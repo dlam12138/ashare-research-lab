@@ -193,10 +193,49 @@ class FactValidator:
         if vs == "verified" and not fact.get("announcement_date"):
             results.append(FactValidationResult(
                 rule_id="FACT_ANNOUNCE_001", target_id=fid,
-                severity="warning", passed=False,
+                severity="error", passed=False,
                 expected="announcement_date present",
                 actual="Missing announcement_date",
                 message="Verified fact lacks announcement_date",
+                checked_at=now,
+            ))
+
+        # FACT_SOURCE_001: verified/reconciled 必须有官方来源
+        if vs in ("verified", "reconciled"):
+            source_tier = fact.get("source_tier", "")
+            source_id = fact.get("source_id", "")
+            if not source_id or source_tier not in ("company_official", "exchange_official"):
+                results.append(FactValidationResult(
+                    rule_id="FACT_SOURCE_001", target_id=fid,
+                    severity="error", passed=False,
+                    expected="source_id 非空且 source_tier 为 company_official 或 exchange_official",
+                    actual=f"source_id={source_id}, source_tier={source_tier}",
+                    message="verified/reconciled 事实必须来自官方来源（非 candidate_aggregator）",
+                    checked_at=now,
+                ))
+
+        # FACT_PIT_001: PIT 适格事实的 available_at 必须有效
+        eligible = fact.get("eligible_for_metrics", False)
+        if eligible:
+            available_at = fact.get("available_at", "")
+            if not available_at:
+                results.append(FactValidationResult(
+                    rule_id="FACT_PIT_001", target_id=fid,
+                    severity="error", passed=False,
+                    expected="available_at 为非空有效日期",
+                    actual="空或缺失",
+                    message="PIT 适格事实缺少 available_at",
+                    checked_at=now,
+                ))
+
+        # FACT_ELIGIBILITY_001: 只有 verified/reconciled 可设置指标适格
+        if eligible and vs not in ("verified", "reconciled"):
+            results.append(FactValidationResult(
+                rule_id="FACT_ELIGIBILITY_001", target_id=fid,
+                severity="error", passed=False,
+                expected="verification_status 为 verified 或 reconciled",
+                actual=f"verification_status={vs}",
+                message="只有 verified/reconciled 事实可设置 eligible_for_metrics=true",
                 checked_at=now,
             ))
 

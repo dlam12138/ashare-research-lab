@@ -241,8 +241,12 @@ class TestFactValidator:
             "filing_date": "2025-04-28",
             "period_end": "2025-03-31",
             "source_provider": "test",
+            "source_tier": "company_official",
+            "source_id": "official_report_2025_page_42",
             "verification_status": "verified",
             "announcement_date": "2025-04-28",
+            "available_at": "2025-04-28",
+            "eligible_for_metrics": False,
             "is_derived": False,
             "created_at": "2025-01-01",
         }

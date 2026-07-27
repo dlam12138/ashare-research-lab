@@ -49,7 +49,7 @@ class FactValidationRuleRegistry:
         "FACT_SOURCE_001": ValidationRule(
             rule_id="FACT_SOURCE_001", version="1",
             severity="error", applies_to="FinancialFact",
-            description="verified 事实必须有官方来源文档",
+            description="verified/reconciled 事实必须有 source_id 且 source_tier 为 company_official 或 exchange_official（非 candidate_aggregator）",
         ),
         "FACT_PERIOD_001": ValidationRule(
             rule_id="FACT_PERIOD_001", version="1",
@@ -88,13 +88,18 @@ class FactValidationRuleRegistry:
         ),
         "FACT_PIT_001": ValidationRule(
             rule_id="FACT_PIT_001", version="1",
-            severity="error", applies_to="AsOfQuery",
-            description="as-of 查询不得返回 available_at 晚于 as_of_date 的事实",
+            severity="error", applies_to="FinancialFact",
+            description="PIT 适格事实的 available_at 必须非空且为有效日期格式",
         ),
         "FACT_ANNOUNCE_001": ValidationRule(
             rule_id="FACT_ANNOUNCE_001", version="1",
-            severity="warning", applies_to="FinancialFact",
+            severity="error", applies_to="FinancialFact",
             description="verified 事实必须有 announcement_date",
+        ),
+        "FACT_ELIGIBILITY_001": ValidationRule(
+            rule_id="FACT_ELIGIBILITY_001", version="1",
+            severity="error", applies_to="FinancialFact",
+            description="只有 verified/reconciled 事实可设置 eligible_for_metrics=true",
         ),
     }
 

@@ -1,12 +1,14 @@
-"""M2 Stage 1 — Point-in-Time 查询引擎。
+"""M2 Stage 1 — Point-in-Time query engine.
 
-所有下游查询必须通过 as_of_date 门禁，
-禁止直接读取未过滤的完整事实集。
+All downstream queries must pass through the as_of_date gate.
+Direct reads of the unfiltered fact set are forbidden outside
+of explicitly audited paths.
 """
 
 from __future__ import annotations
 
 import logging
+import re
 from typing import Any
 
 import pandas as pd
@@ -16,14 +18,27 @@ from ashare_research.facts.repository import FactRepository
 
 logger = logging.getLogger(__name__)
 
+_DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+
+
+def _validate_date_format(date_str: str, param_name: str) -> None:
+    """Raise PointInTimeError if *date_str* is not YYYY-MM-DD."""
+    if not date_str or not _DATE_RE.match(date_str):
+        raise PointInTimeError(
+            f"{param_name} must be a non-empty string in YYYY-MM-DD "
+            f"format, got: {date_str!r}"
+        )
+
 
 class AsOfQuery:
-    """PIT 查询引擎。"""
+    """PIT query engine — every analytical path passes through this gate."""
 
     schema_version: str = "1.0"
 
-    def __init__(self, repository: FactRepository):
+    def __init__(self, repository: FactRepository) -> None:
         self.repository = repository
+
+    # ── Core PIT query ──────────────────────────────────────────
 
     def query(
         self,
@@ -32,27 +47,34 @@ class AsOfQuery:
         as_of_date: str = "",
         start_year: int | None = None,
         end_year: int | None = None,
+        include_unverified: bool = False,
     ) -> pd.DataFrame:
-        """查询截至指定日期已公开的事实。
+        """Return facts available on or before *as_of_date*.
+
+        Strict PIT enforcement:
+          - ``available_at`` must be non-NULL, non-empty, and <= *as_of_date*.
+          - Only ``verified`` / ``reconciled`` facts that are
+            ``eligible_for_metrics`` are returned by default.
 
         Args:
-            symbol: 股票代码
-            concept_ids: 概念ID列表，None 表示全部
-            as_of_date: PIT 截止日期 YYYY-MM-DD
-            start_year: 起始财年
-            end_year: 截止财年
+            symbol: Stock code (e.g. ``000001.SZ``).
+            concept_ids: Optional concept whitelist; ``None`` means all.
+            as_of_date: PIT cut-off date in **YYYY-MM-DD** format
+                (mandatory — pass the day you want the view from).
+            start_year: Earliest fiscal year (inclusive).
+            end_year: Latest fiscal year (inclusive).
+            include_unverified: If ``True``, skip the verification and
+                eligibility filters. **Only use in audit / debugging
+                contexts.**
 
         Returns:
-            仅包含 available_at <= as_of_date 的事实
+            DataFrame ordered by ``period_end``, ``concept_id``,
+            ``fact_version DESC``.
 
         Raises:
-            PointInTimeError: as_of_date 为空时
+            PointInTimeError: *as_of_date* is empty or not YYYY-MM-DD.
         """
-        if not as_of_date:
-            raise PointInTimeError(
-                "as_of_date is required for PIT queries. "
-                "Use get_all_versions_for_audit() for unfiltered access."
-            )
+        _validate_date_format(as_of_date, "as_of_date")
 
         return self.repository.query_facts(
             symbol=symbol,
@@ -60,49 +82,185 @@ class AsOfQuery:
             start_year=start_year,
             end_year=end_year,
             as_of_date=as_of_date,
+            include_unverified=include_unverified,
         )
 
-    def get_latest(
-        self, symbol: str, concept_ids: list[str] | None = None,
+    # ── Latest-available snapshot ───────────────────────────────
+
+    def get_latest_available(
+        self,
+        symbol: str,
+        as_of_date: str,
+        concept_ids: list[str] | None = None,
+        consolidation_scope: str = "consolidated",
     ) -> pd.DataFrame:
-        """获取最新已公开事实（不限 PIT 日期）。"""
-        return self.repository.query_facts(
-            symbol=symbol, concept_ids=concept_ids,
-        )
+        """Return the single latest version of each fact key as of *as_of_date*.
 
-    def get_all_versions_for_audit(
-        self, symbol: str, concept_ids: list[str] | None = None,
-    ) -> pd.DataFrame:
-        """审计用：获取所有版本事实（不限制 available_at）。
+        A fact key is ``(symbol, concept_id, period_end,
+        consolidation_scope)``.  Within each key the row with the highest
+        ``available_at`` (then highest ``fact_version``) wins.
 
-        此方法名称明确表明它是调试/审计接口，不应在分析代码中使用。
-        """
-        return self.repository.query_facts(
-            symbol=symbol, concept_ids=concept_ids,
-        )
+        Strict PIT:
+          - ``available_at`` must be non-NULL, non-empty, and <= *as_of_date*.
+          - Only ``verified`` / ``reconciled`` + ``eligible_for_metrics``
+            facts are considered.
 
-    def compare_versions(
-        self, symbol: str, concept_ids: list[str],
-        date1: str, date2: str,
-    ) -> dict[str, Any]:
-        """比较两个时点的事实版本差异，检测重述。
+        Args:
+            symbol: Stock code.
+            as_of_date: PIT cut-off date in **YYYY-MM-DD** format
+                (mandatory).
+            concept_ids: Optional concept whitelist.
+            consolidation_scope: ``consolidated`` (default) or
+                ``parent_company``.
 
         Returns:
-            dict: {concept_id: {date1_value, date2_value, changed}}
+            DataFrame with exactly one row per fact key
+            (``rn == 1``), ordered by ``period_end``, ``concept_id``.
+
+        Raises:
+            PointInTimeError: *as_of_date* is empty or not YYYY-MM-DD.
         """
-        df1 = self.query(symbol, concept_ids, as_of_date=date1)
-        df2 = self.query(symbol, concept_ids, as_of_date=date2)
+        _validate_date_format(as_of_date, "as_of_date")
+
+        return self.repository.get_latest_available(
+            symbol=symbol,
+            as_of_date=as_of_date,
+            concept_ids=concept_ids,
+            consolidation_scope=consolidation_scope,
+        )
+
+    # ── Audit / debugging escape hatch ──────────────────────────
+
+    def get_all_versions_for_audit(
+        self,
+        symbol: str,
+        concept_ids: list[str] | None = None,
+    ) -> pd.DataFrame:
+        """**Audit-only.** Return every fact version unconditionally.
+
+        This call skips:
+          - the ``available_at`` PIT gate,
+          - the ``verification_status`` filter, and
+          - the ``eligible_for_metrics`` filter.
+
+        It must **never** be used in production analysis or metric
+        calculation paths.  Its sole purpose is manual review of the
+        raw fact table (e.g. investigating a reconciliation discrepancy
+        or auditing a data pipeline run).
+        """
+        return self.repository.get_all_versions_for_audit(
+            symbol=symbol,
+            concept_ids=concept_ids,
+        )
+
+    # ── Version comparison (restatement detection) ──────────────
+
+    def compare_versions(
+        self,
+        symbol: str,
+        concept_ids: list[str],
+        period_end: str,
+        date1: str,
+        date2: str,
+        consolidation_scope: str = "consolidated",
+    ) -> dict[str, Any]:
+        """Compare fact values at two PIT dates — detect restatements.
+
+        Fact keys are ``(concept_id, period_end, consolidation_scope)``.
+        The method matches each key across both snapshots and reports
+        the value at each date plus whether it changed.
+
+        Args:
+            symbol: Stock code.
+            concept_ids: Concepts to compare.
+            period_end: Report period end date (YYYY-MM-DD).  Pass
+                ``""`` to compare across all periods.
+            date1: First PIT date (YYYY-MM-DD).
+            date2: Second PIT date (YYYY-MM-DD).
+            consolidation_scope: ``consolidated`` or ``parent_company``.
+
+        Returns:
+            Dict keyed by ``(concept_id, period_end, consolidation_scope)``,
+            each value::
+
+                {
+                    "concept_id": str,
+                    "period_end": str,
+                    "consolidation_scope": str,
+                    "value_at_<date1>": float | None,
+                    "value_at_<date2>": float | None,
+                    "changed": bool | None,
+                }
+
+        Raises:
+            PointInTimeError: any date is empty or not YYYY-MM-DD.
+        """
+        _validate_date_format(date1, "date1")
+        _validate_date_format(date2, "date2")
+        if period_end:
+            _validate_date_format(period_end, "period_end")
+
+        # Snapshot at each PIT date — use latest-available so we get
+        # one row per fact key.
+        snap1 = self.get_latest_available(
+            symbol=symbol,
+            as_of_date=date1,
+            concept_ids=concept_ids,
+            consolidation_scope=consolidation_scope,
+        )
+        snap2 = self.get_latest_available(
+            symbol=symbol,
+            as_of_date=date2,
+            concept_ids=concept_ids,
+            consolidation_scope=consolidation_scope,
+        )
+
+        # Index both snapshots by the fact key.
+        _key_cols = ["concept_id", "period_end"]
+        if "consolidation_scope" in snap1.columns:
+            _key_cols.append("consolidation_scope")
+
+        def _key_from_row(row: pd.Series) -> tuple:
+            return tuple(row[c] for c in _key_cols)
+
+        if not snap1.empty:
+            snap1["_key"] = snap1.apply(_key_from_row, axis=1)
+        else:
+            snap1["_key"] = pd.Series(dtype="object")
+        if not snap2.empty:
+            snap2["_key"] = snap2.apply(_key_from_row, axis=1)
+        else:
+            snap2["_key"] = pd.Series(dtype="object")
+
+        idx1: dict[tuple, float | None] = {}
+        for _, row in snap1.iterrows():
+            k = row["_key"]
+            # Keep the first occurrence per key (should be unique after
+            # get_latest_available, but be defensive).
+            if k not in idx1:
+                idx1[k] = row.get("value")
+
+        idx2: dict[tuple, float | None] = {}
+        for _, row in snap2.iterrows():
+            k = row["_key"]
+            if k not in idx2:
+                idx2[k] = row.get("value")
+
+        all_keys = set(idx1.keys()) | set(idx2.keys())
 
         comparison: dict[str, Any] = {}
-        for cid in concept_ids:
-            v1 = df1[df1["concept_id"] == cid]
-            v2 = df2[df2["concept_id"] == cid]
-            val1 = v1["value"].iloc[0] if not v1.empty else None
-            val2 = v2["value"].iloc[0] if not v2.empty else None
-            comparison[cid] = {
-                f"value_at_{date1}": val1,
-                f"value_at_{date2}": val2,
-                "changed": val1 != val2 if val1 is not None else None,
-            }
+        for key in sorted(all_keys):
+            val1 = idx1.get(key)
+            val2 = idx2.get(key)
+            changed: bool | None = None
+            if val1 is not None and val2 is not None:
+                changed = val1 != val2
+            kdict = dict(zip(_key_cols, key, strict=True))
+            entry: dict[str, Any] = {**kdict}
+            entry[f"value_at_{date1}"] = val1
+            entry[f"value_at_{date2}"] = val2
+            entry["changed"] = changed
+            label = "|".join(str(v) for v in key)
+            comparison[label] = entry
 
         return comparison

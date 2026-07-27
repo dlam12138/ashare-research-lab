@@ -19,6 +19,13 @@ from pathlib import Path
 from ashare_research import __version__
 from ashare_research.config import load_config
 from ashare_research.exceptions import AshareDataError
+from ashare_research.fact_sources.candidates.akshare_financial import (
+    AKShareFinancialCandidateProvider,
+)
+from ashare_research.facts.as_of import AsOfQuery
+from ashare_research.facts.repository import FactRepository
+from ashare_research.facts.service import FactService
+from ashare_research.official_sources.registry import OfficialSourceRegistry
 from ashare_research.providers.akshare_provider import AKShareProvider
 from ashare_research.providers.baostock_provider import BaostockProvider
 from ashare_research.services.data_service import DataService
@@ -274,6 +281,182 @@ def cmd_inspect(args: argparse.Namespace) -> int:
         service.store.close()
 
 
+# ── M2 价值评估子命令 ──────────────────────────────────────────
+
+
+def cmd_build_value_facts(args: argparse.Namespace) -> int:
+    """构建价值评估事实数据。
+
+    从候选/官方来源获取财务数据，经 validate-before-write 流程
+    写入 DuckDB 事实表。
+
+    退出码：0=passed  2=conditional_pass  1=failed
+    """
+    config = load_config(args.config)
+    store = DuckDBStore(config["storage"]["duckdb_path"])
+    store.connect()
+
+    source_mode = getattr(args, "source", "candidate")
+
+    try:
+        repo = FactRepository(store)
+        repo.ensure_schema()
+
+        if source_mode == "official":
+            print(
+                "Official source mode is not yet implemented. "
+                "Falling back to candidate source.",
+                file=sys.stderr,
+            )
+
+        registry = OfficialSourceRegistry()
+        registry.register(
+            args.symbol,
+            AKShareFinancialCandidateProvider(
+                raw_dir=config["storage"].get("raw_dir", "data/raw"),
+            ),
+        )
+
+        service = FactService(fact_repository=repo, source_registry=registry)
+
+        result = service.build_facts(
+            args.symbol, args.start_year, args.end_year,
+        )
+
+        print(f"run_id:           {result['run_id']}")
+        print(f"symbol:           {result['symbol']}")
+        print(f"reported_count:   {result['reported_count']}")
+        print(f"derived_count:    {result['derived_count']}")
+        print(f"total_error_count:{result['total_error_count']}")
+        print(f"status:           {result['status']}")
+        print(f"checkpoint:       {result['checkpoint_decision']}")
+
+        status = result["status"]
+        if status == "passed":
+            return 0
+        elif status == "conditional_pass":
+            return 2
+        else:
+            return 1
+    except Exception as e:
+        print(f"Error: {e}", file=sys.stderr)
+        return 1
+    finally:
+        store.close()
+
+
+def cmd_verify_value_facts(args: argparse.Namespace) -> int:
+    """重新验证已有事实运行（无网络请求）。
+
+    从数据库读取指定 run_id 的校验结果并输出摘要。
+    """
+    config = load_config(args.config)
+    store = DuckDBStore(config["storage"]["duckdb_path"])
+    store.connect()
+
+    try:
+        repo = FactRepository(store)
+        repo.ensure_schema()
+
+        conn = store.connect()
+
+        run = conn.execute(
+            "SELECT validation_run_id, fact_count, error_count, "
+            "warning_count, status, started_at, completed_at "
+            "FROM fact_validation_runs WHERE validation_run_id = ?",
+            [args.run_id],
+        ).fetchone()
+
+        if not run:
+            print(f"No validation run found for run_id: {args.run_id}")
+            return 1
+
+        run_id, fact_count, err_cnt, warn_cnt, status, started, completed = run
+
+        print(f"Validation Run: {run_id}")
+        print(f"  Status:       {status}")
+        print(f"  Fact count:   {fact_count}")
+        print(f"  Errors:       {err_cnt}")
+        print(f"  Warnings:     {warn_cnt}")
+        print(f"  Started:      {started}")
+        print(f"  Completed:    {completed}")
+
+        # 校验结果明细分组统计
+        detail = conn.execute(
+            "SELECT severity, passed, COUNT(*) "
+            "FROM fact_validation_results "
+            "WHERE validation_run_id = ? "
+            "GROUP BY severity, passed "
+            "ORDER BY severity, passed",
+            [args.run_id],
+        ).fetchall()
+
+        if detail:
+            print(f"\n  Detail ({len(detail)} groups):")
+            for severity, passed_flag, cnt in detail:
+                flag = "PASS" if passed_flag else "FAIL"
+                print(f"    [{severity}] {flag}: {cnt}")
+        else:
+            print("\n  (no detail rows)")
+
+        return 0
+    except Exception as e:
+        print(f"Error: {e}", file=sys.stderr)
+        return 1
+    finally:
+        store.close()
+
+
+def cmd_query_value_facts(args: argparse.Namespace) -> int:
+    """PIT 查询价值评估事实。
+
+    通过 AsOfQuery 对事实表执行时点查询，
+    默认仅返回 verified/reconciled + eligible_for_metrics 的事实。
+    """
+    config = load_config(args.config)
+    store = DuckDBStore(config["storage"]["duckdb_path"])
+    store.connect()
+
+    try:
+        repo = FactRepository(store)
+        as_of = AsOfQuery(repo)
+
+        concept_ids: list[str] | None = args.concept if args.concept else None
+
+        df = as_of.query(
+            symbol=args.symbol,
+            concept_ids=concept_ids,
+            as_of_date=args.as_of,
+            include_unverified=args.include_unverified,
+        )
+
+        if df.empty:
+            print(f"No facts found for {args.symbol} as of {args.as_of}")
+            if args.include_unverified:
+                print("  (include_unverified=True)")
+            return 0
+
+        print(f"Symbol:  {args.symbol}")
+        print(f"As of:   {args.as_of}")
+        print(f"Rows:    {len(df)}")
+        print(f"Concepts:{df['concept_id'].nunique()}")
+        print()
+
+        cols = [
+            "concept_id", "period_end", "value", "unit",
+            "verification_status", "is_derived", "filing_date",
+        ]
+        available_cols = [c for c in cols if c in df.columns]
+        print(df[available_cols].to_string(index=False))
+
+        return 0
+    except Exception as e:
+        print(f"Error: {e}", file=sys.stderr)
+        return 1
+    finally:
+        store.close()
+
+
 def main(argv: list[str] | None = None) -> int:
     """CLI 入口。"""
     parser = argparse.ArgumentParser(
@@ -359,6 +542,59 @@ def main(argv: list[str] | None = None) -> int:
         "--show-data", action="store_true", help="显示数据预览"
     )
     p_inspect.set_defaults(func=cmd_inspect)
+
+    # build-value-facts
+    p_bvf = subparsers.add_parser(
+        "build-value-facts", help="构建价值评估事实数据",
+    )
+    p_bvf.add_argument(
+        "symbol", type=str, help="股票代码 (e.g. 000001.SZ)",
+    )
+    p_bvf.add_argument(
+        "--start-year", type=int, required=True, help="起始年份",
+    )
+    p_bvf.add_argument(
+        "--end-year", type=int, required=True, help="结束年份",
+    )
+    p_bvf.add_argument(
+        "--source", type=str, default="candidate",
+        choices=["candidate", "official"],
+        help="数据来源类型 (default: candidate)",
+    )
+    p_bvf.set_defaults(func=cmd_build_value_facts)
+
+    # verify-value-facts
+    p_vvf = subparsers.add_parser(
+        "verify-value-facts", help="重新验证已有事实运行",
+    )
+    p_vvf.add_argument(
+        "symbol", type=str, help="股票代码 (e.g. 000001.SZ)",
+    )
+    p_vvf.add_argument(
+        "--run-id", type=str, required=True, help="构建运行 ID",
+    )
+    p_vvf.set_defaults(func=cmd_verify_value_facts)
+
+    # query-value-facts
+    p_qvf = subparsers.add_parser(
+        "query-value-facts", help="PIT 查询价值评估事实",
+    )
+    p_qvf.add_argument(
+        "symbol", type=str, help="股票代码 (e.g. 000001.SZ)",
+    )
+    p_qvf.add_argument(
+        "--as-of", type=str, required=True, dest="as_of",
+        help="PIT 截止日期 YYYY-MM-DD",
+    )
+    p_qvf.add_argument(
+        "--concept", type=str, action="append",
+        help="概念 ID（可重复指定）",
+    )
+    p_qvf.add_argument(
+        "--include-unverified", action="store_true",
+        help="仅用于审计，不得用于正式指标或历史回测",
+    )
+    p_qvf.set_defaults(func=cmd_query_value_facts)
 
     args = parser.parse_args(argv)
 
