@@ -82,5 +82,133 @@
 
 ## 实际操作
 
-（执行过程中持续更新）
+### 修复记录
+
+每个问题按 P0→P1→P2 顺序修复。
+
+#### P0.1: AKShare 成交量 ×100
+- 文件: `src/ashare_research/providers/akshare_provider.py:152`
+- 修改: `pd.to_numeric(df["volume"])` → `pd.to_numeric(df["volume"]) * 100`
+- 验证: 新测试 `test_volume_multiplied_by_100` 通过
+
+#### P0.2: 质量门禁
+- 文件: `src/ashare_research/services/data_service.py`
+- 修改: 完全重构 `fetch_and_store` 流程
+- 新流程: 批量检查→不通过则隔离→合并→合并检查→不通过则隔离→通过则原子写入→标记成功
+- 新增: `_merge_with_existing`, `_save_staging_data`, `_save_quarantine` 方法
+- 新增目录: `data/staging/`, `data/quarantine/`
+
+#### P0.3: NaN/Inf 检查
+- 文件: `src/ashare_research/quality/validators.py`
+- 新增: `_check_no_nan_in_numeric_fields` 方法
+- 验证: 新测试 `test_nan_volume_detected`, `test_inf_price_detected`, `test_all_numeric_fields_finite` 通过
+
+#### P1.4: Baostock adjustflag
+- 文件: `src/ashare_research/providers/baostock_provider.py:223`
+- 修改: `adjust_map = {"none": "", ...}` → `adjust_map = {"none": "3", ...}`
+- 真实验证: Baostock 不复权请求成功 (18 rows, 601857.SH)
+- 测试: `test_none_maps_to_3`, `test_qfq_maps_to_2`, `test_hfq_maps_to_1` 通过
+
+#### P1.5: 指数适配器
+- 文件: `src/ashare_research/providers/akshare_provider.py:180-238`
+- 修改: `ak.stock_zh_index_daily(symbol=f"sh{symbol}")` → `ak.index_zh_a_hist(symbol=symbol, ...)`
+- 移除: 伪造成交额 `df["amount"] = 0.0`
+- 改为: 使用 `index_zh_a_hist` 接口，同时提供成交量和成交额
+
+#### P1.6: DuckDB 注册表行数
+- 文件: `src/ashare_research/services/data_service.py:192-194`
+- 修改: `complete_fetch_run(row_count=final_row_count)` 记录合并后总行数
+
+#### P1.7: Parquet 排序
+- 文件: `src/ashare_research/storage/parquet_store.py:102`
+- 修改: `sort_values(pk_cols[0])` → `sort_values(pk_cols)`
+
+#### P1.8: A 股过滤
+- 文件: `src/ashare_research/providers/baostock_provider.py:138-141`
+- 新增: `df = df[df["type"] == "1"]` 过滤股票
+- 新增: `board` 字段（kcb/cyb/bj/sh_main/sz_main 分类）
+
+#### P1.9: 登录生命周期
+- 文件: `src/ashare_research/cli.py:149-152`
+- 删除: CLI 层手动 `baostock.login()` — 由 Provider 内部 `_ensure_login()` 管理
+- Provider 错误在 DataService 层通过 `except (AshareDataError, QualityCheckError) as e` 统一处理
+
+#### P2.10: 数据留存命名
+- 文件: `src/ashare_research/services/data_service.py`
+- 方法重命名: `_save_raw_data` → `_save_staging_data`
+- 新增: `data/staging/`, `data/quarantine/` 目录
+- Docstring: 明确说明"标准化快照"与"不可变原始响应"的区别
+
+#### P2.12: 测试修复
+- 修复: `tests/test_data_service.py:287` 删除 `or True`
+- 新增: `tests/test_providers.py` (成交量转换、adjustflag 参数、代码转换测试)
+- 新增: `test_quality_failure_blocks_parquet_write`, `test_merged_row_count_recorded`, `test_duplicate_request_returns_same_count` 等
+
+#### P2.13: 配置深拷贝
+- 文件: `src/ashare_research/config.py:59`
+- 修改: `dict(DEFAULT_CONFIG)` → `deepcopy(DEFAULT_CONFIG)`
+
+#### P2.14: 许可证
+- 文件: `pyproject.toml:11`
+- 删除: `license = {text = "MIT"}` — 许可证尚未选定
+
+### 真实 Smoke 验证
+
+**Baostock 不复权** (adjustflag=3):
+```powershell
+ashare-research fetch-stock-daily 601857.SH --start 2026-07-01 --end 2026-07-27 --provider baostock --adjustment none --no-fallback -v
+```
+结果: 18 rows, quality=passed, source=baostock ✅
+
+**数据验证** (2026-07-01):
+- volume=124,659,910 股
+- amount=1,089,727,000 元
+- 均价≈8.74元 ≈ close=8.73元 ✓
+
+## 验证
+
+| 检查项 | 状态 |
+|--------|------|
+| pytest (全部) | ✅ 68 passed |
+| ruff | ✅ 仅非阻塞风格建议 |
+| Baostock adjustflag=3 真实测试 | ✅ 18 rows |
+| AKShare 成交量 ×100 测试 | ✅ |
+| NaN/inf 检测测试 | ✅ |
+| 质量门禁隔离测试 | ✅ |
+| 配置深拷贝修复 | ✅ |
+| 许可证矛盾消除 | ✅ |
+
+## 结果
+
+**状态：completed (push pending due to network)**
+
+### 已修复
+
+| 优先级 | 问题 | 状态 |
+|--------|------|------|
+| P0 | AKShare 成交量 ×100 | ✅ |
+| P0 | 质量门禁 | ✅ |
+| P0 | NaN/inf 检查 | ✅ |
+| P1 | Baostock adjustflag=3 | ✅ |
+| P1 | 指数接口 | ✅ |
+| P1 | 注册表行数 | ✅ |
+| P1 | Parquet 完整排序 | ✅ |
+| P1 | A 股过滤 | ✅ |
+| P1 | 登录生命周期 | ✅ |
+| P2 | 数据留存命名 | ✅ |
+| P2 | 测试关键路径 | ✅ |
+| P2 | 配置深拷贝 | ✅ |
+| P2 | 许可证矛盾 | ✅ |
+
+### 尚未完成
+- GitHub 推送（网络不可用，commit 0221ae1 已在本地）
+- 重复下载跳过（P2.11 — 需设计缓存策略，留待后续迭代）
+
+### 最终 Git 状态
+- 分支: main
+- 本地提交: 0221ae1 (fix: P0-P2 data correctness and quality gate)
+- 远程: 0daf3d5 (上次推送)
+- 本地领先: 1 commit (推送待重试)
+- 工作区: 干净
+
 
