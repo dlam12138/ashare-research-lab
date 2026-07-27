@@ -17,7 +17,6 @@ from typing import Any
 import pandas as pd
 
 from ashare_research.exceptions import (
-    AshareDataError,
     FactPersistenceError,
     FactSchemaMigrationError,
 )
@@ -166,6 +165,18 @@ class FactRepository:
         - 1.0 表非空 → 默认停止（抛出异常）
         - 不触及 Milestone 1 的表
         """
+        self.ensure_schema_v2(git_commit)
+
+    def ensure_schema_v2(self, git_commit: str = "") -> None:
+        """安全初始化或迁移至 schema v2.0。
+
+        规则：
+        - 无 M2 表 → 创建 2.0
+        - 已有 v2.0 → 无操作
+        - 非空旧版本表 → 抛出 FactSchemaMigrationError（拒绝自动迁移）
+        - 空表 → 重建为 v2.0（仅开发环境）
+        - 不触及 Milestone 1 的表
+        """
         conn = self.store.connect()
         existing = conn.execute(
             "SELECT name FROM sqlite_master "
@@ -174,11 +185,7 @@ class FactRepository:
 
         if existing is None:
             # 全新创建
-            for stmt in FACT_SCHEMA_V2_SQL.split(";"):
-                stmt = stmt.strip()
-                if stmt:
-                    conn.execute(stmt)
-
+            self._create_v2_tables(conn, FACT_SCHEMA_V2_SQL)
             now = datetime.now().isoformat()
             conn.execute(
                 """INSERT INTO fact_schema_meta
@@ -188,7 +195,6 @@ class FactRepository:
             )
             logger.info("FactRepository schema v2.0 created")
         else:
-            # 检查版本
             meta = conn.execute(
                 "SELECT schema_version FROM fact_schema_meta "
                 "WHERE schema_name='financial_facts'"
@@ -197,7 +203,6 @@ class FactRepository:
             if meta and meta[0] == "2.0":
                 logger.info("FactRepository already at schema v2.0")
             else:
-                # 检查是否为空
                 count = conn.execute(
                     "SELECT COUNT(*) FROM financial_facts"
                 ).fetchone()[0]
@@ -207,10 +212,40 @@ class FactRepository:
                         f"{count} existing rows. Use reset_m2_fact_schema() "
                         f"for development environments only."
                     )
-                # 空表：重建
                 self._rebuild_schema(conn, git_commit)
 
         self._initialized = True
+
+    def _create_v2_tables(self, conn, schema_sql: str) -> None:
+        """从 SQL 字符串创建所有 v2 表。"""
+        for stmt in schema_sql.split(";"):
+            stmt = stmt.strip()
+            if stmt:
+                conn.execute(stmt)
+
+    def store_schema_meta(
+        self, schema_name: str, schema_version: str,
+        git_commit: str = "", conn=None,
+    ) -> None:
+        """记录 schema 迁移元数据。
+
+        用于在事务中与其他写入一起原子提交 schema 版本记录。
+        """
+        close_conn = False
+        if conn is None:
+            conn = self.store.connect()
+            close_conn = True
+        try:
+            now = datetime.now().isoformat()
+            conn.execute(
+                """INSERT OR REPLACE INTO fact_schema_meta
+                   (schema_name, schema_version, applied_at, git_commit)
+                   VALUES (?, ?, ?, ?)""",
+                [schema_name, schema_version, now, git_commit],
+            )
+        finally:
+            if close_conn:
+                pass  # DuckDB manages connection lifecycle
 
     def _rebuild_schema(self, conn, git_commit: str) -> None:
         """仅用于开发环境的空表重建。"""
@@ -220,10 +255,7 @@ class FactRepository:
                        "fact_validation_results",
                        "fact_schema_meta"]:
             conn.execute(f"DROP TABLE IF EXISTS {table}")
-        for stmt in FACT_SCHEMA_V2_SQL.split(";"):
-            stmt = stmt.strip()
-            if stmt:
-                conn.execute(stmt)
+        self._create_v2_tables(conn, FACT_SCHEMA_V2_SQL)
         now = datetime.now().isoformat()
         conn.execute(
             """INSERT INTO fact_schema_meta
@@ -233,7 +265,7 @@ class FactRepository:
         )
 
     def reset_m2_fact_schema(self) -> None:
-        """⚠ 仅开发环境：完全重置 M2 事实表。不影响 Milestone 1 表。"""
+        """警告：仅开发环境：完全重置 M2 事实表。不影响 Milestone 1 表。"""
         conn = self.store.connect()
         self._rebuild_schema(conn, "")
         logger.warning("M2 fact schema completely reset — DEV ONLY")
@@ -242,15 +274,23 @@ class FactRepository:
 
     @contextlib.contextmanager
     def transaction(self):
-        """事务上下文管理器。"""
+        """事务上下文管理器。
+
+        用法:
+            with repo.transaction() as conn:
+                repo.store_facts(facts, conn=conn)
+                repo.store_contexts(contexts, conn=conn)
+                repo.store_schema_meta('financial_facts', '2.0', conn=conn)
+        """
         conn = self.store.connect()
         conn.execute("BEGIN TRANSACTION")
         try:
             yield conn
-            conn.execute("COMMIT")
         except Exception:
             conn.execute("ROLLBACK")
             raise
+        else:
+            conn.execute("COMMIT")
 
     # ── 种子 ────────────────────────────────────────────
 
@@ -298,7 +338,7 @@ class FactRepository:
                 count += 1
         finally:
             if close_conn:
-                pass  # DuckDB handles connection lifecycle
+                pass  # DuckDB manages connection lifecycle
 
         logger.info(f"Seeded {count} concepts")
         return count
@@ -311,7 +351,8 @@ class FactRepository:
         "derivation_definition_id", "derivation_version",
         "input_fact_ids", "source_provider", "source_id",
         "source_tier", "source_document", "source_url",
-        "source_hash", "fact_version", "restatement_version",
+        "source_hash", "source_page", "source_table", "source_label",
+        "fact_version", "restatement_version",
         "supersedes_fact_id", "filing_date", "period_end",
         "announcement_date", "available_at", "raw_value",
         "raw_unit", "normalized_value", "normalization_rule",
@@ -333,6 +374,7 @@ class FactRepository:
         """事务化批量写入事实。
 
         任意一条失败 → 抛出 FactPersistenceError（调用方负责回滚）。
+        写入后验证实际行数与预期一致。
         """
         close_conn = False
         if conn is None:
@@ -340,38 +382,55 @@ class FactRepository:
             close_conn = True
 
         try:
+            # 记录写入前计数用于后续验证
+            before = conn.execute(
+                "SELECT COUNT(*) FROM financial_facts"
+            ).fetchone()[0]
+
+            placeholders = ", ".join(["?"] * len(self._FACT_COLS))
+            col_names = ", ".join(self._FACT_COLS)
+
             for fact in facts:
                 vals = []
                 for col in self._FACT_COLS:
-                    val = fact.get(col, "")
-                    vals.append(val)
-
-                placeholders = ", ".join(["?"] * len(vals))
-                col_names = ", ".join(self._FACT_COLS)
+                    vals.append(fact.get(col, ""))
                 conn.execute(
                     f"INSERT INTO financial_facts "
                     f"({col_names}) VALUES ({placeholders})",
                     vals,
                 )
 
-            # 验证写入数量
-            result = conn.execute(
+            # 验证写入数量与预期一致
+            after = conn.execute(
                 "SELECT COUNT(*) FROM financial_facts"
-            ).fetchone()
-            actual_count = result[0] if result else 0
+            ).fetchone()[0]
+            actual_inserted = after - before
+            expected = len(facts)
 
-            return len(facts)
+            if actual_inserted != expected:
+                raise FactPersistenceError(
+                    f"Fact count mismatch after store: "
+                    f"expected {expected}, got {actual_inserted}"
+                )
+
+            return actual_inserted
+        except FactPersistenceError:
+            raise
         except Exception as e:
             raise FactPersistenceError(
                 f"Failed to store facts: {e}"
             ) from e
         finally:
             if close_conn:
-                pass
+                pass  # DuckDB manages connection lifecycle
 
     def store_contexts(
         self, contexts: list[dict[str, Any]], conn=None,
     ) -> int:
+        """事务化批量写入事实上下文。
+
+        任意一条失败 → 抛出 FactPersistenceError。
+        """
         close_conn = False
         if conn is None:
             conn = self.store.connect()
@@ -393,13 +452,17 @@ class FactRepository:
             ) from e
         finally:
             if close_conn:
-                pass
+                pass  # DuckDB manages connection lifecycle
 
     def store_validation_run(
-        self, run_id: str, fact_count: int,
-        error_count: int, warning_count: int,
-        status: str, conn=None,
+        self, run_id: str, fact_count: int = 0,
+        error_count: int = 0, warning_count: int = 0,
+        status: str = "pending", conn=None,
     ) -> None:
+        """记录一次验证运行。
+
+        可选传入 conn 以参与外部事务。
+        """
         close_conn = False
         if conn is None:
             conn = self.store.connect()
@@ -416,12 +479,17 @@ class FactRepository:
             )
         finally:
             if close_conn:
-                pass
+                pass  # DuckDB manages connection lifecycle
 
     def store_validation_results(
         self, results: list[dict[str, Any]],
         validation_run_id: str, conn=None,
     ) -> int:
+        """批量写入验证结果。
+
+        可选传入 conn 以参与外部事务。
+        返回写入条数。
+        """
         close_conn = False
         if conn is None:
             conn = self.store.connect()
@@ -453,15 +521,20 @@ class FactRepository:
             return count
         finally:
             if close_conn:
-                pass
+                pass  # DuckDB manages connection lifecycle
 
     def store_lineage(
         self, fact_id: str, run_id: str = "",
         source_provider: str = "", source_tier: str = "",
+        source_method: str = "",
         raw_path: str = "", staging_path: str = "",
         fetch_run_id: str = "", parent_fact_ids: str = "",
         conn=None,
     ) -> None:
+        """记录单条事实的数据沿袭。
+
+        可选传入 conn 以参与外部事务。
+        """
         close_conn = False
         if conn is None:
             conn = self.store.connect()
@@ -471,17 +544,19 @@ class FactRepository:
             conn.execute(
                 """INSERT INTO fact_lineage
                    (lineage_id, fact_id, run_id, source_provider,
-                    source_tier, raw_file_path, staging_file_path,
+                    source_tier, source_method,
+                    raw_file_path, staging_file_path,
                     fetch_run_id, parent_fact_ids, recorded_at)
                    VALUES (nextval('fact_lineage_seq'),
-                    ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
                 [fact_id, run_id, source_provider, source_tier,
+                 source_method,
                  raw_path, staging_path, fetch_run_id,
                  parent_fact_ids, now],
             )
         finally:
             if close_conn:
-                pass
+                pass  # DuckDB manages connection lifecycle
 
     # ── 查询 ────────────────────────────────────────────
 
@@ -496,7 +571,7 @@ class FactRepository:
     ) -> pd.DataFrame:
         """查询事实。
 
-        PIT 查询：仅返回 available_at 非空且 ≤ as_of_date 的事实。
+        PIT 查询：仅返回 available_at 非空且 <= as_of_date 的事实。
         默认过滤未核验事实（include_unverified=True 仅用于审计）。
         """
         conn = self.store.connect()
@@ -521,7 +596,7 @@ class FactRepository:
             params.append(end_year)
 
         if as_of_date:
-            # 严格 PIT：available_at 必须非空且 ≤ as_of_date
+            # PIT 门禁：available_at 必须非空且非空字符串且 <= as_of_date
             query += (
                 " AND available_at IS NOT NULL"
                 " AND available_at <> ''"
@@ -550,6 +625,7 @@ class FactRepository:
         """获取截至指定日期的每个事实键的最新版本。
 
         使用 ROW_NUMBER() 窗口函数选择最新版本。
+        PIT 门禁：available_at 必须非空且非空字符串且 <= as_of_date。
         """
         conn = self.store.connect()
 
@@ -583,23 +659,8 @@ class FactRepository:
         """
         return conn.execute(query, params).df()
 
-    def get_all_versions_for_audit(
-        self,
-        symbol: str,
-        concept_ids: list[str] | None = None,
-    ) -> pd.DataFrame:
-        """⚠ 审计专用：返回所有版本（不含 PIT 过滤）。
-
-        此方法返回空 available_at、unverified 和旧版本。
-        不得在正式分析代码中调用。
-        """
-        return self.query_facts(
-            symbol=symbol,
-            concept_ids=concept_ids,
-            include_unverified=True,
-        )
-
     def get_fact_summary(self, symbol: str) -> dict[str, Any]:
+        """返回指定 symbol 的事实摘要统计。"""
         conn = self.store.connect()
         result = conn.execute(
             """SELECT
@@ -617,3 +678,19 @@ class FactRepository:
         if result.empty:
             return {}
         return result.iloc[0].to_dict()
+
+    def get_all_versions_for_audit(
+        self,
+        symbol: str,
+        concept_ids: list[str] | None = None,
+    ) -> pd.DataFrame:
+        """审计专用：返回所有版本（不含 PIT 过滤）。
+
+        此方法返回空 available_at、unverified 和旧版本。
+        不得在正式分析代码中调用。
+        """
+        return self.query_facts(
+            symbol=symbol,
+            concept_ids=concept_ids,
+            include_unverified=True,
+        )
