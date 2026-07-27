@@ -67,7 +67,8 @@ class BaostockProvider(BaseProvider):
 
     provider_name = "baostock"
 
-    def __init__(self):
+    def __init__(self, raw_dir: str = ""):
+        super().__init__(raw_dir=raw_dir)
         self._logged_in = False
 
     def login(self) -> None:
@@ -141,6 +142,7 @@ class BaostockProvider(BaseProvider):
                 raise EmptyResultError("No stock basic data returned")
 
             df = pd.DataFrame(data, columns=rs.fields)
+            self._save_raw_response(df, "stock_basic")
             df = df.rename(columns=_STOCK_BASIC_COLUMNS)
 
             # 仅保留 A 股股票（type=1）
@@ -215,6 +217,7 @@ class BaostockProvider(BaseProvider):
                 )
 
             df = pd.DataFrame(data, columns=rs.fields)
+            self._save_raw_response(df, "trade_calendar")
 
             # Baostock 返回 calendar_date 和 is_trading_day(0/1)
             df = df.rename(columns={
@@ -284,6 +287,7 @@ class BaostockProvider(BaseProvider):
                 )
 
             df = pd.DataFrame(data, columns=rs.fields)
+            self._save_raw_response(df, "stock_daily", bs_code)
             df = df.rename(columns=_STOCK_DAILY_COLUMNS)
 
             # 标准化代码

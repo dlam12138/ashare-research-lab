@@ -42,9 +42,10 @@ def _create_service(config: dict) -> DataService:
     store.connect()
     store.init_db()
 
+    raw_dir = config["storage"].get("raw_dir", "data/raw")
     service = DataService(store, config)
-    service.register_provider("baostock", BaostockProvider())
-    service.register_provider("akshare", AKShareProvider())
+    service.register_provider("baostock", BaostockProvider(raw_dir=raw_dir))
+    service.register_provider("akshare", AKShareProvider(raw_dir=raw_dir))
 
     return service
 

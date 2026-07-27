@@ -122,6 +122,9 @@ class DataService:
             new_row_count = len(df)
             logger.info(f"Fetched {new_row_count} rows from {provider_name}.{method_name}()")
 
+            # 1b. 从 Provider 获取真实原始响应路径
+            raw_path = getattr(provider, "last_raw_path", "")
+
             # 2. 保存标准化快照（供调试和追溯，区别于不可变原始响应）
             staging_path = self._save_staging_data(
                 df, provider_name, dataset, symbol, run_id
@@ -191,7 +194,7 @@ class DataService:
             self.store.complete_fetch_run(
                 run_id=run_id,
                 row_count=final_row_count,
-                raw_file_path=staging_path,
+                raw_file_path=raw_path,
                 parquet_path=parquet_path,
                 quality_status="passed",
             )
@@ -343,12 +346,17 @@ class DataService:
                 existing[col] = existing[col].astype(str)
 
         combined = pd.concat([existing, new_df], ignore_index=True)
-        # 按主键去重，保留新值
         from ashare_research.quality.validators import _PRIMARY_KEYS
         pk = _PRIMARY_KEYS.get(dataset, [])
         existing_pk = [c for c in pk if c in combined.columns]
         if existing_pk:
             combined = combined.drop_duplicates(subset=existing_pk, keep="last")
+            # 按完整主键排序（而非仅第一列），确保最终文件严格有序
+            sort_cols = [c for c in pk if c in combined.columns]
+            if sort_cols:
+                combined = combined.sort_values(sort_cols, kind="stable").reset_index(
+                    drop=True
+                )
         return combined
 
     def _save_staging_data(

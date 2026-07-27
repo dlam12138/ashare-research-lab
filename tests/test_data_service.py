@@ -79,7 +79,7 @@ class MockProvider(BaseProvider):
 
 
 class FailingProvider(BaseProvider):
-    """总是失败的 Mock 提供方。"""
+    """总是抛异常的 Mock 提供方（测试提供方失败路径）。"""
 
     provider_name = "failing"
 
@@ -94,6 +94,82 @@ class FailingProvider(BaseProvider):
 
     def get_index_daily(self, symbol, start_date, end_date) -> pd.DataFrame:
         raise AshareDataError("Simulated index daily failure")
+
+
+class BadDataProvider(BaseProvider):
+    """返回有效 DataFrame 但数据不合格的提供方（测试质量门禁路径）。
+
+    与 FailingProvider 不同：这里 Provider 调用成功，
+    但返回的数据有质量问题，应被质量检查拦截。
+    """
+
+    provider_name = "bad_data"
+
+    def __init__(self, bad_type: str = "nan"):
+        super().__init__()
+        self.bad_type = bad_type
+
+    def get_stock_basic(self) -> pd.DataFrame:
+        return pd.DataFrame({
+            "symbol": ["601857.SH"], "exchange": ["SH"], "name": ["测试"],
+            "source": ["bad_data"], "fetched_at": ["2026-07-27T12:00:00"],
+        })
+
+    def get_trade_calendar(self, start_date, end_date, exchange="SH") -> pd.DataFrame:
+        return pd.DataFrame({
+            "trade_date": ["2026-07-20"], "exchange": ["SH"],
+            "is_open": [True], "source": ["bad_data"],
+            "fetched_at": ["2026-07-27T12:00:00"],
+        })
+
+    def get_stock_daily(self, symbol, start_date, end_date, adjustment="none") -> pd.DataFrame:
+        base = {
+            "symbol": [symbol] * 3,
+            "trade_date": ["2026-07-20", "2026-07-21", "2026-07-22"],
+            "open": [10.0, 10.2, 10.1],
+            "high": [10.5, 10.4, 10.3],
+            "low": [9.8, 10.0, 9.9],
+            "close": [10.2, 10.1, 10.2],
+            "pre_close": [10.1, 10.2, 10.1],
+            "volume": [1e7, 1.2e7, 8e6],
+            "amount": [1e8, 1.2e8, 8e7],
+            "turnover_rate": [0.5, 0.6, 0.4],
+            "is_trading": [True] * 3,
+            "adjustment": [adjustment] * 3,
+            "source": ["bad_data"] * 3,
+            "fetched_at": ["2026-07-27T12:00:00"] * 3,
+        }
+
+        if self.bad_type == "nan":
+            base["volume"][1] = float("nan")
+        elif self.bad_type == "inf":
+            base["close"][2] = float("inf")
+        elif self.bad_type == "neg_inf":
+            base["close"][2] = float("-inf")
+        elif self.bad_type == "duplicate_pk":
+            base["trade_date"][2] = base["trade_date"][0]
+        elif self.bad_type == "ohlc_broken":
+            base["high"][1] = base["low"][1] - 1.0
+        elif self.bad_type == "missing_field":
+            result = pd.DataFrame(base)
+            result = result.drop(columns=["volume"])
+            return result
+
+        return pd.DataFrame(base)
+
+    def get_index_daily(self, symbol, start_date, end_date) -> pd.DataFrame:
+        return pd.DataFrame({
+            "symbol": [symbol] * 3,
+            "trade_date": ["2026-07-20", "2026-07-21", "2026-07-22"],
+            "open": [3300.0, 3310.0, 3290.0],
+            "high": [3320.0, 3325.0, 3320.0],
+            "low": [3280.0, 3290.0, 3270.0],
+            "close": [3310.0, 3300.0, 3290.0],
+            "volume": [1e8, 1.2e8, 8e7],
+            "amount": [3e11, 3.5e11, 2.5e11],
+            "source": ["bad_data"] * 3,
+            "fetched_at": ["2026-07-27T12:00:00"] * 3,
+        })
 
 
 class EmptyProvider(BaseProvider):
@@ -139,6 +215,11 @@ def data_service():
     service.register_provider("mock", MockProvider())
     service.register_provider("failing", FailingProvider())
     service.register_provider("empty", EmptyProvider())
+    for bad_type in ["nan", "inf", "neg_inf", "duplicate_pk",
+                       "ohlc_broken", "missing_field"]:
+        service.register_provider(
+            f"bad_{bad_type}", BadDataProvider(bad_type=bad_type)
+        )
 
     yield service
 
@@ -323,8 +404,8 @@ class TestDataService:
         df = pd.read_parquet(staging_path)
         assert len(df) == 3
 
-    def test_quality_failure_blocks_parquet_write(self, data_service):
-        """质量失败的数据不应写入正式 Parquet 目录。"""
+    def test_provider_failure_blocks_parquet_write(self, data_service):
+        """提供方异常不应写入正式 Parquet。"""
         with pytest.raises(AshareDataError):
             data_service.fetch_and_store(
                 provider_name="failing", method_name="get_stock_daily",
@@ -336,6 +417,167 @@ class TestDataService:
         parquet_dir = data_service.config["storage"]["parquet_dir"]
         parquet_file = os.path.join(parquet_dir, "stock_daily", "601857_SH.parquet")
         assert not os.path.exists(parquet_file)
+
+    def _assert_quality_failure(self, data_service, bad_type: str) -> str:
+        """辅助方法：执行一次质量失败测试并返回 quarantine 路径。"""
+        provider_name = f"bad_{bad_type}"
+        with pytest.raises(AshareDataError):
+            data_service.fetch_and_store(
+                provider_name=provider_name, method_name="get_stock_daily",
+                dataset="stock_daily", symbol="601857.SH",
+                start_date="2026-07-20", end_date="2026-07-22",
+            )
+
+        # 正式 Parquet 没有被创建
+        parquet_dir = data_service.config["storage"]["parquet_dir"]
+        parquet_file = os.path.join(
+            parquet_dir, "stock_daily", "601857_SH.parquet"
+        )
+        assert not os.path.exists(parquet_file)
+
+        # DuckDB 记录了失败
+        runs = data_service.store.query(
+            "SELECT status, error_type FROM data_fetch_runs "
+            "ORDER BY started_at DESC LIMIT 1"
+        )
+        assert runs["status"].iloc[0] == "failed"
+        assert runs["error_type"].iloc[0] in (
+            "QualityCheckError", "AshareDataError"
+        )
+
+        return ""
+
+    def test_quality_failure_quarantines_nan_batch(self, data_service):
+        """NaN 数据应被隔离，不写入正式 Parquet。"""
+        self._assert_quality_failure(data_service, "nan")
+
+    def test_quality_failure_quarantines_inf_batch(self, data_service):
+        """inf 数据应被隔离。"""
+        self._assert_quality_failure(data_service, "inf")
+
+    def test_quality_failure_quarantines_neg_inf_batch(self, data_service):
+        """-inf 数据应被隔离。"""
+        self._assert_quality_failure(data_service, "neg_inf")
+
+    def test_quality_failure_quarantines_duplicate_pk_batch(self, data_service):
+        """重复主键应被隔离。"""
+        self._assert_quality_failure(data_service, "duplicate_pk")
+
+    def test_quality_failure_quarantines_ohlc_broken_batch(self, data_service):
+        """OHLC 逻辑错误应被隔离。"""
+        self._assert_quality_failure(data_service, "ohlc_broken")
+
+    def test_quality_failure_quarantines_missing_field_batch(self, data_service):
+        """缺失必需字段应被隔离。"""
+        self._assert_quality_failure(data_service, "missing_field")
+
+    def test_quality_failure_preserves_existing_parquet_byte_for_byte(
+        self, data_service
+    ):
+        """已有正式 Parquet 在质量失败时完全不被修改。"""
+        import hashlib
+
+        # 1. 先成功写入一份合法数据
+        result_ok = data_service.fetch_and_store(
+            provider_name="mock", method_name="get_stock_daily",
+            dataset="stock_daily", symbol="601857.SH",
+            start_date="2026-07-20", end_date="2026-07-22",
+        )
+        ok_path = result_ok["parquet_path"]
+        assert os.path.exists(ok_path)
+
+        # 2. 记录正式文件的 SHA-256 和元数据
+        with open(ok_path, "rb") as f:
+            sha_before = hashlib.sha256(f.read()).hexdigest()
+        df_before = pd.read_parquet(ok_path)
+        rows_before = len(df_before)
+        cols_before = list(df_before.columns)
+
+        # 3. 尝试写入坏数据（NaN）
+        with pytest.raises(AshareDataError):
+            data_service.fetch_and_store(
+                provider_name="bad_nan", method_name="get_stock_daily",
+                dataset="stock_daily", symbol="601857.SH",
+                start_date="2026-07-23", end_date="2026-07-25",
+            )
+
+        # 4. 验证正式文件完全未被修改
+        with open(ok_path, "rb") as f:
+            sha_after = hashlib.sha256(f.read()).hexdigest()
+        assert sha_before == sha_after, "Official Parquet was modified by failed run!"
+
+        df_after = pd.read_parquet(ok_path)
+        assert len(df_after) == rows_before, "Row count changed"
+        assert list(df_after.columns) == cols_before, "Schema changed"
+        pd.testing.assert_frame_equal(df_before, df_after)
+
+        # 5. 坏数据进入 quarantine
+        quarantine_dir = data_service.config["storage"].get(
+            "quarantine_dir", "data/quarantine"
+        )
+        assert os.path.isdir(quarantine_dir)
+
+    def test_merge_sorts_by_full_pk_after_backfill(self, data_service):
+        """历史回补后数据应按完整主键排序。
+
+        已有: 2026-01-03, 2026-01-04
+        新增: 2026-01-01, 2026-01-02
+        合并后应严格有序: 01, 02, 03, 04
+        """
+        # 使用 mock 先写入后期数据
+        base_dates = ["2026-01-03", "2026-01-04"]
+        new_dates = ["2026-01-01", "2026-01-02"]
+
+        # 创建特殊 provider：第一次返回后期，第二次返回前期
+        class BackfillProvider(BaseProvider):
+            provider_name = "backfill"
+            call_count = 0
+
+            def get_stock_daily(self, symbol, start_date, end_date,
+                                adjustment="none"):
+                self.call_count += 1
+                dates = base_dates if self.call_count == 1 else new_dates
+                data = {
+                    "symbol": [symbol] * 2,
+                    "trade_date": dates,
+                    "open": [10.0, 10.2],
+                    "high": [10.5, 10.4],
+                    "low": [9.8, 10.0],
+                    "close": [10.2, 10.1],
+                    "pre_close": [10.1, 10.2],
+                    "volume": [1e7, 1.2e7],
+                    "amount": [1e8, 1.2e8],
+                    "turnover_rate": [0.5, 0.6],
+                    "is_trading": [True, True],
+                    "adjustment": [adjustment] * 2,
+                    "source": ["backfill"] * 2,
+                    "fetched_at": ["2026-07-27T12:00:00"] * 2,
+                }
+                return pd.DataFrame(data)
+
+            def get_stock_basic(self): return pd.DataFrame()
+            def get_trade_calendar(self, s, e, ex="SH"): return pd.DataFrame()
+            def get_index_daily(self, s, st, en): return pd.DataFrame()
+
+        data_service.register_provider("backfill", BackfillProvider())
+
+        _r1 = data_service.fetch_and_store(
+            provider_name="backfill", method_name="get_stock_daily",
+            dataset="stock_daily", symbol="601857.SH",
+            start_date="2026-01-01", end_date="2026-01-04",
+        )
+        r2 = data_service.fetch_and_store(
+            provider_name="backfill", method_name="get_stock_daily",
+            dataset="stock_daily", symbol="601857.SH",
+            start_date="2026-01-01", end_date="2026-01-04",
+        )
+
+        # 验证最终排序
+        df = pd.read_parquet(r2["parquet_path"])
+        dates = df["trade_date"].tolist()
+        assert dates == sorted(dates), f"Not sorted: {dates}"
+        assert dates == ["2026-01-01", "2026-01-02",
+                          "2026-01-03", "2026-01-04"]
 
     def test_merged_row_count_recorded(self, data_service):
         """DuckDB 注册表应记录合并后的总行数。"""
