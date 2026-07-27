@@ -195,6 +195,28 @@ class FactRepository:
             )
             logger.info("FactRepository schema v2.0 created")
         else:
+            # 检查 fact_schema_meta 是否存在（v1 可能有事实表但无元数据表）
+            meta_exists = conn.execute(
+                "SELECT name FROM sqlite_master "
+                "WHERE type='table' AND name='fact_schema_meta'"
+            ).fetchone()
+            if meta_exists is None:
+                # v1 旧表存在但没有元数据表 → 检查是否为空
+                count = conn.execute(
+                    "SELECT COUNT(*) FROM financial_facts"
+                ).fetchone()[0]
+                if count > 0:
+                    raise FactSchemaMigrationError(
+                        f"Cannot auto-migrate: financial_facts has "
+                        f"{count} existing rows from schema v1, "
+                        f"but fact_schema_meta table is missing. "
+                        f"Use reset_m2_fact_schema() for dev reset."
+                    )
+                # 空表：重建为 v2
+                self._rebuild_schema(conn, git_commit)
+                self._initialized = True
+                return
+
             meta = conn.execute(
                 "SELECT schema_version FROM fact_schema_meta "
                 "WHERE schema_name='financial_facts'"
@@ -648,6 +670,7 @@ class FactRepository:
                 FROM financial_facts
                 WHERE symbol = ?
                   {concept_filter}
+                  AND consolidation_scope = ?
                   AND available_at IS NOT NULL
                   AND available_at <> ''
                   AND available_at <= ?
@@ -657,7 +680,12 @@ class FactRepository:
             WHERE sub.rn = 1
             ORDER BY period_end, concept_id
         """
-        return conn.execute(query, params).df()
+        params_with_scope = [symbol]
+        if concept_ids:
+            params_with_scope.extend(concept_ids)
+        params_with_scope.append(consolidation_scope)
+        params_with_scope.append(as_of_date)
+        return conn.execute(query, params_with_scope).df()
 
     def get_fact_summary(self, symbol: str) -> dict[str, Any]:
         """返回指定 symbol 的事实摘要统计。"""

@@ -74,3 +74,20 @@ grep "except Exception: pass"           →  No matches found
 - 语法检查通过
 - 导入测试通过
 
+
+## Stage 1B.1 审查修复
+
+| 问题 | 修复 | 状态 |
+|------|------|------|
+| FactSourceRegistry API 不兼容 | 新增 get_provider(symbol, source_mode) | ✅ |
+| --source official 静默回退 | 改为明确失败 exit=1 | ✅ |
+| 集成测试未穿主链路 | 待后续补充端到端测试 | 🔲 |
+| _verify_counts 全表计数 | 改为按 fact_id 列表精确计数 | ✅ |
+| Manifest 未写文件 | 调用 complete_with_details + write_manifest | ✅ |
+| job_name 固定为 official | 根据 source_mode 设置 | ✅ |
+| consolidation_scope 未过滤 | 添加 WHERE 子句 | ✅ |
+| 日期仅正则不日历校验 | 改用 date.fromisoformat() | ✅ |
+| Schema 迁移旧库崩溃 | 4种组合全覆盖 | ✅ |
+| 重复键不含版本字段 | 增加 concept_version/source_id/fact_version/restatement_version | ✅ |
+| verify 命令只读不验 | 改为读取事实+重新校验+新 run | ✅ |
+最终状态: 141 passed

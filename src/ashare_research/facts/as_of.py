@@ -18,15 +18,21 @@ from ashare_research.facts.repository import FactRepository
 
 logger = logging.getLogger(__name__)
 
-_DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
-
 
 def _validate_date_format(date_str: str, param_name: str) -> None:
-    """Raise PointInTimeError if *date_str* is not YYYY-MM-DD."""
-    if not date_str or not _DATE_RE.match(date_str):
+    """Raise PointInTimeError if *date_str* is not a valid calendar date."""
+    if not date_str:
         raise PointInTimeError(
-            f"{param_name} must be a non-empty string in YYYY-MM-DD "
-            f"format, got: {date_str!r}"
+            f"{param_name} must be a non-empty YYYY-MM-DD date string, "
+            f"got: {date_str!r}"
+        )
+    try:
+        from datetime import date
+        date.fromisoformat(date_str)
+    except (ValueError, TypeError) as e:
+        raise PointInTimeError(
+            f"{param_name} must be a valid YYYY-MM-DD date, "
+            f"got: {date_str!r} — {e}"
         )
 
 

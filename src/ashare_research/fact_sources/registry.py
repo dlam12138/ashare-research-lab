@@ -42,6 +42,31 @@ class FactSourceRegistry:
     def get_official(self, symbol: str) -> FactSourceProvider | None:
         return self._officials.get(symbol)
 
+    def get_provider(
+        self, symbol: str, source_mode: str = "candidate",
+    ) -> FactSourceProvider:
+        """获取指定来源模式的提供方。
+
+        source_mode="official" 时，若官方来源未启用或未注册，
+        抛出 AshareDataError（不得回退到候选来源）。
+        """
+        if source_mode == "official":
+            provider = self._officials.get(symbol)
+            if provider is None:
+                raise AshareDataError(
+                    f"No official source registered for {symbol}. "
+                    f"Official source is not yet implemented. "
+                    f"Use --source candidate for AKShare candidate data."
+                )
+            return provider
+
+        # candidate mode (default)
+        if symbol not in self._candidates:
+            raise AshareDataError(
+                f"No candidate source registered for {symbol}"
+            )
+        return self._candidates[symbol]
+
     def get_source_tier(
         self, symbol: str, source_mode: str = "candidate",
     ) -> SourceTier:

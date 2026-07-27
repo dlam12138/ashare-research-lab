@@ -155,7 +155,8 @@ class FactValidator:
                 severity="error", passed=False,
                 expected="filing_date >= period_end",
                 actual=f"{filing} < {period_end}",
-                message="Announcement date precedes report period end",
+                message=f"Filing date {filing} precedes "
+                        f"report period end {period_end}",
                 checked_at=now,
             ))
         else:
@@ -257,19 +258,29 @@ class FactValidator:
     def _check_duplicates(
         self, facts: list[dict[str, Any]], now: str,
     ) -> list[FactValidationResult]:
-        """FACT_DUP_001: 检查重复。"""
+        """FACT_DUP_001: 检查重复（含版本和来源键）。"""
         seen: set[tuple] = set()
         results: list[FactValidationResult] = []
         for fact in facts:
-            key = (fact.get("concept_id", ""),
-                   fact.get("symbol", ""),
-                   fact.get("context_id", ""))
+            key = (
+                fact.get("concept_id", ""),
+                fact.get("concept_version", "1"),
+                fact.get("symbol", ""),
+                fact.get("context_id", ""),
+                fact.get("source_id", ""),
+                str(fact.get("fact_version", 1)),
+                fact.get("restatement_version", "original"),
+            )
             if key in seen:
                 results.append(FactValidationResult(
                     rule_id="FACT_DUP_001",
                     target_id=fact.get("fact_id", ""),
                     severity="error", passed=False,
-                    expected="Unique (concept_id, symbol, context_id)",
+                    expected=(
+                        "Unique (concept_id, concept_version, "
+                        "symbol, context_id, source_id, fact_version, "
+                        "restatement_version)"
+                    ),
                     actual=f"Duplicate key: {key}",
                     message="Duplicate fact detected",
                     checked_at=now,

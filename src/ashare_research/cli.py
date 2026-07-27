@@ -25,7 +25,7 @@ from ashare_research.fact_sources.candidates.akshare_financial import (
 from ashare_research.facts.as_of import AsOfQuery
 from ashare_research.facts.repository import FactRepository
 from ashare_research.facts.service import FactService
-from ashare_research.official_sources.registry import OfficialSourceRegistry
+from ashare_research.fact_sources.registry import FactSourceRegistry
 from ashare_research.providers.akshare_provider import AKShareProvider
 from ashare_research.providers.baostock_provider import BaostockProvider
 from ashare_research.services.data_service import DataService
@@ -302,25 +302,29 @@ def cmd_build_value_facts(args: argparse.Namespace) -> int:
         repo = FactRepository(store)
         repo.ensure_schema()
 
-        if source_mode == "official":
+        registry = FactSourceRegistry()
+
+        if source_mode == "candidate":
+            registry.register_candidate(
+                args.symbol,
+                AKShareFinancialCandidateProvider(
+                    raw_dir=config["storage"].get("raw_dir", "data/raw"),
+                ),
+            )
+        elif source_mode == "official":
+            # 官方来源尚未实现 → 明确失败
             print(
-                "Official source mode is not yet implemented. "
-                "Falling back to candidate source.",
+                "ERROR: Official source mode is not yet implemented. "
+                "Use --source candidate for AKShare candidate data.",
                 file=sys.stderr,
             )
-
-        registry = OfficialSourceRegistry()
-        registry.register(
-            args.symbol,
-            AKShareFinancialCandidateProvider(
-                raw_dir=config["storage"].get("raw_dir", "data/raw"),
-            ),
-        )
+            return 1
 
         service = FactService(fact_repository=repo, source_registry=registry)
 
         result = service.build_facts(
             args.symbol, args.start_year, args.end_year,
+            source_mode=source_mode,
         )
 
         print(f"run_id:           {result['run_id']}")
@@ -346,9 +350,9 @@ def cmd_build_value_facts(args: argparse.Namespace) -> int:
 
 
 def cmd_verify_value_facts(args: argparse.Namespace) -> int:
-    """重新验证已有事实运行（无网络请求）。
+    """重新验证已有事实（从数据库读取事实并重新运行校验）。
 
-    从数据库读取指定 run_id 的校验结果并输出摘要。
+    不访问网络，不修改事实本身。
     """
     config = load_config(args.config)
     store = DuckDBStore(config["storage"]["duckdb_path"])
@@ -358,48 +362,58 @@ def cmd_verify_value_facts(args: argparse.Namespace) -> int:
         repo = FactRepository(store)
         repo.ensure_schema()
 
-        conn = store.connect()
+        from ashare_research.validation.validator import FactValidator
+        from ashare_research.validation.results import summarize_results
+        from datetime import datetime
 
-        run = conn.execute(
-            "SELECT validation_run_id, fact_count, error_count, "
-            "warning_count, status, started_at, completed_at "
-            "FROM fact_validation_runs WHERE validation_run_id = ?",
-            [args.run_id],
-        ).fetchone()
+        validator = FactValidator()
 
-        if not run:
-            print(f"No validation run found for run_id: {args.run_id}")
+        # 读取所有事实
+        facts_df = repo.get_all_versions_for_audit(args.symbol)
+        if facts_df.empty:
+            print(f"No facts found for {args.symbol}")
             return 1
 
-        run_id, fact_count, err_cnt, warn_cnt, status, started, completed = run
+        facts = facts_df.to_dict("records")
+        results = validator.validate_batch(facts)
+        summary = summarize_results(results)
 
-        print(f"Validation Run: {run_id}")
-        print(f"  Status:       {status}")
-        print(f"  Fact count:   {fact_count}")
-        print(f"  Errors:       {err_cnt}")
-        print(f"  Warnings:     {warn_cnt}")
-        print(f"  Started:      {started}")
-        print(f"  Completed:    {completed}")
+        # 创建新的 validation run
+        run_id = f"verify_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+        repo.store_validation_run(
+            run_id=run_id,
+            fact_count=len(facts),
+            error_count=summary["error_count"],
+            warning_count=summary["warning_count"],
+            status=(
+                "passed" if summary["error_count"] == 0
+                else "failed"
+            ),
+        )
+        repo.store_validation_results(
+            results=[{
+                "target_id": r.target_id,
+                "rule_id": r.rule_id,
+                "rule_version": r.rule_version,
+                "severity": r.severity,
+                "passed": r.passed,
+                "expected": r.expected,
+                "actual": r.actual,
+                "message": r.message,
+                "checked_at": r.checked_at,
+            } for r in results],
+            validation_run_id=run_id,
+        )
 
-        # 校验结果明细分组统计
-        detail = conn.execute(
-            "SELECT severity, passed, COUNT(*) "
-            "FROM fact_validation_results "
-            "WHERE validation_run_id = ? "
-            "GROUP BY severity, passed "
-            "ORDER BY severity, passed",
-            [args.run_id],
-        ).fetchall()
+        print(f"Verification Run: {run_id}")
+        print(f"  Symbol:       {args.symbol}")
+        print(f"  Fact count:   {len(facts)}")
+        print(f"  Passed:       {summary['passed']}")
+        print(f"  Failed:       {summary['failed']}")
+        print(f"  Errors:       {summary['error_count']}")
+        print(f"  Warnings:     {summary['warning_count']}")
 
-        if detail:
-            print(f"\n  Detail ({len(detail)} groups):")
-            for severity, passed_flag, cnt in detail:
-                flag = "PASS" if passed_flag else "FAIL"
-                print(f"    [{severity}] {flag}: {cnt}")
-        else:
-            print("\n  (no detail rows)")
-
-        return 0
+        return 0 if summary["error_count"] == 0 else 1
     except Exception as e:
         print(f"Error: {e}", file=sys.stderr)
         return 1
