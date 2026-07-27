@@ -101,6 +101,10 @@ class DataService:
         new_row_count = 0
 
         try:
+            # 0. 清空上次 raw 路径，避免跨调用复用
+            if hasattr(provider, "reset_last_raw_path"):
+                provider.reset_last_raw_path()
+
             # 1. 调用数据提供方
             method = getattr(provider, method_name)
             if method_name == "get_stock_basic":
@@ -334,29 +338,36 @@ class DataService:
         dataset: str,
         symbol: str,
     ) -> pd.DataFrame:
-        """将新数据与已有 Parquet 合并，按主键去重。"""
+        """将新数据与已有 Parquet 合并，按主键去重并排序。
+
+        首次写入和增量合并走同一路径，确保始终按完整主键排序。
+        """
         existing = read_parquet(parquet_dir, dataset, symbol)
+
         if existing.empty:
-            return new_df
+            combined = new_df.copy()
+        else:
+            # 确保关键列类型一致
+            for col in ["trade_date"]:
+                if col in new_df.columns and col in existing.columns:
+                    new_df[col] = new_df[col].astype(str)
+                    existing[col] = existing[col].astype(str)
+            combined = pd.concat([existing, new_df], ignore_index=True)
 
-        # 确保关键列类型一致
-        for col in ["trade_date"]:
-            if col in new_df.columns and col in existing.columns:
-                new_df[col] = new_df[col].astype(str)
-                existing[col] = existing[col].astype(str)
-
-        combined = pd.concat([existing, new_df], ignore_index=True)
         from ashare_research.quality.validators import _PRIMARY_KEYS
+
         pk = _PRIMARY_KEYS.get(dataset, [])
-        existing_pk = [c for c in pk if c in combined.columns]
-        if existing_pk:
-            combined = combined.drop_duplicates(subset=existing_pk, keep="last")
-            # 按完整主键排序（而非仅第一列），确保最终文件严格有序
-            sort_cols = [c for c in pk if c in combined.columns]
-            if sort_cols:
-                combined = combined.sort_values(sort_cols, kind="stable").reset_index(
-                    drop=True
+        if pk:
+            missing_pk = [c for c in pk if c not in combined.columns]
+            if missing_pk:
+                raise AshareDataError(
+                    f"Cannot merge {dataset}: missing primary-key "
+                    f"columns {missing_pk}"
                 )
+            combined = combined.drop_duplicates(subset=pk, keep="last")
+            combined = combined.sort_values(pk, kind="stable").reset_index(
+                drop=True
+            )
         return combined
 
     def _save_staging_data(

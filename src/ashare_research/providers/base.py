@@ -9,6 +9,8 @@ from pathlib import Path
 
 import pandas as pd
 
+from ashare_research.exceptions import RawPersistenceError
+
 
 class BaseProvider(ABC):
     """数据提供方抽象基类。
@@ -35,6 +37,10 @@ class BaseProvider(ABC):
         """最近一次抓取保存的原始响应路径。"""
         return self._last_raw_path
 
+    def reset_last_raw_path(self) -> None:
+        """清空上次 raw 路径，避免新方法遗漏保存时复用旧路径。"""
+        self._last_raw_path = ""
+
     def _save_raw_response(
         self, df: pd.DataFrame, dataset: str, symbol: str = ""
     ) -> str:
@@ -44,7 +50,10 @@ class BaseProvider(ABC):
         使用原子写入（临时文件 + 重命名）。
 
         Returns:
-            str: 原始文件路径，保存失败返回空字符串
+            str: 原始文件路径
+
+        Raises:
+            RawPersistenceError: raw_dir 已配置但写入失败
         """
         if not self.raw_dir:
             self._last_raw_path = ""
@@ -64,10 +73,13 @@ class BaseProvider(ABC):
             df.to_parquet(tmp_path, index=False, engine="pyarrow")
             os.replace(tmp_path, str(final_path))
             self._last_raw_path = str(final_path)
-        except Exception:
+        except Exception as e:
             if tmp_path.exists():
                 tmp_path.unlink()
             self._last_raw_path = ""
+            raise RawPersistenceError(
+                f"Failed to save raw response to {final_path}: {e}"
+            ) from e
 
         return self._last_raw_path
 
