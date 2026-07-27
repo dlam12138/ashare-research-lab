@@ -1,0 +1,78 @@
+# Python
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Testing
+.pytest_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# Linting
+.ruff_cache/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+desktop.ini
+
+# Data (generated at runtime)
+data/raw/*
+data/parquet/*
+data/reports/*
+data/*.duckdb
+data/*.db
+data/*.sqlite
+data/*.sqlite3
+data/*.wal
+*.parquet
+
+# Preserve directory placeholders and documentation
+!data/raw/**/.gitkeep
+!data/parquet/**/.gitkeep
+!data/reports/.gitkeep
+!data/README.md
+
+# Config (local overrides)
+config/*.local.yaml
+config/*.local.yml
+.env
+.env.*
+credentials*
+secrets*
+
+# Logs and temporary files
+*.log
+logs/
+tmp/
+temp/
+.cache/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Archives and large artifacts
+*.zip
+*.7z
+*.rar
+*.tar
+*.gz
+
+# OS
+.DS_Store
+Thumbs.db

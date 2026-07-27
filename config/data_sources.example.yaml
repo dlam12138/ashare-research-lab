@@ -1,0 +1,21 @@
+# 数据源配置示例
+# 复制为 config/data_sources.local.yaml 并根据需要修改
+
+storage:
+  duckdb_path: data/research.duckdb
+  raw_dir: data/raw
+  parquet_dir: data/parquet
+
+providers:
+  stock_daily_primary: baostock
+  stock_daily_fallback: akshare
+  index_daily_primary: akshare
+  stock_basic_primary: baostock
+  trade_calendar_primary: baostock
+
+quality:
+  reject_duplicate_keys: true
+  reject_negative_prices: true
+  reject_negative_volume: true
+  warn_large_price_jump: true
+  warn_missing_dates: true
