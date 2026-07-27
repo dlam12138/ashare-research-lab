@@ -146,11 +146,8 @@ def cmd_fetch_stock_daily(args: argparse.Namespace) -> int:
     provider_name = args.provider or config["providers"]["stock_daily_primary"]
     fallback = config["providers"].get("stock_daily_fallback", "")
 
-    # Baostock 需要特殊处理登录
-    baostock = service.get_provider("baostock")
-    if isinstance(baostock, BaostockProvider) and provider_name == "baostock":
-        baostock.login()
-
+    # 提供方登录由 DataService 和 Provider 内部管理
+    # 不在 CLI 层提前登录，确保登录失败时也能触发回退
     try:
         if fallback and not args.no_fallback:
             result = service.fetch_with_fallback(
@@ -194,8 +191,6 @@ def cmd_fetch_stock_daily(args: argparse.Namespace) -> int:
         print(f"Error: {e}", file=sys.stderr)
         return 1
     finally:
-        if isinstance(baostock, BaostockProvider):
-            baostock.logout()
         service.store.close()
 
 

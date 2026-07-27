@@ -146,10 +146,12 @@ class AKShareProvider(BaseProvider):
                     source="AKShare stock_zh_a_hist",
                 )
 
-            # 类型转换
+            # 类型转换（单位标准化）
+            # AKShare stock_zh_a_hist 成交量单位是"手"（1手=100股）
+            # 内部契约要求单位为"股"，因此乘以100
             for col in ["open", "high", "low", "close"]:
                 df[col] = pd.to_numeric(df[col], errors="coerce")
-            df["volume"] = pd.to_numeric(df["volume"], errors="coerce")
+            df["volume"] = pd.to_numeric(df["volume"], errors="coerce") * 100
             df["amount"] = pd.to_numeric(df["amount"], errors="coerce")
 
             df["symbol"] = std_code
@@ -180,29 +182,52 @@ class AKShareProvider(BaseProvider):
     ) -> pd.DataFrame:
         """通过 AKShare 获取指数日线。
 
+        使用 ak.index_zh_a_hist 接口，支持沪深指数且同时返回成交量和成交额。
+
         Args:
             symbol: 指数代码，如 000001（上证指数）, 399001（深证成指）
         """
         now = datetime.now().isoformat()
 
         try:
-            df = ak.stock_zh_index_daily(symbol=f"sh{symbol}")
+            # index_zh_a_hist 接受不带市场前缀的指数代码
+            df = ak.index_zh_a_hist(
+                symbol=symbol,
+                period="daily",
+                start_date=start_date.replace("-", ""),
+                end_date=end_date.replace("-", ""),
+            )
 
             if df is None or df.empty:
                 raise EmptyResultError(
                     f"No index daily data from AKShare for {symbol}"
                 )
 
-            df = self._normalize_index_fields(df)
+            # 中文字段标准化
+            df = df.rename(columns={
+                "日期": "trade_date",
+                "开盘": "open",
+                "最高": "high",
+                "最低": "low",
+                "收盘": "close",
+                "成交量": "volume",
+                "成交额": "amount",
+            })
 
-            # 标准化列名：date → trade_date
-            df = df.rename(columns={"date": "trade_date"})
+            # 检查必需字段
+            required = ["trade_date", "open", "high", "low", "close", "volume", "amount"]
+            missing = [f for f in required if f not in df.columns]
+            if missing:
+                raise FieldMissingError(
+                    missing_fields=missing,
+                    source="AKShare index_zh_a_hist",
+                )
 
             # 类型转换
             for col in ["open", "high", "low", "close"]:
                 df[col] = pd.to_numeric(df[col], errors="coerce")
             df["volume"] = pd.to_numeric(df["volume"], errors="coerce")
-            df["amount"] = pd.to_numeric(df.get("amount", 0), errors="coerce")
+            df["amount"] = pd.to_numeric(df["amount"], errors="coerce")
 
             # 过滤日期范围
             df["trade_date"] = df["trade_date"].astype(str)
@@ -211,15 +236,13 @@ class AKShareProvider(BaseProvider):
 
             if df.empty:
                 raise EmptyResultError(
-                    f"No index daily data in range {start_date} to {end_date} for {symbol}"
+                    f"No index daily data in range {start_date} to {end_date}"
+                    f" for {symbol}"
                 )
 
             df["symbol"] = symbol
             df["source"] = self.provider_name
             df["fetched_at"] = now
-
-            if "amount" not in df.columns:
-                df["amount"] = 0.0
 
             keep_cols = [
                 "symbol", "trade_date", "open", "high", "low", "close",

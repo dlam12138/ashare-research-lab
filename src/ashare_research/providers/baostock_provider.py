@@ -121,7 +121,10 @@ class BaostockProvider(BaseProvider):
     # ── 接口实现 ────────────────────────────────────────────
 
     def get_stock_basic(self) -> pd.DataFrame:
-        """获取全部A股基础信息。"""
+        """获取全部A股基础信息。
+
+        过滤条件：仅保留 type=1（股票），排除指数、基金等。
+        """
         self._ensure_login()
         now = datetime.now().isoformat()
 
@@ -140,6 +143,14 @@ class BaostockProvider(BaseProvider):
             df = pd.DataFrame(data, columns=rs.fields)
             df = df.rename(columns=_STOCK_BASIC_COLUMNS)
 
+            # 仅保留 A 股股票（type=1）
+            # Baostock type: 1=股票, 2=指数, 3=其他
+            if "type" in df.columns:
+                df = df[df["type"] == "1"].copy()
+
+            if df.empty:
+                raise EmptyResultError("No A-share stocks after filtering")
+
             # 标准化代码
             from ashare_research.models import to_standard_code
 
@@ -148,14 +159,31 @@ class BaostockProvider(BaseProvider):
             # 确定交易所
             df["exchange"] = df["symbol"].str.extract(r"\.(SH|SZ)$")
 
+            # 推断板块（基于代码规则）
+            def _classify_board(code: str) -> str:
+                code = str(code).split(".")[0]
+                if code.startswith("688"):
+                    return "kcb"      # 科创板
+                elif code.startswith("300") or code.startswith("301"):
+                    return "cyb"      # 创业板
+                elif code.startswith("8") or code.startswith("4"):
+                    return "bj"       # 北交所
+                elif code.startswith("6") or code.startswith("9"):
+                    return "sh_main"  # 沪市主板
+                elif code.startswith("0") or code.startswith("2"):
+                    return "sz_main"  # 深市主板
+                return "other"
+
+            df["board"] = df["symbol"].apply(_classify_board)
+
             # 添加元数据
             df["source"] = self.provider_name
             df["fetched_at"] = now
 
             # 保留必要字段
             keep_cols = [
-                "symbol", "exchange", "name", "list_date", "delist_date",
-                "status", "source", "fetched_at",
+                "symbol", "exchange", "name", "board", "list_date",
+                "delist_date", "status", "source", "fetched_at",
             ]
             return df[keep_cols]
 
@@ -219,9 +247,10 @@ class BaostockProvider(BaseProvider):
         bs_code = to_baostock_code(symbol)
         now = datetime.now().isoformat()
 
-        # 复权参数："" = 不复权, "1" = 后复权, "2" = 前复权
+        # 复权参数：3 = 不复权, 2 = 前复权, 1 = 后复权
+        # Baostock 官方文档: https://pypi.org/project/baostock/
         frequency_map = {"none": "d", "qfq": "d", "hfq": "d"}
-        adjust_map = {"none": "", "qfq": "2", "hfq": "1"}
+        adjust_map = {"none": "3", "qfq": "2", "hfq": "1"}
 
         if adjustment not in frequency_map:
             raise ValueError(

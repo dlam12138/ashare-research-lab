@@ -87,6 +87,7 @@ class QualityValidator:
 
         if dataset in ("stock_daily", "index_daily"):
             results.extend(self._check_ohlc(df))
+            results.append(self._check_no_nan_in_numeric_fields(df, dataset))
 
         results.append(self._check_no_null_key_values(df, dataset))
 
@@ -268,6 +269,33 @@ class QualityValidator:
         if bad:
             return self._result("no_null_keys", "failed", "; ".join(bad))
         return self._result("no_null_keys", "passed", "No null PK values")
+
+    def _check_no_nan_in_numeric_fields(
+        self, df: pd.DataFrame, dataset: str
+    ) -> dict:
+        """检查必需数值字段不含 NaN、inf、-inf。
+
+        NaN 不参与 < 0 比较，因此现有的 non_negative 检查无法发现它们。
+        """
+        numeric_fields = _NON_NEGATIVE_FIELDS.get(dataset, [])
+        bad = []
+        for col in numeric_fields:
+            if col not in df.columns:
+                continue
+            series = pd.to_numeric(df[col], errors="coerce")
+            nan_count = series.isnull().sum()
+            if nan_count:
+                bad.append(f"{col}: {nan_count} NaN values")
+            inf_mask = series.isin([float("inf"), float("-inf")])
+            if inf_mask.any():
+                bad.append(f"{col}: {inf_mask.sum()} inf values")
+
+        if bad:
+            return self._result(
+                "no_nan_numeric", "failed", "; ".join(bad)
+            )
+        return self._result("no_nan_numeric", "passed",
+                            "All numeric fields are finite")
 
 
 def check_duplicate_insert(

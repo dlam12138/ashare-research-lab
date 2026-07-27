@@ -99,7 +99,9 @@ def write_parquet(
                 )
                 combined = combined.drop_duplicates(subset=pk_cols, keep="last")
 
-        combined = combined.sort_values(pk_cols[0] if pk_cols else combined.columns[0])
+        # 按完整主键排序（而非仅第一列）
+        sort_cols = pk_cols if pk_cols else [combined.columns[0]]
+        combined = combined.sort_values(sort_cols).reset_index(drop=True)
         df = combined
 
     elif pk_cols:

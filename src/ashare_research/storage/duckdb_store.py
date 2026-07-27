@@ -171,11 +171,19 @@ class DuckDBStore:
              quality_status, run_id],
         )
 
-        # 更新数据集注册表（如果有 parquet_path）
+        # 更新数据集注册表
         if parquet_path and row_count > 0:
             self._upsert_dataset_registry(run_id)
 
         logger.info(f"Fetch run completed: {run_id} ({row_count} rows)")
+
+    def _update_run_quality(self, run_id: str, quality_status: str) -> None:
+        """更新抓取任务的质量状态（不改变任务完成状态）。"""
+        conn = self.connect()
+        conn.execute(
+            "UPDATE data_fetch_runs SET quality_status = ? WHERE run_id = ?",
+            [quality_status, run_id],
+        )
 
     def fail_fetch_run(
         self,

@@ -33,6 +33,8 @@ desktop.ini
 # Data (generated at runtime)
 data/raw/*
 data/parquet/*
+data/staging/*
+data/quarantine/*
 data/reports/*
 data/*.duckdb
 data/*.db
@@ -44,6 +46,8 @@ data/*.wal
 # Preserve directory placeholders and documentation
 !data/raw/**/.gitkeep
 !data/parquet/**/.gitkeep
+!data/staging/.gitkeep
+!data/quarantine/.gitkeep
 !data/reports/.gitkeep
 !data/README.md
 

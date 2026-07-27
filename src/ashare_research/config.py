@@ -56,7 +56,8 @@ def load_config(config_path: str | Path | None = None) -> dict[str, Any]:
         dict: 合并后的配置
     """
     root = _find_project_root()
-    config = dict(DEFAULT_CONFIG)
+    from copy import deepcopy
+    config = deepcopy(DEFAULT_CONFIG)
 
     # 尝试加载 example 和 local 配置
     config_dir = root / "config"

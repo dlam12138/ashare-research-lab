@@ -119,3 +119,38 @@ class TestQualityValidator:
 
         check = next(r for r in results if r["check_name"] == "no_null_keys")
         assert check["status"] == "failed"
+
+    def test_nan_volume_detected(self):
+        """NaN 成交量应被 no_nan_numeric 检查捕获。
+
+        NaN < 0 → False，因此 non_negative 检查无法发现 NaN。
+        """
+        df = make_stock_daily_df()
+        df.loc[2, "volume"] = float("nan")
+        results = self.validator.validate(df, "stock_daily")
+
+        check = next(
+            r for r in results if r["check_name"] == "no_nan_numeric"
+        )
+        assert check["status"] == "failed"
+
+    def test_inf_price_detected(self):
+        """inf 价格应被 no_nan_numeric 检查捕获。"""
+        df = make_stock_daily_df()
+        df.loc[3, "close"] = float("inf")
+        results = self.validator.validate(df, "stock_daily")
+
+        check = next(
+            r for r in results if r["check_name"] == "no_nan_numeric"
+        )
+        assert check["status"] == "failed"
+
+    def test_all_numeric_fields_finite(self):
+        """正常数据应通过 no_nan_numeric 检查。"""
+        df = make_stock_daily_df()
+        results = self.validator.validate(df, "stock_daily")
+
+        check = next(
+            r for r in results if r["check_name"] == "no_nan_numeric"
+        )
+        assert check["status"] == "passed"

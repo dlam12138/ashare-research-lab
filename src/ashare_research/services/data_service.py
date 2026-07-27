@@ -2,8 +2,15 @@
 
 编排数据获取、存储和质量检查流程。
 
-流程：
-    数据源 → 原始留存 → 质量检查 → Parquet 写入 → DuckDB 登记
+流程（修正后）：
+    数据源 → 不可变原始快照
+         → 标准化
+         → 批次质量检查
+         → 不通过 → 隔离(quarantine) + 标记失败 + 返回非零
+         → 通过   → 与已有Parquet合并
+                  → 合并数据再次质量检查
+                  → 不通过 → 隔离
+                  → 通过   → 原子写入Parquet → DuckDB登记 → 标记成功
 """
 
 from __future__ import annotations
@@ -16,7 +23,7 @@ from pathlib import Path
 import pandas as pd
 
 from ashare_research.config import load_config
-from ashare_research.exceptions import AshareDataError
+from ashare_research.exceptions import AshareDataError, QualityCheckError
 from ashare_research.providers.base import BaseProvider
 from ashare_research.quality.validators import QualityValidator
 from ashare_research.storage.duckdb_store import DuckDBStore
@@ -66,21 +73,21 @@ class DataService:
     ) -> dict:
         """执行完整的数据抓取和存储流程。
 
-        Args:
-            provider_name: 已注册的提供方名称
-            method_name: 提供方方法名 (get_stock_basic, get_stock_daily, ...)
-            dataset: 数据集类型
-            symbol: 标的代码
-            start_date: 开始日期
-            end_date: 结束日期
-            adjustment: 复权方式
+        流程：
+            1. 获取数据
+            2. 保存标准化快照
+            3. 批次质量检查 → 不通过则隔离并抛出异常
+            4. 与已有 Parquet 合并
+            5. 合并数据再次质量检查 → 不通过则隔离
+            6. 原子写入 Parquet
+            7. DuckDB 登记（记录合并后总行数）
+            8. 标记成功
 
         Returns:
-            dict: {run_id, row_count, parquet_path, raw_path, quality_results}
+            dict: {run_id, row_count, parquet_path, staging_path, quality_results}
         """
         provider = self.get_provider(provider_name)
 
-        # 1. 记录任务开始
         run_id = self.store.start_fetch_run(
             dataset=dataset,
             provider=provider_name,
@@ -89,14 +96,12 @@ class DataService:
             end_date=end_date,
         )
 
-        raw_path = ""
+        staging_path = ""
         parquet_path = ""
-        row_count = 0
-        quality_status = "pending"
-        quality_results = []
+        new_row_count = 0
 
         try:
-            # 2. 调用数据提供方
+            # 1. 调用数据提供方
             method = getattr(provider, method_name)
             if method_name == "get_stock_basic":
                 df = method()
@@ -114,46 +119,104 @@ class DataService:
                     f"Provider {provider_name}.{method_name}() returned empty data"
                 )
 
-            row_count = len(df)
-            logger.info(f"Fetched {row_count} rows from {provider_name}.{method_name}()")
+            new_row_count = len(df)
+            logger.info(f"Fetched {new_row_count} rows from {provider_name}.{method_name}()")
 
-            # 3. 保存原始数据
-            raw_path = self._save_raw_data(df, provider_name, dataset, symbol, run_id)
+            # 2. 保存标准化快照（供调试和追溯，区别于不可变原始响应）
+            staging_path = self._save_staging_data(
+                df, provider_name, dataset, symbol, run_id
+            )
 
-            # 4. 写入 Parquet
+            # 3. 批次质量检查 — 先于写入，不通过则隔离
+            batch_quality = self.validator.validate(
+                df, dataset, self.store, run_id
+            )
+            batch_status = self._summarize_quality(batch_quality)
+            if batch_status == "failed":
+                quarantine_path = self._save_quarantine(
+                    df, provider_name, dataset, symbol, run_id,
+                    reason="batch_quality_failed",
+                )
+                self.store.fail_fetch_run(
+                    run_id=run_id,
+                    error_type="QualityCheckError",
+                    error_message=f"Batch quality failed: "
+                                  f"{[r['check_name'] for r in batch_quality if r['status'] == 'failed']}",
+                )
+                self.store._update_run_quality(run_id, "failed")
+                raise QualityCheckError(
+                    f"Batch quality check failed for {dataset}/{symbol}. "
+                    f"Data quarantined at: {quarantine_path}"
+                )
+
+            # 4. 与已有数据合并
             parquet_dir = self.config["storage"]["parquet_dir"]
+            merged_df = self._merge_with_existing(
+                df, parquet_dir, dataset, symbol
+            )
+
+            # 5. 合并后再次质量检查
+            merged_quality = self.validator.validate(
+                merged_df, dataset, self.store, run_id
+            )
+            merged_status = self._summarize_quality(merged_quality)
+            if merged_status == "failed":
+                quarantine_path = self._save_quarantine(
+                    merged_df, provider_name, dataset, symbol, run_id,
+                    reason="merged_quality_failed",
+                )
+                self.store.fail_fetch_run(
+                    run_id=run_id,
+                    error_type="QualityCheckError",
+                    error_message=f"Merged data quality failed: "
+                                  f"{[r['check_name'] for r in merged_quality if r['status'] == 'failed']}",
+                )
+                self.store._update_run_quality(run_id, "failed")
+                raise QualityCheckError(
+                    f"Merged data quality check failed for {dataset}/{symbol}. "
+                    f"Data quarantined at: {quarantine_path}"
+                )
+
+            # 6. 原子写入 Parquet
+            final_row_count = len(merged_df)
             parquet_path = write_parquet(
-                df=df,
+                df=merged_df,
                 parquet_dir=parquet_dir,
                 dataset=dataset,
                 symbol=symbol if symbol else "",
-                mode="append",
+                mode="replace",
             )
 
-            # 5. 质量检查
-            quality_results = self.validator.validate(
-                df, dataset, self.store, run_id
-            )
-            quality_status = self._summarize_quality(quality_results)
-
-            # 6. 标记成功
+            # 7. 标记成功（记录合并后总行数）
             self.store.complete_fetch_run(
                 run_id=run_id,
-                row_count=row_count,
-                raw_file_path=raw_path,
+                row_count=final_row_count,
+                raw_file_path=staging_path,
                 parquet_path=parquet_path,
-                quality_status=quality_status,
+                quality_status="passed",
             )
 
+        except (AshareDataError, QualityCheckError) as e:
+            # 质量失败已在内部调用过 fail_fetch_run；
+            # 提供方错误等其他 AshareDataError 需要在此处标记失败
+            status = self.store.query(
+                "SELECT status FROM data_fetch_runs WHERE run_id = ?",
+                [run_id],
+            )
+            if status.empty or status["status"].iloc[0] not in ("failed",):
+                self.store.fail_fetch_run(
+                    run_id=run_id,
+                    error_type=type(e).__name__,
+                    error_message=str(e),
+                )
+            raise
         except Exception as e:
             error_type = type(e).__name__
-            error_msg = str(e)
             self.store.fail_fetch_run(
                 run_id=run_id,
                 error_type=error_type,
-                error_message=error_msg,
+                error_message=str(e),
             )
-            # 如果是提供方的上下文管理器问题，尝试清理
             if hasattr(provider, "logout"):
                 with contextlib.suppress(Exception):
                     provider.logout()
@@ -161,11 +224,12 @@ class DataService:
 
         return {
             "run_id": run_id,
-            "row_count": row_count,
+            "row_count": final_row_count,
+            "new_rows": new_row_count,
             "parquet_path": parquet_path,
-            "raw_path": raw_path,
-            "quality_status": quality_status,
-            "quality_results": quality_results,
+            "staging_path": staging_path,
+            "quality_status": "passed",
+            "quality_results": merged_quality,
         }
 
     def fetch_with_fallback(
@@ -260,7 +324,34 @@ class DataService:
 
     # ── 内部方法 ─────────────────────────────────────────
 
-    def _save_raw_data(
+    def _merge_with_existing(
+        self,
+        new_df: pd.DataFrame,
+        parquet_dir: str,
+        dataset: str,
+        symbol: str,
+    ) -> pd.DataFrame:
+        """将新数据与已有 Parquet 合并，按主键去重。"""
+        existing = read_parquet(parquet_dir, dataset, symbol)
+        if existing.empty:
+            return new_df
+
+        # 确保关键列类型一致
+        for col in ["trade_date"]:
+            if col in new_df.columns and col in existing.columns:
+                new_df[col] = new_df[col].astype(str)
+                existing[col] = existing[col].astype(str)
+
+        combined = pd.concat([existing, new_df], ignore_index=True)
+        # 按主键去重，保留新值
+        from ashare_research.quality.validators import _PRIMARY_KEYS
+        pk = _PRIMARY_KEYS.get(dataset, [])
+        existing_pk = [c for c in pk if c in combined.columns]
+        if existing_pk:
+            combined = combined.drop_duplicates(subset=existing_pk, keep="last")
+        return combined
+
+    def _save_staging_data(
         self,
         df: pd.DataFrame,
         provider_name: str,
@@ -268,18 +359,53 @@ class DataService:
         symbol: str,
         run_id: str,
     ) -> str:
-        """保存原始 CSV 到 data/raw/。"""
-        raw_dir = Path(self.config["storage"]["raw_dir"])
-        target_dir = raw_dir / provider_name / dataset
+        """保存标准化批次快照（供调试和追溯）。
+
+        与不可变原始响应不同：这里保存的是 provider 标准化后的 DataFrame。
+        原始响应留存由各个 provider 内部负责。
+        """
+        staging_dir = Path(self.config["storage"].get("staging_dir", "data/staging"))
+        target_dir = staging_dir / provider_name / dataset
         target_dir.mkdir(parents=True, exist_ok=True)
 
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         safe_symbol = symbol.replace(".", "_") if symbol else "all"
-        filename = f"{safe_symbol}_{timestamp}_{run_id}.csv"
+        filename = f"{safe_symbol}_{timestamp}_{run_id}.parquet"
         filepath = target_dir / filename
 
-        df.to_csv(filepath, index=False, encoding="utf-8")
-        logger.info(f"Raw data saved: {filepath} ({len(df)} rows)")
+        df.to_parquet(filepath, index=False, engine="pyarrow")
+        logger.info(f"Staging snapshot saved: {filepath} ({len(df)} rows)")
+
+        return str(filepath)
+
+    def _save_quarantine(
+        self,
+        df: pd.DataFrame,
+        provider_name: str,
+        dataset: str,
+        symbol: str,
+        run_id: str,
+        reason: str = "",
+    ) -> str:
+        """保存质量失败的数据到隔离目录。
+
+        隔离数据不进入正式 Parquet 目录，方便事后审计和重处理。
+        """
+        quarantine_dir = Path(
+            self.config["storage"].get("quarantine_dir", "data/quarantine")
+        )
+        target_dir = quarantine_dir / reason / provider_name
+        target_dir.mkdir(parents=True, exist_ok=True)
+
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        safe_symbol = symbol.replace(".", "_") if symbol else "all"
+        filename = f"{safe_symbol}_{timestamp}_{run_id}.parquet"
+        filepath = target_dir / filename
+
+        df.to_parquet(filepath, index=False, engine="pyarrow")
+        logger.warning(
+            f"Data quarantined [{reason}]: {filepath} ({len(df)} rows)"
+        )
 
         return str(filepath)
 

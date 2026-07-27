@@ -68,9 +68,9 @@ class MockProvider(BaseProvider):
             "symbol": [symbol] * 3,
             "trade_date": ["2026-07-20", "2026-07-21", "2026-07-22"],
             "open": [3300.0, 3310.0, 3290.0],
-            "high": [3320.0, 3325.0, 3310.0],
+            "high": [3320.0, 3325.0, 3320.0],
             "low": [3280.0, 3290.0, 3270.0],
-            "close": [3310.0, 3290.0, 3320.0],
+            "close": [3310.0, 3300.0, 3290.0],
             "volume": [1e8, 1.2e8, 8e7],
             "amount": [3e11, 3.5e11, 2.5e11],
             "source": ["mock"] * 3,
@@ -166,7 +166,7 @@ class TestDataService:
         assert result["row_count"] == 3
         assert result["quality_status"] == "passed"
         assert os.path.exists(result["parquet_path"])
-        assert os.path.exists(result["raw_path"])
+        assert os.path.exists(result["staging_path"])
 
     def test_fetch_stock_basic(self, data_service):
         result = data_service.fetch_and_store(
@@ -284,7 +284,8 @@ class TestDataService:
             end_date="2026-07-22",
         )
         assert result["row_count"] == 3
-        assert "mock" in result.get("parquet_path", "").lower() or True
+        # 验证 fallback 使用了 mock provider（数据成功获取）
+        assert result["quality_status"] == "passed"
 
     def test_both_providers_fail(self, data_service):
         """两个提供方都失败应抛出聚合错误。"""
@@ -309,15 +310,55 @@ class TestDataService:
                 start_date="2020-01-01", end_date="2020-01-10",
             )
 
-    def test_raw_data_saved(self, data_service):
-        """原始数据应保存为 CSV。"""
+    def test_staging_snapshot_saved(self, data_service):
+        """标准化快照应保存为 Parquet。"""
         result = data_service.fetch_and_store(
             provider_name="mock", method_name="get_stock_daily",
             dataset="stock_daily", symbol="601857.SH",
             start_date="2026-07-20", end_date="2026-07-22",
         )
 
-        raw_path = result["raw_path"]
-        assert os.path.exists(raw_path)
-        df = pd.read_csv(raw_path)
+        staging_path = result["staging_path"]
+        assert os.path.exists(staging_path)
+        df = pd.read_parquet(staging_path)
         assert len(df) == 3
+
+    def test_quality_failure_blocks_parquet_write(self, data_service):
+        """质量失败的数据不应写入正式 Parquet 目录。"""
+        with pytest.raises(AshareDataError):
+            data_service.fetch_and_store(
+                provider_name="failing", method_name="get_stock_daily",
+                dataset="stock_daily", symbol="601857.SH",
+                start_date="2026-07-20", end_date="2026-07-22",
+            )
+
+        # 不应有任何正式 Parquet 写入
+        parquet_dir = data_service.config["storage"]["parquet_dir"]
+        parquet_file = os.path.join(parquet_dir, "stock_daily", "601857_SH.parquet")
+        assert not os.path.exists(parquet_file)
+
+    def test_merged_row_count_recorded(self, data_service):
+        """DuckDB 注册表应记录合并后的总行数。"""
+        result = data_service.fetch_and_store(
+            provider_name="mock", method_name="get_stock_daily",
+            dataset="stock_daily", symbol="601857.SH",
+            start_date="2026-07-20", end_date="2026-07-22",
+        )
+        # 3 行新数据，注册表应记录 3
+        assert result["row_count"] == 3
+
+    def test_duplicate_request_returns_same_count(self, data_service):
+        """相同请求重复执行不应产生重复行，注册表行数应一致。"""
+        r1 = data_service.fetch_and_store(
+            provider_name="mock", method_name="get_stock_daily",
+            dataset="stock_daily", symbol="601857.SH",
+            start_date="2026-07-20", end_date="2026-07-22",
+        )
+        r2 = data_service.fetch_and_store(
+            provider_name="mock", method_name="get_stock_daily",
+            dataset="stock_daily", symbol="601857.SH",
+            start_date="2026-07-20", end_date="2026-07-22",
+        )
+        # 两次请求相同数据，总行数应一致
+        assert r1["row_count"] == r2["row_count"]
+        assert r2["row_count"] == 3
