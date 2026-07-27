@@ -60,16 +60,16 @@ class BaseProvider(ABC):
             return ""
 
         target_dir = Path(self.raw_dir) / self.provider_name / dataset
-        target_dir.mkdir(parents=True, exist_ok=True)
 
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")
         safe_symbol = symbol.replace(".", "_") if symbol else "all"
         filename = f"{safe_symbol}_{timestamp}.parquet"
         final_path = target_dir / filename
 
-        # 原子写入
+        # 原子写入：目录创建、写入、替换的每一步失败都转为 RawPersistenceError
         tmp_path = target_dir / f".{filename}.tmp"
         try:
+            target_dir.mkdir(parents=True, exist_ok=True)
             df.to_parquet(tmp_path, index=False, engine="pyarrow")
             os.replace(tmp_path, str(final_path))
             self._last_raw_path = str(final_path)

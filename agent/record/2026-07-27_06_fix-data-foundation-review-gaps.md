@@ -96,4 +96,13 @@
 - 完整主键排序保证查询顺序
 - raw/staging/quarantine 三目录语义清晰
 
+### 第二轮修复（commit 37a61ae）
+
+**Fix 1**: `_merge_with_existing()` 统一路径，首次写入也排序
+**Fix 2**: `_assert_quality_failure()` 验证 quarantine 文件集合和坏数据特征
+**Fix 3**: fixture 改用 `tmp_path`，测试后 0 个真实 data/ 文件污染
+**Fix 4**: RawPersistenceError + 4 个 raw 链路测试
+
+最终: 81 passed, PR #1 OPEN (https://github.com/dlam12138/ashare-research-lab/pull/1)
+
 

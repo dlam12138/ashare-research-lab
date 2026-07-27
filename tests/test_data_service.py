@@ -527,7 +527,7 @@ class TestDataService:
         """已有正式 Parquet 在质量失败时完全不被修改。"""
         import hashlib
 
-        # 1. 先成功写入一份合法数据
+        # 成功写入合法正式文件
         result_ok = data_service.fetch_and_store(
             provider_name="mock", method_name="get_stock_daily",
             dataset="stock_daily", symbol="601857.SH",
@@ -536,14 +536,20 @@ class TestDataService:
         ok_path = result_ok["parquet_path"]
         assert os.path.exists(ok_path)
 
-        # 2. 记录正式文件的 SHA-256 和元数据
+        # 记录正式文件的 SHA-256、schema 和行数
         with open(ok_path, "rb") as f:
             sha_before = hashlib.sha256(f.read()).hexdigest()
         df_before = pd.read_parquet(ok_path)
         rows_before = len(df_before)
         cols_before = list(df_before.columns)
 
-        # 3. 尝试写入坏数据（NaN）
+        # 记录当前 quarantine 文件集合
+        quarantine_root = Path(
+            data_service.config["storage"]["quarantine_dir"]
+        )
+        files_before = set(quarantine_root.rglob("*.parquet"))
+
+        # 执行一次坏数据写入（NaN）
         with pytest.raises(AshareDataError):
             data_service.fetch_and_store(
                 provider_name="bad_nan", method_name="get_stock_daily",
@@ -551,46 +557,30 @@ class TestDataService:
                 start_date="2026-07-23", end_date="2026-07-25",
             )
 
-        # 4. 验证正式文件完全未被修改
+        # 正式文件 SHA-256 完全不变
         with open(ok_path, "rb") as f:
             sha_after = hashlib.sha256(f.read()).hexdigest()
-        assert sha_before == sha_after, "Official Parquet was modified by failed run!"
+        assert sha_before == sha_after, (
+            "Official Parquet was modified by failed run!"
+        )
 
         df_after = pd.read_parquet(ok_path)
         assert len(df_after) == rows_before, "Row count changed"
         assert list(df_after.columns) == cols_before, "Schema changed"
         pd.testing.assert_frame_equal(df_before, df_after)
 
-        # 5. 验证恰好增加一个 quarantine 文件且内容正确
-        quarantine_root = Path(data_service.config["storage"]["quarantine_dir"])
-        files_before_q = set(quarantine_root.rglob("*.parquet"))
+        # 恰好增加一个 quarantine 文件
+        files_after = set(quarantine_root.rglob("*.parquet"))
+        new_files = files_after - files_before
+        assert len(new_files) == 1, (
+            f"Expected exactly 1 new quarantine file, got {len(new_files)}"
+        )
 
-        with pytest.raises(AshareDataError):
-            data_service.fetch_and_store(
-                provider_name="bad_nan", method_name="get_stock_daily",
-                dataset="stock_daily", symbol="601857.SH",
-                start_date="2026-07-23", end_date="2026-07-25",
-            )
-
-        files_after_q = set(quarantine_root.rglob("*.parquet"))
-        new_files = files_after_q - files_before_q
-        # 如果之前测试已产生 quarantine 文件，本次恰好增加 1 个
-        # （但前一个 "bad_nan" 也在本测试中会触发质量失败）
-        # 实际上这个 with 块是第二次 bad_nan 调用，它也会产生一个新文件
-        # 之前的第一次 bad_nan 调用在步骤 3 的 with 块中，已在 files_before_q 之前
-        # 所以 files_before_q 集合是在步骤3之后、步骤5之前采集的
-        # → 步骤5的 with 块产生的新文件会出现在这里
-        # 等待，看用户的代码逻辑——步骤3已经调用了 bad_nan 并产生了一个 quarantine
-        # 然后步骤5又调用 bad_nan 产生第二个 quarantine
-        # 所以 files_before_q 采集时已经包含了步骤3的文件，步骤5的新文件是第二个
-        # 我预期 new_files 有 1 个（步骤5的文件）
-        # 但步骤3的那个 bad_nan 调用并不是在这个 with 块里...
-        # 实际上步骤3的 with block 是在步骤5的 files_before_q 之前执行的
-        # 步骤5的 files_before_q 包含了步骤3产生的文件
-        # 步骤5的 with block 又产生一个新文件
-        # 所以 new_files 应该有 1 个
-        assert len(new_files) >= 1, (
-            f"Expected at least 1 new quarantine file, got {len(new_files)}"
+        # quarantine 文件内容包含 NaN volume
+        quarantine_path = str(new_files.pop())
+        quarantined = pd.read_parquet(quarantine_path)
+        assert quarantined["volume"].isnull().any(), (
+            "Quarantined data should contain NaN volume"
         )
 
     def test_first_write_sorts_by_full_primary_key(self, data_service):
@@ -898,6 +888,7 @@ class TestDataService:
         from unittest.mock import patch
 
         import akshare
+
         from ashare_research.exceptions import RawPersistenceError
 
         raw_dir = tmp_path / "raw"
@@ -967,3 +958,199 @@ class TestDataService:
                 assert runs["status"].iloc[0] == "failed"
 
                 store.close()
+
+    def test_configured_raw_provider_without_snapshot_is_rejected(
+        self, tmp_path
+    ):
+        """配置了 raw_dir 的 Provider 未保存快照时应被拒绝。
+
+        测试策略：使用真实 AKShareProvider，mock 上游数据和
+        reset_last_raw_path，验证 DataService 层检测到空 raw 路径并拒绝。
+        """
+        from unittest.mock import patch
+
+        import akshare
+
+        from ashare_research.exceptions import RawPersistenceError
+        from ashare_research.providers.akshare_provider import AKShareProvider
+        from ashare_research.services.data_service import DataService
+        from ashare_research.storage.duckdb_store import DuckDBStore
+
+        raw_dir = tmp_path / "raw"
+        raw_dir.mkdir()
+        parquet_dir = tmp_path / "parquet"
+        parquet_dir.mkdir()
+        staging_dir = tmp_path / "staging"
+        staging_dir.mkdir()
+        quarantine_dir = tmp_path / "quarantine"
+        quarantine_dir.mkdir()
+        db_path = tmp_path / "test.duckdb"
+
+        store = DuckDBStore(str(db_path))
+        store.init_db()
+        config = {
+            "storage": {
+                "duckdb_path": str(db_path),
+                "raw_dir": str(raw_dir),
+                "staging_dir": str(staging_dir),
+                "quarantine_dir": str(quarantine_dir),
+                "parquet_dir": str(parquet_dir),
+            },
+        }
+        svc = DataService(store, config)
+        provider = AKShareProvider(raw_dir=str(raw_dir))
+
+        mock_df = pd.DataFrame({
+            "日期": ["2026-07-20"],
+            "开盘": [10.0], "最高": [10.5], "最低": [9.8], "收盘": [10.2],
+            "成交量": [10000], "成交额": [10200000], "换手率": [0.5],
+        })
+
+        # Mock _save_raw_response 返回空（模拟未调用保存）
+        # 同时禁用 reset_last_raw_path 避免其覆盖手动设置的 _last_raw_path
+        with patch.object(akshare, "stock_zh_a_hist", return_value=mock_df):
+            with patch.object(provider, "_save_raw_response",
+                              return_value=""):
+                with patch.object(provider, "reset_last_raw_path",
+                                  return_value=None):
+                    svc.register_provider("akshare_noraw", provider)
+                    with pytest.raises(
+                        RawPersistenceError, match="did not persist"
+                    ):
+                        svc.fetch_and_store(
+                            provider_name="akshare_noraw",
+                            method_name="get_stock_daily",
+                            dataset="stock_daily",
+                            symbol="601857.SH",
+                            start_date="2026-07-20",
+                            end_date="2026-07-20",
+                        )
+
+        # staging 不存在
+        assert not list(staging_dir.rglob("*.parquet"))
+        # 正式 Parquet 不存在
+        assert not (parquet_dir / "stock_daily").exists()
+        # DuckDB 记录为 failed
+        runs = store.query(
+            "SELECT status FROM data_fetch_runs ORDER BY started_at DESC LIMIT 1"
+        )
+        assert runs["status"].iloc[0] == "failed"
+        store.close()
+
+    def test_missing_raw_snapshot_file_is_rejected(self, tmp_path):
+        """Provider 返回不存在的 raw 文件路径时应被拒绝。
+
+        测试策略：先让真实的 _save_raw_response 正常运行，
+        产生一个真实的 raw 文件，获取路径后删除该文件，
+        然后 mock 下一次调用的总流程。
+        简化为：直接 mock last_raw_path 返回不存在的路径。
+        """
+        from unittest.mock import PropertyMock, patch
+
+        import akshare
+
+        from ashare_research.exceptions import RawPersistenceError
+        from ashare_research.providers.akshare_provider import AKShareProvider
+        from ashare_research.services.data_service import DataService
+        from ashare_research.storage.duckdb_store import DuckDBStore
+
+        raw_dir = tmp_path / "raw"
+        raw_dir.mkdir()
+        parquet_dir = tmp_path / "parquet"
+        parquet_dir.mkdir()
+        staging_dir = tmp_path / "staging"
+        staging_dir.mkdir()
+        quarantine_dir = tmp_path / "quarantine"
+        quarantine_dir.mkdir()
+        db_path = tmp_path / "test.duckdb"
+
+        store = DuckDBStore(str(db_path))
+        store.init_db()
+        config = {
+            "storage": {
+                "duckdb_path": str(db_path),
+                "raw_dir": str(raw_dir),
+                "staging_dir": str(staging_dir),
+                "quarantine_dir": str(quarantine_dir),
+                "parquet_dir": str(parquet_dir),
+            },
+        }
+        svc = DataService(store, config)
+        provider = AKShareProvider(raw_dir=str(raw_dir))
+
+        mock_df = pd.DataFrame({
+            "日期": ["2026-07-20"],
+            "开盘": [10.0], "最高": [10.5], "最低": [9.8], "收盘": [10.2],
+            "成交量": [10000], "成交额": [10200000], "换手率": [0.5],
+        })
+
+        fake_path = "/nonexistent/path.parquet"
+        with patch.object(akshare, "stock_zh_a_hist", return_value=mock_df), patch.object(
+            type(provider), "last_raw_path",
+            new_callable=PropertyMock, return_value=fake_path,
+        ), patch.object(provider, "reset_last_raw_path",
+                          return_value=None):
+            svc.register_provider("akshare_missing", provider)
+            with pytest.raises(
+                RawPersistenceError, match="does not exist"
+            ):
+                svc.fetch_and_store(
+                    provider_name="akshare_missing",
+                    method_name="get_stock_daily",
+                    dataset="stock_daily",
+                    symbol="601857.SH",
+                    start_date="2026-07-20",
+                    end_date="2026-07-20",
+                )
+
+        store.close()
+
+    def test_to_parquet_failure_raises_raw_persistence_error(self, tmp_path):
+        """to_parquet 写入失败应转为 RawPersistenceError。"""
+        from unittest.mock import patch
+
+        import akshare
+
+        from ashare_research.exceptions import RawPersistenceError
+        from ashare_research.providers.akshare_provider import AKShareProvider
+
+        raw_dir = tmp_path / "raw"
+        raw_dir.mkdir()
+
+        mock_df = pd.DataFrame({
+            "日期": ["2026-07-20"],
+            "开盘": [10.0], "最高": [10.5], "最低": [9.8], "收盘": [10.2],
+            "成交量": [10000], "成交额": [10200000], "换手率": [0.5],
+        })
+
+        with patch.object(akshare, "stock_zh_a_hist", return_value=mock_df):
+            provider = AKShareProvider(raw_dir=str(raw_dir))
+            # Mock to_parquet 使其抛出 OSError
+            with patch.object(pd.DataFrame, "to_parquet",
+                              side_effect=OSError("disk full")):
+                with pytest.raises(RawPersistenceError, match="disk full"):
+                    provider.get_stock_daily(
+                        "601857.SH", "2026-07-20", "2026-07-20", "none"
+                    )
+
+        # last_raw_path 应被清空
+        assert provider.last_raw_path == ""
+
+    def test_load_config_resolves_all_storage_paths(self, tmp_path):
+        """load_config 应将所有相对存储路径转为绝对路径。"""
+        from unittest.mock import patch
+
+        from ashare_research.config import load_config
+
+        # 模拟项目根目录
+        with patch("ashare_research.config._find_project_root",
+                   return_value=tmp_path):
+            config = load_config()
+
+        storage = config["storage"]
+        for key in ["raw_dir", "staging_dir", "quarantine_dir",
+                     "parquet_dir", "duckdb_path"]:
+            path_str = storage[key]
+            assert path_str.startswith(str(tmp_path)), (
+                f"{key}={path_str} not absolute under tmp_path"
+            )

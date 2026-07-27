@@ -23,7 +23,11 @@ from pathlib import Path
 import pandas as pd
 
 from ashare_research.config import load_config
-from ashare_research.exceptions import AshareDataError, QualityCheckError
+from ashare_research.exceptions import (
+    AshareDataError,
+    QualityCheckError,
+    RawPersistenceError,
+)
 from ashare_research.providers.base import BaseProvider
 from ashare_research.quality.validators import QualityValidator
 from ashare_research.storage.duckdb_store import DuckDBStore
@@ -128,6 +132,20 @@ class DataService:
 
             # 1b. 从 Provider 获取真实原始响应路径
             raw_path = getattr(provider, "last_raw_path", "")
+            provider_raw_dir = getattr(provider, "raw_dir", "")
+
+            # 若 Provider 配置了 raw_dir，必须成功保存原始快照
+            if provider_raw_dir:
+                if not raw_path:
+                    raise RawPersistenceError(
+                        f"Provider {provider_name}.{method_name}() returned "
+                        "data but did not persist a raw snapshot"
+                    )
+                raw_file = Path(raw_path)
+                if not raw_file.is_file():
+                    raise RawPersistenceError(
+                        f"Provider raw snapshot does not exist: {raw_path}"
+                    )
 
             # 2. 保存标准化快照（供调试和追溯，区别于不可变原始响应）
             staging_path = self._save_staging_data(
