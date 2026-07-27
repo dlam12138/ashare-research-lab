@@ -59,6 +59,12 @@ class ReportType(str, Enum):
     quarterly = "quarterly"
 
 
+class SourceTier(str, Enum):
+    candidate_aggregator = "candidate_aggregator"
+    company_official = "company_official"
+    exchange_official = "exchange_official"
+
+
 # ── 核心数据类 ──────────────────────────────────────────────
 
 
@@ -113,13 +119,16 @@ class Fact:
     同时包含原始值和标准化值的完整追踪。
     """
     fact_id: str = ""
+    fact_version: int = 1
     concept_id: str = ""
+    concept_version: str = "1"
     symbol: str = ""
     value: float | None = None
     unit: str = ""
     context_id: str = ""
-    is_derived: bool = False
+    is_derived: bool = field(default=False)
     derived_from: str = ""               # 逗号分隔的源 fact_id
+    supersedes_fact_id: str = ""
     derivation_definition_id: str = ""
     derivation_version: str = ""
     input_fact_ids: str = ""             # 逗号分隔
@@ -128,8 +137,13 @@ class Fact:
     source_page: str = ""
     source_table: str = ""
     source_label: str = ""
+    source_tier: SourceTier = SourceTier.candidate_aggregator
+    source_id: str = ""
+    source_url: str = ""
+    source_hash: str = ""
     filing_date: str = ""               # 财报公告日期
     period_end: str = ""                # 报告期截止日
+    restatement_version: str = "original"
     announcement_date: str = ""          # 此事实可用的日期
     available_at: str = ""              # PIT 门禁字段
     raw_value: float | None = None

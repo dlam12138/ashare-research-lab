@@ -105,3 +105,18 @@ class SourceDocumentError(AshareDataError):
 class ReconciliationError(AshareDataError):
     """交叉核验发现无法解释的不一致。"""
     pass
+
+
+class FactPersistenceError(AshareDataError):
+    """事实持久化失败，事务已回滚。"""
+    pass
+
+
+class FactSchemaMigrationError(AshareDataError):
+    """Fact schema 迁移失败。"""
+    pass
+
+
+class FactCheckpointError(AshareDataError):
+    """事实构建 checkpoint 校验失败。"""
+    pass

@@ -1,24 +1,42 @@
-"""M2 Stage 1 — FactRepository: DuckDB 事实存储。
+"""M2 Stage 1B — FactRepository: 事务化 DuckDB 事实存储。
 
-包装现有 DuckDBStore，管理 5 张新表的 CRUD。
+关键变更：
+- 事务化写入（全部成功或全部回滚）
+- 不再静默吞掉异常
+- PIT 查询强制排除空 available_at
+- Schema v2.0 + migration safety
 """
 
 from __future__ import annotations
 
+import contextlib
 import logging
 from datetime import datetime
 from typing import Any
 
 import pandas as pd
 
+from ashare_research.exceptions import (
+    AshareDataError,
+    FactPersistenceError,
+    FactSchemaMigrationError,
+)
 from ashare_research.storage.duckdb_store import DuckDBStore
 
 logger = logging.getLogger(__name__)
 
-FACT_SCHEMA_SQL = """
+FACT_SCHEMA_V2_SQL = """
+CREATE TABLE IF NOT EXISTS fact_schema_meta (
+    schema_name VARCHAR PRIMARY KEY,
+    schema_version VARCHAR NOT NULL,
+    applied_at VARCHAR NOT NULL,
+    git_commit VARCHAR DEFAULT ''
+);
+
 CREATE TABLE IF NOT EXISTS financial_facts (
     fact_id VARCHAR PRIMARY KEY,
     concept_id VARCHAR NOT NULL,
+    concept_version VARCHAR DEFAULT '1',
     symbol VARCHAR NOT NULL,
     value DOUBLE,
     unit VARCHAR NOT NULL DEFAULT 'CNY',
@@ -29,10 +47,17 @@ CREATE TABLE IF NOT EXISTS financial_facts (
     derivation_version VARCHAR DEFAULT '',
     input_fact_ids VARCHAR DEFAULT '',
     source_provider VARCHAR NOT NULL DEFAULT '',
+    source_id VARCHAR DEFAULT '',
+    source_tier VARCHAR DEFAULT 'candidate_aggregator',
     source_document VARCHAR DEFAULT '',
+    source_url VARCHAR DEFAULT '',
+    source_hash VARCHAR DEFAULT '',
     source_page VARCHAR DEFAULT '',
     source_table VARCHAR DEFAULT '',
     source_label VARCHAR DEFAULT '',
+    fact_version INTEGER DEFAULT 1,
+    restatement_version VARCHAR DEFAULT 'original',
+    supersedes_fact_id VARCHAR DEFAULT '',
     filing_date VARCHAR DEFAULT '',
     period_end VARCHAR DEFAULT '',
     announcement_date VARCHAR DEFAULT '',
@@ -64,8 +89,8 @@ CREATE TABLE IF NOT EXISTS fact_contexts (
 );
 
 CREATE TABLE IF NOT EXISTS concept_registry (
-    concept_id VARCHAR PRIMARY KEY,
-    version VARCHAR DEFAULT '1',
+    concept_id VARCHAR NOT NULL,
+    version VARCHAR NOT NULL DEFAULT '1',
     display_name VARCHAR NOT NULL DEFAULT '',
     display_name_zh VARCHAR DEFAULT '',
     description VARCHAR DEFAULT '',
@@ -74,13 +99,16 @@ CREATE TABLE IF NOT EXISTS concept_registry (
     statement_type VARCHAR DEFAULT '',
     instant_or_duration VARCHAR DEFAULT 'duration',
     canonical_unit VARCHAR DEFAULT '',
-    created_at VARCHAR NOT NULL DEFAULT ''
+    created_at VARCHAR NOT NULL DEFAULT '',
+    PRIMARY KEY (concept_id, version)
 );
 
 CREATE TABLE IF NOT EXISTS fact_lineage (
     lineage_id INTEGER PRIMARY KEY,
     fact_id VARCHAR NOT NULL,
+    run_id VARCHAR DEFAULT '',
     source_provider VARCHAR NOT NULL DEFAULT '',
+    source_tier VARCHAR DEFAULT '',
     source_method VARCHAR DEFAULT '',
     raw_file_path VARCHAR DEFAULT '',
     staging_file_path VARCHAR DEFAULT '',
@@ -91,12 +119,27 @@ CREATE TABLE IF NOT EXISTS fact_lineage (
 
 CREATE SEQUENCE IF NOT EXISTS fact_lineage_seq START 1;
 
+CREATE TABLE IF NOT EXISTS fact_validation_runs (
+    validation_run_id VARCHAR PRIMARY KEY,
+    started_at VARCHAR NOT NULL,
+    completed_at VARCHAR DEFAULT '',
+    fact_count INTEGER DEFAULT 0,
+    error_count INTEGER DEFAULT 0,
+    warning_count INTEGER DEFAULT 0,
+    status VARCHAR DEFAULT 'pending'
+);
+
 CREATE TABLE IF NOT EXISTS fact_validation_results (
     id INTEGER PRIMARY KEY,
+    validation_run_id VARCHAR NOT NULL,
     fact_id VARCHAR NOT NULL,
-    rule_name VARCHAR NOT NULL,
-    status VARCHAR NOT NULL DEFAULT '',
-    details VARCHAR DEFAULT '',
+    rule_id VARCHAR NOT NULL,
+    rule_version VARCHAR DEFAULT '1',
+    severity VARCHAR DEFAULT 'error',
+    passed BOOLEAN DEFAULT TRUE,
+    expected VARCHAR DEFAULT '',
+    actual VARCHAR DEFAULT '',
+    message VARCHAR DEFAULT '',
     checked_at VARCHAR NOT NULL DEFAULT ''
 );
 
@@ -105,137 +148,342 @@ CREATE SEQUENCE IF NOT EXISTS fact_validation_seq START 1;
 
 
 class FactRepository:
-    """财务事实仓库。
+    """事务化财务事实仓库。"""
 
-    包装 DuckDBStore，不创建新连接。
-    """
-
-    schema_version: str = "1.0"
+    schema_version: str = "2.0"
 
     def __init__(self, duckdb_store: DuckDBStore):
         self.store = duckdb_store
         self._initialized = False
 
-    def init_schema(self) -> None:
-        """创建 M2 Stage 1 所需的表。"""
-        conn = self.store.connect()
-        # 分条执行以避免多语句问题
-        for stmt in FACT_SCHEMA_SQL.split(";"):
-            stmt = stmt.strip()
-            if stmt and not stmt.startswith("--"):
-                try:
-                    conn.execute(stmt)
-                except Exception:
-                    pass  # CREATE IF NOT EXISTS 安全
-        self._initialized = True
-        logger.info("FactRepository schema initialized")
+    # ── Schema ──────────────────────────────────────────
 
-    def seed_concepts(self) -> int:
-        """将概念注册表种子写入 DuckDB。"""
+    def ensure_schema(self, git_commit: str = "") -> None:
+        """安全初始化或迁移 schema v2.0。
+
+        规则：
+        - 无 M2 表 → 创建 2.0
+        - 1.0 表非空 → 默认停止（抛出异常）
+        - 不触及 Milestone 1 的表
+        """
+        conn = self.store.connect()
+        existing = conn.execute(
+            "SELECT name FROM sqlite_master "
+            "WHERE type='table' AND name='financial_facts'"
+        ).fetchone()
+
+        if existing is None:
+            # 全新创建
+            for stmt in FACT_SCHEMA_V2_SQL.split(";"):
+                stmt = stmt.strip()
+                if stmt:
+                    conn.execute(stmt)
+
+            now = datetime.now().isoformat()
+            conn.execute(
+                """INSERT INTO fact_schema_meta
+                   (schema_name, schema_version, applied_at, git_commit)
+                   VALUES ('financial_facts', '2.0', ?, ?)""",
+                [now, git_commit],
+            )
+            logger.info("FactRepository schema v2.0 created")
+        else:
+            # 检查版本
+            meta = conn.execute(
+                "SELECT schema_version FROM fact_schema_meta "
+                "WHERE schema_name='financial_facts'"
+            ).fetchone()
+
+            if meta and meta[0] == "2.0":
+                logger.info("FactRepository already at schema v2.0")
+            else:
+                # 检查是否为空
+                count = conn.execute(
+                    "SELECT COUNT(*) FROM financial_facts"
+                ).fetchone()[0]
+                if count > 0:
+                    raise FactSchemaMigrationError(
+                        f"Cannot auto-migrate: financial_facts has "
+                        f"{count} existing rows. Use reset_m2_fact_schema() "
+                        f"for development environments only."
+                    )
+                # 空表：重建
+                self._rebuild_schema(conn, git_commit)
+
+        self._initialized = True
+
+    def _rebuild_schema(self, conn, git_commit: str) -> None:
+        """仅用于开发环境的空表重建。"""
+        for table in ["financial_facts", "fact_contexts",
+                       "concept_registry", "fact_lineage",
+                       "fact_validation_runs",
+                       "fact_validation_results",
+                       "fact_schema_meta"]:
+            conn.execute(f"DROP TABLE IF EXISTS {table}")
+        for stmt in FACT_SCHEMA_V2_SQL.split(";"):
+            stmt = stmt.strip()
+            if stmt:
+                conn.execute(stmt)
+        now = datetime.now().isoformat()
+        conn.execute(
+            """INSERT INTO fact_schema_meta
+               (schema_name, schema_version, applied_at, git_commit)
+               VALUES ('financial_facts', '2.0', ?, ?)""",
+            [now, git_commit],
+        )
+
+    def reset_m2_fact_schema(self) -> None:
+        """⚠ 仅开发环境：完全重置 M2 事实表。不影响 Milestone 1 表。"""
+        conn = self.store.connect()
+        self._rebuild_schema(conn, "")
+        logger.warning("M2 fact schema completely reset — DEV ONLY")
+
+    # ── 事务 ────────────────────────────────────────────
+
+    @contextlib.contextmanager
+    def transaction(self):
+        """事务上下文管理器。"""
+        conn = self.store.connect()
+        conn.execute("BEGIN TRANSACTION")
+        try:
+            yield conn
+            conn.execute("COMMIT")
+        except Exception:
+            conn.execute("ROLLBACK")
+            raise
+
+    # ── 种子 ────────────────────────────────────────────
+
+    def seed_concepts(self, conn=None) -> int:
+        """将概念注册表种子写入 DuckDB。
+
+        使用 INSERT ON CONFLICT 避免覆盖已有版本。
+        """
         from ashare_research.facts.concepts import ConceptRegistry
 
-        conn = self.store.connect()
+        close_conn = False
+        if conn is None:
+            conn = self.store.connect()
+            close_conn = True
+
         count = 0
         now = datetime.now().isoformat()
 
-        for concept in ConceptRegistry.list_all():
-            conn.execute(
-                """INSERT OR REPLACE INTO concept_registry
-                   (concept_id, version, display_name, display_name_zh,
-                    description, parent_concept_id, category,
-                    statement_type, instant_or_duration,
-                    canonical_unit, created_at)
-                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
-                [
-                    concept.concept_id,
-                    concept.version,
-                    concept.display_name,
-                    concept.display_name_zh,
-                    concept.description,
-                    concept.parent_concept_id,
-                    concept.category.value,
-                    concept.statement_type,
-                    concept.instant_or_duration.value,
-                    concept.canonical_unit,
-                    now,
-                ],
-            )
-            count += 1
+        try:
+            for concept in ConceptRegistry.list_all():
+                conn.execute(
+                    """INSERT INTO concept_registry
+                       (concept_id, version, display_name,
+                        display_name_zh, description, parent_concept_id,
+                        category, statement_type, instant_or_duration,
+                        canonical_unit, created_at)
+                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                       ON CONFLICT (concept_id, version) DO UPDATE SET
+                        display_name=excluded.display_name,
+                        display_name_zh=excluded.display_name_zh,
+                        canonical_unit=excluded.canonical_unit""",
+                    [
+                        concept.concept_id, concept.version,
+                        concept.display_name,
+                        concept.display_name_zh,
+                        concept.description,
+                        concept.parent_concept_id,
+                        concept.category.value,
+                        concept.statement_type,
+                        concept.instant_or_duration.value,
+                        concept.canonical_unit,
+                        now,
+                    ],
+                )
+                count += 1
+        finally:
+            if close_conn:
+                pass  # DuckDB handles connection lifecycle
 
         logger.info(f"Seeded {count} concepts")
         return count
 
-    def store_facts(self, facts: list[dict[str, Any]]) -> int:
-        """INSERT OR REPLACE 写入事实。"""
-        conn = self.store.connect()
-        count = 0
-        cols = [
-            "fact_id", "concept_id", "symbol", "value", "unit",
-            "context_id", "is_derived", "derived_from",
-            "derivation_definition_id", "derivation_version",
-            "input_fact_ids", "source_provider", "source_document",
-            "filing_date", "period_end", "announcement_date",
-            "available_at", "raw_value", "raw_unit",
-            "normalized_value", "normalization_rule",
-            "verification_status", "verification_note",
-            "eligible_for_metrics", "created_at",
-        ]
+    # ── 存储（事务化） ──────────────────────────────────
 
-        for fact in facts:
-            vals = []
-            for col in cols:
-                val = fact.get(col, "")
-                if isinstance(val, bool):
-                    val = str(val).lower()
-                elif val is None:
-                    val = None
-                vals.append(val)
+    _FACT_COLS = [
+        "fact_id", "concept_id", "concept_version", "symbol",
+        "value", "unit", "context_id", "is_derived", "derived_from",
+        "derivation_definition_id", "derivation_version",
+        "input_fact_ids", "source_provider", "source_id",
+        "source_tier", "source_document", "source_url",
+        "source_hash", "fact_version", "restatement_version",
+        "supersedes_fact_id", "filing_date", "period_end",
+        "announcement_date", "available_at", "raw_value",
+        "raw_unit", "normalized_value", "normalization_rule",
+        "verification_status", "verification_note",
+        "eligible_for_metrics", "created_at",
+    ]
 
-            placeholders = ", ".join(["?"] * len(vals))
-            col_names = ", ".join(cols)
+    _CTX_COLS = [
+        "context_id", "symbol", "fiscal_year", "period_type",
+        "period_start", "period_end", "instant_or_duration",
+        "consolidation_scope", "accounting_standard",
+        "restatement_version", "source_document",
+        "filing_date", "created_at",
+    ]
 
-            try:
+    def store_facts(
+        self, facts: list[dict[str, Any]], conn=None,
+    ) -> int:
+        """事务化批量写入事实。
+
+        任意一条失败 → 抛出 FactPersistenceError（调用方负责回滚）。
+        """
+        close_conn = False
+        if conn is None:
+            conn = self.store.connect()
+            close_conn = True
+
+        try:
+            for fact in facts:
+                vals = []
+                for col in self._FACT_COLS:
+                    val = fact.get(col, "")
+                    vals.append(val)
+
+                placeholders = ", ".join(["?"] * len(vals))
+                col_names = ", ".join(self._FACT_COLS)
                 conn.execute(
-                    f"INSERT OR REPLACE INTO financial_facts "
+                    f"INSERT INTO financial_facts "
                     f"({col_names}) VALUES ({placeholders})",
                     vals,
                 )
-                count += 1
-            except Exception as e:
-                logger.error(
-                    f"Failed to store fact {fact.get('fact_id', '?')}: {e}"
-                )
 
-        return count
+            # 验证写入数量
+            result = conn.execute(
+                "SELECT COUNT(*) FROM financial_facts"
+            ).fetchone()
+            actual_count = result[0] if result else 0
 
-    def store_contexts(self, contexts: list[dict[str, Any]]) -> int:
-        """存储事实上下文。"""
-        conn = self.store.connect()
-        count = 0
-        cols = [
-            "context_id", "symbol", "fiscal_year", "period_type",
-            "period_start", "period_end", "instant_or_duration",
-            "consolidation_scope", "accounting_standard",
-            "restatement_version", "source_document",
-            "filing_date", "created_at",
-        ]
+            return len(facts)
+        except Exception as e:
+            raise FactPersistenceError(
+                f"Failed to store facts: {e}"
+            ) from e
+        finally:
+            if close_conn:
+                pass
 
-        for ctx in contexts:
-            vals = [ctx.get(col, "") for col in cols]
-            placeholders = ", ".join(["?"] * len(vals))
-            col_names = ", ".join(cols)
-
-            try:
+    def store_contexts(
+        self, contexts: list[dict[str, Any]], conn=None,
+    ) -> int:
+        close_conn = False
+        if conn is None:
+            conn = self.store.connect()
+            close_conn = True
+        try:
+            for ctx in contexts:
+                vals = [ctx.get(col, "") for col in self._CTX_COLS]
+                placeholders = ", ".join(["?"] * len(vals))
+                col_names = ", ".join(self._CTX_COLS)
                 conn.execute(
                     f"INSERT OR REPLACE INTO fact_contexts "
                     f"({col_names}) VALUES ({placeholders})",
                     vals,
                 )
-                count += 1
-            except Exception as e:
-                logger.error(f"Failed to store context: {e}")
+            return len(contexts)
+        except Exception as e:
+            raise FactPersistenceError(
+                f"Failed to store contexts: {e}"
+            ) from e
+        finally:
+            if close_conn:
+                pass
 
-        return count
+    def store_validation_run(
+        self, run_id: str, fact_count: int,
+        error_count: int, warning_count: int,
+        status: str, conn=None,
+    ) -> None:
+        close_conn = False
+        if conn is None:
+            conn = self.store.connect()
+            close_conn = True
+        try:
+            now = datetime.now().isoformat()
+            conn.execute(
+                """INSERT OR REPLACE INTO fact_validation_runs
+                   (validation_run_id, started_at, completed_at,
+                    fact_count, error_count, warning_count, status)
+                   VALUES (?, ?, ?, ?, ?, ?, ?)""",
+                [run_id, now, now, fact_count, error_count,
+                 warning_count, status],
+            )
+        finally:
+            if close_conn:
+                pass
+
+    def store_validation_results(
+        self, results: list[dict[str, Any]],
+        validation_run_id: str, conn=None,
+    ) -> int:
+        close_conn = False
+        if conn is None:
+            conn = self.store.connect()
+            close_conn = True
+        try:
+            count = 0
+            for r in results:
+                conn.execute(
+                    """INSERT INTO fact_validation_results
+                       (id, validation_run_id, fact_id, rule_id,
+                        rule_version, severity, passed,
+                        expected, actual, message, checked_at)
+                       VALUES (nextval('fact_validation_seq'),
+                        ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                    [
+                        validation_run_id,
+                        r.get("target_id", ""),
+                        r.get("rule_id", ""),
+                        r.get("rule_version", "1"),
+                        r.get("severity", "error"),
+                        r.get("passed", True),
+                        r.get("expected", ""),
+                        r.get("actual", ""),
+                        r.get("message", ""),
+                        r.get("checked_at", ""),
+                    ],
+                )
+                count += 1
+            return count
+        finally:
+            if close_conn:
+                pass
+
+    def store_lineage(
+        self, fact_id: str, run_id: str = "",
+        source_provider: str = "", source_tier: str = "",
+        raw_path: str = "", staging_path: str = "",
+        fetch_run_id: str = "", parent_fact_ids: str = "",
+        conn=None,
+    ) -> None:
+        close_conn = False
+        if conn is None:
+            conn = self.store.connect()
+            close_conn = True
+        try:
+            now = datetime.now().isoformat()
+            conn.execute(
+                """INSERT INTO fact_lineage
+                   (lineage_id, fact_id, run_id, source_provider,
+                    source_tier, raw_file_path, staging_file_path,
+                    fetch_run_id, parent_fact_ids, recorded_at)
+                   VALUES (nextval('fact_lineage_seq'),
+                    ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                [fact_id, run_id, source_provider, source_tier,
+                 raw_path, staging_path, fetch_run_id,
+                 parent_fact_ids, now],
+            )
+        finally:
+            if close_conn:
+                pass
+
+    # ── 查询 ────────────────────────────────────────────
 
     def query_facts(
         self,
@@ -244,8 +492,13 @@ class FactRepository:
         start_year: int | None = None,
         end_year: int | None = None,
         as_of_date: str | None = None,
+        include_unverified: bool = False,
     ) -> pd.DataFrame:
-        """查询事实，支持 PIT 过滤。"""
+        """查询事实。
+
+        PIT 查询：仅返回 available_at 非空且 ≤ as_of_date 的事实。
+        默认过滤未核验事实（include_unverified=True 仅用于审计）。
+        """
         conn = self.store.connect()
         query = "SELECT * FROM financial_facts WHERE symbol = ?"
         params: list = [symbol]
@@ -256,55 +509,97 @@ class FactRepository:
             params.extend(concept_ids)
 
         if start_year:
-            query += " AND CAST(SUBSTR(period_end,1,4) AS INTEGER) >= ?"
+            query += (
+                " AND CAST(SUBSTR(period_end,1,4) AS INTEGER) >= ?"
+            )
             params.append(start_year)
 
         if end_year:
-            query += " AND CAST(SUBSTR(period_end,1,4) AS INTEGER) <= ?"
+            query += (
+                " AND CAST(SUBSTR(period_end,1,4) AS INTEGER) <= ?"
+            )
             params.append(end_year)
 
         if as_of_date:
-            query += " AND (available_at = '' OR available_at <= ?)"
+            # 严格 PIT：available_at 必须非空且 ≤ as_of_date
+            query += (
+                " AND available_at IS NOT NULL"
+                " AND available_at <> ''"
+                " AND available_at <= ?"
+            )
             params.append(as_of_date)
 
-        query += " ORDER BY period_end, concept_id"
+        # 默认过滤：仅返回 verified/reconciled + eligible_for_metrics
+        if not include_unverified:
+            query += (
+                " AND verification_status IN ('verified', 'reconciled')"
+                " AND eligible_for_metrics = TRUE"
+            )
+
+        query += " ORDER BY period_end, concept_id, fact_version DESC"
 
         return conn.execute(query, params).df()
 
-    def record_lineage(
-        self, fact_id: str, source_provider: str = "",
-        raw_path: str = "", staging_path: str = "",
-        fetch_run_id: str = "", parent_fact_ids: str = "",
-    ) -> None:
-        """记录事实血缘。"""
-        conn = self.store.connect()
-        now = datetime.now().isoformat()
-        conn.execute(
-            """INSERT INTO fact_lineage
-               (lineage_id, fact_id, source_provider,
-                raw_file_path, staging_file_path,
-                fetch_run_id, parent_fact_ids, recorded_at)
-               VALUES (nextval('fact_lineage_seq'), ?, ?, ?, ?, ?, ?, ?)""",
-            [fact_id, source_provider, raw_path, staging_path,
-             fetch_run_id, parent_fact_ids, now],
-        )
+    def get_latest_available(
+        self,
+        symbol: str,
+        as_of_date: str,
+        concept_ids: list[str] | None = None,
+        consolidation_scope: str = "consolidated",
+    ) -> pd.DataFrame:
+        """获取截至指定日期的每个事实键的最新版本。
 
-    def record_validation_result(
-        self, fact_id: str, rule_name: str,
-        status: str, details: str = "",
-    ) -> None:
-        """记录校验结果。"""
+        使用 ROW_NUMBER() 窗口函数选择最新版本。
+        """
         conn = self.store.connect()
-        now = datetime.now().isoformat()
-        conn.execute(
-            """INSERT INTO fact_validation_results
-               (id, fact_id, rule_name, status, details, checked_at)
-               VALUES (nextval('fact_validation_seq'), ?, ?, ?, ?, ?)""",
-            [fact_id, rule_name, status, details, now],
+
+        concept_filter = ""
+        params: list = [symbol, as_of_date]
+        if concept_ids:
+            placeholders = ", ".join(["?"] * len(concept_ids))
+            concept_filter = f" AND concept_id IN ({placeholders})"
+            params[1:1] = concept_ids
+
+        query = f"""
+            SELECT * FROM (
+                SELECT *,
+                    ROW_NUMBER() OVER (
+                        PARTITION BY symbol, concept_id, period_end,
+                                     consolidation_scope
+                        ORDER BY available_at DESC, fact_version DESC,
+                                 created_at DESC
+                    ) AS rn
+                FROM financial_facts
+                WHERE symbol = ?
+                  {concept_filter}
+                  AND available_at IS NOT NULL
+                  AND available_at <> ''
+                  AND available_at <= ?
+                  AND verification_status IN ('verified', 'reconciled')
+                  AND eligible_for_metrics = TRUE
+            ) sub
+            WHERE sub.rn = 1
+            ORDER BY period_end, concept_id
+        """
+        return conn.execute(query, params).df()
+
+    def get_all_versions_for_audit(
+        self,
+        symbol: str,
+        concept_ids: list[str] | None = None,
+    ) -> pd.DataFrame:
+        """⚠ 审计专用：返回所有版本（不含 PIT 过滤）。
+
+        此方法返回空 available_at、unverified 和旧版本。
+        不得在正式分析代码中调用。
+        """
+        return self.query_facts(
+            symbol=symbol,
+            concept_ids=concept_ids,
+            include_unverified=True,
         )
 
     def get_fact_summary(self, symbol: str) -> dict[str, Any]:
-        """获取事实摘要统计。"""
         conn = self.store.connect()
         result = conn.execute(
             """SELECT
@@ -319,7 +614,6 @@ class FactRepository:
                FROM financial_facts WHERE symbol = ?""",
             [symbol],
         ).df()
-
         if result.empty:
             return {}
         return result.iloc[0].to_dict()
