@@ -784,18 +784,20 @@ class TestDataService:
         mock_rs.get_row_data = get_row_data
         mock_rs.next.side_effect = [True, False]
 
-        with patch.object(bs, "login", return_value=mock_login):
-            with patch.object(bs, "logout", return_value=None):
-                with patch.object(bs, "query_history_k_data_plus",
-                                  return_value=mock_rs):
-                    from ashare_research.providers.baostock_provider import (
-                        BaostockProvider,
-                    )
-                    provider = BaostockProvider(raw_dir=str(raw_dir))
-                    provider._ensure_login()
-                    result = provider.get_stock_daily(
-                        "601857.SH", "2026-07-20", "2026-07-20", "none"
-                    )
+        with (
+            patch.object(bs, "login", return_value=mock_login),
+            patch.object(bs, "logout", return_value=None),
+            patch.object(bs, "query_history_k_data_plus",
+                          return_value=mock_rs),
+        ):
+            from ashare_research.providers.baostock_provider import (
+                BaostockProvider,
+            )
+            provider = BaostockProvider(raw_dir=str(raw_dir))
+            provider._ensure_login()
+            result = provider.get_stock_daily(
+                "601857.SH", "2026-07-20", "2026-07-20", "none"
+            )
 
         # raw 含 Baostock 原始字段
         assert provider.last_raw_path
@@ -1008,23 +1010,23 @@ class TestDataService:
 
         # Mock _save_raw_response 返回空（模拟未调用保存）
         # 同时禁用 reset_last_raw_path 避免其覆盖手动设置的 _last_raw_path
-        with patch.object(akshare, "stock_zh_a_hist", return_value=mock_df):
-            with patch.object(provider, "_save_raw_response",
-                              return_value=""):
-                with patch.object(provider, "reset_last_raw_path",
-                                  return_value=None):
-                    svc.register_provider("akshare_noraw", provider)
-                    with pytest.raises(
-                        RawPersistenceError, match="did not persist"
-                    ):
-                        svc.fetch_and_store(
-                            provider_name="akshare_noraw",
-                            method_name="get_stock_daily",
-                            dataset="stock_daily",
-                            symbol="601857.SH",
-                            start_date="2026-07-20",
-                            end_date="2026-07-20",
-                        )
+        with (
+            patch.object(akshare, "stock_zh_a_hist", return_value=mock_df),
+            patch.object(provider, "_save_raw_response", return_value=""),
+            patch.object(provider, "reset_last_raw_path", return_value=None),
+        ):
+            svc.register_provider("akshare_noraw", provider)
+            with pytest.raises(
+                RawPersistenceError, match="did not persist"
+            ):
+                svc.fetch_and_store(
+                    provider_name="akshare_noraw",
+                    method_name="get_stock_daily",
+                    dataset="stock_daily",
+                    symbol="601857.SH",
+                    start_date="2026-07-20",
+                    end_date="2026-07-20",
+                )
 
         # staging 不存在
         assert not list(staging_dir.rglob("*.parquet"))
@@ -1126,12 +1128,16 @@ class TestDataService:
         with patch.object(akshare, "stock_zh_a_hist", return_value=mock_df):
             provider = AKShareProvider(raw_dir=str(raw_dir))
             # Mock to_parquet 使其抛出 OSError
-            with patch.object(pd.DataFrame, "to_parquet",
-                              side_effect=OSError("disk full")):
-                with pytest.raises(RawPersistenceError, match="disk full"):
-                    provider.get_stock_daily(
-                        "601857.SH", "2026-07-20", "2026-07-20", "none"
-                    )
+            with (
+                patch.object(
+                    pd.DataFrame, "to_parquet",
+                    side_effect=OSError("disk full"),
+                ),
+                pytest.raises(RawPersistenceError, match="disk full"),
+            ):
+                provider.get_stock_daily(
+                    "601857.SH", "2026-07-20", "2026-07-20", "none"
+                )
 
         # last_raw_path 应被清空
         assert provider.last_raw_path == ""

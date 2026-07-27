@@ -162,11 +162,14 @@ class DataService:
                     df, provider_name, dataset, symbol, run_id,
                     reason="batch_quality_failed",
                 )
+                failed_checks = [
+                    r["check_name"] for r in batch_quality
+                    if r["status"] == "failed"
+                ]
                 self.store.fail_fetch_run(
                     run_id=run_id,
                     error_type="QualityCheckError",
-                    error_message=f"Batch quality failed: "
-                                  f"{[r['check_name'] for r in batch_quality if r['status'] == 'failed']}",
+                    error_message=f"Batch quality failed: {failed_checks}",
                 )
                 self.store._update_run_quality(run_id, "failed")
                 raise QualityCheckError(
@@ -190,11 +193,14 @@ class DataService:
                     merged_df, provider_name, dataset, symbol, run_id,
                     reason="merged_quality_failed",
                 )
+                failed_checks = [
+                    r["check_name"] for r in merged_quality
+                    if r["status"] == "failed"
+                ]
                 self.store.fail_fetch_run(
                     run_id=run_id,
                     error_type="QualityCheckError",
-                    error_message=f"Merged data quality failed: "
-                                  f"{[r['check_name'] for r in merged_quality if r['status'] == 'failed']}",
+                    error_message=f"Merged data quality failed: {failed_checks}",
                 )
                 self.store._update_run_quality(run_id, "failed")
                 raise QualityCheckError(

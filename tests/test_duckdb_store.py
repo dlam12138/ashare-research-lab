@@ -1,5 +1,6 @@
 """DuckDB 元数据存储测试。"""
 
+import contextlib
 import os
 import tempfile
 
@@ -174,10 +175,8 @@ class TestDuckDBStore:
         assert info["row_count"] == 3
 
         # 清理
-        try:
+        with contextlib.suppress(Exception):
             os.unlink(parquet_path)
-        except Exception:
-            pass
 
     def test_query_parquet(self, duckdb_store):
         """测试直接查询 Parquet。"""
@@ -194,7 +193,5 @@ class TestDuckDBStore:
         result = duckdb_store.query_parquet(parquet_path)
         assert len(result) == 2
 
-        try:
+        with contextlib.suppress(Exception):
             os.unlink(parquet_path)
-        except Exception:
-            pass
