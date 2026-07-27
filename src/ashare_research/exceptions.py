@@ -67,3 +67,41 @@ class DateRangeError(AshareDataError):
 class RawPersistenceError(AshareDataError):
     """原始响应保存失败。"""
     pass
+
+
+# ── M2 Stage 1 异常 ──────────────────────────────────────
+
+
+class FactValidationError(AshareDataError):
+    """财务事实校验失败。"""
+    pass
+
+
+class ConceptNotFoundError(AshareDataError):
+    """概念ID未在注册表中找到。"""
+    pass
+
+
+class UnitConversionError(AshareDataError):
+    """单位转换不支持。"""
+    pass
+
+
+class DerivationError(AshareDataError):
+    """派生事实计算失败。"""
+    pass
+
+
+class PointInTimeError(AshareDataError):
+    """PIT查询违反时序约束。"""
+    pass
+
+
+class SourceDocumentError(AshareDataError):
+    """官方来源文档不可访问或不可解析。"""
+    pass
+
+
+class ReconciliationError(AshareDataError):
+    """交叉核验发现无法解释的不一致。"""
+    pass

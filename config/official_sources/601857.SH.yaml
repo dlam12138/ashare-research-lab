@@ -1,0 +1,47 @@
+# 中国石油 601857.SH 官方数据源配置
+# Milestone 2 Stage 1 — Official Financial Fact Layer
+
+symbol: "601857.SH"
+company_name: "中国石油天然气股份有限公司"
+company_name_en: "PetroChina Company Limited"
+profile: "cyclical"
+reporting_currency: "CNY"
+consolidation_scope: "consolidated"
+accounting_standard: "CAS"
+primary_source: "akshare"
+provider_class: "ashare_research.official_sources.petrochina.PetroChinaProvider"
+
+annual_periods:
+  - 2021
+  - 2022
+  - 2023
+  - 2024
+  - 2025
+
+quarter_periods:
+  - "2024Q2"
+  - "2024Q3"
+  - "2024Q4"
+  - "2025Q1"
+  - "2025Q2"
+  - "2025Q3"
+  - "2025Q4"
+  - "2026Q1"
+
+document_sources:
+  - type: "annual_report"
+    year: 2021
+    description: "2021 年度报告"
+    url_pattern: "https://www.petrochina.com.cn/"
+  - type: "annual_report"
+    year: 2022
+    description: "2022 年度报告"
+  - type: "annual_report"
+    year: 2023
+    description: "2023 年度报告"
+  - type: "annual_report"
+    year: 2024
+    description: "2024 年度报告"
+  - type: "annual_report"
+    year: 2025
+    description: "2025 年度报告"
