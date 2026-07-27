@@ -62,3 +62,8 @@ class CodeFormatError(AshareDataError):
 class DateRangeError(AshareDataError):
     """日期范围无效。"""
     pass
+
+
+class RawPersistenceError(AshareDataError):
+    """原始响应保存失败。"""
+    pass

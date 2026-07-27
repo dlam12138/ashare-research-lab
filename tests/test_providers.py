@@ -7,6 +7,8 @@
 - AKShare 指数接口使用
 """
 
+import contextlib
+
 import pandas as pd
 
 from ashare_research.exceptions import EmptyResultError
@@ -103,24 +105,31 @@ class TestBaostockAdjustflag:
 
         mock_rs.get_row_data = get_row_data
 
-        with patch.object(bs, "login", return_value=mock_login):
-            with patch.object(bs, "logout", return_value=None):
-                with patch.object(bs, "query_history_k_data_plus") as mock_query:
-                    mock_query.return_value = mock_rs
-                    from ashare_research.providers.baostock_provider import (
-                        BaostockProvider,
-                    )
-                    provider = BaostockProvider()
-                    provider._ensure_login()
-                    provider.get_stock_daily(
-                        "601857.SH", "2026-07-20", "2026-07-20", "none"
-                    )
+        with (
+            patch.object(bs, "login", return_value=mock_login),
+            patch.object(bs, "logout", return_value=None),
+            patch.object(bs, "query_history_k_data_plus") as mock_query,
+        ):
+            mock_query.return_value = mock_rs
+            from ashare_research.providers.baostock_provider import (
+                BaostockProvider,
+            )
+            provider = BaostockProvider()
+            provider._ensure_login()
+            provider.get_stock_daily(
+                "601857.SH", "2026-07-20", "2026-07-20", "none"
+            )
 
-                    # 验证 adjustflag 参数
-                    call_kwargs = mock_query.call_args
-                    # query_history_k_data_plus(code, fields, start, end, frequency, adjustflag)
-                    adjustflag = call_kwargs[0][5] if len(call_kwargs[0]) > 5 else call_kwargs[1].get("adjustflag")
-                    assert adjustflag == "3", f"Expected adjustflag='3', got '{adjustflag}'"
+            # 验证 adjustflag 参数
+            call_kwargs = mock_query.call_args
+            adjustflag = (
+                call_kwargs[0][5]
+                if len(call_kwargs[0]) > 5
+                else call_kwargs[1].get("adjustflag")
+            )
+            assert adjustflag == "3", (
+                f"Expected adjustflag='3', got '{adjustflag}'"
+            )
 
     def test_qfq_maps_to_2(self):
         """前复权应映射为 adjustflag=2。"""
@@ -137,25 +146,31 @@ class TestBaostockAdjustflag:
                           "turn", "tradestatus"]
         mock_rs.next.return_value = False
 
-        with patch.object(bs, "login", return_value=mock_login):
-            with patch.object(bs, "logout", return_value=None):
-                with patch.object(bs, "query_history_k_data_plus") as mock_query:
-                    mock_query.return_value = mock_rs
-                    from ashare_research.providers.baostock_provider import (
-                        BaostockProvider,
-                    )
-                    provider = BaostockProvider()
-                    provider._ensure_login()
-                    try:
-                        provider.get_stock_daily(
-                            "601857.SH", "2026-07-20", "2026-07-20", "qfq"
-                        )
-                    except EmptyResultError:
-                        pass
+        with (
+            patch.object(bs, "login", return_value=mock_login),
+            patch.object(bs, "logout", return_value=None),
+            patch.object(bs, "query_history_k_data_plus") as mock_query,
+        ):
+            mock_query.return_value = mock_rs
+            from ashare_research.providers.baostock_provider import (
+                BaostockProvider,
+            )
+            provider = BaostockProvider()
+            provider._ensure_login()
+            with contextlib.suppress(EmptyResultError):
+                provider.get_stock_daily(
+                    "601857.SH", "2026-07-20", "2026-07-20", "qfq"
+                )
 
-                    call_kwargs = mock_query.call_args
-                    adjustflag = call_kwargs[0][5] if len(call_kwargs[0]) > 5 else call_kwargs[1].get("adjustflag")
-                    assert adjustflag == "2", f"Expected adjustflag='2', got '{adjustflag}'"
+            call_kwargs = mock_query.call_args
+            adjustflag = (
+                call_kwargs[0][5]
+                if len(call_kwargs[0]) > 5
+                else call_kwargs[1].get("adjustflag")
+            )
+            assert adjustflag == "2", (
+                f"Expected adjustflag='2', got '{adjustflag}'"
+            )
 
     def test_hfq_maps_to_1(self):
         """后复权应映射为 adjustflag=1。"""
@@ -172,25 +187,31 @@ class TestBaostockAdjustflag:
                           "turn", "tradestatus"]
         mock_rs.next.return_value = False
 
-        with patch.object(bs, "login", return_value=mock_login):
-            with patch.object(bs, "logout", return_value=None):
-                with patch.object(bs, "query_history_k_data_plus") as mock_query:
-                    mock_query.return_value = mock_rs
-                    from ashare_research.providers.baostock_provider import (
-                        BaostockProvider,
-                    )
-                    provider = BaostockProvider()
-                    provider._ensure_login()
-                    try:
-                        provider.get_stock_daily(
-                            "601857.SH", "2026-07-20", "2026-07-20", "hfq"
-                        )
-                    except EmptyResultError:
-                        pass
+        with (
+            patch.object(bs, "login", return_value=mock_login),
+            patch.object(bs, "logout", return_value=None),
+            patch.object(bs, "query_history_k_data_plus") as mock_query,
+        ):
+            mock_query.return_value = mock_rs
+            from ashare_research.providers.baostock_provider import (
+                BaostockProvider,
+            )
+            provider = BaostockProvider()
+            provider._ensure_login()
+            with contextlib.suppress(EmptyResultError):
+                provider.get_stock_daily(
+                    "601857.SH", "2026-07-20", "2026-07-20", "hfq"
+                )
 
-                    call_kwargs = mock_query.call_args
-                    adjustflag = call_kwargs[0][5] if len(call_kwargs[0]) > 5 else call_kwargs[1].get("adjustflag")
-                    assert adjustflag == "1", f"Expected adjustflag='1', got '{adjustflag}'"
+            call_kwargs = mock_query.call_args
+            adjustflag = (
+                call_kwargs[0][5]
+                if len(call_kwargs[0]) > 5
+                else call_kwargs[1].get("adjustflag")
+            )
+            assert adjustflag == "1", (
+                f"Expected adjustflag='1', got '{adjustflag}'"
+            )
 
 
 class TestCodeConversionDetailed:

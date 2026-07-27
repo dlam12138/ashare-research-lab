@@ -16,6 +16,8 @@ DEFAULT_CONFIG: dict[str, Any] = {
     "storage": {
         "duckdb_path": "data/research.duckdb",
         "raw_dir": "data/raw",
+        "staging_dir": "data/staging",
+        "quarantine_dir": "data/quarantine",
         "parquet_dir": "data/parquet",
     },
     "providers": {
@@ -79,8 +81,8 @@ def load_config(config_path: str | Path | None = None) -> dict[str, Any]:
                 file_config = yaml.safe_load(f) or {}
                 _deep_merge(config, file_config)
 
-    # 将相对路径转为绝对路径（相对于项目根目录）
-    for key in ("raw_dir", "parquet_dir"):
+    # 将所有存储路径转为绝对路径（相对于项目根目录）
+    for key in ("raw_dir", "staging_dir", "quarantine_dir", "parquet_dir"):
         val = config.get("storage", {}).get(key, "")
         if val and not os.path.isabs(val):
             config["storage"][key] = str(root / val)

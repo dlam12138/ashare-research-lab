@@ -62,6 +62,9 @@ class AKShareProvider(BaseProvider):
 
     provider_name = "akshare"
 
+    def __init__(self, raw_dir: str = ""):
+        super().__init__(raw_dir=raw_dir)
+
     def _normalize_index_fields(self, df: pd.DataFrame) -> pd.DataFrame:
         """将 AKShare 的中文字段名映射为英文，并检查必需字段。"""
         # 先做别名映射
@@ -123,6 +126,9 @@ class AKShareProvider(BaseProvider):
                 raise EmptyResultError(
                     f"No stock daily data from AKShare for {symbol}"
                 )
+
+            # 保存原始响应（标准化前，保留 AKShare 原始字段名和单位）
+            self._save_raw_response(df, "stock_daily", symbol)
 
             # 标准化
             df = df.copy()
@@ -202,6 +208,9 @@ class AKShareProvider(BaseProvider):
                 raise EmptyResultError(
                     f"No index daily data from AKShare for {symbol}"
                 )
+
+            # 保存原始响应
+            self._save_raw_response(df, "index_daily", symbol)
 
             # 中文字段标准化
             df = df.rename(columns={

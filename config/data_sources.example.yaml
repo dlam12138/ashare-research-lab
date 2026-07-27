@@ -4,6 +4,8 @@
 storage:
   duckdb_path: data/research.duckdb
   raw_dir: data/raw
+  staging_dir: data/staging
+  quarantine_dir: data/quarantine
   parquet_dir: data/parquet
 
 providers:
