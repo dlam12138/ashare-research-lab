@@ -11,7 +11,6 @@
 from __future__ import annotations
 
 import contextlib
-import json
 import logging
 from dataclasses import dataclass, field
 from datetime import datetime
@@ -25,6 +24,10 @@ from ashare_research.exceptions import (
     FactPersistenceError,
     FactSchemaMigrationError,
     FactVersionConflictError,
+)
+from ashare_research.facts.identity import (
+    diff_fact_semantic_payloads,
+    facts_semantically_equal,
 )
 from ashare_research.storage.duckdb_store import DuckDBStore
 
@@ -150,16 +153,6 @@ CREATE TABLE IF NOT EXISTS fact_validation_results (
 
 CREATE SEQUENCE IF NOT EXISTS fact_validation_seq START 1;
 """
-
-# ── 语义比较字段集 ──────────────────────────────────────
-
-_FACT_SEMANTIC_FIELDS = [
-    "value", "unit", "source_tier", "announcement_date",
-    "available_at", "verification_status", "eligible_for_metrics",
-    "period_end", "filing_date", "raw_value", "normalized_value",
-    "restatement_version", "supersedes_fact_id",
-    "derivation_definition_id", "derivation_version",
-]
 
 _CTX_SEMANTIC_FIELDS = [
     "symbol", "fiscal_year", "period_type", "period_start", "period_end",
@@ -496,46 +489,6 @@ class FactRepository:
         return df.iloc[0].to_dict()
 
     @staticmethod
-    def _facts_semantically_equal(existing: dict, fact: dict) -> bool:
-        """比较两条事实的语义内容是否一致。
-
-        比较值、单位、来源层级、公告日、可用日、核验状态、
-        是否可用于指标、期末日、申报日、原始值、标准化值、
-        重述版本、替代事实、派生定义、派生版本和输入事实列表。
-        对 input_fact_ids 使用 json.dumps(sort_keys=True) 进行列表规范化比较。
-        """
-        for fld in _FACT_SEMANTIC_FIELDS:
-            if existing.get(fld) != fact.get(fld):
-                return False
-
-        # input_fact_ids: 使用 JSON 序列化（sort_keys）规范化列表顺序
-        ex_input = existing.get("input_fact_ids")
-        fa_input = fact.get("input_fact_ids")
-
-        def _normalize_list_field(v: Any) -> str | None:
-            if v is None:
-                return None
-            if isinstance(v, list):
-                return json.dumps(v, sort_keys=True)
-            if isinstance(v, str):
-                stripped = v.strip()
-                if not stripped:
-                    return None
-                try:
-                    parsed = json.loads(stripped)
-                    if isinstance(parsed, list):
-                        return json.dumps(parsed, sort_keys=True)
-                except (json.JSONDecodeError, TypeError):
-                    pass
-                return stripped
-            return str(v)
-
-        norm_ex = _normalize_list_field(ex_input)
-        norm_fa = _normalize_list_field(fa_input)
-
-        return norm_ex == norm_fa
-
-    @staticmethod
     def _contexts_semantically_equal(
         existing: dict, context: dict,
     ) -> bool:
@@ -597,16 +550,18 @@ class FactRepository:
                     )
                     inserted += 1
                     inserted_ids.append(fact_id)
-                elif self._facts_semantically_equal(existing, fact):
+                elif facts_semantically_equal(existing, fact):
                     unchanged += 1
                     unchanged_ids.append(fact_id)
                 else:
                     conflicts += 1
+                    diffs = diff_fact_semantic_payloads(existing, fact)
+                    diff_keys = list(diffs.keys())
                     raise FactVersionConflictError(
                         f"Fact {fact_id} already exists with different "
-                        f"content. Existing value={existing.get('value')} "
-                        f"{existing.get('unit')}, "
-                        f"new value={fact.get('value')} {fact.get('unit')}"
+                        f"content. Changed fields: {diff_keys}. "
+                        f"Create a new fact_version instead of "
+                        f"overwriting the existing fact."
                     )
 
             result = StoreFactsResult(

@@ -7,12 +7,12 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from enum import Enum
+from enum import StrEnum
 
 import pandas as pd
 
 
-class SourceTier(str, Enum):
+class SourceTier(StrEnum):
     """来源等级。"""
     candidate_aggregator = "candidate_aggregator"   # AKShare等第三方聚合
     company_official = "company_official"           # 公司官网/年报

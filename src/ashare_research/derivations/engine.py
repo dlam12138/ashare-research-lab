@@ -145,7 +145,6 @@ class DerivationEngine:
                     input_ids.append(comp_df.iloc[0]["fact_id"])
 
             if input_ids:
-                row = year_df.iloc[0]
                 derived.append(_make_single_q_fact_dict(
                     "interest_bearing_debt", year, 0, "FY",
                     total, now, input_ids,

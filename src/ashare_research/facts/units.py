@@ -6,12 +6,12 @@
 
 from __future__ import annotations
 
-from enum import Enum
+from enum import StrEnum
 
 from ashare_research.exceptions import UnitConversionError
 
 
-class Unit(str, Enum):
+class Unit(StrEnum):
     CNY = "CNY"                        # 人民币元
     CNY_PER_SHARE = "CNY_PER_SHARE"    # 人民币元/股
     SHARE = "SHARE"                    # 股
@@ -118,9 +118,8 @@ class UnitRegistry:
         if unit == Unit.CNY:
             factor = 1.0
             rule = "identity"
-            from_str = "CNY"
             if raw_unit in UNIT_CONVERSIONS:
-                for target, factor_val in UNIT_CONVERSIONS[raw_unit].items():
+                for _target, factor_val in UNIT_CONVERSIONS[raw_unit].items():
                     factor = factor_val
                     break
                 rule = f"multiply_by_{int(factor):,}"

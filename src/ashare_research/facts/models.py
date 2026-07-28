@@ -6,12 +6,12 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from enum import Enum
+from enum import StrEnum
 
 # ── 枚举 ────────────────────────────────────────────────────
 
 
-class PeriodType(str, Enum):
+class PeriodType(StrEnum):
     annual = "annual"
     quarter_ytd = "quarter_ytd"
     half_year_ytd = "half_year_ytd"
@@ -20,18 +20,18 @@ class PeriodType(str, Enum):
     instant = "instant"
 
 
-class InstantOrDuration(str, Enum):
+class InstantOrDuration(StrEnum):
     instant = "instant"
     duration = "duration"
 
 
-class ConsolidationScope(str, Enum):
+class ConsolidationScope(StrEnum):
     consolidated = "consolidated"
     parent_company = "parent_company"
     unknown = "unknown"
 
 
-class VerificationStatus(str, Enum):
+class VerificationStatus(StrEnum):
     verified = "verified"
     reconciled = "reconciled"
     unverified = "unverified"
@@ -40,7 +40,7 @@ class VerificationStatus(str, Enum):
     not_applicable = "not_applicable"
 
 
-class ConceptCategory(str, Enum):
+class ConceptCategory(StrEnum):
     balance_sheet = "balance_sheet"
     income_statement = "income_statement"
     cash_flow = "cash_flow"
@@ -51,7 +51,7 @@ class ConceptCategory(str, Enum):
     per_share = "per_share"
 
 
-class ReportType(str, Enum):
+class ReportType(StrEnum):
     annual = "annual"
     q1 = "q1"
     half_year = "half_year"
@@ -59,7 +59,7 @@ class ReportType(str, Enum):
     quarterly = "quarterly"
 
 
-class SourceTier(str, Enum):
+class SourceTier(StrEnum):
     candidate_aggregator = "candidate_aggregator"
     company_official = "company_official"
     exchange_official = "exchange_official"

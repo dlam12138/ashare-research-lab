@@ -7,7 +7,6 @@
 
 from __future__ import annotations
 
-import hashlib
 import logging
 from datetime import datetime
 
@@ -16,6 +15,7 @@ import pandas as pd
 
 from ashare_research.exceptions import EmptyResultError
 from ashare_research.fact_sources.base import FactSourceProvider, SourceTier
+from ashare_research.facts.identity import build_fact_id
 from ashare_research.facts.mappings import ConceptMapping
 
 logger = logging.getLogger(__name__)
@@ -108,13 +108,8 @@ class AKShareFinancialCandidateProvider(FactSourceProvider):
                         continue
 
                     norm_val = float(raw_val) * factor
-                    fact_id = _make_fact_id(
-                        concept_id, symbol, year, fact_type,
-                        source_id,
-                    )
 
-                    facts.append({
-                        "fact_id": fact_id,
+                    fact = {
                         "concept_id": concept_id,
                         "concept_version": "1",
                         "symbol": symbol,
@@ -154,7 +149,9 @@ class AKShareFinancialCandidateProvider(FactSourceProvider):
                         "created_at": now,
                         "restatement_version": "original",
                         "supersedes_fact_id": "",
-                    })
+                    }
+                    fact["fact_id"] = build_fact_id(fact)
+                    facts.append(fact)
             except Exception as e:
                 logger.warning(f"API {api_name} failed: {e}")
 
@@ -179,11 +176,7 @@ class AKShareFinancialCandidateProvider(FactSourceProvider):
                     cash_div = row.get("每股派息", 0)
                     if pd.notna(cash_div):
                         source_id = f"akshare::dividend::{symbol}::{year}"
-                        facts.append({
-                            "fact_id": _make_fact_id(
-                                "cash_dividend_per_share",
-                                symbol, year, "FY", source_id,
-                            ),
+                        fact = {
                             "concept_id": "cash_dividend_per_share",
                             "concept_version": "1",
                             "symbol": symbol,
@@ -199,7 +192,9 @@ class AKShareFinancialCandidateProvider(FactSourceProvider):
                             "verification_status": "unverified",
                             "eligible_for_metrics": False,
                             "created_at": now,
-                        })
+                        }
+                        fact["fact_id"] = build_fact_id(fact)
+                        facts.append(fact)
                 except Exception:
                     continue
             return pd.DataFrame(facts)
@@ -235,11 +230,3 @@ def _period_end_date(year: int, report_type: str) -> str:
         "年报": f"{year}-12-31", "一季报": f"{year}-03-31",
         "中报": f"{year}-06-30", "三季报": f"{year}-09-30",
     }.get(report_type, f"{year}-12-31")
-
-
-def _make_fact_id(
-    concept_id: str, symbol: str, year: int,
-    report_type: str, source_id: str,
-) -> str:
-    raw = f"{symbol}|{concept_id}|v1|{year}|{report_type}|{source_id}"
-    return hashlib.sha256(raw.encode()).hexdigest()[:16]

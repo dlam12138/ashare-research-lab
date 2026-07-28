@@ -17,6 +17,7 @@ from ashare_research.exceptions import (
 )
 from ashare_research.fact_sources.base import FactSourceProvider, SourceTier
 from ashare_research.fact_sources.registry import FactSourceRegistry
+from ashare_research.facts.identity import build_fact_id
 from ashare_research.facts.repository import FactRepository
 from ashare_research.facts.service import FactService
 from ashare_research.storage.duckdb_store import DuckDBStore
@@ -149,8 +150,7 @@ class _IdempotentProvider(FactSourceProvider):
                 ("total_assets", 2.5e11),
                 ("net_profit_attributable_to_parent", 1e10),
             ]:
-                facts.append({
-                    "fact_id": f"{symbol}|{cid}|{year}|FY|reported",
+                fact = {
                     "concept_id": cid,
                     "concept_version": "1",
                     "symbol": symbol,
@@ -176,7 +176,9 @@ class _IdempotentProvider(FactSourceProvider):
                     "raw_unit": "CNY",
                     "normalized_value": val,
                     "created_at": "2026-07-28T00:00:00",
-                })
+                }
+                fact["fact_id"] = build_fact_id(fact)
+                facts.append(fact)
         return pd.DataFrame(facts)
 
     def get_dividends(self, s, sy, ey):
@@ -342,9 +344,11 @@ class TestFactIdempotency:
             repo.store_facts([f1], conn=conn)
 
         f2 = _make_fact(fact_id="f_conflict", value=200.0)
-        with pytest.raises(FactVersionConflictError, match="f_conflict"):
-            with repo.transaction() as conn:
-                repo.store_facts([f2], conn=conn)
+        with (
+            pytest.raises(FactVersionConflictError, match="f_conflict"),
+            repo.transaction() as conn,
+        ):
+            repo.store_facts([f2], conn=conn)
 
         # 原值仍保留
         assert _get_fact_value(repo, "f_conflict") == 100.0

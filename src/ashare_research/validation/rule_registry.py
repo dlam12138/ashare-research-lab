@@ -49,7 +49,10 @@ class FactValidationRuleRegistry:
         "FACT_SOURCE_001": ValidationRule(
             rule_id="FACT_SOURCE_001", version="1",
             severity="error", applies_to="FinancialFact",
-            description="verified/reconciled 事实必须有 source_id 且 source_tier 为 company_official 或 exchange_official（非 candidate_aggregator）",
+            description=(
+                "verified/reconciled 事实必须有 source_id 且 source_tier "
+                "为 company_official 或 exchange_official（非 candidate_aggregator）"
+            ),
         ),
         "FACT_PERIOD_001": ValidationRule(
             rule_id="FACT_PERIOD_001", version="1",
@@ -100,6 +103,14 @@ class FactValidationRuleRegistry:
             rule_id="FACT_ELIGIBILITY_001", version="1",
             severity="error", applies_to="FinancialFact",
             description="只有 verified/reconciled 事实可设置 eligible_for_metrics=true",
+        ),
+        "FACT_VERSION_001": ValidationRule(
+            rule_id="FACT_VERSION_001", version="1",
+            severity="error", applies_to="FinancialFact",
+            description=(
+                "fact_version=1 时 supersedes_fact_id 必须为空；"
+                "fact_version>1 时 supersedes_fact_id 必须非空且 != fact_id"
+            ),
         ),
     }
 

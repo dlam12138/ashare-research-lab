@@ -24,6 +24,7 @@ from __future__ import annotations
 
 import logging
 import os
+from dataclasses import dataclass
 from datetime import datetime
 from typing import Any
 
@@ -63,6 +64,26 @@ PROFILE_CRITICAL_CONCEPTS: dict[str, list[str]] = {
         "total_assets",
     ],
 }
+
+
+class FactDomainError(Exception):
+    """业务域错误基类——事实构建管线内预期内的失败。"""
+
+    pass
+
+
+@dataclass
+class FactBuildRunState:
+    """单次 build_facts 运行的追踪状态。"""
+
+    run_id: str
+    manifest: LineageManifest
+    output_dir: str
+    failure_stage: str = ""
+    finalized: bool = False
+    reported_error_count: int = 0
+    derived_error_count: int = 0
+    context_error_count: int = 0
 
 
 def _count_errors(results: list[FactValidationResult]) -> int:
@@ -146,6 +167,7 @@ class FactService:
         self.validator = validator or FactValidator()
         self.as_of = AsOfQuery(fact_repository)
         self.output_root = output_root
+        self._build_run_state: FactBuildRunState | None = None
 
     # ── 公开入口 ──────────────────────────────────────────
 
@@ -172,160 +194,343 @@ class FactService:
         output_path = os.path.join(
             self.output_root, symbol, "runs", run_id, "run_manifest.json",
         )
+        run_state = FactBuildRunState(
+            run_id=run_id,
+            manifest=manifest,
+            output_dir=os.path.dirname(output_path),
+        )
+        self._build_run_state = run_state
+
         actual_source_tiers = self._resolve_source_tiers(source_mode)
 
-        # ── 阶段 1: 获取事实 ──
         try:
-            provider = self.registry.get_provider(symbol, source_mode)
+            # ── 阶段 1: 获取事实 ──
+            run_state.failure_stage = "provider_fetch"
+            try:
+                provider = self.registry.get_provider(symbol, source_mode)
+                logger.info(
+                    f"Fetching facts for {symbol} ({start_year}-{end_year})"
+                )
+                facts_df = provider.get_financial_statements(
+                    symbol, start_year, end_year,
+                )
+            except Exception as exc:
+                logger.error(f"Provider fetch failed: {exc}")
+                self._finalize_and_write_manifest(
+                    manifest=manifest,
+                    output_path=output_path,
+                    status="failed",
+                    failure_stage="provider_fetch",
+                    reported_error_count=1,
+                    actual_source_tiers=actual_source_tiers,
+                )
+                return _build_result(
+                    manifest, reported_count=0, derived_count=0,
+                    reported_error_count=1, derived_error_count=0,
+                    context_error_count=0, checkpoint_error_count=0,
+                    total_error_count=1,
+                    checkpoint_decision="failed",
+                )
+
+            if facts_df.empty:
+                logger.warning(f"No facts returned for {symbol}")
+                self._finalize_and_write_manifest(
+                    manifest=manifest,
+                    output_path=output_path,
+                    status="failed",
+                    failure_stage="provider_empty",
+                    reported_error_count=1,
+                    actual_source_tiers=actual_source_tiers,
+                )
+                return _build_result(
+                    manifest, reported_count=0, derived_count=0,
+                    reported_error_count=1, derived_error_count=0,
+                    context_error_count=0, checkpoint_error_count=1,
+                    total_error_count=2,
+                    checkpoint_decision="failed",
+                )
+
+            reported_facts_raw = facts_df.to_dict("records")
+            manifest.entry.reported_fact_count = len(reported_facts_raw)
             logger.info(
-                f"Fetching facts for {symbol} ({start_year}-{end_year})"
-            )
-            facts_df = provider.get_financial_statements(
-                symbol, start_year, end_year,
-            )
-        except Exception as exc:
-            logger.error(f"Provider fetch failed: {exc}")
-            self._finalize_and_write_manifest(
-                manifest=manifest,
-                output_path=output_path,
-                status="failed",
-                failure_stage="provider_fetch",
-                reported_error_count=1,
-                actual_source_tiers=actual_source_tiers,
-            )
-            return _build_result(
-                manifest, reported_count=0, derived_count=0,
-                reported_error_count=1, derived_error_count=0,
-                context_error_count=0, checkpoint_error_count=0,
-                total_error_count=1,
-                checkpoint_decision="failed",
+                f"Fetched {len(reported_facts_raw)} reported facts"
             )
 
-        if facts_df.empty:
-            logger.warning(f"No facts returned for {symbol}")
-            self._finalize_and_write_manifest(
-                manifest=manifest,
-                output_path=output_path,
-                status="failed",
-                failure_stage="provider_empty",
-                reported_error_count=1,
-                actual_source_tiers=actual_source_tiers,
-            )
-            return _build_result(
-                manifest, reported_count=0, derived_count=0,
-                reported_error_count=1, derived_error_count=0,
-                context_error_count=0, checkpoint_error_count=1,
-                total_error_count=2,
-                checkpoint_decision="failed",
+            # ── 阶段 2: 填充默认值 ──
+            reported_facts = [
+                _ensure_fact_defaults(f) for f in reported_facts_raw
+            ]
+
+            # ── 阶段 3: 构建 contexts（内存） ──
+            run_state.failure_stage = "context_build"
+            contexts, context_error_count = self._build_contexts(
+                symbol, reported_facts,
             )
 
-        reported_facts_raw = facts_df.to_dict("records")
-        manifest.entry.reported_fact_count = len(reported_facts_raw)
-        logger.info(
-            f"Fetched {len(reported_facts_raw)} reported facts"
-        )
-
-        # ── 阶段 2: 填充默认值 ──
-        reported_facts = [
-            _ensure_fact_defaults(f) for f in reported_facts_raw
-        ]
-
-        # ── 阶段 3: 构建 contexts（内存） ──
-        contexts, context_error_count = self._build_contexts(
-            symbol, reported_facts,
-        )
-
-        # ── 阶段 4: 校验 reported facts ──
-        logger.info("Validating reported facts...")
-        reported_validation = self.validator.validate_batch(reported_facts)
-        reported_summary = summarize_results(reported_validation)
-        reported_error_count = reported_summary["error_count"]
-        reported_warning_count = reported_summary["warning_count"]
-        logger.info(
-            f"Reported validation: {reported_summary['passed']} passed, "
-            f"{reported_error_count} errors, "
-            f"{reported_warning_count} warnings"
-        )
-
-        # ── 阶段 5: 派生单季度事实（内存） ──
-        logger.info("Deriving single-quarter facts...")
-        facts_for_derive = pd.DataFrame(reported_facts)
-        derived_facts_raw = self.engine.derive_all(facts_for_derive)
-        derived_facts = [
-            _ensure_fact_defaults(d) for d in derived_facts_raw
-        ]
-        manifest.entry.derived_fact_count = len(derived_facts)
-        logger.info(f"Derived {len(derived_facts)} derived facts")
-
-        # ── 阶段 6: 校验 derived facts ──
-        derived_validation: list[FactValidationResult] = []
-        derived_error_count = 0
-        derived_warning_count = 0
-        if derived_facts:
-            logger.info("Validating derived facts...")
-            derived_validation = self.validator.validate_batch(
-                derived_facts,
-            )
-            d_summary = summarize_results(derived_validation)
-            derived_error_count = d_summary["error_count"]
-            derived_warning_count = d_summary["warning_count"]
+            run_state.context_error_count = context_error_count
+            # ── 阶段 4: 校验 reported facts ──
+            run_state.failure_stage = "reported_validation"
+            logger.info("Validating reported facts...")
+            reported_validation = self.validator.validate_batch(reported_facts)
+            reported_summary = summarize_results(reported_validation)
+            reported_error_count = reported_summary["error_count"]
+            reported_warning_count = reported_summary["warning_count"]
             logger.info(
-                f"Derived validation: {d_summary['passed']} passed, "
-                f"{derived_error_count} errors, "
-                f"{derived_warning_count} warnings"
+                f"Reported validation: {reported_summary['passed']} passed, "
+                f"{reported_error_count} errors, "
+                f"{reported_warning_count} warnings"
             )
 
-        # ── 阶段 7: 汇总错误 ──
-        checkpoint = self._run_checkpoint(
-            reported_facts=reported_facts,
-            derived_facts=derived_facts,
-            reported_error_count=reported_error_count,
-            derived_error_count=derived_error_count,
-            context_error_count=context_error_count,
-            profile=manifest.entry.profile,
-        )
-        checkpoint_error_count = checkpoint["checkpoint_error_count"]
-        checkpoint_decision = checkpoint["decision"]
+            run_state.reported_error_count = reported_error_count
+            # ── 阶段 5: 派生单季度事实（内存） ──
+            run_state.failure_stage = "derivation"
+            logger.info("Deriving single-quarter facts...")
+            facts_for_derive = pd.DataFrame(reported_facts)
+            derived_facts_raw = self.engine.derive_all(facts_for_derive)
+            derived_facts = [
+                _ensure_fact_defaults(d) for d in derived_facts_raw
+            ]
+            manifest.entry.derived_fact_count = len(derived_facts)
+            logger.info(f"Derived {len(derived_facts)} derived facts")
 
-        total_error_count = (
-            reported_error_count
-            + derived_error_count
-            + context_error_count
-            + checkpoint_error_count
-        )
+            # ── 阶段 6: 校验 derived facts ──
+            run_state.failure_stage = "derived_validation"
+            derived_validation: list[FactValidationResult] = []
+            derived_error_count = 0
+            derived_warning_count = 0
+            if derived_facts:
+                logger.info("Validating derived facts...")
+                derived_validation = self.validator.validate_batch(
+                    derived_facts,
+                )
+                d_summary = summarize_results(derived_validation)
+                derived_error_count = d_summary["error_count"]
+                derived_warning_count = d_summary["warning_count"]
+                logger.info(
+                    f"Derived validation: {d_summary['passed']} passed, "
+                    f"{derived_error_count} errors, "
+                    f"{derived_warning_count} warnings"
+                )
 
-        total_warning_count = reported_warning_count + derived_warning_count
+            run_state.derived_error_count = derived_error_count
+            # ── 阶段 7: 汇总错误 ──
+            run_state.failure_stage = "checkpoint"
+            checkpoint = self._run_checkpoint(
+                reported_facts=reported_facts,
+                derived_facts=derived_facts,
+                reported_error_count=reported_error_count,
+                derived_error_count=derived_error_count,
+                context_error_count=context_error_count,
+                profile=manifest.entry.profile,
+            )
+            checkpoint_error_count = checkpoint["checkpoint_error_count"]
+            checkpoint_decision = checkpoint["decision"]
 
-        # ── 阶段 8: 决定状态 ──
-        if total_error_count > 0 or checkpoint_decision == "failed":
-            status = "failed"
-        elif (
-            checkpoint_decision == "conditional_pass"
-            or _has_unverified(reported_facts + derived_facts)
-        ):
-            status = "conditional_pass"
-        else:
-            status = "passed"
+            total_error_count = (
+                reported_error_count
+                + derived_error_count
+                + context_error_count
+                + checkpoint_error_count
+            )
 
-        # ── 阶段 9: checkpoint failed → 不写库 ──
-        if checkpoint_decision == "failed":
+            total_warning_count = reported_warning_count + derived_warning_count
+
+            # ── 阶段 8: 决定状态 ──
+            if total_error_count > 0 or checkpoint_decision == "failed":
+                status = "failed"
+            elif (
+                checkpoint_decision == "conditional_pass"
+                or _has_unverified(reported_facts + derived_facts)
+            ):
+                status = "conditional_pass"
+            else:
+                status = "passed"
+
+            # ── 阶段 9: checkpoint failed → 不写库 ──
+            if checkpoint_decision == "failed":
+                self._finalize_and_write_manifest(
+                    manifest=manifest,
+                    output_path=output_path,
+                    status="failed",
+                    checkpoint_status=checkpoint_decision,
+                    transaction_committed=False,
+                    failure_stage="checkpoint",
+                    reported_error_count=reported_error_count,
+                    derived_error_count=derived_error_count,
+                    context_error_count=context_error_count,
+                    warning_count=total_warning_count,
+                    actual_source_tiers=actual_source_tiers,
+                )
+                logger.warning(
+                    f"Checkpoint FAILED: {checkpoint['reasons']}. "
+                    f"No data written."
+                )
+                return _build_result(
+                    manifest=manifest,
+                    reported_count=len(reported_facts),
+                    derived_count=len(derived_facts),
+                    reported_error_count=reported_error_count,
+                    derived_error_count=derived_error_count,
+                    context_error_count=context_error_count,
+                    checkpoint_error_count=checkpoint_error_count,
+                    total_error_count=total_error_count,
+                    checkpoint_decision=checkpoint_decision,
+                )
+
+            # ── 阶段 10: 事务化写入 ──
+            run_state.failure_stage = "persistence"
+            all_validation = reported_validation + derived_validation
+            logger.info(
+                f"Checkpoint {checkpoint_decision.upper()} — "
+                f"writing {len(reported_facts)} reported + "
+                f"{len(derived_facts)} derived facts in transaction..."
+            )
+
+            # Initialize store result variables for the except handler
+            reported_result: StoreFactsResult | None = None
+            derived_result: StoreFactsResult | None = None
+            ctx_result: StoreFactsResult | None = None
+
+            try:
+                with self.repo.transaction() as conn:
+                    # 10a. 种子概念
+                    self.repo.seed_concepts(conn=conn)
+
+                    # 10b. 写入 contexts
+                    ctx_result = self.repo.store_contexts(contexts, conn=conn)
+                    logger.info(
+                        f"Contexts: {ctx_result.inserted} inserted, "
+                        f"{ctx_result.unchanged} unchanged"
+                    )
+
+                    # 10c. 写入 reported facts
+                    reported_result = self.repo.store_facts(
+                        reported_facts, conn=conn,
+                    )
+                    logger.info(
+                        f"Reported facts: {reported_result.inserted} inserted, "
+                        f"{reported_result.unchanged} unchanged"
+                    )
+
+                    # 10d. 写入 derived facts
+                    if derived_facts:
+                        derived_result = self.repo.store_facts(
+                            derived_facts, conn=conn,
+                        )
+                        logger.info(
+                            f"Derived facts: {derived_result.inserted} inserted, "
+                            f"{derived_result.unchanged} unchanged"
+                        )
+
+                    # 10e. 写入验证运行摘要
+                    self.repo.store_validation_run(
+                        run_id=run_id,
+                        fact_count=len(reported_facts) + len(derived_facts),
+                        error_count=total_error_count,
+                        warning_count=total_warning_count,
+                        status=status,
+                        conn=conn,
+                    )
+
+                    # 10f. 写入验证结果明细
+                    if all_validation:
+                        vr_count = self.repo.store_validation_results(
+                            [
+                                result_to_dict(r)
+                                for r in all_validation
+                            ],
+                            validation_run_id=run_id,
+                            conn=conn,
+                        )
+                        logger.info(
+                            f"Stored {vr_count} validation results"
+                        )
+
+                    # 10g. 写入 lineage
+                    for fact in reported_facts:
+                        self.repo.store_lineage(
+                            fact_id=fact.get("fact_id", ""),
+                            run_id=run_id,
+                            source_provider=fact.get("source_provider", ""),
+                            source_tier=fact.get("source_tier", ""),
+                            source_method="fetch",
+                            conn=conn,
+                        )
+                    for fact in derived_facts:
+                        self.repo.store_lineage(
+                            fact_id=fact.get("fact_id", ""),
+                            run_id=run_id,
+                            source_provider="ashare-research",
+                            source_tier="derived",
+                            source_method="derive",
+                            parent_fact_ids=fact.get("input_fact_ids", ""),
+                            conn=conn,
+                        )
+                    logger.info("Lineage records written")
+
+                logger.info(
+                    f"Transaction committed — "
+                    f"{reported_result.inserted} reported + "
+                    f"{derived_result.inserted if derived_result else 0} derived facts"
+                )
+
+                # Set fact counts based on source_mode
+                total_fact_count = len(reported_facts) + len(derived_facts)
+                if source_mode == "candidate":
+                    manifest.entry.candidate_fact_count = total_fact_count
+                else:
+                    manifest.entry.official_fact_count = total_fact_count
+
+            except Exception as exc:
+                logger.error(f"Transaction failed (rolled back): {exc}")
+                self._finalize_and_write_manifest(
+                    manifest=manifest,
+                    output_path=output_path,
+                    status="failed",
+                    transaction_committed=False,
+                    failure_stage="transaction",
+                    reported_error_count=reported_error_count,
+                    derived_error_count=derived_error_count,
+                    context_error_count=context_error_count,
+                    warning_count=total_warning_count,
+                    actual_source_tiers=actual_source_tiers,
+                )
+                return _build_result(
+                    manifest=manifest,
+                    reported_count=len(reported_facts),
+                    derived_count=len(derived_facts),
+                    reported_error_count=reported_error_count,
+                    derived_error_count=derived_error_count,
+                    context_error_count=context_error_count,
+                    checkpoint_error_count=checkpoint_error_count + 1,
+                    total_error_count=total_error_count + 1,
+                    checkpoint_decision="failed",
+                )
+
+            # ── 阶段 11: 完成并返回 ──
+            run_state.failure_stage = "output"
             self._finalize_and_write_manifest(
                 manifest=manifest,
                 output_path=output_path,
-                status="failed",
+                status=status,
                 checkpoint_status=checkpoint_decision,
-                transaction_committed=False,
-                failure_stage="checkpoint",
+                transaction_committed=True,
+                failure_stage="",
                 reported_error_count=reported_error_count,
                 derived_error_count=derived_error_count,
                 context_error_count=context_error_count,
                 warning_count=total_warning_count,
+                reported_store_result=reported_result,
+                derived_store_result=derived_result,
+                context_store_result=ctx_result,
                 actual_source_tiers=actual_source_tiers,
             )
-            logger.warning(
-                f"Checkpoint FAILED: {checkpoint['reasons']}. "
-                f"No data written."
+
+            logger.info(
+                f"build_facts complete: "
+                f"run_id={run_id} symbol={symbol} status={status}"
             )
+
             return _build_result(
                 manifest=manifest,
                 reported_count=len(reported_facts),
@@ -337,170 +542,56 @@ class FactService:
                 total_error_count=total_error_count,
                 checkpoint_decision=checkpoint_decision,
             )
-
-        # ── 阶段 10: 事务化写入 ──
-        all_validation = reported_validation + derived_validation
-        logger.info(
-            f"Checkpoint {checkpoint_decision.upper()} — "
-            f"writing {len(reported_facts)} reported + "
-            f"{len(derived_facts)} derived facts in transaction..."
-        )
-
-        # Initialize store result variables for the except handler
-        reported_result: StoreFactsResult | None = None
-        derived_result: StoreFactsResult | None = None
-        ctx_result: StoreFactsResult | None = None
-
-        try:
-            with self.repo.transaction() as conn:
-                # 10a. 种子概念
-                self.repo.seed_concepts(conn=conn)
-
-                # 10b. 写入 contexts
-                ctx_result = self.repo.store_contexts(contexts, conn=conn)
-                logger.info(
-                    f"Contexts: {ctx_result.inserted} inserted, "
-                    f"{ctx_result.unchanged} unchanged"
-                )
-
-                # 10c. 写入 reported facts
-                reported_result = self.repo.store_facts(
-                    reported_facts, conn=conn,
-                )
-                logger.info(
-                    f"Reported facts: {reported_result.inserted} inserted, "
-                    f"{reported_result.unchanged} unchanged"
-                )
-
-                # 10d. 写入 derived facts
-                if derived_facts:
-                    derived_result = self.repo.store_facts(
-                        derived_facts, conn=conn,
-                    )
-                    logger.info(
-                        f"Derived facts: {derived_result.inserted} inserted, "
-                        f"{derived_result.unchanged} unchanged"
-                    )
-
-                # 10e. 写入验证运行摘要
-                self.repo.store_validation_run(
-                    run_id=run_id,
-                    fact_count=len(reported_facts) + len(derived_facts),
-                    error_count=total_error_count,
-                    warning_count=total_warning_count,
-                    status=status,
-                    conn=conn,
-                )
-
-                # 10f. 写入验证结果明细
-                if all_validation:
-                    vr_count = self.repo.store_validation_results(
-                        [
-                            result_to_dict(r)
-                            for r in all_validation
-                        ],
-                        validation_run_id=run_id,
-                        conn=conn,
-                    )
-                    logger.info(
-                        f"Stored {vr_count} validation results"
-                    )
-
-                # 10g. 写入 lineage
-                for fact in reported_facts:
-                    self.repo.store_lineage(
-                        fact_id=fact.get("fact_id", ""),
-                        run_id=run_id,
-                        source_provider=fact.get("source_provider", ""),
-                        source_tier=fact.get("source_tier", ""),
-                        source_method="fetch",
-                        conn=conn,
-                    )
-                for fact in derived_facts:
-                    self.repo.store_lineage(
-                        fact_id=fact.get("fact_id", ""),
-                        run_id=run_id,
-                        source_provider="ashare-research",
-                        source_tier="derived",
-                        source_method="derive",
-                        parent_fact_ids=fact.get("input_fact_ids", ""),
-                        conn=conn,
-                    )
-                logger.info("Lineage records written")
-
-            logger.info(
-                f"Transaction committed — "
-                f"{reported_result.inserted} reported + "
-                f"{derived_result.inserted if derived_result else 0} derived facts"
+        except FactDomainError as exc:
+            logger.error(
+                "Build failed with domain error "
+                "(stage=%s): %s",
+                run_state.failure_stage, exc,
             )
-
-            # Set fact counts based on source_mode
-            total_fact_count = len(reported_facts) + len(derived_facts)
-            if source_mode == "candidate":
-                manifest.entry.candidate_fact_count = total_fact_count
-            else:
-                manifest.entry.official_fact_count = total_fact_count
-
-        except Exception as exc:
-            logger.error(f"Transaction failed (rolled back): {exc}")
             self._finalize_and_write_manifest(
                 manifest=manifest,
                 output_path=output_path,
                 status="failed",
-                transaction_committed=False,
-                failure_stage="transaction",
-                reported_error_count=reported_error_count,
-                derived_error_count=derived_error_count,
-                context_error_count=context_error_count,
-                warning_count=total_warning_count,
+                failure_stage=run_state.failure_stage or "unknown",
+                reported_error_count=run_state.reported_error_count,
+                derived_error_count=run_state.derived_error_count,
+                context_error_count=run_state.context_error_count,
                 actual_source_tiers=actual_source_tiers,
             )
             return _build_result(
-                manifest=manifest,
-                reported_count=len(reported_facts),
-                derived_count=len(derived_facts),
-                reported_error_count=reported_error_count,
-                derived_error_count=derived_error_count,
-                context_error_count=context_error_count,
-                checkpoint_error_count=checkpoint_error_count + 1,
-                total_error_count=total_error_count + 1,
+                manifest,
+                reported_count=0,
+                derived_count=0,
+                reported_error_count=max(run_state.reported_error_count, 1),
+                derived_error_count=run_state.derived_error_count,
+                context_error_count=run_state.context_error_count,
+                checkpoint_error_count=0,
+                total_error_count=(
+                    max(run_state.reported_error_count, 1)
+                    + run_state.derived_error_count
+                    + run_state.context_error_count
+                ),
                 checkpoint_decision="failed",
             )
-
-        # ── 阶段 11: 完成并返回 ──
-        self._finalize_and_write_manifest(
-            manifest=manifest,
-            output_path=output_path,
-            status=status,
-            checkpoint_status=checkpoint_decision,
-            transaction_committed=True,
-            failure_stage="",
-            reported_error_count=reported_error_count,
-            derived_error_count=derived_error_count,
-            context_error_count=context_error_count,
-            warning_count=total_warning_count,
-            reported_store_result=reported_result,
-            derived_store_result=derived_result,
-            context_store_result=ctx_result,
-            actual_source_tiers=actual_source_tiers,
-        )
-
-        logger.info(
-            f"build_facts complete: "
-            f"run_id={run_id} symbol={symbol} status={status}"
-        )
-
-        return _build_result(
-            manifest=manifest,
-            reported_count=len(reported_facts),
-            derived_count=len(derived_facts),
-            reported_error_count=reported_error_count,
-            derived_error_count=derived_error_count,
-            context_error_count=context_error_count,
-            checkpoint_error_count=checkpoint_error_count,
-            total_error_count=total_error_count,
-            checkpoint_decision=checkpoint_decision,
-        )
+        except Exception as exc:
+            logger.error(
+                "Unexpected build failure (stage=%s): %s",
+                run_state.failure_stage, exc,
+            )
+            self._finalize_and_write_manifest(
+                manifest=manifest,
+                output_path=output_path,
+                status="failed",
+                failure_stage=run_state.failure_stage or "unknown",
+                reported_error_count=run_state.reported_error_count,
+                derived_error_count=run_state.derived_error_count,
+                context_error_count=run_state.context_error_count,
+                actual_source_tiers=actual_source_tiers,
+            )
+            raise RuntimeError(
+                f"Unexpected failure in build_facts "
+                f"(symbol={symbol}, stage={run_state.failure_stage}): {exc}"
+            ) from exc
 
     # ── 查询方法 ──────────────────────────────────────────
 
@@ -728,6 +819,16 @@ class FactService:
         所有返回路径（passed/conditional_pass/failed）都必须经过此方法。
         所有字段均通过显式参数传入，不读取 manifest.entry 中的值。
         """
+        # Guard: 确保每次运行最多写一次 manifest。
+        if self._build_run_state is not None and self._build_run_state.finalized:
+            logger.warning(
+                "Manifest already finalized for run %s; skipping duplicate write.",
+                self._build_run_state.run_id,
+            )
+            return
+        if self._build_run_state is not None:
+            self._build_run_state.finalized = True
+
         manifest.entry.status = status
         manifest.entry.completed_at = datetime.now().isoformat()
         manifest.entry.checkpoint_status = checkpoint_status
@@ -762,7 +863,17 @@ class FactService:
             manifest.entry.contexts_unchanged = context_store_result.unchanged
             manifest.entry.contexts_conflicts = context_store_result.conflicts
 
-        manifest.write_manifest(output_path)
+        try:
+            manifest.write_manifest(output_path)
+        except Exception as e:
+            logger.error(
+                "Failed to write manifest for run %s at %s: %s",
+                manifest.entry.run_id, output_path, e,
+            )
+            raise RuntimeError(
+                f"Manifest write failed for run {manifest.entry.run_id} "
+                f"at {output_path}: {e}"
+            ) from e
 
 
 # ── 辅助函数 ──────────────────────────────────────────────

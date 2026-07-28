@@ -174,7 +174,6 @@ class FactValidator:
         ps = fact.get("period_start", "")
         filing = fact.get("filing_date", "")
         period_ok = True
-        period_msg_parts: list[str] = []
         try:
             pe_date = self._parse_optional_iso_date(pe, "period_end")
             ps_date = self._parse_optional_iso_date(ps, "period_start")
@@ -191,7 +190,16 @@ class FactValidator:
             ))
             period_ok = False
         if period_ok:
-            if pe_date is not None and ps_date is not None and ps_date > pe_date:
+            if pe_date is None:
+                results.append(FactValidationResult(
+                    rule_id="FACT_PERIOD_001", target_id=fid,
+                    severity="error", passed=False,
+                    expected="period_end 必须非空",
+                    actual="空或缺失",
+                    message="period_end must be non-empty",
+                    checked_at=now,
+                ))
+            elif ps_date is not None and ps_date > pe_date:
                 results.append(FactValidationResult(
                     rule_id="FACT_PERIOD_001", target_id=fid,
                     severity="error", passed=False,
@@ -278,7 +286,7 @@ class FactValidator:
             ))
 
         # FACT_ANNOUNCE_001: verified/reconciled 需要有效 announcement_date >= period_end;
-        #                     candidate 的 announcement_date 若存在也必须有效。
+        #                     未核验事实的 announcement_date 若存在也必须有效。
         ad = fact.get("announcement_date", "")
         if vs in ("verified", "reconciled"):
             if not (isinstance(ad, str) and ad.strip()):
@@ -324,7 +332,7 @@ class FactValidator:
                             message="announcement_date 有效且 >= period_end",
                             checked_at=now,
                         ))
-        elif vs == "candidate" and isinstance(ad, str) and ad.strip():
+        elif isinstance(ad, str) and ad.strip():
             try:
                 self._parse_optional_iso_date(ad, "announcement_date")
             except ValueError as exc:
@@ -352,17 +360,22 @@ class FactValidator:
                 results.append(FactValidationResult(
                     rule_id="FACT_SOURCE_001", target_id=fid,
                     severity="error", passed=False,
-                    expected="source_id 非空且 source_tier 为 company_official 或 exchange_official",
+                    expected=(
+                        "source_id 非空且 source_tier 为"
+                        " company_official 或 exchange_official"
+                    ),
                     actual=f"source_id={source_id}, source_tier={source_tier}",
                     message="verified/reconciled 事实必须来自官方来源（非 candidate_aggregator）",
                     checked_at=now,
                 ))
 
         # FACT_PIT_001: available_at 若非空须为有效日期；
-        #               eligible_for_metrics=true 或 verified/reconciled 时
-        #               必须非空且 >= announcement_date。
+        #               available_at >= filing_date（若 filing_date 存在）；
+        #               eligible_for_metrics=true 时 available_at 必须非空；
+        #               verified/reconciled 时 available_at 必须非空且 >= announcement_date。
         eligible = fact.get("eligible_for_metrics", False)
         available_at = fact.get("available_at", "")
+        pit_failed = False
         if isinstance(available_at, str) and available_at.strip():
             try:
                 aa_date = self._parse_optional_iso_date(available_at, "available_at")
@@ -376,20 +389,50 @@ class FactValidator:
                     checked_at=now,
                 ))
                 aa_date = None
-            else:
-                aa_date = aa_date
+                pit_failed = True
         else:
             aa_date = None
-        if eligible or vs in ("verified", "reconciled"):
-            if aa_date is None:
+        # available_at >= filing_date（若两者均有效）
+        if aa_date is not None and not pit_failed:
+            filing_raw = fact.get("filing_date", "")
+            if isinstance(filing_raw, str) and filing_raw.strip():
+                try:
+                    filing_date = self._parse_optional_iso_date(filing_raw, "filing_date")
+                except ValueError:
+                    filing_date = None
+                if filing_date is not None and aa_date < filing_date:
+                    results.append(FactValidationResult(
+                        rule_id="FACT_PIT_001", target_id=fid,
+                        severity="error", passed=False,
+                        expected="available_at >= filing_date",
+                        actual=f"available_at={available_at} < filing_date={filing_raw}",
+                        message=f"available_at {available_at} before filing_date {filing_raw}",
+                        checked_at=now,
+                    ))
+                    pit_failed = True
+        # eligible_for_metrics=true 时 available_at 必须非空
+        if eligible and not pit_failed and aa_date is None:
                 results.append(FactValidationResult(
                     rule_id="FACT_PIT_001", target_id=fid,
                     severity="error", passed=False,
-                    expected="available_at 为非空有效日期",
+                    expected="eligible_for_metrics=true 时 available_at 必须非空",
                     actual="空或缺失",
                     message="PIT 适格事实缺少 available_at",
                     checked_at=now,
                 ))
+                pit_failed = True
+        # verified/reconciled 时 available_at 必须非空且 >= announcement_date
+        if vs in ("verified", "reconciled") and not pit_failed:
+            if aa_date is None:
+                results.append(FactValidationResult(
+                    rule_id="FACT_PIT_001", target_id=fid,
+                    severity="error", passed=False,
+                    expected="verified/reconciled 时 available_at 必须非空",
+                    actual="空或缺失",
+                    message="verified/reconciled 事实缺少 available_at",
+                    checked_at=now,
+                ))
+                pit_failed = True
             else:
                 ad = fact.get("announcement_date", "")
                 try:
@@ -405,6 +448,7 @@ class FactValidator:
                         message=f"available_at {available_at} before announcement_date {ad}",
                         checked_at=now,
                     ))
+                    pit_failed = True
                 else:
                     results.append(FactValidationResult(
                         rule_id="FACT_PIT_001", target_id=fid,
@@ -412,6 +456,64 @@ class FactValidator:
                         message="available_at 有效且 >= announcement_date",
                         checked_at=now,
                     ))
+        elif not pit_failed and not (eligible or vs in ("verified", "reconciled")):
+            pass  # 无需 PIT 检查时产生任何结果
+        elif not pit_failed:
+            # eligible 且 aa_date 非空（已在上面通过）但没有 verified/reconciled 时报告成功
+            results.append(FactValidationResult(
+                rule_id="FACT_PIT_001", target_id=fid,
+                severity="error", passed=True,
+                message="available_at 有效",
+                checked_at=now,
+            ))
+
+        # FACT_VERSION_001: fact_version==1 → supersedes_fact_id 必须为空；
+        #                   fact_version>1 → supersedes_fact_id 必须非空且 != fact_id。
+        fv = fact.get("fact_version", 1)
+        sfid = fact.get("supersedes_fact_id", "")
+        if fv == 1:
+            if isinstance(sfid, str) and sfid.strip():
+                results.append(FactValidationResult(
+                    rule_id="FACT_VERSION_001", target_id=fid,
+                    severity="error", passed=False,
+                    expected="fact_version=1 时 supersedes_fact_id 必须为空",
+                    actual=f"supersedes_fact_id={sfid}",
+                    message="Version 1 fact must not reference a superseded fact",
+                    checked_at=now,
+                ))
+            else:
+                results.append(FactValidationResult(
+                    rule_id="FACT_VERSION_001", target_id=fid,
+                    severity="error", passed=True,
+                    message="Version 1 fact has no supersedes_fact_id",
+                    checked_at=now,
+                ))
+        elif isinstance(fv, int) and fv > 1:
+            if not (isinstance(sfid, str) and sfid.strip()):
+                results.append(FactValidationResult(
+                    rule_id="FACT_VERSION_001", target_id=fid,
+                    severity="error", passed=False,
+                    expected="fact_version>1 时 supersedes_fact_id 必须非空",
+                    actual="空或缺失",
+                    message=f"Version {fv} fact must have supersedes_fact_id",
+                    checked_at=now,
+                ))
+            elif sfid == fid:
+                results.append(FactValidationResult(
+                    rule_id="FACT_VERSION_001", target_id=fid,
+                    severity="error", passed=False,
+                    expected="supersedes_fact_id != fact_id",
+                    actual=f"supersedes_fact_id={sfid} == fact_id={fid}",
+                    message="supersedes_fact_id 不得指向自身",
+                    checked_at=now,
+                ))
+            else:
+                results.append(FactValidationResult(
+                    rule_id="FACT_VERSION_001", target_id=fid,
+                    severity="error", passed=True,
+                    message=f"Version {fv} fact with valid supersedes_fact_id",
+                    checked_at=now,
+                ))
 
         # FACT_ELIGIBILITY_001: 只有 verified/reconciled 可设置指标适格
         if eligible and vs not in ("verified", "reconciled"):

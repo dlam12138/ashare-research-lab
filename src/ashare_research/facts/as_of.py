@@ -32,7 +32,7 @@ def _validate_date_format(date_str: str, param_name: str) -> None:
         raise PointInTimeError(
             f"{param_name} must be a valid YYYY-MM-DD date, "
             f"got: {date_str!r} — {e}"
-        )
+        ) from e
 
 
 class AsOfQuery:
