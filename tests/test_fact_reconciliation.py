@@ -63,8 +63,13 @@ def _seed_context(repo: FactRepository) -> None:
         repo.store_contexts([ctx], conn=conn)
 
 
-def _source_fact(*, source_id: str, source_provider: str) -> dict:
-    """A verified official source fact, NOT eligible for metrics."""
+def _source_fact(*, source_id: str, source_provider: str,
+                 source_tier: str) -> dict:
+    """A verified official source fact, NOT eligible for metrics.
+
+    ``source_tier`` is ``company_official`` or ``exchange_official`` -- the
+    two sources must genuinely differ in tier, not just in source_id.
+    """
     f = make_test_fact(
         symbol=SYMBOL,
         concept_id="revenue",
@@ -76,7 +81,9 @@ def _source_fact(*, source_id: str, source_provider: str) -> dict:
         filing_date="2025-03-28",
         source_id=source_id,
         source_provider=source_provider,
-        source_tier="company_official",
+        source_tier=source_tier,
+        source_url=f"https://example/{source_id}",
+        source_hash="a" * 64,
         verification_status="verified",
         verification_note=f"{source_provider} official report",
         eligible_for_metrics=False,
@@ -89,7 +96,11 @@ def _source_fact(*, source_id: str, source_provider: str) -> dict:
 
 def _reconciled_fact(input_ids: list[str]) -> dict:
     """The reconciled canonical fact: eligible for metrics, references
-    both sources via ``input_fact_ids`` / ``derived_from``."""
+    both sources via ``input_fact_ids`` / ``derived_from``.
+
+    Uses ``reconciled_derived`` source tier -- it must NOT masquerade as a
+    raw company_official or exchange_official fact.
+    """
     joined = ",".join(input_ids)
     f = make_test_fact(
         symbol=SYMBOL,
@@ -100,15 +111,15 @@ def _reconciled_fact(input_ids: list[str]) -> dict:
         available_at="2025-03-29",  # reconciled after both sources landed
         announcement_date="2025-03-29",
         filing_date="2025-03-29",
-        source_id="reconciled:petrochina_website+sse_announcement",
-        source_provider="reconciliation",
-        source_tier="company_official",
+        source_id="reconciled:petrochina_company_sse",
+        source_provider="official_reconciliation",
+        source_tier="reconciled_derived",
         verification_status="reconciled",
         verification_note="cross-verified petrochina website + SSE",
         eligible_for_metrics=True,
         is_derived=True,
         derived_from=joined,
-        derivation_definition_id="dual_source_reconciliation",
+        derivation_definition_id="official_dual_source_reconciliation",
         derivation_version="1",
         input_fact_ids=joined,
         fact_version=1,
@@ -122,12 +133,14 @@ class TestDualSourceReconciliation:
     def _seed(self, repo: FactRepository) -> tuple[dict, dict, dict]:
         _seed_context(repo)
         src_a = _source_fact(
-            source_id="petrochina_website",
-            source_provider="petrochina_website",
+            source_id="petrochina_company_website",
+            source_provider="petrochina_company_website",
+            source_tier="company_official",
         )
         src_b = _source_fact(
             source_id="sse_announcement",
             source_provider="sse_announcement",
+            source_tier="exchange_official",
         )
         rec = _reconciled_fact([src_a["fact_id"], src_b["fact_id"]])
         with repo.transaction() as conn:
@@ -184,9 +197,9 @@ class TestDualSourceReconciliation:
             [SYMBOL],
         ).fetchall()
         by_src = {r[0]: (r[1], r[2]) for r in rows}
-        assert by_src["petrochina_website"] == (False, "verified")
+        assert by_src["petrochina_company_website"] == (False, "verified")
         assert by_src["sse_announcement"] == (False, "verified")
-        assert by_src["reconciled:petrochina_website+sse_announcement"] == (
+        assert by_src["reconciled:petrochina_company_sse"] == (
             True, "reconciled",
         )
 

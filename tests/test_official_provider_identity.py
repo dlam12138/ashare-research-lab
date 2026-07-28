@@ -1,12 +1,12 @@
 """Stage 1C-A - Official provider canonical identity contract (3 layers).
 
-Layer 1 (Provider): both official providers emit canonical fact_ids and
-cannot be bypassed.
-  - PetroChinaProvider (official_sources): private ``_make_fact_id`` is
-    gone; facts carry canonical ``build_fact_id``. Tested with a stubbed
-    AKShare so no network access.
-  - PetroChinaOfficialFilingProvider (fact_sources): manual facts are
-    forced canonical at the provider exit; a wrong fact_id is recomputed.
+The old AKShare-based ``PetroChinaProvider`` (official_sources/petrochina.py)
+has been deleted in Stage 1C-A.2 because it duplicated the candidate provider
+while mislabeling AKShare data as ``company_official``.  The sole company
+official entry point is now ``PetroChinaOfficialFilingProvider``.
+
+Layer 1 (Provider): ``PetroChinaOfficialFilingProvider`` forces manual facts
+canonical at the provider exit; a wrong fact_id is recomputed.
 
 Layer 2 (Service): the official build path accepts canonical facts and
 rejects a non-canonical injection.
@@ -19,7 +19,6 @@ No test accesses the network.
 from __future__ import annotations
 
 from pathlib import Path
-from unittest.mock import patch
 
 import pandas as pd
 
@@ -36,8 +35,6 @@ from ashare_research.facts.contexts import build_context_id
 from ashare_research.facts.identity import build_fact_id
 from ashare_research.facts.repository import FactRepository
 from ashare_research.facts.service import FactService
-from ashare_research.official_sources import petrochina as petrochina_mod
-from ashare_research.official_sources.petrochina import PetroChinaProvider
 from ashare_research.storage.duckdb_store import DuckDBStore
 
 SYMBOL = "601857.SH"
@@ -84,87 +81,7 @@ def _canonical_official_fact(
     return f
 
 
-# ── Layer 1a: PetroChinaProvider (official_sources) ──────────────────
-
-
-class TestPetroChinaProviderCanonical:
-    """The old AKShare-based provider must use canonical fact_ids too.
-
-    The provider fetches via ``getattr(ak, api_name)``; we stub the whole
-    ``ak`` module so the test does not depend on any concrete AKShare API
-    name (which varies across akshare versions) and never touches the
-    network.
-    """
-
-    @staticmethod
-    def _stub_ak(fake_df: pd.DataFrame):
-        """Return an object whose every attribute is a callable returning
-        ``fake_df`` (ignoring kwargs like ``symbol``)."""
-
-        class _FakeAk:
-            def __getattr__(self, _name):
-                def _api(*, symbol):  # noqa: ARG001
-                    return fake_df
-                return _api
-        return _FakeAk()
-
-    def test_no_private_make_fact_id_remains(self):
-        """No private ID concatenation logic in the module."""
-        import ashare_research.official_sources.petrochina as mod
-        assert not hasattr(mod, "_make_fact_id")
-        # the canonical entry point must be imported
-        assert hasattr(mod, "build_fact_id")
-
-    def test_facts_carry_canonical_fact_id_no_network(self):
-        """Stub AKShare so no network; facts must be canonical."""
-        provider = PetroChinaProvider()
-        fake_df = pd.DataFrame([{"报告期": "20241231", "营业收入": 2.35e11}])
-
-        with patch.object(
-            petrochina_mod, "ak", self._stub_ak(fake_df),
-        ):
-            df = provider.get_financial_statements(SYMBOL, 2024, 2024)
-
-        assert not df.empty
-        for rec in df.to_dict("records"):
-            assert rec["fact_id"] == build_fact_id(rec)
-            # canonical ids are full 64-char sha256, not 16-char truncation
-            assert len(rec["fact_id"]) == 64
-
-    def test_same_identity_same_fact_id_deterministic(self):
-        """Same reported identity -> same canonical fact_id (stable)."""
-        provider = PetroChinaProvider()
-        fake_df = pd.DataFrame([{"报告期": "20241231", "营业收入": 1e11}])
-
-        with patch.object(
-            petrochina_mod, "ak", self._stub_ak(fake_df),
-        ):
-            df1 = provider.get_financial_statements(SYMBOL, 2024, 2024)
-            df2 = provider.get_financial_statements(SYMBOL, 2024, 2024)
-
-        r1 = df1[df1["concept_id"] == "revenue"].iloc[0]
-        r2 = df2[df2["concept_id"] == "revenue"].iloc[0]
-        assert r1["fact_id"] == r2["fact_id"]
-
-    def test_value_change_does_not_change_fact_id(self):
-        """value is not an identity field -> id stable across value."""
-        provider = PetroChinaProvider()
-
-        df1 = pd.DataFrame([{"报告期": "20241231", "营业收入": 1e11}])
-        df2 = pd.DataFrame([{"报告期": "20241231", "营业收入": 9e10}])
-
-        with patch.object(petrochina_mod, "ak", self._stub_ak(df1)):
-            out1 = provider.get_financial_statements(SYMBOL, 2024, 2024)
-        with patch.object(petrochina_mod, "ak", self._stub_ak(df2)):
-            out2 = provider.get_financial_statements(SYMBOL, 2024, 2024)
-
-        r1 = out1[out1["concept_id"] == "revenue"].iloc[0]
-        r2 = out2[out2["concept_id"] == "revenue"].iloc[0]
-        assert r1["value"] != r2["value"]  # values differ
-        assert r1["fact_id"] == r2["fact_id"]  # identity stable
-
-
-# ── Layer 1b: PetroChinaOfficialFilingProvider (fact_sources) ────────
+# ── Layer 1: PetroChinaOfficialFilingProvider (fact_sources) ──────────
 
 
 class TestOfficialFilingProviderCanonical:
@@ -264,7 +181,6 @@ class TestServiceOfficialLayer:
             symbol=SYMBOL, start_year=2024, end_year=2024,
             source_mode="official",
         )
-        # the build must fail (canonical contract violated)
         assert result["status"] == "failed"
         conn = store.connect()
         n = conn.execute(

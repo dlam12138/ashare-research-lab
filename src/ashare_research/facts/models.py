@@ -63,6 +63,7 @@ class SourceTier(StrEnum):
     candidate_aggregator = "candidate_aggregator"
     company_official = "company_official"
     exchange_official = "exchange_official"
+    reconciled_derived = "reconciled_derived"
 
 
 # ── 核心数据类 ──────────────────────────────────────────────
