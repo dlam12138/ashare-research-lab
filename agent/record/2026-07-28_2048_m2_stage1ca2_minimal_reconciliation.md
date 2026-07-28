@@ -209,8 +209,16 @@
 ## 最终Git状态
 
 - 当前分支：feat/m2-value-assessment-mvp
-- 当前提交：__FINAL_HASH__（待填）
-- 未提交修改：工作记录待记录最终哈希后单独 docs 提交
-- 是否创建提交：是
+- 当前提交：bfbaded（`fix: correct official source semantics and add minimal reconciliation`）
+- 未提交修改：无（本 docs 提交为记录定稿）
+- 是否创建提交：是（主提交 bfbaded + docs 定稿提交）
 - 是否创建 Tag/Release：否
-- 是否推送：是（见 Final Report）
+- 是否推送：是
+
+### 推送后远程校验
+
+- `git push origin feat/m2-value-assessment-mvp`：`95b25d4..bfbaded` 推送成功
+- `git ls-remote origin refs/heads/feat/m2-value-assessment-mvp`：`bfbadeddccf0d185d54018f3c94b7aac5deb0ba3`（与本地一致）
+- `git show --stat --name-status HEAD`：10 文件（4 改 / 1 删 / 5 增），无 stash/output/旧记录污染
+- `git stash list`：stash@{0}（Stage 1B.4 旧记录编辑保护）保持原状未 pop
+- 未 amend 已推送提交；未创建 Tag/Release；未合并 main
