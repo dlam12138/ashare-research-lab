@@ -162,12 +162,41 @@
 
 ## 下一步建议
 
-（待填）
+Stage 1C-A 第二项：实现 reconciliation engine（company official + exchange official -> reconciled canonical fact）。在 reconciliation engine 及其测试通过前，不开始 2021-2025 真实报告下载、解析或录入。需先解决遗留 #1（AKShare API 适配或换源）以恢复候选取数链路（若 Stage 1C 录入依赖 AKShare 候选对照）。
 
 ## 最终文件变更
 
-（待填）
+新增：
+
+- `tests/test_official_provider_identity.py`
+- `agent/record/2026-07-28_2014_m2_stage1ca_official_provider_identity.md`
+
+修改：
+
+- `src/ashare_research/official_sources/petrochina.py`（删 `_make_fact_id`，改 `build_fact_id`，补全 canonical 字段）
+- `src/ashare_research/fact_sources/official/petrochina_filings.py`（canonical manual-fact 加载入口）
 
 ## 最终Git状态
 
-（待填）
+- 当前分支：feat/m2-value-assessment-mvp
+- 本次提交：`1aed47b7718f1dd2431f865e7c58be7e6a4b03c1`（`1aed47b`，`fix: enforce canonical fact identity in official providers`）
+- 远程分支：origin/feat/m2-value-assessment-mvp
+- 远程核验：`git ls-remote` 返回 `1aed47b7718f1dd2431f865e7c58be7e6a4b03c1`，与本地 HEAD 一致
+- 已推送：是（`f1b7f87..1aed47b`）
+- 提交边界：仅含本轮 4 文件（2 修改 + 2 新增，622 insertions / 43 deletions）；不含旧记录、源码外内容、运行产物、DuckDB、缓存
+- 工作区：干净
+- `stash@{0}`（Stage 1B.4 记录旧修改）保持不动，未 pop
+- 未创建 Tag 或 Release
+
+## 阶段结论
+
+```text
+M2 Stage 1C-A 第一项（官方 Provider canonical 身份规范化）: Pass
+Stage 1C-A 第一项 commit: 1aed47b
+Remote branch: synchronized
+Worktree: clean
+Stage 1C-A 第二项（reconciliation engine）: allowed, not started
+Merge to main: not yet
+```
+
+不得表述为 Stage 1C-A 已完成或官方事实层已完成。reconciliation engine 与真实数据录入均未开始。
