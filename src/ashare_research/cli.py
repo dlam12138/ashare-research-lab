@@ -368,42 +368,70 @@ def cmd_verify_value_facts(args: argparse.Namespace) -> int:
 
         validator = FactValidator()
 
-        # 读取所有事实
-        facts_df = repo.get_all_versions_for_audit(args.symbol)
+        # 按 run_id 查询该运行的事实 ID
+        conn = store.connect()
+        if args.run_id:
+            fact_ids = conn.execute(
+                "SELECT fact_id FROM fact_lineage WHERE run_id = ?",
+                [args.run_id],
+            ).fetchall()
+            if not fact_ids:
+                print(f"No facts found for run_id: {args.run_id}")
+                return 1
+            fid_list = [r[0] for r in fact_ids]
+            placeholders = ", ".join(["?"] * len(fid_list))
+            facts_df = conn.execute(
+                f"SELECT * FROM financial_facts "
+                f"WHERE symbol = ? AND fact_id IN ({placeholders})",
+                [args.symbol] + fid_list,
+            ).df()
+        else:
+            facts_df = repo.get_all_versions_for_audit(args.symbol)
+
         if facts_df.empty:
-            print(f"No facts found for {args.symbol}")
+            print(f"No facts found for symbol={args.symbol} "
+                  f"{'run_id=' + args.run_id if args.run_id else ''}")
             return 1
 
         facts = facts_df.to_dict("records")
         results = validator.validate_batch(facts)
         summary = summarize_results(results)
 
-        # 创建新的 validation run
+        # 创建新的 validation run（事务保护）
         run_id = f"verify_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
-        repo.store_validation_run(
-            run_id=run_id,
-            fact_count=len(facts),
-            error_count=summary["error_count"],
-            warning_count=summary["warning_count"],
-            status=(
-                "passed" if summary["error_count"] == 0
-                else "failed"
-            ),
-        )
-        repo.store_validation_results(
-            results=[{
-                "target_id": r.target_id,
-                "rule_id": r.rule_id,
-                "rule_version": r.rule_version,
-                "severity": r.severity,
-                "passed": r.passed,
-                "expected": r.expected,
-                "actual": r.actual,
+        txn_conn = store.connect()
+        txn_conn.execute("BEGIN TRANSACTION")
+        try:
+            repo.store_validation_run(
+                run_id=run_id,
+                fact_count=len(facts),
+                error_count=summary["error_count"],
+                warning_count=summary["warning_count"],
+                status=(
+                    "passed" if summary["error_count"] == 0
+                    else "failed"
+                ),
+                conn=txn_conn,
+            )
+            repo.store_validation_results(
+                results=[{
+                    "target_id": r.target_id,
+                    "rule_id": r.rule_id,
+                    "rule_version": r.rule_version,
+                    "severity": r.severity,
+                    "passed": r.passed,
+                    "expected": r.expected,
+                    "actual": r.actual,
                 "message": r.message,
                 "checked_at": r.checked_at,
             } for r in results],
             validation_run_id=run_id,
         )
+
+            txn_conn.execute("COMMIT")
+        except Exception:
+            txn_conn.execute("ROLLBACK")
+            raise
 
         print(f"Verification Run: {run_id}")
         print(f"  Symbol:       {args.symbol}")

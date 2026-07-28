@@ -30,6 +30,9 @@ htmlcov/
 *~
 desktop.ini
 
+# M2 output (generated at runtime)
+output/*
+
 # Data (generated at runtime)
 data/raw/*
 data/parquet/*

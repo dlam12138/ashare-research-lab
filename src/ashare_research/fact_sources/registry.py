@@ -50,6 +50,11 @@ class FactSourceRegistry:
         source_mode="official" 时，若官方来源未启用或未注册，
         抛出 AshareDataError（不得回退到候选来源）。
         """
+        if source_mode not in ("candidate", "official"):
+            raise AshareDataError(
+                f"Invalid source_mode: {source_mode!r}. "
+                f"Must be 'candidate' or 'official'."
+            )
         if source_mode == "official":
             provider = self._officials.get(symbol)
             if provider is None:

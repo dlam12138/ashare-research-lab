@@ -179,7 +179,10 @@ class FactService:
                 symbol, start_year, end_year,
             )
         except Exception as exc:
-            manifest.complete_manifest(status="failed", error_count=1)
+            self._finalize_and_write_manifest(
+                manifest, symbol, run_id, "failed",
+                failure_stage="provider_fetch",
+            )
             logger.error(f"Provider fetch failed: {exc}")
             return _build_result(
                 manifest, reported_count=0, derived_count=0,
@@ -190,7 +193,10 @@ class FactService:
             )
 
         if facts_df.empty:
-            manifest.complete_manifest(status="failed", error_count=1)
+            self._finalize_and_write_manifest(
+                manifest, symbol, run_id, "failed",
+                failure_stage="provider_empty",
+            )
             logger.warning(f"No facts returned for {symbol}")
             return _build_result(
                 manifest, reported_count=0, derived_count=0,
@@ -290,10 +296,9 @@ class FactService:
 
         # ── 阶段 9: checkpoint failed → 不写库 ──
         if checkpoint_decision == "failed":
-            manifest.complete_manifest(
-                status="failed",
-                error_count=total_error_count,
-                warning_count=total_warning_count,
+            self._finalize_and_write_manifest(
+                manifest, symbol, run_id, "failed",
+                failure_stage="checkpoint",
             )
             logger.warning(
                 f"Checkpoint FAILED: {checkpoint['reasons']}. "
@@ -442,10 +447,14 @@ class FactService:
                 "context": context_error_count,
             },
             transaction_success=True,
-            failure_stage="" if status == "passed" else "checkpoint",
+            failure_stage="" if status != "failed" else "checkpoint",
         )
         manifest.entry.checkpoint_status = checkpoint_decision
-        manifest.entry.source_tiers = [source_mode]
+        manifest.entry.source_tiers = [
+            "candidate_aggregator" if source_mode == "candidate"
+            else "company_official"
+        ]
+        manifest.entry.transaction_committed = True
         if source_mode == "candidate":
             manifest.entry.candidate_fact_count = (
                 len(reported_facts) + len(derived_facts)
@@ -456,7 +465,6 @@ class FactService:
             )
         manifest.write_manifest(
             f"output/value_assessment/{symbol}/runs/{run_id}/run_manifest.json"
-        )
         )
 
         logger.info(
@@ -664,6 +672,34 @@ class FactService:
             "checkpoint_error_count": checkpoint_error_count,
             "reasons": reasons,
         }
+
+    def _finalize_and_write_manifest(
+        self, manifest, symbol: str, run_id: str,
+        status: str, failure_stage: str = "",
+    ) -> None:
+        """统一入口：完成 manifest 并写入文件。
+
+        所有返回路径（passed/conditional_pass/failed）都必须经过此方法。
+        """
+        manifest.complete_with_details(
+            status=status,
+            error_counts={
+                "reported":
+                    getattr(manifest.entry, "reported_error_count", 0),
+                "derived":
+                    getattr(manifest.entry, "derived_error_count", 0),
+                "context":
+                    getattr(manifest.entry, "context_error_count", 0),
+            },
+            transaction_success=(
+                False if status == "failed" else
+                getattr(manifest.entry, "transaction_committed", False)
+            ),
+            failure_stage=failure_stage if status == "failed" else "",
+        )
+        manifest.write_manifest(
+            f"output/value_assessment/{symbol}/runs/{run_id}/run_manifest.json"
+        )
 
     @staticmethod
     def _verify_counts(

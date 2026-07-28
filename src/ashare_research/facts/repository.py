@@ -660,25 +660,26 @@ class FactRepository:
 
         query = f"""
             SELECT * FROM (
-                SELECT *,
+                SELECT f.*,
                     ROW_NUMBER() OVER (
-                        PARTITION BY symbol, concept_id, period_end,
-                                     consolidation_scope
-                        ORDER BY available_at DESC, fact_version DESC,
-                                 created_at DESC
+                        PARTITION BY f.symbol, f.concept_id, f.period_end,
+                                     c.consolidation_scope
+                        ORDER BY f.available_at DESC, f.fact_version DESC,
+                                 f.created_at DESC
                     ) AS rn
-                FROM financial_facts
-                WHERE symbol = ?
+                FROM financial_facts f
+                JOIN fact_contexts c ON f.context_id = c.context_id
+                WHERE f.symbol = ?
                   {concept_filter}
-                  AND consolidation_scope = ?
-                  AND available_at IS NOT NULL
-                  AND available_at <> ''
-                  AND available_at <= ?
-                  AND verification_status IN ('verified', 'reconciled')
-                  AND eligible_for_metrics = TRUE
+                  AND c.consolidation_scope = ?
+                  AND f.available_at IS NOT NULL
+                  AND f.available_at <> ''
+                  AND f.available_at <= ?
+                  AND f.verification_status IN ('verified', 'reconciled')
+                  AND f.eligible_for_metrics = TRUE
             ) sub
             WHERE sub.rn = 1
-            ORDER BY period_end, concept_id
+            ORDER BY sub.period_end, sub.concept_id
         """
         params_with_scope = [symbol]
         if concept_ids:
