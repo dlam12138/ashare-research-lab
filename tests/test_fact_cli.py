@@ -44,7 +44,7 @@ class StubProvider(FactSourceProvider):
                 f = {
                     "concept_id": cid, "concept_version": "1",
                     "symbol": symbol, "value": val, "unit": "CNY",
-                    "context_id": f"{symbol}|{year}|FY|consolidated|original",
+                    "context_id": f"{symbol}|{year}|FY|consolidated",
                     "source_provider": self.provider_name,
                     "source_id": f"stub::{symbol}::{year}::{cid}",
                     "source_tier": "candidate_aggregator",
@@ -242,10 +242,14 @@ class TestCLIVerifyRun:
         # first build's run_id:
         run_a = self._latest_run_id(factory.output_root)
 
+        # run_b builds a DIFFERENT year (2024) than run_a (2025), so the
+        # two runs have disjoint canonical fact_id sets.  This makes the
+        # isolation assertion meaningful: a buggy verify that loaded the
+        # whole symbol would return run_a + run_b facts, not just run_a's.
         main(
             ["build-value-facts", SYMBOL,
              "--source", "candidate",
-             "--start-year", "2025", "--end-year", "2025"],
+             "--start-year", "2024", "--end-year", "2024"],
             service_factory=factory,
         )
         run_b = self._latest_run_id(factory.output_root)
@@ -266,22 +270,31 @@ class TestCLIVerifyRun:
         assert run_a in text
         assert "Verification Run:" in text or "Build Run:" in text
 
-        # only run_a's facts were revalidated: the verification run's
-        # fact_count must equal the number of lineage rows for run_a
-        # (not run_a + run_b, which share the same canonical fact_ids
-        # due to idempotent builds but have distinct lineage rows).
+        # only run_a's facts were revalidated.  run_a (2025) and run_b
+        # (2024) have DISJOINT canonical fact_id sets, so a buggy verify
+        # that loaded the whole symbol would return both years' facts;
+        # the correct verify returns only run_a's.
         store = DuckDBStore(str(tmp_path / "cli.duckdb"))
         store.connect()
-        run_a_lineage_count = store.connect().execute(
-            "SELECT COUNT(*) FROM fact_lineage WHERE run_id = ?",
-            [run_a],
-        ).fetchone()[0]
-        run_b_lineage_count = store.connect().execute(
-            "SELECT COUNT(*) FROM fact_lineage WHERE run_id = ?",
-            [run_b],
-        ).fetchone()[0]
-        assert run_a_lineage_count > 0
-        assert run_b_lineage_count > 0
+        run_a_fids = {
+            r[0] for r in store.connect().execute(
+                "SELECT DISTINCT fact_id FROM fact_lineage "
+                "WHERE run_id = ?",
+                [run_a],
+            ).fetchall()
+        }
+        run_b_fids = {
+            r[0] for r in store.connect().execute(
+                "SELECT DISTINCT fact_id FROM fact_lineage "
+                "WHERE run_id = ?",
+                [run_b],
+            ).fetchall()
+        }
+        assert run_a_fids and run_b_fids
+        # genuinely different fact sets -- this is what makes the
+        # isolation assertion non-trivial (previously both runs shared
+        # the same canonical fact_ids due to idempotent same-year builds).
+        assert run_a_fids.isdisjoint(run_b_fids)
         # verify loaded exactly run_a's fact count (distinct fact_ids),
         # not the sum of both runs' lineage rows.
         distinct_run_a_facts = store.connect().execute(

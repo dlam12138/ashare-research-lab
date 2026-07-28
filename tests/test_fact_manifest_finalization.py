@@ -36,7 +36,7 @@ class _StubProvider(FactSourceProvider):
         f = {
             "concept_id": "revenue", "concept_version": "1",
             "symbol": symbol, "value": 1e11, "unit": "CNY",
-            "context_id": f"{symbol}|{sy}|FY|consolidated|original",
+            "context_id": f"{symbol}|{sy}|FY|consolidated",
             "source_provider": self.provider_name,
             "source_id": f"stub::{symbol}::{sy}",
             "source_tier": "candidate_aggregator",

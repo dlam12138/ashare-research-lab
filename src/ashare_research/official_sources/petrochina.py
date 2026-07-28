@@ -10,6 +10,7 @@ import akshare as ak
 import pandas as pd
 
 from ashare_research.exceptions import EmptyResultError
+from ashare_research.facts.contexts import build_context_id
 from ashare_research.facts.mappings import ConceptMapping
 from ashare_research.official_sources.base import OfficialSourceProvider
 
@@ -107,9 +108,8 @@ class PetroChinaProvider(OfficialSourceProvider):
                         "symbol": symbol,
                         "value": norm_val,
                         "unit": "CNY",
-                        "context_id": (
-                            f"{symbol}|{year}|"
-                            f"{fact_type}|consolidated|original"
+                        "context_id": build_context_id(
+                            symbol, year, fact_type,
                         ),
                         "is_derived": False,
                         "source_provider": self.provider_name,

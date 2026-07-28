@@ -49,7 +49,7 @@ class TestFactIdentityDeterminism:
 
     def test_context_change_changes_fact_id(self):
         f = make_test_fact()
-        f2 = dict(f, context_id="OTHER|2024|annual|consolidated|original")
+        f2 = dict(f, context_id="OTHER|2024|annual|consolidated")
         assert build_fact_id(f) != build_fact_id(f2)
 
     def test_source_change_changes_fact_id(self):

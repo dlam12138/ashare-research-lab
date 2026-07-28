@@ -72,8 +72,9 @@ class SourceTier(StrEnum):
 class FactContext:
     """财务事实上下文 — 报告期 + 口径 + 重述版本。
 
-    格式: SYMBOL|FY|PERIOD_TYPE|SCOPE|RESTATEMENT
-    示例: 601857.SH|2025|annual|consolidated|original
+    格式: SYMBOL|FY|PERIOD_TYPE|SCOPE
+    示例: 601857.SH|2025|annual|consolidated
+    重述版本不编码进 context_id，见 facts.contexts.build_context_id。
     """
     context_id: str
     symbol: str

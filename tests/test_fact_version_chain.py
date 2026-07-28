@@ -14,6 +14,7 @@ from fact_test_helpers import make_verified_fact
 
 from ashare_research.exceptions import VersionChainCycleError
 from ashare_research.facts.as_of import AsOfQuery
+from ashare_research.facts.contexts import build_context_id
 from ashare_research.facts.identity import build_fact_id
 from ashare_research.facts.repository import FactRepository
 from ashare_research.storage.duckdb_store import DuckDBStore
@@ -42,7 +43,7 @@ def _versioned_fact(
         symbol=SYMBOL,
         source_id=source_id,
         concept_id="revenue",
-        context_id=f"{SYMBOL}|2024|annual|consolidated|original",
+        context_id=build_context_id(SYMBOL, 2024, "annual"),
         period_end="2024-12-31",
         value=value,
         available_at=available_at,
@@ -287,7 +288,7 @@ class TestPITRestatementSwitching:
 
     def _seed_context(self, repo: FactRepository) -> None:
         ctx = {
-            "context_id": f"{SYMBOL}|2024|annual|consolidated|original",
+            "context_id": build_context_id(SYMBOL, 2024, "annual"),
             "symbol": SYMBOL,
             "fiscal_year": 2024,
             "period_type": "annual",
@@ -303,3 +304,127 @@ class TestPITRestatementSwitching:
         }
         with repo.transaction() as conn:
             repo.store_contexts([ctx], conn=conn)
+
+
+# ── Real restatement: original -> restated_1 in one context ─────────
+
+
+class TestRealRestatementChain:
+    """A real restatement changes restatement_version, not context_id.
+
+    The tests above switch fact_version within the SAME restatement
+    version (both ``original``).  Here v2 is a formal restatement
+    (``restated_1``) that supersedes v1 (``original``) while sharing the
+    same context_id.  FACT_VERSIONCHAIN_001 must allow this: context_id
+    is stable, restatement_version is allowed to change, and fact_version
+    increments by 1.  This is the case the previous PIT tests did not
+    cover.
+    """
+
+    def _seed_restatement(
+        self, repo: FactRepository,
+    ) -> tuple[dict, dict, str]:
+        ctx_id = build_context_id(SYMBOL, 2024, "annual")
+        v1 = make_verified_fact(
+            symbol=SYMBOL,
+            source_id="official_petrochina",
+            concept_id="revenue",
+            context_id=ctx_id,
+            period_end="2024-12-31",
+            value=100.0,
+            available_at="2025-03-30",
+            announcement_date="2025-03-30",
+            filing_date="2025-03-30",
+            fact_version=1,
+            restatement_version="original",
+            supersedes_fact_id="",
+        )
+        v1["fact_id"] = build_fact_id(v1)
+        v2 = make_verified_fact(
+            symbol=SYMBOL,
+            source_id="official_petrochina",  # same source -> stable identity
+            concept_id="revenue",
+            context_id=ctx_id,  # same context -> stable across restatement
+            period_end="2024-12-31",
+            value=88.0,  # restated downward
+            available_at="2025-09-15",  # restatement available later
+            announcement_date="2025-09-15",
+            filing_date="2025-09-15",
+            fact_version=2,
+            restatement_version="restated_1",  # changed: real restatement
+            supersedes_fact_id=v1["fact_id"],
+        )
+        v2["fact_id"] = build_fact_id(v2)
+        with repo.transaction() as conn:
+            repo.store_facts([v1, v2], conn=conn)
+        return v1, v2, ctx_id
+
+    def _seed_context(self, repo: FactRepository, ctx_id: str) -> None:
+        ctx = {
+            "context_id": ctx_id,
+            "symbol": SYMBOL,
+            "fiscal_year": 2024,
+            "period_type": "annual",
+            "period_start": "2024-01-01",
+            "period_end": "2024-12-31",
+            "instant_or_duration": "duration",
+            "consolidation_scope": "consolidated",
+            "accounting_standard": "CAS",
+            "restatement_version": "original",
+            "source_document": "",
+            "filing_date": "2025-03-30",
+            "created_at": "2026-07-28T00:00:00",
+        }
+        with repo.transaction() as conn:
+            repo.store_contexts([ctx], conn=conn)
+
+    def test_restatement_chain_validates(self, tmp_path: Path):
+        """v2 (restated_1) supersedes v1 (original) in the same context.
+
+        The version chain must PASS: context_id stable, restatement_version
+        allowed to change, fact_version +1, same source_id.
+        """
+        repo = _setup_repo(str(tmp_path / "t.duckdb"))
+        v1, v2, _ = self._seed_restatement(repo)
+        results = VersionChainValidator(repo).validate(
+            [v2], conn=repo.store.connect(),
+        )
+        assert results
+        assert results[0].passed, results[0].message
+
+    def test_pit_before_restatement_returns_original(self, tmp_path: Path):
+        repo = _setup_repo(str(tmp_path / "t.duckdb"))
+        v1, v2, ctx_id = self._seed_restatement(repo)
+        self._seed_context(repo, ctx_id)
+        asof = AsOfQuery(repo)
+        before = asof.get_latest_available(
+            symbol=SYMBOL, as_of_date="2025-06-01",
+        )
+        assert not before.empty
+        assert before.iloc[0]["value"] == 100.0
+        assert before.iloc[0]["restatement_version"] == "original"
+        assert int(before.iloc[0]["fact_version"]) == 1
+
+    def test_pit_on_restatement_returns_restated(self, tmp_path: Path):
+        repo = _setup_repo(str(tmp_path / "t.duckdb"))
+        v1, v2, ctx_id = self._seed_restatement(repo)
+        self._seed_context(repo, ctx_id)
+        asof = AsOfQuery(repo)
+        after = asof.get_latest_available(
+            symbol=SYMBOL, as_of_date="2025-09-15",
+        )
+        assert not after.empty
+        assert after.iloc[0]["value"] == 88.0
+        assert after.iloc[0]["restatement_version"] == "restated_1"
+        assert int(after.iloc[0]["fact_version"]) == 2
+
+    def test_both_restatement_versions_preserved(self, tmp_path: Path):
+        """The original fact is not overwritten by the restatement."""
+        repo = _setup_repo(str(tmp_path / "t.duckdb"))
+        v1, v2, _ = self._seed_restatement(repo)
+        conn = repo.store.connect()
+        n = conn.execute(
+            "SELECT COUNT(*) FROM financial_facts WHERE symbol = ?",
+            [SYMBOL],
+        ).fetchone()[0]
+        assert n == 2

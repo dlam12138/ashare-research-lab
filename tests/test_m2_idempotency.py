@@ -58,7 +58,7 @@ def _make_fact(**overrides) -> dict:
     """
     base = make_test_fact(
         symbol=SYMBOL,
-        context_id=f"{SYMBOL}|2024|FY|consolidated|original",
+        context_id=f"{SYMBOL}|2024|FY|consolidated",
         created_at=NOW,
     )
     base.update(overrides)
@@ -129,7 +129,7 @@ class _IdempotentProvider(FactSourceProvider):
                     "value": val,
                     "unit": "CNY",
                     "context_id": (
-                        f"{symbol}|{year}|FY|consolidated|original"
+                        f"{symbol}|{year}|FY|consolidated"
                     ),
                     "source_provider": "idempotent_test",
                     "source_id": f"simple::{symbol}::{year}::{cid}",
@@ -184,7 +184,7 @@ class _SingleFactProvider(FactSourceProvider):
             "symbol": symbol,
             "value": 1e11,
             "unit": "CNY",
-            "context_id": f"{symbol}|{year}|FY|consolidated|original",
+            "context_id": f"{symbol}|{year}|FY|consolidated",
             "source_provider": "single_fact_test",
             "source_id": f"single::{symbol}::{year}",
             "source_tier": "candidate_aggregator",

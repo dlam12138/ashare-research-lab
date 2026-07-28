@@ -46,7 +46,7 @@ def _make_fact(**overrides) -> dict:
     """
     base = make_test_fact(
         symbol="000001.SZ",
-        context_id="000001.SZ|2024|annual|consolidated|original",
+        context_id="000001.SZ|2024|annual|consolidated",
         verification_status="verified",
         source_tier="company_official",
         eligible_for_metrics=True,
@@ -586,7 +586,7 @@ class TestTransactionWithContexts:
         repo = _setup_repo(db)
 
         ctx = {
-            "context_id": "000001.SZ|2024|annual|consolidated|original",
+            "context_id": "000001.SZ|2024|annual|consolidated",
             "symbol": "000001.SZ",
             "fiscal_year": 2024,
             "period_type": "annual",
@@ -823,7 +823,7 @@ class TestFactServiceEndToEnd:
                                 "concept_id": cid, "concept_version": "1",
                                 "symbol": symbol, "value": val,
                                 "unit": "CNY",
-                                "context_id": f"{symbol}|{year}|FY|consolidated|original",
+                                "context_id": f"{symbol}|{year}|FY|consolidated",
                                 "source_provider": "mock_fact",
                                 "source_id": f"mock::{symbol}::{year}",
                                 "source_tier": "candidate_aggregator",
@@ -890,7 +890,7 @@ class TestFactServiceEndToEnd:
                 fact = {
                     "concept_id": "revenue", "concept_version": "1",
                     "symbol": s, "value": 1e11, "unit": "CNY",
-                    "context_id": f"{s}|2025|FY|consolidated|original",
+                    "context_id": f"{s}|2025|FY|consolidated",
                     "source_provider": "simple",
                     "source_id": f"simple::{s}::2025",
                     "source_tier": "candidate_aggregator",

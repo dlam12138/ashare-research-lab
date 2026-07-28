@@ -21,24 +21,32 @@ def build_context_id(
     fiscal_year: int,
     period_type: str,
     consolidation_scope: str = "consolidated",
-    restatement_version: str = "original",
 ) -> str:
     """构建唯一 context_id。
 
-    格式: SYMBOL|FY|PERIOD_TYPE|SCOPE|RESTATEMENT
-    示例: 601857.SH|2025|annual|consolidated|original
+    context_id 跨重述保持稳定：它只标识“哪家公司 + 哪个期间 + 什么
+    口径”这一经济现实，不包含 ``restatement_version``。重述
+    (original -> restated_1) 是对同一 context 的重新报告，因此
+    ``restatement_version`` 作为事实级属性沿版本链变化，而
+    ``context_id`` 不变。这是 ``VersionChainValidator`` 检查 C
+    （要求 context_id 跨版本一致）与真实重述版本链同时成立的必要
+    条件。
+
+    格式: SYMBOL|FY|PERIOD_TYPE|SCOPE
+    示例: 601857.SH|2025|annual|consolidated
     """
-    return (
-        f"{symbol}|{fiscal_year}|{period_type}"
-        f"|{consolidation_scope}|{restatement_version}"
-    )
+    return f"{symbol}|{fiscal_year}|{period_type}|{consolidation_scope}"
 
 
 def parse_context_id(context_id: str) -> dict[str, str | int]:
-    """解析 context_id 为各组成部分。"""
+    """解析 context_id 为各组成部分。
+
+    restatement_version 不再编码进 context_id，故不在此返回；
+    事实的 restatement_version 应从事实行本身读取。
+    """
     parts = context_id.split("|")
     keys = ["symbol", "fiscal_year", "period_type",
-            "consolidation_scope", "restatement_version"]
+            "consolidation_scope"]
     result: dict[str, str | int] = {}
     for i, key in enumerate(keys):
         if i < len(parts):
@@ -141,14 +149,18 @@ def create_context(
     restatement_version: str = "original",
     accounting_standard: str = "CAS",
 ) -> FactContext:
-    """便捷创建 FactContext。"""
+    """便捷创建 FactContext。
+
+    ``restatement_version`` 仅存入 FactContext 的同名名义字段，
+    不进入 ``context_id``（见 :func:`build_context_id`）。
+    """
     pt = parse_period_type(period_type)
     start, end = compute_period_dates(fiscal_year, pt)
 
     return FactContext(
         context_id=build_context_id(
             symbol, fiscal_year, period_type,
-            consolidation_scope, restatement_version,
+            consolidation_scope,
         ),
         symbol=symbol,
         fiscal_year=fiscal_year,

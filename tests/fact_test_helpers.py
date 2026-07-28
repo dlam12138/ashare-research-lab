@@ -53,7 +53,7 @@ def make_test_fact(**overrides: Any) -> dict[str, Any]:
         "symbol": "000001.SZ",
         "value": 1000.0,
         "unit": "CNY",
-        "context_id": "000001.SZ|2024|annual|consolidated|original",
+        "context_id": "000001.SZ|2024|annual|consolidated",
         "is_derived": False,
         "derived_from": "",
         "derivation_definition_id": "",

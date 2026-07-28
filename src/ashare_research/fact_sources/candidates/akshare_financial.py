@@ -15,6 +15,7 @@ import pandas as pd
 
 from ashare_research.exceptions import EmptyResultError
 from ashare_research.fact_sources.base import FactSourceProvider, SourceTier
+from ashare_research.facts.contexts import build_context_id
 from ashare_research.facts.identity import build_fact_id
 from ashare_research.facts.mappings import ConceptMapping
 
@@ -115,9 +116,8 @@ class AKShareFinancialCandidateProvider(FactSourceProvider):
                         "symbol": symbol,
                         "value": norm_val,
                         "unit": "CNY",
-                        "context_id": (
-                            f"{symbol}|{year}|{fact_type}"
-                            f"|consolidated|original"
+                        "context_id": build_context_id(
+                            symbol, year, fact_type,
                         ),
                         "is_derived": False,
                         "source_provider": self.provider_name,

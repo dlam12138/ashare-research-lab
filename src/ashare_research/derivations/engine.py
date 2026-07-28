@@ -11,6 +11,7 @@ from datetime import datetime
 
 import pandas as pd
 
+from ashare_research.facts.contexts import build_context_id
 from ashare_research.facts.identity import build_fact_id
 
 logger = logging.getLogger(__name__)
@@ -218,8 +219,10 @@ def _make_single_q_fact(
         "symbol": row["symbol"],
         "value": row["value"],
         "unit": row.get("unit", "CNY"),
-        "context_id": f"{row['symbol']}|{row['fiscal_year']}"
-                       f"|single_quarter_q{quarter}|consolidated|original",
+        "context_id": build_context_id(
+            row["symbol"], row["fiscal_year"],
+            f"single_quarter_q{quarter}",
+        ),
         "is_derived": True,
         "derived_from": row.get("fact_id", ""),
         "derivation_definition_id": derivation_id,
@@ -266,8 +269,9 @@ def _make_single_q_fact_dict(
         "symbol": symbol,
         "value": value,
         "unit": "CNY",
-        "context_id": f"{symbol}|{year}|single_quarter_q{quarter}"
-                       f"|consolidated|original",
+        "context_id": build_context_id(
+            symbol, year, f"single_quarter_q{quarter}",
+        ),
         "is_derived": True,
         "derived_from": ",".join(input_fact_ids),
         "derivation_definition_id": derivation_id,

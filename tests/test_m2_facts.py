@@ -92,7 +92,28 @@ class TestUnitRegistry:
 class TestContexts:
     def test_build_context_id(self):
         ctx = build_context_id("601857.SH", 2025, "annual")
-        assert ctx == "601857.SH|2025|annual|consolidated|original"
+        assert ctx == "601857.SH|2025|annual|consolidated"
+
+    def test_build_context_id_stable_across_restatements(self):
+        """context_id 不含 restatement_version，跨重述保持稳定。"""
+        original = build_context_id("601857.SH", 2025, "annual")
+        # create_context 仍接受 restatement_version，但不应影响 context_id
+        from ashare_research.facts.contexts import create_context
+        restated = create_context(
+            "601857.SH", 2025, "annual",
+            restatement_version="restated_1",
+        ).context_id
+        assert original == restated
+
+    def test_parse_context_id_four_parts(self):
+        from ashare_research.facts.contexts import parse_context_id
+        parsed = parse_context_id("601857.SH|2025|annual|consolidated")
+        assert parsed["symbol"] == "601857.SH"
+        assert parsed["fiscal_year"] == 2025
+        assert parsed["period_type"] == "annual"
+        assert parsed["consolidation_scope"] == "consolidated"
+        # restatement_version 不再编码进 context_id
+        assert "restatement_version" not in parsed
 
     def test_parse_period_label_annual(self):
         result = parse_period_label("2021FY")
