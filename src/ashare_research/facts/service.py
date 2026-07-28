@@ -14,7 +14,7 @@
        - 开启事务
        - 写入 concepts, contexts, reported facts, derived facts,
          validation results, lineage
-       - 验证写入行数与预期一致
+       - 验证写入行数与预期一致（使用 StoreFactsResult）
        - 提交或回滚
        - 写出 run manifest
    11. 返回结构化结果：run_id, counts, status, manifest
@@ -23,16 +23,17 @@
 from __future__ import annotations
 
 import logging
+import os
 from datetime import datetime
 from typing import Any
 
 import pandas as pd
 
 from ashare_research.derivations.engine import DerivationEngine
-from ashare_research.exceptions import FactCheckpointError
+from ashare_research.fact_sources.base import SourceTier
 from ashare_research.facts.as_of import AsOfQuery
 from ashare_research.facts.contexts import create_context
-from ashare_research.facts.repository import FactRepository
+from ashare_research.facts.repository import FactRepository, StoreFactsResult
 from ashare_research.lineage.manifest import LineageManifest
 from ashare_research.validation.results import (
     FactValidationResult,
@@ -137,12 +138,14 @@ class FactService:
         source_registry,  # FactSourceRegistry
         derivation_engine: DerivationEngine | None = None,
         validator: FactValidator | None = None,
+        output_root: str = "output/value_assessment",
     ):
         self.repo = fact_repository
         self.registry = source_registry
         self.engine = derivation_engine or DerivationEngine()
         self.validator = validator or FactValidator()
         self.as_of = AsOfQuery(fact_repository)
+        self.output_root = output_root
 
     # ── 公开入口 ──────────────────────────────────────────
 
@@ -160,14 +163,16 @@ class FactService:
             total_error_count, status, checkpoint_decision, manifest
         """
         manifest = LineageManifest(symbol=symbol, profile="cyclical")
-        if source_mode == "official":
-            manifest.entry.job_name = "build-official-value-facts"
-        else:
-            manifest.entry.job_name = "build-candidate-value-facts"
+        manifest.entry.job_name = self._resolve_job_name(source_mode)
         manifest.entry.code_version = self.schema_version
         manifest.entry.fact_schema_version = "2.0"
         manifest.entry.concept_registry_version = "2.0"
         run_id = manifest.entry.run_id
+
+        output_path = os.path.join(
+            self.output_root, symbol, "runs", run_id, "run_manifest.json",
+        )
+        actual_source_tiers = self._resolve_source_tiers(source_mode)
 
         # ── 阶段 1: 获取事实 ──
         try:
@@ -179,11 +184,15 @@ class FactService:
                 symbol, start_year, end_year,
             )
         except Exception as exc:
-            self._finalize_and_write_manifest(
-                manifest, symbol, run_id, "failed",
-                failure_stage="provider_fetch",
-            )
             logger.error(f"Provider fetch failed: {exc}")
+            self._finalize_and_write_manifest(
+                manifest=manifest,
+                output_path=output_path,
+                status="failed",
+                failure_stage="provider_fetch",
+                reported_error_count=1,
+                actual_source_tiers=actual_source_tiers,
+            )
             return _build_result(
                 manifest, reported_count=0, derived_count=0,
                 reported_error_count=1, derived_error_count=0,
@@ -193,11 +202,15 @@ class FactService:
             )
 
         if facts_df.empty:
-            self._finalize_and_write_manifest(
-                manifest, symbol, run_id, "failed",
-                failure_stage="provider_empty",
-            )
             logger.warning(f"No facts returned for {symbol}")
+            self._finalize_and_write_manifest(
+                manifest=manifest,
+                output_path=output_path,
+                status="failed",
+                failure_stage="provider_empty",
+                reported_error_count=1,
+                actual_source_tiers=actual_source_tiers,
+            )
             return _build_result(
                 manifest, reported_count=0, derived_count=0,
                 reported_error_count=1, derived_error_count=0,
@@ -297,8 +310,17 @@ class FactService:
         # ── 阶段 9: checkpoint failed → 不写库 ──
         if checkpoint_decision == "failed":
             self._finalize_and_write_manifest(
-                manifest, symbol, run_id, "failed",
+                manifest=manifest,
+                output_path=output_path,
+                status="failed",
+                checkpoint_status=checkpoint_decision,
+                transaction_committed=False,
                 failure_stage="checkpoint",
+                reported_error_count=reported_error_count,
+                derived_error_count=derived_error_count,
+                context_error_count=context_error_count,
+                warning_count=total_warning_count,
+                actual_source_tiers=actual_source_tiers,
             )
             logger.warning(
                 f"Checkpoint FAILED: {checkpoint['reasons']}. "
@@ -324,29 +346,40 @@ class FactService:
             f"{len(derived_facts)} derived facts in transaction..."
         )
 
+        # Initialize store result variables for the except handler
+        reported_result: StoreFactsResult | None = None
+        derived_result: StoreFactsResult | None = None
+        ctx_result: StoreFactsResult | None = None
+
         try:
             with self.repo.transaction() as conn:
                 # 10a. 种子概念
                 self.repo.seed_concepts(conn=conn)
 
                 # 10b. 写入 contexts
-                stored_ctx = self.repo.store_contexts(contexts, conn=conn)
-                logger.info(f"Stored {stored_ctx} contexts")
+                ctx_result = self.repo.store_contexts(contexts, conn=conn)
+                logger.info(
+                    f"Contexts: {ctx_result.inserted} inserted, "
+                    f"{ctx_result.unchanged} unchanged"
+                )
 
                 # 10c. 写入 reported facts
-                stored_reported = self.repo.store_facts(
+                reported_result = self.repo.store_facts(
                     reported_facts, conn=conn,
                 )
-                logger.info(f"Stored {stored_reported} reported facts")
+                logger.info(
+                    f"Reported facts: {reported_result.inserted} inserted, "
+                    f"{reported_result.unchanged} unchanged"
+                )
 
                 # 10d. 写入 derived facts
-                stored_derived = 0
                 if derived_facts:
-                    stored_derived = self.repo.store_facts(
+                    derived_result = self.repo.store_facts(
                         derived_facts, conn=conn,
                     )
                     logger.info(
-                        f"Stored {stored_derived} derived facts"
+                        f"Derived facts: {derived_result.inserted} inserted, "
+                        f"{derived_result.unchanged} unchanged"
                     )
 
                 # 10e. 写入验证运行摘要
@@ -395,37 +428,33 @@ class FactService:
                     )
                 logger.info("Lineage records written")
 
-                # 10h. 验证写入行数与预期一致（按 fact_id 精确计数）
-                all_fact_ids = [f.get("fact_id", "") for f in reported_facts]
-                all_fact_ids += [f.get("fact_id", "") for f in derived_facts]
-                self._verify_counts(
-                    conn=conn,
-                    fact_ids=all_fact_ids,
-                    expected_reported=len(reported_facts),
-                    expected_derived=len(derived_facts),
-                )
-
             logger.info(
                 f"Transaction committed — "
-                f"{stored_reported} reported + "
-                f"{stored_derived} derived facts"
+                f"{reported_result.inserted} reported + "
+                f"{derived_result.inserted if derived_result else 0} derived facts"
             )
 
+            # Set fact counts based on source_mode
+            total_fact_count = len(reported_facts) + len(derived_facts)
+            if source_mode == "candidate":
+                manifest.entry.candidate_fact_count = total_fact_count
+            else:
+                manifest.entry.official_fact_count = total_fact_count
+
         except Exception as exc:
-            manifest.complete_with_details(
-                status="failed",
-                error_counts={
-                    "reported": reported_error_count,
-                    "derived": derived_error_count,
-                    "context": context_error_count,
-                },
-                transaction_success=False,
-                failure_stage="transaction",
-            )
-            manifest.write_manifest(
-                f"output/value_assessment/{symbol}/runs/{run_id}/run_manifest.json"
-            )
             logger.error(f"Transaction failed (rolled back): {exc}")
+            self._finalize_and_write_manifest(
+                manifest=manifest,
+                output_path=output_path,
+                status="failed",
+                transaction_committed=False,
+                failure_stage="transaction",
+                reported_error_count=reported_error_count,
+                derived_error_count=derived_error_count,
+                context_error_count=context_error_count,
+                warning_count=total_warning_count,
+                actual_source_tiers=actual_source_tiers,
+            )
             return _build_result(
                 manifest=manifest,
                 reported_count=len(reported_facts),
@@ -439,32 +468,21 @@ class FactService:
             )
 
         # ── 阶段 11: 完成并返回 ──
-        manifest.complete_with_details(
+        self._finalize_and_write_manifest(
+            manifest=manifest,
+            output_path=output_path,
             status=status,
-            error_counts={
-                "reported": reported_error_count,
-                "derived": derived_error_count,
-                "context": context_error_count,
-            },
-            transaction_success=True,
-            failure_stage="" if status != "failed" else "checkpoint",
-        )
-        manifest.entry.checkpoint_status = checkpoint_decision
-        manifest.entry.source_tiers = [
-            "candidate_aggregator" if source_mode == "candidate"
-            else "company_official"
-        ]
-        manifest.entry.transaction_committed = True
-        if source_mode == "candidate":
-            manifest.entry.candidate_fact_count = (
-                len(reported_facts) + len(derived_facts)
-            )
-        else:
-            manifest.entry.official_fact_count = (
-                len(reported_facts) + len(derived_facts)
-            )
-        manifest.write_manifest(
-            f"output/value_assessment/{symbol}/runs/{run_id}/run_manifest.json"
+            checkpoint_status=checkpoint_decision,
+            transaction_committed=True,
+            failure_stage="",
+            reported_error_count=reported_error_count,
+            derived_error_count=derived_error_count,
+            context_error_count=context_error_count,
+            warning_count=total_warning_count,
+            reported_store_result=reported_result,
+            derived_store_result=derived_result,
+            context_store_result=ctx_result,
+            actual_source_tiers=actual_source_tiers,
         )
 
         logger.info(
@@ -501,6 +519,20 @@ class FactService:
         )
 
     # ── 内部方法 ──────────────────────────────────────────
+
+    @staticmethod
+    def _resolve_job_name(source_mode: str) -> str:
+        """根据 source_mode 解析 job_name。"""
+        if source_mode == "official":
+            return "build-official-value-facts"
+        return "build-candidate-value-facts"
+
+    @staticmethod
+    def _resolve_source_tiers(source_mode: str) -> list[str]:
+        """根据 source_mode 解析 source_tiers 列表（使用枚举值）。"""
+        if source_mode == "official":
+            return [SourceTier.company_official.value]
+        return [SourceTier.candidate_aggregator.value]
 
     def _build_contexts(
         self, symbol: str, facts: list[dict[str, Any]],
@@ -674,77 +706,63 @@ class FactService:
         }
 
     def _finalize_and_write_manifest(
-        self, manifest, symbol: str, run_id: str,
-        status: str, failure_stage: str = "",
+        self,
+        manifest: LineageManifest,
+        output_path: str,
+        *,
+        status: str,
+        checkpoint_status: str = "",
+        transaction_committed: bool = False,
+        failure_stage: str = "",
+        reported_error_count: int = 0,
+        derived_error_count: int = 0,
+        context_error_count: int = 0,
+        warning_count: int = 0,
+        reported_store_result: StoreFactsResult | None = None,
+        derived_store_result: StoreFactsResult | None = None,
+        context_store_result: StoreFactsResult | None = None,
+        actual_source_tiers: list[str] | None = None,
     ) -> None:
         """统一入口：完成 manifest 并写入文件。
 
         所有返回路径（passed/conditional_pass/failed）都必须经过此方法。
+        所有字段均通过显式参数传入，不读取 manifest.entry 中的值。
         """
-        manifest.complete_with_details(
-            status=status,
-            error_counts={
-                "reported":
-                    getattr(manifest.entry, "reported_error_count", 0),
-                "derived":
-                    getattr(manifest.entry, "derived_error_count", 0),
-                "context":
-                    getattr(manifest.entry, "context_error_count", 0),
-            },
-            transaction_success=(
-                False if status == "failed" else
-                getattr(manifest.entry, "transaction_committed", False)
-            ),
-            failure_stage=failure_stage if status == "failed" else "",
+        manifest.entry.status = status
+        manifest.entry.completed_at = datetime.now().isoformat()
+        manifest.entry.checkpoint_status = checkpoint_status
+        manifest.entry.transaction_committed = transaction_committed
+        manifest.entry.failure_stage = failure_stage
+        manifest.entry.reported_error_count = reported_error_count
+        manifest.entry.derived_error_count = derived_error_count
+        manifest.entry.context_error_count = context_error_count
+        manifest.entry.error_count = (
+            reported_error_count + derived_error_count + context_error_count
         )
-        manifest.write_manifest(
-            f"output/value_assessment/{symbol}/runs/{run_id}/run_manifest.json"
-        )
+        manifest.entry.warning_count = warning_count
 
-    @staticmethod
-    def _verify_counts(
-        conn,
-        fact_ids: list[str],
-        expected_reported: int,
-        expected_derived: int,
-    ) -> None:
-        """在事务内验证本次写入行数与预期一致。
+        if actual_source_tiers is not None:
+            manifest.entry.source_tiers = actual_source_tiers
 
-        按 fact_id 精确匹配，不按 symbol 全表计数。
-        失败时抛出 FactCheckpointError 触发回滚。
-        """
-        if not fact_ids:
-            raise FactCheckpointError("No fact_ids provided for verification")
+        if reported_store_result is not None:
+            manifest.entry.reported_requested = reported_store_result.requested
+            manifest.entry.reported_inserted = reported_store_result.inserted
+            manifest.entry.reported_unchanged = reported_store_result.unchanged
+            manifest.entry.reported_conflicts = reported_store_result.conflicts
 
-        placeholders = ", ".join(["?"] * len(fact_ids))
-        result = conn.execute(
-            f"SELECT is_derived, COUNT(*) "
-            f"FROM financial_facts "
-            f"WHERE fact_id IN ({placeholders}) "
-            f"GROUP BY is_derived",
-            fact_ids,
-        ).fetchall()
+        if derived_store_result is not None:
+            manifest.entry.derived_requested = derived_store_result.requested
+            manifest.entry.derived_inserted = derived_store_result.inserted
+            manifest.entry.derived_unchanged = derived_store_result.unchanged
+            manifest.entry.derived_conflicts = derived_store_result.conflicts
 
-        actual: dict[bool, int] = {False: 0, True: 0}
-        for row in result:
-            actual[bool(row[0])] = row[1]
+        if context_store_result is not None:
+            manifest.entry.contexts_requested = context_store_result.requested
+            manifest.entry.contexts_inserted = context_store_result.inserted
+            manifest.entry.contexts_unchanged = context_store_result.unchanged
+            manifest.entry.contexts_conflicts = context_store_result.conflicts
 
-        if actual[False] != expected_reported:
-            raise FactCheckpointError(
-                f"Reported fact count mismatch: "
-                f"expected {expected_reported}, wrote {actual[False]}"
-            )
-
-        if actual[True] != expected_derived:
-            raise FactCheckpointError(
-                f"Derived fact count mismatch: "
-                f"expected {expected_derived}, wrote {actual[True]}"
-            )
-
-        logger.info(
-            f"Count verification passed: "
-            f"{actual[False]} reported, {actual[True]} derived"
-        )
+        manifest.write_manifest(output_path)
 
 
 # ── 辅助函数 ──────────────────────────────────────────────

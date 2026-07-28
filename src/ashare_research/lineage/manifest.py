@@ -46,6 +46,7 @@ class ManifestEntry:
     derived_error_count: int = 0
     context_error_count: int = 0
     checkpoint_status: str = ""
+    requested_source_mode: str = ""
     source_tiers: list = field(default_factory=list)
     candidate_fact_count: int = 0
     official_fact_count: int = 0
@@ -55,6 +56,19 @@ class ManifestEntry:
     mismatch_fact_count: int = 0
     fact_schema_version: str = "2.0"
     concept_registry_version: str = "2.0"
+    # Store result breakdowns
+    reported_requested: int = 0
+    reported_inserted: int = 0
+    reported_unchanged: int = 0
+    reported_conflicts: int = 0
+    derived_requested: int = 0
+    derived_inserted: int = 0
+    derived_unchanged: int = 0
+    derived_conflicts: int = 0
+    contexts_requested: int = 0
+    contexts_inserted: int = 0
+    contexts_unchanged: int = 0
+    contexts_conflicts: int = 0
 
 
 class LineageManifest:

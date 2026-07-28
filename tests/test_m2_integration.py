@@ -12,8 +12,6 @@ from pathlib import Path
 import pandas as pd
 import pytest
 
-import pytest
-
 from ashare_research.exceptions import FactSchemaMigrationError
 from ashare_research.facts.as_of import AsOfQuery
 from ashare_research.facts.repository import FactRepository
@@ -171,7 +169,7 @@ class TestFactRepositoryTransactions:
         assert _count_table(repo, "financial_facts") == 0
 
     def test_store_count_verification(self, tmp_path: Path):
-        """store_facts 返回的计数与实际写入行数一致，不一致时抛出异常。"""
+        """store_facts 返回的 StoreFactsResult.inserted 与实际写入行数一致。"""
         db = _make_db_path(tmp_path)
         repo = _setup_repo(db)
 
@@ -181,8 +179,11 @@ class TestFactRepositoryTransactions:
         ]
 
         with repo.transaction() as conn:
-            count = repo.store_facts(facts, conn=conn)
-            assert count == 5
+            result = repo.store_facts(facts, conn=conn)
+            assert result.inserted == 5
+            assert result.unchanged == 0
+            assert result.conflicts == 0
+            assert result.requested == 5
 
         # 验证库中实际行数
         assert _count_table(repo, "financial_facts") == 5
@@ -702,14 +703,16 @@ class TestConceptSeeding:
         assert table_count == count
 
     def test_seed_concepts_idempotent(self, tmp_path: Path):
-        """重复 seed_concepts 不重复插入行（ON CONFLICT 处理）。"""
+        """重复 seed_concepts 不重复插入行，第二次插入计数为 0。"""
         db = _make_db_path(tmp_path)
         repo = _setup_repo(db)
 
         c1 = repo.seed_concepts()
         c2 = repo.seed_concepts()
-        assert c2 == c1
+        # 第二次调用应无新插入
+        assert c2 == 0
 
+        # 表中行数应保持不变
         table_count = _count_table(repo, "concept_registry")
         assert table_count == c1
 
@@ -760,9 +763,9 @@ class TestFactServiceEndToEnd:
     """
 
     def _setup_service(self, tmp_path):
+        from ashare_research.fact_sources.registry import FactSourceRegistry
         from ashare_research.facts.repository import FactRepository
         from ashare_research.facts.service import FactService
-        from ashare_research.fact_sources.registry import FactSourceRegistry
         from ashare_research.storage.duckdb_store import DuckDBStore
 
         db_path = tmp_path / "test_e2e.duckdb"
@@ -790,23 +793,23 @@ class TestFactServiceEndToEnd:
 
     def test_build_facts_import_works(self, tmp_path):
         """FactService 和 CLI 可成功导入。"""
-        from ashare_research.facts.service import FactService
         from ashare_research.fact_sources.registry import FactSourceRegistry
+        from ashare_research.facts.service import FactService
         assert FactService is not None
         assert FactSourceRegistry is not None
 
     def test_registry_rejects_invalid_source_mode(self, tmp_path):
         """source_mode 非法时 registry 应拒绝。"""
-        from ashare_research.fact_sources.registry import FactSourceRegistry
         from ashare_research.exceptions import AshareDataError
+        from ashare_research.fact_sources.registry import FactSourceRegistry
         registry = FactSourceRegistry()
         with pytest.raises(AshareDataError, match="Invalid source_mode"):
             registry.get_provider("601857.SH", source_mode="offical")
 
     def test_official_mode_fails_when_not_registered(self, tmp_path):
         """--source official 在未注册时应明确失败。"""
-        from ashare_research.fact_sources.registry import FactSourceRegistry
         from ashare_research.exceptions import AshareDataError
+        from ashare_research.fact_sources.registry import FactSourceRegistry
         registry = FactSourceRegistry()
         with pytest.raises(AshareDataError, match="No official source"):
             registry.get_provider("601857.SH", source_mode="official")
@@ -827,10 +830,11 @@ class TestFactServiceEndToEnd:
         使用 Mock FactSourceProvider 绕过 AKShare API 依赖，
         测试 FactService 完整流程。
         """
-        from ashare_research.fact_sources.registry import FactSourceRegistry
         from ashare_research.fact_sources.base import (
-            FactSourceProvider, SourceTier,
+            FactSourceProvider,
+            SourceTier,
         )
+        from ashare_research.fact_sources.registry import FactSourceRegistry
 
         class MockFactProvider(FactSourceProvider):
             provider_name = "mock_fact"
@@ -903,7 +907,8 @@ class TestFactServiceEndToEnd:
     def test_repeated_build_is_idempotent(self, tmp_path):
         """相同参数重复构建不应因主键冲突失败。"""
         from ashare_research.fact_sources.base import (
-            FactSourceProvider, SourceTier,
+            FactSourceProvider,
+            SourceTier,
         )
         from ashare_research.fact_sources.registry import FactSourceRegistry
         from ashare_research.facts.repository import FactRepository

@@ -5,20 +5,26 @@
 - 不再静默吞掉异常
 - PIT 查询强制排除空 available_at
 - Schema v2.0 + migration safety
+- 幂等 check-then-insert-or-update：不再使用 INSERT OR REPLACE
 """
 
 from __future__ import annotations
 
 import contextlib
+import json
 import logging
+from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any
 
 import pandas as pd
 
 from ashare_research.exceptions import (
+    ConceptVersionConflictError,
+    ContextVersionConflictError,
     FactPersistenceError,
     FactSchemaMigrationError,
+    FactVersionConflictError,
 )
 from ashare_research.storage.duckdb_store import DuckDBStore
 
@@ -145,6 +151,42 @@ CREATE TABLE IF NOT EXISTS fact_validation_results (
 CREATE SEQUENCE IF NOT EXISTS fact_validation_seq START 1;
 """
 
+# ── 语义比较字段集 ──────────────────────────────────────
+
+_FACT_SEMANTIC_FIELDS = [
+    "value", "unit", "source_tier", "announcement_date",
+    "available_at", "verification_status", "eligible_for_metrics",
+    "period_end", "filing_date", "raw_value", "normalized_value",
+    "restatement_version", "supersedes_fact_id",
+    "derivation_definition_id", "derivation_version",
+]
+
+_CTX_SEMANTIC_FIELDS = [
+    "symbol", "fiscal_year", "period_type", "period_start", "period_end",
+    "instant_or_duration", "consolidation_scope", "accounting_standard",
+    "restatement_version", "source_document", "filing_date",
+]
+
+_CONCEPT_SEMANTIC_FIELDS = [
+    "display_name", "display_name_zh", "description", "parent_concept_id",
+    "category", "statement_type", "instant_or_duration", "canonical_unit",
+]
+
+
+@dataclass
+class StoreFactsResult:
+    """store_facts / store_contexts 的返回值。
+
+    调用方据此判断哪些事实是新写入、哪些因内容相同被跳过、
+    以及是否有冲突。
+    """
+    requested: int
+    inserted: int
+    unchanged: int
+    conflicts: int
+    inserted_ids: list[str] = field(default_factory=list)
+    unchanged_ids: list[str] = field(default_factory=list)
+
 
 class FactRepository:
     """事务化财务事实仓库。"""
@@ -251,6 +293,7 @@ class FactRepository:
     ) -> None:
         """记录 schema 迁移元数据。
 
+        幂等：已存在则 UPDATE，不存在则 INSERT。
         用于在事务中与其他写入一起原子提交 schema 版本记录。
         """
         close_conn = False
@@ -259,12 +302,24 @@ class FactRepository:
             close_conn = True
         try:
             now = datetime.now().isoformat()
-            conn.execute(
-                """INSERT OR REPLACE INTO fact_schema_meta
-                   (schema_name, schema_version, applied_at, git_commit)
-                   VALUES (?, ?, ?, ?)""",
-                [schema_name, schema_version, now, git_commit],
-            )
+            exists = conn.execute(
+                "SELECT 1 FROM fact_schema_meta WHERE schema_name = ?",
+                [schema_name],
+            ).fetchone()
+            if exists:
+                conn.execute(
+                    """UPDATE fact_schema_meta
+                       SET schema_version = ?, applied_at = ?, git_commit = ?
+                       WHERE schema_name = ?""",
+                    [schema_version, now, git_commit, schema_name],
+                )
+            else:
+                conn.execute(
+                    """INSERT INTO fact_schema_meta
+                       (schema_name, schema_version, applied_at, git_commit)
+                       VALUES (?, ?, ?, ?)""",
+                    [schema_name, schema_version, now, git_commit],
+                )
         finally:
             if close_conn:
                 pass  # DuckDB manages connection lifecycle
@@ -319,7 +374,8 @@ class FactRepository:
     def seed_concepts(self, conn=None) -> int:
         """将概念注册表种子写入 DuckDB。
 
-        使用 INSERT ON CONFLICT 避免覆盖已有版本。
+        幂等 check-then-insert：已存在且语义相同 → 跳过；
+        已存在但内容不同 → 抛出 ConceptVersionConflictError。
         """
         from ashare_research.facts.concepts import ConceptRegistry
 
@@ -333,31 +389,68 @@ class FactRepository:
 
         try:
             for concept in ConceptRegistry.list_all():
-                conn.execute(
-                    """INSERT INTO concept_registry
-                       (concept_id, version, display_name,
-                        display_name_zh, description, parent_concept_id,
-                        category, statement_type, instant_or_duration,
-                        canonical_unit, created_at)
-                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                       ON CONFLICT (concept_id, version) DO UPDATE SET
-                        display_name=excluded.display_name,
-                        display_name_zh=excluded.display_name_zh,
-                        canonical_unit=excluded.canonical_unit""",
-                    [
-                        concept.concept_id, concept.version,
-                        concept.display_name,
-                        concept.display_name_zh,
-                        concept.description,
-                        concept.parent_concept_id,
-                        concept.category.value,
-                        concept.statement_type,
-                        concept.instant_or_duration.value,
-                        concept.canonical_unit,
-                        now,
-                    ],
-                )
-                count += 1
+                new_row = {
+                    "concept_id": concept.concept_id,
+                    "version": concept.version,
+                    "display_name": concept.display_name,
+                    "display_name_zh": concept.display_name_zh,
+                    "description": concept.description,
+                    "parent_concept_id": concept.parent_concept_id,
+                    "category": concept.category.value,
+                    "statement_type": concept.statement_type,
+                    "instant_or_duration": concept.instant_or_duration.value,
+                    "canonical_unit": concept.canonical_unit,
+                }
+
+                existing = conn.execute(
+                    """SELECT display_name, display_name_zh, description,
+                              parent_concept_id, category, statement_type,
+                              instant_or_duration, canonical_unit
+                       FROM concept_registry
+                       WHERE concept_id = ? AND version = ?""",
+                    [concept.concept_id, concept.version],
+                ).fetchone()
+
+                if existing is None:
+                    conn.execute(
+                        """INSERT INTO concept_registry
+                           (concept_id, version, display_name,
+                            display_name_zh, description, parent_concept_id,
+                            category, statement_type, instant_or_duration,
+                            canonical_unit, created_at)
+                           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                        [
+                            concept.concept_id, concept.version,
+                            concept.display_name,
+                            concept.display_name_zh,
+                            concept.description,
+                            concept.parent_concept_id,
+                            concept.category.value,
+                            concept.statement_type,
+                            concept.instant_or_duration.value,
+                            concept.canonical_unit,
+                            now,
+                        ],
+                    )
+                    count += 1
+                else:
+                    # 逐字段比较语义内容
+                    col_names = [
+                        "display_name", "display_name_zh", "description",
+                        "parent_concept_id", "category", "statement_type",
+                        "instant_or_duration", "canonical_unit",
+                    ]
+                    match = True
+                    for i, col in enumerate(col_names):
+                        if existing[i] != new_row[col]:
+                            match = False
+                            break
+                    if not match:
+                        raise ConceptVersionConflictError(
+                            f"Concept {concept.concept_id} v{concept.version} "
+                            f"already exists with different content."
+                        )
+                    # 内容相同：跳过（幂等）
         finally:
             if close_conn:
                 pass  # DuckDB manages connection lifecycle
@@ -365,7 +458,7 @@ class FactRepository:
         logger.info(f"Seeded {count} concepts")
         return count
 
-    # ── 存储（事务化） ──────────────────────────────────
+    # ── 列定义 ──────────────────────────────────────────
 
     _FACT_COLS = [
         "fact_id", "concept_id", "concept_version", "symbol",
@@ -390,13 +483,85 @@ class FactRepository:
         "filing_date", "created_at",
     ]
 
+    # ── 存储辅助方法 ────────────────────────────────────
+
+    def _get_fact_by_id(self, fact_id: str, conn) -> dict | None:
+        """按 fact_id 查询已存在的事实行，不存在返回 None。"""
+        df = conn.execute(
+            "SELECT * FROM financial_facts WHERE fact_id = ?",
+            [fact_id],
+        ).df()
+        if df.empty:
+            return None
+        return df.iloc[0].to_dict()
+
+    @staticmethod
+    def _facts_semantically_equal(existing: dict, fact: dict) -> bool:
+        """比较两条事实的语义内容是否一致。
+
+        比较值、单位、来源层级、公告日、可用日、核验状态、
+        是否可用于指标、期末日、申报日、原始值、标准化值、
+        重述版本、替代事实、派生定义、派生版本和输入事实列表。
+        对 input_fact_ids 使用 json.dumps(sort_keys=True) 进行列表规范化比较。
+        """
+        for fld in _FACT_SEMANTIC_FIELDS:
+            if existing.get(fld) != fact.get(fld):
+                return False
+
+        # input_fact_ids: 使用 JSON 序列化（sort_keys）规范化列表顺序
+        ex_input = existing.get("input_fact_ids")
+        fa_input = fact.get("input_fact_ids")
+
+        def _normalize_list_field(v: Any) -> str | None:
+            if v is None:
+                return None
+            if isinstance(v, list):
+                return json.dumps(v, sort_keys=True)
+            if isinstance(v, str):
+                stripped = v.strip()
+                if not stripped:
+                    return None
+                try:
+                    parsed = json.loads(stripped)
+                    if isinstance(parsed, list):
+                        return json.dumps(parsed, sort_keys=True)
+                except (json.JSONDecodeError, TypeError):
+                    pass
+                return stripped
+            return str(v)
+
+        norm_ex = _normalize_list_field(ex_input)
+        norm_fa = _normalize_list_field(fa_input)
+
+        return norm_ex == norm_fa
+
+    @staticmethod
+    def _contexts_semantically_equal(
+        existing: dict, context: dict,
+    ) -> bool:
+        """比较两个上下文的语义内容是否一致。
+
+        比较除 context_id 和 created_at 之外的所有业务字段。
+        """
+        return all(
+            existing.get(fld) == context.get(fld)
+            for fld in _CTX_SEMANTIC_FIELDS
+        )
+
+    # ── 存储（幂等 check-then-insert） ──────────────────
+
     def store_facts(
         self, facts: list[dict[str, Any]], conn=None,
-    ) -> int:
-        """事务化批量写入事实。
+    ) -> StoreFactsResult:
+        """幂等批量写入事实。
 
-        任意一条失败 → 抛出 FactPersistenceError（调用方负责回滚）。
-        写入后验证实际行数与预期一致。
+        对每条事实：
+        - SELECT 已有行（按 fact_id）；
+        - 无 → INSERT → 计入 inserted；
+        - 有且语义相同 → 跳过 → 计入 unchanged；
+        - 有但内容不同 → 抛出 FactVersionConflictError。
+
+        任意冲突 → 调用方负责回滚。
         """
         close_conn = False
         if conn is None:
@@ -404,38 +569,61 @@ class FactRepository:
             close_conn = True
 
         try:
-            # 记录写入前计数用于后续验证
-            before = conn.execute(
-                "SELECT COUNT(*) FROM financial_facts"
-            ).fetchone()[0]
+            requested = len(facts)
+            inserted = 0
+            unchanged = 0
+            conflicts = 0
+            inserted_ids: list[str] = []
+            unchanged_ids: list[str] = []
 
             placeholders = ", ".join(["?"] * len(self._FACT_COLS))
             col_names = ", ".join(self._FACT_COLS)
 
             for fact in facts:
-                vals = []
-                for col in self._FACT_COLS:
-                    vals.append(fact.get(col, ""))
-                conn.execute(
-                    f"INSERT OR REPLACE INTO financial_facts "
-                    f"({col_names}) VALUES ({placeholders})",
-                    vals,
-                )
+                fact_id = fact.get("fact_id", "")
+                if not fact_id:
+                    raise FactPersistenceError(
+                        "fact_id is required for store_facts"
+                    )
 
-            # 验证写入数量与预期一致
-            after = conn.execute(
-                "SELECT COUNT(*) FROM financial_facts"
-            ).fetchone()[0]
-            actual_inserted = after - before
-            expected = len(facts)
+                existing = self._get_fact_by_id(fact_id, conn)
 
-            if actual_inserted != expected:
-                raise FactPersistenceError(
-                    f"Fact count mismatch after store: "
-                    f"expected {expected}, got {actual_inserted}"
-                )
+                if existing is None:
+                    vals = [fact.get(col, "") for col in self._FACT_COLS]
+                    conn.execute(
+                        f"INSERT INTO financial_facts "
+                        f"({col_names}) VALUES ({placeholders})",
+                        vals,
+                    )
+                    inserted += 1
+                    inserted_ids.append(fact_id)
+                elif self._facts_semantically_equal(existing, fact):
+                    unchanged += 1
+                    unchanged_ids.append(fact_id)
+                else:
+                    conflicts += 1
+                    raise FactVersionConflictError(
+                        f"Fact {fact_id} already exists with different "
+                        f"content. Existing value={existing.get('value')} "
+                        f"{existing.get('unit')}, "
+                        f"new value={fact.get('value')} {fact.get('unit')}"
+                    )
 
-            return actual_inserted
+            result = StoreFactsResult(
+                requested=requested,
+                inserted=inserted,
+                unchanged=unchanged,
+                conflicts=conflicts,
+                inserted_ids=inserted_ids,
+                unchanged_ids=unchanged_ids,
+            )
+            logger.info(
+                f"store_facts: {inserted} inserted, {unchanged} unchanged, "
+                f"{conflicts} conflicts out of {requested} requested"
+            )
+            return result
+        except FactVersionConflictError:
+            raise
         except FactPersistenceError:
             raise
         except Exception as e:
@@ -448,26 +636,80 @@ class FactRepository:
 
     def store_contexts(
         self, contexts: list[dict[str, Any]], conn=None,
-    ) -> int:
-        """事务化批量写入事实上下文。
+    ) -> StoreFactsResult:
+        """幂等批量写入事实上下文。
 
-        任意一条失败 → 抛出 FactPersistenceError。
+        对每条上下文：
+        - SELECT 已有行（按 context_id）；
+        - 无 → INSERT → 计入 inserted；
+        - 有且语义相同 → 跳过 → 计入 unchanged；
+        - 有但内容不同 → 抛出 ContextVersionConflictError。
         """
         close_conn = False
         if conn is None:
             conn = self.store.connect()
             close_conn = True
         try:
+            requested = len(contexts)
+            inserted = 0
+            unchanged = 0
+            conflicts = 0
+            inserted_ids: list[str] = []
+            unchanged_ids: list[str] = []
+
+            col_names = ", ".join(self._CTX_COLS)
+            placeholders = ", ".join(["?"] * len(self._CTX_COLS))
+
             for ctx in contexts:
-                vals = [ctx.get(col, "") for col in self._CTX_COLS]
-                placeholders = ", ".join(["?"] * len(vals))
-                col_names = ", ".join(self._CTX_COLS)
-                conn.execute(
-                    f"INSERT OR REPLACE INTO fact_contexts "
-                    f"({col_names}) VALUES ({placeholders})",
-                    vals,
-                )
-            return len(contexts)
+                ctx_id = ctx.get("context_id", "")
+                if not ctx_id:
+                    raise FactPersistenceError(
+                        "context_id is required for store_contexts"
+                    )
+
+                existing_df = conn.execute(
+                    "SELECT * FROM fact_contexts WHERE context_id = ?",
+                    [ctx_id],
+                ).df()
+
+                if existing_df.empty:
+                    vals = [ctx.get(col, "") for col in self._CTX_COLS]
+                    conn.execute(
+                        f"INSERT INTO fact_contexts "
+                        f"({col_names}) VALUES ({placeholders})",
+                        vals,
+                    )
+                    inserted += 1
+                    inserted_ids.append(ctx_id)
+                else:
+                    existing = existing_df.iloc[0].to_dict()
+                    if self._contexts_semantically_equal(existing, ctx):
+                        unchanged += 1
+                        unchanged_ids.append(ctx_id)
+                    else:
+                        conflicts += 1
+                        raise ContextVersionConflictError(
+                            f"Context {ctx_id} already exists with different "
+                            f"content."
+                        )
+
+            result = StoreFactsResult(
+                requested=requested,
+                inserted=inserted,
+                unchanged=unchanged,
+                conflicts=conflicts,
+                inserted_ids=inserted_ids,
+                unchanged_ids=unchanged_ids,
+            )
+            logger.info(
+                f"store_contexts: {inserted} inserted, {unchanged} unchanged, "
+                f"{conflicts} conflicts out of {requested} requested"
+            )
+            return result
+        except ContextVersionConflictError:
+            raise
+        except FactPersistenceError:
+            raise
         except Exception as e:
             raise FactPersistenceError(
                 f"Failed to store contexts: {e}"
@@ -483,6 +725,7 @@ class FactRepository:
     ) -> None:
         """记录一次验证运行。
 
+        幂等：已存在则 UPDATE，不存在则 INSERT。
         可选传入 conn 以参与外部事务。
         """
         close_conn = False
@@ -491,14 +734,29 @@ class FactRepository:
             close_conn = True
         try:
             now = datetime.now().isoformat()
-            conn.execute(
-                """INSERT OR REPLACE INTO fact_validation_runs
-                   (validation_run_id, started_at, completed_at,
-                    fact_count, error_count, warning_count, status)
-                   VALUES (?, ?, ?, ?, ?, ?, ?)""",
-                [run_id, now, now, fact_count, error_count,
-                 warning_count, status],
-            )
+            exists = conn.execute(
+                "SELECT 1 FROM fact_validation_runs "
+                "WHERE validation_run_id = ?",
+                [run_id],
+            ).fetchone()
+            if exists:
+                conn.execute(
+                    """UPDATE fact_validation_runs
+                       SET completed_at = ?, fact_count = ?,
+                           error_count = ?, warning_count = ?, status = ?
+                       WHERE validation_run_id = ?""",
+                    [now, fact_count, error_count, warning_count,
+                     status, run_id],
+                )
+            else:
+                conn.execute(
+                    """INSERT INTO fact_validation_runs
+                       (validation_run_id, started_at, completed_at,
+                        fact_count, error_count, warning_count, status)
+                       VALUES (?, ?, ?, ?, ?, ?, ?)""",
+                    [run_id, now, now, fact_count, error_count,
+                     warning_count, status],
+                )
         finally:
             if close_conn:
                 pass  # DuckDB manages connection lifecycle
@@ -509,6 +767,7 @@ class FactRepository:
     ) -> int:
         """批量写入验证结果。
 
+        每次调用 INSERT 新行（使用序列生成主键），允许重复运行。
         可选传入 conn 以参与外部事务。
         返回写入条数。
         """
@@ -555,6 +814,7 @@ class FactRepository:
     ) -> None:
         """记录单条事实的数据沿袭。
 
+        直接 INSERT（允许同一 fact 多条沿袭记录）。
         可选传入 conn 以参与外部事务。
         """
         close_conn = False

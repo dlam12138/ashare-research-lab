@@ -31,6 +31,7 @@ htmlcov/
 desktop.ini
 
 # M2 output (generated at runtime)
+output/
 output/*
 
 # Data (generated at runtime)

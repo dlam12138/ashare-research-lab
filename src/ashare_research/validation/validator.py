@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import logging
 import math
-from datetime import datetime
+from datetime import date, datetime
 from typing import Any
 
 from ashare_research.facts.concepts import ConceptRegistry
@@ -25,6 +25,29 @@ class FactValidator:
 
     def __init__(self):
         pass
+
+    @staticmethod
+    def _parse_optional_iso_date(
+        value: Any, field_name: str,
+    ) -> date | None:
+        """将可选的 ISO 日期字符串解析为 date，无效日期抛出 ValueError。
+
+        捕获 2025-02-30、2025-13-01 等无效日历日期，
+        同时也拒绝空字符串和空白字符串。
+        """
+        if value is None or (isinstance(value, str) and value.strip() == ""):
+            return None
+        if not isinstance(value, str):
+            raise ValueError(
+                f"{field_name}: expected str, got {type(value).__name__}: "
+                f"{value!r}"
+            )
+        try:
+            return date.fromisoformat(value.strip())
+        except (ValueError, TypeError) as exc:
+            raise ValueError(
+                f"{field_name}: invalid calendar date: {value!r}"
+            ) from exc
 
     def validate_batch(
         self, facts: list[dict[str, Any]]
@@ -146,24 +169,88 @@ class FactValidator:
                 checked_at=now,
             ))
 
-        # FACT_PERIOD_001: filing_date >= period_end
+        # FACT_PERIOD_001: period_start <= period_end, filing_date >= period_end
+        pe = fact.get("period_end", "")
+        ps = fact.get("period_start", "")
         filing = fact.get("filing_date", "")
-        period_end = fact.get("period_end", "")
-        if filing and period_end and filing < period_end:
+        period_ok = True
+        period_msg_parts: list[str] = []
+        try:
+            pe_date = self._parse_optional_iso_date(pe, "period_end")
+            ps_date = self._parse_optional_iso_date(ps, "period_start")
+            filing_date = self._parse_optional_iso_date(filing, "filing_date")
+        except ValueError as exc:
             results.append(FactValidationResult(
                 rule_id="FACT_PERIOD_001", target_id=fid,
                 severity="error", passed=False,
-                expected="filing_date >= period_end",
-                actual=f"{filing} < {period_end}",
-                message=f"Filing date {filing} precedes "
-                        f"report period end {period_end}",
+                expected="period_end, period_start, and filing_date "
+                         "must be valid calendar dates (ISO 8601, YYYY-MM-DD)",
+                actual=str(exc),
+                message=str(exc),
                 checked_at=now,
             ))
-        else:
+            period_ok = False
+        if period_ok:
+            if pe_date is not None and ps_date is not None and ps_date > pe_date:
+                results.append(FactValidationResult(
+                    rule_id="FACT_PERIOD_001", target_id=fid,
+                    severity="error", passed=False,
+                    expected="period_start <= period_end",
+                    actual=f"period_start={ps} > period_end={pe}",
+                    message=f"period_start {ps} after period_end {pe}",
+                    checked_at=now,
+                ))
+            elif pe_date is not None and filing_date is not None and filing_date < pe_date:
+                results.append(FactValidationResult(
+                    rule_id="FACT_PERIOD_001", target_id=fid,
+                    severity="error", passed=False,
+                    expected="filing_date >= period_end",
+                    actual=f"filing_date={filing} < period_end={pe}",
+                    message=f"filing_date {filing} before period_end {pe}",
+                    checked_at=now,
+                ))
+            else:
+                results.append(FactValidationResult(
+                    rule_id="FACT_PERIOD_001", target_id=fid,
+                    severity="error", passed=True,
+                    message="filing_date >= period_end, "
+                            "period_start <= period_end",
+                    checked_at=now,
+                ))
+
+        # FACT_DATE_001: period_end 对所有事实必须是有效日历日期；
+        #                period_start 若存在也必须有效。
+        try:
+            self._parse_optional_iso_date(
+                fact.get("period_end", ""), "period_end"
+            )
+        except ValueError as exc:
             results.append(FactValidationResult(
-                rule_id="FACT_PERIOD_001", target_id=fid,
+                rule_id="FACT_DATE_001", target_id=fid,
+                severity="error", passed=False,
+                expected="period_end 为有效日历日期 (YYYY-MM-DD)",
+                actual=str(exc),
+                message=str(exc),
+                checked_at=now,
+            ))
+        ps_raw = fact.get("period_start", "")
+        if isinstance(ps_raw, str) and ps_raw.strip():
+            try:
+                self._parse_optional_iso_date(ps_raw, "period_start")
+            except ValueError as exc:
+                results.append(FactValidationResult(
+                    rule_id="FACT_DATE_001", target_id=fid,
+                    severity="error", passed=False,
+                    expected="period_start 为有效日历日期 (YYYY-MM-DD)",
+                    actual=str(exc),
+                    message=str(exc),
+                    checked_at=now,
+                ))
+        if not any(r.rule_id == "FACT_DATE_001" for r in results):
+            results.append(FactValidationResult(
+                rule_id="FACT_DATE_001", target_id=fid,
                 severity="error", passed=True,
-                message="filing_date >= period_end or not applicable",
+                message="period_end (and period_start if present) 为有效日期",
                 checked_at=now,
             ))
 
@@ -190,16 +277,72 @@ class FactValidator:
                 checked_at=now,
             ))
 
-        # FACT_ANNOUNCE_001: verified 需要 announcement_date
-        if vs == "verified" and not fact.get("announcement_date"):
-            results.append(FactValidationResult(
-                rule_id="FACT_ANNOUNCE_001", target_id=fid,
-                severity="error", passed=False,
-                expected="announcement_date present",
-                actual="Missing announcement_date",
-                message="Verified fact lacks announcement_date",
-                checked_at=now,
-            ))
+        # FACT_ANNOUNCE_001: verified/reconciled 需要有效 announcement_date >= period_end;
+        #                     candidate 的 announcement_date 若存在也必须有效。
+        ad = fact.get("announcement_date", "")
+        if vs in ("verified", "reconciled"):
+            if not (isinstance(ad, str) and ad.strip()):
+                results.append(FactValidationResult(
+                    rule_id="FACT_ANNOUNCE_001", target_id=fid,
+                    severity="error", passed=False,
+                    expected="announcement_date 为非空有效日期",
+                    actual="空或缺失",
+                    message="Verified/reconciled fact lacks announcement_date",
+                    checked_at=now,
+                ))
+            else:
+                try:
+                    ad_date = self._parse_optional_iso_date(ad, "announcement_date")
+                except ValueError as exc:
+                    results.append(FactValidationResult(
+                        rule_id="FACT_ANNOUNCE_001", target_id=fid,
+                        severity="error", passed=False,
+                        expected="announcement_date 为有效日历日期 (YYYY-MM-DD)",
+                        actual=str(exc),
+                        message=str(exc),
+                        checked_at=now,
+                    ))
+                else:
+                    pe_raw = fact.get("period_end", "")
+                    try:
+                        pe_date = self._parse_optional_iso_date(pe_raw, "period_end")
+                    except ValueError:
+                        pe_date = None
+                    if pe_date is not None and ad_date is not None and ad_date < pe_date:
+                        results.append(FactValidationResult(
+                            rule_id="FACT_ANNOUNCE_001", target_id=fid,
+                            severity="error", passed=False,
+                            expected="announcement_date >= period_end",
+                            actual=f"announcement_date={ad} < period_end={pe_raw}",
+                            message=f"announcement_date {ad} before period_end {pe_raw}",
+                            checked_at=now,
+                        ))
+                    else:
+                        results.append(FactValidationResult(
+                            rule_id="FACT_ANNOUNCE_001", target_id=fid,
+                            severity="error", passed=True,
+                            message="announcement_date 有效且 >= period_end",
+                            checked_at=now,
+                        ))
+        elif vs == "candidate" and isinstance(ad, str) and ad.strip():
+            try:
+                self._parse_optional_iso_date(ad, "announcement_date")
+            except ValueError as exc:
+                results.append(FactValidationResult(
+                    rule_id="FACT_ANNOUNCE_001", target_id=fid,
+                    severity="error", passed=False,
+                    expected="announcement_date 为有效日历日期或空",
+                    actual=str(exc),
+                    message=str(exc),
+                    checked_at=now,
+                ))
+            else:
+                results.append(FactValidationResult(
+                    rule_id="FACT_ANNOUNCE_001", target_id=fid,
+                    severity="error", passed=True,
+                    message="announcement_date 有效",
+                    checked_at=now,
+                ))
 
         # FACT_SOURCE_001: verified/reconciled 必须有官方来源
         if vs in ("verified", "reconciled"):
@@ -215,11 +358,30 @@ class FactValidator:
                     checked_at=now,
                 ))
 
-        # FACT_PIT_001: PIT 适格事实的 available_at 必须有效
+        # FACT_PIT_001: available_at 若非空须为有效日期；
+        #               eligible_for_metrics=true 或 verified/reconciled 时
+        #               必须非空且 >= announcement_date。
         eligible = fact.get("eligible_for_metrics", False)
-        if eligible:
-            available_at = fact.get("available_at", "")
-            if not available_at:
+        available_at = fact.get("available_at", "")
+        if isinstance(available_at, str) and available_at.strip():
+            try:
+                aa_date = self._parse_optional_iso_date(available_at, "available_at")
+            except ValueError as exc:
+                results.append(FactValidationResult(
+                    rule_id="FACT_PIT_001", target_id=fid,
+                    severity="error", passed=False,
+                    expected="available_at 为有效日历日期 (YYYY-MM-DD) 或空",
+                    actual=str(exc),
+                    message=str(exc),
+                    checked_at=now,
+                ))
+                aa_date = None
+            else:
+                aa_date = aa_date
+        else:
+            aa_date = None
+        if eligible or vs in ("verified", "reconciled"):
+            if aa_date is None:
                 results.append(FactValidationResult(
                     rule_id="FACT_PIT_001", target_id=fid,
                     severity="error", passed=False,
@@ -228,6 +390,28 @@ class FactValidator:
                     message="PIT 适格事实缺少 available_at",
                     checked_at=now,
                 ))
+            else:
+                ad = fact.get("announcement_date", "")
+                try:
+                    ad_date = self._parse_optional_iso_date(ad, "announcement_date")
+                except ValueError:
+                    ad_date = None
+                if ad_date is not None and aa_date < ad_date:
+                    results.append(FactValidationResult(
+                        rule_id="FACT_PIT_001", target_id=fid,
+                        severity="error", passed=False,
+                        expected="available_at >= announcement_date",
+                        actual=f"available_at={available_at} < announcement_date={ad}",
+                        message=f"available_at {available_at} before announcement_date {ad}",
+                        checked_at=now,
+                    ))
+                else:
+                    results.append(FactValidationResult(
+                        rule_id="FACT_PIT_001", target_id=fid,
+                        severity="error", passed=True,
+                        message="available_at 有效且 >= announcement_date",
+                        checked_at=now,
+                    ))
 
         # FACT_ELIGIBILITY_001: 只有 verified/reconciled 可设置指标适格
         if eligible and vs not in ("verified", "reconciled"):

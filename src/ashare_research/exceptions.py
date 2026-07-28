@@ -120,3 +120,18 @@ class FactSchemaMigrationError(AshareDataError):
 class FactCheckpointError(AshareDataError):
     """事实构建 checkpoint 校验失败。"""
     pass
+
+
+class FactVersionConflictError(AshareDataError):
+    """事实版本冲突：已有不同内容的同 fact_id 事实存在，拒绝覆盖。"""
+    pass
+
+
+class ContextVersionConflictError(AshareDataError):
+    """上下文版本冲突：已有不同内容的同 context_id 上下文存在，拒绝覆盖。"""
+    pass
+
+
+class ConceptVersionConflictError(AshareDataError):
+    """概念版本冲突：已有不同内容的同 (concept_id, version) 概念存在，拒绝覆盖。"""
+    pass

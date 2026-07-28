@@ -22,10 +22,10 @@ from ashare_research.exceptions import AshareDataError
 from ashare_research.fact_sources.candidates.akshare_financial import (
     AKShareFinancialCandidateProvider,
 )
+from ashare_research.fact_sources.registry import FactSourceRegistry
 from ashare_research.facts.as_of import AsOfQuery
 from ashare_research.facts.repository import FactRepository
 from ashare_research.facts.service import FactService
-from ashare_research.fact_sources.registry import FactSourceRegistry
 from ashare_research.providers.akshare_provider import AKShareProvider
 from ashare_research.providers.baostock_provider import BaostockProvider
 from ashare_research.services.data_service import DataService
@@ -320,7 +320,12 @@ def cmd_build_value_facts(args: argparse.Namespace) -> int:
             )
             return 1
 
-        service = FactService(fact_repository=repo, source_registry=registry)
+        output_root = config["storage"].get(
+            "value_assessment_output_dir", "output/value_assessment"
+        )
+        service = FactService(
+            fact_repository=repo, source_registry=registry, output_root=output_root
+        )
 
         result = service.build_facts(
             args.symbol, args.start_year, args.end_year,
@@ -362,9 +367,10 @@ def cmd_verify_value_facts(args: argparse.Namespace) -> int:
         repo = FactRepository(store)
         repo.ensure_schema()
 
-        from ashare_research.validation.validator import FactValidator
-        from ashare_research.validation.results import summarize_results
         from datetime import datetime
+
+        from ashare_research.validation.results import summarize_results
+        from ashare_research.validation.validator import FactValidator
 
         validator = FactValidator()
 
