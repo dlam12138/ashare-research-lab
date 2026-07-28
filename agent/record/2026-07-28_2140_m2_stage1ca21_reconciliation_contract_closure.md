@@ -213,12 +213,16 @@ company_official fact + exchange_official fact -> FactValidator -> Reconciliatio
 ## 最终Git状态
 
 - 当前分支：feat/m2-value-assessment-mvp
-- 当前提交：__FINAL_HASH__（待填）
+- 当前提交：9745adc（`fix: close official reconciliation contract gaps`）
 - 未提交修改：无（本 docs 提交为记录定稿）
-- 是否创建提交：是（主提交 + docs 定稿提交）
+- 是否创建提交：是（主提交 9745adc + docs 定稿提交）
 - 是否创建 Tag/Release：否
 - 是否推送：是
 
 ### 推送后远程校验
 
-（待填）
+- `git push origin feat/m2-value-assessment-mvp`：`86696b8..9745adc` 推送成功
+- `git ls-remote origin refs/heads/feat/m2-value-assessment-mvp`：`9745adc321f4d5d07f31f4a97426dfc31af28c1b`（与本地一致）
+- 暂存区 12 文件（10 改 / 2 增），无 stash/output/旧记录/DuckDB 污染
+- `git stash list`：stash@{0}（Stage 1B.4 旧记录编辑保护）保持原状未 pop
+- 未 amend 已推送提交；未创建 Tag/Release；未合并 main
