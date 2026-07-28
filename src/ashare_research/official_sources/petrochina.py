@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import hashlib
 import logging
 from datetime import datetime
 
@@ -11,6 +10,7 @@ import pandas as pd
 
 from ashare_research.exceptions import EmptyResultError
 from ashare_research.facts.contexts import build_context_id
+from ashare_research.facts.identity import build_fact_id
 from ashare_research.facts.mappings import ConceptMapping
 from ashare_research.official_sources.base import OfficialSourceProvider
 
@@ -98,13 +98,13 @@ class PetroChinaProvider(OfficialSourceProvider):
                         continue
 
                     norm_val = float(raw_val) * factor
-                    fact_id = _make_fact_id(
-                        concept_id, symbol, year, fact_type,
+                    source_id = (
+                        f"petrochina_official::{symbol}::{year}"
+                        f"::{fact_type}::{concept_id}"
                     )
-
-                    facts.append({
-                        "fact_id": fact_id,
+                    fact = {
                         "concept_id": concept_id,
+                        "concept_version": "1",
                         "symbol": symbol,
                         "value": norm_val,
                         "unit": "CNY",
@@ -113,9 +113,19 @@ class PetroChinaProvider(OfficialSourceProvider):
                         ),
                         "is_derived": False,
                         "source_provider": self.provider_name,
+                        "source_id": source_id,
+                        "source_tier": "company_official",
                         "source_document": (
                             f"{year} {report_type}"
                         ),
+                        "source_url": "",
+                        "source_hash": "",
+                        "source_page": "",
+                        "source_table": "",
+                        "source_label": "",
+                        "fact_version": 1,
+                        "restatement_version": "original",
+                        "supersedes_fact_id": "",
                         "fiscal_year": year,
                         "report_type": fact_type,
                         "period_end": period_end,
@@ -136,7 +146,9 @@ class PetroChinaProvider(OfficialSourceProvider):
                         ),
                         "eligible_for_metrics": False,
                         "created_at": now,
-                    })
+                    }
+                    fact["fact_id"] = build_fact_id(fact)
+                    facts.append(fact)
             except Exception as e:
                 logger.warning(
                     f"API {api_name} failed for {symbol} {year} "
@@ -167,24 +179,43 @@ class PetroChinaProvider(OfficialSourceProvider):
 
                     cash_div = row.get("每股派息", 0)
                     if pd.notna(cash_div):
-                        facts.append({
-                            "fact_id": _make_fact_id(
-                                "cash_dividend_per_share", symbol, year, "FY",
-                            ),
+                        source_id = (
+                            f"petrochina_official_div::{symbol}"
+                            f"::{year}::cash_dividend_per_share"
+                        )
+                        fact = {
                             "concept_id": "cash_dividend_per_share",
+                            "concept_version": "1",
                             "symbol": symbol,
                             "value": float(cash_div),
                             "unit": "CNY_PER_SHARE",
+                            "context_id": build_context_id(
+                                symbol, year, "FY",
+                            ),
+                            "is_derived": False,
+                            "source_provider": self.provider_name,
+                            "source_id": source_id,
+                            "source_tier": "company_official",
+                            "source_document": f"{year} cash dividend",
+                            "fact_version": 1,
+                            "restatement_version": "original",
+                            "supersedes_fact_id": "",
                             "fiscal_year": year,
                             "report_type": "FY",
                             "period_end": f"{year}-12-31",
                             "filing_date": ex_date,
                             "announcement_date": ex_date,
                             "available_at": ex_date,
-                            "source_provider": self.provider_name,
+                            "raw_value": float(cash_div),
+                            "raw_unit": "CNY_PER_SHARE",
+                            "normalized_value": float(cash_div),
+                            "normalization_rule": "identity",
                             "verification_status": "unverified",
+                            "eligible_for_metrics": False,
                             "created_at": now,
-                        })
+                        }
+                        fact["fact_id"] = build_fact_id(fact)
+                        facts.append(fact)
                 except Exception:
                     continue
 
@@ -230,11 +261,3 @@ def _period_end_date(year: int, report_type: str) -> str:
         "中报": f"{year}-06-30",
         "三季报": f"{year}-09-30",
     }.get(report_type, f"{year}-12-31")
-
-
-def _make_fact_id(
-    concept_id: str, symbol: str, year: int,
-    report_type: str,
-) -> str:
-    raw = f"{symbol}|{concept_id}|{year}|{report_type}|reported"
-    return hashlib.sha256(raw.encode()).hexdigest()[:16]
