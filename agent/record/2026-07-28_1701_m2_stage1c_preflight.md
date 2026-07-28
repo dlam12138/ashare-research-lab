@@ -155,11 +155,11 @@
 
 ## 遗留问题
 
-1. **petrochina.py 仍用非 canonical `_make_fact_id`**（16 字符截断 SHA-256），是 Stage 1C 真实官方源接入前的硬阻塞；本次仅改其 context_id，未动 ID 生成（超出 Preflight 范围）。
-2. **fact_contexts.restatement_version 列现为名义字段**（service 恒填 `original`），不参与 context_id 与查询分区；未改 schema，未来若需 context 级重述语义可再评估。
-3. **reconciliation 引擎本身未实现**（取数-比对-生成 reconciled）；本 Preflight 仅冻结规则与数据模型/查询语义，留待 Stage 1C。
-4. 工作区开始时已有 `agent/record/2026-07-28_11_m2_stage1b4_clean_checkout_closure.md` 的未提交修改（上一任务记录含 `（待填）` 残块），按 Git 规则保护，未混入本次、未清理。
-5. 未提交、未推送（用户未要求 commit）。
+1. **PetroChina 官方 Provider 仍需去除非 canonical `_make_fact_id`**（16 字符截断 SHA-256），是 Stage 1C 真实官方源接入前的硬阻塞；本次仅改其 context_id，未动 ID 生成（超出 Preflight 范围）。
+2. **reconciliation engine 尚未实现**（取数-比对-生成 reconciled）；本 Preflight 仅冻结规则与数据模型/查询语义，是 Stage 1C 真实数据录入前的硬阻塞。
+3. **中国石油官网和上交所报告尚未注册**（含报告文件 SHA-256），无审计来源可挂载。
+4. **真实官方事实尚未录入和核验**；本 Preflight 用合成事实验证契约，未接入任何真实披露。
+5. **`fact_contexts.restatement_version` 暂作兼容名义字段**（service 恒填 `original`），不参与 context_id 与查询分区；未改 schema，不为其单独开启数据库迁移。
 
 ## 下一步建议
 
@@ -193,8 +193,33 @@
 ## 最终Git状态
 
 - 当前分支：feat/m2-value-assessment-mvp
-- 当前提交：cf75e20（未变）
-- 工作区：本次 12 个已修改 + 2 个未跟踪；另含 1 个会话开始前已存在的前次修改（`2026-07-28_11_m2_stage1b4_clean_checkout_closure.md`，未触碰、未混入）
-- 是否提交：否
-- 是否推送：否
+- Preflight 实现提交：`26f6702c9d885c29e3b800ed353f3297f7caa899`（`26f6702`，`fix: close M2 Stage 1C preflight contracts`）
+- 远程分支：origin/feat/m2-value-assessment-mvp
+- 远程核验：`git ls-remote` 返回 `26f6702c9d885c29e3b800ed353f3297f7caa899`，与本地 HEAD 一致
+- 已推送：是（`cf75e20..26f6702`）
+- 提交边界：仅含本次 Preflight 15 文件（13 修改 + 2 新增，633 insertions / 52 deletions）；会话开始前已存在的 `2026-07-28_11_m2_stage1b4_clean_checkout_closure.md` 未提交、未混入（工作区仍保留该未提交修改，按 Git 规则保护，后续单独 stash 处理）
+- 工作区：仅剩上述 1 个前次未提交修改；无运行产物、DuckDB、缓存或官方报告文件被跟踪
 - 未创建 Tag 或 Release
+
+## 提交前门禁（实际执行）
+
+| 验证项 | 命令 | 结果 |
+|--------|------|------|
+| Ruff | `ruff check src tests` | All checks passed（exit 0） |
+| compileall | `python -m compileall -q src tests` | exit 0 |
+| 全量 pytest | `pytest -q` | 227 passed, 2 baseline warnings（exit 0） |
+| 暂存区空白 | `git diff --cached --check` | 无空白错误 |
+| output 跟踪 | `git ls-files "output/**"` | 无输出 |
+
+2 个 warnings 位于 `tests/test_quality.py` 的 pandas 日期解析，为既有基线警告，与本次改动无关。LF->CRLF 提示为 Windows autocrlf 正常行为，不等于 `git diff --check` 失败，未因此批量改行尾。
+
+## 阶段结论
+
+```text
+M2 Stage 1C Preflight: Pass
+Stage 1B infrastructure blocker: false
+Stage 1C implementation allowed: true
+merge to main: not yet
+```
+
+不得表述为 Stage 1C 已完成或官方事实层已完成。`fact_contexts.restatement_version` 暂作兼容名义字段保留，不为它单独开启数据库迁移。
