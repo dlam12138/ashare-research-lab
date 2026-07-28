@@ -335,6 +335,21 @@ def _normalize_for_comparison(payload: dict[str, Any]) -> str:
             return "true" if v else "false"
         if isinstance(v, str):
             return v
+        # Numeric normalization: an integral number compares as int
+        # regardless of whether it arrived as a Python int or was read
+        # back from a DOUBLE column as a float.  Without this, an
+        # incoming int 235000000 and a DOUBLE-read-back 235000000.0
+        # serialize to different JSON ("235000000" vs "235000000.0")
+        # and are wrongly flagged as a semantic conflict (with an empty
+        # changed_fields list).  Non-integral floats keep their float
+        # form so genuine fractional differences are still detected.
+        if isinstance(v, float):
+            iv = int(v)
+            if iv == v:
+                return iv
+            return v
+        if isinstance(v, int):
+            return v
         return v
 
     normalized: dict[str, Any] = {}

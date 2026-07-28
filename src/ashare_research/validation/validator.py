@@ -352,22 +352,51 @@ class FactValidator:
                     checked_at=now,
                 ))
 
-        # FACT_SOURCE_001: verified/reconciled 必须有官方来源
-        if vs in ("verified", "reconciled"):
+        # FACT_SOURCE_001: 按事实类型分开的来源语义规则。
+        #   - verified 原始官方事实：source_tier 必须为 company_official /
+        #     exchange_official，且具备来源身份（source_id / source_provider
+        #     非空）。candidate_aggregator / reconciled_derived 不得冒充。
+        #   - reconciled 派生核验事实：source_tier 必须为 reconciled_derived，
+        #     且具备完整派生元数据（provider / derivation / >=2 输入 /
+        #     eligible）。不得伪装为原始官方来源。
+        #   来源证据（source_document / source_url / source_hash）由
+        #   Reconciliation Engine 硬证据门禁（仅对双源输入）与官方 Provider
+        #   canonical 入口强制；announcement_date / available_at 由
+        #   FACT_ANNOUNCE_001 / FACT_PIT_001 强制。
+        if vs == "verified":
             source_tier = fact.get("source_tier", "")
             source_id = fact.get("source_id", "")
-            if not source_id or source_tier not in ("company_official", "exchange_official"):
+            source_provider = fact.get("source_provider", "")
+            if (
+                not source_id
+                or not source_provider
+                or source_tier not in (
+                    "company_official", "exchange_official",
+                )
+            ):
                 results.append(FactValidationResult(
                     rule_id="FACT_SOURCE_001", target_id=fid,
                     severity="error", passed=False,
                     expected=(
-                        "source_id 非空且 source_tier 为"
-                        " company_official 或 exchange_official"
+                        "source_id 与 source_provider 非空，且 "
+                        "source_tier 为 company_official 或 "
+                        "exchange_official"
                     ),
-                    actual=f"source_id={source_id}, source_tier={source_tier}",
-                    message="verified/reconciled 事实必须来自官方来源（非 candidate_aggregator）",
+                    actual=(
+                        f"source_id={source_id}, "
+                        f"source_provider={source_provider}, "
+                        f"source_tier={source_tier}"
+                    ),
+                    message=(
+                        "verified 事实必须来自官方来源"
+                        "（company_official / exchange_official），"
+                        "不得为 candidate_aggregator 或 reconciled_derived"
+                    ),
                     checked_at=now,
                 ))
+        elif vs == "reconciled":
+            recon_issues = self._check_reconciled_source(fact, now)
+            results.extend(recon_issues)
 
         # FACT_PIT_001: available_at 若非空须为有效日期；
         #               available_at >= filing_date（若 filing_date 存在）；
@@ -573,3 +602,97 @@ class FactValidator:
                 ))
             seen.add(key)
         return results
+
+    def _check_reconciled_source(
+        self, fact: dict[str, Any], now: str,
+    ) -> list[FactValidationResult]:
+        """FACT_SOURCE_001 (reconciled 分支): 派生核验事实来源语义。
+
+        仅返回失败项（与 verified 分支一致：通过时不产生结果行）。
+        reconciled 事实必须：
+          - source_tier == reconciled_derived
+          - source_provider == official_reconciliation
+          - source_id 非空
+          - is_derived == true
+          - derivation_definition_id == official_dual_source_reconciliation
+          - derivation_version 非空
+          - input_fact_ids 至少 2 个不同 fact_id
+          - eligible_for_metrics == true
+        不得伪装为原始官方来源（company_official / exchange_official）。
+        """
+        fid = fact.get("fact_id", "unknown")
+        raw_inputs = fact.get("input_fact_ids", "")
+        if isinstance(raw_inputs, list):
+            input_ids = {
+                str(x).strip() for x in raw_inputs if str(x).strip()
+            }
+        else:
+            input_ids = {
+                s.strip() for s in str(raw_inputs).split(",") if s.strip()
+            }
+        checks: list[tuple[str, bool, str, str]] = [
+            (
+                "source_tier",
+                fact.get("source_tier", "") == "reconciled_derived",
+                "source_tier == reconciled_derived",
+                f"source_tier={fact.get('source_tier', '')}",
+            ),
+            (
+                "source_provider",
+                fact.get("source_provider", "")
+                == "official_reconciliation",
+                "source_provider == official_reconciliation",
+                f"source_provider={fact.get('source_provider', '')}",
+            ),
+            (
+                "source_id",
+                bool(str(fact.get("source_id", "")).strip()),
+                "source_id 非空",
+                f"source_id={fact.get('source_id', '')}",
+            ),
+            (
+                "is_derived",
+                fact.get("is_derived") is True,
+                "is_derived == true",
+                f"is_derived={fact.get('is_derived')}",
+            ),
+            (
+                "derivation_definition_id",
+                fact.get("derivation_definition_id", "")
+                == "official_dual_source_reconciliation",
+                "derivation_definition_id == "
+                "official_dual_source_reconciliation",
+                f"derivation_definition_id="
+                f"{fact.get('derivation_definition_id', '')}",
+            ),
+            (
+                "derivation_version",
+                bool(str(fact.get("derivation_version", "")).strip()),
+                "derivation_version 非空",
+                f"derivation_version="
+                f"{fact.get('derivation_version', '')}",
+            ),
+            (
+                "input_fact_ids",
+                len(input_ids) >= 2,
+                "input_fact_ids 至少 2 个不同 fact_id",
+                f"distinct_inputs={len(input_ids)}",
+            ),
+            (
+                "eligible_for_metrics",
+                fact.get("eligible_for_metrics") is True,
+                "eligible_for_metrics == true",
+                f"eligible_for_metrics="
+                f"{fact.get('eligible_for_metrics')}",
+            ),
+        ]
+        return [
+            FactValidationResult(
+                rule_id="FACT_SOURCE_001", target_id=fid,
+                severity="error", passed=False,
+                expected=c[2], actual=c[3],
+                message=f"reconciled 事实 {c[0]} 不满足派生来源契约",
+                checked_at=now,
+            )
+            for c in checks if not c[1]
+        ]

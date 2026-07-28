@@ -1,4 +1,4 @@
-"""M2 Stage 1C-A.2 - Minimal official dual-source reconciliation engine.
+"""M2 Stage 1C-A.2.1 - Minimal official dual-source reconciliation engine.
 
 A *pure* engine: ``reconcile_pair(company_fact, exchange_fact)`` takes two
 fact dicts and returns a :class:`ReconciliationResult`.  It performs no I/O,
@@ -16,17 +16,30 @@ Hard gates (in order, first failure wins):
      source_hash (64 hex), announcement_date, available_at.  Otherwise
      ``insufficient_evidence``.
   4. Comparable identity -- symbol, concept_id, concept_version,
-     context_id, period_end, statement_type, consolidation_scope,
-     currency(unit), fact_version, restatement_version must match.
-     Otherwise ``not_comparable``.
+     context_id, period_end, fact_version, restatement_version must match
+     (plus derived statement_type / consolidation_scope).  ``unit`` is
+     deliberately NOT compared here: it is resolved by the unit-conversion
+     gate so that a company value in 万元 can match an exchange value in
+     元.  Otherwise ``not_comparable``.
   5. Concept support -- only revenue, net_profit_attributable_to_parent,
      operating_cash_flow.  Otherwise ``insufficient_evidence``.
-  6. Unit/currency -- convertible to CNY.  Otherwise ``not_comparable``.
-  7. Exact Decimal comparison -- equal -> ``matched`` (emit fact); else
+  6. Unit/currency -> canonical 万元 -- only CNY / 元 / 万元 / 亿元 are
+     convertible.  Otherwise ``not_comparable``.
+  7. Integral + safe-integer range -- each canonical value must be an
+     exact integer and ``abs(value) <= 2**53 - 1`` (DOUBLE cannot
+     represent every integer beyond 2^53).  Otherwise
+     ``insufficient_evidence``.
+  8. Exact Decimal comparison -- equal -> ``matched`` (emit fact); else
      ``mismatch``.
 
-No tolerance, no averaging, no auto-selection.  Decimal values are
-serialized as strings; never written back through float.
+No tolerance, no averaging, no auto-selection.  Decimal is used for
+comparison and unit normalization only; v1 persists only exact integral
+canonical-unit (万元) values.  The output fact never passes through
+``float()``.
+
+This engine is symbol-agnostic: it contains no company-specific
+literals.  The reconciled ``source_id`` is built from the symbol + rule,
+so the same engine serves any company.
 """
 
 from __future__ import annotations
@@ -54,16 +67,24 @@ SUPPORTED_CONCEPTS: frozenset[str] = frozenset({
     "operating_cash_flow",
 })
 
-CANONICAL_UNIT = "CNY"
+# v1 canonical storage unit.  Large-listed-company amounts expressed in 元
+# can approach / exceed the DOUBLE safe-integer ceiling (2**53 - 1); 万元
+# gives four orders of magnitude of headroom while remaining lossless for
+# the three supported concepts' officially disclosed values.
+CANONICAL_UNIT = "万元"
 
-# Decimal conversion factors for amount units -> CNY.  Kept as Decimal so
-# comparison never passes through binary float.
+# Decimal conversion factors for amount units -> canonical 万元.  Kept as
+# Decimal so comparison never passes through binary float.
 _UNIT_DECIMAL_FACTORS: dict[str, Decimal] = {
-    "CNY": Decimal("1"),
-    "元": Decimal("1"),
-    "万元": Decimal("10000"),
-    "亿元": Decimal("100000000"),
+    "CNY": Decimal("0.0001"),       # 元 -> 万元 (÷10000)
+    "元": Decimal("0.0001"),         # 元 -> 万元 (÷10000)
+    "万元": Decimal("1"),            # identity
+    "亿元": Decimal("10000"),        # 亿元 -> 万元 (×10000)
 }
+
+# DOUBLE cannot represent every integer beyond 2**53 - 1; canonical values
+# must stay within this range to be stored exactly.
+_SAFE_INT_MAX = Decimal(2**53 - 1)
 
 _HEXDIGEST64 = re.compile(r"^[0-9a-f]{64}$")
 
@@ -77,6 +98,10 @@ _EVIDENCE_FIELDS = (
 )
 
 # Identity fields that must be identical for two facts to be comparable.
+# NOTE: ``unit`` is intentionally absent -- it is resolved by the
+# unit-conversion gate (gate 6) so cross-unit pairs (万元 vs 元) are
+# comparable.  ``currency`` is CNY-only by construction (only CNY-family
+# units are convertible), so it is enforced implicitly by gate 6.
 _IDENTITY_FIELDS = (
     "symbol",
     "concept_id",
@@ -85,8 +110,26 @@ _IDENTITY_FIELDS = (
     "period_end",
     "fact_version",
     "restatement_version",
-    "unit",  # currency proxy
 )
+
+
+def build_reconciliation_source_id(
+    symbol: str,
+    rule_id: str,
+    rule_version: str,
+) -> str:
+    """Build the generic reconciled-fact ``source_id``.
+
+    Format: ``reconciled:{symbol}:company_exchange:{rule_id}:v{rule_version}``
+
+    Symbol-agnostic and stable: the same engine serves any company, and the
+    same company + rule always yields the same source_id.  This is the
+    ``source_id`` only (NOT the canonical ``fact_id``, which is always
+    produced by :func:`build_fact_id`).
+    """
+    return (
+        f"reconciled:{symbol}:company_exchange:{rule_id}:v{rule_version}"
+    )
 
 
 def _str(value: Any) -> str:
@@ -121,8 +164,13 @@ def _has_evidence(fact: dict[str, Any]) -> bool:
     return bool(_HEXDIGEST64.match(_str(fact.get("source_hash"))))
 
 
-def _to_cny_decimal(fact: dict[str, Any]) -> tuple[Decimal, bool]:
-    """Return (decimal value in CNY, ok).  ok=False if not convertible."""
+def _to_canonical_decimal(
+    fact: dict[str, Any],
+) -> tuple[Decimal, bool]:
+    """Return (decimal value in canonical 万元, ok).
+
+    ok=False if the unit is not convertible or the value is missing.
+    """
     unit = _str(fact.get("unit"))
     factor = _UNIT_DECIMAL_FACTORS.get(unit)
     if factor is None:
@@ -134,6 +182,11 @@ def _to_cny_decimal(fact: dict[str, Any]) -> tuple[Decimal, bool]:
         return Decimal(raw) * factor, True
     except InvalidOperation:
         return Decimal("0"), False
+
+
+def _is_integral(value: Decimal) -> bool:
+    """True if the Decimal is an exact integer value."""
+    return value == value.to_integral_value()
 
 
 def _max_date(a: str, b: str) -> str:
@@ -210,7 +263,7 @@ class ReconciliationEngine:
                 "announcement_date/available_at or source_hash not 64-hex)",
             )
 
-        # 4. Comparable identity.
+        # 4. Comparable identity (unit excluded -- resolved in gate 6).
         mismatched = self._identity_mismatches(company, exchange)
         if mismatched:
             return _result(
@@ -228,20 +281,37 @@ class ReconciliationEngine:
                 f"net_profit_attributable_to_parent, operating_cash_flow)",
             )
 
-        # 6. Unit / currency -> CNY.
-        company_dec, ok_c = _to_cny_decimal(company)
-        exchange_dec, ok_e = _to_cny_decimal(exchange)
+        # 6. Unit / currency -> canonical 万元.
+        company_dec, ok_c = _to_canonical_decimal(company)
+        exchange_dec, ok_e = _to_canonical_decimal(exchange)
         if not (ok_c and ok_e):
             return _result(
                 ReconciliationStatus.not_comparable,
-                "one or both inputs have a unit not convertible to CNY",
+                "one or both inputs have a unit not convertible to "
+                f"{CANONICAL_UNIT} (only CNY / 元 / 万元 / 亿元 supported)",
             )
+
+        # 7. Integral + safe-integer range (v1 persistence contract).
+        for label, dec in (("company", company_dec), ("exchange", exchange_dec)):
+            if not _is_integral(dec):
+                return _result(
+                    ReconciliationStatus.insufficient_evidence,
+                    f"{label} canonical value {dec} is not an exact integer; "
+                    f"RECON_OFFICIAL_NUMERIC_001 v1 only supports integral "
+                    f"{CANONICAL_UNIT} values",
+                )
+            if abs(dec) > _SAFE_INT_MAX:
+                return _result(
+                    ReconciliationStatus.insufficient_evidence,
+                    f"{label} canonical value {dec} exceeds the DOUBLE "
+                    f"safe-integer range (2**53 - 1); cannot store exactly",
+                )
 
         company_val_s = str(company_dec)
         exchange_val_s = str(exchange_dec)
         diff_s = str(abs(company_dec - exchange_dec))
 
-        # 7. Exact Decimal comparison.
+        # 8. Exact Decimal comparison.
         if company_dec == exchange_dec:
             output = self._build_reconciled_fact(
                 company, exchange, company_dec, now=now,
@@ -306,9 +376,10 @@ class ReconciliationEngine:
     @staticmethod
     def _reconciliation_id(company_id: str, exchange_id: str) -> str:
         """Deterministic run identity for the pair (not the canonical
-        fact_id).  Stable across repeated reconciliation of the same pair."""
+        fact_id).  Stable across repeated reconciliation of the same pair.
+        Uses the full SHA-256 hex digest (no truncation)."""
         raw = f"{RULE_ID}|{company_id}|{exchange_id}"
-        return "recon_" + hashlib.sha256(raw.encode()).hexdigest()[:16]
+        return "recon_" + hashlib.sha256(raw.encode()).hexdigest()
 
     @staticmethod
     def _build_reconciled_fact(
@@ -322,19 +393,25 @@ class ReconciliationEngine:
 
         Stable identity fields come from the two (identical) inputs.
         ``fact_id`` is canonical (build_fact_id).  input_fact_ids is
-        stably sorted.
+        stably sorted.  The canonical value is persisted as an exact
+        integer in 万元 -- never through ``float()``.
         """
         input_ids = sorted([
             _str(company.get("fact_id")),
             _str(exchange.get("fact_id")),
         ])
         joined = ",".join(input_ids)
-        value_f = float(matched_value)
+        # Exact integer canonical value -- no float intermediary.
+        canonical_int = int(matched_value.to_integral_value())
+        symbol = _str(company.get("symbol"))
+        source_id = build_reconciliation_source_id(
+            symbol, RULE_ID, RULE_VERSION,
+        )
         fact: dict[str, Any] = {
             "concept_id": _str(company.get("concept_id")),
             "concept_version": _str(company.get("concept_version")),
-            "symbol": _str(company.get("symbol")),
-            "value": value_f,
+            "symbol": symbol,
+            "value": canonical_int,
             "unit": CANONICAL_UNIT,
             "context_id": _str(company.get("context_id")),
             "is_derived": True,
@@ -343,7 +420,7 @@ class ReconciliationEngine:
             "derivation_version": RULE_VERSION,
             "input_fact_ids": joined,
             "source_provider": "official_reconciliation",
-            "source_id": "reconciled:petrochina_company_sse",
+            "source_id": source_id,
             "source_tier": "reconciled_derived",
             "source_document": "official dual-source reconciliation",
             "source_url": "",
@@ -371,9 +448,9 @@ class ReconciliationEngine:
                 _str(company.get("available_at")),
                 _str(exchange.get("available_at")),
             ),
-            "raw_value": value_f,
+            "raw_value": canonical_int,
             "raw_unit": CANONICAL_UNIT,
-            "normalized_value": value_f,
+            "normalized_value": canonical_int,
             "normalization_rule": "identity",
             "verification_status": "reconciled",
             "verification_note": (

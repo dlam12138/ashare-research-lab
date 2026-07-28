@@ -107,6 +107,18 @@ class ReconciliationError(AshareDataError):
     pass
 
 
+class ReconciliationValidationError(AshareDataError):
+    """双源 Reconciliation 写入前的完整验证失败。
+
+    由 OfficialFactReconciliationService 在写入 reconciled fact 之前触发：
+    输入/输出 FactValidator 报错、输入来源组合非法（FACT_RECON_INPUT_001）、
+    或输入事实的 context_id 未在 fact_contexts 注册时抛出。
+    任何 error severity 校验结果都不得写入 reconciled fact，
+    transaction_committed 始终为 false。
+    """
+    pass
+
+
 class FactPersistenceError(AshareDataError):
     """事实持久化失败，事务已回滚。"""
     pass

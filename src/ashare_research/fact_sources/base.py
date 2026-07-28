@@ -7,16 +7,15 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from enum import StrEnum
 
 import pandas as pd
 
+from ashare_research.facts.models import SourceTier
 
-class SourceTier(StrEnum):
-    """来源等级。"""
-    candidate_aggregator = "candidate_aggregator"   # AKShare等第三方聚合
-    company_official = "company_official"           # 公司官网/年报
-    exchange_official = "exchange_official"         # 交易所正式披露
+# SourceTier 的唯一权威定义位于 ``ashare_research.facts.models``。
+# 此处仅作再导出，供已有的 ``from ashare_research.fact_sources.base import
+# SourceTier`` 引用保持可用；不得在本模块或任何其它位置再定义第二套
+# SourceTier 枚举（见 Stage 1C-A.2.1 契约收口）。
 
 
 @dataclass

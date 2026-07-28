@@ -36,10 +36,10 @@ from ashare_research.exceptions import (
     LineagePersistenceError,
     VersionChainCycleError,
 )
-from ashare_research.fact_sources.base import SourceTier
 from ashare_research.facts.as_of import AsOfQuery
 from ashare_research.facts.contexts import create_context
 from ashare_research.facts.identity import validate_canonical_fact_ids
+from ashare_research.facts.models import SourceTier
 from ashare_research.facts.repository import FactRepository, StoreFactsResult
 from ashare_research.lineage.manifest import LineageManifest
 from ashare_research.validation.results import (

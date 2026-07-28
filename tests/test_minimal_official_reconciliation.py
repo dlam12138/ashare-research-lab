@@ -49,6 +49,10 @@ def _setup_repo(db_path: str) -> FactRepository:
     store.connect()
     repo = FactRepository(store)
     repo.ensure_schema()
+    # Stage 1C-A.2.1: the service now requires the input context_id to be
+    # registered in fact_contexts (it does not auto-create contexts).
+    # Seed the canonical context for every repo used by reconciliation.
+    _seed_context(repo)
     return repo
 
 
@@ -135,14 +139,14 @@ def _off_fact(
 
 
 def _company(**kw) -> dict:
-    kw.setdefault("source_id", "petrochina_company_website::2024::revenue")
-    kw.setdefault("source_provider", "petrochina_company_website")
+    kw.setdefault("source_id", f"{SYMBOL}_company_website::2024::revenue")
+    kw.setdefault("source_provider", f"{SYMBOL}_company_website")
     return _off_fact(source_tier="company_official", **kw)
 
 
 def _exchange(**kw) -> dict:
-    kw.setdefault("source_id", "sse_announcement::2024::revenue")
-    kw.setdefault("source_provider", "sse_announcement")
+    kw.setdefault("source_id", f"{SYMBOL}_exchange::2024::revenue")
+    kw.setdefault("source_provider", f"{SYMBOL}_exchange")
     return _off_fact(source_tier="exchange_official", **kw)
 
 
@@ -293,7 +297,10 @@ class TestReconciliationMatched:
         repo = _setup_repo(str(tmp_path / "m.duckdb"))
         svc = _reconcile_service(repo)
         company = _company(announcement_date="2025-03-28")
-        exchange = _exchange(announcement_date="2025-04-10")
+        # available_at must be >= announcement_date for a verified input.
+        exchange = _exchange(
+            announcement_date="2025-04-10", available_at="2025-04-10",
+        )
         result = svc.reconcile_official_pair(company, exchange)
         assert result.output_fact["announcement_date"] == "2025-04-10"
 
@@ -315,20 +322,14 @@ class TestRetentionAndQueries:
         repo, company, exchange, result = self._reconciled(tmp_path)
         conn = repo.store.connect()
         rows = conn.execute(
-            """SELECT source_id, eligible_for_metrics, verification_status
-               FROM financial_facts WHERE symbol = ? ORDER BY source_id""",
+            """SELECT source_tier, eligible_for_metrics, verification_status
+               FROM financial_facts WHERE symbol = ? ORDER BY source_tier""",
             [SYMBOL],
         ).fetchall()
-        by_src = {r[0]: (r[1], r[2]) for r in rows}
-        assert by_src["petrochina_company_website::2024::revenue"] == (
-            False, "verified",
-        )
-        assert by_src["sse_announcement::2024::revenue"] == (
-            False, "verified",
-        )
-        assert by_src["reconciled:petrochina_company_sse"] == (
-            True, "reconciled",
-        )
+        by_tier = {r[0]: (r[1], r[2]) for r in rows}
+        assert by_tier["company_official"] == (False, "verified")
+        assert by_tier["exchange_official"] == (False, "verified")
+        assert by_tier["reconciled_derived"] == (True, "reconciled")
         repo.store.close()
 
     def test_default_pit_query_returns_only_reconciled_fact(

@@ -124,6 +124,9 @@ CREATE TABLE IF NOT EXISTS fact_lineage (
     staging_file_path VARCHAR DEFAULT '',
     fetch_run_id VARCHAR DEFAULT '',
     parent_fact_ids VARCHAR DEFAULT '',
+    role VARCHAR DEFAULT '',
+    reconciliation_rule_id VARCHAR DEFAULT '',
+    reconciliation_rule_version VARCHAR DEFAULT '',
     recorded_at VARCHAR NOT NULL DEFAULT ''
 );
 
@@ -782,12 +785,20 @@ class FactRepository:
         source_method: str = "",
         raw_path: str = "", staging_path: str = "",
         fetch_run_id: str = "", parent_fact_ids: str = "",
+        role: str = "",
+        reconciliation_rule_id: str = "",
+        reconciliation_rule_version: str = "",
         conn=None,
     ) -> None:
         """记录单条事实的数据沿袭。
 
         直接 INSERT（允许同一 fact 多条沿袭记录）。
         可选传入 conn 以参与外部事务。
+
+        ``role`` / ``reconciliation_rule_id`` /
+        ``reconciliation_rule_version`` 用于双源 Reconciliation 沿袭，
+        明确区分 company / exchange 输入与 output 角色，并记录所用规则
+        与版本。普通 fetch / derive 沿袭不传，留空。
         """
         close_conn = False
         if conn is None:
@@ -800,13 +811,16 @@ class FactRepository:
                    (lineage_id, fact_id, run_id, source_provider,
                     source_tier, source_method,
                     raw_file_path, staging_file_path,
-                    fetch_run_id, parent_fact_ids, recorded_at)
+                    fetch_run_id, parent_fact_ids,
+                    role, reconciliation_rule_id,
+                    reconciliation_rule_version, recorded_at)
                    VALUES (nextval('fact_lineage_seq'),
-                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
                 [fact_id, run_id, source_provider, source_tier,
                  source_method,
                  raw_path, staging_path, fetch_run_id,
-                 parent_fact_ids, now],
+                 parent_fact_ids, role, reconciliation_rule_id,
+                 reconciliation_rule_version, now],
             )
         finally:
             if close_conn:
