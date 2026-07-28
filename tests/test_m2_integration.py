@@ -899,3 +899,55 @@ class TestFactServiceEndToEnd:
         assert result["reported_count"] > 0
         assert result["reported_count"] >= 5
         store.close()
+
+    def test_repeated_build_is_idempotent(self, tmp_path):
+        """相同参数重复构建不应因主键冲突失败。"""
+        from ashare_research.fact_sources.base import (
+            FactSourceProvider, SourceTier,
+        )
+        from ashare_research.fact_sources.registry import FactSourceRegistry
+        from ashare_research.facts.repository import FactRepository
+        from ashare_research.facts.service import FactService
+        from ashare_research.storage.duckdb_store import DuckDBStore
+
+        class SimpleProvider(FactSourceProvider):
+            provider_name = "simple"
+            source_tier = SourceTier.candidate_aggregator
+            def get_financial_statements(self, s, sy, ey):
+                return pd.DataFrame([{
+                    "fact_id": "simple_rev_2025_FY",
+                    "concept_id": "revenue", "concept_version": "1",
+                    "symbol": s, "value": 1e11, "unit": "CNY",
+                    "context_id": f"{s}|2025|FY|consolidated|original",
+                    "source_provider": "simple",
+                    "source_id": f"simple::{s}::2025",
+                    "source_tier": "candidate_aggregator",
+                    "fact_version": 1, "fiscal_year": 2025,
+                    "report_type": "FY", "period_end": "2025-12-31",
+                    "verification_status": "unverified",
+                    "eligible_for_metrics": False,
+                    "restatement_version": "original",
+                    "created_at": "2026-07-27T12:00:00",
+                }])
+            def get_dividends(self, s, sy, ey): return pd.DataFrame()
+            def get_buybacks(self, s, sy, ey): return pd.DataFrame()
+            def get_shareholder_increases(self, s, sy, ey): return pd.DataFrame()
+            def get_audit_opinions(self, s, sy, ey): return pd.DataFrame()
+
+        db_path = tmp_path / "test_idem.duckdb"
+        store = DuckDBStore(str(db_path))
+        store.connect()
+        repo = FactRepository(store)
+        repo.ensure_schema()
+        repo.seed_concepts()
+
+        registry = FactSourceRegistry()
+        registry.register_candidate("601857.SH", SimpleProvider())
+        svc = FactService(fact_repository=repo, source_registry=registry)
+
+        r1 = svc.build_facts("601857.SH", 2025, 2025, source_mode="candidate")
+        r2 = svc.build_facts("601857.SH", 2025, 2025, source_mode="candidate")
+
+        assert r1["reported_count"] == r2["reported_count"]
+        assert r1["reported_count"] > 0
+        store.close()

@@ -417,7 +417,7 @@ class FactRepository:
                 for col in self._FACT_COLS:
                     vals.append(fact.get(col, ""))
                 conn.execute(
-                    f"INSERT INTO financial_facts "
+                    f"INSERT OR REPLACE INTO financial_facts "
                     f"({col_names}) VALUES ({placeholders})",
                     vals,
                 )
