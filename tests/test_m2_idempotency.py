@@ -11,6 +11,7 @@ from pathlib import Path
 
 import pandas as pd
 import pytest
+from fact_test_helpers import make_test_fact
 
 from ashare_research.exceptions import (
     FactVersionConflictError,
@@ -48,50 +49,21 @@ NOW = datetime.now().isoformat()
 
 
 def _make_fact(**overrides) -> dict:
-    """Create a minimal valid fact dict with sensible defaults."""
-    import uuid
+    """Create a fact dict with a canonical ``fact_id``.
 
-    fact_id = overrides.get("fact_id", uuid.uuid4().hex[:12])
-    base: dict = {
-        "fact_id": fact_id,
-        "concept_id": "revenue",
-        "concept_version": "1",
-        "symbol": SYMBOL,
-        "value": 1000.0,
-        "unit": "CNY",
-        "context_id": f"{SYMBOL}|2024|FY|consolidated|original",
-        "is_derived": False,
-        "derived_from": "",
-        "derivation_definition_id": "",
-        "derivation_version": "",
-        "input_fact_ids": "",
-        "source_provider": "test_provider",
-        "source_id": f"src_{fact_id}",
-        "source_tier": "candidate_aggregator",
-        "source_document": "",
-        "source_url": "",
-        "source_hash": "",
-        "source_page": "",
-        "source_table": "",
-        "source_label": "",
-        "fact_version": 1,
-        "restatement_version": "original",
-        "supersedes_fact_id": "",
-        "filing_date": "2025-03-28",
-        "period_end": "2024-12-31",
-        "announcement_date": "2025-03-28",
-        "available_at": "2025-03-28",
-        "raw_value": 1000.0,
-        "raw_unit": "CNY",
-        "normalized_value": 1000.0,
-        "normalization_rule": "",
-        "verification_status": "unverified",
-        "verification_note": "",
-        "eligible_for_metrics": False,
-        "created_at": NOW,
-    }
+    Tests needing several distinct facts must vary an identity field
+    (e.g. ``source_id`` or ``concept_id``) so the canonical ids differ.
+    An explicit ``fact_id`` in *overrides* is ignored -- the id is
+    always recomputed from the identity fields.
+    """
+    base = make_test_fact(
+        symbol=SYMBOL,
+        context_id=f"{SYMBOL}|2024|FY|consolidated|original",
+        created_at=NOW,
+    )
     base.update(overrides)
-    base["fact_id"] = fact_id
+    base.pop("fact_id", None)
+    base["fact_id"] = build_fact_id(base)
     return base
 
 
@@ -207,7 +179,6 @@ class _SingleFactProvider(FactSourceProvider):
     def get_financial_statements(self, symbol, start_year, end_year):
         year = start_year
         base = {
-            "fact_id": f"{symbol}|test|{year}|FY|reported",
             "concept_id": "revenue",
             "concept_version": "1",
             "symbol": symbol,
@@ -233,6 +204,8 @@ class _SingleFactProvider(FactSourceProvider):
             "created_at": "2026-07-28T00:00:00",
         }
         base.update(self._overrides)
+        base.pop("fact_id", None)
+        base["fact_id"] = build_fact_id(base)
         return pd.DataFrame([base])
 
     def get_dividends(self, s, sy, ey):
@@ -297,9 +270,8 @@ class TestFactIdempotency:
         repo = _setup_repo(db)
 
         facts = [
-            _make_fact(fact_id="f_first_1", value=100.0),
-            _make_fact(fact_id="f_first_2", value=200.0),
-            _make_fact(fact_id="f_first_3", value=300.0),
+            _make_fact(source_id=f"src_first_{i}", value=100.0 * i)
+            for i in range(1, 4)
         ]
         with repo.transaction() as conn:
             result = repo.store_facts(facts, conn=conn)
@@ -308,7 +280,7 @@ class TestFactIdempotency:
         assert result.inserted == 3
         assert result.unchanged == 0
         assert result.conflicts == 0
-        assert set(result.inserted_ids) == {"f_first_1", "f_first_2", "f_first_3"}
+        assert set(result.inserted_ids) == {f["fact_id"] for f in facts}
 
     def test_store_facts_identical_repeat_returns_unchanged(self, tmp_path: Path):
         """相同事实再次写入 → 全部 unchanged。"""
@@ -316,8 +288,8 @@ class TestFactIdempotency:
         repo = _setup_repo(db)
 
         facts = [
-            _make_fact(fact_id="f_repeat_1", value=100.0),
-            _make_fact(fact_id="f_repeat_2", value=200.0),
+            _make_fact(source_id=f"src_repeat_{i}", value=100.0 * i)
+            for i in range(1, 3)
         ]
         # 首次写入
         with repo.transaction() as conn:
@@ -339,41 +311,44 @@ class TestFactIdempotency:
         db = str(tmp_path / "test.duckdb")
         repo = _setup_repo(db)
 
-        f1 = _make_fact(fact_id="f_conflict", value=100.0)
+        # 相同 identity（相同 source_id）-> 相同 canonical fact_id
+        f1 = _make_fact(source_id="src_conflict", value=100.0)
         with repo.transaction() as conn:
             repo.store_facts([f1], conn=conn)
 
-        f2 = _make_fact(fact_id="f_conflict", value=200.0)
+        f2 = _make_fact(source_id="src_conflict", value=200.0)
         with (
-            pytest.raises(FactVersionConflictError, match="f_conflict"),
+            pytest.raises(FactVersionConflictError, match="changed_fields"),
             repo.transaction() as conn,
         ):
             repo.store_facts([f2], conn=conn)
 
         # 原值仍保留
-        assert _get_fact_value(repo, "f_conflict") == 100.0
+        assert _get_fact_value(repo, f1["fact_id"]) == 100.0
 
     def test_fact_conflict_rolls_back_entire_batch(self, tmp_path: Path):
         """事务中任一事实冲突 → 整批回滚，已写入的好事实不留存。"""
         db = str(tmp_path / "test.duckdb")
         repo = _setup_repo(db)
 
-        # 先写入一条锚点事实（其 ID 将被后续冲突引用）
-        anchor = _make_fact(fact_id="f_anchor", value=100.0)
+        # 先写入一条锚点事实（其 identity 将被后续冲突复用）
+        anchor = _make_fact(source_id="src_anchor", value=100.0)
         with repo.transaction() as conn:
             repo.store_facts([anchor], conn=conn)
 
-        f_good = _make_fact(fact_id="f_good", value=200.0)
-        f_bad = _make_fact(fact_id="f_anchor", value=999.0)
+        # f_good 用不同 source_id（不同 identity -> 不同 fact_id）
+        f_good = _make_fact(source_id="src_good", value=200.0)
+        # f_bad 复用 anchor 的 source_id 但改 value -> 同 fact_id 冲突
+        f_bad = _make_fact(source_id="src_anchor", value=999.0)
 
         with pytest.raises(FactVersionConflictError), repo.transaction() as conn:
             repo.store_facts([f_good], conn=conn)
             repo.store_facts([f_bad], conn=conn)
 
         # 回滚后 f_good 不应存在
-        assert not _has_fact(repo, "f_good")
-        # f_anchor 仍保留原值
-        assert _get_fact_value(repo, "f_anchor") == 100.0
+        assert not _has_fact(repo, f_good["fact_id"])
+        # anchor 仍保留原值
+        assert _get_fact_value(repo, anchor["fact_id"]) == 100.0
 
     def test_new_fact_version_preserves_old_fact(self, tmp_path: Path):
         """不同 fact_id 的同 concept 事实共存，旧事实不受影响。"""
@@ -381,15 +356,15 @@ class TestFactIdempotency:
         repo = _setup_repo(db)
 
         f_old = _make_fact(
-            fact_id="f_old_version",
             concept_id="revenue",
+            source_id="src_vold",
             value=100.0,
             restatement_version="original",
             period_end="2023-12-31",
         )
         f_new = _make_fact(
-            fact_id="f_new_version",
             concept_id="revenue",
+            source_id="src_vnew",
             value=120.0,
             restatement_version="restated",
             period_end="2023-12-31",
@@ -398,10 +373,10 @@ class TestFactIdempotency:
         with repo.transaction() as conn:
             repo.store_facts([f_old, f_new], conn=conn)
 
-        assert _has_fact(repo, "f_old_version")
-        assert _has_fact(repo, "f_new_version")
-        assert _get_fact_value(repo, "f_old_version") == 100.0
-        assert _get_fact_value(repo, "f_new_version") == 120.0
+        assert _has_fact(repo, f_old["fact_id"])
+        assert _has_fact(repo, f_new["fact_id"])
+        assert _get_fact_value(repo, f_old["fact_id"]) == 100.0
+        assert _get_fact_value(repo, f_new["fact_id"]) == 120.0
 
     # ── Builder-level 重复构建 ──────────────────────────────
 

@@ -6,11 +6,12 @@
 
 from __future__ import annotations
 
-import hashlib
 import logging
 from datetime import datetime
 
 import pandas as pd
+
+from ashare_research.facts.identity import build_fact_id
 
 logger = logging.getLogger(__name__)
 
@@ -55,6 +56,9 @@ class DerivationEngine:
             for _, row in year_df.iterrows():
                 by_type[row["report_type"]] = row
 
+            # 取本财年首个可用 symbol（同财年同概念应一致）
+            symbol = str(year_df.iloc[0]["symbol"])
+
             # Q1 直接使用 Q1_YTD
             if "Q1" in by_type:
                 derived.append(_make_single_q_fact(
@@ -67,6 +71,7 @@ class DerivationEngine:
                 derived.append(_make_single_q_fact_dict(
                     concept_id, year, 2, "Q2", val, now,
                     [by_type["H1"]["fact_id"], by_type["Q1"]["fact_id"]],
+                    symbol=symbol,
                 ))
 
             # Q3 = Q3_YTD - H1
@@ -75,6 +80,7 @@ class DerivationEngine:
                 derived.append(_make_single_q_fact_dict(
                     concept_id, year, 3, "Q3", val, now,
                     [by_type["Q3"]["fact_id"], by_type["H1"]["fact_id"]],
+                    symbol=symbol,
                 ))
 
             # Q4 = FY - Q3_YTD
@@ -83,6 +89,7 @@ class DerivationEngine:
                 derived.append(_make_single_q_fact_dict(
                     concept_id, year, 4, "Q4", val, now,
                     [by_type["FY"]["fact_id"], by_type["Q3"]["fact_id"]],
+                    symbol=symbol,
                 ))
 
         return derived
@@ -117,6 +124,8 @@ class DerivationEngine:
                 "free_cash_flow", year, 0, rtype, fcf_val, now,
                 [ocf_row["fact_id"], capex_match.iloc[0]["fact_id"]],
                 derivation_id="free_cash_flow",
+                symbol=str(ocf_row["symbol"]),
+                period_end=str(ocf_row.get("period_end", "")),
             ))
 
         return derived
@@ -149,6 +158,8 @@ class DerivationEngine:
                     "interest_bearing_debt", year, 0, "FY",
                     total, now, input_ids,
                     derivation_id="interest_bearing_debt",
+                    symbol=str(year_df.iloc[0]["symbol"]),
+                    period_end=str(year_df.iloc[0].get("period_end", "")),
                 ))
 
         return derived
@@ -195,14 +206,15 @@ def _make_single_q_fact(
     row, concept_id: str, quarter: int,
     period_type: str, now: str,
 ) -> dict:
-    """从 DataFrame row 构建单季度派生事实 dict（Q1 直接使用）。"""
-    return {
-        "fact_id": _make_fact_id(
-            concept_id, row["symbol"],
-            row["fiscal_year"], f"single_q{quarter}",
-            is_derived=True,
-        ),
+    """从 DataFrame row 构建单季度派生事实 dict（Q1 直接使用）。
+
+    fact_id 由 canonical build_fact_id 计算，因此派生事实的身份
+    与已报告事实遵循同一套契约。
+    """
+    derivation_id = f"single_quarter_{concept_id}"
+    fact: dict = {
         "concept_id": concept_id,
+        "concept_version": str(row.get("concept_version", "1") or "1"),
         "symbol": row["symbol"],
         "value": row["value"],
         "unit": row.get("unit", "CNY"),
@@ -210,9 +222,12 @@ def _make_single_q_fact(
                        f"|single_quarter_q{quarter}|consolidated|original",
         "is_derived": True,
         "derived_from": row.get("fact_id", ""),
-        "derivation_definition_id": f"single_quarter_{concept_id}",
+        "derivation_definition_id": derivation_id,
         "derivation_version": "1",
         "input_fact_ids": row.get("fact_id", ""),
+        "fact_version": 1,
+        "restatement_version": "original",
+        "source_id": f"derived::{derivation_id}",
         "fiscal_year": row["fiscal_year"],
         "report_type": f"single_q{quarter}",
         "period_end": row.get("period_end", ""),
@@ -223,6 +238,8 @@ def _make_single_q_fact(
         "verification_status": "derived",
         "created_at": now,
     }
+    fact["fact_id"] = build_fact_id(fact)
+    return fact
 
 
 def _make_single_q_fact_dict(
@@ -230,18 +247,22 @@ def _make_single_q_fact_dict(
     period_type: str, value: float, now: str,
     input_fact_ids: list[str],
     derivation_id: str = "",
-    symbol: str = "601857.SH",
+    *,
+    symbol: str,
+    period_end: str = "",
 ) -> dict:
-    """构建单季度/派生事实 dict（Q2/Q3/Q4 差值计算）。"""
+    """构建单季度/派生事实 dict（Q2/Q3/Q4 差值计算）。
+
+    ``symbol`` 为必填关键字参数（修复此前硬编码 601857.SH 的缺陷），
+    ``period_end`` 继承自源事实的报告期，fact_id 由 canonical
+    build_fact_id 计算。
+    """
     if not derivation_id:
         derivation_id = f"single_quarter_{concept_id}"
     sq_label = f"single_q{quarter}" if quarter > 0 else period_type
-    fact_id = _make_fact_id(
-        concept_id, symbol, year, sq_label, is_derived=True,
-    )
-    return {
-        "fact_id": fact_id,
+    fact: dict = {
         "concept_id": concept_id,
+        "concept_version": "1",
         "symbol": symbol,
         "value": value,
         "unit": "CNY",
@@ -252,9 +273,12 @@ def _make_single_q_fact_dict(
         "derivation_definition_id": derivation_id,
         "derivation_version": "1",
         "input_fact_ids": ",".join(input_fact_ids),
+        "fact_version": 1,
+        "restatement_version": "original",
+        "source_id": f"derived::{derivation_id}",
         "fiscal_year": year,
         "report_type": sq_label,
-        "period_end": "",
+        "period_end": period_end,
         "source_provider": "ashare-research",
         "filing_date": "",
         "announcement_date": "",
@@ -262,15 +286,5 @@ def _make_single_q_fact_dict(
         "verification_status": "derived",
         "created_at": now,
     }
-
-
-def _make_fact_id(
-    concept_id: str, symbol: str, year: int,
-    period_type: str, is_derived: bool = False,
-) -> str:
-    """生成确定性 fact_id。"""
-    raw = (
-        f"{symbol}|{concept_id}|{year}|{period_type}"
-        f"|{'derived' if is_derived else 'reported'}"
-    )
-    return hashlib.sha256(raw.encode()).hexdigest()[:16]
+    fact["fact_id"] = build_fact_id(fact)
+    return fact

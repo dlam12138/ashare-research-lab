@@ -21,11 +21,13 @@ import pandas as pd
 from ashare_research.exceptions import (
     ConceptVersionConflictError,
     ContextVersionConflictError,
+    FactIdentityError,
     FactPersistenceError,
     FactSchemaMigrationError,
     FactVersionConflictError,
 )
 from ashare_research.facts.identity import (
+    build_fact_id,
     diff_fact_semantic_payloads,
     facts_semantically_equal,
 )
@@ -539,6 +541,20 @@ class FactRepository:
                         "fact_id is required for store_facts"
                     )
 
+                # 防御性边界：fact_id 必须与 canonical 身份一致。
+                # Service 不是 Repository 唯一调用者（手工脚本、迁移、
+                # 未来官方 Provider 也可能直连），身份契约由持久化边界
+                # 最终保证。
+                expected_id = build_fact_id(fact)
+                if fact_id != expected_id:
+                    raise FactIdentityError(
+                        "Fact ID does not match canonical identity at "
+                        "persistence boundary: "
+                        f"actual={fact_id}, expected={expected_id}, "
+                        f"symbol={fact.get('symbol', '')}, "
+                        f"concept_id={fact.get('concept_id', '')}"
+                    )
+
                 existing = self._get_fact_by_id(fact_id, conn)
 
                 if existing is None:
@@ -556,10 +572,11 @@ class FactRepository:
                 else:
                     conflicts += 1
                     diffs = diff_fact_semantic_payloads(existing, fact)
-                    diff_keys = list(diffs.keys())
+                    diff_keys = sorted(diffs.keys())
                     raise FactVersionConflictError(
-                        f"Fact {fact_id} already exists with different "
-                        f"content. Changed fields: {diff_keys}. "
+                        f"Existing fact has the same identity/version but "
+                        f"different semantic content: fact_id={fact_id}, "
+                        f"changed_fields={diff_keys}. "
                         f"Create a new fact_version instead of "
                         f"overwriting the existing fact."
                     )
@@ -880,6 +897,7 @@ class FactRepository:
                         PARTITION BY f.symbol, f.concept_id, f.period_end,
                                      c.consolidation_scope
                         ORDER BY f.available_at DESC, f.fact_version DESC,
+                                 f.restatement_version DESC,
                                  f.created_at DESC
                     ) AS rn
                 FROM financial_facts f

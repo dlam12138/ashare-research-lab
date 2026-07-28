@@ -112,6 +112,30 @@ class FactPersistenceError(AshareDataError):
     pass
 
 
+class FactIdentityError(FactPersistenceError):
+    """事实 fact_id 与 canonical 身份不一致，或 fact_id 缺失。
+
+    由 Service 边界和 Repository 边界共同强制：Provider 返回事实后、
+    以及持久化写入前，都会校验 fact_id == build_fact_id(fact)。
+    """
+    pass
+
+
+class LineagePersistenceError(AshareDataError):
+    """运行 Manifest 写入失败。
+
+    只有 write_manifest 成功返回后才能将运行标记为 finalized；
+    底层 OSError/PermissionError/JSON 序列化/os.replace 失败统一
+    转换为此异常，避免把运行错误地汇报为成功。
+    """
+    pass
+
+
+class VersionChainCycleError(FactValidationError):
+    """事实版本链形成循环（A supersedes B, B supersedes A ...）。"""
+    pass
+
+
 class FactSchemaMigrationError(AshareDataError):
     """Fact schema 迁移失败。"""
     pass

@@ -11,9 +11,11 @@ from pathlib import Path
 
 import pandas as pd
 import pytest
+from fact_test_helpers import make_test_fact, now_iso
 
 from ashare_research.exceptions import FactSchemaMigrationError
 from ashare_research.facts.as_of import AsOfQuery
+from ashare_research.facts.identity import build_fact_id
 from ashare_research.facts.repository import FactRepository
 from ashare_research.storage.duckdb_store import DuckDBStore
 
@@ -36,58 +38,24 @@ FACT_COLS = [
 
 
 def _make_fact(**overrides) -> dict:
-    """Create a minimal valid fact dict with sensible defaults.
+    """Create a verified, metrics-eligible fact with a canonical fact_id.
 
-    All fields from FACT_COLS are populated, so the dict is ready for
-    ``FactRepository.store_facts``.
+    Tests needing several distinct facts must vary an identity field
+    (e.g. ``source_id`` or ``concept_id``).  An explicit ``fact_id`` in
+    *overrides* is ignored -- the id is always recomputed canonically.
     """
-    now = datetime.now().isoformat()
-    fact_id = overrides.get("fact_id", "")
-    if not fact_id:
-        import uuid
-        fact_id = uuid.uuid4().hex[:12]
-
-    base: dict = {
-        "fact_id": fact_id,
-        "concept_id": "revenue",
-        "concept_version": "1",
-        "symbol": "000001.SZ",
-        "value": 1000.0,
-        "unit": "CNY",
-        "context_id": "000001.SZ|2024|annual|consolidated|original",
-        "is_derived": False,
-        "derived_from": "",
-        "derivation_definition_id": "",
-        "derivation_version": "",
-        "input_fact_ids": "",
-        "source_provider": "test_provider",
-        "source_id": f"src_{fact_id}",
-        "source_tier": "company_official",
-        "source_document": "",
-        "source_url": "",
-        "source_hash": "",
-        "source_page": "",
-        "source_table": "",
-        "source_label": "",
-        "fact_version": 1,
-        "restatement_version": "original",
-        "supersedes_fact_id": "",
-        "filing_date": "2025-03-28",
-        "period_end": "2024-12-31",
-        "announcement_date": "2025-03-28",
-        "available_at": "2025-03-28",
-        "raw_value": 1000.0,
-        "raw_unit": "CNY",
-        "normalized_value": 1000.0,
-        "normalization_rule": "",
-        "verification_status": "verified",
-        "verification_note": "",
-        "eligible_for_metrics": True,
-        "created_at": now,
-    }
+    base = make_test_fact(
+        symbol="000001.SZ",
+        context_id="000001.SZ|2024|annual|consolidated|original",
+        verification_status="verified",
+        source_tier="company_official",
+        eligible_for_metrics=True,
+        source_id="official_report_2025",
+        created_at=now_iso(),
+    )
     base.update(overrides)
-    # Ensure fact_id matches overrides
-    base["fact_id"] = fact_id
+    base.pop("fact_id", None)
+    base["fact_id"] = build_fact_id(base)
     return base
 
 
@@ -137,16 +105,16 @@ class TestFactRepositoryTransactions:
         db = _make_db_path(tmp_path)
         repo = _setup_repo(db)
 
-        f1 = _make_fact(fact_id="f_commit_1", value=100.0, concept_id="revenue")
-        f2 = _make_fact(fact_id="f_commit_2", value=200.0, concept_id="net_profit")
-        f3 = _make_fact(fact_id="f_commit_3", value=300.0, concept_id="total_assets")
+        f1 = _make_fact(source_id="src_commit_1", value=100.0, concept_id="revenue")
+        f2 = _make_fact(source_id="src_commit_2", value=200.0, concept_id="net_profit")
+        f3 = _make_fact(source_id="src_commit_3", value=300.0, concept_id="total_assets")
 
         with repo.transaction() as conn:
             repo.store_facts([f1, f2, f3], conn=conn)
 
-        assert _has_fact(repo, "f_commit_1")
-        assert _has_fact(repo, "f_commit_2")
-        assert _has_fact(repo, "f_commit_3")
+        assert _has_fact(repo, f1["fact_id"])
+        assert _has_fact(repo, f2["fact_id"])
+        assert _has_fact(repo, f3["fact_id"])
         assert _count_table(repo, "financial_facts") == 3
 
     def test_transaction_rolls_back_on_error(self, tmp_path: Path):
@@ -154,8 +122,8 @@ class TestFactRepositoryTransactions:
         db = _make_db_path(tmp_path)
         repo = _setup_repo(db)
 
-        f1 = _make_fact(fact_id="f_rollback_1", value=100.0)
-        f2 = _make_fact(fact_id="f_rollback_2", value=200.0)
+        f1 = _make_fact(source_id="src_rollback_1", value=100.0)
+        f2 = _make_fact(source_id="src_rollback_2", value=200.0)
 
         with pytest.raises(ValueError, match="simulated failure"), \
                 repo.transaction() as conn:  # noqa: SIM117
@@ -164,8 +132,8 @@ class TestFactRepositoryTransactions:
             raise ValueError("simulated failure")
 
         # 回滚后不应有任何事实残留
-        assert not _has_fact(repo, "f_rollback_1")
-        assert not _has_fact(repo, "f_rollback_2")
+        assert not _has_fact(repo, f1["fact_id"])
+        assert not _has_fact(repo, f2["fact_id"])
         assert _count_table(repo, "financial_facts") == 0
 
     def test_store_count_verification(self, tmp_path: Path):
@@ -174,7 +142,7 @@ class TestFactRepositoryTransactions:
         repo = _setup_repo(db)
 
         facts = [
-            _make_fact(fact_id=f"f_count_{i}", value=float(i * 100))
+            _make_fact(source_id=f"src_count_{i}", value=float(i * 100))
             for i in range(1, 6)
         ]
 
@@ -198,17 +166,17 @@ class TestFactRepositoryTransactions:
         assert _count_table(repo, "financial_facts") == 0
 
         # 写入一条事实确认表可用
-        f = _make_fact(fact_id="f_schema_1")
+        f = _make_fact(source_id="src_schema_1")
         with repo.transaction() as conn:
             repo.store_facts([f], conn=conn)
 
-        assert _has_fact(repo, "f_schema_1")
+        assert _has_fact(repo, f["fact_id"])
 
         # 再次调用 ensure_schema — 应安全跳过
         repo.ensure_schema()
 
         # 事实仍然存在（未被删除）
-        assert _has_fact(repo, "f_schema_1")
+        assert _has_fact(repo, f["fact_id"])
 
     def test_empty_schema_reset_allowed(self, tmp_path: Path):
         """空表环境下的 schema 重置不应引发迁移错误。"""
@@ -224,10 +192,10 @@ class TestFactRepositoryTransactions:
         assert _count_table(repo, "financial_facts") == 0
 
         # 重置后写入仍然可用
-        f = _make_fact(fact_id="f_after_reset")
+        f = _make_fact(source_id="src_after_reset")
         with repo.transaction() as conn:
             repo.store_facts([f], conn=conn)
-        assert _has_fact(repo, "f_after_reset")
+        assert _has_fact(repo, f["fact_id"])
 
     def test_nonempty_schema_migration_refused(self, tmp_path: Path):
         """已有数据的旧版本 schema 拒绝自动迁移。"""
@@ -294,7 +262,7 @@ class TestAsOfPIT:
         repo = _setup_repo(db)
 
         f = _make_fact(
-            fact_id="f_empty_avail", available_at="",
+            source_id="src_f_empty_avail", available_at="",
             verification_status="verified",
             eligible_for_metrics=True,
         )
@@ -313,7 +281,7 @@ class TestAsOfPIT:
         repo = _setup_repo(db)
 
         f = _make_fact(
-            fact_id="f_null_avail",
+            source_id="src_f_null_avail",
             verification_status="verified",
             eligible_for_metrics=True,
         )
@@ -322,7 +290,7 @@ class TestAsOfPIT:
             repo.store_facts([f], conn=conn)
             conn.execute(
                 "UPDATE financial_facts SET available_at = NULL WHERE fact_id = ?",
-                ["f_null_avail"],
+                [f["fact_id"]],
             )
 
         asof = AsOfQuery(repo)
@@ -335,7 +303,7 @@ class TestAsOfPIT:
         repo = _setup_repo(db)
 
         f = _make_fact(
-            fact_id="f_future",
+            source_id="src_f_future",
             available_at="2025-12-31",
             period_end="2025-09-30",
             filing_date="2025-12-31",
@@ -357,7 +325,7 @@ class TestAsOfPIT:
         repo = _setup_repo(db)
 
         f = _make_fact(
-            fact_id="f_on_date",
+            source_id="src_f_on_date",
             available_at="2025-06-01",
             filing_date="2025-06-01",
             announcement_date="2025-06-01",
@@ -367,7 +335,7 @@ class TestAsOfPIT:
         asof = AsOfQuery(repo)
         result = asof.query(symbol=self.SYMBOL, as_of_date="2025-06-01")
         assert len(result) == 1
-        assert result.iloc[0]["fact_id"] == "f_on_date"
+        assert result.iloc[0]["fact_id"] == f["fact_id"]
 
     # ── 默认过滤 ───────────────────────────────────────────────────────
 
@@ -377,17 +345,17 @@ class TestAsOfPIT:
         repo = _setup_repo(db)
 
         verified = _make_fact(
-            fact_id="f_verified",
+            source_id="src_f_verified",
             verification_status="verified",
             eligible_for_metrics=True,
         )
         unverified = _make_fact(
-            fact_id="f_unverified",
+            source_id="src_f_unverified",
             verification_status="unverified",
             eligible_for_metrics=False,
         )
         reconciled = _make_fact(
-            fact_id="f_reconciled",
+            source_id="src_f_reconciled",
             verification_status="reconciled",
             eligible_for_metrics=True,
         )
@@ -396,9 +364,9 @@ class TestAsOfPIT:
         asof = AsOfQuery(repo)
         result = asof.query(symbol=self.SYMBOL, as_of_date="2025-06-01")
         ids = set(result["fact_id"])
-        assert "f_verified" in ids
-        assert "f_reconciled" in ids
-        assert "f_unverified" not in ids
+        assert verified["fact_id"] in ids
+        assert reconciled["fact_id"] in ids
+        assert unverified["fact_id"] not in ids
 
     def test_audit_query_includes_all(self, tmp_path: Path):
         """审计查询（include_unverified=True）返回全部事实，不施加任何过滤。"""
@@ -407,17 +375,17 @@ class TestAsOfPIT:
 
         facts = [
             _make_fact(
-                fact_id="f_audit_verified",
+                source_id="src_f_audit_verified",
                 verification_status="verified",
                 eligible_for_metrics=True,
             ),
             _make_fact(
-                fact_id="f_audit_unverified",
+                source_id="src_f_audit_unverified",
                 verification_status="unverified",
                 eligible_for_metrics=False,
             ),
             _make_fact(
-                fact_id="f_audit_empty_avail",
+                source_id="src_f_audit_empty_avail",
                 available_at="",
                 verification_status="verified",
                 eligible_for_metrics=True,
@@ -435,7 +403,7 @@ class TestAsOfPIT:
         repo = _setup_repo(db)
 
         f = _make_fact(
-            fact_id="f_audit_future",
+            source_id="src_f_audit_future",
             available_at="2099-12-31",
             verification_status="verified",
             eligible_for_metrics=True,
@@ -445,7 +413,7 @@ class TestAsOfPIT:
         asof = AsOfQuery(repo)
         result = asof.get_all_versions_for_audit(symbol=self.SYMBOL)
         assert len(result) == 1
-        assert result.iloc[0]["fact_id"] == "f_audit_future"
+        assert result.iloc[0]["fact_id"] == f["fact_id"]
 
     # ── 格式校验 ───────────────────────────────────────────────────────
 
@@ -491,9 +459,9 @@ class TestIntegrationScenarios:
         db = _make_db_path(tmp_path)
         repo = _setup_repo(db)
 
-        ok_1 = _make_fact(fact_id="f_ok_1", value=100.0)
-        ok_2 = _make_fact(fact_id="f_ok_2", value=200.0)
-        nan_fact = _make_fact(fact_id="f_nan", value=float("nan"))
+        ok_1 = _make_fact(source_id="src_f_ok_1", value=100.0)
+        ok_2 = _make_fact(source_id="src_f_ok_2", value=200.0)
+        nan_fact = _make_fact(source_id="src_f_nan", value=float("nan"))
 
         # 模拟 validator 检测到 NaN 后拒绝写入
         def _any_nan(facts):
@@ -511,9 +479,9 @@ class TestIntegrationScenarios:
             repo.store_facts([nan_fact], conn=conn)
 
         # 回滚后：之前写入的 ok_1, ok_2 也不应存在
-        assert not _has_fact(repo, "f_ok_1")
-        assert not _has_fact(repo, "f_ok_2")
-        assert not _has_fact(repo, "f_nan")
+        assert not _has_fact(repo, ok_1["fact_id"])
+        assert not _has_fact(repo, ok_2["fact_id"])
+        assert not _has_fact(repo, nan_fact["fact_id"])
         assert _count_table(repo, "financial_facts") == 0
 
     def test_candidate_fact_is_unverified(self, tmp_path: Path):
@@ -526,7 +494,7 @@ class TestIntegrationScenarios:
         repo = _setup_repo(db)
 
         f = _make_fact(
-            fact_id="f_candidate",
+            source_id="src_f_candidate",
             source_tier="candidate_aggregator",
             verification_status="unverified",
             eligible_for_metrics=False,
@@ -538,7 +506,7 @@ class TestIntegrationScenarios:
         row = conn.execute(
             "SELECT source_tier, verification_status, eligible_for_metrics "
             "FROM financial_facts WHERE fact_id = ?",
-            ["f_candidate"],
+            [f["fact_id"]],
         ).fetchone()
         assert row is not None
         assert row[0] == "candidate_aggregator"
@@ -555,7 +523,7 @@ class TestIntegrationScenarios:
         repo = _setup_repo(db)
 
         f = _make_fact(
-            fact_id="f_candidate_pit",
+            source_id="src_f_candidate_pit",
             source_tier="candidate_aggregator",
             verification_status="unverified",
             eligible_for_metrics=False,
@@ -566,11 +534,11 @@ class TestIntegrationScenarios:
 
         asof = AsOfQuery(repo)
         result = asof.query(symbol=self.SYMBOL, as_of_date="2025-06-01")
-        assert "f_candidate_pit" not in set(result["fact_id"])
+        assert f["fact_id"] not in set(result["fact_id"])
 
         # 审计查询仍然可见
         audit = asof.get_all_versions_for_audit(symbol=self.SYMBOL)
-        assert "f_candidate_pit" in set(audit["fact_id"])
+        assert f["fact_id"] in set(audit["fact_id"])
 
     def test_multiple_sources_coexist(self, tmp_path: Path):
         """official 和 candidate 两个源的事实共存，PIT 只返回 verified。"""
@@ -578,14 +546,14 @@ class TestIntegrationScenarios:
         repo = _setup_repo(db)
 
         official = _make_fact(
-            fact_id="f_official",
+            source_id="src_f_official",
             source_tier="company_official",
             source_provider="cninfo",
             verification_status="verified",
             eligible_for_metrics=True,
         )
         candidate = _make_fact(
-            fact_id="f_candidate2",
+            source_id="src_f_candidate2",
             source_tier="candidate_aggregator",
             source_provider="akshare",
             verification_status="unverified",
@@ -597,8 +565,8 @@ class TestIntegrationScenarios:
         asof = AsOfQuery(repo)
         result = asof.query(symbol=self.SYMBOL, as_of_date="2025-06-01")
         ids = set(result["fact_id"])
-        assert "f_official" in ids
-        assert "f_candidate2" not in ids
+        assert official["fact_id"] in ids
+        assert candidate["fact_id"] not in ids
 
         # 两者都在库中
         assert _count_table(repo, "financial_facts") == 2
@@ -633,14 +601,14 @@ class TestTransactionWithContexts:
             "created_at": datetime.now().isoformat(),
         }
         fact = _make_fact(
-            fact_id="f_with_ctx", context_id=ctx["context_id"],
+            source_id="src_f_with_ctx", context_id=ctx["context_id"],
         )
 
         with repo.transaction() as conn:
             repo.store_contexts([ctx], conn=conn)
             repo.store_facts([fact], conn=conn)
 
-        assert _has_fact(repo, "f_with_ctx")
+        assert _has_fact(repo, fact["fact_id"])
         conn = repo.store.connect()
         row = conn.execute(
             "SELECT COUNT(*) FROM fact_contexts WHERE context_id = ?",
@@ -731,15 +699,15 @@ class TestFactSummary:
         repo = _setup_repo(db)
 
         facts = [
-            _make_fact(fact_id="f_sum_v1", verification_status="verified",
+            _make_fact(source_id="src_f_sum_v1", verification_status="verified",
                        eligible_for_metrics=True, is_derived=False, value=1.0),
-            _make_fact(fact_id="f_sum_v2", verification_status="verified",
+            _make_fact(source_id="src_f_sum_v2", verification_status="verified",
                        eligible_for_metrics=True, is_derived=False, value=2.0),
-            _make_fact(fact_id="f_sum_u1", verification_status="unverified",
+            _make_fact(source_id="src_f_sum_u1", verification_status="unverified",
                        eligible_for_metrics=False, is_derived=False, value=3.0),
-            _make_fact(fact_id="f_sum_r1", verification_status="reconciled",
+            _make_fact(source_id="src_f_sum_r1", verification_status="reconciled",
                        eligible_for_metrics=True, is_derived=False, value=4.0),
-            _make_fact(fact_id="f_sum_d1", verification_status="verified",
+            _make_fact(source_id="src_f_sum_d1", verification_status="verified",
                        eligible_for_metrics=True, is_derived=True, value=5.0,
                        derived_from="f_sum_v1,f_sum_v2"),
         ]
@@ -852,7 +820,6 @@ class TestFactServiceEndToEnd:
                             ("basic_eps", 0.8),
                         ]:
                             facts.append({
-                                "fact_id": f"mock_{cid}_{year}_FY",
                                 "concept_id": cid, "concept_version": "1",
                                 "symbol": symbol, "value": val,
                                 "unit": "CNY",
@@ -872,6 +839,7 @@ class TestFactServiceEndToEnd:
                                 "restatement_version": "original",
                                 "created_at": "2026-07-27T12:00:00",
                             })
+                            facts[-1]["fact_id"] = build_fact_id(facts[-1])
                 return pd.DataFrame(facts)
 
             def get_dividends(self, s, sy, ey): return pd.DataFrame()
@@ -919,8 +887,7 @@ class TestFactServiceEndToEnd:
             provider_name = "simple"
             source_tier = SourceTier.candidate_aggregator
             def get_financial_statements(self, s, sy, ey):
-                return pd.DataFrame([{
-                    "fact_id": "simple_rev_2025_FY",
+                fact = {
                     "concept_id": "revenue", "concept_version": "1",
                     "symbol": s, "value": 1e11, "unit": "CNY",
                     "context_id": f"{s}|2025|FY|consolidated|original",
@@ -933,7 +900,9 @@ class TestFactServiceEndToEnd:
                     "eligible_for_metrics": False,
                     "restatement_version": "original",
                     "created_at": "2026-07-27T12:00:00",
-                }])
+                }
+                fact["fact_id"] = build_fact_id(fact)
+                return pd.DataFrame([fact])
             def get_dividends(self, s, sy, ey): return pd.DataFrame()
             def get_buybacks(self, s, sy, ey): return pd.DataFrame()
             def get_shareholder_increases(self, s, sy, ey): return pd.DataFrame()

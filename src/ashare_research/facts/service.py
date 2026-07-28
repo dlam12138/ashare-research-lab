@@ -31,9 +31,15 @@ from typing import Any
 import pandas as pd
 
 from ashare_research.derivations.engine import DerivationEngine
+from ashare_research.exceptions import (
+    FactIdentityError,
+    LineagePersistenceError,
+    VersionChainCycleError,
+)
 from ashare_research.fact_sources.base import SourceTier
 from ashare_research.facts.as_of import AsOfQuery
 from ashare_research.facts.contexts import create_context
+from ashare_research.facts.identity import validate_canonical_fact_ids
 from ashare_research.facts.repository import FactRepository, StoreFactsResult
 from ashare_research.lineage.manifest import LineageManifest
 from ashare_research.validation.results import (
@@ -42,6 +48,7 @@ from ashare_research.validation.results import (
     summarize_results,
 )
 from ashare_research.validation.validator import FactValidator
+from ashare_research.validation.version_chain import VersionChainValidator
 
 logger = logging.getLogger(__name__)
 
@@ -81,6 +88,7 @@ class FactBuildRunState:
     output_dir: str
     failure_stage: str = ""
     finalized: bool = False
+    manifest_path: str = ""
     reported_error_count: int = 0
     derived_error_count: int = 0
     context_error_count: int = 0
@@ -165,6 +173,7 @@ class FactService:
         self.registry = source_registry
         self.engine = derivation_engine or DerivationEngine()
         self.validator = validator or FactValidator()
+        self.version_chain_validator = VersionChainValidator(fact_repository)
         self.as_of = AsOfQuery(fact_repository)
         self.output_root = output_root
         self._build_run_state: FactBuildRunState | None = None
@@ -261,6 +270,35 @@ class FactService:
                 _ensure_fact_defaults(f) for f in reported_facts_raw
             ]
 
+            # ── 阶段 2b: 强制 canonical fact_id（Provider 输出边界） ──
+            run_state.failure_stage = "canonical_validation"
+            try:
+                validate_canonical_fact_ids(reported_facts)
+            except FactIdentityError as exc:
+                logger.error(
+                    f"Canonical fact_id validation failed: {exc}"
+                )
+                self._finalize_and_write_manifest(
+                    manifest=manifest,
+                    output_path=output_path,
+                    status="failed",
+                    transaction_committed=False,
+                    failure_stage="canonical_validation",
+                    reported_error_count=1,
+                    actual_source_tiers=actual_source_tiers,
+                )
+                return _build_result(
+                    manifest=manifest,
+                    reported_count=len(reported_facts),
+                    derived_count=0,
+                    reported_error_count=1,
+                    derived_error_count=0,
+                    context_error_count=0,
+                    checkpoint_error_count=1,
+                    total_error_count=2,
+                    checkpoint_decision="failed",
+                )
+
             # ── 阶段 3: 构建 contexts（内存） ──
             run_state.failure_stage = "context_build"
             contexts, context_error_count = self._build_contexts(
@@ -282,6 +320,53 @@ class FactService:
             )
 
             run_state.reported_error_count = reported_error_count
+
+            # ── 阶段 4b: Repository-aware 版本链校验（reported） ──
+            run_state.failure_stage = "version_validation"
+            all_validation: list[FactValidationResult] = list(
+                reported_validation,
+            )
+            try:
+                version_chain_results = (
+                    self.version_chain_validator.validate(
+                        reported_facts, conn=self.repo.store.connect(),
+                    )
+                )
+            except VersionChainCycleError as exc:
+                logger.error(f"Version chain cycle detected: {exc}")
+                self._finalize_and_write_manifest(
+                    manifest=manifest,
+                    output_path=output_path,
+                    status="failed",
+                    transaction_committed=False,
+                    failure_stage="version_validation",
+                    reported_error_count=reported_error_count + 1,
+                    actual_source_tiers=actual_source_tiers,
+                )
+                return _build_result(
+                    manifest=manifest,
+                    reported_count=len(reported_facts),
+                    derived_count=0,
+                    reported_error_count=reported_error_count + 1,
+                    derived_error_count=0,
+                    context_error_count=context_error_count,
+                    checkpoint_error_count=1,
+                    total_error_count=(
+                        reported_error_count + 1 + context_error_count + 1
+                    ),
+                    checkpoint_decision="failed",
+                )
+
+            version_chain_errors = _count_errors(version_chain_results)
+            if version_chain_errors > 0:
+                logger.error(
+                    f"Version chain validation failed: "
+                    f"{version_chain_errors} error(s)"
+                )
+                all_validation.extend(version_chain_results)
+                reported_error_count += version_chain_errors
+                run_state.reported_error_count = reported_error_count
+
             # ── 阶段 5: 派生单季度事实（内存） ──
             run_state.failure_stage = "derivation"
             logger.info("Deriving single-quarter facts...")
@@ -311,8 +396,88 @@ class FactService:
                     f"{derived_error_count} errors, "
                     f"{derived_warning_count} warnings"
                 )
+                all_validation.extend(derived_validation)
 
             run_state.derived_error_count = derived_error_count
+
+            # ── 阶段 6b: derived 事实 canonical ID + 版本链校验 ──
+            run_state.failure_stage = "version_validation"
+            if derived_facts:
+                try:
+                    validate_canonical_fact_ids(derived_facts)
+                except FactIdentityError as exc:
+                    logger.error(
+                        f"Derived canonical fact_id validation failed: {exc}"
+                    )
+                    self._finalize_and_write_manifest(
+                        manifest=manifest,
+                        output_path=output_path,
+                        status="failed",
+                        transaction_committed=False,
+                        failure_stage="version_validation",
+                        reported_error_count=reported_error_count,
+                        derived_error_count=derived_error_count + 1,
+                        actual_source_tiers=actual_source_tiers,
+                    )
+                    return _build_result(
+                        manifest=manifest,
+                        reported_count=len(reported_facts),
+                        derived_count=len(derived_facts),
+                        reported_error_count=reported_error_count,
+                        derived_error_count=derived_error_count + 1,
+                        context_error_count=context_error_count,
+                        checkpoint_error_count=1,
+                        total_error_count=(
+                            reported_error_count + derived_error_count + 1
+                            + context_error_count + 1
+                        ),
+                        checkpoint_decision="failed",
+                    )
+                try:
+                    derived_chain_results = (
+                        self.version_chain_validator.validate(
+                            derived_facts,
+                            conn=self.repo.store.connect(),
+                        )
+                    )
+                except VersionChainCycleError as exc:
+                    logger.error(
+                        f"Derived version chain cycle detected: {exc}"
+                    )
+                    self._finalize_and_write_manifest(
+                        manifest=manifest,
+                        output_path=output_path,
+                        status="failed",
+                        transaction_committed=False,
+                        failure_stage="version_validation",
+                        reported_error_count=reported_error_count,
+                        derived_error_count=derived_error_count + 1,
+                        actual_source_tiers=actual_source_tiers,
+                    )
+                    return _build_result(
+                        manifest=manifest,
+                        reported_count=len(reported_facts),
+                        derived_count=len(derived_facts),
+                        reported_error_count=reported_error_count,
+                        derived_error_count=derived_error_count + 1,
+                        context_error_count=context_error_count,
+                        checkpoint_error_count=1,
+                        total_error_count=(
+                            reported_error_count + derived_error_count + 1
+                            + context_error_count + 1
+                        ),
+                        checkpoint_decision="failed",
+                    )
+                derived_chain_errors = _count_errors(derived_chain_results)
+                if derived_chain_errors > 0:
+                    logger.error(
+                        f"Derived version chain validation failed: "
+                        f"{derived_chain_errors} error(s)"
+                    )
+                    all_validation.extend(derived_chain_results)
+                    derived_error_count += derived_chain_errors
+                    run_state.derived_error_count = derived_error_count
+
             # ── 阶段 7: 汇总错误 ──
             run_state.failure_stage = "checkpoint"
             checkpoint = self._run_checkpoint(
@@ -379,7 +544,6 @@ class FactService:
 
             # ── 阶段 10: 事务化写入 ──
             run_state.failure_stage = "persistence"
-            all_validation = reported_validation + derived_validation
             logger.info(
                 f"Checkpoint {checkpoint_decision.upper()} — "
                 f"writing {len(reported_facts)} reported + "
@@ -483,7 +647,7 @@ class FactService:
 
             except Exception as exc:
                 logger.error(f"Transaction failed (rolled back): {exc}")
-                self._finalize_and_write_manifest(
+                self._safe_finalize_manifest(
                     manifest=manifest,
                     output_path=output_path,
                     status="failed",
@@ -548,7 +712,7 @@ class FactService:
                 "(stage=%s): %s",
                 run_state.failure_stage, exc,
             )
-            self._finalize_and_write_manifest(
+            self._safe_finalize_manifest(
                 manifest=manifest,
                 output_path=output_path,
                 status="failed",
@@ -574,11 +738,20 @@ class FactService:
                 checkpoint_decision="failed",
             )
         except Exception as exc:
+            # A manifest write failure (LineagePersistenceError) must
+            # propagate as-is: the run is already unfinalized and
+            # _safe_finalize_manifest will no-op (already attempted).
+            if isinstance(exc, LineagePersistenceError):
+                logger.error(
+                    "Manifest persistence failed for run %s: %s",
+                    run_state.run_id, exc,
+                )
+                raise
             logger.error(
                 "Unexpected build failure (stage=%s): %s",
                 run_state.failure_stage, exc,
             )
-            self._finalize_and_write_manifest(
+            self._safe_finalize_manifest(
                 manifest=manifest,
                 output_path=output_path,
                 status="failed",
@@ -826,8 +999,6 @@ class FactService:
                 self._build_run_state.run_id,
             )
             return
-        if self._build_run_state is not None:
-            self._build_run_state.finalized = True
 
         manifest.entry.status = status
         manifest.entry.completed_at = datetime.now().isoformat()
@@ -863,17 +1034,44 @@ class FactService:
             manifest.entry.contexts_unchanged = context_store_result.unchanged
             manifest.entry.contexts_conflicts = context_store_result.conflicts
 
+        # 只有 write_manifest 成功返回后才标记 finalized，并记录路径。
+        # 写入失败时不得把运行汇报为成功 -> 抛 LineagePersistenceError。
         try:
-            manifest.write_manifest(output_path)
-        except Exception as e:
+            written_path = manifest.write_manifest(output_path)
+        except (OSError, PermissionError, ValueError, TypeError) as e:
             logger.error(
                 "Failed to write manifest for run %s at %s: %s",
                 manifest.entry.run_id, output_path, e,
             )
-            raise RuntimeError(
-                f"Manifest write failed for run {manifest.entry.run_id} "
-                f"at {output_path}: {e}"
+            raise LineagePersistenceError(
+                f"Failed to persist run manifest: run_id="
+                f"{manifest.entry.run_id}"
             ) from e
+
+        if self._build_run_state is not None:
+            self._build_run_state.finalized = True
+            self._build_run_state.manifest_path = written_path
+
+    def _safe_finalize_manifest(self, **kwargs: Any) -> None:
+        """Write a failed-run manifest from an error handler.
+
+        If writing the *failure* manifest itself fails, we must not
+        raise from the handler -- that would mask the original error
+        and could recurse.  The run stays unfinalized, so it is never
+        reported as successful.
+        """
+        try:
+            self._finalize_and_write_manifest(**kwargs)
+        except LineagePersistenceError as exc:
+            run_id = (
+                self._build_run_state.run_id
+                if self._build_run_state else "?"
+            )
+            logger.error(
+                "Could not persist failure manifest for run %s: %s "
+                "(run remains unfinalized)",
+                run_id, exc,
+            )
 
 
 # ── 辅助函数 ──────────────────────────────────────────────

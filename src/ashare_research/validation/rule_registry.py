@@ -112,6 +112,15 @@ class FactValidationRuleRegistry:
                 "fact_version>1 时 supersedes_fact_id 必须非空且 != fact_id"
             ),
         ),
+        "FACT_VERSIONCHAIN_001": ValidationRule(
+            rule_id="FACT_VERSIONCHAIN_001", version="1",
+            severity="error", applies_to="FinancialFact",
+            description=(
+                "Repository-aware 版本链：fact_version>1 时旧事实必须存在、"
+                "版本严格 +1、稳定身份字段一致、available_at/announcement_date "
+                "不得倒退、supersedes 链不得成环"
+            ),
+        ),
     }
 
     @classmethod

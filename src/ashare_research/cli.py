@@ -284,48 +284,80 @@ def cmd_inspect(args: argparse.Namespace) -> int:
 # ── M2 价值评估子命令 ──────────────────────────────────────────
 
 
-def cmd_build_value_facts(args: argparse.Namespace) -> int:
-    """构建价值评估事实数据。
+def create_fact_service(
+    config: dict,
+    *,
+    registry: FactSourceRegistry | None = None,
+    output_root: str | None = None,
+    symbol: str | None = None,
+    source_mode: str = "candidate",
+    raw_dir: str | None = None,
+) -> tuple[FactService, FactRepository, DuckDBStore]:
+    """Create a FactService wired to a DuckDB store and source registry.
 
-    从候选/官方来源获取财务数据，经 validate-before-write 流程
-    写入 DuckDB 事实表。
+    Production code calls this with defaults (AKShare candidate provider
+    registered for the symbol).  Tests inject a custom ``registry``
+    (with mock providers), a temporary ``output_root`` and rely on a
+    config whose ``duckdb_path`` points at a tmp file -- they do *not*
+    replace the validator, repository transaction, manifest, or
+    exit-code logic.
 
-    退出码：0=passed  2=conditional_pass  1=failed
+    For ``source_mode="official"`` no provider is registered, so
+    ``registry.get_provider`` raises and the service writes a failed
+    manifest (no fallback to candidate).
     """
-    config = load_config(args.config)
     store = DuckDBStore(config["storage"]["duckdb_path"])
     store.connect()
+    repo = FactRepository(store)
+    repo.ensure_schema()
 
-    source_mode = getattr(args, "source", "candidate")
-
-    try:
-        repo = FactRepository(store)
-        repo.ensure_schema()
-
+    if registry is None:
         registry = FactSourceRegistry()
 
-        if source_mode == "candidate":
-            registry.register_candidate(
-                args.symbol,
-                AKShareFinancialCandidateProvider(
-                    raw_dir=config["storage"].get("raw_dir", "data/raw"),
+    if (
+        source_mode == "candidate"
+        and symbol is not None
+        and symbol not in registry.list_candidates()
+    ):
+        registry.register_candidate(
+            symbol,
+            AKShareFinancialCandidateProvider(
+                raw_dir=raw_dir or config["storage"].get(
+                    "raw_dir", "data/raw",
                 ),
-            )
-        elif source_mode == "official":
-            # 官方来源尚未实现 → 明确失败
-            print(
-                "ERROR: Official source mode is not yet implemented. "
-                "Use --source candidate for AKShare candidate data.",
-                file=sys.stderr,
-            )
-            return 1
+            ),
+        )
 
-        output_root = config["storage"].get(
-            "value_assessment_output_dir", "output/value_assessment"
-        )
-        service = FactService(
-            fact_repository=repo, source_registry=registry, output_root=output_root
-        )
+    out = output_root or config["storage"].get(
+        "value_assessment_output_dir", "output/value_assessment",
+    )
+    service = FactService(
+        fact_repository=repo, source_registry=registry, output_root=out,
+    )
+    return service, repo, store
+
+
+def cmd_build_value_facts(args: argparse.Namespace) -> int:
+    """Build value-assessment facts via validate-before-write.
+
+    Exit codes: 0=passed, 2=conditional_pass, 1=failed.
+
+    ``--source official`` with no official provider registered lets the
+    service write a failed manifest and returns 1 -- it never falls
+    back to candidate data.
+    """
+    config = load_config(args.config)
+    source_mode = getattr(args, "source", "candidate")
+    service_factory = getattr(args, "_service_factory", None)
+
+    store = None
+    try:
+        if service_factory is not None:
+            service, repo, store = service_factory(config)
+        else:
+            service, repo, store = create_fact_service(
+                config, symbol=args.symbol, source_mode=source_mode,
+            )
 
         result = service.build_facts(
             args.symbol, args.start_year, args.end_year,
@@ -340,6 +372,19 @@ def cmd_build_value_facts(args: argparse.Namespace) -> int:
         print(f"status:           {result['status']}")
         print(f"checkpoint:       {result['checkpoint_decision']}")
 
+        # Official source unavailable: report explicitly and never fall
+        # back to candidate data.
+        if source_mode == "official" and result["status"] == "failed":
+            print(
+                f"official source unavailable for {args.symbol}",
+                file=sys.stderr,
+            )
+            print(
+                "no fallback: candidate data is not used when "
+                "--source official is requested",
+                file=sys.stderr,
+            )
+
         status = result["status"]
         if status == "passed":
             return 0
@@ -351,7 +396,8 @@ def cmd_build_value_facts(args: argparse.Namespace) -> int:
         print(f"Error: {e}", file=sys.stderr)
         return 1
     finally:
-        store.close()
+        if store is not None:
+            store.close()
 
 
 def cmd_verify_value_facts(args: argparse.Namespace) -> int:
@@ -360,12 +406,22 @@ def cmd_verify_value_facts(args: argparse.Namespace) -> int:
     不访问网络，不修改事实本身。
     """
     config = load_config(args.config)
-    store = DuckDBStore(config["storage"]["duckdb_path"])
-    store.connect()
+    service_factory = getattr(args, "_service_factory", None)
 
+    store = None
     try:
-        repo = FactRepository(store)
-        repo.ensure_schema()
+        if service_factory is not None:
+            # reuse the test factory's DuckDB store (same db_path as
+            # build-value-facts used) without registering providers.
+            store = DuckDBStore(service_factory.db_path)  # type: ignore[attr-defined]
+            store.connect()
+            repo = FactRepository(store)
+            repo.ensure_schema()
+        else:
+            store = DuckDBStore(config["storage"]["duckdb_path"])
+            store.connect()
+            repo = FactRepository(store)
+            repo.ensure_schema()
 
         from datetime import datetime
 
@@ -439,6 +495,7 @@ def cmd_verify_value_facts(args: argparse.Namespace) -> int:
             txn_conn.execute("ROLLBACK")
             raise
 
+        print(f"Build Run:        {args.run_id}")
         print(f"Verification Run: {run_id}")
         print(f"  Symbol:       {args.symbol}")
         print(f"  Fact count:   {len(facts)}")
@@ -505,8 +562,20 @@ def cmd_query_value_facts(args: argparse.Namespace) -> int:
         store.close()
 
 
-def main(argv: list[str] | None = None) -> int:
-    """CLI 入口。"""
+def main(
+    argv: list[str] | None = None,
+    *,
+    service_factory=None,
+) -> int:
+    """CLI entry point.
+
+    ``service_factory`` is an optional callable ``config -> (service,
+    repo, store)`` used only by tests to inject a custom registry /
+    DuckDB path / output_root for ``build-value-facts``.  Production
+    calls pass ``None`` and the default :func:`create_fact_service` is
+    used; the validator, repository transaction, manifest, and
+    exit-code logic are never replaced.
+    """
     parser = argparse.ArgumentParser(
         prog="ashare-research",
         description="A股研究平台 — 免费数据底座",
@@ -645,6 +714,9 @@ def main(argv: list[str] | None = None) -> int:
     p_qvf.set_defaults(func=cmd_query_value_facts)
 
     args = parser.parse_args(argv)
+
+    if service_factory is not None:
+        args._service_factory = service_factory
 
     setup_logging(args.debug)
 
