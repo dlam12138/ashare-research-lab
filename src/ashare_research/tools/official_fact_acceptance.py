@@ -33,11 +33,11 @@ from ashare_research.storage.duckdb_store import DuckDBStore
 from ashare_research.validation.validator import FactValidator
 
 SCHEMA_VERSION = "1.0"
+ACCEPTANCE_CONTRACT = "annual_official_facts_v1"
 NORMALIZATION_RULE = "RMB_MILLION_TO_CNY_10K_X100"
 RAW_UNIT = "人民币百万元"
 CANONICAL_UNIT = "万元"
 SAFE_INTEGER_MAX = 2**53 - 1
-EXPECTED_SYMBOL = "601857.SH"
 EXPECTED_CONCEPTS = frozenset(SUPPORTED_CONCEPTS)
 DOCUMENT_KEYS = ("company", "exchange")
 SOURCE_TIERS = {
@@ -46,6 +46,7 @@ SOURCE_TIERS = {
 }
 _SHA256 = re.compile(r"^[0-9a-f]{64}$")
 _INTEGER = re.compile(r"^-?(?:0|[1-9]\d*)$")
+_A_SHARE_SYMBOL = re.compile(r"^\d{6}\.(SH|SZ)$")
 
 
 class AcceptanceError(ValueError):
@@ -64,15 +65,55 @@ def load_bundle(path: str | Path) -> dict[str, Any]:
     return bundle
 
 
+def expected_annual_period(fiscal_year: int) -> tuple[str, str]:
+    """Return the natural-calendar duration for one annual evidence bundle."""
+    return (
+        f"{fiscal_year:04d}-01-01",
+        f"{fiscal_year:04d}-12-31",
+    )
+
+
+def canonical_report_title(bundle: dict[str, Any]) -> str:
+    """Build the context-level report title without replacing source titles."""
+    return f"{bundle['company_name']}{bundle['fiscal_year']}年年度报告"
+
+
+def build_run_id(
+    symbol: str,
+    fiscal_year: int,
+    now: datetime | None = None,
+) -> str:
+    """Build a stable annual run identity with injectable time for tests."""
+    timestamp = (now or datetime.now()).strftime("%Y%m%d_%H%M%S_%f")
+    return (
+        f"annual_official_{symbol.replace('.', '_')}_"
+        f"{fiscal_year}_{timestamp}"
+    )
+
+
 def validate_bundle(bundle: dict[str, Any]) -> None:
-    """Validate the deliberately narrow Stage 1C-B evidence contract."""
+    """Validate the deliberately narrow annual official-fact contract."""
     _require(bundle.get("schema_version") == SCHEMA_VERSION, "unsupported bundle schema")
-    _require(bundle.get("symbol") == EXPECTED_SYMBOL, "bundle symbol must be 601857.SH")
+    symbol = bundle.get("symbol")
+    _require(
+        isinstance(symbol, str) and _A_SHARE_SYMBOL.fullmatch(symbol) is not None,
+        "symbol must be six digits followed by .SH or .SZ",
+    )
+    company_name = bundle.get("company_name")
+    _require(
+        isinstance(company_name, str) and bool(company_name.strip()),
+        "company_name must be a non-empty string",
+    )
+    fiscal_year = bundle.get("fiscal_year")
+    _require(
+        type(fiscal_year) is int and 1990 <= fiscal_year <= 9999,
+        "fiscal_year must be an integer from 1990 through 9999",
+    )
+    expected_start, expected_end = expected_annual_period(fiscal_year)
     context_fields = {
-        "fiscal_year": 2025,
         "report_type": "annual",
-        "period_start": "2025-01-01",
-        "period_end": "2025-12-31",
+        "period_start": expected_start,
+        "period_end": expected_end,
         "accounting_standard": "CAS",
         "consolidation_scope": "consolidated",
         "language": "zh-CN",
@@ -223,7 +264,7 @@ def build_context(bundle: dict[str, Any], *, created_at: str) -> dict[str, Any]:
         "consolidation_scope": bundle["consolidation_scope"],
         "accounting_standard": bundle["accounting_standard"],
         "restatement_version": "original",
-        "source_document": bundle["company_name"] + "2025年年度报告",
+        "source_document": canonical_report_title(bundle),
         "filing_date": filing_date,
         "created_at": created_at,
     }
@@ -342,8 +383,14 @@ def run_acceptance(
 ) -> dict[str, Any]:
     """Run the complete offline acceptance and return its manifest."""
     bundle = load_bundle(bundle_path)
-    run_id = run_id or f"stage1cb_{datetime.now().strftime('%Y%m%d_%H%M%S_%f')}"
-    run_dir = Path(output_root) / bundle["symbol"] / "stage1cb" / run_id
+    run_id = run_id or build_run_id(bundle["symbol"], bundle["fiscal_year"])
+    run_dir = (
+        Path(output_root)
+        / bundle["symbol"]
+        / "annual_official_facts"
+        / str(bundle["fiscal_year"])
+        / run_id
+    )
     run_dir.mkdir(parents=True, exist_ok=False)
     db_path = run_dir / "acceptance.duckdb"
     started_at = datetime.now().astimezone().isoformat()
@@ -353,6 +400,17 @@ def run_acceptance(
         "status": "failed",
         "transaction_committed": False,
         "offline": True,
+        "symbol": bundle["symbol"],
+        "company_name": bundle["company_name"],
+        "fiscal_year": bundle["fiscal_year"],
+        "report_type": bundle["report_type"],
+        "period_start": bundle["period_start"],
+        "period_end": bundle["period_end"],
+        "accounting_standard": bundle["accounting_standard"],
+        "consolidation_scope": bundle["consolidation_scope"],
+        "language": bundle["language"],
+        "acceptance_contract": ACCEPTANCE_CONTRACT,
+        "bundle_schema_version": bundle["schema_version"],
         "fact_schema_version": FactRepository.schema_version,
         "database": "acceptance.duckdb",
         "started_at": started_at,
@@ -486,12 +544,16 @@ def run_acceptance(
 
     _write_json(run_dir / "run_manifest.json", manifest)
     summary = (
-        f"# Official fact acceptance\n\n"
+        f"# Annual official fact acceptance\n\n"
+        f"- symbol: `{bundle['symbol']}`\n"
+        f"- fiscal_year: `{bundle['fiscal_year']}`\n"
         f"- run_id: `{run_id}`\n"
         f"- status: **{manifest['status']}**\n"
         f"- offline: `true`\n"
         f"- database: `acceptance.duckdb` (run-scoped)\n"
         f"- transaction_committed: `{str(manifest['transaction_committed']).lower()}`\n"
+        f"- fact_schema_version: `{FactRepository.schema_version}`\n"
+        f"- acceptance_contract: `{ACCEPTANCE_CONTRACT}`\n"
     )
     if "counts" in manifest:
         summary += "\n## Counts\n\n" + "\n".join(

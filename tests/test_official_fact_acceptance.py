@@ -32,8 +32,37 @@ def _bundle() -> dict:
     return json.loads(REAL_BUNDLE.read_text(encoding="utf-8"))
 
 
-def _valid_temp_bundle(tmp_path: Path) -> tuple[Path, Path, Path, dict]:
-    bundle = _bundle()
+def _synthetic_bundle(
+    fiscal_year: int,
+    *,
+    symbol: str = "600519.SH",
+    company_name: str = "合成测试股份有限公司",
+) -> dict:
+    """Synthetic fixture only; not real historical evidence."""
+    bundle = copy.deepcopy(_bundle())
+    bundle["symbol"] = symbol
+    bundle["company_name"] = company_name
+    bundle["fiscal_year"] = fiscal_year
+    bundle["period_start"], bundle["period_end"] = acceptance.expected_annual_period(
+        fiscal_year
+    )
+    for key, document in bundle["documents"].items():
+        document["source_id"] = f"{key}:{symbol}:{fiscal_year}:annual:synthetic"
+        document["source_document"] = f"{company_name}{fiscal_year}年年度报告（合成测试）"
+        document["landing_url"] = f"https://example.invalid/{key}/landing"
+        document["pdf_url"] = f"https://example.invalid/{key}/report.pdf"
+        document["final_pdf_url"] = document["pdf_url"]
+        document["announcement_date"] = f"{fiscal_year + 1:04d}-03-30"
+        document["retrieved_at"] = f"{fiscal_year + 1:04d}-07-01T12:00:00+08:00"
+    return bundle
+
+
+def _valid_temp_bundle(
+    tmp_path: Path,
+    bundle: dict | None = None,
+) -> tuple[Path, Path, Path, dict]:
+    tmp_path.mkdir(parents=True, exist_ok=True)
+    bundle = copy.deepcopy(bundle if bundle is not None else _bundle())
     digest = hashlib.sha256(PDF_BYTES).hexdigest()
     for document in bundle["documents"].values():
         document["sha256"] = digest
@@ -54,34 +83,159 @@ def _assert_invalid(bundle: dict, message: str = "") -> None:
         acceptance.validate_bundle(bundle)
 
 
-def _run_success(tmp_path: Path):
-    bundle_path, company, exchange, _ = _valid_temp_bundle(tmp_path)
+def _run_success(
+    tmp_path: Path,
+    bundle: dict | None = None,
+    *,
+    run_id: str = "test_run",
+):
+    bundle_path, company, exchange, _ = _valid_temp_bundle(tmp_path, bundle)
     return acceptance.run_acceptance(
-        bundle_path, company, exchange, tmp_path / "output", run_id="test_run"
+        bundle_path, company, exchange, tmp_path / "output", run_id=run_id
     )
 
 
 # Bundle validation
 
 
-def test_bundle_requires_exact_symbol():
+def test_bundle_accepts_valid_sh_symbol():
+    acceptance.validate_bundle(_synthetic_bundle(2024, symbol="600519.SH"))
+
+
+def test_bundle_accepts_valid_sz_symbol():
+    acceptance.validate_bundle(_synthetic_bundle(2024, symbol="000001.SZ"))
+
+
+@pytest.mark.parametrize(
+    "symbol",
+    ["601857", "601857.sh", "00700.HK", "AAPL", "SH601857", ""],
+)
+def test_bundle_rejects_invalid_a_share_symbol(symbol):
     bundle = _bundle()
-    bundle["symbol"] = "000001.SZ"
+    bundle["symbol"] = symbol
     _assert_invalid(bundle, "symbol")
 
 
-def test_bundle_requires_2025_annual_context():
-    for field, value in (
-        ("fiscal_year", 2024),
+def test_bundle_rejects_symbol_without_suffix():
+    bundle = _bundle()
+    bundle["symbol"] = "601857"
+    _assert_invalid(bundle, "symbol")
+
+
+def test_bundle_rejects_lowercase_suffix():
+    bundle = _bundle()
+    bundle["symbol"] = "601857.sh"
+    _assert_invalid(bundle, "symbol")
+
+
+def test_bundle_rejects_non_a_share_symbol():
+    bundle = _bundle()
+    bundle["symbol"] = "00700.HK"
+    _assert_invalid(bundle, "symbol")
+
+
+def test_bundle_rejects_empty_symbol():
+    bundle = _bundle()
+    bundle["symbol"] = ""
+    _assert_invalid(bundle, "symbol")
+
+
+def test_bundle_rejects_non_string_symbol():
+    bundle = _bundle()
+    bundle["symbol"] = None
+    _assert_invalid(bundle, "symbol")
+
+
+def test_bundle_accepts_2025_annual_context():
+    acceptance.validate_bundle(_bundle())
+
+
+def test_bundle_accepts_2024_annual_context():
+    acceptance.validate_bundle(_synthetic_bundle(2024))
+
+
+def test_bundle_derives_period_from_fiscal_year():
+    assert acceptance.expected_annual_period(2024) == (
+        "2024-01-01",
+        "2024-12-31",
+    )
+
+
+def test_bundle_rejects_period_start_from_different_year():
+    bundle = _synthetic_bundle(2024)
+    bundle["period_start"] = "2025-01-01"
+    _assert_invalid(bundle, "period_start")
+
+
+def test_bundle_rejects_period_end_from_different_year():
+    bundle = _synthetic_bundle(2024)
+    bundle["period_end"] = "2025-12-31"
+    _assert_invalid(bundle, "period_end")
+
+
+@pytest.mark.parametrize(
+    ("field", "value"),
+    [
         ("report_type", "quarterly"),
-        ("period_start", "2025-04-01"),
-        ("period_end", "2025-09-30"),
         ("accounting_standard", "IFRS"),
         ("consolidation_scope", "parent_company"),
-    ):
-        bundle = _bundle()
-        bundle[field] = value
-        _assert_invalid(bundle, field)
+        ("language", "en-US"),
+    ],
+)
+def test_bundle_rejects_non_annual_context_contract(field, value):
+    bundle = _bundle()
+    bundle[field] = value
+    _assert_invalid(bundle, field)
+
+
+def test_bundle_rejects_quarterly_report():
+    bundle = _bundle()
+    bundle["report_type"] = "quarterly"
+    _assert_invalid(bundle, "report_type")
+
+
+def test_bundle_rejects_ifrs():
+    bundle = _bundle()
+    bundle["accounting_standard"] = "IFRS"
+    _assert_invalid(bundle, "accounting_standard")
+
+
+def test_bundle_rejects_parent_company_scope():
+    bundle = _bundle()
+    bundle["consolidation_scope"] = "parent_company"
+    _assert_invalid(bundle, "consolidation_scope")
+
+
+def test_bundle_rejects_non_chinese_language():
+    bundle = _bundle()
+    bundle["language"] = "en-US"
+    _assert_invalid(bundle, "language")
+
+
+@pytest.mark.parametrize("fiscal_year", ["2024", 2024.0, True, 1989, 10000])
+def test_bundle_rejects_invalid_fiscal_year(fiscal_year):
+    bundle = _bundle()
+    bundle["fiscal_year"] = fiscal_year
+    _assert_invalid(bundle, "fiscal_year")
+
+
+def test_bundle_rejects_string_fiscal_year():
+    bundle = _bundle()
+    bundle["fiscal_year"] = "2024"
+    _assert_invalid(bundle, "fiscal_year")
+
+
+def test_bundle_rejects_boolean_fiscal_year():
+    bundle = _bundle()
+    bundle["fiscal_year"] = True
+    _assert_invalid(bundle, "fiscal_year")
+
+
+@pytest.mark.parametrize("company_name", ["", "   ", None, 123])
+def test_bundle_rejects_invalid_company_name(company_name):
+    bundle = _bundle()
+    bundle["company_name"] = company_name
+    _assert_invalid(bundle, "company_name")
 
 
 def test_bundle_requires_company_and_exchange_documents():
@@ -278,6 +432,91 @@ def test_original_facts_are_verified_and_ineligible():
     assert all(fact["eligible_for_metrics"] is False for fact in facts)
 
 
+def test_existing_2025_bundle_remains_backward_compatible():
+    bundle = _bundle()
+    acceptance.validate_bundle(bundle)
+    context = acceptance.build_context(bundle, created_at="test")
+    facts = acceptance.build_source_facts(bundle, created_at="test")
+    assert context["context_id"] == "601857.SH|2025|annual|consolidated"
+    assert len(facts["company"] + facts["exchange"]) == 6
+
+
+def test_synthetic_2024_bundle_validates():
+    acceptance.validate_bundle(_synthetic_bundle(2024))
+
+
+def test_synthetic_2024_context_uses_2024():
+    context = acceptance.build_context(_synthetic_bundle(2024), created_at="test")
+    assert context["context_id"] == "600519.SH|2024|annual|consolidated"
+    assert context["fiscal_year"] == 2024
+    assert context["period_start"] == "2024-01-01"
+    assert context["period_end"] == "2024-12-31"
+    assert context["source_document"] == "合成测试股份有限公司2024年年度报告"
+    assert "2025" not in context["source_document"]
+
+
+def test_synthetic_2024_facts_use_2024_period():
+    facts = acceptance.build_source_facts(_synthetic_bundle(2024), created_at="test")
+    for fact in facts["company"] + facts["exchange"]:
+        assert fact["fiscal_year"] == 2024
+        assert fact["period_start"] == "2024-01-01"
+        assert fact["period_end"] == "2024-12-31"
+        assert "|2024|" in fact["context_id"]
+
+
+def test_synthetic_2024_fact_ids_differ_from_2025():
+    previous = _bundle()
+    synthetic = _synthetic_bundle(
+        2024,
+        symbol=previous["symbol"],
+        company_name=previous["company_name"],
+    )
+    facts_previous = acceptance.build_source_facts(previous, created_at="test")
+    facts_synthetic = acceptance.build_source_facts(synthetic, created_at="test")
+    ids_previous = {
+        (key, fact["concept_id"]): fact["fact_id"]
+        for key, facts in facts_previous.items()
+        for fact in facts
+    }
+    ids_synthetic = {
+        (key, fact["concept_id"]): fact["fact_id"]
+        for key, facts in facts_synthetic.items()
+        for fact in facts
+    }
+    assert ids_previous.keys() == ids_synthetic.keys()
+    assert all(ids_previous[key] != ids_synthetic[key] for key in ids_previous)
+
+
+def test_runner_is_not_bound_to_601857():
+    bundle = _synthetic_bundle(2024, symbol="600519.SH")
+    acceptance.validate_bundle(bundle)
+    context = acceptance.build_context(bundle, created_at="test")
+    assert context["symbol"] == "600519.SH"
+    assert "601857" not in context["context_id"]
+
+
+def test_second_symbol_uses_same_runner(tmp_path: Path):
+    result = _run_success(
+        tmp_path,
+        _synthetic_bundle(2024, symbol="600519.SH"),
+        run_id="second_symbol",
+    )
+    assert result["status"] == "passed"
+    assert result["symbol"] == "600519.SH"
+    assert "600519.SH" in result["run_directory"].parts
+
+
+def test_second_symbol_does_not_require_new_python_module():
+    path = (
+        ROOT
+        / "src"
+        / "ashare_research"
+        / "tools"
+        / "company_specific_acceptance.py"
+    )
+    assert not path.exists()
+
+
 # Reconciliation
 
 
@@ -369,7 +608,12 @@ def test_lineage_contains_nine_role_rows(tmp_path: Path):
 
 def test_acceptance_uses_run_scoped_database(tmp_path: Path):
     result = _run_success(tmp_path)
-    assert result["run_directory"].parts[-3:] == ("601857.SH", "stage1cb", "test_run")
+    assert result["run_directory"].parts[-4:] == (
+        "601857.SH",
+        "annual_official_facts",
+        "2025",
+        "test_run",
+    )
     assert (result["run_directory"] / "acceptance.duckdb").is_file()
 
 
@@ -389,6 +633,121 @@ def test_acceptance_output_contains_no_absolute_paths(tmp_path: Path):
         assert forbidden not in path.read_text(encoding="utf-8")
 
 
+def test_synthetic_2024_offline_run_passes(tmp_path: Path):
+    result = _run_success(tmp_path, _synthetic_bundle(2024))
+    assert result["status"] == "passed"
+    assert result["counts"] == {
+        "contexts": 1,
+        "financial_facts": 9,
+        "company_original": 3,
+        "exchange_original": 3,
+        "reconciled": 3,
+        "lineage": 9,
+        "pit_before": 0,
+        "pit_after": 3,
+        "audit": 9,
+    }
+
+
+def test_synthetic_2024_run_directory_contains_year(tmp_path: Path):
+    result = _run_success(tmp_path, _synthetic_bundle(2024))
+    assert result["run_directory"].parts[-3:] == (
+        "annual_official_facts",
+        "2024",
+        "test_run",
+    )
+
+
+def test_synthetic_2024_manifest_contains_year(tmp_path: Path):
+    result = _run_success(tmp_path, _synthetic_bundle(2024))
+    manifest = json.loads(
+        (result["run_directory"] / "run_manifest.json").read_text(encoding="utf-8")
+    )
+    assert manifest["fiscal_year"] == 2024
+    assert manifest["period_start"] == "2024-01-01"
+    assert manifest["period_end"] == "2024-12-31"
+
+
+def test_run_path_is_annual_and_year_scoped(tmp_path: Path):
+    result = _run_success(tmp_path)
+    assert result["run_directory"].parts[-3:] == (
+        "annual_official_facts",
+        "2025",
+        "test_run",
+    )
+    assert "stage1cb" not in result["run_directory"].parts
+
+
+def test_2024_and_2025_runs_do_not_share_directory(tmp_path: Path):
+    result_2024 = _run_success(
+        tmp_path,
+        _synthetic_bundle(2024),
+        run_id="same_run",
+    )
+    result_2025 = _run_success(tmp_path, run_id="same_run")
+    assert result_2024["run_directory"] != result_2025["run_directory"]
+    assert "2024" in result_2024["run_directory"].parts
+    assert "2025" in result_2025["run_directory"].parts
+
+
+def test_manifest_contains_no_absolute_local_paths(tmp_path: Path):
+    result = _run_success(tmp_path)
+    manifest_text = (result["run_directory"] / "run_manifest.json").read_text(
+        encoding="utf-8"
+    )
+    assert str(tmp_path.resolve()) not in manifest_text
+    assert "company.pdf" not in manifest_text
+    assert "exchange.pdf" not in manifest_text
+    assert "bundle.json" not in manifest_text
+
+
+def test_summary_contains_symbol_and_fiscal_year(tmp_path: Path):
+    result = _run_success(tmp_path, _synthetic_bundle(2024, symbol="600519.SH"))
+    summary = (result["run_directory"] / "acceptance_summary.md").read_text(
+        encoding="utf-8"
+    )
+    assert "600519.SH" in summary
+    assert "2024" in summary
+
+
+def test_summary_does_not_contain_stage1cb(tmp_path: Path):
+    result = _run_success(tmp_path)
+    summary = (result["run_directory"] / "acceptance_summary.md").read_text(
+        encoding="utf-8"
+    )
+    assert "stage1cb" not in summary
+
+
+def test_manifest_records_bundle_schema_version(tmp_path: Path):
+    result = _run_success(tmp_path)
+    assert result["bundle_schema_version"] == "1.0"
+
+
+def test_manifest_records_acceptance_contract(tmp_path: Path):
+    result = _run_success(tmp_path)
+    assert result["acceptance_contract"] == "annual_official_facts_v1"
+
+
+def test_manifest_records_fact_schema_version(tmp_path: Path):
+    result = _run_success(tmp_path)
+    assert result["fact_schema_version"] == "2.1"
+
+
+def test_contract_version_is_distinct_from_fact_schema_version(tmp_path: Path):
+    result = _run_success(tmp_path)
+    assert result["acceptance_contract"] != result["fact_schema_version"]
+
+
+def test_build_run_id_is_symbol_year_and_time_scoped():
+    run_id = acceptance.build_run_id(
+        "600519.SH",
+        2024,
+        now=acceptance.datetime(2026, 7, 29, 20, 30, 0, 123456),
+    )
+    assert run_id == "annual_official_600519_SH_2024_20260729_203000_123456"
+    assert "stage1cb" not in run_id
+
+
 def test_acceptance_runner_is_offline():
     tree = ast.parse(Path(acceptance.__file__).read_text(encoding="utf-8"))
     forbidden = {"requests", "httpx", "urllib", "socket", "aiohttp"}
@@ -401,6 +760,20 @@ def test_acceptance_runner_is_offline():
         )
     }
     assert imported.isdisjoint(forbidden)
+
+
+def test_runner_source_contains_no_company_or_year_hardcoding():
+    source = Path(acceptance.__file__).read_text(encoding="utf-8")
+    for forbidden in (
+        "EXPECTED_SYMBOL",
+        "601857",
+        "2025-01-01",
+        "2025-12-31",
+        "stage1cb",
+        "中国石油",
+        "petrochina",
+    ):
+        assert forbidden not in source
 
 
 def test_cli_result_is_json_serializable(tmp_path: Path):
