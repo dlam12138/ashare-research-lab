@@ -51,6 +51,7 @@
 
 ## 门禁状态
 
+- Evidence commit：`709418d`
 - Registered bundle + annual runner tests：`122 passed in 4.95s`
 - Reconciliation regression：`86 passed in 6.64s`
 - Full pytest：`444 passed, 2 warnings in 43.53s`
@@ -60,3 +61,8 @@
 - 本轮新增测试 Ruff：All checks passed。
 - `ruff check src tests --ignore UP038`：All checks passed。
 - 严格 `ruff check src tests`（Ruff 0.12.0）：在起始 commit 已存在的 runner 两处和既有测试一处报 `UP038`；本轮未修改这些文件。
+- 2024、2025 bundle 和正式验收报告：未修改。
+- PDF、DuckDB、output、截图和下载中间文件：均未进入 Git。
+- `stash@{0}`：保持原状，未 pop。
+- 最终状态：**M2 Stage 1C-C.2 Conditional Pass**
+- 2022：严格全仓 Ruff 基线问题被单独处置或远程复审明确接受前不允许进入。
