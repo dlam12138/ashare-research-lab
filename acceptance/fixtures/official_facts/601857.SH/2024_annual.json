@@ -1,0 +1,123 @@
+{
+  "schema_version": "1.0",
+  "symbol": "601857.SH",
+  "company_name": "中国石油天然气股份有限公司",
+  "fiscal_year": 2024,
+  "report_type": "annual",
+  "period_start": "2024-01-01",
+  "period_end": "2024-12-31",
+  "accounting_standard": "CAS",
+  "consolidation_scope": "consolidated",
+  "language": "zh-CN",
+  "document_relationship": "byte_identical",
+  "documents": {
+    "company": {
+      "source_tier": "company_official",
+      "source_provider": "petrochina_ir_manual_registry",
+      "source_id": "company_ir:601857.SH:2024:annual:zh-cn",
+      "source_document": "中国石油天然气股份有限公司2024年年度报告",
+      "landing_url": "https://www.petrochina.com.cn/petrochina/rdxx/202503/b8750418435d4da380a6b13d5725ebe9.shtml",
+      "pdf_url": "https://www.petrochina.com.cn/petrochina/rdxx/202503/b8750418435d4da380a6b13d5725ebe9/files/4ed3388fde7b4f4a922b2de43d6225d6.pdf",
+      "final_pdf_url": "https://www.petrochina.com.cn/petrochina/rdxx/202503/b8750418435d4da380a6b13d5725ebe9/files/4ed3388fde7b4f4a922b2de43d6225d6.pdf",
+      "announcement_date": "2025-03-30",
+      "retrieved_at": "2026-07-29T20:52:48.462+08:00",
+      "sha256": "15a2de01653ceefa46fdd18a02a127f434f06db02da9efb0b62c3a12a35a9bba",
+      "content_type": "application/pdf",
+      "content_length": 11167845,
+      "page_count": 280
+    },
+    "exchange": {
+      "source_tier": "exchange_official",
+      "source_provider": "sse_disclosure_manual_registry",
+      "source_id": "sse:601857.SH:2024:annual:zh-cn",
+      "source_document": "中国石油天然气股份有限公司2024年度报告",
+      "landing_url": "https://www.sse.com.cn/disclosure/listedinfo/regular/index.shtml?productId=601857",
+      "pdf_url": "https://www.sse.com.cn/disclosure/listedinfo/announcement/c/new/2025-03-31/601857_20250331_9OUT.pdf",
+      "final_pdf_url": "https://static.sse.com.cn/disclosure/listedinfo/announcement/c/new/2025-03-31/601857_20250331_9OUT.pdf",
+      "announcement_date": "2025-03-31",
+      "retrieved_at": "2026-07-29T20:53:33.569+08:00",
+      "sha256": "15a2de01653ceefa46fdd18a02a127f434f06db02da9efb0b62c3a12a35a9bba",
+      "content_type": "application/pdf",
+      "content_length": 11167845,
+      "page_count": 280
+    }
+  },
+  "facts": [
+    {
+      "source_key": "company",
+      "concept_id": "revenue",
+      "source_page": "PDF page 115 / printed page 113",
+      "source_table": "2024年度合并及公司利润表",
+      "source_label": "营业收入",
+      "column_label": "2024年度合并",
+      "raw_value": "2937981",
+      "raw_unit": "人民币百万元",
+      "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+      "expected_normalized_value": 293798100
+    },
+    {
+      "source_key": "company",
+      "concept_id": "net_profit_attributable_to_parent",
+      "source_page": "PDF page 115 / printed page 113",
+      "source_table": "2024年度合并及公司利润表",
+      "source_label": "归属于母公司股东的净利润",
+      "column_label": "2024年度合并",
+      "raw_value": "164676",
+      "raw_unit": "人民币百万元",
+      "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+      "expected_normalized_value": 16467600
+    },
+    {
+      "source_key": "company",
+      "concept_id": "operating_cash_flow",
+      "source_page": "PDF page 116 / printed page 114",
+      "source_table": "2024年度合并及公司现金流量表",
+      "source_label": "经营活动产生的现金流量净额",
+      "column_label": "2024年度合并",
+      "raw_value": "406532",
+      "raw_unit": "人民币百万元",
+      "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+      "expected_normalized_value": 40653200
+    },
+    {
+      "source_key": "exchange",
+      "concept_id": "revenue",
+      "source_page": "PDF page 115 / printed page 113",
+      "source_table": "2024年度合并及公司利润表",
+      "source_label": "营业收入",
+      "column_label": "2024年度合并",
+      "raw_value": "2937981",
+      "raw_unit": "人民币百万元",
+      "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+      "expected_normalized_value": 293798100
+    },
+    {
+      "source_key": "exchange",
+      "concept_id": "net_profit_attributable_to_parent",
+      "source_page": "PDF page 115 / printed page 113",
+      "source_table": "2024年度合并及公司利润表",
+      "source_label": "归属于母公司股东的净利润",
+      "column_label": "2024年度合并",
+      "raw_value": "164676",
+      "raw_unit": "人民币百万元",
+      "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+      "expected_normalized_value": 16467600
+    },
+    {
+      "source_key": "exchange",
+      "concept_id": "operating_cash_flow",
+      "source_page": "PDF page 116 / printed page 114",
+      "source_table": "2024年度合并及公司现金流量表",
+      "source_label": "经营活动产生的现金流量净额",
+      "column_label": "2024年度合并",
+      "raw_value": "406532",
+      "raw_unit": "人民币百万元",
+      "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+      "expected_normalized_value": 40653200
+    }
+  ],
+  "limitations": [
+    "两个正式发布路径提供字节完全相同的同一份年度报告，不是两个独立编制的内容来源。",
+    "中国石油官网报告列表默认链接的繁体H股文件已排除；本注册使用同一官网发布目录中的简体A股完整年度报告。"
+  ]
+}
