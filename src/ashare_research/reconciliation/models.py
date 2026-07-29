@@ -8,11 +8,11 @@ never be written back through binary float.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from enum import Enum
+from enum import StrEnum
 from typing import Any
 
 
-class ReconciliationStatus(str, Enum):
+class ReconciliationStatus(StrEnum):
     """Outcome of reconciling two official facts."""
 
     matched = "matched"                  # values exactly equal -> emit fact

@@ -14,6 +14,9 @@ is not bound to PetroChina.
 from __future__ import annotations
 
 import inspect
+import json
+from contextlib import contextmanager
+from dataclasses import replace
 from pathlib import Path
 
 import pytest
@@ -159,6 +162,194 @@ def _expected_source_id(symbol: str) -> str:
     return build_reconciliation_source_id(symbol, RULE_ID, RULE_VERSION)
 
 
+class _OutputMutatingEngine(ReconciliationEngine):
+    def __init__(self, **changes) -> None:
+        super().__init__()
+        self.changes = changes
+
+    def reconcile_pair(self, company_fact, exchange_fact, *, now=None):
+        result = super().reconcile_pair(
+            company_fact, exchange_fact, now=now,
+        )
+        assert result.output_fact is not None
+        output = dict(result.output_fact)
+        output.update(self.changes)
+        output["fact_id"] = build_fact_id(output)
+        return replace(result, output_fact=output)
+
+
+class _BadLineageService(OfficialFactReconciliationService):
+    @staticmethod
+    def _build_reconciliation_lineage(
+        company_fact, exchange_fact, output_fact, run_id,
+    ):
+        rows = OfficialFactReconciliationService._build_reconciliation_lineage(
+            company_fact, exchange_fact, output_fact, run_id,
+        )
+        rows[2]["parent_fact_ids"] = "wrong_parent_a,wrong_parent_b"
+        return rows
+
+
+class _SwappedRoleLineageService(OfficialFactReconciliationService):
+    @staticmethod
+    def _build_reconciliation_lineage(
+        company_fact, exchange_fact, output_fact, run_id,
+    ):
+        rows = OfficialFactReconciliationService._build_reconciliation_lineage(
+            company_fact, exchange_fact, output_fact, run_id,
+        )
+        rows[0]["fact_id"], rows[1]["fact_id"] = (
+            rows[1]["fact_id"], rows[0]["fact_id"],
+        )
+        return rows
+
+
+class _FailingMetaRepository(FactRepository):
+    def store_schema_meta(self, *args, **kwargs) -> None:
+        raise RuntimeError("simulated metadata write failure")
+
+
+LEGACY_SCHEMA_V20_SQL = """
+CREATE TABLE fact_schema_meta (
+    schema_name VARCHAR PRIMARY KEY,
+    schema_version VARCHAR NOT NULL,
+    applied_at VARCHAR NOT NULL,
+    git_commit VARCHAR DEFAULT ''
+);
+CREATE TABLE financial_facts (
+    fact_id VARCHAR PRIMARY KEY,
+    concept_id VARCHAR NOT NULL,
+    concept_version VARCHAR DEFAULT '1',
+    symbol VARCHAR NOT NULL,
+    value DOUBLE,
+    unit VARCHAR NOT NULL DEFAULT 'CNY',
+    context_id VARCHAR NOT NULL,
+    is_derived BOOLEAN DEFAULT FALSE,
+    derived_from VARCHAR DEFAULT '',
+    derivation_definition_id VARCHAR DEFAULT '',
+    derivation_version VARCHAR DEFAULT '',
+    input_fact_ids VARCHAR DEFAULT '',
+    source_provider VARCHAR NOT NULL DEFAULT '',
+    source_id VARCHAR DEFAULT '',
+    source_tier VARCHAR DEFAULT 'candidate_aggregator',
+    source_document VARCHAR DEFAULT '',
+    source_url VARCHAR DEFAULT '',
+    source_hash VARCHAR DEFAULT '',
+    source_page VARCHAR DEFAULT '',
+    source_table VARCHAR DEFAULT '',
+    source_label VARCHAR DEFAULT '',
+    fact_version INTEGER DEFAULT 1,
+    restatement_version VARCHAR DEFAULT 'original',
+    supersedes_fact_id VARCHAR DEFAULT '',
+    filing_date VARCHAR DEFAULT '',
+    period_end VARCHAR DEFAULT '',
+    announcement_date VARCHAR DEFAULT '',
+    available_at VARCHAR DEFAULT '',
+    raw_value DOUBLE,
+    raw_unit VARCHAR DEFAULT '',
+    normalized_value DOUBLE,
+    normalization_rule VARCHAR DEFAULT '',
+    verification_status VARCHAR DEFAULT 'unverified',
+    verification_note VARCHAR DEFAULT '',
+    eligible_for_metrics BOOLEAN DEFAULT FALSE,
+    created_at VARCHAR NOT NULL DEFAULT ''
+);
+CREATE TABLE fact_contexts (
+    context_id VARCHAR PRIMARY KEY,
+    symbol VARCHAR NOT NULL,
+    fiscal_year INTEGER NOT NULL,
+    period_type VARCHAR NOT NULL,
+    period_start VARCHAR DEFAULT '',
+    period_end VARCHAR DEFAULT '',
+    instant_or_duration VARCHAR DEFAULT 'duration',
+    consolidation_scope VARCHAR DEFAULT 'consolidated',
+    accounting_standard VARCHAR DEFAULT 'CAS',
+    restatement_version VARCHAR DEFAULT 'original',
+    source_document VARCHAR DEFAULT '',
+    filing_date VARCHAR DEFAULT '',
+    created_at VARCHAR NOT NULL DEFAULT ''
+);
+CREATE TABLE fact_lineage (
+    lineage_id INTEGER PRIMARY KEY,
+    fact_id VARCHAR NOT NULL,
+    run_id VARCHAR DEFAULT '',
+    source_provider VARCHAR NOT NULL DEFAULT '',
+    source_tier VARCHAR DEFAULT '',
+    source_method VARCHAR DEFAULT '',
+    raw_file_path VARCHAR DEFAULT '',
+    staging_file_path VARCHAR DEFAULT '',
+    fetch_run_id VARCHAR DEFAULT '',
+    parent_fact_ids VARCHAR DEFAULT '',
+    recorded_at VARCHAR NOT NULL DEFAULT ''
+);
+CREATE SEQUENCE fact_lineage_seq START 2;
+"""
+
+
+def _legacy_schema_20_repo(db_path: str) -> FactRepository:
+    """Create and seed the exact relevant physical schema from 86696b8."""
+    store = DuckDBStore(db_path)
+    conn = store.connect()
+    for statement in LEGACY_SCHEMA_V20_SQL.split(";"):
+        if statement.strip():
+            conn.execute(statement)
+    conn.execute(
+        "INSERT INTO fact_schema_meta VALUES "
+        "('financial_facts', '2.0', '2026-07-27T00:00:00', '86696b8')"
+    )
+    conn.execute(
+        """INSERT INTO fact_contexts
+           (context_id, symbol, fiscal_year, period_type, period_end,
+            created_at)
+           VALUES ('legacy_ctx', '601857.SH', 2024, 'annual',
+                   '2024-12-31', '2026-07-27T00:00:00')"""
+    )
+    conn.execute(
+        """INSERT INTO financial_facts
+           (fact_id, concept_id, symbol, value, unit, context_id,
+            source_provider, source_id, created_at)
+           VALUES ('legacy_fact', 'revenue', '601857.SH', 123456.0,
+                   '万元', 'legacy_ctx', 'legacy_provider', 'legacy_source',
+                   '2026-07-27T00:00:00')"""
+    )
+    conn.execute(
+        """INSERT INTO fact_lineage
+           (lineage_id, fact_id, run_id, source_provider, source_tier,
+            source_method, parent_fact_ids, recorded_at)
+           VALUES (1, 'legacy_fact', 'legacy_run', 'legacy_provider',
+                   'company_official', 'legacy_fetch', '',
+                   '2026-07-27T00:00:00')"""
+    )
+    return FactRepository(store)
+
+
+def _assert_prewrite_rejection(
+    repo: FactRepository,
+    service: OfficialFactReconciliationService,
+) -> None:
+    transaction_entered = {"value": False}
+    original_transaction = repo.transaction
+
+    @contextmanager
+    def tracked_transaction():
+        transaction_entered["value"] = True
+        with original_transaction() as conn:
+            yield conn
+
+    repo.transaction = tracked_transaction  # type: ignore[method-assign]
+    with pytest.raises(ReconciliationValidationError) as exc:
+        service.reconcile_official_pair(_company(), _exchange())
+    assert "FACT_RECON_INPUT_001" in str(exc.value)
+    assert transaction_entered["value"] is False
+    conn = repo.store.connect()
+    assert conn.execute(
+        "SELECT COUNT(*) FROM financial_facts"
+    ).fetchone()[0] == 0
+    assert conn.execute(
+        "SELECT COUNT(*) FROM fact_lineage"
+    ).fetchone()[0] == 0
+
+
 # ── 1. SourceTier single enum ───────────────────────────────────────
 
 
@@ -180,6 +371,12 @@ class TestSourceTierSingleEnum:
         from ashare_research.facts.models import SourceTier as ModelTier
         assert BaseTier is ModelTier
         assert hasattr(BaseTier, "reconciled_derived")
+
+    def test_reconciliation_status_strenum_compatibility(self):
+        status = ReconciliationStatus.matched
+        assert str(status) == "matched"
+        assert status == "matched"
+        assert json.dumps({"status": status}) == '{"status": "matched"}'
 
     def test_reconciled_source_tier_is_shared_across_layers(self):
         from ashare_research.fact_sources.base import SourceTier as BaseTier
@@ -398,6 +595,178 @@ class TestServiceFullValidation:
             [SYMBOL_A],
         ).fetchone()[0]
         assert n == 0  # transaction rolled back
+        repo.store.close()
+
+    def test_output_input_ids_must_match_actual_pair(self, tmp_path: Path):
+        repo = _setup_repo(str(tmp_path / "wrong_inputs.duckdb"))
+        engine = _OutputMutatingEngine(
+            input_fact_ids="other_fact_a,other_fact_b",
+            derived_from="other_fact_a,other_fact_b",
+        )
+        svc = OfficialFactReconciliationService(repo, engine=engine)
+        _assert_prewrite_rejection(repo, svc)
+        repo.store.close()
+
+    def test_output_derived_from_must_match_input_ids(self, tmp_path: Path):
+        repo = _setup_repo(str(tmp_path / "wrong_derived.duckdb"))
+        engine = _OutputMutatingEngine(
+            derived_from="other_fact_a,other_fact_b",
+        )
+        svc = OfficialFactReconciliationService(repo, engine=engine)
+        _assert_prewrite_rejection(repo, svc)
+        repo.store.close()
+
+    def test_output_lineage_parents_must_match_input_ids(
+        self, tmp_path: Path,
+    ):
+        repo = _setup_repo(str(tmp_path / "wrong_lineage.duckdb"))
+        svc = _BadLineageService(repo)
+        _assert_prewrite_rejection(repo, svc)
+        repo.store.close()
+
+    def test_lineage_roles_must_match_actual_fact_ids(self, tmp_path: Path):
+        repo = _setup_repo(str(tmp_path / "swapped_roles.duckdb"))
+        svc = _SwappedRoleLineageService(repo)
+        _assert_prewrite_rejection(repo, svc)
+        repo.store.close()
+
+    @pytest.mark.parametrize(
+        ("input_fact_ids", "derived_from"),
+        [
+            ("one_input_only", "one_input_only"),
+            (
+                "other_fact_a,other_fact_b,other_fact_c",
+                "other_fact_a,other_fact_b,other_fact_c",
+            ),
+        ],
+        ids=["missing_input", "extra_third_input"],
+    )
+    def test_output_must_reference_exactly_two_actual_inputs(
+        self, tmp_path: Path, input_fact_ids: str, derived_from: str,
+    ):
+        repo = _setup_repo(
+            str(tmp_path / f"{input_fact_ids[:5]}.duckdb")
+        )
+        engine = _OutputMutatingEngine(
+            input_fact_ids=input_fact_ids,
+            derived_from=derived_from,
+        )
+        svc = OfficialFactReconciliationService(repo, engine=engine)
+        _assert_prewrite_rejection(repo, svc)
+        repo.store.close()
+
+
+class TestLineageSchemaV21Migration:
+    def test_existing_schema_20_migrates_lineage_columns(
+        self, tmp_path: Path,
+    ):
+        repo = _legacy_schema_20_repo(
+            str(tmp_path / "migrate_columns.duckdb")
+        )
+
+        repo.ensure_schema()
+
+        conn = repo.store.connect()
+        columns = {
+            row[1] for row in repo.store.connect().execute(
+                "PRAGMA table_info('fact_lineage')"
+            ).fetchall()
+        }
+        assert {
+            "role",
+            "reconciliation_rule_id",
+            "reconciliation_rule_version",
+        } <= columns
+        assert conn.execute(
+            "SELECT schema_version FROM fact_schema_meta"
+        ).fetchone() == ("2.1",)
+        assert conn.execute(
+            """SELECT role, reconciliation_rule_id,
+                      reconciliation_rule_version
+               FROM fact_lineage"""
+        ).fetchone() == ("", "", "")
+        repo.store.close()
+
+    def test_existing_schema_20_with_rows_preserves_data(
+        self, tmp_path: Path,
+    ):
+        repo = _legacy_schema_20_repo(str(tmp_path / "migrate_rows.duckdb"))
+        repo.ensure_schema()
+
+        conn = repo.store.connect()
+        assert conn.execute(
+            "SELECT COUNT(*), MIN(value), MAX(value) FROM financial_facts"
+        ).fetchone() == (1, 123456.0, 123456.0)
+        assert conn.execute(
+            "SELECT COUNT(*), MIN(fiscal_year) FROM fact_contexts"
+        ).fetchone() == (1, 2024)
+        assert conn.execute(
+            "SELECT fact_id, run_id, source_provider FROM fact_lineage"
+        ).fetchone() == (
+            "legacy_fact", "legacy_run", "legacy_provider",
+        )
+        repo.store.close()
+
+    def test_schema_version_is_bumped_for_lineage_change(
+        self, tmp_path: Path,
+    ):
+        repo = _legacy_schema_20_repo(
+            str(tmp_path / "schema_version.duckdb")
+        )
+        repo.ensure_schema()
+        assert FactRepository.schema_version == "2.1"
+        version = repo.store.connect().execute(
+            "SELECT schema_version FROM fact_schema_meta "
+            "WHERE schema_name = 'financial_facts'"
+        ).fetchone()[0]
+        assert version == "2.1"
+        repo.store.close()
+
+    def test_schema_20_migration_is_idempotent(self, tmp_path: Path):
+        repo = _legacy_schema_20_repo(
+            str(tmp_path / "migrate_idempotent.duckdb")
+        )
+        repo.ensure_schema()
+        repo.ensure_schema()
+        conn = repo.store.connect()
+        assert conn.execute(
+            "SELECT COUNT(*) FROM financial_facts"
+        ).fetchone() == (1,)
+        assert conn.execute(
+            "SELECT COUNT(*) FROM fact_lineage"
+        ).fetchone() == (1,)
+        assert conn.execute(
+            "SELECT schema_version FROM fact_schema_meta"
+        ).fetchone() == ("2.1",)
+        repo.store.close()
+
+    def test_schema_20_migration_failure_rolls_back(self, tmp_path: Path):
+        repo = _legacy_schema_20_repo(
+            str(tmp_path / "migrate_rollback.duckdb")
+        )
+        failing_repo = _FailingMetaRepository(repo.store)
+
+        with pytest.raises(Exception, match="metadata write failure"):
+            failing_repo.ensure_schema()
+
+        conn = repo.store.connect()
+        columns = {
+            row[1] for row in conn.execute(
+                "PRAGMA table_info('fact_lineage')"
+            ).fetchall()
+        }
+        assert "role" not in columns
+        assert "reconciliation_rule_id" not in columns
+        assert "reconciliation_rule_version" not in columns
+        assert conn.execute(
+            "SELECT schema_version FROM fact_schema_meta"
+        ).fetchone() == ("2.0",)
+        assert conn.execute(
+            "SELECT COUNT(*) FROM financial_facts"
+        ).fetchone() == (1,)
+        assert conn.execute(
+            "SELECT COUNT(*) FROM fact_lineage"
+        ).fetchone() == (1,)
         repo.store.close()
 
 

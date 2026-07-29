@@ -54,7 +54,7 @@ class ManifestEntry:
     verified_fact_count: int = 0
     reconciled_fact_count: int = 0
     mismatch_fact_count: int = 0
-    fact_schema_version: str = "2.0"
+    fact_schema_version: str = "2.1"
     concept_registry_version: str = "2.0"
     # Store result breakdowns
     reported_requested: int = 0

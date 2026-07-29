@@ -4,7 +4,7 @@
 - 事务化写入（全部成功或全部回滚）
 - 不再静默吞掉异常
 - PIT 查询强制排除空 available_at
-- Schema v2.0 + migration safety
+- Schema v2.1 + migration safety
 - 幂等 check-then-insert-or-update：不再使用 INSERT OR REPLACE
 """
 
@@ -189,7 +189,7 @@ class StoreFactsResult:
 class FactRepository:
     """事务化财务事实仓库。"""
 
-    schema_version: str = "2.0"
+    schema_version: str = "2.1"
 
     def __init__(self, duckdb_store: DuckDBStore):
         self.store = duckdb_store
@@ -198,23 +198,25 @@ class FactRepository:
     # ── Schema ──────────────────────────────────────────
 
     def ensure_schema(self, git_commit: str = "") -> None:
-        """安全初始化或迁移 schema v2.0。
+        """安全初始化或迁移 schema v2.1。
 
         规则：
-        - 无 M2 表 → 创建 2.0
+        - 无 M2 表 → 创建 2.1
+        - 2.0 → 增量迁移 fact_lineage，保留已有数据
         - 1.0 表非空 → 默认停止（抛出异常）
         - 不触及 Milestone 1 的表
         """
         self.ensure_schema_v2(git_commit)
 
     def ensure_schema_v2(self, git_commit: str = "") -> None:
-        """安全初始化或迁移至 schema v2.0。
+        """安全初始化或迁移至 schema v2.1。
 
         规则：
-        - 无 M2 表 → 创建 2.0
-        - 已有 v2.0 → 无操作
+        - 无 M2 表 → 创建 2.1
+        - 已有 v2.1 → 无操作并核对 lineage 列
+        - 已有 v2.0 → 事务化增加 lineage 三列并更新元数据
         - 非空旧版本表 → 抛出 FactSchemaMigrationError（拒绝自动迁移）
-        - 空表 → 重建为 v2.0（仅开发环境）
+        - 空表 → 重建为 v2.1（仅开发环境）
         - 不触及 Milestone 1 的表
         """
         conn = self.store.connect()
@@ -230,10 +232,10 @@ class FactRepository:
             conn.execute(
                 """INSERT INTO fact_schema_meta
                    (schema_name, schema_version, applied_at, git_commit)
-                   VALUES ('financial_facts', '2.0', ?, ?)""",
+                   VALUES ('financial_facts', '2.1', ?, ?)""",
                 [now, git_commit],
             )
-            logger.info("FactRepository schema v2.0 created")
+            logger.info("FactRepository schema v2.1 created")
         else:
             # 检查 fact_schema_meta 是否存在（v1 可能有事实表但无元数据表）
             meta_exists = conn.execute(
@@ -262,8 +264,11 @@ class FactRepository:
                 "WHERE schema_name='financial_facts'"
             ).fetchone()
 
-            if meta and meta[0] == "2.0":
-                logger.info("FactRepository already at schema v2.0")
+            if meta and meta[0] == "2.1":
+                self._assert_lineage_v21_columns(conn)
+                logger.info("FactRepository already at schema v2.1")
+            elif meta and meta[0] == "2.0":
+                self._migrate_v20_to_v21(conn, git_commit)
             else:
                 count = conn.execute(
                     "SELECT COUNT(*) FROM financial_facts"
@@ -277,6 +282,69 @@ class FactRepository:
                 self._rebuild_schema(conn, git_commit)
 
         self._initialized = True
+
+    @staticmethod
+    def _lineage_columns(conn) -> set[str]:
+        """Return the physical fact_lineage column names."""
+        table = conn.execute(
+            "SELECT name FROM sqlite_master "
+            "WHERE type='table' AND name='fact_lineage'"
+        ).fetchone()
+        if table is None:
+            return set()
+        return {
+            str(row[1])
+            for row in conn.execute(
+                "PRAGMA table_info('fact_lineage')"
+            ).fetchall()
+        }
+
+    def _assert_lineage_v21_columns(self, conn) -> None:
+        required = {
+            "role",
+            "reconciliation_rule_id",
+            "reconciliation_rule_version",
+        }
+        missing = required - self._lineage_columns(conn)
+        if missing:
+            raise FactSchemaMigrationError(
+                "Schema metadata says 2.1 but fact_lineage is missing "
+                f"column(s): {sorted(missing)}"
+            )
+
+    def _migrate_v20_to_v21(self, conn, git_commit: str) -> None:
+        """Add reconciliation lineage columns without replacing any table."""
+        additions = (
+            ("role", "VARCHAR DEFAULT ''"),
+            ("reconciliation_rule_id", "VARCHAR DEFAULT ''"),
+            ("reconciliation_rule_version", "VARCHAR DEFAULT ''"),
+        )
+        try:
+            conn.execute("BEGIN TRANSACTION")
+            columns = self._lineage_columns(conn)
+            if not columns:
+                raise FactSchemaMigrationError(
+                    "Cannot migrate schema 2.0: fact_lineage table is missing"
+                )
+            for name, definition in additions:
+                if name not in columns:
+                    conn.execute(
+                        f"ALTER TABLE fact_lineage "
+                        f"ADD COLUMN {name} {definition}"
+                    )
+            self.store_schema_meta(
+                "financial_facts", "2.1", git_commit=git_commit, conn=conn,
+            )
+            self._assert_lineage_v21_columns(conn)
+            conn.execute("COMMIT")
+        except Exception as exc:
+            conn.execute("ROLLBACK")
+            if isinstance(exc, FactSchemaMigrationError):
+                raise
+            raise FactSchemaMigrationError(
+                f"Failed to migrate fact schema 2.0 to 2.1: {exc}"
+            ) from exc
+        logger.info("FactRepository schema migrated from v2.0 to v2.1")
 
     def _create_v2_tables(self, conn, schema_sql: str) -> None:
         """从 SQL 字符串创建所有 v2 表。"""
@@ -335,7 +403,7 @@ class FactRepository:
         conn.execute(
             """INSERT INTO fact_schema_meta
                (schema_name, schema_version, applied_at, git_commit)
-               VALUES ('financial_facts', '2.0', ?, ?)""",
+               VALUES ('financial_facts', '2.1', ?, ?)""",
             [now, git_commit],
         )
 
@@ -355,7 +423,7 @@ class FactRepository:
             with repo.transaction() as conn:
                 repo.store_facts(facts, conn=conn)
                 repo.store_contexts(contexts, conn=conn)
-                repo.store_schema_meta('financial_facts', '2.0', conn=conn)
+                repo.store_schema_meta('financial_facts', '2.1', conn=conn)
         """
         conn = self.store.connect()
         conn.execute("BEGIN TRANSACTION")

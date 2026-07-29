@@ -159,7 +159,7 @@ class FactService:
         Provider → 内存校验 → Checkpoint 决策 → 事务化写入 → 清单
     """
 
-    schema_version: str = "2.0"
+    schema_version: str = "2.1"
 
     def __init__(
         self,
@@ -196,7 +196,7 @@ class FactService:
         manifest = LineageManifest(symbol=symbol, profile="cyclical")
         manifest.entry.job_name = self._resolve_job_name(source_mode)
         manifest.entry.code_version = self.schema_version
-        manifest.entry.fact_schema_version = "2.0"
+        manifest.entry.fact_schema_version = "2.1"
         manifest.entry.concept_registry_version = "2.0"
         run_id = manifest.entry.run_id
 

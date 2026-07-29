@@ -12,7 +12,8 @@ validate-before-write contract:
   7. canonical id validation on the output fact
   8. FactValidator on the output fact
   9. FACT_RECON_INPUT_001 (one company_official + one exchange_official,
-     both verified, both ineligible)
+     both verified and ineligible; output provenance and all three lineage
+     roles strictly bound to those actual inputs)
  10. VersionChainValidator if output.fact_version > 1
  11. any error severity -> raise ReconciliationValidationError, write nothing
  12. single transaction: idempotent store of both inputs + reconciled fact,
@@ -137,12 +138,24 @@ class OfficialFactReconciliationService:
                 "Reconciliation engine produced a non-canonical fact_id"
             )
 
+        recon_run_id = (
+            f"recon_{datetime.now().strftime('%Y%m%d_%H%M%S_%f')}"
+        )
+        lineage_rows = self._build_reconciliation_lineage(
+            company_fact, exchange_fact, output_fact, recon_run_id,
+        )
+
         # 8-10. Output validation + FACT_RECON_INPUT_001 + version chain.
         post_errors: list[FactValidationResult] = []
         post_errors.extend(self.validator.validate_single_fact(output_fact))
         post_errors.extend(
             self._check_recon_inputs(
-                company_fact, exchange_fact, now,
+                company_fact, exchange_fact, output_fact, result, now,
+            )
+        )
+        post_errors.extend(
+            self._check_recon_lineage(
+                company_fact, exchange_fact, output_fact, lineage_rows, now,
             )
         )
         if int(output_fact.get("fact_version", 1) or 1) > 1:
@@ -154,14 +167,6 @@ class OfficialFactReconciliationService:
         self._raise_on_errors(post_errors)
 
         # 11. Transactional write.
-        recon_run_id = (
-            f"recon_{datetime.now().strftime('%Y%m%d_%H%M%S_%f')}"
-        )
-        parent_ids = ",".join(sorted([
-            result.company_fact_id,
-            result.exchange_fact_id,
-        ]))
-
         with self.repository.transaction() as conn:
             # Retain both inputs as ineligible audit trail (idempotent).
             self.repository.store_facts(
@@ -171,43 +176,10 @@ class OfficialFactReconciliationService:
             # FactVersionConflictError on payload change).
             self.repository.store_facts([output_fact], conn=conn)
 
-            # Lineage: 3 rows, roles distinguish company / exchange / output.
-            self.repository.store_lineage(
-                fact_id=result.company_fact_id,
-                run_id=recon_run_id,
-                source_provider=RECONCILIATION_SOURCE_PROVIDER,
-                source_tier="company_official",
-                source_method=RECONCILIATION_METHOD,
-                parent_fact_ids="",
-                role=ROLE_INPUT_COMPANY,
-                reconciliation_rule_id=RULE_ID,
-                reconciliation_rule_version=RULE_VERSION,
-                conn=conn,
-            )
-            self.repository.store_lineage(
-                fact_id=result.exchange_fact_id,
-                run_id=recon_run_id,
-                source_provider=RECONCILIATION_SOURCE_PROVIDER,
-                source_tier="exchange_official",
-                source_method=RECONCILIATION_METHOD,
-                parent_fact_ids="",
-                role=ROLE_INPUT_EXCHANGE,
-                reconciliation_rule_id=RULE_ID,
-                reconciliation_rule_version=RULE_VERSION,
-                conn=conn,
-            )
-            self.repository.store_lineage(
-                fact_id=output_fact["fact_id"],
-                run_id=recon_run_id,
-                source_provider=RECONCILIATION_SOURCE_PROVIDER,
-                source_tier="reconciled_derived",
-                source_method=RECONCILIATION_METHOD,
-                parent_fact_ids=parent_ids,
-                role=ROLE_OUTPUT,
-                reconciliation_rule_id=RULE_ID,
-                reconciliation_rule_version=RULE_VERSION,
-                conn=conn,
-            )
+            # Lineage was fully bound and validated before opening the
+            # transaction.  Persist exactly those three checked rows.
+            for row in lineage_rows:
+                self.repository.store_lineage(**row, conn=conn)
 
         return result
 
@@ -248,6 +220,8 @@ class OfficialFactReconciliationService:
     def _check_recon_inputs(
         company_fact: dict[str, Any],
         exchange_fact: dict[str, Any],
+        output_fact: dict[str, Any],
+        result: ReconciliationResult,
         now: str,
     ) -> list[FactValidationResult]:
         """FACT_RECON_INPUT_001: the two inputs must be one
@@ -259,6 +233,57 @@ class OfficialFactReconciliationService:
             str(exchange_fact.get("source_tier", "")),
         }
         results: list[FactValidationResult] = []
+        expected_ids = {
+            str(company_fact.get("fact_id", "")),
+            str(exchange_fact.get("fact_id", "")),
+        }
+        facts_by_tier = {
+            str(fact.get("source_tier", "")): fact
+            for fact in (company_fact, exchange_fact)
+        }
+
+        input_ids = OfficialFactReconciliationService._parse_fact_ids(
+            output_fact.get("input_fact_ids", ""),
+        )
+        derived_ids = OfficialFactReconciliationService._parse_fact_ids(
+            output_fact.get("derived_from", ""),
+        )
+        if len(input_ids) != 2 or set(input_ids) != expected_ids:
+            results.append(OfficialFactReconciliationService._recon_error(
+                output_fact.get("fact_id", ""),
+                f"input_fact_ids exactly reference {sorted(expected_ids)}",
+                f"input_fact_ids={input_ids}",
+                "reconciled output must reference the actual official pair",
+                now,
+            ))
+        if derived_ids != input_ids:
+            results.append(OfficialFactReconciliationService._recon_error(
+                output_fact.get("fact_id", ""),
+                f"derived_from={input_ids}",
+                f"derived_from={derived_ids}",
+                "reconciled output derived_from must match input_fact_ids",
+                now,
+            ))
+        expected_result_ids = (
+            str(facts_by_tier.get(
+                "company_official", company_fact,
+            ).get("fact_id", "")),
+            str(facts_by_tier.get(
+                "exchange_official", exchange_fact,
+            ).get("fact_id", "")),
+        )
+        actual_result_ids = (
+            str(result.company_fact_id),
+            str(result.exchange_fact_id),
+        )
+        if actual_result_ids != expected_result_ids:
+            results.append(OfficialFactReconciliationService._recon_error(
+                output_fact.get("fact_id", ""),
+                f"result input ids={expected_result_ids}",
+                f"result input ids={actual_result_ids}",
+                "reconciliation result ids must identify the actual inputs",
+                now,
+            ))
 
         if tiers != {"company_official", "exchange_official"}:
             results.append(FactValidationResult(
@@ -315,3 +340,140 @@ class OfficialFactReconciliationService:
                 ))
 
         return results
+
+    @staticmethod
+    def _parse_fact_ids(value: Any) -> list[str]:
+        """Parse a comma-separated provenance field without losing order."""
+        if not isinstance(value, str):
+            return []
+        return [part.strip() for part in value.split(",") if part.strip()]
+
+    @staticmethod
+    def _recon_error(
+        target_id: str,
+        expected: str,
+        actual: str,
+        message: str,
+        now: str,
+    ) -> FactValidationResult:
+        return FactValidationResult(
+            rule_id="FACT_RECON_INPUT_001",
+            target_id=str(target_id),
+            severity="error",
+            passed=False,
+            expected=expected,
+            actual=actual,
+            message=message,
+            checked_at=now,
+        )
+
+    @staticmethod
+    def _build_reconciliation_lineage(
+        company_fact: dict[str, Any],
+        exchange_fact: dict[str, Any],
+        output_fact: dict[str, Any],
+        run_id: str,
+    ) -> list[dict[str, Any]]:
+        facts_by_tier = {
+            str(fact.get("source_tier", "")): fact
+            for fact in (company_fact, exchange_fact)
+        }
+        company_input = facts_by_tier.get("company_official", company_fact)
+        exchange_input = facts_by_tier.get(
+            "exchange_official", exchange_fact,
+        )
+        parent_ids = ",".join(sorted(
+            OfficialFactReconciliationService._parse_fact_ids(
+                output_fact.get("input_fact_ids", ""),
+            )
+        ))
+        common = {
+            "run_id": run_id,
+            "source_provider": RECONCILIATION_SOURCE_PROVIDER,
+            "source_method": RECONCILIATION_METHOD,
+            "reconciliation_rule_id": RULE_ID,
+            "reconciliation_rule_version": RULE_VERSION,
+        }
+        return [
+            {
+                **common,
+                "fact_id": company_input.get("fact_id", ""),
+                "source_tier": "company_official",
+                "parent_fact_ids": "",
+                "role": ROLE_INPUT_COMPANY,
+            },
+            {
+                **common,
+                "fact_id": exchange_input.get("fact_id", ""),
+                "source_tier": "exchange_official",
+                "parent_fact_ids": "",
+                "role": ROLE_INPUT_EXCHANGE,
+            },
+            {
+                **common,
+                "fact_id": output_fact.get("fact_id", ""),
+                "source_tier": "reconciled_derived",
+                "parent_fact_ids": parent_ids,
+                "role": ROLE_OUTPUT,
+            },
+        ]
+
+    @staticmethod
+    def _check_recon_lineage(
+        company_fact: dict[str, Any],
+        exchange_fact: dict[str, Any],
+        output_fact: dict[str, Any],
+        rows: list[dict[str, Any]],
+        now: str,
+    ) -> list[FactValidationResult]:
+        facts_by_tier = {
+            str(fact.get("source_tier", "")): fact
+            for fact in (company_fact, exchange_fact)
+        }
+        expected_by_role = {
+            ROLE_INPUT_COMPANY: str(facts_by_tier.get(
+                "company_official", company_fact,
+            ).get("fact_id", "")),
+            ROLE_INPUT_EXCHANGE: str(facts_by_tier.get(
+                "exchange_official", exchange_fact,
+            ).get("fact_id", "")),
+            ROLE_OUTPUT: str(output_fact.get("fact_id", "")),
+        }
+        actual_by_role = {
+            str(row.get("role", "")): str(row.get("fact_id", ""))
+            for row in rows
+        }
+        errors: list[FactValidationResult] = []
+        if len(rows) != 3 or actual_by_role != expected_by_role:
+            errors.append(OfficialFactReconciliationService._recon_error(
+                output_fact.get("fact_id", ""),
+                f"lineage roles={expected_by_role}",
+                f"lineage roles={actual_by_role}, row_count={len(rows)}",
+                "reconciliation lineage roles must identify the actual inputs "
+                "and output",
+                now,
+            ))
+
+        output_rows = [
+            row for row in rows if row.get("role") == ROLE_OUTPUT
+        ]
+        lineage_parent_ids = (
+            OfficialFactReconciliationService._parse_fact_ids(
+                output_rows[0].get("parent_fact_ids", ""),
+            )
+            if len(output_rows) == 1 else []
+        )
+        output_input_ids = (
+            OfficialFactReconciliationService._parse_fact_ids(
+                output_fact.get("input_fact_ids", ""),
+            )
+        )
+        if lineage_parent_ids != sorted(output_input_ids):
+            errors.append(OfficialFactReconciliationService._recon_error(
+                output_fact.get("fact_id", ""),
+                f"output lineage parent_fact_ids={sorted(output_input_ids)}",
+                f"output lineage parent_fact_ids={lineage_parent_ids}",
+                "output lineage parents must match output input_fact_ids",
+                now,
+            ))
+        return errors
