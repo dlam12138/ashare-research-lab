@@ -27,7 +27,35 @@
 
 ## 完成后填写
 
-- 参数化代码 commit：待完成
-- 记录定稿 commit：待完成
-- 测试、静态检查与远程哈希：待实际执行后填写
-- C.1：只有 C.0 全部门禁通过并完成远程复审后才允许
+- 参数化代码 commit：`5f11df8b528500a5bbd528304153b179402e2305`
+- 变更文件：
+  - `src/ashare_research/tools/official_fact_acceptance.py`
+  - `tests/test_official_fact_acceptance.py`
+  - 本工作记录
+- 删除的绑定：`EXPECTED_SYMBOL`、固定年度/起止日期/报告标题、`stage1cb_` run_id 和 `stage1cb` 目录。
+- 年度合同：A 股 symbol 格式、1990—9999 整数年度、自然年度 duration、annual/CAS/consolidated/zh-CN。
+- 不变合同：company + exchange、三个既有 Concept、人民币百万元到万元的 Decimal X100、Reconciliation v1、Fact Schema 2.1。
+- run_id：`annual_official_{symbol_token}_{fiscal_year}_{timestamp}`
+- 输出目录：`<output_root>/<symbol>/annual_official_facts/<fiscal_year>/<run_id>/`
+- Manifest 版本区分：
+  - `bundle_schema_version = 1.0`
+  - `acceptance_contract = annual_official_facts_v1`
+  - `fact_schema_version = 2.1`
+- 2025 正式 bundle：保持原文件不变并通过兼容回归。
+- 历史年度测试：仅使用测试内合成 bundle 与临时 PDF；未创建真实历史年度证据。
+- 第二 symbol：仅合成合同测试；未创建公司配置或真实证据。
+- 源码硬编码检查：`No matches found`。
+- Targeted：`182 passed in 10.77s`。
+- 全量 pytest：`418 passed, 2 warnings in 40.22s`。
+- Ruff：`All checks passed!`，exit 0。
+- compileall：exit 0。
+- import：OK。
+- `git diff --check`：exit 0。
+- 主提交远程哈希：`5f11df8b528500a5bbd528304153b179402e2305`。
+- 污染检查：无被跟踪的 `output/**`、PDF、DuckDB 或 `data/raw/official/**`。
+- 正式 evidence fixture 仍只有已验收的 `601857.SH/2025_annual.json`。
+- `stash@{0}`：保持原状，未 pop。
+- 主提交推送后 worktree：clean。
+- 后续风险：真实历史报告若使用不同单位或结构，必须在 C.1 停止并单独评估；C.0 未预扩展单位或解析框架。
+- 最终状态：**M2 Stage 1C-C.0 Pass**。
+- C.1：技术前置门禁已满足；在本次远程提交完成复审前不得启动真实报告工作。
