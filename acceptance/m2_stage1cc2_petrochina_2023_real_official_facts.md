@@ -2,7 +2,7 @@
 
 ## 结论
 
-**Conditional Pass。** 2023 年真实官方事实、Reconciliation、PIT、Audit、Lineage、隔离运行和全部 pytest 均通过；但当前 Ruff 0.12.0 对起始 commit 已存在的三个 `UP038` 报错，严格全仓 Ruff 门禁不是 clean。本阶段未修改 runner 或既有测试绕过该问题。
+**Pass。** 2023 年真实官方事实、Reconciliation、PIT、Audit、Lineage、隔离运行、全部 pytest 和严格全仓 Ruff 门禁均通过。
 
 - 公司：中国石油天然气股份有限公司
 - Symbol：`601857.SH`
@@ -13,6 +13,12 @@
 - Acceptance contract：`annual_official_facts_v1`
 - Evidence commit：`709418d`
 - run_id：`annual_official_601857_SH_2023_20260729_212055_855553`
+
+### 后续工具链收口
+
+原验收时数据证据链已经通过，唯一条件是 `ruff>=0.1.0` 未固定版本，导致 Ruff 0.12.0 报告三条随后删除的 `UP038`。M2 Stage 1C-C.2.1 将开发依赖固定为 `ruff==0.13.2`；该版本规则集中已不存在 `UP038`，并在未修改三处 `isinstance` 的情况下通过严格全仓检查。
+
+本次收口没有修改 runner 业务逻辑、2023 事实值、六个原始 fact_id、三个 reconciled fact_id、PIT、Audit 或 Lineage。
 
 ## 官方文档
 
@@ -121,16 +127,16 @@
 
 ## 质量门禁
 
-- Registered bundle + annual runner tests：`122 passed in 4.95s`
-- Reconciliation regression：`86 passed in 6.64s`
-- Full pytest：`444 passed, 2 warnings in 43.53s`
+- Ruff toolchain：`ruff==0.13.2`
+- Strict Ruff：`python -m ruff check src tests`，All checks passed，exit 0
+- Registered bundle + annual runner tests：`122 passed in 5.24s`
+- Reconciliation regression：`86 passed in 6.89s`
+- Full pytest：`444 passed, 2 warnings in 42.53s`
 - compileall：exit 0
 - import validation：OK
 - git diff check：exit 0
-- 本轮新增测试 Ruff：All checks passed
-- `ruff check src tests --ignore UP038`：All checks passed
-- 严格 `ruff check src tests`（Ruff 0.12.0）：失败；起始 commit 已有 3 条 `UP038`，位于 runner 两处和既有测试一处
+- 历史条件：Ruff 0.12.0 曾报告三条 `UP038`；0.13.2 已删除该规则，未通过 ignore/noqa 或代码改写绕过
 - PDF、DuckDB、output 和 `data/raw/official/**` 均无 Git 跟踪文件
 - 2024、2025 bundle 与正式验收报告未修改
 
-最终判定：**M2 Stage 1C-C.2 Conditional Pass**。2023 官方事实验收链路本身通过；在严格全仓 Ruff 基线问题被单独处置或复审明确接受前，不进入 2022 年验收。
+最终判定：**M2 Stage 1C-C.2 Pass**。允许进入 M2 Stage 1C-C.3：中国石油 2022 年年度报告最小官方事实验收。

@@ -18,8 +18,7 @@
 
 ## 待确认
 
-- 严格全仓 Ruff 0.12 基线问题的处置
-- 最终提交与远程状态
+- 无
 
 ## 来源发现与人工复核
 
@@ -52,17 +51,19 @@
 ## 门禁状态
 
 - Evidence commit：`709418d`
-- Registered bundle + annual runner tests：`122 passed in 4.95s`
-- Reconciliation regression：`86 passed in 6.64s`
-- Full pytest：`444 passed, 2 warnings in 43.53s`
+- Ruff toolchain commit：`07ff3a825f5a90d2db253ad4b54e05953cf2606b`
+- Ruff：固定为 `0.13.2`；严格全仓检查 All checks passed，exit 0
+- Registered bundle + annual runner tests：`122 passed in 5.24s`
+- Reconciliation regression：`86 passed in 6.89s`
+- Full pytest：`444 passed, 2 warnings in 42.53s`
 - compileall：exit 0
 - import：OK
 - diff check：exit 0
-- 本轮新增测试 Ruff：All checks passed。
-- `ruff check src tests --ignore UP038`：All checks passed。
-- 严格 `ruff check src tests`（Ruff 0.12.0）：在起始 commit 已存在的 runner 两处和既有测试一处报 `UP038`；本轮未修改这些文件。
+- 原条件：Ruff 0.12.0 在起始 commit 已存在的 runner 两处和既有测试一处报告 `UP038`。
+- 后续收口：Ruff 0.13.2 已删除该规则；未修改三处 `isinstance`，未添加 ignore/noqa。
+- 2023 bundle、六个原始 fact_id、三个 reconciled fact_id、PIT、Audit 和 Lineage 均未改变。
 - 2024、2025 bundle 和正式验收报告：未修改。
 - PDF、DuckDB、output、截图和下载中间文件：均未进入 Git。
 - `stash@{0}`：保持原状，未 pop。
-- 最终状态：**M2 Stage 1C-C.2 Conditional Pass**
-- 2022：严格全仓 Ruff 基线问题被单独处置或远程复审明确接受前不允许进入。
+- 最终状态：**M2 Stage 1C-C.2 Pass**
+- 2022：允许进入 M2 Stage 1C-C.3。

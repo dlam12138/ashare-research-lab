@@ -40,7 +40,7 @@
 
 ## 待确认
 
-- 提交、远程状态与最终结论
+- 最终记录提交与远程状态
 
 ## 固定工具链结果
 
@@ -60,8 +60,28 @@
 
 - 2023 注册证据与年度验收：`122 passed in 5.24s`
 - Reconciliation 回归：`86 passed in 6.89s`
-- 全量测试：`444 passed, 2 warnings in 51.10s`
+- 全量测试：`444 passed, 2 warnings in 42.53s`
 - warnings：与原验收相同的 pandas 日期解析两条 warning，无新增
 - compileall：exit 0
 - import：OK
 - diff check：exit 0
+
+## 不可变性复核
+
+- 2023 bundle 完成后 blob：`6612148ea91b2004605b98e0c8fe799a4d2686ea`
+- 2024 bundle 完成后 blob：`03a2ec2813c31676aebed20e4df50042f42f140b`
+- 2025 bundle 完成后 blob：`0ababb5262e6cbf1646e165ccfb3e7bfe2769670`
+- 三个 bundle blob 与启动值逐一相同。
+- runner、`tests/test_official_fact_acceptance.py` 和 `tests/test_registered_annual_evidence.py` 相对 base commit 无差异。
+- 2023 六个原始 fact_id和三个 reconciled fact_id不变。
+- PIT：before 0，on availability 3；Audit 9；Lineage 9，均不变。
+- PDF、PNG、DuckDB、output、`data/raw/official/**` 和 Ruff cache 均未进入 Git。
+
+## 提交与结论
+
+- 工具链提交：`07ff3a825f5a90d2db253ad4b54e05953cf2606b`
+- 工具链提交已推送；SSH `ls-remote` 确认远程分支指向该哈希。
+- `stash@{0}`：保持原状，未 pop。
+- M2 Stage 1C-C.2.1：**Pass**
+- M2 Stage 1C-C.2：**Pass**
+- Stage 1C-C.3 / 2022：**Allowed**
