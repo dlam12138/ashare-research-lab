@@ -19,7 +19,7 @@
 
 ## 待确认
 
-- 最终结论、测试数量和提交哈希：待实际执行
+- 无
 
 ## 来源发现与人工复核
 
@@ -47,3 +47,20 @@
 - PIT：before 0，on availability 3；Audit 9
 - latest_available_at：`2025-03-31`
 - 默认 research DB 运行后哈希与启动哈希一致。
+
+## 门禁与提交
+
+- Evidence commit：`9574c6c3474ac878205eced5fe634ca19e0cc5f8`
+- Registered bundle + runner tests：`109 passed in 5.22s`
+- Reconciliation regression：`86 passed in 6.86s`
+- Full pytest：`431 passed, 2 warnings in 40.88s`
+- Ruff：All checks passed，exit 0
+- compileall：exit 0
+- import：OK
+- diff check：exit 0
+- 2025 比较列 sanity check：三项值一致；仅作检查，未作为 2024 原始事实。
+- 2025 bundle 和正式验收报告：未修改。
+- PDF、DuckDB、output、截图和下载中间文件：均未进入 Git。
+- `stash@{0}`：保持原状，未 pop。
+- 最终状态：**M2 Stage 1C-C.1 Pass**
+- 2023：本次远程提交复审通过后才允许进入。
