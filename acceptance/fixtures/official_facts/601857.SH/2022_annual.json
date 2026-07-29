@@ -1,0 +1,124 @@
+{
+  "schema_version": "1.0",
+  "symbol": "601857.SH",
+  "company_name": "中国石油天然气股份有限公司",
+  "fiscal_year": 2022,
+  "report_type": "annual",
+  "period_start": "2022-01-01",
+  "period_end": "2022-12-31",
+  "accounting_standard": "CAS",
+  "consolidation_scope": "consolidated",
+  "language": "zh-CN",
+  "document_relationship": "same_report_different_bytes",
+  "documents": {
+    "company": {
+      "source_tier": "company_official",
+      "source_provider": "petrochina_ir_manual_registry",
+      "source_id": "company_ir:601857.SH:2022:annual:zh-cn",
+      "source_document": "中国石油天然气股份有限公司2022年度报告（A股）",
+      "landing_url": "https://www.petrochina.com.cn/petrochina/gsgg/202303/c19b382ed0784b67a77de51a42a0ca3d.shtml",
+      "pdf_url": "https://www.petrochina.com.cn/petrochina/gsgg/202303/c19b382ed0784b67a77de51a42a0ca3d/files/d780ae64c9d0404d882a02dfd201e162.pdf",
+      "final_pdf_url": "https://www.petrochina.com.cn/petrochina/gsgg/202303/c19b382ed0784b67a77de51a42a0ca3d/files/d780ae64c9d0404d882a02dfd201e162.pdf",
+      "announcement_date": "2023-03-29",
+      "retrieved_at": "2026-07-29T21:57:22.200+08:00",
+      "sha256": "fea19e9033bbcff24357575d02da3e9b8ddda7d5bbcdd7cabfb018a7e35615c1",
+      "content_type": "application/pdf",
+      "content_length": 12261788,
+      "page_count": 285
+    },
+    "exchange": {
+      "source_tier": "exchange_official",
+      "source_provider": "sse_disclosure_manual_registry",
+      "source_id": "sse:601857.SH:2022:annual:zh-cn",
+      "source_document": "中国石油天然气股份有限公司2022年度报告",
+      "landing_url": "https://www.sse.com.cn/disclosure/listedinfo/regular/index.shtml?productId=601857",
+      "pdf_url": "https://www.sse.com.cn/disclosure/listedinfo/announcement/c/new/2023-03-30/601857_20230330_LSV2.pdf",
+      "final_pdf_url": "https://static.sse.com.cn/disclosure/listedinfo/announcement/c/new/2023-03-30/601857_20230330_LSV2.pdf",
+      "announcement_date": "2023-03-30",
+      "retrieved_at": "2026-07-29T21:58:32.148+08:00",
+      "sha256": "da64c67d9e575c3cfcfbd892ce5e8c19d4cf8ca07d51c47df01be2fa4587d861",
+      "content_type": "application/pdf",
+      "content_length": 12257199,
+      "page_count": 285
+    }
+  },
+  "facts": [
+    {
+      "source_key": "company",
+      "concept_id": "revenue",
+      "source_page": "PDF page 113 / printed page 111",
+      "source_table": "2022年度合并及公司利润表",
+      "source_label": "营业收入",
+      "column_label": "2022年度合并",
+      "raw_value": "3239167",
+      "raw_unit": "人民币百万元",
+      "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+      "expected_normalized_value": 323916700
+    },
+    {
+      "source_key": "company",
+      "concept_id": "net_profit_attributable_to_parent",
+      "source_page": "PDF page 113 / printed page 111",
+      "source_table": "2022年度合并及公司利润表",
+      "source_label": "归属于母公司股东的净利润",
+      "column_label": "2022年度合并",
+      "raw_value": "149375",
+      "raw_unit": "人民币百万元",
+      "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+      "expected_normalized_value": 14937500
+    },
+    {
+      "source_key": "company",
+      "concept_id": "operating_cash_flow",
+      "source_page": "PDF page 114 / printed page 112",
+      "source_table": "2022年度合并及公司现金流量表",
+      "source_label": "经营活动产生的现金流量净额",
+      "column_label": "2022年度合并",
+      "raw_value": "393768",
+      "raw_unit": "人民币百万元",
+      "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+      "expected_normalized_value": 39376800
+    },
+    {
+      "source_key": "exchange",
+      "concept_id": "revenue",
+      "source_page": "PDF page 113 / printed page 111",
+      "source_table": "2022年度合并及公司利润表",
+      "source_label": "营业收入",
+      "column_label": "2022年度合并",
+      "raw_value": "3239167",
+      "raw_unit": "人民币百万元",
+      "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+      "expected_normalized_value": 323916700
+    },
+    {
+      "source_key": "exchange",
+      "concept_id": "net_profit_attributable_to_parent",
+      "source_page": "PDF page 113 / printed page 111",
+      "source_table": "2022年度合并及公司利润表",
+      "source_label": "归属于母公司股东的净利润",
+      "column_label": "2022年度合并",
+      "raw_value": "149375",
+      "raw_unit": "人民币百万元",
+      "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+      "expected_normalized_value": 14937500
+    },
+    {
+      "source_key": "exchange",
+      "concept_id": "operating_cash_flow",
+      "source_page": "PDF page 114 / printed page 112",
+      "source_table": "2022年度合并及公司现金流量表",
+      "source_label": "经营活动产生的现金流量净额",
+      "column_label": "2022年度合并",
+      "raw_value": "393768",
+      "raw_unit": "人民币百万元",
+      "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+      "expected_normalized_value": 39376800
+    }
+  ],
+  "limitations": [
+    "两个正式发布路径提供同一份年度报告但PDF字节不同；页数、封面、审计意见、报表结构、页码和三个目标事实经人工对照一致。",
+    "中国石油官网使用明确标注为A股的简体完整年度报告；繁体H股、英文、摘要和业绩公告均已排除。",
+    "2023年度报告根据企业会计准则解释第16号重列了2022比较数据，其中归母净利润变为148738；本注册只使用2022年度报告原始披露值149375，不用后续比较列覆盖。"
+  ]
+}
