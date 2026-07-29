@@ -25,8 +25,25 @@
 
 ## 完成后填写
 
-- 工具 commit：待实际提交
-- 证据 commit：待实际提交
-- Acceptance run_id：待实际运行
-- 测试结果：待实际运行
-- 最终状态：不得在真实 Acceptance Run 与全部门禁通过前填写 Pass
+- 公司官网公告日：`2026-03-29`
+- 上交所公告日：`2026-03-30`
+- 公司 PDF SHA-256：`0eba96bd4e815187e7b64645f523f2b5d363ca3fea8168a63ec930f624715f8d`
+- 上交所 PDF SHA-256：`840b15aa4dc38745a6b86a3656063e6a73081ce87407acb0ca93554f4e836e65`
+- `document_relationship`：`same_report_different_bytes`
+- 原始值（人民币百万元）：营业收入 `2,864,469`；归母净利润 `157,302`；经营活动现金流量净额 `412,510`
+- 规范化值（万元）：`286,446,900`、`15,730,200`、`41,251,000`
+- 工具 commit：`0b1f8679d75a87d615d03675403c5d72983d2f02`
+- 证据 commit：由本记录与正式验收报告提交后记录在 Git 历史及最终回报
+- Acceptance run_id：`stage1cb_20260729_200911_593537`
+- Acceptance exit code：`0`
+- Acceptance 计数：1 context、6 original、3 reconciled、9 facts、9 lineage
+- PIT：`2026-03-29` 返回 0；`2026-03-30` 返回 3
+- Audit：9
+- 针对性门禁：`125 passed in 9.13s`
+- 全量测试：`361 passed, 2 warnings in 40.58s`
+- Ruff：exit 0
+- compileall / import：exit 0 / OK
+- diff check：exit 0
+- 后续事项：两份 PDF 是同一报告的两个正式发布路径，不是独立编制的内容来源；不得将其表述为独立内容交叉验证。
+- 最终状态：**Pass**
+- 下一阶段：仅允许进入 `M2 Stage 1C-C`，先扩展 2021—2024 年度报告，不立即录入季度数据。
