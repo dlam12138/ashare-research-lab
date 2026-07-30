@@ -14,6 +14,7 @@ class MetricStatus(StrEnum):
     undefined_zero_denominator = "undefined_zero_denominator"
     not_comparable_negative_prior = "not_comparable_negative_prior"
     not_comparable_non_positive_profit = "not_comparable_non_positive_profit"
+    not_comparable_negative_revenue = "not_comparable_negative_revenue"
 
 
 @dataclass(frozen=True)

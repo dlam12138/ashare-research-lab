@@ -1,4 +1,4 @@
-"""Decimal-only calculation engine for the four Stage 2A metrics."""
+"""Decimal-only calculation engine for explicit versioned metrics."""
 
 from __future__ import annotations
 
@@ -143,6 +143,27 @@ class MetricEngine:
                         status = (
                             MetricStatus.not_comparable_non_positive_profit
                         )
+                    else:
+                        value = (primary / secondary).quantize(
+                            CANONICAL_QUANTUM,
+                            rounding=ROUND_HALF_EVEN,
+                        )
+                elif (
+                    definition.formula
+                    == "operating_cash_flow - cash_paid_for_fixed_assets"
+                ):
+                    value = (primary - secondary).quantize(
+                        CANONICAL_QUANTUM,
+                        rounding=ROUND_HALF_EVEN,
+                    )
+                elif (
+                    definition.formula
+                    == "cash_paid_for_fixed_assets / revenue"
+                ):
+                    if secondary == 0:
+                        status = MetricStatus.undefined_zero_denominator
+                    elif secondary < 0:
+                        status = MetricStatus.not_comparable_negative_revenue
                     else:
                         value = (primary / secondary).quantize(
                             CANONICAL_QUANTUM,
