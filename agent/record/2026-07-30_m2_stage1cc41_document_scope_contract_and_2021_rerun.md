@@ -27,10 +27,6 @@
 - `independent_content_sources`：保持 `false`
 - 不修改 Reconciliation、Fact Schema、SourceTier、Concept、单位、容差、PIT 或 canonical Fact ID 规则。
 
-## 待完成
-
-- 全量门禁、正式报告、分步提交和远程核验
-
 ## 合同测试
 
 - Runner 与合同测试：`107 passed in 6.12s`
@@ -128,3 +124,28 @@ Reconciled：
 
 - Runner、2021—2025 注册 bundle targeted pytest：`160 passed in 5.26s`
 - 2021 新增测试 Ruff 0.13.2：通过
+
+## 全量门禁
+
+- Ruff：`py -3.13 -m ruff check src tests`，版本 `0.13.2`，通过。
+- compileall：`python -m compileall -q src tests`，通过。
+- import：`ashare_research` 与 `official_fact_acceptance` 导入通过，合同版本为 `annual_official_facts_v1_1`。
+- 全量 pytest：`482 passed, 2 warnings in 38.66s`。
+- `git diff --check`：通过。
+- 2022—2025 bundle 内容与基线逐字节 JSON 等价，Git blob 保持：
+  - 2022：`7076195f3532ead9f0278f97691fe552fdb2ff54`
+  - 2023：`6612148ea91b2004605b98e0c8fe799a4d2686ea`
+  - 2024：`03a2ec2813c31676aebed20e4df50042f42f140b`
+  - 2025：`0ababb5262e6cbf1646e165ccfb3e7bfe2769670`
+- 2022—2025 每年六个 original canonical Fact ID 与基线完全一致。
+- 默认 `data/research.duckdb` 结束 SHA-256：`4A71D3C7B88C0B16AE46FFB4F9BFBD006D91E0537E559235C9B5A1F919E2FCE6`，与启动值一致。
+- PDF、渲染 PNG、DuckDB 和 runner output 均未进入 Git；临时渲染目录和浏览器缓存已清理。
+- `stash@{0}` 未读取、未应用、未弹出。
+
+## 提交边界
+
+- `b50dcfb fix: support scoped official document evidence`
+  - runner 合同、合同测试、工作记录初稿。
+- `add075e test: register PetroChina 2021 official fact evidence`
+  - 2021 bundle、注册证据测试、实际证据工作记录。
+- 正式报告与最终工作记录在第三个独立 docs 提交中定稿。
