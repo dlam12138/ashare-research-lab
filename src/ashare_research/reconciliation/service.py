@@ -6,19 +6,21 @@ validate-before-write contract:
   1. receive company_fact + exchange_fact
   2. canonical id validation on both inputs
   3. FactValidator on both inputs
-  4. context_id existence check (must be registered in fact_contexts)
-  5. call the engine
-  6. if status != matched -> return result, write nothing
-  7. canonical id validation on the output fact
-  8. FactValidator on the output fact
-  9. FACT_RECON_INPUT_001 (one company_official + one exchange_official,
+ 4. VersionChainValidator on versioned inputs
+ 5. context_id existence check (must be registered in fact_contexts)
+ 6. call the engine
+ 7. if status != matched -> return result, write nothing
+ 8. bind an explicit reconciled supersedes id for versioned output
+ 9. canonical id validation on the output fact
+ 10. FactValidator on the output fact
+ 11. FACT_RECON_INPUT_001 (one company_official + one exchange_official,
      both verified and ineligible; output provenance and all three lineage
      roles strictly bound to those actual inputs)
- 10. VersionChainValidator if output.fact_version > 1
- 11. any error severity -> raise ReconciliationValidationError, write nothing
- 12. single transaction: idempotent store of both inputs + reconciled fact,
+ 12. VersionChainValidator if output.fact_version > 1
+ 13. any error severity -> raise ReconciliationValidationError, write nothing
+ 14. single transaction: idempotent store of both inputs + reconciled fact,
      then 3 lineage rows (input_company / input_exchange / output)
- 13. commit and return
+ 15. commit and return
 
 It does NOT fetch from the network, parse documents, or register reports.
 The two input facts are accepted as dicts (already loaded / constructed).
@@ -29,6 +31,7 @@ ineligible audit trail; only the reconciled fact is ``eligible_for_metrics``.
 from __future__ import annotations
 
 import logging
+import re
 from datetime import datetime
 from typing import Any
 
@@ -58,6 +61,7 @@ RECONCILIATION_METHOD = "dual_source_reconciliation"
 ROLE_INPUT_COMPANY = "reconciliation_input_company"
 ROLE_INPUT_EXCHANGE = "reconciliation_input_exchange"
 ROLE_OUTPUT = "reconciliation_output"
+_FACT_ID = re.compile(r"^[0-9a-f]{64}$")
 
 
 class OfficialFactReconciliationService:
@@ -88,6 +92,8 @@ class OfficialFactReconciliationService:
         self,
         company_fact: dict[str, Any],
         exchange_fact: dict[str, Any],
+        *,
+        output_supersedes_fact_id: str = "",
     ) -> ReconciliationResult:
         """Reconcile two official facts with full validation.
 
@@ -109,7 +115,25 @@ class OfficialFactReconciliationService:
         input_errors.extend(self.validator.validate_single_fact(exchange_fact))
         self._raise_on_errors(input_errors)
 
-        # 4. Context existence check (pre-transaction read).
+        # 4. Repository-aware version-chain validation on both inputs.
+        # Version 1 facts are ignored by VersionChainValidator.  Versioned
+        # facts must prove their predecessor before the engine runs or any
+        # transaction opens.
+        input_errors.extend(
+            self.version_chain_validator.validate(
+                [company_fact, exchange_fact],
+                conn=self.repository.store.connect(),
+                now=now,
+            )
+        )
+        input_errors.extend(
+            self._check_input_source_tier_chains(
+                company_fact, exchange_fact, now,
+            )
+        )
+        self._raise_on_errors(input_errors)
+
+        # 5. Context existence check (pre-transaction read).
         for fact, label in (
             (company_fact, "company"), (exchange_fact, "exchange"),
         ):
@@ -121,17 +145,36 @@ class OfficialFactReconciliationService:
                     f"auto-create contexts (caller must register them)"
                 )
 
-        # 5. Engine.
+        # 6. Engine.
         result = self.engine.reconcile_pair(
             company_fact, exchange_fact, now=now,
         )
 
-        # 6. Non-matched -> return without writing.
+        # 7. Non-matched -> return without writing.
         if result.output_fact is None:
             return result
         output_fact = result.output_fact
 
-        # 7. Canonical id validation on output.
+        # 8. Versioned reconciled output must explicitly bind its actual
+        # predecessor. The pure engine deliberately never guesses this id.
+        output_version = int(output_fact.get("fact_version", 1) or 1)
+        if output_version == 1:
+            if output_supersedes_fact_id:
+                raise ReconciliationValidationError(
+                    "Version 1 reconciled output must not specify "
+                    "output_supersedes_fact_id; no facts or lineage written"
+                )
+        else:
+            if _FACT_ID.fullmatch(output_supersedes_fact_id) is None:
+                raise ReconciliationValidationError(
+                    "Versioned reconciled output requires a complete "
+                    "64-character lowercase output_supersedes_fact_id; "
+                    "no facts or lineage written"
+                )
+            output_fact["supersedes_fact_id"] = output_supersedes_fact_id
+            output_fact["fact_id"] = build_fact_id(output_fact)
+
+        # 9. Canonical id validation on output after supersedes binding.
         validate_canonical_fact_ids([output_fact])
         if output_fact["fact_id"] != build_fact_id(output_fact):
             raise ReconciliationValidationError(
@@ -145,7 +188,7 @@ class OfficialFactReconciliationService:
             company_fact, exchange_fact, output_fact, recon_run_id,
         )
 
-        # 8-10. Output validation + FACT_RECON_INPUT_001 + version chain.
+        # 10-12. Output validation + FACT_RECON_INPUT_001 + version chain.
         post_errors: list[FactValidationResult] = []
         post_errors.extend(self.validator.validate_single_fact(output_fact))
         post_errors.extend(
@@ -158,7 +201,7 @@ class OfficialFactReconciliationService:
                 company_fact, exchange_fact, output_fact, lineage_rows, now,
             )
         )
-        if int(output_fact.get("fact_version", 1) or 1) > 1:
+        if output_version > 1:
             post_errors.extend(
                 self.version_chain_validator.validate(
                     [output_fact], conn=self.repository.store.connect(),
@@ -166,7 +209,7 @@ class OfficialFactReconciliationService:
             )
         self._raise_on_errors(post_errors)
 
-        # 11. Transactional write.
+        # 14. Transactional write.
         with self.repository.transaction() as conn:
             # Retain both inputs as ineligible audit trail (idempotent).
             self.repository.store_facts(
@@ -215,6 +258,49 @@ class OfficialFactReconciliationService:
             [context_id],
         ).fetchone()
         return row is not None
+
+    def _check_input_source_tier_chains(
+        self,
+        company_fact: dict[str, Any],
+        exchange_fact: dict[str, Any],
+        now: str,
+    ) -> list[FactValidationResult]:
+        """Keep source_tier stable across versioned official raw facts.
+
+        VersionChainValidator owns the shared stable-identity contract.
+        ``source_tier`` is additionally enforced here because it is a
+        service-level official-pair role rather than a FactIdentity field.
+        """
+        conn = self.repository.store.connect()
+        errors: list[FactValidationResult] = []
+        for fact in (company_fact, exchange_fact):
+            version = fact.get("fact_version", 1)
+            if not (isinstance(version, int) and version > 1):
+                continue
+            predecessor_id = str(fact.get("supersedes_fact_id", ""))
+            predecessor = self.repository._get_fact_by_id(
+                predecessor_id, conn,
+            )
+            if predecessor is None:
+                continue
+            old_tier = str(predecessor.get("source_tier", ""))
+            new_tier = str(fact.get("source_tier", ""))
+            if old_tier != new_tier:
+                errors.append(FactValidationResult(
+                    rule_id="FACT_VERSIONCHAIN_001",
+                    rule_version="1",
+                    target_id=str(fact.get("fact_id", "")),
+                    severity="error",
+                    passed=False,
+                    expected=f"source_tier remains {old_tier!r}",
+                    actual=f"source_tier={new_tier!r}",
+                    message=(
+                        "Versioned official input changes its stable "
+                        "source_tier"
+                    ),
+                    checked_at=now,
+                ))
+        return errors
 
     @staticmethod
     def _check_recon_inputs(
