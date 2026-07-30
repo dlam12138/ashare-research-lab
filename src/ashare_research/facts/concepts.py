@@ -124,7 +124,10 @@ class ConceptRegistry:
                 display_name_zh="购建固定资产无形资产支付的现金",
                 category=ConceptCategory.cash_flow,
                 canonical_unit="CNY",
-                aliases=["购建固定资产、无形资产和其他长期资产支付的现金"],
+                aliases=[
+                    "购建固定资产、无形资产和其他长期资产支付的现金",
+                    "购建固定资产、油气资产、无形资产和其他长期资产支付的现金",
+                ],
             ),
         },
         "cash_paid_for_intangible_assets": {

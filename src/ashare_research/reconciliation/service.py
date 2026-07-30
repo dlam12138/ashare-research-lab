@@ -187,6 +187,9 @@ class OfficialFactReconciliationService:
         lineage_rows = self._build_reconciliation_lineage(
             company_fact, exchange_fact, output_fact, recon_run_id,
         )
+        for row in lineage_rows:
+            row["reconciliation_rule_id"] = result.rule_id
+            row["reconciliation_rule_version"] = result.rule_version
 
         # 10-12. Output validation + FACT_RECON_INPUT_001 + version chain.
         post_errors: list[FactValidationResult] = []
@@ -459,6 +462,9 @@ class OfficialFactReconciliationService:
         exchange_fact: dict[str, Any],
         output_fact: dict[str, Any],
         run_id: str,
+        *,
+        rule_id: str = RULE_ID,
+        rule_version: str = RULE_VERSION,
     ) -> list[dict[str, Any]]:
         facts_by_tier = {
             str(fact.get("source_tier", "")): fact
@@ -477,8 +483,8 @@ class OfficialFactReconciliationService:
             "run_id": run_id,
             "source_provider": RECONCILIATION_SOURCE_PROVIDER,
             "source_method": RECONCILIATION_METHOD,
-            "reconciliation_rule_id": RULE_ID,
-            "reconciliation_rule_version": RULE_VERSION,
+            "reconciliation_rule_id": rule_id,
+            "reconciliation_rule_version": rule_version,
         }
         return [
             {

@@ -46,6 +46,7 @@ from __future__ import annotations
 
 import hashlib
 import re
+from dataclasses import dataclass
 from decimal import Decimal, InvalidOperation
 from typing import Any
 
@@ -59,6 +60,8 @@ from ashare_research.reconciliation.models import (
 
 RULE_ID = "RECON_OFFICIAL_NUMERIC_001"
 RULE_VERSION = "1"
+SUPPLEMENTAL_RULE_ID = "RECON_OFFICIAL_NUMERIC_002"
+SUPPLEMENTAL_RULE_VERSION = "1"
 
 # Only these three concepts are reconcilable in the first version.
 SUPPORTED_CONCEPTS: frozenset[str] = frozenset({
@@ -72,6 +75,33 @@ SUPPORTED_CONCEPTS: frozenset[str] = frozenset({
 # gives four orders of magnitude of headroom while remaining lossless for
 # the three supported concepts' officially disclosed values.
 CANONICAL_UNIT = "万元"
+
+
+@dataclass(frozen=True)
+class NumericReconciliationRule:
+    """Explicit immutable contract for one official numeric rule.
+
+    The default remains ``RECON_OFFICIAL_NUMERIC_001`` v1.  Supplemental
+    concepts must opt into a separate rule so extending coverage cannot
+    silently change the semantic scope or identities of the frozen rule.
+    """
+
+    rule_id: str
+    version: str
+    supported_concepts: frozenset[str]
+
+
+DEFAULT_NUMERIC_RECONCILIATION_RULE = NumericReconciliationRule(
+    rule_id=RULE_ID,
+    version=RULE_VERSION,
+    supported_concepts=SUPPORTED_CONCEPTS,
+)
+
+CAPEX_CASH_RECONCILIATION_RULE = NumericReconciliationRule(
+    rule_id=SUPPLEMENTAL_RULE_ID,
+    version=SUPPLEMENTAL_RULE_VERSION,
+    supported_concepts=frozenset({"cash_paid_for_fixed_assets"}),
+)
 
 # Decimal conversion factors for amount units -> canonical 万元.  Kept as
 # Decimal so comparison never passes through binary float.
@@ -197,6 +227,12 @@ def _max_date(a: str, b: str) -> str:
 class ReconciliationEngine:
     """Pure dual-source reconciliation for official numeric facts."""
 
+    def __init__(
+        self,
+        rule: NumericReconciliationRule | None = None,
+    ) -> None:
+        self.rule = rule or DEFAULT_NUMERIC_RECONCILIATION_RULE
+
     def reconcile_pair(
         self,
         company_fact: dict[str, Any],
@@ -222,8 +258,8 @@ class ReconciliationEngine:
         ) -> ReconciliationResult:
             return ReconciliationResult(
                 reconciliation_id=recon_id,
-                rule_id=RULE_ID,
-                rule_version=RULE_VERSION,
+                rule_id=self.rule.rule_id,
+                rule_version=self.rule.version,
                 company_fact_id=company_id,
                 exchange_fact_id=exchange_id,
                 status=status,
@@ -273,12 +309,12 @@ class ReconciliationEngine:
 
         # 5. Concept support.
         concept_id = _str(company.get("concept_id"))
-        if concept_id not in SUPPORTED_CONCEPTS:
+        if concept_id not in self.rule.supported_concepts:
+            supported = ", ".join(sorted(self.rule.supported_concepts))
             return _result(
                 ReconciliationStatus.insufficient_evidence,
                 f"concept {concept_id!r} is not supported by "
-                f"{RULE_ID} (only revenue, "
-                f"net_profit_attributable_to_parent, operating_cash_flow)",
+                f"{self.rule.rule_id} (only {supported})",
             )
 
         # 6. Unit / currency -> canonical 万元.
@@ -297,7 +333,8 @@ class ReconciliationEngine:
                 return _result(
                     ReconciliationStatus.insufficient_evidence,
                     f"{label} canonical value {dec} is not an exact integer; "
-                    f"RECON_OFFICIAL_NUMERIC_001 v1 only supports integral "
+                    f"{self.rule.rule_id} v{self.rule.version} only supports "
+                    "integral "
                     f"{CANONICAL_UNIT} values",
                 )
             if abs(dec) > _SAFE_INT_MAX:
@@ -373,16 +410,19 @@ class ReconciliationEngine:
             mismatched.append("consolidation_scope")
         return mismatched
 
-    @staticmethod
-    def _reconciliation_id(company_id: str, exchange_id: str) -> str:
+    def _reconciliation_id(
+        self,
+        company_id: str,
+        exchange_id: str,
+    ) -> str:
         """Deterministic run identity for the pair (not the canonical
         fact_id).  Stable across repeated reconciliation of the same pair.
         Uses the full SHA-256 hex digest (no truncation)."""
-        raw = f"{RULE_ID}|{company_id}|{exchange_id}"
+        raw = f"{self.rule.rule_id}|{company_id}|{exchange_id}"
         return "recon_" + hashlib.sha256(raw.encode()).hexdigest()
 
-    @staticmethod
     def _build_reconciled_fact(
+        self,
         company: dict[str, Any],
         exchange: dict[str, Any],
         matched_value: Decimal,
@@ -405,7 +445,7 @@ class ReconciliationEngine:
         canonical_int = int(matched_value.to_integral_value())
         symbol = _str(company.get("symbol"))
         source_id = build_reconciliation_source_id(
-            symbol, RULE_ID, RULE_VERSION,
+            symbol, self.rule.rule_id, self.rule.version,
         )
         fact: dict[str, Any] = {
             "concept_id": _str(company.get("concept_id")),
@@ -417,7 +457,7 @@ class ReconciliationEngine:
             "is_derived": True,
             "derived_from": joined,
             "derivation_definition_id": "official_dual_source_reconciliation",
-            "derivation_version": RULE_VERSION,
+            "derivation_version": self.rule.version,
             "input_fact_ids": joined,
             "source_provider": "official_reconciliation",
             "source_id": source_id,
