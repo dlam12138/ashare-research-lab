@@ -49,3 +49,51 @@
   首次出现即使用 2023 reconciled v2。
 - 2025 四个指标均可计算，`revision_review_status` 为
   `not_yet_reviewable`。
+
+## 最终门禁
+
+- Metric unit/repository/integration：`31 passed`。
+- Stage 1D-B regression：`30 passed`。
+- Multi-year regression：`19 passed`。
+- Reconciliation regression：`92 passed`。
+- Full pytest：`562 passed, 2 warnings`；warning 为既有 pandas 日期解析
+  warning。
+- Ruff 0.13.2、compileall、四模块 import、`git diff --check`：通过。
+
+## 不变性
+
+- 五个 annual bundle blob：
+  `cb85f84c3a1459f3a909e36bd6482c8d8124d1a4`、
+  `7076195f3532ead9f0278f97691fe552fdb2ff54`、
+  `6612148ea91b2004605b98e0c8fe799a4d2686ea`、
+  `03a2ec2813c31676aebed20e4df50042f42f140b`、
+  `0ababb5262e6cbf1646e165ccfb3e7bfe2769670`。
+- 四个 restatement evidence blob：
+  `65e25075b91d3d1d15a7761571cca18e931a9f8b`、
+  `e141a0c4b45994ee7d331d9af874ab0c1d8e20ac`、
+  `62d8e20cc728b7def157e4fb781918cf12d09e21`、
+  `8127b566849c811b04f69a180205d0be592738e6`。
+- Stage 1D-B 基线和 Stage 2A upstream 的 57 Fact ID 集合逐一相等；
+  排序集合 SHA-256：
+  `e2afd5d39ae97f2488f5e9a713fda578174c38c5ea13e37d12e8844a8f29d829`。
+- Fact、PIT、Reconciliation、Derivation、Stage 1D-A/1D-B 受保护源码和
+  报告均无 diff。
+- 默认数据库 SHA-256 保持
+  `4A71D3C7B88C0B16AE46FFB4F9BFBD006D91E0537E559235C9B5A1F919E2FCE6`。
+- `stash@{0}` 未动；无 PDF、PNG、DuckDB、output 或 raw official
+  artifact 进入 Git。
+
+## 提交
+
+- `ce51e0c feat: add deterministic metric foundation`
+- `94df17a test: add PetroChina PIT metric integration`
+- 正式报告和本记录定稿进入第三个独立提交。
+
+## 最终结论
+
+```text
+M2 Stage 2A: PASS
+Minimal transparent metrics: TRUSTED
+Additional fact coverage: ALLOWED
+Scoring: NOT YET
+```
