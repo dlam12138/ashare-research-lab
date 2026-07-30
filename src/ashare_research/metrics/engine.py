@@ -169,6 +169,34 @@ class MetricEngine:
                             CANONICAL_QUANTUM,
                             rounding=ROUND_HALF_EVEN,
                         )
+                elif definition.formula == "revenue - operating_cost":
+                    value = (primary - secondary).quantize(
+                        CANONICAL_QUANTUM,
+                        rounding=ROUND_HALF_EVEN,
+                    )
+                elif (
+                    definition.formula
+                    == "(revenue - operating_cost) / revenue"
+                ):
+                    if primary == 0:
+                        status = MetricStatus.undefined_zero_denominator
+                    elif primary < 0:
+                        status = MetricStatus.not_comparable_negative_revenue
+                    else:
+                        value = ((primary - secondary) / primary).quantize(
+                            CANONICAL_QUANTUM,
+                            rounding=ROUND_HALF_EVEN,
+                        )
+                elif definition.formula == "operating_profit / revenue":
+                    if secondary == 0:
+                        status = MetricStatus.undefined_zero_denominator
+                    elif secondary < 0:
+                        status = MetricStatus.not_comparable_negative_revenue
+                    else:
+                        value = (primary / secondary).quantize(
+                            CANONICAL_QUANTUM,
+                            rounding=ROUND_HALF_EVEN,
+                        )
                 else:
                     raise ValueError(
                         f"unsupported metric formula: {definition.formula}"
