@@ -62,6 +62,8 @@ RULE_ID = "RECON_OFFICIAL_NUMERIC_001"
 RULE_VERSION = "1"
 SUPPLEMENTAL_RULE_ID = "RECON_OFFICIAL_NUMERIC_002"
 SUPPLEMENTAL_RULE_VERSION = "1"
+EARNINGS_QUALITY_RULE_ID = "RECON_OFFICIAL_NUMERIC_003"
+EARNINGS_QUALITY_RULE_VERSION = "1"
 
 # Only these three concepts are reconcilable in the first version.
 SUPPORTED_CONCEPTS: frozenset[str] = frozenset({
@@ -101,6 +103,16 @@ CAPEX_CASH_RECONCILIATION_RULE = NumericReconciliationRule(
     rule_id=SUPPLEMENTAL_RULE_ID,
     version=SUPPLEMENTAL_RULE_VERSION,
     supported_concepts=frozenset({"cash_paid_for_fixed_assets"}),
+)
+
+EARNINGS_QUALITY_RECONCILIATION_RULE = NumericReconciliationRule(
+    rule_id=EARNINGS_QUALITY_RULE_ID,
+    version=EARNINGS_QUALITY_RULE_VERSION,
+    supported_concepts=frozenset({
+        "net_profit_excluding_non_recurring",
+        "operating_cost",
+        "operating_profit",
+    }),
 )
 
 # Decimal conversion factors for amount units -> canonical 万元.  Kept as
