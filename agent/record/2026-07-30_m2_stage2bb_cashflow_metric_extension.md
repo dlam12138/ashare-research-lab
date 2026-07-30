@@ -73,4 +73,35 @@ Stage 2B-A 75 个 Fact ID 摘要保持
 
 两个新指标共 12 个 result versions，只有 2023 各自产生一条 v1→v2
 链；2025 均为 `not_yet_reviewable`。正式 ID、五年值、最终门禁和提交
-证据将在正式报告阶段定稿。
+证据见
+`acceptance/m2_stage2bb_petrochina_cashflow_metric_extension.md`。
+
+## 不变性与最终门禁
+
+- Stage 2A 原四指标：26 versions、六条链、ID / value / status /
+  input Fact IDs 全部不变。
+- Stage 2B-A：75 Fact IDs 与最终 Fact PIT 20 不变。
+- Stage 2A runner / 报告、Stage 2B-A runner / evidence / 报告、
+  annual bundles 和全部 restatement evidence 的冻结 blob 测试通过。
+- 默认数据库 SHA-256 保持
+  `4A71D3C7B88C0B16AE46FFB4F9BFBD006D91E0537E559235C9B5A1F919E2FCE6`。
+- Ruff 0.13.2：`All checks passed!`
+- compileall / 三模块 import：通过
+- 新定义、Engine 与新集成 targeted：`25 passed`
+- Stage 2A、Stage 2B-A、Stage 1D-B、multi-year 与
+  Reconciliation 回归：`171 passed`
+- 全量 pytest：`603 passed, 2 warnings`
+- `git diff --check`：通过
+- PDF、PNG、DuckDB、output、`data/raw/official` 均未进入 Git。
+
+两条 warning 均来自既有 quality date parsing 测试。本阶段未创建 score
+表或 score 输出，不包含评分或投资建议。
+
+## 提交
+
+1. `60bec96e98f3c6c2a09852c868f548d2ef7eed51`
+   `feat: add cashflow metric definitions`
+2. `9d154a0dab93892ee1046723d404af2c72a5d86c`
+   `test: add PetroChina cashflow metric extension`
+3. `docs: finalize PetroChina cashflow metric extension`
+   （正式报告与本记录定稿）
