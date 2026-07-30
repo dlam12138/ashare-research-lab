@@ -276,8 +276,8 @@
         "PDF page 9"
       ]
     },
-    "company_itemized_bridge": false,
-    "exchange_itemized_bridge": true,
+    "company_itemized_bridge_available": false,
+    "exchange_itemized_bridge_available": true,
     "fact_creation": "not_a_financial_facts_input"
   },
   "limitations": [

@@ -48,7 +48,21 @@ PDF 第 1 页目视确认发行人、A 股代码 `601857`、2021 年度业绩公
 企业会计准则口径归母净利润 `92,161` 百万元、扣非归母净利润 `99,531`
 百万元。
 
-## 待定稿
+## 定稿
 
-多年度证据、后续比较值、版本链、真实离线运行和全门禁结果将在后续提交完成
-后补充。本记录必须保留初始失败历史，不得改写为“从未失败”。
+- run_id：`m2_stage2cc1_20260730_164500`
+- result：`PASS`
+- R：`4`
+- facts / eligible / final PIT：`132 / 44 / 35`
+- Audit / Lineage：`132 / 132`
+- annual cumulative PIT：`0 / 7 / 14 / 21 / 28 / 35`
+- upstream 84 Fact IDs：逐 ID 不变
+- frozen 38 Metric Result IDs：不变
+- default database SHA-256：不变
+- 新 Metric / scoring：未计算 / 未实现
+
+初始 Stage 2C-C Fail 继续保留在审计历史中。纠正后的合同仅接受正式年度直接
+披露，并继续执行双官方精确核验、文档哈希与页面绑定、PIT、三角色 lineage 和
+版本链要求。
+
+最终状态：`M2 Stage 2C-C.1: PASS`。
