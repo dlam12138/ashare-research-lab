@@ -29,9 +29,6 @@
 
 ## 待完成
 
-- 两份 2021 合规官方 PDF 重新下载
-- 双遍目视核对三个事实与审计意见
-- 2021 bundle、注册证据测试与真实 runner
 - 全量门禁、正式报告、分步提交和远程核验
 
 ## 合同测试
@@ -39,3 +36,95 @@
 - Runner 与合同测试：`107 passed in 6.12s`
 - Ruff 0.13.2（本次生产文件与测试）：通过
 - 已覆盖旧 bundle 缺省范围、新关系正例、范围错配、两份 audited statements、相同哈希、新旧关系和 manifest 规范化。
+
+## 2021 官方文档
+
+### company_official
+
+- 标题：`中国石油天然气股份有限公司截至2021年12月31日止年度财务报表及审计报告`
+- document_scope：`audited_financial_statements`
+- Landing：`https://www.petrochina.com.cn/petrochina/gsgg/xwgg_list_42.shtml`
+- PDF：`https://www.petrochina.com.cn/petrochina/gsgg/202203/b39500c66f3b40f5b1a97c5b37f1f75f/files/f066f8223a454855ae08d97d1f3bf0cb.pdf`
+- 公告日期：`2022-03-31`
+- retrieved_at：`2026-07-30T08:20:08.701+08:00`
+- SHA-256：`badab8f25c48184e16469f4ac542ff5ac5087b2a376ae3c95cd31b3793cd7a99`
+- 大小：`4,714,421` bytes
+- 页数：`95`
+
+### exchange_official
+
+- 标题：`中国石油天然气股份有限公司2021年度报告`
+- document_scope：`full_annual_report`
+- Landing：`https://www.sse.com.cn/disclosure/listedinfo/regular/index.shtml?productId=601857`
+- 原 PDF：`https://www.sse.com.cn/disclosure/listedinfo/announcement/c/new/2022-04-01/601857_20220401_6_QNCbgaXu.pdf`
+- Final PDF：`https://static.sse.com.cn/disclosure/listedinfo/announcement/c/new/2022-04-01/601857_20220401_6_QNCbgaXu.pdf`
+- 公告日期：`2022-04-01`
+- retrieved_at：`2026-07-30T08:26:28.000+08:00`
+- SHA-256：`939de04e6502dc61be1a1fd3b12a4b9faaa0eb52e3996134810581391a93841f`
+- 大小：`5,115,948` bytes
+- 页数：`282`
+
+文档关系为 `audited_financial_statements_subset_of_full_annual_report`。两份文件范围和字节不同，但包含同一套 CAS 合并财务报表；不是独立编制的数据来源。
+
+## 双遍目视核对
+
+- 第一遍：公司官网审计财务报表，利润表 PDF page 10 / printed page 8；现金流量表 PDF page 11 / printed page 9。
+- 第二遍：上交所完整年报，利润表 PDF page 114 / printed page 112；现金流量表 PDF page 115 / printed page 113。
+- 两份文件的表名、行标签、`2021年度合并` 列和人民币百万元单位一致。
+
+| Concept | 原始值（人民币百万元） | 规范化值（万元） |
+|---|---:|---:|
+| revenue | 2,614,349 | 261,434,900 |
+| net_profit_attributable_to_parent | 92,161 | 9,216,100 |
+| operating_cash_flow | 341,469 | 34,146,900 |
+
+- 审计机构：普华永道中天会计师事务所（特殊普通合伙）。
+- 审计报告号：普华永道中天审字（2022）第10001号。
+- 审计意见：无保留意见。
+- 公司审计报告起始：PDF page 3 / audit printed page 1。
+- 上交所年报审计报告起始：PDF page 107 / printed page 105。
+- 2022 年报的 2021 比较列三值与 2021 original facts 一致；未使用该比较列建立事实或覆盖 original。
+
+## 真实离线验收
+
+- run_id：`annual_official_601857_SH_2021_20260730_083333_624931`
+- status：passed
+- transaction committed：true
+- source hash validation：passed
+- Acceptance contract：`annual_official_facts_v1_1`
+- Bundle Schema / Fact Schema：`1.0 / 2.1`
+- company originals / exchange originals：`3 / 3`
+- matched / reconciled：`3 / 3`
+- financial_facts：`9`
+- PIT before / on availability：`0 / 3`
+- Audit / Lineage：`9 / 9`
+- latest_available_at：`2022-04-01`
+- Manifest scopes：`audited_financial_statements / full_annual_report`
+- Manifest independent content sources：`false`
+
+## Canonical Fact ID
+
+公司原始：
+
+- revenue：`dcccf0526fd2d52cf0c791615035d62938c6d68bf8b563788ef661bae5048850`
+- net profit attributable：`65c656bcac5d2efc9d5e79e30891e7daeb1d6c0c7ab952890db33b665a60b1b9`
+- operating cash flow：`bff27442c19c115839326e362696bda86003bb00f81ada5740d6c8dc44fe96f1`
+
+上交所原始：
+
+- revenue：`3a337163978075c730e517bfee5f4faad8a4ddcbd7ea578b5e3187bfc82b2e71`
+- net profit attributable：`38ec7019d25dededf58d5dc046f346ec91e1441a2b78b6b5c398a25f0201aa1a`
+- operating cash flow：`5429fd7e648f4d3d06217e57e1e8344baab06ab7328fd41595a029992501b5bc`
+
+Reconciled：
+
+- revenue：`1b1612e8ca2f32f885d577d67f83bb02a4a7e2f8f220b64f25dbd3be7f4161d6`
+- net profit attributable：`00a7319ffc9aeff068a71d1895a8ba05c042b289894d1e3e9e2a65aa3c5521f4`
+- operating cash flow：`932e9eb9ef2ee654f0a31036eb5bad324231c6274bbc5b9befe6d1c216b61da2`
+
+三个 reconciliation output 的 parent_fact_ids 均严格等于各自 company/exchange 原始 fact_id。
+
+## 注册证据测试
+
+- Runner、2021—2025 注册 bundle targeted pytest：`160 passed in 5.26s`
+- 2021 新增测试 Ruff 0.13.2：通过
