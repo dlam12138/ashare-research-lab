@@ -1,0 +1,181 @@
+{
+  "contract": "earnings_quality_official_facts_v1",
+  "base_bundle_path": "acceptance/fixtures/official_facts/601857.SH/2025_annual.json",
+  "base_bundle_sha256": "1cea469542ec4293658703167e7d10cc00b7ced21c9ce6a5e13843bed6e1caab",
+  "base_bundle_git_blob": "0ababb5262e6cbf1646e165ccfb3e7bfe2769670",
+  "symbol": "601857.SH",
+  "fiscal_year": 2025,
+  "report_type": "annual",
+  "accounting_standard": "CAS",
+  "consolidation_scope": "consolidated",
+  "language": "zh-CN",
+  "document_relationship": "same_report_different_bytes",
+  "reconciliation_rule_id": "RECON_OFFICIAL_NUMERIC_003",
+  "reconciliation_rule_version": "1",
+  "revision_review_status": "not_yet_reviewable",
+  "sources": {
+    "company": {
+      "facts": [
+        {
+          "concept_id": "net_profit_excluding_non_recurring",
+          "source_page": "PDF page 8 / printed page 6",
+          "pdf_page": 8,
+          "printed_page": 6,
+          "source_table": "按中国企业会计准则编制的主要财务数据：主要会计数据及财务指标",
+          "source_label": "归属于母公司股东的扣除非经常性损益的净利润",
+          "column_label": "2025年",
+          "source_display_value": "161,671",
+          "raw_value": "161671",
+          "raw_unit": "人民币百万元",
+          "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+          "expected_normalized_value": 16167100,
+          "evidence_type": "annual_report_direct_disclosure",
+          "manual_review_status": "visually_verified_twice"
+        },
+        {
+          "concept_id": "operating_cost",
+          "source_page": "PDF page 109 / printed page 107",
+          "pdf_page": 109,
+          "printed_page": 107,
+          "source_table": "2025年度合并及公司利润表",
+          "source_label": "减：营业成本",
+          "column_label": "2025年度合并",
+          "source_display_value": "(2,246,121)",
+          "raw_value": "2246121",
+          "raw_unit": "人民币百万元",
+          "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+          "expected_normalized_value": 224612100,
+          "sign_convention": "expense_magnitude_positive",
+          "evidence_type": "audited_consolidated_income_statement",
+          "manual_review_status": "visually_verified_twice"
+        },
+        {
+          "concept_id": "operating_profit",
+          "source_page": "PDF page 109 / printed page 107",
+          "pdf_page": 109,
+          "printed_page": 107,
+          "source_table": "2025年度合并及公司利润表",
+          "source_label": "营业利润",
+          "column_label": "2025年度合并",
+          "source_display_value": "234,579",
+          "raw_value": "234579",
+          "raw_unit": "人民币百万元",
+          "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+          "expected_normalized_value": 23457900,
+          "evidence_type": "audited_consolidated_income_statement",
+          "manual_review_status": "visually_verified_twice"
+        }
+      ]
+    },
+    "exchange": {
+      "facts": [
+        {
+          "concept_id": "net_profit_excluding_non_recurring",
+          "source_page": "PDF page 8 / printed page 6",
+          "pdf_page": 8,
+          "printed_page": 6,
+          "source_table": "按中国企业会计准则编制的主要财务数据：主要会计数据及财务指标",
+          "source_label": "归属于母公司股东的扣除非经常性损益的净利润",
+          "column_label": "2025年",
+          "source_display_value": "161,671",
+          "raw_value": "161671",
+          "raw_unit": "人民币百万元",
+          "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+          "expected_normalized_value": 16167100,
+          "evidence_type": "annual_report_direct_disclosure",
+          "manual_review_status": "visually_verified_twice"
+        },
+        {
+          "concept_id": "operating_cost",
+          "source_page": "PDF page 109 / printed page 107",
+          "pdf_page": 109,
+          "printed_page": 107,
+          "source_table": "2025年度合并及公司利润表",
+          "source_label": "减：营业成本",
+          "column_label": "2025年度合并",
+          "source_display_value": "(2,246,121)",
+          "raw_value": "2246121",
+          "raw_unit": "人民币百万元",
+          "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+          "expected_normalized_value": 224612100,
+          "sign_convention": "expense_magnitude_positive",
+          "evidence_type": "audited_consolidated_income_statement",
+          "manual_review_status": "visually_verified_twice"
+        },
+        {
+          "concept_id": "operating_profit",
+          "source_page": "PDF page 109 / printed page 107",
+          "pdf_page": 109,
+          "printed_page": 107,
+          "source_table": "2025年度合并及公司利润表",
+          "source_label": "营业利润",
+          "column_label": "2025年度合并",
+          "source_display_value": "234,579",
+          "raw_value": "234579",
+          "raw_unit": "人民币百万元",
+          "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+          "expected_normalized_value": 23457900,
+          "evidence_type": "audited_consolidated_income_statement",
+          "manual_review_status": "visually_verified_twice"
+        }
+      ]
+    }
+  },
+  "non_recurring_bridge": {
+    "unit": "人民币百万元",
+    "net_profit_attributable_to_parent": 157302,
+    "net_profit_excluding_non_recurring": 161671,
+    "attributable_difference": -4369,
+    "items": [
+      {
+        "label": "非流动性资产处置损益",
+        "amount": -8632
+      },
+      {
+        "label": "计入当期损益的政府补助",
+        "amount": 1687
+      },
+      {
+        "label": "与正常经营业务无关的金融资产和金融负债产生的损益",
+        "amount": 1514
+      },
+      {
+        "label": "应收款项减值准备转回",
+        "amount": 55
+      },
+      {
+        "label": "其他营业外收入和支出",
+        "amount": -60
+      },
+      {
+        "label": "其他符合非经常性损益定义的损益项目",
+        "amount": 385
+      }
+    ],
+    "item_subtotal": -5051,
+    "income_tax_effect": 766,
+    "minority_interest_effect": -84,
+    "reported_final_net_effect": -4369,
+    "computed_final_net_effect": -4369,
+    "sign_convention": "positive increases attributable profit; parentheses are negative; reported effects are added with their displayed signs",
+    "exact_tie_out": true,
+    "bridge_status": "reconciled",
+    "evidence_pages": {
+      "company": [
+        "PDF page 9 / printed page 7",
+        "PDF page 191 / printed page 189"
+      ],
+      "exchange": [
+        "PDF page 9 / printed page 7",
+        "PDF page 191 / printed page 189"
+      ]
+    },
+    "fact_creation": "not_a_financial_facts_input"
+  },
+  "limitations": [
+    "扣非归母净利润是年度报告直接披露指标，不是经审计合并利润表标准行项目。",
+    "营业成本按利润表中以括号列示的成本金额绝对值登记，以支持收入减营业成本的透明口径。",
+    "非经常性损益桥只作为勾稽证据，本阶段不创建模糊 non_recurring_gain_loss Fact。",
+    "2025 年尚无后续年度报告复核，三个 Concept 均为 not_yet_reviewable。"
+  ]
+}
