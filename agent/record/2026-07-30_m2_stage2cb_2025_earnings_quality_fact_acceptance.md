@@ -4,7 +4,7 @@
 
 起点：`feat/m2-value-assessment-mvp@9d73a41d93b6dcf625a718c64f686b8e760c0f11`
 
-状态：Rule 003 初稿
+状态：正式验收定稿
 
 ## 阶段边界
 
@@ -51,3 +51,48 @@ hash_verified = 2
 新增 `RECON_OFFICIAL_NUMERIC_003` v1，复用 `NumericReconciliationRule` 与共享 Decimal 精确逻辑，只支持三个目标 Concept。Rule 001 和 Rule 002 的常量、支持范围与结果身份不作修改；兼容测试冻结其既有输出 Fact ID。
 
 第一提交前门禁：Ruff 0.13.2 通过；Rule 003、Rule 001/002 和 reconciliation targeted regression 共 `83 passed`；`git diff --check` 通过。
+
+## 提交与真实运行
+
+1. `98ab0a1` — `feat: add earnings quality reconciliation rule`，已独立推送；
+2. `a7fdb04` — `test: register PetroChina 2025 earnings quality evidence`，已独立推送。
+
+真实离线 run：
+
+```text
+run_id = earnings_quality_601857_SH_2025_20260730_145900
+status = passed
+transaction_committed = true
+facts / eligible / PIT / Audit / Lineage = 84 / 28 / 23 / 84 / 84
+bridge_status = reconciled
+```
+
+六个 raw Fact ID：
+
+- company adjusted NP `466e5df9f080d6ab4a04027accaaa6d526408347083cdf094270360ef4fd22a6`
+- exchange adjusted NP `501c9be93d1adf72b20f51f67629be409804bd66bd0e300dff888ff35811ec81`
+- company operating cost `5e9d6710fbd703ac4d2e405fbbd108569cbed3ee0f368aca8933aa57bd4f52f0`
+- exchange operating cost `e9d0c5718d11592a955a8a411ef089f6be2c514c2a7cc5cf8ff9ece419dc463c`
+- company operating profit `af27da38cd6915d0b4bc7a2fb148b12b3335e7afa5058c6e8e01120d37d7f0c8`
+- exchange operating profit `d6bac004cd48573d5609453e4bfc0d12a2a80bc82e171c32e0bf83a0611fbed5`
+
+三个 reconciled Fact ID：
+
+- adjusted NP `06f703c7e956f3d78e341be57478b9a9c1c67214f1da942645f77d8f41dc8077`
+- operating cost `be615c237d0c328a531cc420fe1e7c9a96d7b748d07539ea3540c704f8f896a5`
+- operating profit `2a98f29f9c371c6d52fed66efdcd9bb5a0bf6acec95752d699cfea135c3b469c`
+
+## 最终门禁
+
+- Ruff 0.13.2：通过；
+- compileall / import：通过；
+- required targeted regression：`137 passed`；
+- full pytest：`642 passed, 2 warnings`；
+- `git diff --check`：通过；
+- 原 75 Fact ID 与 38 Metric Result ID 集合摘要不变；
+- Rule 001 / 002、既有 runners/reports、Stage 2C-A 产物不变；
+- 默认数据库 SHA-256 不变；
+- 禁止产物未进入 Git；
+- `stash@{0}` 未动。
+
+最终结论：Stage 2C-B PASS；2025 盈利质量官方事实 TRUSTED；多年扩展 ALLOWED；新盈利质量指标与评分仍 NOT YET。
