@@ -2,9 +2,12 @@
 
 ## 验收结论
 
-> **M2 Stage 1D-B：PASS**  
-> **Restatement version chains：TRUSTED**  
-> **Metrics foundation：ALLOWED**  
+> **M2 Stage 1D-B：PASS**
+>
+> **Restatement version chains：TRUSTED**
+>
+> **Metrics foundation：ALLOWED**
+>
 > **Scoring：NOT YET**
 
 - Branch：`feat/m2-value-assessment-mvp`
