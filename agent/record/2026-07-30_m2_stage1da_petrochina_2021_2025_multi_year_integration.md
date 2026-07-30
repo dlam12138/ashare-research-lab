@@ -31,8 +31,44 @@
 - 只创建 run-scoped `integration.duckdb`；失败时删除该次数据库，避免部分持久化。
 - 不访问网络、不读取 PDF、不写默认数据库、不建立重列版本、不计算指标或评分。
 
-## 待完成
+## 测试合同
 
-- 完整测试合同。
-- 真实离线整合。
-- 正式验收报告、全量门禁、两个独立提交和远程核验。
+- 新增 `tests/test_official_fact_multi_year_integration.py`，共 19 项。
+- 覆盖精确年度集合、重复/缺失年度、不同 symbol/口径、canonical Context/Fact ID、15 组内存 matched、失败不建库、固定总计数、逐年计数、PIT、Manifest、离线边界、默认数据库与单年度 runner 不变性、无重列版本。
+- 工具测试：`19 passed in 1.52s`。
+
+## 真实离线整合
+
+- Code commit：`053fc1a feat: add multi-year official fact integration`
+- run_id：`multi_year_official_601857_SH_2021_2025_20260730_101527_996990`
+- status：passed
+- transaction committed：true
+- Fact Schema：`2.1`
+- integration.duckdb SHA-256：`F1273AAC859AAF5655A24F820159224513A6FF9A09CEC910C36D7EC9527C86B1`
+- Context / original / reconciled / total facts：`5 / 30 / 15 / 45`
+- company / exchange originals：`15 / 15`
+- eligible / ineligible originals：`15 / 30`
+- reconciliation matched：`15`
+- Lineage / Audit：`45 / 45`
+- Lineage 三角色：`15 / 15 / 15`
+- 每年计数：`1 Context / 3 + 3 originals / 3 reconciled / 9 facts / 9 lineage`
+- PIT：`0 / 3 / 6 / 9 / 12 / 15`
+
+## 门禁
+
+- Ruff 0.13.2：通过。
+- compileall / import：通过。
+- 多年度与注册证据 targeted pytest：`72 passed in 1.58s`。
+- Reconciliation targeted pytest：`86 passed in 6.36s`。
+- 全量 pytest：`501 passed, 2 warnings in 40.03s`。
+- Manifest 本地绝对路径检查：通过。
+- 默认 `data/research.duckdb` 结束 SHA-256：`4A71D3C7B88C0B16AE46FFB4F9BFBD006D91E0537E559235C9B5A1F919E2FCE6`，与启动值相同。
+- 单年度 runner Git blob仍为 `334a369bd44549d255014d04886977330f6ca338`。
+- 五个 bundle blob 均与启动值相同。
+- PDF、PNG、DuckDB、output、`data/raw/official` 未进入 Git。
+- `stash@{0}` 未动。
+
+## Restatement Boundary
+
+- 本阶段没有创建 `fact_version = 2`、`restated_1`、`supersedes_fact_id` 或重列 reconciled facts。
+- 已知候选：2022 归母净利润、2023 三个 Concept；2024 三项比较值一致；2021 留待 Stage 1D-B 系统核验。
