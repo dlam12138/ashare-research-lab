@@ -4,7 +4,7 @@
 
 起点：`feat/m2-value-assessment-mvp@5c9f0f7e0ed2e0ae1db6c8dab6f1a7f89825f524`
 
-状态：第一提交门禁通过，等待正式验收定稿
+状态：正式验收定稿
 
 ## 阶段边界
 
@@ -48,6 +48,12 @@ Fact Schema 2.1 与 Metric Schema 1.0 无需修改。缺口为扣非净利润、
   - Stage 2A 26 个既有 Metric Result IDs：`671249ca0133cfdf45f0146cd795b1badab8a1e3104a27cb535e83826caf0edf`
   - Stage 2B-B 38 个 Metric Result IDs：`730484f4abe54298cc53ecdc44d3079c0d2e064a6981047a0b413f6466faa5fa`
 
+## 第一提交
+
+`a70a82c` — `docs: add value evaluation methodology baseline`
+
+HTTPS push 的前三次尝试因本机到 `github.com:443` 连接超时而失败，随后一次连接被重置。SSH over 443 身份验证成功后，使用同一 GitHub 仓库的 SSH URL 推送成功；`origin` 配置未改变，远程分支已到 `a70a82c`。
+
 ## 门禁
 
 第一提交前结果：
@@ -57,4 +63,17 @@ Fact Schema 2.1 与 Metric Schema 1.0 无需修改。缺口为扣非净利润、
 - targeted pytest：`9 passed`
 - `git diff --check`：通过
 
-正式验收后记录全量 pytest、数据库哈希、stash、worktree 和远程状态。
+正式验收结果：
+
+- Ruff 0.13.2：`All checks passed!`
+- compileall：通过
+- targeted pytest：`9 passed`
+- full pytest：`612 passed, 2 warnings`
+- `git diff --check`：通过
+- 75 Fact ID 与 38 Metric Result ID 集合摘要不变
+- Stage 2B-B 正式报告 blob：`1e6ae316c8a79b0a48deaa2b2316b17f559f543e`
+- `data/research.duckdb` SHA-256：`4a71d3c7b88c0b16ae46ffb4f9bfbd006d91e0537e559235c9b5a1f919e2fce6`
+- 未下载公司年报，未生成新的 PDF、PNG、DuckDB 或 output 产物
+- `stash@{0}` 未动
+
+正式结论：M2 Stage 2C-A PASS；方法论 TRUSTED；推荐事实扩展 ALLOWED；评分 STILL NOT YET。
