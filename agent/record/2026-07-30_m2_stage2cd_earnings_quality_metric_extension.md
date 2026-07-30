@@ -23,4 +23,17 @@ Registry，旧六个定义、Identity、Repository 与 Schema 不变。
 
 ## 状态
 
-实现中。最终运行、版本链、不变性和门禁结果将在后续独立提交中定稿。
+集成试运行 `stage2cd_trial` 已通过：
+
+- upstream facts / eligible / Fact PIT / Fact links：`132 / 44 / 35 / 27`
+- definitions / result versions：`10 / 63`
+- computed / insufficient / links / lineage：`59 / 4 / 13 / 122`
+- final latest / computed / insufficient：`50 / 46 / 4`
+- 新指标 versions / links / lineage：`25 / 5 / 49`
+- Metric PIT：`0/10/20/30/40/50`
+- 原 38 Metric Result ID digest 不变
+- 原 132 Fact ID digest 不变
+- upstream DuckDB 前后哈希一致
+- 默认数据库哈希不变
+
+最终正式 run 与全量门禁将在文档定稿提交中记录。
