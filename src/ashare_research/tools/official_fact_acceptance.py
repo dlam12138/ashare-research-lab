@@ -33,13 +33,28 @@ from ashare_research.storage.duckdb_store import DuckDBStore
 from ashare_research.validation.validator import FactValidator
 
 SCHEMA_VERSION = "1.0"
-ACCEPTANCE_CONTRACT = "annual_official_facts_v1"
+ACCEPTANCE_CONTRACT = "annual_official_facts_v1_1"
 NORMALIZATION_RULE = "RMB_MILLION_TO_CNY_10K_X100"
 RAW_UNIT = "人民币百万元"
 CANONICAL_UNIT = "万元"
 SAFE_INTEGER_MAX = 2**53 - 1
 EXPECTED_CONCEPTS = frozenset(SUPPORTED_CONCEPTS)
 DOCUMENT_KEYS = ("company", "exchange")
+FULL_ANNUAL_REPORT = "full_annual_report"
+AUDITED_FINANCIAL_STATEMENTS = "audited_financial_statements"
+DOCUMENT_SCOPES = frozenset(
+    {
+        FULL_ANNUAL_REPORT,
+        AUDITED_FINANCIAL_STATEMENTS,
+    }
+)
+DOCUMENT_RELATIONSHIPS = frozenset(
+    {
+        "byte_identical",
+        "same_report_different_bytes",
+        "audited_financial_statements_subset_of_full_annual_report",
+    }
+)
 SOURCE_TIERS = {
     "company": "company_official",
     "exchange": "exchange_official",
@@ -76,6 +91,13 @@ def expected_annual_period(fiscal_year: int) -> tuple[str, str]:
 def canonical_report_title(bundle: dict[str, Any]) -> str:
     """Build the context-level report title without replacing source titles."""
     return f"{bundle['company_name']}{bundle['fiscal_year']}年年度报告"
+
+
+def normalized_document_scope(document: dict[str, Any]) -> str:
+    """Return the explicit scope or the legacy full-report default."""
+    scope = document.get("document_scope", FULL_ANNUAL_REPORT)
+    _require(scope in DOCUMENT_SCOPES, "document_scope is invalid")
+    return scope
 
 
 def build_run_id(
@@ -149,6 +171,7 @@ def validate_bundle(bundle: dict[str, Any]) -> None:
         )
         _require(document.get("content_length", 0) > 0, f"{key}.content_length required")
         _require(document.get("page_count", 0) > 0, f"{key}.page_count required")
+        normalized_document_scope(document)
         try:
             date.fromisoformat(document["announcement_date"])
             datetime.fromisoformat(document["retrieved_at"])
@@ -179,14 +202,29 @@ def validate_bundle(bundle: dict[str, Any]) -> None:
 
     relationship = bundle.get("document_relationship")
     _require(
-        relationship in {"byte_identical", "same_report_different_bytes"},
+        relationship in DOCUMENT_RELATIONSHIPS,
         "document_relationship is invalid",
     )
     same_hash = documents["company"]["sha256"] == documents["exchange"]["sha256"]
+    company_scope = normalized_document_scope(documents["company"])
+    exchange_scope = normalized_document_scope(documents["exchange"])
+    relationship_matches = {
+        "byte_identical": same_hash and company_scope == exchange_scope,
+        "same_report_different_bytes": (
+            not same_hash
+            and company_scope == FULL_ANNUAL_REPORT
+            and exchange_scope == FULL_ANNUAL_REPORT
+        ),
+        "audited_financial_statements_subset_of_full_annual_report": (
+            not same_hash
+            and documents["company"].get("document_scope")
+            == AUDITED_FINANCIAL_STATEMENTS
+            and documents["exchange"].get("document_scope") == FULL_ANNUAL_REPORT
+        ),
+    }
     _require(
-        (same_hash and relationship == "byte_identical")
-        or (not same_hash and relationship == "same_report_different_bytes"),
-        "document_relationship does not agree with registered hashes",
+        relationship_matches[relationship],
+        "document_relationship does not agree with registered hashes and scopes",
     )
 
 
@@ -365,6 +403,7 @@ def _public_source_manifest(bundle: dict[str, Any], checks: dict[str, Any]) -> d
         "documents": {
             key: {
                 **bundle["documents"][key],
+                "document_scope": normalized_document_scope(bundle["documents"][key]),
                 "local_verification": checks[key],
             }
             for key in DOCUMENT_KEYS

@@ -57,6 +57,18 @@ def _synthetic_bundle(
     return bundle
 
 
+def _scoped_bundle() -> dict:
+    bundle = copy.deepcopy(_bundle())
+    bundle["documents"]["company"][
+        "document_scope"
+    ] = acceptance.AUDITED_FINANCIAL_STATEMENTS
+    bundle["documents"]["exchange"]["document_scope"] = acceptance.FULL_ANNUAL_REPORT
+    bundle[
+        "document_relationship"
+    ] = "audited_financial_statements_subset_of_full_annual_report"
+    return bundle
+
+
 def _valid_temp_bundle(
     tmp_path: Path,
     bundle: dict | None = None,
@@ -278,6 +290,98 @@ def test_bundle_rejects_third_party_source_tier():
     bundle = _bundle()
     bundle["documents"]["company"]["source_tier"] = "candidate_aggregator"
     _assert_invalid(bundle, "source_tier")
+
+
+def test_legacy_bundle_defaults_to_full_annual_report():
+    bundle = _bundle()
+    assert "document_scope" not in bundle["documents"]["company"]
+    assert (
+        acceptance.normalized_document_scope(bundle["documents"]["company"])
+        == acceptance.FULL_ANNUAL_REPORT
+    )
+    acceptance.validate_bundle(bundle)
+
+
+def test_all_legacy_registered_bundles_remain_valid():
+    for fiscal_year in range(2022, 2026):
+        path = REAL_BUNDLE.with_name(f"{fiscal_year}_annual.json")
+        acceptance.validate_bundle(json.loads(path.read_text(encoding="utf-8")))
+
+
+def test_audited_statements_and_full_report_are_compatible():
+    acceptance.validate_bundle(_scoped_bundle())
+
+
+def test_subset_relationship_requires_company_audited_statements():
+    bundle = _scoped_bundle()
+    bundle["documents"]["company"]["document_scope"] = acceptance.FULL_ANNUAL_REPORT
+    _assert_invalid(bundle, "hashes and scopes")
+
+
+def test_subset_relationship_requires_exchange_full_report():
+    bundle = _scoped_bundle()
+    bundle["documents"]["exchange"][
+        "document_scope"
+    ] = acceptance.AUDITED_FINANCIAL_STATEMENTS
+    _assert_invalid(bundle, "hashes and scopes")
+
+
+def test_two_audited_statements_cannot_use_subset_relationship():
+    bundle = _scoped_bundle()
+    bundle["documents"]["exchange"][
+        "document_scope"
+    ] = acceptance.AUDITED_FINANCIAL_STATEMENTS
+    _assert_invalid(bundle, "hashes and scopes")
+
+
+def test_identical_hashes_cannot_use_subset_relationship():
+    bundle = _scoped_bundle()
+    bundle["documents"]["exchange"]["sha256"] = bundle["documents"]["company"]["sha256"]
+    _assert_invalid(bundle, "hashes and scopes")
+
+
+def test_different_full_reports_keep_existing_relationship():
+    bundle = _bundle()
+    bundle["documents"]["company"]["document_scope"] = acceptance.FULL_ANNUAL_REPORT
+    bundle["documents"]["exchange"]["document_scope"] = acceptance.FULL_ANNUAL_REPORT
+    acceptance.validate_bundle(bundle)
+
+
+def test_byte_identical_relationship_requires_matching_scope():
+    bundle = _bundle()
+    bundle["documents"]["exchange"]["sha256"] = bundle["documents"]["company"]["sha256"]
+    bundle["document_relationship"] = "byte_identical"
+    bundle["documents"]["company"][
+        "document_scope"
+    ] = acceptance.AUDITED_FINANCIAL_STATEMENTS
+    bundle["documents"]["exchange"]["document_scope"] = acceptance.FULL_ANNUAL_REPORT
+    _assert_invalid(bundle, "hashes and scopes")
+
+
+def test_manifest_normalizes_legacy_document_scope():
+    bundle = _bundle()
+    manifest = acceptance._public_source_manifest(
+        bundle,
+        {"company": {"verified": True}, "exchange": {"verified": True}},
+    )
+    assert {
+        document["document_scope"] for document in manifest["documents"].values()
+    } == {acceptance.FULL_ANNUAL_REPORT}
+
+
+def test_manifest_preserves_scoped_document_roles():
+    manifest = acceptance._public_source_manifest(
+        _scoped_bundle(),
+        {"company": {"verified": True}, "exchange": {"verified": True}},
+    )
+    assert manifest["documents"]["company"]["document_scope"] == (
+        acceptance.AUDITED_FINANCIAL_STATEMENTS
+    )
+    assert (
+        manifest["documents"]["exchange"]["document_scope"]
+        == acceptance.FULL_ANNUAL_REPORT
+    )
+    assert manifest["independent_content_sources"] is False
 
 
 # Hash verification
@@ -725,7 +829,7 @@ def test_manifest_records_bundle_schema_version(tmp_path: Path):
 
 def test_manifest_records_acceptance_contract(tmp_path: Path):
     result = _run_success(tmp_path)
-    assert result["acceptance_contract"] == "annual_official_facts_v1"
+    assert result["acceptance_contract"] == "annual_official_facts_v1_1"
 
 
 def test_manifest_records_fact_schema_version(tmp_path: Path):
