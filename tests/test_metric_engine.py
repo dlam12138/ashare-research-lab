@@ -1,4 +1,5 @@
 from copy import deepcopy
+from dataclasses import asdict
 from decimal import Decimal
 
 import pytest
@@ -129,6 +130,8 @@ def test_identity_ignores_created_at_but_changes_with_inputs():
     changed_time = deepcopy(result)
     changed_time.created_at = "2099-01-01"
     assert build_metric_result_id(changed_time) == result.metric_result_id
+    with_run_id = {**asdict(result), "run_id": "another-run"}
+    assert build_metric_result_id(with_run_id) == result.metric_result_id
     changed_input = deepcopy(result)
     changed_input.input_fact_ids = ("different", *result.input_fact_ids[1:])
     assert build_metric_result_id(changed_input) != result.metric_result_id

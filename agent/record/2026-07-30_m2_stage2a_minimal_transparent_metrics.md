@@ -29,3 +29,23 @@
   `DECIMAL(38,12)`。
 - Repository 支持 canonical 校验、语义冲突、幂等、严格版本链和批量
   事务回滚。
+
+## 第二部分：PIT Metric 集成
+
+- 新增 `official_fact_metric_foundation.py`，先调用未修改的 Stage 1D-B
+  runner，再核验 upstream 57 facts / 最终 Fact PIT 15。
+- 唯一 Fact `available_at` 只用于安排 snapshot；指标输入全部来自
+  `AsOfQuery.get_latest_available()`，未直接挑选全版本事实。
+- 全部结果在内存中完成后一次事务写入独立 `metrics.duckdb`；上游
+  restatement DuckDB 读取前后 SHA-256 完全一致。
+- 最终真实 run：
+  `metric_foundation_601857_SH_2021_2025_20260730_120052_376281`。
+- 实际计数：definitions 4、result versions 26、computed 23、
+  insufficient history 3、version links 6、lineage 49；最终 latest
+  20，其中 computed 17、insufficient history 3。
+- Metric PIT：`0 / 4 / 8 / 12 / 16 / 20`；computed：
+  `0 / 1 / 5 / 9 / 13 / 17`。
+- 真实输入自然产生 2022 两条和 2023 四条 Metric v2；2024 三个 YoY
+  首次出现即使用 2023 reconciled v2。
+- 2025 四个指标均可计算，`revision_review_status` 为
+  `not_yet_reviewable`。
