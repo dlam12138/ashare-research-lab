@@ -1,0 +1,38 @@
+{
+  "contract": "supplemental_annual_official_facts_v1",
+  "base_bundle_path": "acceptance/fixtures/official_facts/601857.SH/2022_annual.json",
+  "base_bundle_sha256": "5c610fd5ac33f61f5777ae4ea6fb62b50caff741b7c414e3a4161915db130ed9",
+  "base_bundle_git_blob": "7076195f3532ead9f0278f97691fe552fdb2ff54",
+  "symbol": "601857.SH",
+  "fiscal_year": 2022,
+  "concept_id": "cash_paid_for_fixed_assets",
+  "restatement_review_status": "reviewed_unchanged",
+  "company": {
+    "source_page": "PDF page 114 / printed page 112",
+    "pdf_page": 114,
+    "printed_page": 112,
+    "source_table": "2022年度合并及公司现金流量表",
+    "source_label": "购建固定资产、油气资产、无形资产和其他长期资产支付的现金",
+    "column_label": "2022年度合并",
+    "source_display_value": "(243,752)",
+    "raw_value": "243752",
+    "raw_unit": "人民币百万元",
+    "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+    "expected_normalized_value": 24375200,
+    "manual_review_status": "visually_verified_twice"
+  },
+  "exchange": {
+    "source_page": "PDF page 114 / printed page 112",
+    "pdf_page": 114,
+    "printed_page": 112,
+    "source_table": "2022年度合并及公司现金流量表",
+    "source_label": "购建固定资产、油气资产、无形资产和其他长期资产支付的现金",
+    "column_label": "2022年度合并",
+    "source_display_value": "(243,752)",
+    "raw_value": "243752",
+    "raw_unit": "人民币百万元",
+    "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+    "expected_normalized_value": 24375200,
+    "manual_review_status": "visually_verified_twice"
+  }
+}
