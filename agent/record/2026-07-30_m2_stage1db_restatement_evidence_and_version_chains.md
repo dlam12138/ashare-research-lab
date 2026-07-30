@@ -70,8 +70,8 @@
   - 在内存中验证所有 changed pair matched 后才创建 run-scoped DuckDB；
   - 仅 changed 数据创建 company/exchange/reconciled v2；
   - `source_id` 保持目标年度 v1 逻辑来源身份，后续报告只进入证据字段。
-- 真实离线 run：
-  `restatement_601857_SH_2021_2025_20260730_110128_441181`，状态
+- 最终真实离线 run：
+  `restatement_601857_SH_2021_2025_20260730_111131_272246`，状态
   `passed`，`transaction_committed = true`。
 - 动态计数：Contexts 5、company 19、exchange 19、raw 38、
   reconciled 19、facts 57、eligible 19、ineligible 38、version links
@@ -82,12 +82,39 @@
 - 四个 `compare_versions.changed = true`；最终 2026-03-30 PIT snapshot
   为 15 个 eligible reconciled facts。
 
-## 当前测试
+## 最终门禁
 
 - Restatement evidence/integration + Service/version-chain targeted：
   `30 passed`。
-- Ruff 0.13.2：新增工具与测试通过。
+- Multi-year integration regression：`19 passed`。
+- Reconciliation regression：`92 passed`。
+- Full pytest：`531 passed, 2 warnings`（既有 pandas 日期解析 warning）。
+- Ruff 0.13.2、compileall、Service/tool import、`git diff --check`：通过。
+- 最终真实 run 额外验证基础 PIT：
+  `0 / 3 / 6 / 9 / 12 / 15`。
 
-## 待完成
+## 基线与提交
 
-- 正式报告、全量门禁、后续两个提交逐次推送与远程核验。
+- 五个 original bundle blob 保持：
+  - 2021：`cb85f84c3a1459f3a909e36bd6482c8d8124d1a4`
+  - 2022：`7076195f3532ead9f0278f97691fe552fdb2ff54`
+  - 2023：`6612148ea91b2004605b98e0c8fe799a4d2686ea`
+  - 2024：`03a2ec2813c31676aebed20e4df50042f42f140b`
+  - 2025：`0ababb5262e6cbf1646e165ccfb3e7bfe2769670`
+- 原 45 个 v1 Fact ID 在重列数据库逐一等于 Stage 1D-A 构造结果。
+- Stage 1D-A runner / 报告不变；默认数据库 SHA-256 不变。
+- `stash@{0}` 保持不动；无 PDF、PNG、DuckDB、output 或 raw official
+  artifact 进入 Git。
+- 已独立提交并推送：
+  - `fb12d56 fix: close reconciled restatement version chains`
+  - `d03f7c0 test: register PetroChina restatement evidence`
+- 正式验收报告与本记录定稿进入第三个独立提交。
+
+## 最终结论
+
+```text
+M2 Stage 1D-B: PASS
+Restatement version chains: TRUSTED
+Metrics foundation: ALLOWED
+Scoring: NOT YET
+```

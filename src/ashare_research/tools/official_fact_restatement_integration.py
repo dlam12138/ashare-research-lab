@@ -439,6 +439,37 @@ def _collect_acceptance(
     _require(len(chains) == 3 * changed_count, "version-chain link count differs")
 
     as_of = AsOfQuery(repo)
+    v1_dates = conn.execute(
+        """SELECT c.fiscal_year, MAX(f.available_at) AS available_at
+           FROM financial_facts f
+           JOIN fact_contexts c ON f.context_id = c.context_id
+           WHERE f.source_tier='reconciled_derived' AND f.fact_version=1
+           GROUP BY c.fiscal_year ORDER BY c.fiscal_year"""
+    ).df().to_dict("records")
+    _require(len(v1_dates) == 5, "five baseline publication dates are required")
+    first_v1_date = date.fromisoformat(v1_dates[0]["available_at"])
+    base_dates = [
+        (first_v1_date - timedelta(days=1)).isoformat(),
+        *(item["available_at"] for item in v1_dates),
+    ]
+    base_snapshots: list[dict[str, Any]] = []
+    for index, as_of_date in enumerate(base_dates):
+        snapshot = as_of.get_latest_available(
+            EXPECTED_SYMBOL, as_of_date, sorted(EXPECTED_CONCEPTS),
+        )
+        expected_count = index * 3
+        _require(
+            len(snapshot) == expected_count,
+            f"baseline PIT snapshot {as_of_date} expected {expected_count} facts",
+        )
+        base_snapshots.append(
+            {
+                "as_of_date": as_of_date,
+                "count": len(snapshot),
+                "fact_ids": snapshot["fact_id"].tolist(),
+            }
+        )
+
     transitions: list[dict[str, Any]] = []
     comparisons: list[dict[str, Any]] = []
     for pair in restatements["changed_pairs"]:
@@ -526,6 +557,7 @@ def _collect_acceptance(
         "expected_counts": expected_counts,
         "version_chains": chains,
         "pit_transitions": transitions,
+        "base_pit_snapshots": base_snapshots,
         "compare_versions": comparisons,
         "latest_snapshot": {
             "as_of_date": latest_date,
@@ -621,6 +653,9 @@ def run_integration(
                 "changed_concept_years": restatements["changed_count"],
                 "counts": acceptance["counts"],
                 "latest_pit_snapshot": acceptance["latest_snapshot"],
+                "base_pit_snapshot_counts": [
+                    item["count"] for item in acceptance["base_pit_snapshots"]
+                ],
                 "compare_versions": acceptance["compare_versions"],
                 "new_reconciled_fact_ids": [
                     item["output_fact"]["fact_id"] for item in persisted_results

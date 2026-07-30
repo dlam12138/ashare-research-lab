@@ -281,6 +281,7 @@ def test_compare_versions_detects_all_four_changes(completed_run: dict):
 
 
 def test_final_pit_snapshot_has_one_fact_per_year_and_concept(completed_run: dict):
+    assert completed_run["base_pit_snapshot_counts"] == [0, 3, 6, 9, 12, 15]
     latest = completed_run["latest_pit_snapshot"]
     assert latest["as_of_date"] == "2026-03-30"
     assert latest["count"] == 15
