@@ -36,4 +36,41 @@
   `not_comparable_negative_revenue`。
 - 不修改 Metric Schema、Identity 或 Repository。
 
-真实运行、ID、PIT、计数、不变性、门禁和提交证据将在后续定稿。
+## 离线扩展与真实运行
+
+- 新工具显式调用 Stage 2B-A runner，重建 75-fact run-scoped upstream。
+- 输入只通过 `AsOfQuery.get_latest_available()` 取得 eligible
+  `reconciled_derived` facts。
+- 既有四指标由已接受的 `build_metric_versions()` 构造；两个新指标独立
+  PIT 回放后，与原四项显式组合为六定义。
+- revision review status 从原 restatement evidence 与 capex review
+  evidence 逐 Concept 推导，不以年份硬编码 changed/unchanged。
+- 只有 value、status 或 input Fact IDs 改变时才产生新版本。
+
+真实 run：
+
+`cashflow_metric_extension_601857_SH_2021_2025_20260730_135559_837294`
+
+- status / committed / offline：`passed / true / true`
+- network / PDF / cache access：`false / false / false`
+- downloaded：`0`
+- upstream facts / Fact PIT / eligible：`75 / 20 / 25`
+- definitions / result versions：`6 / 38`
+- computed / insufficient-history versions：`35 / 3`
+- version links / lineage：`8 / 73`
+- final latest / computed / insufficient history：`30 / 27 / 3`
+- Metric PIT：`0 / 6 / 12 / 18 / 24 / 30`
+- computed PIT：`0 / 3 / 9 / 15 / 21 / 27`
+- insufficient-history PIT：`0 / 3 / 3 / 3 / 3 / 3`
+- upstream DuckDB before / after：
+  `24e4b142a39c04ba02e59016e0a7990a1a7f57ae4ed16d95765351dd97bdc6e3`
+  / `24e4b142a39c04ba02e59016e0a7990a1a7f57ae4ed16d95765351dd97bdc6e3`
+
+Stage 2A 26 个 Metric Result ID 摘要保持
+`671249ca0133cfdf45f0146cd795b1badab8a1e3104a27cb535e83826caf0edf`；
+Stage 2B-A 75 个 Fact ID 摘要保持
+`7787dad8be434ba04ad9ae3f19855a9e5f85333faa595466a95e6e1afb8d10a1`。
+
+两个新指标共 12 个 result versions，只有 2023 各自产生一条 v1→v2
+链；2025 均为 `not_yet_reviewable`。正式 ID、五年值、最终门禁和提交
+证据将在正式报告阶段定稿。
