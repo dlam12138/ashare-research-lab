@@ -1,0 +1,112 @@
+{
+  "contract": "restatement_evidence_v1",
+  "symbol": "601857.SH",
+  "target_fiscal_year": 2022,
+  "evidence_fiscal_year": 2023,
+  "accounting_standard": "CAS",
+  "consolidation_scope": "consolidated",
+  "language": "zh-CN",
+  "document_relationship": "byte_identical",
+  "documents": {
+    "company": {
+      "source_tier": "company_official",
+      "source_provider": "petrochina_ir_manual_registry",
+      "source_document": "中国石油天然气股份有限公司2023年度报告（A股）",
+      "source_url": "https://www.petrochina.com.cn/petrochina/gsgg/202403/b539f133283f4ed59ccfd3abaf257ec7/files/951707e943ab4b989219698aac0e29a1.pdf",
+      "announcement_date": "2024-03-25",
+      "retrieved_at": "2026-07-30T10:38:57.364+08:00",
+      "sha256": "b845502e533311280f89d59c2a92c67f94f2be17451e51e55f93a1d52abe6692",
+      "content_length": 12437650,
+      "page_count": 293
+    },
+    "exchange": {
+      "source_tier": "exchange_official",
+      "source_provider": "sse_disclosure_manual_registry",
+      "source_document": "中国石油天然气股份有限公司2023年度报告",
+      "source_url": "https://static.sse.com.cn/disclosure/listedinfo/announcement/c/new/2024-03-26/601857_20240326_9CKZ.pdf",
+      "announcement_date": "2024-03-26",
+      "retrieved_at": "2026-07-30T10:46:03.477+08:00",
+      "sha256": "b845502e533311280f89d59c2a92c67f94f2be17451e51e55f93a1d52abe6692",
+      "content_length": 12437650,
+      "page_count": 293
+    }
+  },
+  "concepts": [
+    {
+      "concept_id": "revenue",
+      "original_fact_ids": {
+        "company": "80817b56628836a4f6dabf2b57682a06f4724667648fc42876f1a6530ca8f693",
+        "exchange": "3342b40b4e9ef4931e993a7aede1697ade1bffee1e74ba632eeee9bbcb6eb5ae"
+      },
+      "original_raw_value": "3239167",
+      "later_comparative_raw_value": "3239167",
+      "raw_unit": "人民币百万元",
+      "company": {
+        "page": "PDF page 114 / printed page 112",
+        "table": "2023年度合并及公司利润表",
+        "label": "营业收入",
+        "column": "2022年度合并"
+      },
+      "exchange": {
+        "page": "PDF page 114 / printed page 112",
+        "table": "2023年度合并及公司利润表",
+        "label": "营业收入",
+        "column": "2022年度合并"
+      },
+      "changed": false,
+      "disclosed_change_reason": "not_applicable",
+      "review_status": "reviewed_unchanged"
+    },
+    {
+      "concept_id": "net_profit_attributable_to_parent",
+      "original_fact_ids": {
+        "company": "e40af899cb646df7f3c16cd458bd4d991be7822fc39c3890797d4024fc5b70fa",
+        "exchange": "9b70bf5e7b5c98059910449752931a4cbbbd9cf8047fdbf92fcea53b72a56b1e"
+      },
+      "original_raw_value": "149375",
+      "later_comparative_raw_value": "148738",
+      "raw_unit": "人民币百万元",
+      "company": {
+        "page": "PDF page 114 / printed page 112",
+        "table": "2023年度合并及公司利润表",
+        "label": "归属于母公司股东的净利润",
+        "column": "2022年度合并"
+      },
+      "exchange": {
+        "page": "PDF page 114 / printed page 112",
+        "table": "2023年度合并及公司利润表",
+        "label": "归属于母公司股东的净利润",
+        "column": "2022年度合并"
+      },
+      "changed": true,
+      "disclosed_change_reason": "企业会计准则解释第16号：单项交易产生的资产和负债相关递延所得税追溯调整",
+      "reason_reference": "PDF page 8 / printed page 6",
+      "review_status": "reviewed_changed"
+    },
+    {
+      "concept_id": "operating_cash_flow",
+      "original_fact_ids": {
+        "company": "b31644176365f6c0e1d1bb1dd3d4caaffc28aae57feedcf1bd2cb0f93db53728",
+        "exchange": "4b202de9d788c0137de7a453a35a7e1ad4bbe5069f964513d67037b3b43e71b6"
+      },
+      "original_raw_value": "393768",
+      "later_comparative_raw_value": "393768",
+      "raw_unit": "人民币百万元",
+      "company": {
+        "page": "PDF page 115 / printed page 113",
+        "table": "2023年度合并及公司现金流量表",
+        "label": "经营活动产生的现金流量净额",
+        "column": "2022年度合并"
+      },
+      "exchange": {
+        "page": "PDF page 115 / printed page 113",
+        "table": "2023年度合并及公司现金流量表",
+        "label": "经营活动产生的现金流量净额",
+        "column": "2022年度合并"
+      },
+      "changed": false,
+      "disclosed_change_reason": "not_applicable",
+      "review_status": "reviewed_unchanged"
+    }
+  ]
+}

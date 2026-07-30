@@ -1,0 +1,111 @@
+{
+  "contract": "restatement_evidence_v1",
+  "symbol": "601857.SH",
+  "target_fiscal_year": 2024,
+  "evidence_fiscal_year": 2025,
+  "accounting_standard": "CAS",
+  "consolidation_scope": "consolidated",
+  "language": "zh-CN",
+  "document_relationship": "same_report_different_bytes",
+  "documents": {
+    "company": {
+      "source_tier": "company_official",
+      "source_provider": "petrochina_ir_manual_registry",
+      "source_document": "中国石油天然气股份有限公司2025年年度报告",
+      "source_url": "https://www.petrochina.com.cn/petrochina/rdxx/202603/77efc25cfdc14bad83525f05cf092454/files/e3eab58b4de94a8aa43abf7ec9a40123.pdf",
+      "announcement_date": "2026-03-29",
+      "retrieved_at": "2026-07-30T10:39:17.511+08:00",
+      "sha256": "0eba96bd4e815187e7b64645f523f2b5d363ca3fea8168a63ec930f624715f8d",
+      "content_length": 10608680,
+      "page_count": 273
+    },
+    "exchange": {
+      "source_tier": "exchange_official",
+      "source_provider": "sse_disclosure_manual_registry",
+      "source_document": "中国石油天然气股份有限公司2025年年度报告",
+      "source_url": "https://static.sse.com.cn/disclosure/listedinfo/announcement/c/new/2026-03-30/601857_20260330_6PPK.pdf",
+      "announcement_date": "2026-03-30",
+      "retrieved_at": "2026-07-30T10:46:31.831+08:00",
+      "sha256": "840b15aa4dc38745a6b86a3656063e6a73081ce87407acb0ca93554f4e836e65",
+      "content_length": 9416509,
+      "page_count": 273
+    }
+  },
+  "concepts": [
+    {
+      "concept_id": "revenue",
+      "original_fact_ids": {
+        "company": "de04cf1a1ad6319926e7fac0324ca7107b137c1e2ccac8b043ab3113111bf8d7",
+        "exchange": "741a6ee18c719382ab9616c28ee9816a71e5a7e8653c695c21e1581045de2911"
+      },
+      "original_raw_value": "2937981",
+      "later_comparative_raw_value": "2937981",
+      "raw_unit": "人民币百万元",
+      "company": {
+        "page": "PDF page 109 / printed page 107",
+        "table": "2025年度合并及公司利润表",
+        "label": "营业收入",
+        "column": "2024年度合并"
+      },
+      "exchange": {
+        "page": "PDF page 109 / printed page 107",
+        "table": "2025年度合并及公司利润表",
+        "label": "营业收入",
+        "column": "2024年度合并"
+      },
+      "changed": false,
+      "disclosed_change_reason": "not_applicable",
+      "review_status": "reviewed_unchanged"
+    },
+    {
+      "concept_id": "net_profit_attributable_to_parent",
+      "original_fact_ids": {
+        "company": "c68c5eb457d7a7fda556fd8f3ab7330deefa333a5d43862068773adaa58afffc",
+        "exchange": "1e5f7988349e6e1f0914417ed91a90dab3edbd3fa3ad6c9f0b42d1658af18eb6"
+      },
+      "original_raw_value": "164676",
+      "later_comparative_raw_value": "164676",
+      "raw_unit": "人民币百万元",
+      "company": {
+        "page": "PDF page 109 / printed page 107",
+        "table": "2025年度合并及公司利润表",
+        "label": "归属于母公司股东的净利润",
+        "column": "2024年度合并"
+      },
+      "exchange": {
+        "page": "PDF page 109 / printed page 107",
+        "table": "2025年度合并及公司利润表",
+        "label": "归属于母公司股东的净利润",
+        "column": "2024年度合并"
+      },
+      "changed": false,
+      "disclosed_change_reason": "not_applicable",
+      "review_status": "reviewed_unchanged"
+    },
+    {
+      "concept_id": "operating_cash_flow",
+      "original_fact_ids": {
+        "company": "7477571542e7336afa3532d8c0957904cd923b02af9087ae8a334c817cfc9867",
+        "exchange": "da3c485c75ffb34fdfa15afeec8b19bc2b76d8755ad54f96bb3f1e88afe95164"
+      },
+      "original_raw_value": "406532",
+      "later_comparative_raw_value": "406532",
+      "raw_unit": "人民币百万元",
+      "company": {
+        "page": "PDF page 110 / printed page 108",
+        "table": "2025年度合并及公司现金流量表",
+        "label": "经营活动产生的现金流量净额",
+        "column": "2024年度合并"
+      },
+      "exchange": {
+        "page": "PDF page 110 / printed page 108",
+        "table": "2025年度合并及公司现金流量表",
+        "label": "经营活动产生的现金流量净额",
+        "column": "2024年度合并"
+      },
+      "changed": false,
+      "disclosed_change_reason": "not_applicable",
+      "review_status": "reviewed_unchanged"
+    }
+  ]
+}

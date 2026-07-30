@@ -38,8 +38,56 @@
 - Service/version-chain + 既有 Reconciliation targeted pytest：`97 passed in 10.20s`。
 - Ruff 0.13.2：通过。
 
+## 官方后续报告重新核验
+
+- 从 2022—2025 已注册 bundle 的正式 URL 重新下载四组 company /
+  exchange PDF；8 份本地文件的 SHA-256、字节数和页数均与已提交
+  bundle 一致。
+- 公司与交易所副本分别目视核验后续年度合并利润表、合并现金流量表；
+  byte-identical 的 2023、2024 双路径另以哈希相同证明内容相同。
+- 每个 Concept 均完成两遍读数复核；PDF、截图和临时渲染未进入 Git。
+- 实际结论：
+  - 2022 年报复核 2021：三项均 unchanged；
+  - 2023 年报复核 2022：营业收入、经营现金流 unchanged，归母净利润
+    `149,375 → 148,738`；
+  - 2024 年报复核 2023：营业收入 `3,011,012 → 3,012,812`、归母净利润
+    `161,144 → 161,414`、经营现金流 `456,596 → 456,847`；
+  - 2025 年报复核 2024：三项均 unchanged；
+  - 2025：`not_yet_reviewable`。
+- 2023 年报印刷第 6 页明确披露 2022 比较数据因企业会计准则解释第
+  16 号相关递延所得税规定追溯调整；2024 年报印刷第 113 页明确披露
+  同一控制下合并中国石油集团电能有限公司。未将未知原因写成会计差错。
+- 实际变化的 Concept-Year 数量 `R = 4`。
+
+## 重列证据与离线整合
+
+- 新增四个 `restatement_evidence_v1` 注册文件；原值、后续比较值、
+  双来源页面与文档元数据均由证据文件承载。
+- 新增薄工具 `official_fact_restatement_integration.py`：
+  - 复用 Stage 1D-A preflight、annual builders、Engine、Service、
+    Repository、AsOfQuery；
+  - 不包含网络或 PDF 依赖；
+  - 在内存中验证所有 changed pair matched 后才创建 run-scoped DuckDB；
+  - 仅 changed 数据创建 company/exchange/reconciled v2；
+  - `source_id` 保持目标年度 v1 逻辑来源身份，后续报告只进入证据字段。
+- 真实离线 run：
+  `restatement_601857_SH_2021_2025_20260730_110128_441181`，状态
+  `passed`，`transaction_committed = true`。
+- 动态计数：Contexts 5、company 19、exchange 19、raw 38、
+  reconciled 19、facts 57、eligible 19、ineligible 38、version links
+  12、Audit 57、Lineage 57。
+- 四个 PIT 切换均在较晚的 exchange 公告日发生：
+  - 2022 归母净利润：2024-03-25 v1，2024-03-26 v2；
+  - 2023 三项：2025-03-30 v1，2025-03-31 v2。
+- 四个 `compare_versions.changed = true`；最终 2026-03-30 PIT snapshot
+  为 15 个 eligible reconciled facts。
+
+## 当前测试
+
+- Restatement evidence/integration + Service/version-chain targeted：
+  `30 passed`。
+- Ruff 0.13.2：新增工具与测试通过。
+
 ## 待完成
 
-- 四组双官方 PDF 重新下载、哈希与目视双遍复核。
-- 四个 restatement evidence、整合工具、真实 PIT 切换验收。
-- 正式报告、全量门禁、三提交逐次推送与远程核验。
+- 正式报告、全量门禁、后续两个提交逐次推送与远程核验。

@@ -1,0 +1,114 @@
+{
+  "contract": "restatement_evidence_v1",
+  "symbol": "601857.SH",
+  "target_fiscal_year": 2023,
+  "evidence_fiscal_year": 2024,
+  "accounting_standard": "CAS",
+  "consolidation_scope": "consolidated",
+  "language": "zh-CN",
+  "document_relationship": "byte_identical",
+  "documents": {
+    "company": {
+      "source_tier": "company_official",
+      "source_provider": "petrochina_ir_manual_registry",
+      "source_document": "中国石油天然气股份有限公司2024年年度报告",
+      "source_url": "https://www.petrochina.com.cn/petrochina/rdxx/202503/b8750418435d4da380a6b13d5725ebe9/files/4ed3388fde7b4f4a922b2de43d6225d6.pdf",
+      "announcement_date": "2025-03-30",
+      "retrieved_at": "2026-07-30T10:39:06.885+08:00",
+      "sha256": "15a2de01653ceefa46fdd18a02a127f434f06db02da9efb0b62c3a12a35a9bba",
+      "content_length": 11167845,
+      "page_count": 280
+    },
+    "exchange": {
+      "source_tier": "exchange_official",
+      "source_provider": "sse_disclosure_manual_registry",
+      "source_document": "中国石油天然气股份有限公司2024年度报告",
+      "source_url": "https://static.sse.com.cn/disclosure/listedinfo/announcement/c/new/2025-03-31/601857_20250331_9OUT.pdf",
+      "announcement_date": "2025-03-31",
+      "retrieved_at": "2026-07-30T10:46:19.950+08:00",
+      "sha256": "15a2de01653ceefa46fdd18a02a127f434f06db02da9efb0b62c3a12a35a9bba",
+      "content_length": 11167845,
+      "page_count": 280
+    }
+  },
+  "concepts": [
+    {
+      "concept_id": "revenue",
+      "original_fact_ids": {
+        "company": "232c4c512fff424f993bd03535036d2b2b57669da0cc6a2508df15a0d1d050b9",
+        "exchange": "70a20f6c1b415cda930100ce6af2324c70ad08bce0984baedc7aaa199da72572"
+      },
+      "original_raw_value": "3011012",
+      "later_comparative_raw_value": "3012812",
+      "raw_unit": "人民币百万元",
+      "company": {
+        "page": "PDF page 115 / printed page 113",
+        "table": "2024年度合并及公司利润表",
+        "label": "营业收入",
+        "column": "2023年度合并"
+      },
+      "exchange": {
+        "page": "PDF page 115 / printed page 113",
+        "table": "2024年度合并及公司利润表",
+        "label": "营业收入",
+        "column": "2023年度合并"
+      },
+      "changed": true,
+      "disclosed_change_reason": "2024年同一控制下企业合并中国石油集团电能有限公司，比较数据相应重列",
+      "reason_reference": "PDF page 115 / printed page 113",
+      "review_status": "reviewed_changed"
+    },
+    {
+      "concept_id": "net_profit_attributable_to_parent",
+      "original_fact_ids": {
+        "company": "8c0ad69221674ff45505d199b7d6711510d7db2ed91c0dae72ad705a691b2a79",
+        "exchange": "21d6b20c8886ccdecc5783258b8b2a4d6c0990459a799a80ddfb97f14928f973"
+      },
+      "original_raw_value": "161144",
+      "later_comparative_raw_value": "161414",
+      "raw_unit": "人民币百万元",
+      "company": {
+        "page": "PDF page 115 / printed page 113",
+        "table": "2024年度合并及公司利润表",
+        "label": "归属于母公司股东的净利润",
+        "column": "2023年度合并"
+      },
+      "exchange": {
+        "page": "PDF page 115 / printed page 113",
+        "table": "2024年度合并及公司利润表",
+        "label": "归属于母公司股东的净利润",
+        "column": "2023年度合并"
+      },
+      "changed": true,
+      "disclosed_change_reason": "2024年同一控制下企业合并中国石油集团电能有限公司，比较数据相应重列",
+      "reason_reference": "PDF page 115 / printed page 113",
+      "review_status": "reviewed_changed"
+    },
+    {
+      "concept_id": "operating_cash_flow",
+      "original_fact_ids": {
+        "company": "efc9b7157781c64a7b992200d1c17a967defa9752ae556f856ff5d6429c95d9a",
+        "exchange": "dd37a724277e9cceb6c05c50c78b14d7c53690700dc8a43cad094298a8b7b76a"
+      },
+      "original_raw_value": "456596",
+      "later_comparative_raw_value": "456847",
+      "raw_unit": "人民币百万元",
+      "company": {
+        "page": "PDF page 116 / printed page 114",
+        "table": "2024年度合并及公司现金流量表",
+        "label": "经营活动产生的现金流量净额",
+        "column": "2023年度合并"
+      },
+      "exchange": {
+        "page": "PDF page 116 / printed page 114",
+        "table": "2024年度合并及公司现金流量表",
+        "label": "经营活动产生的现金流量净额",
+        "column": "2023年度合并"
+      },
+      "changed": true,
+      "disclosed_change_reason": "2024年同一控制下企业合并中国石油集团电能有限公司，比较数据相应重列",
+      "reason_reference": "PDF page 115 / printed page 113",
+      "review_status": "reviewed_changed"
+    }
+  ]
+}
