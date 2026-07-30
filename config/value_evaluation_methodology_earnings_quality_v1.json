@@ -23,7 +23,9 @@
       "pit_required": true,
       "restatement_sensitive": true,
       "cyclical_company_limitation": "周期高低点会放大同比",
-      "score_eligible": false
+      "score_eligible": false,
+      "score_blockers": ["missing_cross_cycle_history", "missing_industry_benchmark"],
+      "references": ["cfa_fsa", "cfa_reporting_quality", "mof_cas", "penman_fsa_sv"]
     },
     {
       "metric_id": "gross_profit",
@@ -38,7 +40,9 @@
       "pit_required": true,
       "restatement_sensitive": true,
       "cyclical_company_limitation": "受油气价格、炼化价差和业务结构影响",
-      "score_eligible": false
+      "score_eligible": false,
+      "score_blockers": ["missing_industry_benchmark", "no_approved_threshold"],
+      "references": ["cfa_fsa", "mof_cas", "penman_fsa_sv"]
     },
     {
       "metric_id": "gross_margin",
@@ -53,7 +57,9 @@
       "pit_required": true,
       "restatement_sensitive": true,
       "cyclical_company_limitation": "必须结合油价、炼化价差和业务结构",
-      "score_eligible": false
+      "score_eligible": false,
+      "score_blockers": ["missing_industry_benchmark", "no_approved_threshold"],
+      "references": ["cfa_fsa", "mof_cas", "penman_fsa_sv"]
     },
     {
       "metric_id": "operating_profit_margin",
@@ -68,7 +74,9 @@
       "pit_required": true,
       "restatement_sensitive": true,
       "cyclical_company_limitation": "周期与业务结构会改变指标解释",
-      "score_eligible": false
+      "score_eligible": false,
+      "score_blockers": ["missing_capital_return_facts", "no_approved_threshold"],
+      "references": ["cfa_fsa", "mof_cas", "penman_fsa_sv"]
     }
   ],
   "score_blockers": [
@@ -80,9 +88,25 @@
     "no_approved_threshold_or_weight_contract"
   ],
   "references": [
-    "CFA Institute Financial Statement Analysis",
-    "CFA Institute Evaluating Quality of Financial Reports",
-    "财政部企业会计准则",
-    "Stephen H. Penman, Financial Statement Analysis and Security Valuation"
+    {
+      "reference_id": "cfa_fsa",
+      "title": "CFA Institute Financial Statement Analysis",
+      "url": "https://www.cfainstitute.org/insights/professional-learning/refresher-readings/2026/introduction-financial-statement-analysis"
+    },
+    {
+      "reference_id": "cfa_reporting_quality",
+      "title": "CFA Institute Evaluating Quality of Financial Reports",
+      "url": "https://www.cfainstitute.org/insights/professional-learning/refresher-readings/2026/evaluating-quality-financial-reports"
+    },
+    {
+      "reference_id": "mof_cas",
+      "title": "财政部企业会计准则",
+      "url": "https://kjs.mof.gov.cn/zt/kjzzss/"
+    },
+    {
+      "reference_id": "penman_fsa_sv",
+      "title": "Stephen H. Penman, Financial Statement Analysis and Security Valuation",
+      "url": "https://www.mheducation.com/highered/product/financial-statement-analysis-and-security-valuation-penman.html"
+    }
   ]
 }

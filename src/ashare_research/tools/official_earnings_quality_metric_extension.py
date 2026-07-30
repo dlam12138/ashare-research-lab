@@ -59,6 +59,9 @@ CAPEX_CONCEPT = "cash_paid_for_fixed_assets"
 ORIGINAL_38_RESULT_ID_SET_SHA256 = (
     "730484f4abe54298cc53ecdc44d3079c0d2e064a6981047a0b413f6466faa5fa"
 )
+ORIGINAL_38_RESULT_SEMANTIC_SHA256 = (
+    "f665e33775c40a1b8e092c1345978f5f8fd5650cec90c5a87a931dfba2726890"
+)
 UPSTREAM_132_FACT_ID_SET_SHA256 = (
     "1e5267022b8062acf96fb413f09ecfc737c706b786c9f02a0b1dc3834fab604d"
 )
@@ -145,6 +148,47 @@ def _sha256(path: Path) -> str:
 
 def _id_set_digest(ids: list[str]) -> str:
     payload = json.dumps(sorted(ids), separators=(",", ":"))
+    return hashlib.sha256(payload.encode()).hexdigest()
+
+
+def _result_semantic_digest(results: list[MetricResult]) -> str:
+    fields = (
+        "metric_result_id",
+        "metric_id",
+        "metric_definition_version",
+        "symbol",
+        "fiscal_year",
+        "period_end",
+        "result_version",
+        "supersedes_metric_result_id",
+        "status",
+        "value",
+        "unit",
+        "formula",
+        "available_at",
+        "input_fact_ids",
+        "missing_input_description",
+        "revision_review_status",
+    )
+    rows = []
+    for result in results:
+        data = asdict(result)
+        rows.append(
+            {
+                field: (
+                    str(data[field])
+                    if field in {"status", "value"} and data[field] is not None
+                    else data[field]
+                )
+                for field in fields
+            }
+        )
+    payload = json.dumps(
+        sorted(rows, key=lambda item: item["metric_result_id"]),
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    )
     return hashlib.sha256(payload.encode()).hexdigest()
 
 
@@ -435,6 +479,11 @@ def _acceptance(
         and _id_set_digest(old_ids) == ORIGINAL_38_RESULT_ID_SET_SHA256,
         "original 38 Metric Result IDs changed",
     )
+    old_semantic_digest = _result_semantic_digest(old_results)
+    _require(
+        old_semantic_digest == ORIGINAL_38_RESULT_SEMANTIC_SHA256,
+        "original 38 Metric Result semantics changed",
+    )
     _require(
         len(stage2a["results"]) == 26
         and _id_set_digest(
@@ -525,6 +574,7 @@ def _acceptance(
         "transitions": transitions,
         "yoy_2024": asdict(yoy_2024),
         "original_result_id_set_sha256": _id_set_digest(old_ids),
+        "original_result_semantic_sha256": old_semantic_digest,
         "upstream_fact_id_set_sha256": _id_set_digest(upstream_fact_ids),
     }
 
@@ -769,6 +819,9 @@ def run_earnings_quality_metric_extension(
             original_result_versions=38,
             original_result_id_set_sha256=(
                 acceptance["original_result_id_set_sha256"]
+            ),
+            original_result_semantic_sha256=(
+                acceptance["original_result_semantic_sha256"]
             ),
             new_metric_result_ids=sorted(
                 item.metric_result_id for item in earnings["results"]

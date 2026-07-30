@@ -55,7 +55,7 @@ PROTECTED_BLOBS = {
     "src/ashare_research/metrics/models.py":
         "16e36169c29087fb02685aba65c7fd49d5e7840c",
     "src/ashare_research/metrics/engine.py":
-        "3640c38aef8940913cf9a489781089f97c1676fd",
+        "7505cccc2b51df1fd73b30ea59c7ae1bb15bfee1",
     "src/ashare_research/facts/concepts.py":
         "f3a9d425c75a19a54313508d9b0f73b459a467f2",
     "src/ashare_research/tools/official_fact_metric_foundation.py":

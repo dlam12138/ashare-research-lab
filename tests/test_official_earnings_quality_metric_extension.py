@@ -12,6 +12,7 @@ from ashare_research.tools.official_earnings_quality_metric_extension import (
     EXPECTED_COUNTS,
     NEW_EXPECTED_COUNTS,
     ORIGINAL_38_RESULT_ID_SET_SHA256,
+    ORIGINAL_38_RESULT_SEMANTIC_SHA256,
     UPSTREAM_132_FACT_ID_SET_SHA256,
     run_earnings_quality_metric_extension,
 )
@@ -180,6 +181,9 @@ def test_frozen_ids_read_only_upstream_and_deterministic_rerun(two_runs):
     first, second = two_runs
     assert first["original_result_id_set_sha256"] == (
         ORIGINAL_38_RESULT_ID_SET_SHA256
+    )
+    assert first["original_result_semantic_sha256"] == (
+        ORIGINAL_38_RESULT_SEMANTIC_SHA256
     )
     assert first["upstream"]["fact_id_set_sha256"] == (
         UPSTREAM_132_FACT_ID_SET_SHA256

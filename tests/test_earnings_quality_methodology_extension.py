@@ -35,6 +35,8 @@ def test_methodology_has_four_non_scoring_transparent_metrics():
         "pit_required",
         "restatement_sensitive",
         "cyclical_company_limitation",
+        "score_blockers",
+        "references",
     }
     assert all(required <= item.keys() for item in methodology["metrics"])
     assert methodology["score_blockers"]
