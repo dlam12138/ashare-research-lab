@@ -1,0 +1,286 @@
+{
+  "contract": "earnings_quality_official_facts_v1",
+  "base_bundle_path": "acceptance/fixtures/official_facts/601857.SH/2021_annual.json",
+  "base_bundle_sha256": "0c97789044bc594dec48e95a846603b2d22a06227dce535ec855f569aeaf391b",
+  "base_bundle_git_blob": "cb85f84c3a1459f3a909e36bd6482c8d8124d1a4",
+  "symbol": "601857.SH",
+  "fiscal_year": 2021,
+  "report_type": "annual",
+  "accounting_standard": "CAS",
+  "consolidation_scope": "consolidated",
+  "language": "zh-CN",
+  "document_relationship": "audited_financial_statements_subset_of_full_annual_report",
+  "reconciliation_rule_id": "RECON_OFFICIAL_NUMERIC_003",
+  "reconciliation_rule_version": "1",
+  "revision_review_status": "reviewed_by_later_annual_report",
+  "independent_content_sources": false,
+  "documents": {
+    "exchange_full_annual_report": {
+      "source_tier": "exchange_official",
+      "source_provider": "sse_disclosure_manual_registry",
+      "source_id": "sse:601857.SH:2021:annual:zh-cn",
+      "source_document": "中国石油天然气股份有限公司2021年度报告",
+      "document_scope": "full_annual_report",
+      "landing_url": "https://www.sse.com.cn/disclosure/listedinfo/regular/index.shtml?productId=601857",
+      "pdf_url": "https://www.sse.com.cn/disclosure/listedinfo/announcement/c/new/2022-04-01/601857_20220401_6_QNCbgaXu.pdf",
+      "final_pdf_url": "https://static.sse.com.cn/disclosure/listedinfo/announcement/c/new/2022-04-01/601857_20220401_6_QNCbgaXu.pdf",
+      "announcement_date": "2022-04-01",
+      "retrieved_at": "2026-07-30T08:26:28.000+08:00",
+      "sha256": "939de04e6502dc61be1a1fd3b12a4b9faaa0eb52e3996134810581391a93841f",
+      "content_type": "application/pdf",
+      "content_length": 5115948,
+      "page_count": 282,
+      "document_key": "exchange_full_annual_report",
+      "source_key": "exchange",
+      "source_url": "https://static.sse.com.cn/disclosure/listedinfo/announcement/c/new/2022-04-01/601857_20220401_6_QNCbgaXu.pdf",
+      "source_hash": "939de04e6502dc61be1a1fd3b12a4b9faaa0eb52e3996134810581391a93841f"
+    },
+    "company_audited_financial_statements": {
+      "source_tier": "company_official",
+      "source_provider": "petrochina_ir_manual_registry",
+      "source_id": "company_ir:601857.SH:2021:annual:zh-cn",
+      "source_document": "中国石油天然气股份有限公司截至2021年12月31日止年度财务报表及审计报告",
+      "document_scope": "audited_financial_statements",
+      "landing_url": "https://www.petrochina.com.cn/petrochina/gsgg/xwgg_list_42.shtml",
+      "pdf_url": "https://www.petrochina.com.cn/petrochina/gsgg/202203/b39500c66f3b40f5b1a97c5b37f1f75f/files/f066f8223a454855ae08d97d1f3bf0cb.pdf",
+      "final_pdf_url": "https://www.petrochina.com.cn/petrochina/gsgg/202203/b39500c66f3b40f5b1a97c5b37f1f75f/files/f066f8223a454855ae08d97d1f3bf0cb.pdf",
+      "announcement_date": "2022-03-31",
+      "retrieved_at": "2026-07-30T08:20:08.701+08:00",
+      "sha256": "badab8f25c48184e16469f4ac542ff5ac5087b2a376ae3c95cd31b3793cd7a99",
+      "content_type": "application/pdf",
+      "content_length": 4714421,
+      "page_count": 95,
+      "document_key": "company_audited_financial_statements",
+      "source_key": "company",
+      "source_url": "https://www.petrochina.com.cn/petrochina/gsgg/202203/b39500c66f3b40f5b1a97c5b37f1f75f/files/f066f8223a454855ae08d97d1f3bf0cb.pdf",
+      "source_hash": "badab8f25c48184e16469f4ac542ff5ac5087b2a376ae3c95cd31b3793cd7a99"
+    },
+    "company_annual_results_announcement": {
+      "document_key": "company_annual_results_announcement",
+      "source_key": "company",
+      "source_tier": "company_official",
+      "source_id": "company_ir:601857.SH:2021:annual:zh-cn",
+      "source_document": "中国石油天然气股份有限公司二零二一年度业绩公告（年度报告摘要）",
+      "document_scope": "annual_results_announcement",
+      "source_url": "https://www.petrochina.com.cn/petrochina/ndyjgb/202203/aa94890bbe674250ac0e7135af5a8f86/files/d913968f2c264f4abe45f87ff1286ccb.pdf",
+      "source_hash": "555a24ed0ace306ebb249faefd2d131e960cd008ad22df8929993c40183e4786",
+      "announcement_date": "2022-03-31",
+      "retrieved_at": "2026-07-30T16:27:52.7197632+08:00",
+      "content_length": 1195800,
+      "page_count": 44,
+      "issuer": "中国石油天然气股份有限公司",
+      "stock_code": "601857",
+      "fiscal_year": 2021,
+      "formal_annual_disclosure": true,
+      "direct_financial_data_disclosure": true
+    }
+  },
+  "sources": {
+    "company": {
+      "facts": [
+        {
+          "concept_id": "net_profit_excluding_non_recurring",
+          "document_key": "company_annual_results_announcement",
+          "source_document": "中国石油天然气股份有限公司二零二一年度业绩公告（年度报告摘要）",
+          "document_scope": "annual_results_announcement",
+          "source_url": "https://www.petrochina.com.cn/petrochina/ndyjgb/202203/aa94890bbe674250ac0e7135af5a8f86/files/d913968f2c264f4abe45f87ff1286ccb.pdf",
+          "source_hash": "555a24ed0ace306ebb249faefd2d131e960cd008ad22df8929993c40183e4786",
+          "source_page": "PDF page 3 / printed page 1",
+          "pdf_page": 3,
+          "printed_page": 1,
+          "source_table": "主要会计数据及财务指标",
+          "source_label": "归属于母公司股东的扣除非经常性损益的净利润",
+          "column_label": "2021年",
+          "source_display_value": "99,531",
+          "raw_value": "99531",
+          "raw_unit": "人民币百万元",
+          "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+          "expected_normalized_value": 9953100,
+          "evidence_type": "annual_report_direct_disclosure",
+          "evidence_scope": "annual_results_announcement_direct_disclosure",
+          "official_direct_disclosure": true,
+          "manual_review_status": "visually_verified_twice"
+        },
+        {
+          "concept_id": "operating_cost",
+          "document_key": "company_audited_financial_statements",
+          "source_document": "中国石油天然气股份有限公司截至2021年12月31日止年度财务报表及审计报告",
+          "document_scope": "audited_financial_statements",
+          "source_url": "https://www.petrochina.com.cn/petrochina/gsgg/202203/b39500c66f3b40f5b1a97c5b37f1f75f/files/f066f8223a454855ae08d97d1f3bf0cb.pdf",
+          "source_hash": "badab8f25c48184e16469f4ac542ff5ac5087b2a376ae3c95cd31b3793cd7a99",
+          "source_page": "PDF page 10 / printed page 8",
+          "pdf_page": 10,
+          "printed_page": 8,
+          "source_table": "2021年度合并及公司利润表",
+          "source_label": "减：营业成本",
+          "column_label": "2021年度合并",
+          "source_display_value": "(2,071,504)",
+          "raw_value": "2071504",
+          "raw_unit": "人民币百万元",
+          "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+          "expected_normalized_value": 207150400,
+          "evidence_type": "audited_consolidated_income_statement",
+          "evidence_scope": "audited_statement_line_item",
+          "official_direct_disclosure": true,
+          "manual_review_status": "visually_verified_twice",
+          "sign_convention": "expense_magnitude_positive"
+        },
+        {
+          "concept_id": "operating_profit",
+          "document_key": "company_audited_financial_statements",
+          "source_document": "中国石油天然气股份有限公司截至2021年12月31日止年度财务报表及审计报告",
+          "document_scope": "audited_financial_statements",
+          "source_url": "https://www.petrochina.com.cn/petrochina/gsgg/202203/b39500c66f3b40f5b1a97c5b37f1f75f/files/f066f8223a454855ae08d97d1f3bf0cb.pdf",
+          "source_hash": "badab8f25c48184e16469f4ac542ff5ac5087b2a376ae3c95cd31b3793cd7a99",
+          "source_page": "PDF page 10 / printed page 8",
+          "pdf_page": 10,
+          "printed_page": 8,
+          "source_table": "2021年度合并及公司利润表",
+          "source_label": "营业利润",
+          "column_label": "2021年度合并",
+          "source_display_value": "182,180",
+          "raw_value": "182180",
+          "raw_unit": "人民币百万元",
+          "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+          "expected_normalized_value": 18218000,
+          "evidence_type": "audited_consolidated_income_statement",
+          "evidence_scope": "audited_statement_line_item",
+          "official_direct_disclosure": true,
+          "manual_review_status": "visually_verified_twice"
+        }
+      ]
+    },
+    "exchange": {
+      "facts": [
+        {
+          "concept_id": "net_profit_excluding_non_recurring",
+          "document_key": "exchange_full_annual_report",
+          "source_document": "中国石油天然气股份有限公司2021年度报告",
+          "document_scope": "full_annual_report",
+          "source_url": "https://static.sse.com.cn/disclosure/listedinfo/announcement/c/new/2022-04-01/601857_20220401_6_QNCbgaXu.pdf",
+          "source_hash": "939de04e6502dc61be1a1fd3b12a4b9faaa0eb52e3996134810581391a93841f",
+          "source_page": "PDF page 3 / printed page 1",
+          "pdf_page": 3,
+          "printed_page": 1,
+          "source_table": "主要会计数据及财务指标",
+          "source_label": "归属于母公司股东的扣除非经常性损益的净利润",
+          "column_label": "2021年",
+          "source_display_value": "99,531",
+          "raw_value": "99531",
+          "raw_unit": "人民币百万元",
+          "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+          "expected_normalized_value": 9953100,
+          "evidence_type": "annual_report_direct_disclosure",
+          "evidence_scope": "full_annual_report_direct_disclosure",
+          "official_direct_disclosure": true,
+          "manual_review_status": "visually_verified_twice"
+        },
+        {
+          "concept_id": "operating_cost",
+          "document_key": "exchange_full_annual_report",
+          "source_document": "中国石油天然气股份有限公司2021年度报告",
+          "document_scope": "full_annual_report",
+          "source_url": "https://static.sse.com.cn/disclosure/listedinfo/announcement/c/new/2022-04-01/601857_20220401_6_QNCbgaXu.pdf",
+          "source_hash": "939de04e6502dc61be1a1fd3b12a4b9faaa0eb52e3996134810581391a93841f",
+          "source_page": "PDF page 10 / printed page 8",
+          "pdf_page": 10,
+          "printed_page": 8,
+          "source_table": "2021年度合并及公司利润表",
+          "source_label": "减：营业成本",
+          "column_label": "2021年度合并",
+          "source_display_value": "(2,071,504)",
+          "raw_value": "2071504",
+          "raw_unit": "人民币百万元",
+          "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+          "expected_normalized_value": 207150400,
+          "evidence_type": "audited_consolidated_income_statement",
+          "evidence_scope": "audited_statement_line_item",
+          "official_direct_disclosure": true,
+          "manual_review_status": "visually_verified_twice",
+          "sign_convention": "expense_magnitude_positive"
+        },
+        {
+          "concept_id": "operating_profit",
+          "document_key": "exchange_full_annual_report",
+          "source_document": "中国石油天然气股份有限公司2021年度报告",
+          "document_scope": "full_annual_report",
+          "source_url": "https://static.sse.com.cn/disclosure/listedinfo/announcement/c/new/2022-04-01/601857_20220401_6_QNCbgaXu.pdf",
+          "source_hash": "939de04e6502dc61be1a1fd3b12a4b9faaa0eb52e3996134810581391a93841f",
+          "source_page": "PDF page 10 / printed page 8",
+          "pdf_page": 10,
+          "printed_page": 8,
+          "source_table": "2021年度合并及公司利润表",
+          "source_label": "营业利润",
+          "column_label": "2021年度合并",
+          "source_display_value": "182,180",
+          "raw_value": "182180",
+          "raw_unit": "人民币百万元",
+          "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+          "expected_normalized_value": 18218000,
+          "evidence_type": "audited_consolidated_income_statement",
+          "evidence_scope": "audited_statement_line_item",
+          "official_direct_disclosure": true,
+          "manual_review_status": "visually_verified_twice"
+        }
+      ]
+    }
+  },
+  "non_recurring_bridge": {
+    "unit": "人民币百万元",
+    "net_profit_attributable_to_parent": 92161,
+    "net_profit_excluding_non_recurring": 99531,
+    "attributable_difference": -7370,
+    "items": [
+      {
+        "label": "非经常性损益项目1",
+        "amount": -19546
+      },
+      {
+        "label": "非经常性损益项目2",
+        "amount": 837
+      },
+      {
+        "label": "非经常性损益项目3",
+        "amount": 321
+      },
+      {
+        "label": "非经常性损益项目4",
+        "amount": -4
+      },
+      {
+        "label": "非经常性损益项目5",
+        "amount": 18320
+      },
+      {
+        "label": "非经常性损益项目6",
+        "amount": 3575
+      },
+      {
+        "label": "非经常性损益项目7",
+        "amount": -4186
+      }
+    ],
+    "item_subtotal": -683,
+    "income_tax_effect": 1226,
+    "minority_interest_effect": -7913,
+    "reported_final_net_effect": -7370,
+    "computed_final_net_effect": -7370,
+    "sign_convention": "positive increases attributable profit; parentheses are negative",
+    "exact_tie_out": true,
+    "bridge_status": "reconciled_cross_document",
+    "evidence_pages": {
+      "company": [
+        "PDF page 3"
+      ],
+      "exchange": [
+        "PDF page 9"
+      ]
+    },
+    "company_itemized_bridge": false,
+    "exchange_itemized_bridge": true,
+    "fact_creation": "not_a_financial_facts_input"
+  },
+  "limitations": [
+    "桥接仅作勾稽证据，不创建独立 Fact。"
+  ]
+}
