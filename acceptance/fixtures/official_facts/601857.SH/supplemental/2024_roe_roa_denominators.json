@@ -1,0 +1,113 @@
+{
+  "contract": "roe_roa_denominator_official_facts_v1",
+  "base_bundle_path": "acceptance/fixtures/official_facts/601857.SH/2024_annual.json",
+  "base_bundle_sha256": "d596ebfc9404cc6bca7520de10ddec5647830212daa946ff25b9e8fe9cc54176",
+  "base_bundle_git_blob": "03a2ec2813c31676aebed20e4df50042f42f140b",
+  "symbol": "601857.SH",
+  "fiscal_year": 2024,
+  "report_type": "annual",
+  "accounting_standard": "CAS",
+  "consolidation_scope": "consolidated",
+  "language": "zh-CN",
+  "document_relationship": "byte_identical",
+  "period_type": "instant",
+  "period_end": "2024-12-31",
+  "reconciliation_rule_id": "RECON_OFFICIAL_NUMERIC_004",
+  "reconciliation_rule_version": "1",
+  "revision_review_status": "reviewed_unchanged",
+  "sources": {
+    "company": {
+      "facts": [
+        {
+          "concept_id": "total_assets",
+          "source_page": "PDF page 113 / printed page 111",
+          "pdf_page": 113,
+          "printed_page": 111,
+          "source_table": "2024 年 12 月 31 日合并及公司资产负债表",
+          "source_label": "资产总计",
+          "column_label": "2024 年 12 月 31 日合并",
+          "source_display_value": "2,753,007",
+          "raw_value": "2753007",
+          "raw_unit": "人民币百万元",
+          "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+          "expected_normalized_value": 275300700,
+          "evidence_type": "audited_consolidated_balance_sheet",
+          "manual_review_status": "visually_verified_twice"
+        },
+        {
+          "concept_id": "equity_attributable_to_parent",
+          "source_page": "PDF page 114 / printed page 112",
+          "pdf_page": 114,
+          "printed_page": 112,
+          "source_table": "2024 年 12 月 31 日合并及公司资产负债表(续)",
+          "source_label": "归属于母公司股东权益合计",
+          "column_label": "2024 年 12 月 31 日合并",
+          "source_display_value": "1,515,371",
+          "raw_value": "1515371",
+          "raw_unit": "人民币百万元",
+          "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+          "expected_normalized_value": 151537100,
+          "evidence_type": "audited_consolidated_balance_sheet",
+          "manual_review_status": "visually_verified_twice"
+        }
+      ]
+    },
+    "exchange": {
+      "facts": [
+        {
+          "concept_id": "total_assets",
+          "source_page": "PDF page 113 / printed page 111",
+          "pdf_page": 113,
+          "printed_page": 111,
+          "source_table": "2024 年 12 月 31 日合并及公司资产负债表",
+          "source_label": "资产总计",
+          "column_label": "2024 年 12 月 31 日合并",
+          "source_display_value": "2,753,007",
+          "raw_value": "2753007",
+          "raw_unit": "人民币百万元",
+          "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+          "expected_normalized_value": 275300700,
+          "evidence_type": "audited_consolidated_balance_sheet",
+          "manual_review_status": "visually_verified_twice"
+        },
+        {
+          "concept_id": "equity_attributable_to_parent",
+          "source_page": "PDF page 114 / printed page 112",
+          "pdf_page": 114,
+          "printed_page": 112,
+          "source_table": "2024 年 12 月 31 日合并及公司资产负债表(续)",
+          "source_label": "归属于母公司股东权益合计",
+          "column_label": "2024 年 12 月 31 日合并",
+          "source_display_value": "1,515,371",
+          "raw_value": "1515371",
+          "raw_unit": "人民币百万元",
+          "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+          "expected_normalized_value": 151537100,
+          "evidence_type": "audited_consolidated_balance_sheet",
+          "manual_review_status": "visually_verified_twice"
+        }
+      ]
+    }
+  },
+  "accounting_identity_check": {
+    "unit": "人民币百万元",
+    "total_current_assets": 590844,
+    "total_non_current_assets": 2162163,
+    "computed_total_assets": 2753007,
+    "reported_total_assets": 2753007,
+    "equity_attributable_to_parent": 1515371,
+    "minority_interest": 194492,
+    "computed_total_equity": 1709863,
+    "reported_total_equity": 1709863,
+    "total_liabilities": 1043144,
+    "computed_liabilities_plus_equity": 2753007,
+    "reported_liabilities_plus_equity": 2753007,
+    "exact_tie_out": true,
+    "scope": "consolidated_only"
+  },
+  "limitations": [
+    "两个正式发布路径提供字节完全相同的同一份年度报告，不是两个独立编制的内容来源。",
+    "资产总计和归属于母公司股东权益均为经审计合并资产负债表时点值；未使用总权益、流动资产、分部或母公司单体数据。",
+    "时点 Concept 取当年合并列，period_start=period_end=2024-12-31，不复用 duration Context。"
+  ]
+}
