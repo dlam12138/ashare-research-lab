@@ -212,3 +212,41 @@ ROE/ROA metric computation: NOT YET
 ROIC fact foundation: NOT YET
 Scoring: STILL NOT YET
 ```
+
+## 最终文件变更
+
+新增：
+- `src/ashare_research/tools/official_roe_roa_denominator_2025_acceptance.py`
+- `tests/test_roe_roa_denominator_reconciliation_rule.py`
+- `tests/test_registered_roe_roa_denominator_evidence.py`
+- `tests/test_official_roe_roa_denominator_2025_acceptance.py`
+- `acceptance/fixtures/official_facts/601857.SH/supplemental/2024_roe_roa_denominators.json`
+- `acceptance/fixtures/official_facts/601857.SH/supplemental/2025_roe_roa_denominators.json`
+- `acceptance/fixtures/restatements/601857.SH/roe_roa_denominators_2024_reviewed_by_2025.json`
+- `acceptance/m2_stage2da_petrochina_2025_roe_roa_denominator_facts.md`
+
+修改：
+- `src/ashare_research/reconciliation/engine.py`（新增 Rule 004 常量与规则）
+- `src/ashare_research/validation/validator.py`（微调 `FACT_INSTANT_001`）
+
+## 最终Git状态
+
+- 当前分支：`feat/m2-value-assessment-mvp`
+- 当前提交：`9e3d1b4b5e1ec24925a3bdf6551ef154fe8966b4`
+- 远程 HEAD：`9e3d1b4`（local / origin / remote 一致）
+- 是否存在未提交修改：否（worktree clean）
+- 是否创建提交：是（3 个提交并逐个 push）：
+  - `ee0ee7d` `feat: add balance-sheet reconciliation rule`
+  - `ca6a45e` `test: register PetroChina 2025 ROE ROA denominator evidence`
+  - `9e3d1b4` `test: finalize PetroChina ROE ROA denominator acceptance`
+- 是否执行推送：是（3 次独立 push）
+- stash：`stash@{0}` 未动
+- 默认 `data/research.duckdb` SHA-256：`4a71d3c7b88c0b16ae46ffb4f9bfbd006d91e0537e559235c9b5a1f919e2fce6`（不变）
+
+### Ruff 说明
+
+`ruff check src tests` 报 3 个 `UP038` 警告，全部位于与本阶段无关的既有文件
+`src/ashare_research/tools/official_fact_acceptance.py`（2 个）与
+`tests/test_official_fact_acceptance.py`（1 个），经核对在父提交 `d19b2c1` 已存在
+（前序阶段按“仅检查改动文件”执行 ruff，故未暴露）。本阶段改动的 6 个文件 ruff 全部通过；
+按“不随意重构无关代码、不把无关修改混入本次任务”原则，未修改这些既有文件。
