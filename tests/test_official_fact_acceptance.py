@@ -858,7 +858,7 @@ def test_acceptance_runner_is_offline():
     imported = {
         alias.name.split(".")[0]
         for node in ast.walk(tree)
-        if isinstance(node, (ast.Import, ast.ImportFrom))
+        if isinstance(node, ast.Import | ast.ImportFrom)
         for alias in (
             node.names if isinstance(node, ast.Import) else [ast.alias(node.module or "")]
         )

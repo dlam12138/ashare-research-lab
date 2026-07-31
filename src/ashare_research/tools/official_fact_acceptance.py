@@ -379,11 +379,11 @@ def _jsonable(value: Any) -> Any:
         return str(value)
     if isinstance(value, dict):
         return {str(key): _jsonable(item) for key, item in value.items()}
-    if isinstance(value, (list, tuple)):
+    if isinstance(value, list | tuple):
         return [_jsonable(item) for item in value]
     if hasattr(value, "item"):
         return value.item()
-    if isinstance(value, (datetime, date)):
+    if isinstance(value, datetime | date):
         return value.isoformat()
     return value
 
