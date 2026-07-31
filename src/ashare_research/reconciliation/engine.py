@@ -64,6 +64,8 @@ SUPPLEMENTAL_RULE_ID = "RECON_OFFICIAL_NUMERIC_002"
 SUPPLEMENTAL_RULE_VERSION = "1"
 EARNINGS_QUALITY_RULE_ID = "RECON_OFFICIAL_NUMERIC_003"
 EARNINGS_QUALITY_RULE_VERSION = "1"
+ROE_ROA_DENOMINATOR_RULE_ID = "RECON_OFFICIAL_NUMERIC_004"
+ROE_ROA_DENOMINATOR_RULE_VERSION = "1"
 
 # Only these three concepts are reconcilable in the first version.
 SUPPORTED_CONCEPTS: frozenset[str] = frozenset({
@@ -112,6 +114,20 @@ EARNINGS_QUALITY_RECONCILIATION_RULE = NumericReconciliationRule(
         "net_profit_excluding_non_recurring",
         "operating_cost",
         "operating_profit",
+    }),
+)
+
+# Stage 2D-A: balance-sheet instant denominators for ROE/ROA average
+# balances.  Both concepts are instant (PeriodType.instant) and live on
+# the audited consolidated balance sheet.  Reconciliation here is
+# dual-source verification (company_official + exchange_official), never
+# subtraction; FACT_INSTANT_001 is narrowed to permit this exact path.
+ROE_ROA_DENOMINATOR_RECONCILIATION_RULE = NumericReconciliationRule(
+    rule_id=ROE_ROA_DENOMINATOR_RULE_ID,
+    version=ROE_ROA_DENOMINATOR_RULE_VERSION,
+    supported_concepts=frozenset({
+        "total_assets",
+        "equity_attributable_to_parent",
     }),
 )
 

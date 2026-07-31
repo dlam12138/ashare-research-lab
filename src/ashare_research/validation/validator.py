@@ -262,12 +262,20 @@ class FactValidator:
                 checked_at=now,
             ))
 
-        # FACT_INSTANT_001: 时点概念不是派生（由派生引擎保证，此处仅检查）
-        if fact.get("is_derived") and cid in INSTANT_CONCEPTS:
+        # FACT_INSTANT_001: 时点概念不得通过相减派生（双源对账派生除外）。
+        # 规则文档化本意（rule_registry.py）是禁止"相减"生成时点字段；双源对账
+        # 是 company_official + exchange_official 跨来源精确核验，不构成相减派生，
+        # 故对 derivation_definition_id == official_dual_source_reconciliation 放行。
+        if (
+            fact.get("is_derived")
+            and cid in INSTANT_CONCEPTS
+            and fact.get("derivation_definition_id")
+            != "official_dual_source_reconciliation"
+        ):
             results.append(FactValidationResult(
                 rule_id="FACT_INSTANT_001", target_id=fid,
                 severity="error", passed=False,
-                expected="Instant concepts must not be derived",
+                expected="Instant concepts must not be derived by subtraction",
                 actual=f"Derived instant concept: {cid}",
                 message="Instant fact must not be derived by subtraction",
                 checked_at=now,
