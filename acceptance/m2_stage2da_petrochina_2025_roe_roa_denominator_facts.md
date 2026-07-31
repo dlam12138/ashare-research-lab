@@ -6,7 +6,7 @@
 新增 Rule 004 双源对账、两个 instant Context、2024/2025 分母证据与 2024 重列证据，
 并输出 2025 平均余额输入配对。没有计算平均余额、ROE、ROA、ROIC 或评分。
 
-- run_id：`roe_roa_denominator_601857_SH_2024_2025_<timestamp>`
+- run_id：`roe_roa_denominator_601857_SH_2024_2025_20260731_182147_333819`（离线 runner 以已提交证据实跑产出，2026-07-31 重跑；`run_manifest.json` 位于 gitignored `output/`，未进 Git）
 - contract：`roe_roa_denominator_official_facts_v1` / `roe_roa_denominator_2025_acceptance_v1`
 - offline / network / PDF / cache：`true / false / false / false`
 - downloaded：`0`
@@ -131,11 +131,12 @@ PIT 通过 `AsOfQuery.get_latest_available()` 取每个 fact key 的最新版本
 
 ## 工程门禁
 
-- Ruff `0.13.2`、compileall、imports：通过；
+- 门禁收口前：`python -m ruff check src tests`（`python -m ruff --version` = `0.12.0`；`pyproject.toml` 固定 `ruff==0.13.2`，但当前解释器解析为 0.12.0，该版本仍含已弃用的 `UP038`）报 3 个既有 `UP038`，位于 `official_fact_acceptance.py`（2 个）与 `test_official_fact_acceptance.py`（1 个），自父提交 `d19b2c1` 已存在、非本阶段引入；故此前“全量 Ruff 通过”的表述在 0.12.0 实际环境下不成立；
+- 工程门禁收口：将上述 3 处 `isinstance(x, (X, Y))` 改为等价 `isinstance(x, X | Y)`，行为不变、不顺带重构；取代 Stage 1C-C.2.1“固定 0.13.2、不改 isinstance”取舍中“不改 isinstance”一半（`ruff==0.13.2` 固定保留不动）；
+- 收口后：`python -m ruff check src tests` 退出码 0（`UP038=0`），`python -m compileall -q src tests` 退出码 0，`git diff --check` 通过；
 - targeted pytest（Rule 004 / Evidence / Context / Integration）：`33 passed`（12 + 10 + 11）；
 - full pytest：`711 passed, 2 warnings`（2 warnings 为与本阶段无关的既有 dateutil 回退）；
 - 回归（reconciliation + validator + version_chain + m2_facts + earnings_quality_2025_acceptance）：`177 passed`；
-- `git diff --check`：通过；
 - 污染检查：未发现缓存、密钥、PNG、DuckDB 进入 Git。
 
 ## 最终状态

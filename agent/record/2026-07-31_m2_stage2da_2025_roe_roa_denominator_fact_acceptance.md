@@ -43,7 +43,7 @@
   - 132 Fact ID 集合 SHA-256：`1e5267022b8062acf96fb413f09ecfc737c706b786c9f02a0b1dc3834fab604d`；
   - 原 38 Metric Result ID 集合 SHA-256：`730484f4abe54298cc53ecdc44d3079c0d2e064a6981047a0b413f6466faa5fa`；
   - 原 38 Metric Result 完整语义 SHA-256：`f665e33775c40a1b8e092c1345978f5f8fd5650cec90c5a87a931dfba2726890`；
-  - 63 Metric Result ID 集合 SHA-256：待 runner 重建后计算并记录。
+  - 63 Metric Result ID 集合 SHA-256：runner 重建后验证为 `34edbbc3a4d3f6533c6d29911fef03c4d07772c68e6649f414ed0b567038e526`（不变）。
 
 ## 开始前代码审查
 
@@ -182,11 +182,13 @@ Service（`service.py:196` 校验输出 Fact，`:213` 抛错）零写入。代�
 6. Commit 3（进行中）：runner `official_roe_roa_denominator_2025_acceptance.py`（离线，重建 132-fact 上游，4 组 Rule 004 对账，R=0，写 run-scoped DuckDB，输出 `average_balance_input_pairs.json`）；
    `tests/test_official_roe_roa_denominator_2025_acceptance.py`：11 项 Integration 测试；
    正式报告 `acceptance/m2_stage2da_petrochina_2025_roe_roa_denominator_facts.md`。
-7. runner 实跑通过：`status=passed`，R=0，全部动态计数符合，PIT 30/39，平均余额两对 `ready_for_average=true`。
+7. runner 实跑通过：`status=passed`，R=0，全部动态计数符合，PIT 30/39，平均余额两对 `ready_for_average=true`。原始实跑 run_manifest 位于临时目录已清理（run_id 时间戳不可复现）；工程门禁收口时以已提交证据离线重跑，取得真实 run_id `roe_roa_denominator_601857_SH_2024_2025_20260731_182147_333819`（见正式报告与工程门禁收口记录）。
 
 ## 验证
 
-- Ruff `0.13.2`：Rule 004 / Evidence / Integration / engine / validator 文件均通过；
+- Ruff（仅本阶段改动文件：Rule 004 / Evidence / Integration / engine / validator）：通过；
+- 全量 `ruff check src tests`：本阶段未全量通过——实际解释器解析为 `ruff 0.12.0`（`pyproject.toml` 固定 `ruff==0.13.2` 未在环境生效），报 3 个既有 `UP038`（非本阶段引入，见“Ruff 说明”）；该 3 个 `UP038` 已在工程门禁收口任务中关闭（等价语法，行为不变），收口后全量退出码 0；
+- run_id（离线重跑，2026-07-31，已提交证据）：`roe_roa_denominator_601857_SH_2024_2025_20260731_182147_333819`；
 - compileall / import：通过（runner 已 `python -m py_compile`）；
 - Rule 004 单元测试：`12 passed`；
 - Evidence/Context 测试：`10 passed`；
@@ -232,21 +234,28 @@ Scoring: STILL NOT YET
 ## 最终Git状态
 
 - 当前分支：`feat/m2-value-assessment-mvp`
-- 当前提交：`9e3d1b4b5e1ec24925a3bdf6551ef154fe8966b4`
-- 远程 HEAD：`9e3d1b4`（local / origin / remote 一致）
-- 是否存在未提交修改：否（worktree clean）
-- 是否创建提交：是（3 个提交并逐个 push）：
+- Stage 2D-A 验收代码/报告提交：`9e3d1b4`（`test: finalize PetroChina ROE ROA denominator acceptance`，含 runner、Integration 测试、正式报告）
+- Stage 2D-A 文档收口提交：`f7b565d`（`docs: finalize Stage 2D-A work record with results and git state`，即 Stage 2D-A 最终 HEAD）
+- 是否存在未提交修改：否（Stage 2D-A 部分 worktree clean）
+- 是否创建提交：是（Stage 2D-A 共 4 个提交并逐个 push）：
   - `ee0ee7d` `feat: add balance-sheet reconciliation rule`
   - `ca6a45e` `test: register PetroChina 2025 ROE ROA denominator evidence`
   - `9e3d1b4` `test: finalize PetroChina ROE ROA denominator acceptance`
-- 是否执行推送：是（3 次独立 push）
+  - `f7b565d` `docs: finalize Stage 2D-A work record with results and git state`
+- 是否执行推送：是（逐个 push）
+- 工程门禁收口（UP038 关闭 + 本记录/正式报告一致性修正）为后续任务，其提交与最终远程 HEAD 见独立工作记录 `2026-07-31_m2_stage2da_engineering_gate_closure.md` 与终端汇报；本文件不自引用收口提交哈希
 - stash：`stash@{0}` 未动
 - 默认 `data/research.duckdb` SHA-256：`4a71d3c7b88c0b16ae46ffb4f9bfbd006d91e0537e559235c9b5a1f919e2fce6`（不变）
 
 ### Ruff 说明
 
-`ruff check src tests` 报 3 个 `UP038` 警告，全部位于与本阶段无关的既有文件
+`ruff check src tests`（`python -m ruff --version` = `0.12.0`；`pyproject.toml` 固定 `ruff==0.13.2`，但当前解释器解析为 0.12.0，该版本仍含已弃用的 `UP038`）报 3 个 `UP038` 警告，全部位于与本阶段无关的既有文件
 `src/ashare_research/tools/official_fact_acceptance.py`（2 个）与
 `tests/test_official_fact_acceptance.py`（1 个），经核对在父提交 `d19b2c1` 已存在
-（前序阶段按“仅检查改动文件”执行 ruff，故未暴露）。本阶段改动的 6 个文件 ruff 全部通过；
-按“不随意重构无关代码、不把无关修改混入本次任务”原则，未修改这些既有文件。
+（前序阶段按“仅检查改动文件”执行 ruff，故未暴露）。本阶段（Stage 2D-A）改动的文件 ruff 全部通过；
+当时按“不随意重构无关代码、不把无关修改混入本次任务”原则，未修改这些既有文件。
+
+后续工程门禁收口任务（见 `2026-07-31_m2_stage2da_engineering_gate_closure.md`）已将上述 3 处
+`isinstance(x, (X, Y))` 改为等价 `isinstance(x, X | Y)`（行为不变），`ruff check src tests` 退出码 0。
+此收口取代 Stage 1C-C.2.1“固定 0.13.2、不改 isinstance”取舍中“不改 isinstance”一半；
+`ruff==0.13.2` 固定保留不动。
