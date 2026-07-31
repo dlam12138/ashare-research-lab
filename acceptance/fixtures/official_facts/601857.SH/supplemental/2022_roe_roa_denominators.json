@@ -1,0 +1,113 @@
+{
+  "contract": "roe_roa_denominator_official_facts_v1",
+  "base_bundle_path": "acceptance/fixtures/official_facts/601857.SH/2022_annual.json",
+  "base_bundle_sha256": "5c610fd5ac33f61f5777ae4ea6fb62b50caff741b7c414e3a4161915db130ed9",
+  "base_bundle_git_blob": "7076195f3532ead9f0278f97691fe552fdb2ff54",
+  "symbol": "601857.SH",
+  "fiscal_year": 2022,
+  "report_type": "annual",
+  "accounting_standard": "CAS",
+  "consolidation_scope": "consolidated",
+  "language": "zh-CN",
+  "document_relationship": "same_report_different_bytes",
+  "period_type": "instant",
+  "period_end": "2022-12-31",
+  "reconciliation_rule_id": "RECON_OFFICIAL_NUMERIC_004",
+  "reconciliation_rule_version": "1",
+  "revision_review_status": "reviewed_changed",
+  "sources": {
+    "company": {
+      "facts": [
+        {
+          "concept_id": "total_assets",
+          "source_page": "PDF page 111 / printed page 109",
+          "pdf_page": 111,
+          "printed_page": 109,
+          "source_table": "2022年12月31日合并及公司资产负债表",
+          "source_label": "资产总计",
+          "column_label": "2022年12月31日合并",
+          "source_display_value": "2,673,751",
+          "raw_value": "2673751",
+          "raw_unit": "人民币百万元",
+          "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+          "expected_normalized_value": 267375100,
+          "evidence_type": "audited_consolidated_balance_sheet",
+          "manual_review_status": "visually_verified_twice"
+        },
+        {
+          "concept_id": "equity_attributable_to_parent",
+          "source_page": "PDF page 112 / printed page 110",
+          "pdf_page": 112,
+          "printed_page": 110,
+          "source_table": "2022年12月31日合并及公司资产负债表(续)",
+          "source_label": "归属于母公司股东权益合计",
+          "column_label": "2022年12月31日合并",
+          "source_display_value": "1,369,576",
+          "raw_value": "1369576",
+          "raw_unit": "人民币百万元",
+          "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+          "expected_normalized_value": 136957600,
+          "evidence_type": "audited_consolidated_balance_sheet",
+          "manual_review_status": "visually_verified_twice"
+        }
+      ]
+    },
+    "exchange": {
+      "facts": [
+        {
+          "concept_id": "total_assets",
+          "source_page": "PDF page 111 / printed page 109",
+          "pdf_page": 111,
+          "printed_page": 109,
+          "source_table": "2022年12月31日合并及公司资产负债表",
+          "source_label": "资产总计",
+          "column_label": "2022年12月31日合并",
+          "source_display_value": "2,673,751",
+          "raw_value": "2673751",
+          "raw_unit": "人民币百万元",
+          "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+          "expected_normalized_value": 267375100,
+          "evidence_type": "audited_consolidated_balance_sheet",
+          "manual_review_status": "visually_verified_twice"
+        },
+        {
+          "concept_id": "equity_attributable_to_parent",
+          "source_page": "PDF page 112 / printed page 110",
+          "pdf_page": 112,
+          "printed_page": 110,
+          "source_table": "2022年12月31日合并及公司资产负债表(续)",
+          "source_label": "归属于母公司股东权益合计",
+          "column_label": "2022年12月31日合并",
+          "source_display_value": "1,369,576",
+          "raw_value": "1369576",
+          "raw_unit": "人民币百万元",
+          "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+          "expected_normalized_value": 136957600,
+          "evidence_type": "audited_consolidated_balance_sheet",
+          "manual_review_status": "visually_verified_twice"
+        }
+      ]
+    }
+  },
+  "accounting_identity_check": {
+    "unit": "人民币百万元",
+    "total_current_assets": 613867,
+    "total_non_current_assets": 2059884,
+    "computed_total_assets": 2673751,
+    "reported_total_assets": 2673751,
+    "equity_attributable_to_parent": 1369576,
+    "minority_interest": 168527,
+    "computed_total_equity": 1538103,
+    "reported_total_equity": 1538103,
+    "total_liabilities": 1135648,
+    "computed_liabilities_plus_equity": 2673751,
+    "reported_liabilities_plus_equity": 2673751,
+    "exact_tie_out": true,
+    "scope": "consolidated_only"
+  },
+  "limitations": [
+    "2022 两项被 2023 年度报告比较列追溯重述（财政部解释16号/IAS 12 修订），本证据记录 v1 原值；v2 由 2022_reviewed_by_2023 重述证据驱动。",
+    "资产总计和归属于母公司股东权益均为经审计合并资产负债表时点值；未使用总权益、流动资产、分部或母公司单体数据。",
+    "时点 Concept 取当年合并列，period_start=period_end=2022-12-31，不复用 duration Context。"
+  ]
+}
