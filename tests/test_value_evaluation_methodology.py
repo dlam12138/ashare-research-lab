@@ -53,9 +53,9 @@ PROTECTED_BLOBS = {
     "src/ashare_research/metrics/cashflow_definitions.py":
         "4539bd36f306b821dd7f6accab05da8b23749e84",
     "src/ashare_research/metrics/models.py":
-        "16e36169c29087fb02685aba65c7fd49d5e7840c",
+        "9c979146b9917dd2bffddf39b0b6388852f501aa",
     "src/ashare_research/metrics/engine.py":
-        "7505cccc2b51df1fd73b30ea59c7ae1bb15bfee1",
+        "0ae662fba480d335dc9fd8b25317c4f38e189aae",
     "src/ashare_research/facts/concepts.py":
         "f3a9d425c75a19a54313508d9b0f73b459a467f2",
     "src/ashare_research/tools/official_fact_metric_foundation.py":

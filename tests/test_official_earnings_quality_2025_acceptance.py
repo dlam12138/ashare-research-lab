@@ -61,7 +61,7 @@ PROTECTED_BLOBS = {
     "docs/value_scoring_readiness_gates.md":
         "abb73f82853e831b80879c9f60eb0594472c0738",
     "tests/test_value_evaluation_methodology.py":
-        "c9b28166bcf44dc73173747f3ec018151c5a6c3a",
+        "7ef8fdb50f12a64d4eda5786d11a070a2b2913f0",
     "acceptance/m2_stage2ca_value_evaluation_methodology_baseline.md":
         "2d9bce7dfe6842682567326468b59b12077299b4",
     "acceptance/fixtures/official_facts/601857.SH/2025_annual.json":

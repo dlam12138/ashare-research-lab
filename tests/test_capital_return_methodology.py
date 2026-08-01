@@ -86,11 +86,17 @@ PROTECTED_BLOBS = {
     "src/ashare_research/reconciliation/service.py":
         "62837ed1ce07e94590a62975dbd5c6dc5c8d8c25",
     "src/ashare_research/metrics/models.py":
-        "16e36169c29087fb02685aba65c7fd49d5e7840c",
+        # Stage 2D-D added the not_comparable_negative_denominator status
+        # value (enum addition, no schema upgrade); blob advanced from
+        # 16e36169... to 9c979146....
+        "9c979146b9917dd2bffddf39b0b6388852f501aa",
     "src/ashare_research/metrics/identity.py":
         "2073a297df7de10194b29fc634d162ca544deb36",
     "src/ashare_research/metrics/engine.py":
-        "7505cccc2b51df1fd73b30ea59c7ae1bb15bfee1",
+        # Stage 2D-D added the optional tertiary_fact (ROE three-input
+        # branch); two-input behaviour/IDs unchanged. Blob advanced from
+        # 7505cccc... to 0ae662fb....
+        "0ae662fba480d335dc9fd8b25317c4f38e189aae",
     "src/ashare_research/metrics/definitions.py":
         "bb06f1e5d0358624fec8fb59863e9e2915a0bf6e",
     "src/ashare_research/metrics/earnings_quality_definitions.py":
