@@ -1,0 +1,381 @@
+{
+  "as_of_trade_date": "2026-07-31",
+  "contract": "petrochina_value_profile_v1",
+  "evidence": {
+    "gaps": [
+      {
+        "available_source_types": [
+          "issuer_official"
+        ],
+        "event_id": "dve2_31d8f2d9e40ce1ff45989915",
+        "event_key": "2021-interim",
+        "gap": "exact exchange payload could not be retrieved because the official endpoint returned an anti-bot challenge",
+        "status": "issuer_only"
+      },
+      {
+        "available_source_types": [
+          "issuer_official"
+        ],
+        "event_id": "dve2_09864b9b129b87fbe82d770c",
+        "event_key": "2021-final",
+        "gap": "exact exchange payload could not be retrieved because the official endpoint returned an anti-bot challenge",
+        "status": "issuer_only"
+      },
+      {
+        "available_source_types": [
+          "issuer_official"
+        ],
+        "event_id": "dve2_1df3144a2ad4afb3d74569d1",
+        "event_key": "2022-interim",
+        "gap": "exact exchange payload could not be retrieved because the official endpoint returned an anti-bot challenge",
+        "status": "issuer_only"
+      },
+      {
+        "available_source_types": [
+          "issuer_official"
+        ],
+        "event_id": "dve2_545dca7962b7546dda01cf8f",
+        "event_key": "2022-final",
+        "gap": "exact exchange payload could not be retrieved because the official endpoint returned an anti-bot challenge",
+        "status": "issuer_only"
+      },
+      {
+        "available_source_types": [
+          "issuer_official"
+        ],
+        "event_id": "dve2_87942f04cbe07d8fa7f72a34",
+        "event_key": "2023-interim",
+        "gap": "exact exchange payload could not be retrieved because the official endpoint returned an anti-bot challenge",
+        "status": "issuer_only"
+      },
+      {
+        "available_source_types": [
+          "issuer_official"
+        ],
+        "event_id": "dve2_feace1c8156be53a04cb0fa2",
+        "event_key": "2023-final",
+        "gap": "exact exchange payload could not be retrieved because the official endpoint returned an anti-bot challenge",
+        "status": "issuer_only"
+      },
+      {
+        "available_source_types": [
+          "issuer_official"
+        ],
+        "event_id": "dve2_b01e73d5301952998595ff05",
+        "event_key": "2024-final",
+        "gap": "exact exchange payload could not be retrieved because the official endpoint returned an anti-bot challenge",
+        "status": "issuer_only"
+      },
+      {
+        "available_source_types": [
+          "issuer_official"
+        ],
+        "event_id": "dve2_40135402681a3e67ad7b9e96",
+        "event_key": "2025-interim",
+        "gap": "exact exchange payload could not be retrieved because the official endpoint returned an anti-bot challenge",
+        "status": "issuer_only"
+      },
+      {
+        "available_source_types": [
+          "issuer_official"
+        ],
+        "event_id": "dve2_d9a78550b9e4eff7fd1e41b6",
+        "event_key": "2025-final",
+        "gap": "exact exchange payload could not be retrieved because the official endpoint returned an anti-bot challenge",
+        "status": "issuer_only"
+      }
+    ],
+    "phase_a_status": "pass_with_explicit_gaps",
+    "rule007_eligible_event_count": 1
+  },
+  "integrated_layers": {
+    "daily_market_mechanism": "not_evaluated",
+    "dividend_announced": "partial_evidence",
+    "dividend_paid": "partial_evidence",
+    "earnings_cash_quality": "observed",
+    "financial_safety": "observed",
+    "roe_roa": "observed",
+    "roic": "not_evaluated"
+  },
+  "latest_observations": {
+    "a_share_price_to_latest_annual_parent_earnings": {
+      "lineage": {
+        "dividend_event_ids": [],
+        "financial_fact_ids": [
+          "fact_68355a493cdadff40bfc9a94"
+        ],
+        "missing_event_ids": []
+      },
+      "score_eligible": false,
+      "status": "computed",
+      "trade_date": "2026-07-31",
+      "value": 12.891587101393752,
+      "value_decimal": "12.89158710139375214555441126"
+    },
+    "a_share_price_to_latest_annual_revenue": {
+      "lineage": {
+        "dividend_event_ids": [],
+        "financial_fact_ids": [
+          "fact_9cfd555bc7217239b1b01f5a"
+        ],
+        "missing_event_ids": []
+      },
+      "score_eligible": false,
+      "status": "computed",
+      "trade_date": "2026-07-31",
+      "value": 0.7079400874030893,
+      "value_decimal": "0.7079400874030893683960273264"
+    },
+    "a_share_price_to_latest_year_end_parent_equity": {
+      "lineage": {
+        "dividend_event_ids": [],
+        "financial_fact_ids": [
+          "fact_d2c082f270d9a8d5cf845c83"
+        ],
+        "missing_event_ids": []
+      },
+      "score_eligible": false,
+      "status": "computed",
+      "trade_date": "2026-07-31",
+      "value": 1.2785589168534124,
+      "value_decimal": "1.278558916853412321468089815"
+    },
+    "latest_annual_fcf_proxy_yield": {
+      "lineage": {
+        "dividend_event_ids": [],
+        "financial_fact_ids": [
+          "fact_2a487f3014a2c3d81943ad81",
+          "fact_d478b1d908dcfefbf4feff2c"
+        ],
+        "missing_event_ids": []
+      },
+      "score_eligible": false,
+      "status": "computed",
+      "trade_date": "2026-07-31",
+      "value": 0.059037737275543345,
+      "value_decimal": "0.05903773727554334316827771199"
+    },
+    "trailing_12m_announced_dividend_yield": {
+      "lineage": {
+        "dividend_event_ids": [],
+        "financial_fact_ids": [],
+        "missing_event_ids": [
+          "dve2_40135402681a3e67ad7b9e96",
+          "dve2_d9a78550b9e4eff7fd1e41b6"
+        ]
+      },
+      "score_eligible": false,
+      "status": "missing_input",
+      "trade_date": "2026-07-31",
+      "value": null,
+      "value_decimal": null
+    },
+    "trailing_12m_paid_dividend_yield": {
+      "lineage": {
+        "dividend_event_ids": [],
+        "financial_fact_ids": [],
+        "missing_event_ids": [
+          "dve2_40135402681a3e67ad7b9e96",
+          "dve2_d9a78550b9e4eff7fd1e41b6"
+        ]
+      },
+      "score_eligible": false,
+      "status": "missing_input",
+      "trade_date": "2026-07-31",
+      "value": null,
+      "value_decimal": null
+    }
+  },
+  "north_star_decision": "valuation",
+  "percentile_position": {
+    "a_share_price_to_latest_annual_parent_earnings": {
+      "3y": 0.920907840440165,
+      "5y": 0.9452380952380952,
+      "effective_samples": {
+        "3y": 727,
+        "5y": 1050,
+        "expanding": 1050
+      },
+      "expanding": 0.9452380952380952,
+      "latest": {
+        "status": "computed",
+        "trade_date": "2026-07-31",
+        "value": 12.891587101393752
+      },
+      "minimum_samples": {
+        "3y": 500,
+        "5y": 900,
+        "expanding": 120
+      },
+      "missing_reason": null
+    },
+    "a_share_price_to_latest_annual_revenue": {
+      "3y": 0.920907840440165,
+      "5y": 0.9452380952380952,
+      "effective_samples": {
+        "3y": 727,
+        "5y": 1050,
+        "expanding": 1050
+      },
+      "expanding": 0.9452380952380952,
+      "latest": {
+        "status": "computed",
+        "trade_date": "2026-07-31",
+        "value": 0.7079400874030893
+      },
+      "minimum_samples": {
+        "3y": 500,
+        "5y": 900,
+        "expanding": 120
+      },
+      "missing_reason": null
+    },
+    "a_share_price_to_latest_year_end_parent_equity": {
+      "3y": 0.8452544704264099,
+      "5y": 0.8928571428571429,
+      "effective_samples": {
+        "3y": 727,
+        "5y": 1050,
+        "expanding": 1050
+      },
+      "expanding": 0.8928571428571429,
+      "latest": {
+        "status": "computed",
+        "trade_date": "2026-07-31",
+        "value": 1.2785589168534124
+      },
+      "minimum_samples": {
+        "3y": 500,
+        "5y": 900,
+        "expanding": 120
+      },
+      "missing_reason": null
+    },
+    "latest_annual_fcf_proxy_yield": {
+      "3y": 0.17400275103163687,
+      "5y": 0.12047619047619047,
+      "effective_samples": {
+        "3y": 727,
+        "5y": 1050,
+        "expanding": 1050
+      },
+      "expanding": 0.12047619047619047,
+      "latest": {
+        "status": "computed",
+        "trade_date": "2026-07-31",
+        "value": 0.059037737275543345
+      },
+      "minimum_samples": {
+        "3y": 500,
+        "5y": 900,
+        "expanding": 120
+      },
+      "missing_reason": null
+    },
+    "trailing_12m_announced_dividend_yield": {
+      "3y": null,
+      "5y": null,
+      "effective_samples": {
+        "3y": 242,
+        "5y": 410,
+        "expanding": 410
+      },
+      "expanding": 0.5158536585365854,
+      "latest": {
+        "status": "partial_evidence",
+        "trade_date": "2025-09-09",
+        "value": 0.02502844141069397
+      },
+      "minimum_samples": {
+        "3y": 500,
+        "5y": 900,
+        "expanding": 120
+      },
+      "missing_reason": "insufficient_valid_samples_for_one_or_more_windows"
+    },
+    "trailing_12m_paid_dividend_yield": {
+      "3y": null,
+      "5y": null,
+      "effective_samples": {
+        "3y": 244,
+        "5y": 418,
+        "expanding": 418
+      },
+      "expanding": 0.7870813397129187,
+      "latest": {
+        "status": "partial_evidence",
+        "trade_date": "2025-09-18",
+        "value": 0.02679658952496955
+      },
+      "minimum_samples": {
+        "3y": 500,
+        "5y": 900,
+        "expanding": 120
+      },
+      "missing_reason": "insufficient_valid_samples_for_one_or_more_windows"
+    }
+  },
+  "risk_veto_statuses": {
+    "currency_scope": "observed",
+    "identity": "observed",
+    "non_positive_comparables": "observed",
+    "official_exchange_evidence": "not_observed_within_bounded_evidence",
+    "pit_future_leakage": "observed"
+  },
+  "scenarios": [
+    {
+      "base_value": 12.891587101393752,
+      "input_shock": -0.2,
+      "lineage": {
+        "base_observation_type": "a_share_price_to_latest_annual_parent_earnings",
+        "sample_end_trade_date": "2026-07-31"
+      },
+      "observation_type": "a_share_price_to_latest_annual_parent_earnings",
+      "sample_end_trade_date": "2026-07-31",
+      "scenario_id": "scenario_f46ee343dd325b99194da4dc",
+      "shock_group": "net_profit",
+      "stressed_value": 16.114483876742188
+    },
+    {
+      "base_value": 12.891587101393752,
+      "input_shock": -0.3,
+      "lineage": {
+        "base_observation_type": "a_share_price_to_latest_annual_parent_earnings",
+        "sample_end_trade_date": "2026-07-31"
+      },
+      "observation_type": "a_share_price_to_latest_annual_parent_earnings",
+      "sample_end_trade_date": "2026-07-31",
+      "scenario_id": "scenario_149a2c7f59a7d21c32467d22",
+      "shock_group": "net_profit",
+      "stressed_value": 18.416553001991076
+    },
+    {
+      "base_value": 0.059037737275543345,
+      "input_shock": -0.2,
+      "lineage": {
+        "base_observation_type": "latest_annual_fcf_proxy_yield",
+        "sample_end_trade_date": "2026-07-31"
+      },
+      "observation_type": "latest_annual_fcf_proxy_yield",
+      "sample_end_trade_date": "2026-07-31",
+      "scenario_id": "scenario_cd16fb4099e7fde0ea9d2570",
+      "shock_group": "fcf_proxy",
+      "stressed_value": 0.04723018982043468
+    },
+    {
+      "base_value": 0.059037737275543345,
+      "input_shock": -0.3,
+      "lineage": {
+        "base_observation_type": "latest_annual_fcf_proxy_yield",
+        "sample_end_trade_date": "2026-07-31"
+      },
+      "observation_type": "latest_annual_fcf_proxy_yield",
+      "sample_end_trade_date": "2026-07-31",
+      "scenario_id": "scenario_0e4086c59b42aea7d62680a8",
+      "shock_group": "fcf_proxy",
+      "stressed_value": 0.04132641609288034
+    }
+  ],
+  "score_eligible": false,
+  "symbol": "601857.SH"
+}
