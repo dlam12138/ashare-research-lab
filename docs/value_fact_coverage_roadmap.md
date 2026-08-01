@@ -139,3 +139,18 @@ Stage 2D-C `this_stage_executes = none_of_A_B_C`。
 - **C. ROA 透明 Metric 计算**：基于 Stage 2D-C 合同与 `net_profit`（分子）+ 平均总资产
   （分母，Stage 2D-B）输入对，按合同透明计算 2021-2025 ROA。
 - ROIC 仍 blocked（NOPAT 与投入资本口径未登记）；scoring 仍 STILL NOT YET。
+
+## Stage 2D-F 状态追加（2026-08-01，append-only，不改写历史基线）
+
+### ROA 透明 Metric（已完成）
+
+- 新增唯一定义 `return_on_average_total_assets` v1：
+  `net_profit / ((opening_total_assets + closing_total_assets) / 2)`，三输入角色为
+  `numerator/opening/closing`，`unit=ratio`，`score_eligible=false`；Stage 2D-C 方法论 JSON 未修改。
+- Stage 2D-E foundation 重建并验证 201 Fact（67 reconciled eligible、PIT 52、45 version links）；
+  Stage 2D-D 的既有 70 Result、63 旧 Result ID/语义和 7 个 ROE 版本保持不变。
+- ROA 结果 7 个版本、2 条真实重列链、21 行 lineage、5 个 latest；FY2024 直接使用 2023 assets v2，
+  FY2025 `not_yet_reviewable`；组合结果 77、final latest 60、final computed 56。
+- PIT latest=`0/12/24/36/48/60`，computed=`0/8/20/32/44/56`，insufficient=`0/4/4/4/4/4`。
+- ROE/ROA capital-return layer：`COMPLETE`；ROIC：`NOT YET`；Scoring：`STILL NOT YET`。
+- 下一阶段选择需进行 `NORTH-STAR REVIEW REQUIRED`。
