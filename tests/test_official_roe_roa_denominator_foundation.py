@@ -74,8 +74,11 @@ PROTECTED_BLOBS = {
         "4f90195f7d5aca44b8830760dca66a757bd19dc4",
     "docs/value_evaluation_methodology_v1.md":
         "6938e35868b940649b4cabe0104dc070f8880886",
+    # Stage 2D-C sanctioned an append-only update to the coverage roadmap
+    # (current state + next steps A/B/C); the blob advanced from
+    # 9d737e00... to 04d323dd....  The historical baseline text is unchanged.
     "docs/value_fact_coverage_roadmap.md":
-        "9d737e00d36e711a93c9cad001c5343829de0de9",
+        "04d323ddaf39c7ad00f2bd14466efb4f72209c5c",
     "docs/value_scoring_readiness_gates.md":
         "abb73f82853e831b80879c9f60eb0594472c0738",
     # --- Stage 2D-A artifacts (unchanged by 2D-B) ---

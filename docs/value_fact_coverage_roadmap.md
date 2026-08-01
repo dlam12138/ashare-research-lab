@@ -74,3 +74,33 @@ Stage 2B-B 冻结的 gap inventory 全量保留为：扣非净利润、毛利率
 理由是它以较少且官方可得的 duration facts，直接修复当前归母利润同比无法区分一次性项目、也无法解释利润率的主要盲点；公式争议低、现有年度 bundle/PIT/重列基础设施复用高，对周期企业也有明显解释增量。下一阶段应先做一个年度的双官方最小验收，再扩展多年，不在本阶段执行。
 
 ROE/ROA 是随后优先项；ROIC 在税后经营利润和投入资本边界完成前不应抢跑。财务安全、分红与估值按路线图继续保留。
+
+## Stage 2D-C 状态追加（2026-08-01，append-only，不改写历史基线）
+
+Stage 2D-C 冻结 ROE/ROA 资本回报方法论合同，不新增 Fact、不计算 Metric。合同见
+[资本回报方法论 v1](value_evaluation_methodology_capital_return_v1.md)、
+[机器合同](../config/value_evaluation_methodology_capital_return_v1.json) 与
+[ROE/ROA 输入契约](roe_roa_input_contract.md)。
+
+### 当前状态
+
+- **ROE** `return_on_average_equity_attributable_to_parent`：
+  分子 `net_profit_attributable_to_parent`（Stage 2C 覆盖 2021-2025）与分母平均归母权益
+  （Stage 2D-B 覆盖 2020-2025，10 对平均余额输入对就绪）均已就绪；
+  `inputs_ready=true`、`methodology_ready=true`、`metric_computation=allowed_next_stage`。
+- **ROA** `return_on_average_total_assets`：
+  分母平均总资产就绪（Stage 2D-B）；**分子 `net_profit`（合并净利润）2021-2025 无可信事实**，
+  `numerator_ready=false`、`required_fact=net_profit`、`metric_computation=blocked`。
+  不得用归母净利润冒充，不得静默生成 proxy。
+- **ROIC**：blocked，NOPAT 与投入资本口径未登记，不讨论实现。
+- **scoring**：blocked，评分门禁未触发。
+- 平均余额规则：`(opening+closing)/2`，Decimal prec28/ROUND_HALF_EVEN/量化1e-12，两时点强制，缺失不置零。
+- PIT：`available_at=max(分子,opening,closing)`；重列传播：任一输入变化建新 Metric 版本并 supersede。
+
+### 下一步（不在 Stage 2D-C 执行）
+
+- **A. Stage 2D-D：ROE 透明 Metric 计算。** 基于本合同与 Stage 2D-B 平均余额输入对，透明计算 2021-2025 ROE Metric Result。
+- **B. Stage 2D-E：2021-2025 consolidated `net_profit` 官方事实与重列。** 补齐 ROA 分子事实覆盖。
+- **C. 之后才允许 ROA 计算。** `net_profit` 事实覆盖与重列完成后，按 ROA 合同计算。
+
+Stage 2D-C `this_stage_executes = none_of_A_B_C`。

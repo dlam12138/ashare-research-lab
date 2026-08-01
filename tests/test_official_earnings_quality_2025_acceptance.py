@@ -57,7 +57,7 @@ PROTECTED_BLOBS = {
     "config/value_evaluation_methodology_v1.json":
         "9a36c28a96a690c52d46acede3ff95bfe907cb33",
     "docs/value_fact_coverage_roadmap.md":
-        "9d737e00d36e711a93c9cad001c5343829de0de9",
+        "04d323ddaf39c7ad00f2bd14466efb4f72209c5c",
     "docs/value_scoring_readiness_gates.md":
         "abb73f82853e831b80879c9f60eb0594472c0738",
     "tests/test_value_evaluation_methodology.py":

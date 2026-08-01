@@ -71,7 +71,7 @@ PROTECTED_BLOBS = {
     "docs/value_evaluation_methodology_v1.md":
         "6938e35868b940649b4cabe0104dc070f8880886",
     "docs/value_fact_coverage_roadmap.md":
-        "9d737e00d36e711a93c9cad001c5343829de0de9",
+        "04d323ddaf39c7ad00f2bd14466efb4f72209c5c",
     "docs/value_scoring_readiness_gates.md":
         "abb73f82853e831b80879c9f60eb0594472c0738",
 }
