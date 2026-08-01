@@ -198,4 +198,16 @@ roadmap 引用已同步更新为新 blob（surgical edit + 注释说明），三
 
 ## 最终Git状态
 
-（待填）
+- 当前分支：`feat/m2-value-assessment-mvp`
+- 开始提交：`ff6f6ab`（Stage 2D-C 主体已 push 落地后的 HEAD）
+- Stage 2D-C 主体两个提交（均已 push）：
+  1. `ecfde23` `docs: add ROE ROA methodology contract`——方法论合同提交
+     （新增 4 文件 + append-only 追加 roadmap + 同步 3 处 protected-blob 测试引用）
+  2. `ff6f6ab` `docs: finalize capital return methodology acceptance`——验收报告提交
+     （新增验收报告 + 本工作记录）
+- 本收口提交 `docs: close Stage 2D-C acceptance inconsistencies`：仅修正验收报告与本工作记录中的两处
+  不准确表述（"零既有文件修改"、"worktree 仅新增文件"），并补全本小节；不新增事实/指标/方法，
+  不改 JSON/公式/roadmap 正文/tests/代码。
+- 上述主体两个提交当时 local/origin/remote 一致（ahead/behind=0/0）；
+- `stash@{0}` 保留未动；默认 `data/research.duckdb` SHA 不变；最终 worktree clean。
+- 不 merge main，不创建 Tag/Release；不进入 Stage 2D-D 或 2D-E。

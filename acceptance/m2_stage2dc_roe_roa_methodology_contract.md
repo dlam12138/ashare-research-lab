@@ -92,19 +92,29 @@ instant Context `SYMBOL|FY|instant|consolidated`，不复用 duration Context。
 
 本阶段 `this_stage_executes = none_of_A_B_C`。
 
-## 11. 新增产物
+## 11. 变更范围
+
+本阶段实际变更（提交 `ecfde23` + `ff6f6ab`）：
+
+**新增文件（6 个，方法论/测试/验收/记录）：**
 
 - `docs/value_evaluation_methodology_capital_return_v1.md`（方法论）
 - `config/value_evaluation_methodology_capital_return_v1.json`（机器合同）
 - `docs/roe_roa_input_contract.md`（输入契约）
 - `tests/test_capital_return_methodology.py`（22 项合同测试）
 - `acceptance/m2_stage2dc_roe_roa_methodology_contract.md`（本报告）
-- `docs/value_fact_coverage_roadmap.md`（追加更新）
-- 工作记录
+- `agent/record/2026-08-01_0915_m2_stage2dc_roe_roa_methodology_contract.md`（工作记录）
+
+**既有文件修改（4 处 surgical edit，无语义改动）：**
+
+- `docs/value_fact_coverage_roadmap.md`：append-only 追加 Stage 2D-C 状态与下一步 A/B/C（历史基线文本未改写）；
+- `tests/test_official_earnings_quality_2025_acceptance.py`：同步 roadmap blob 引用（`9d737e00…`→`04d323dd…`）；
+- `tests/test_official_roe_roa_denominator_2025_acceptance.py`：同上同步；
+- `tests/test_official_roe_roa_denominator_foundation.py`：同上同步。
+
+除以上 surgical edits 外，既有代码、事实、指标和方法论基线未改变。
 
 ## 12. 不变性证明
-
-本阶段仅新增文件，零既有文件修改：
 
 - 默认 `data/research.duckdb` SHA-256 = `4a71d3c7b88c0b16ae46ffb4f9bfbd006d91e0537e559235c9b5a1f919e2fce6`（不变）；
 - 上游 132 Fact ID 集合 SHA = `1e5267022b8062acf96fb413f09ecfc737c706b786c9f02a0b1dc3834fab604d`（不变）；
@@ -119,10 +129,10 @@ instant Context `SYMBOL|FY|instant|consolidated`，不复用 duration Context。
 - `compileall -q src tests`：exit 0；
 - targeted + full pytest：全部通过；
 - `git diff --check`：exit 0；
-- 污染检查：无 DB/PDF/PNG 入库；worktree 仅新增文件。
+- 污染检查：无 DB/PDF/PNG 入库；提交范围见 §11（6 新增 + 4 surgical edit），最终 worktree clean。
 
 ## 14. 最终状态
 
-- 分支 `feat/m2-value-assessment-mvp`，2 个提交逐个 push；
+- 分支 `feat/m2-value-assessment-mvp`，2 个提交（`ecfde23` 方法论合同、`ff6f6ab` 验收报告）均已 push；
 - worktree clean，local/origin/remote 一致；
 - 不 merge main，不建 Tag/Release。
