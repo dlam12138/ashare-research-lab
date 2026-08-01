@@ -1,0 +1,14 @@
+{
+  "contract": "repurchase_event_scan_v1",
+  "symbol": "601857.SH",
+  "scope": "2021-01-01..2026-06-30",
+  "status": "bounded_search_no_event_found",
+  "search_basis": [
+    "PetroChina official announcement index for 601857, 2021-2026",
+    "Shanghai Stock Exchange official announcement index for 601857, 2021-2026",
+    "2021-2025 annual reports and 2021-2025 interim reports"
+  ],
+  "events": [],
+  "no_zero_valued_fact_created": true,
+  "limitations": "The bounded scan records no implemented buyback event; it is not a proof that no off-register transaction exists."
+}
