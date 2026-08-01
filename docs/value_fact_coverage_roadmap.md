@@ -168,3 +168,26 @@ Stage 2D-C `this_stage_executes = none_of_A_B_C`。
 
 - 正式 run-scoped runner `e1` 已 `passed`；全量 pytest `911 passed, 2 warnings`，ruff、compileall、diff、污染、protected blob、default DB、stash 与 local/origin/remote 一致性均通过。
 - 交付结论：current-portion composition correction `TRUSTED`；interest coverage `BLOCKED`；ROIC `NOT YET`；Scoring `STILL NOT YET`；下一阶段选择 `NORTH-STAR REVIEW REQUIRED`。
+
+## Stage 2F 状态追加（2026-08-01，append-only，不改写历史基线）
+
+### 现金分红兑现事实与覆盖指标（已完成）
+
+- 新增 `dividend_event_record_v1`：2021—2025 每年 interim/final 两条，共 10 条；只把
+  `paid/implemented` 事件进入兑现计算，范围固定为 `A_H_ordinary_combined`、CNY、普通股。
+- 新增 `RECON_OFFICIAL_NUMERIC_007 v1`，10 条事件 × 3 个数值概念 × 3 层 Fact，新增
+  90 个 run-scoped Fact（30 个 reconciled eligible）；Rule 001—006、Fact Schema、默认 DB
+  与 stash 不变。回购扫描登记 `bounded_search_no_event_found`，不生成零值 Fact。
+- 新增四个 `score_eligible=false` 分红兑现指标：payout ratio、经营现金流覆盖、自由
+  现金流代理覆盖、已实施每股分红；latest 20 个 Result 全部 computed、60 行 lineage。
+- PIT 年报日的分红指标 computed=`0/4/8/12/16`；2026-03-30 时 FY2025 final 尚未可用，
+  后续 latest 回放才完整，`revision_review_status=not_yet_reviewable`。
+- 正式 run-scoped runner 已通过：旧 354 Fact、16 definitions、102 既有 Metric Result
+  ID/语义保持不变；不计算 ROIC/score，不访问网络/PDF/cache/default DB；验收文档见
+  `acceptance/m2_stage2f_petrochina_dividend_realization.md`。
+- 最终门禁：全量 pytest `920 passed, 2 warnings`；targeted Stage 2F `9 passed`，保护/历史
+  runner targeted `77 passed`；全仓 Ruff、compileall/import、diff-check、污染检查通过。
+- 结论：Dividend implementation facts `TRUSTED`；payout/cash-flow coverage metrics
+  `TRUSTED`；repurchase evidence `DOCUMENTED`；dividend realization layer `COMPLETE`；
+  valuation PIT foundation `ALLOWED`；ROIC `NOT YET`；Scoring `STILL NOT YET`；下一阶段
+  选择 `NORTH-STAR REVIEW REQUIRED`。
