@@ -104,3 +104,38 @@ Stage 2D-C 冻结 ROE/ROA 资本回报方法论合同，不新增 Fact、不计�
 - **C. 之后才允许 ROA 计算。** `net_profit` 事实覆盖与重列完成后，按 ROA 合同计算。
 
 Stage 2D-C `this_stage_executes = none_of_A_B_C`。
+
+## Stage 2D-D / 2D-E 状态追加（2026-08-01，append-only，不改写历史基线）
+
+### Stage 2D-D：ROE 透明 Metric 计算（已完成）
+
+- ROE `return_on_average_equity_attributable_to_parent` 2021-2025 透明计算落地：
+  7 个结果版本、2 条重述链（FY2022@2024-03-26、FY2023@2025-03-31）、21 行 lineage、
+  5 个 latest；FY2024 直接使用 2023 归母权益 v2（无假版本）；FY2025 `not_yet_reviewable`。
+- Metric Engine 最小三输入扩展（可选 `tertiary_fact`，输入按声明角色绑定）；
+  旧 63 Result ID/语义逐字不变；组合 70 Result ID 集冻结（`bdd9d4fee977…`）。
+- 当时 ROA 仍 blocked（分子 `net_profit` 尚无可信事实）；ROIC / scoring 仍 blocked。
+
+### Stage 2D-E：2021-2025 consolidated `net_profit` 官方事实与重列（已完成）
+
+- 新增 Rule 005（`RECON_OFFICIAL_NUMERIC_005` v1，仅支持 `net_profit`；精确相等、
+  统一万元、无容差/无平均/无来源优先）；Rule 001-004 语义/输出/身份不变。
+- 5 个年度 duration `net_profit` 事实全部取自经审计合并利润表"净利润"直接披露行
+  （含归母与非控股股东损益）；归母+少数股东损益加总仅作交叉校验，不作正式值。
+- R=2：FY2022（Interpretation 16 / IAS 12 修订，163,977→163,343 百万元）、
+  FY2023（同一控制下企业合并（中油电能），180,291→180,561 百万元）changed；
+  FY2021、FY2024 未变；FY2025 `not_yet_reviewable`。
+- 动态计数（R=2）：contexts=11（复用，不新增）；facts=201；raw/ineligible=134；
+  reconciled/eligible=67；version links=45；audit=lineage=201；
+  final latest Fact PIT=52；年报可用 PIT 2021=12 / 2022=22 / 2023=32 / 2024=42 / 2025=52。
+- 180 Fact、70 Metric Result、ROE 7 版本基线全部不变；默认 DB 与 stash 不变。
+- **"ROA numerator fact coverage" 阻塞解除**：2021-2025 latest reconciled 事实已登记于
+  `net_profit_input_readiness.json`（`scope=consolidated`、`ready_for_roa_numerator=true`）；
+  Stage 2D-C 方法论 JSON 保持冻结不修改。
+- 本阶段未计算 ROA/ROIC/scoring；不进入 ROA Metric、ROIC 或评分。
+
+### 下一步（不在 Stage 2D-E 执行）
+
+- **C. ROA 透明 Metric 计算**：基于 Stage 2D-C 合同与 `net_profit`（分子）+ 平均总资产
+  （分母，Stage 2D-B）输入对，按合同透明计算 2021-2025 ROA。
+- ROIC 仍 blocked（NOPAT 与投入资本口径未登记）；scoring 仍 STILL NOT YET。
