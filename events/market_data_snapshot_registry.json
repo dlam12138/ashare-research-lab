@@ -1,0 +1,53 @@
+{
+  "close_differences_within_0_01": true,
+  "close_max_abs_difference": 0.0,
+  "common_trade_days": 1351,
+  "contract": "market_data_snapshot_registry_v1",
+  "date_range": {
+    "end": "2026-07-31",
+    "start": "2021-01-01"
+  },
+  "official_exchange_anchor_status": "not_available_in_offline_acquisition",
+  "providers": [
+    {
+      "acquisition_warning": null,
+      "adjustment": "none",
+      "date_range": {
+        "end": "2026-07-31",
+        "start": "2021-01-04"
+      },
+      "fields_units": {
+        "amount": "CNY",
+        "close": "CNY/share",
+        "volume": "share"
+      },
+      "normalized_cache_path": "D:\\量化分析-cache\\market-data\\601857.SH\\baostock\\defd0b9507c0d87cf9d12864923eb24573e4edee28d7b67b9ce319ab4d91a764.parquet",
+      "provider": "baostock",
+      "provider_version": "0.9.3",
+      "raw_response_path": "D:\\量化分析-cache\\market-data\\601857.SH\\baostock\\raw\\baostock\\stock_daily\\sh_601857_20260801_230334_918183.parquet",
+      "row_count": 1351,
+      "sha256": "defd0b9507c0d87cf9d12864923eb24573e4edee28d7b67b9ce319ab4d91a764"
+    },
+    {
+      "acquisition_warning": "network_refresh_failed_reused_verified_external_probe:NetworkError",
+      "adjustment": "none",
+      "date_range": {
+        "end": "2026-07-31",
+        "start": "2021-01-04"
+      },
+      "fields_units": {
+        "amount": "CNY",
+        "close": "CNY/share",
+        "volume": "share"
+      },
+      "normalized_cache_path": "D:\\量化分析-cache\\market-data\\601857.SH\\akshare\\203ddfd7ce14502c61da11dca49df54f62737d28778a1d4b175c1d635c7ce61c.parquet",
+      "provider": "akshare",
+      "provider_version": "1.18.79",
+      "raw_response_path": "",
+      "row_count": 1351,
+      "sha256": "203ddfd7ce14502c61da11dca49df54f62737d28778a1d4b175c1d635c7ce61c"
+    }
+  ],
+  "reconciliation_status": "pass",
+  "symbol": "601857.SH"
+}
