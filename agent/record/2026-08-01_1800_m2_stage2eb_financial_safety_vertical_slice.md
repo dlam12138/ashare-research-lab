@@ -56,7 +56,7 @@
 
 截至记录建立时，尚未写入本阶段 Fact/Metric/evidence 代码；动态结果计数尚未计算。
 
-## 继续记录：已完成实施与离线验证
+## 继续记录：已完成实施与离线验证（纠正前基线，已被 2E-B.1 审计修订）
 
 - 已新增七项直接概念证据合同、四份 FY2021—FY2024 后续比较列重列证据、Rule006、四项 `score_eligible=false` Metric 定义、可选 role-map Metric Engine 扩展与正式离线 runner。
 - 已修正 FY2022 annual bundle/evidence SHA 记录为实际 64 位 SHA；runner 启动时冻结并验证 prior 77 Result ID 集合与 Result 语义摘要。
@@ -66,3 +66,10 @@
 - 已验证：四项安全指标的五年最新值、FY2022/FY2023 真实重列链、无假版本、2025 `not_yet_reviewable`、显式债务组件 lineage、零/负/缺失边界、无 interest coverage/ROIC/score 输出、重跑幂等。
 - 已新增 `reports/petrochina_financial_safety_2021_2025.md`、`acceptance/m2_stage2eb_petrochina_financial_safety_vertical_slice.md` 与 `tests/test_official_financial_safety_vertical_slice.py`。
 - 目前 targeted Stage 2E-B + capital-return/ROA tests 已通过；全量门禁、污染/哈希复核、三次提交与逐个 push 尚待完成。
+
+## 2E-B.1 纠正说明
+
+本记录中的七项 direct current-portion 口径和 `318/212/106/57` 计数是纠正
+前的历史实现证据，不再作为可信生产结果。后续 2E-B.1 记录保留其审计
+轨迹，并将 statement aggregate 标记为拒绝项，改由附注三组件派生；旧
+201 Fact、77 Result、ROE/ROA 与默认数据库仍按本阶段门禁冻结。

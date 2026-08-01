@@ -51,10 +51,13 @@ same 12-31 date. Missing input is `missing_input`; zero total assets is
 current_portion_of_interest_bearing_non_current_liabilities + long_term_borrowings +
 bonds_payable + lease_liabilities`.
 
-The five direct components are mutually exclusive and must be tied to the same CAS
+The five gross-debt components are mutually exclusive and must be tied to the same CAS
 consolidated 12-31 instant context and unit. `total_liabilities` and the existing generic
-`interest_bearing_debt` concept are not substitutes. If the current/long-term split is not
-directly supported, the method is blocked; the engine must not infer or double-count it.
+`interest_bearing_debt` concept are not substitutes. The current-portion concept may be
+eligible only when an evidence-backed derivation sums current long-term borrowings,
+current bonds, and current lease liabilities; a separately disclosed current long-term
+payables row is excluded. If any component is not supported, the method is blocked; the
+engine must not infer, subtract the aggregate, or double-count it.
 Missing components remain `missing_input`. A negative component or total is
 `not_comparable_negative_debt_component` until a later contract proves a valid sign policy.
 

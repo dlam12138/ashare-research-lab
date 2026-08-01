@@ -8,8 +8,12 @@ interest coverage, ROIC, scoring, grade, or investment-advice output.
 
 ## Contract
 
-- Rule 006 is additive and contains only the seven registered direct safety
-  concepts.
+- Rule 006 is additive and directly reconciles the six base safety concepts
+  plus `current_portion_of_long_term_borrowings`,
+  `current_portion_of_bonds_payable`, and
+  `current_portion_of_lease_liabilities`. The aggregate
+  `current_portion_of_interest_bearing_non_current_liabilities` is derived
+  only by `DERIVE_INTEREST_BEARING_CURRENT_PORTION_001 v1`.
 - Evidence is dual-source, CAS, consolidated, instant, and normalized to 万元.
 - The five annual report dates are replayed through `AsOfQuery.get_latest_available()`.
 - Four metrics are descriptive-only (`score_eligible=false`) and bind their
@@ -18,14 +22,17 @@ interest coverage, ROIC, scoring, grade, or investment-advice output.
   `not_comparable_negative_debt_component`; missing roles are `missing_input`.
 - No synthetic average balance Fact, interest coverage metric, ROIC, or score is
   generated.
+- The statement aggregate is retained as rejected audit evidence and never as
+  an eligible canonical Fact. Each derived current-portion Fact has exactly
+  three reconciled component input IDs and one derivation lineage row.
 
 ## Expected observed counts
 
 The runner validates these from the rebuilt run-scoped stores and does not
 hard-code production metric values:
 
-- Facts: `contexts=11`, `facts=318`, `raw=212`, `reconciled=106`,
-  `fact_links=57`, `lineage=318`, `audit=318`.
+- Facts: `contexts=11`, `facts=354`, `raw=232`, `reconciled=122`,
+  `fact_links=58`, `lineage=354`, `audit=354`.
 - Financial safety: `definitions=4`, `results=25`, `computed=25`,
   `insufficient=0`, `links=5`, `lineage=116`, `final_latest=20`,
   `final_computed=20`.
@@ -35,10 +42,13 @@ hard-code production metric values:
 - Metric PIT computed: `0/12/28/44/60/76`.
 - Metric PIT historical insufficient: `0/4/4/4/4/4`.
 
-The four revised direct facts are FY2022 total liabilities and FY2023 total
-liabilities, current portion, and lease liabilities. Their corresponding
-metric version chains are expected; unchanged years must not receive a fake
-version.
+The four revised canonical direct facts are FY2022 total liabilities and FY2023
+total liabilities, full lease liabilities, and current lease component. The
+old FY2023 current-portion aggregate change remains rejected audit evidence.
+Its derived current-portion v1→v2 chain is expected; unchanged years must not
+receive a fake version. All five annual debt-composition proof statuses are
+`proven` from dual-source note components and an aggregate-plus-excluded-row
+tie-out.
 
 ## Evidence and invariants
 

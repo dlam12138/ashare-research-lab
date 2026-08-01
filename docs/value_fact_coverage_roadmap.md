@@ -154,3 +154,12 @@ Stage 2D-C `this_stage_executes = none_of_A_B_C`。
 - PIT latest=`0/12/24/36/48/60`，computed=`0/8/20/32/44/56`，insufficient=`0/4/4/4/4/4`。
 - ROE/ROA capital-return layer：`COMPLETE`；ROIC：`NOT YET`；Scoring：`STILL NOT YET`。
 - 下一阶段选择需进行 `NORTH-STAR REVIEW REQUIRED`。
+
+## Stage 2E-B.1 状态追加（2026-08-01，append-only，不改写历史基线）
+
+### 财务安全 current-portion 口径纠正（已实现，门禁复核中）
+
+- 旧 statement aggregate `一年内到期的非流动负债` 仅保留为拒绝审计证据；五年附注明确证明 current long-term borrowings、current bonds、current lease liabilities 三项有息组件，并排除 current long-term payables。
+- 新增 `DERIVE_INTEREST_BEARING_CURRENT_PORTION_001 v1`；五年 proof status 均为 `proven`，FY2023 comparative lease component 自然生成派生 v2；不使用 aggregate subtraction、估算、手工分配或零填充。
+- 修正后 run-scoped Fact counts=`354/232/122/58`（facts/raw/reconciled-or-derived eligible/version links），`201` foundation Fact、`77` prior Metric Result、ROE/ROA、默认 DB、stash 与 protected blobs 保持不变；组合 financial-safety Metric/PIT 计数保持既定值。
+- interest coverage：仍 blocked；ROIC：NOT YET；Scoring：STILL NOT YET；下一阶段选择：`NORTH-STAR REVIEW REQUIRED`。普通缺口不阻断其他年度；本次五年组成证据均已通过，未触发硬停止。

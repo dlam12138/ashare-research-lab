@@ -25,7 +25,7 @@ not acceptable. Missing is not zero.
 | `total_assets` | asset-liability denominator | 12-31 consolidated balance sheet | concept exists; coverage must be proven |
 | `total_liabilities` | asset-liability numerator | 12-31 consolidated balance sheet | concept exists; coverage must be proven |
 | `short_term_borrowings` | gross-debt component | 12-31 consolidated balance sheet | concept exists; direct coverage must be proven |
-| `current_portion_of_interest_bearing_non_current_liabilities` | gross-debt component | current portion, only when directly disclosed and mutually exclusive | not yet proven; absence blocks gross debt |
+| `current_portion_of_interest_bearing_non_current_liabilities` | gross-debt component | derived only from proven current long-term borrowings + current bonds + current lease liabilities; the disclosed long-term-payables row is excluded | proven for PetroChina FY2021—FY2025 by Stage 2E-B.1 evidence; incomplete years remain missing |
 | `long_term_borrowings` | gross-debt component | 12-31 consolidated balance sheet | concept exists; direct coverage must be proven |
 | `bonds_payable` | gross-debt component | 12-31 consolidated balance sheet | concept exists; direct coverage must be proven |
 | `lease_liabilities` | gross-debt component | 12-31 consolidated balance sheet | concept exists; direct coverage must be proven |
@@ -34,7 +34,8 @@ not acceptable. Missing is not zero.
 The existing generic `interest_bearing_debt` concept is not accepted as a replacement for
 the five-component gross-debt decomposition. `total_liabilities` is never a debt proxy.
 If a filing combines current and non-current items, record the split as unresolved and stop;
-do not infer, allocate, or count a component twice.
+do not infer, allocate, subtract the aggregate, or count a component twice. The approved
+Stage 2E-B.1 derivation is an additive sum of three reconciled note components only.
 
 ## Cash policy
 
@@ -60,7 +61,8 @@ must query only facts whose `available_at` is not later than that date. A change
 fact creates a new metric version and supersedes the prior version; unchanged years do not
 create fake versions. The 2025 state is `not_yet_reviewable` until the review window opens.
 Every direct input contributes one lineage edge, and derived debt outputs retain expanded
-lineage to all five components.
+lineage to all five gross-debt components; the current-portion derived Fact retains all
+three note-component input IDs.
 
 ## Foundation gate
 
