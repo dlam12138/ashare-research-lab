@@ -50,8 +50,16 @@
   acceptance, and work-record artifacts. This is a gate-preserving exception to the requested
   roadmap append, not a change to an expected value.
 
-## Pending closeout
+## Commit and final gate log
 
-- Run full pytest, full ruff, protected-file/hash and contamination checks.
-- Stage and push the contract/document commit, then stage and push the review/test/acceptance commit.
-- Record final commit IDs, remote equality, clean worktree, and unchanged stash.
+- First commit: `1cc2ca3` — `docs: add financial safety methodology contract`; pushed to
+  `origin/feat/m2-value-assessment-mvp` before the second commit.
+- Full pytest after restoring the protected roadmap: `906 passed, 2 warnings` in `120.89s`.
+- Full lint: `ruff check .` → `All checks passed!`.
+- Full compile/import check: `python -m compileall -q src tests` → passed.
+- Whitespace check: `git diff --check` → passed.
+- Contamination check: no untracked `.duckdb`, `.db`, `.pdf`, or `.png` artifacts.
+- Existing protected tests confirmed Stage2D-B/C/D/E artifacts, Rule 001—005, prior metrics,
+  default DB, and runner/report blobs unchanged after the roadmap exception was removed.
+- Remaining work: stage and push the review/test/acceptance commit, then verify clean worktree,
+  local/origin equality, stash identity, protected hashes, and final status.
