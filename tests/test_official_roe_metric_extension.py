@@ -109,7 +109,7 @@ PROTECTED_BLOBS = {
         # Stage 2D-E appended the 2D-D/2D-E status section (append-only;
         # historical baseline text unchanged). Blob advanced 04d323dd... ->
         # a9fa3da1....
-        "a9fa3da12345c3d759134025b2b8fcf6d6ba3507",
+        "7cb8149805e32581e2f5423ba43b5ecccf1b653e",
     "docs/value_evaluation_methodology_v1.md":
         "6938e35868b940649b4cabe0104dc070f8880886",
 }

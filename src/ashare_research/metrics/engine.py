@@ -122,6 +122,11 @@ class MetricEngine:
         status = MetricStatus.computed
         value: Decimal | None = None
         missing = ""
+        roa_formula = (
+            definition.formula
+            == "net_profit / "
+            "((opening_total_assets + closing_total_assets) / 2)"
+        )
 
         if primary_fact is None:
             status = MetricStatus.missing_input
@@ -133,7 +138,7 @@ class MetricEngine:
         elif secondary_fact is None:
             status = (
                 MetricStatus.insufficient_history
-                if missing_prior_is_history
+                if missing_prior_is_history and not roa_formula
                 else MetricStatus.missing_input
             )
             missing = (
@@ -228,6 +233,7 @@ class MetricEngine:
                     == "net_profit_attributable_to_parent / "
                     "((opening_equity_attributable_to_parent + "
                     "closing_equity_attributable_to_parent) / 2)"
+                    or roa_formula
                 ):
                     opening = secondary
                     closing = Decimal(_fact_integer(tertiary_fact))

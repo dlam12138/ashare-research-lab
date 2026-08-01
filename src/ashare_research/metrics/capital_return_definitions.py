@@ -1,10 +1,8 @@
 """Versioned definitions for the transparent capital-return metrics.
 
-Stage 2D-D registers the single ROE metric whose inputs are covered by the
-Stage 2C duration net-profit facts and the Stage 2D-B instant average-equity
-denominator facts.  ROA is intentionally absent: its consolidated
-``net_profit`` numerator has no trusted fact yet (see the Stage 2D-C capital
-return methodology contract), so its computation stays blocked.
+The capital-return registry contains the transparent ROE and ROA definitions.
+Their input coverage and computation are staged separately by the offline
+acceptance runners; the definitions themselves remain non-scoring.
 """
 
 from __future__ import annotations
@@ -23,7 +21,7 @@ class CapitalReturnMetricDefinition(MetricDefinition):
 
 
 class CapitalReturnMetricDefinitionRegistry:
-    """The ROE definition, kept outside the previously accepted registries."""
+    """Ordered definitions for the transparent capital-return layer."""
 
     schema_version = METRIC_DEFINITION_SCHEMA
 
@@ -50,6 +48,19 @@ class CapitalReturnMetricDefinitionRegistry:
                 score_eligible=False,
             )
         ),
+        "return_on_average_total_assets": CapitalReturnMetricDefinition(
+            metric_id="return_on_average_total_assets",
+            version="1",
+            display_name_zh="基于平均总资产的资产收益率",
+            formula=(
+                "net_profit / "
+                "((opening_total_assets + closing_total_assets) / 2)"
+            ),
+            input_concept_ids=("net_profit", "total_assets", "total_assets"),
+            input_roles=("numerator", "opening", "closing"),
+            unit="ratio",
+            score_eligible=False,
+        ),
     }
 
     @classmethod
@@ -57,5 +68,20 @@ class CapitalReturnMetricDefinitionRegistry:
         return cls.DEFINITIONS.get(metric_id)
 
     @classmethod
-    def list_all(cls) -> list[CapitalReturnMetricDefinition]:
-        return [cls.DEFINITIONS[key] for key in sorted(cls.DEFINITIONS)]
+    def list_all(
+        cls, *, include_roa: bool = False
+    ) -> list[CapitalReturnMetricDefinition]:
+        """List definitions while preserving the frozen Stage 2D-D view.
+
+        The legacy ROE runner calls this method without arguments and must
+        continue rebuilding the frozen 70-result baseline. Stage 2D-F opts
+        into the appended ROA definition explicitly; both views retain the
+        canonical sorted order, with ROE before ROA.
+        """
+        keys = sorted(cls.DEFINITIONS)
+        if not include_roa:
+            keys = [
+                key for key in keys
+                if key != "return_on_average_total_assets"
+            ]
+        return [cls.DEFINITIONS[key] for key in keys]

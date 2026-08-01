@@ -104,7 +104,9 @@ PROTECTED_BLOBS = {
         # declared role (no None-shift), two-role defs reject a non-None
         # tertiary_fact. Valid 3-input ROE / all valid 2-input results, IDs,
         # available_at and semantics unchanged. Blob advanced to 244f3605....
-        "244f360554e90adcd0fca61d2f4c9cad9ea63d37",
+        # Stage 2D-F adds the isolated average-assets ROA formula branch;
+        # legacy 70-result semantics remain frozen.
+        "44d9d18697313809bb170775e3126d94435de123",
     "src/ashare_research/metrics/definitions.py":
         "bb06f1e5d0358624fec8fb59863e9e2915a0bf6e",
     "src/ashare_research/metrics/earnings_quality_definitions.py":

@@ -50,10 +50,22 @@ def test_roe_definition_contract():
         "closing_equity_attributable_to_parent) / 2)"
     )
     assert ROE.score_eligible is False
-    # Registry exposes exactly one definition (ROE only, no ROA).
+    # ROE remains first; Stage 2D-F appends the ROA definition without changing
+    # the ROE identity, text, or ordering semantics.
     assert {
-        d.metric_id for d in CapitalReturnMetricDefinitionRegistry.list_all()
-    } == {"return_on_average_equity_attributable_to_parent"}
+        d.metric_id
+        for d in CapitalReturnMetricDefinitionRegistry.list_all(include_roa=True)
+    } == {
+        "return_on_average_equity_attributable_to_parent",
+        "return_on_average_total_assets",
+    }
+    assert [
+        d.metric_id
+        for d in CapitalReturnMetricDefinitionRegistry.list_all(include_roa=True)
+    ] == [
+        "return_on_average_equity_attributable_to_parent",
+        "return_on_average_total_assets",
+    ]
 
 
 def test_roe_three_input_formula_matches_json_contract():

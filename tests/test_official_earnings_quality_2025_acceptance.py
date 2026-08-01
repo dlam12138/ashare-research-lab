@@ -60,13 +60,15 @@ PROTECTED_BLOBS = {
         # Stage 2D-E appended the 2D-D/2D-E status section (append-only;
         # historical baseline text unchanged). Blob advanced 04d323dd... ->
         # a9fa3da1....
-        "a9fa3da12345c3d759134025b2b8fcf6d6ba3507",
+        "7cb8149805e32581e2f5423ba43b5ecccf1b653e",
     "docs/value_scoring_readiness_gates.md":
         "abb73f82853e831b80879c9f60eb0594472c0738",
     "tests/test_value_evaluation_methodology.py":
         # Cascade: Stage 2D-D closure advanced engine.py blob; this file's
         # engine.py blob ref was updated, advancing its own blob to 6f4c3efd.
-        "6f4c3efd4e8757b1e09cfa86e31a37ed03e84649",
+        # Stage 2D-F updated the protected engine reference only; this
+        # cascade test now points to the current protected test blob.
+        "6c2617cba1b6eb580112173b702ad88ca9efe3ab",
     "acceptance/m2_stage2ca_value_evaluation_methodology_baseline.md":
         "2d9bce7dfe6842682567326468b59b12077299b4",
     "acceptance/fixtures/official_facts/601857.SH/2025_annual.json":

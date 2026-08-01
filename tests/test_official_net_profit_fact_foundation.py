@@ -113,11 +113,13 @@ PROTECTED_BLOBS = {
     "acceptance/m2_stage2dd_petrochina_roe_metric_extension.md":
         "41754c3ef7790633bf7ceffeab251bb547cc3c8e",
     "src/ashare_research/metrics/capital_return_definitions.py":
-        "e425794d6eb03fa7330d2b7cc397ddf0b5ab5f9b",
+        # Stage 2D-F appends the ROA definition while preserving the frozen
+        # ROE definition and legacy runner view.
+        "b13b7b44c86b4dcf93562fc98f0f10923a81ec7a",
     "src/ashare_research/metrics/models.py":
         "9c979146b9917dd2bffddf39b0b6388852f501aa",
     "src/ashare_research/metrics/engine.py":
-        "244f360554e90adcd0fca61d2f4c9cad9ea63d37",
+        "44d9d18697313809bb170775e3126d94435de123",
     "src/ashare_research/metrics/identity.py":
         "2073a297df7de10194b29fc634d162ca544deb36",
     "src/ashare_research/metrics/definitions.py":
@@ -150,7 +152,7 @@ PROTECTED_BLOBS = {
         # Stage 2D-E appended the 2D-D/2D-E status section (append-only;
         # historical baseline text unchanged). Blob advanced 04d323dd... ->
         # a9fa3da1....
-        "a9fa3da12345c3d759134025b2b8fcf6d6ba3507",
+        "7cb8149805e32581e2f5423ba43b5ecccf1b653e",
     "docs/value_scoring_readiness_gates.md":
         "abb73f82853e831b80879c9f60eb0594472c0738",
     # --- Stage 2D-E runner (this stage) ---

@@ -58,7 +58,7 @@ PROTECTED_BLOBS = {
         # Stage 2D-D closure: input role binding hardened (no None-shift;
         # two-role defs reject non-None tertiary_fact). Valid results/IDs
         # unchanged. Blob advanced from 0ae662fb... to 244f3605....
-        "244f360554e90adcd0fca61d2f4c9cad9ea63d37",
+        "44d9d18697313809bb170775e3126d94435de123",
     "src/ashare_research/facts/concepts.py":
         "f3a9d425c75a19a54313508d9b0f73b459a467f2",
     "src/ashare_research/tools/official_fact_metric_foundation.py":
