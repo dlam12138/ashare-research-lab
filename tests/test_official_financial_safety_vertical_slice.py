@@ -6,6 +6,8 @@ import json
 from decimal import Decimal
 from pathlib import Path
 
+import pytest
+
 from ashare_research.facts.concepts import ConceptRegistry
 from ashare_research.metrics.financial_safety_definitions import (
     FinancialSafetyMetricDefinitionRegistry,
@@ -20,7 +22,14 @@ from ashare_research.reconciliation.engine import DEFAULT_NUMERIC_RECONCILIATION
 from ashare_research.reconciliation.financial_safety import (
     FINANCIAL_SAFETY_RECONCILIATION_RULE,
 )
+from ashare_research.reconciliation.financial_safety_derivation import (
+    CURRENT_PORTION_COMPONENT_IDS,
+    CURRENT_PORTION_CONCEPT_ID,
+    DERIVATION_DEFINITION_ID,
+    build_current_portion_fact,
+)
 from ashare_research.tools.official_financial_safety_vertical_slice import (
+    DIRECT_SAFETY_CONCEPTS,
     METRIC_IDS,
     PIT_DATES,
     run_financial_safety_vertical_slice,
@@ -72,9 +81,10 @@ def _compute(metric_id: str, values: dict[str, int | None]):
 
 def test_financial_safety_concepts_rule_and_definitions_are_additive():
     assert "current_portion_of_interest_bearing_non_current_liabilities" in ConceptRegistry.CONCEPTS
+    assert all(concept in ConceptRegistry.CONCEPTS for concept in CURRENT_PORTION_COMPONENT_IDS)
     assert FINANCIAL_SAFETY_RECONCILIATION_RULE.rule_id == "RECON_OFFICIAL_NUMERIC_006"
     assert FINANCIAL_SAFETY_RECONCILIATION_RULE.version == "1"
-    assert FINANCIAL_SAFETY_RECONCILIATION_RULE.supported_concepts == SAFETY_CONCEPTS
+    assert FINANCIAL_SAFETY_RECONCILIATION_RULE.supported_concepts == set(DIRECT_SAFETY_CONCEPTS)
     assert DEFAULT_NUMERIC_RECONCILIATION_RULE.supported_concepts == frozenset(
         {"revenue", "net_profit_attributable_to_parent", "operating_cash_flow"}
     )
@@ -140,8 +150,8 @@ def test_official_evidence_has_dual_source_and_four_reviewed_changes():
     expected_changes = {
         (2022, "total_liabilities"),
         (2023, "total_liabilities"),
-        (2023, "current_portion_of_interest_bearing_non_current_liabilities"),
         (2023, "lease_liabilities"),
+        (2023, "current_portion_of_lease_liabilities"),
     }
     changed = set()
     for year in range(2021, 2026):
@@ -161,6 +171,16 @@ def test_official_evidence_has_dual_source_and_four_reviewed_changes():
         assert {row["expected_normalized_value"] for row in company.values()} == {
             row["expected_normalized_value"] for row in exchange.values()
         }
+        composition = evidence["current_portion_composition"]
+        assert composition["proof_status"] == "proven"
+        for source in ("company", "exchange"):
+            note = composition[source]
+            assert [row["concept_id"] for row in note["interest_bearing_components"]] == list(
+                CURRENT_PORTION_COMPONENT_IDS
+            )
+            assert note["aggregate_raw_value"] == sum(
+                row["raw_value"] for row in note["interest_bearing_components"]
+            ) + sum(row["raw_value"] for row in note["excluded_components"])
         if year < 2025:
             review = json.loads(
                 (
@@ -171,9 +191,11 @@ def test_official_evidence_has_dual_source_and_four_reviewed_changes():
                     )
                 ).read_text(encoding="utf-8")
             )
-            changed.update(
-                (year, row["concept_id"]) for row in review["concepts"] if row["changed"]
-            )
+            changed.update((year, concept) for concept in review["canonical_changed_concepts"])
+            if review["rejected_aggregate_concepts"]:
+                assert "current_portion_of_interest_bearing_non_current_liabilities" in {
+                    row["concept_id"] for row in review["concepts"] if row["changed"]
+                }
     assert changed == expected_changes
 
 
@@ -182,12 +204,12 @@ def test_official_runner_counts_pit_values_and_idempotence(tmp_path):
     assert result["status"] == "passed"
     assert result["fact_counts"] == {
         "contexts": 11,
-        "facts": 318,
-        "raw": 212,
-        "reconciled": 106,
-        "fact_links": 57,
-        "lineage": 318,
-        "audit": 318,
+        "facts": 354,
+        "raw": 232,
+        "reconciled": 122,
+        "fact_links": 58,
+        "lineage": 354,
+        "audit": 354,
     }
     assert result["financial_safety_counts"] == {
         "definitions": 4,
@@ -214,6 +236,10 @@ def test_official_runner_counts_pit_values_and_idempotence(tmp_path):
     assert result["metric_pit_insufficient_counts"] == [0, 4, 4, 4, 4, 4]
     assert result["prior_result_count"] == 77
     assert result["default_db_sha256_before"] == result["default_db_sha256_after"]
+    assert result["debt_component_proof_status"] == {
+        2021: "proven", 2022: "proven", 2023: "proven", 2024: "proven", 2025: "proven",
+    }
+    assert result["rejected_statement_aggregate"] == CURRENT_PORTION_CONCEPT_ID
 
     run_dir = Path(result["run_directory"])
     result_rows = json.loads(
@@ -227,6 +253,14 @@ def test_official_runner_counts_pit_values_and_idempotence(tmp_path):
         for row in result_rows
         if row["fiscal_year"] == 2025
     )
+    derivation = json.loads(
+        (run_dir / "current_portion_derivation.json").read_text(encoding="utf-8")
+    )
+    assert derivation["definition_id"] == DERIVATION_DEFINITION_ID
+    assert len(derivation["derived_facts"]) == 6
+    assert {row["fact_version"] for row in derivation["derived_facts"]} == {1, 2}
+    assert all(len(row["input_fact_ids"].split(",")) == 3 for row in derivation["derived_facts"])
+    assert all(row["eligible_for_metrics"] for row in derivation["derived_facts"])
     assert PIT_DATES == [
         "2022-03-31",
         "2022-04-01",
@@ -239,3 +273,30 @@ def test_official_runner_counts_pit_values_and_idempotence(tmp_path):
     rerun = run_financial_safety_vertical_slice(tmp_path, run_id="financial-safety-test")
     assert rerun["status"] == "passed"
     assert rerun["combined_counts"] == result["combined_counts"]
+
+
+def test_current_portion_derivation_rejects_missing_or_non_reconciled_component():
+    base = {
+        "symbol": "601857.SH",
+        "context_id": "601857.SH|2023|instant|consolidated",
+        "period_end": "2023-12-31",
+        "period_start": "",
+        "unit": "万元",
+        "filing_date": "2024-03-26",
+        "available_at": "2024-03-26",
+        "source_tier": "reconciled_derived",
+        "is_derived": True,
+        "derivation_definition_id": "official_dual_source_reconciliation",
+        "eligible_for_metrics": True,
+    }
+    facts = {}
+    for index, concept in enumerate(CURRENT_PORTION_COMPONENT_IDS):
+        fact = dict(base, concept_id=concept, fact_id=f"component-{index}", value=100)
+        facts[concept] = fact
+    result = build_current_portion_fact(facts, created_at="2026-08-01T00:00:00+08:00")
+    assert result["value"] == 300
+    assert result["derivation_definition_id"] == DERIVATION_DEFINITION_ID
+    missing = dict(facts)
+    missing.pop(CURRENT_PORTION_COMPONENT_IDS[-1])
+    with pytest.raises(ValueError):
+        build_current_portion_fact(missing)
