@@ -1,12 +1,15 @@
 """Additive Stage 2E-B reconciliation contract.
 
 The frozen reconciliation engine is intentionally unchanged.  This module
-uses its immutable rule value object for the new seven-concept scope.
+uses its immutable rule value object for the direct six-component plus
+three-current-portion-component scope.  The aggregate current-portion
+concept is derived only after those three components are reconciled.
 """
 
 from __future__ import annotations
 
 from ashare_research.facts.financial_safety_concepts import (
+    CURRENT_PORTION_COMPONENT_CONCEPTS,
     install_financial_safety_concepts,
 )
 from ashare_research.reconciliation.engine import NumericReconciliationRule
@@ -23,7 +26,7 @@ FINANCIAL_SAFETY_RECONCILIATION_RULE = NumericReconciliationRule(
         {
             "total_liabilities",
             "short_term_borrowings",
-            "current_portion_of_interest_bearing_non_current_liabilities",
+            *(concept.concept_id for concept in CURRENT_PORTION_COMPONENT_CONCEPTS),
             "long_term_borrowings",
             "bonds_payable",
             "lease_liabilities",

@@ -12,6 +12,16 @@
   "changed_concepts": [
     "total_liabilities"
   ],
+  "canonical_changed_concepts": [
+    "total_liabilities"
+  ],
+  "rejected_aggregate_concepts": [],
+  "current_portion_components": {
+    "original": {"aggregate_raw_value": 70561, "current_portion_of_long_term_borrowings": 37264, "current_portion_of_bonds_payable": 25000, "current_portion_of_lease_liabilities": 7560, "excluded_long_term_payables": 737},
+    "later_comparative": {"aggregate_raw_value": 70561, "current_portion_of_long_term_borrowings": 37264, "current_portion_of_bonds_payable": 25000, "current_portion_of_lease_liabilities": 7560, "excluded_long_term_payables": 737},
+    "source_page": "PDF page 172 / printed page 170",
+    "proof_status": "proven"
+  },
   "concepts": [
     {
       "concept_id": "total_liabilities",

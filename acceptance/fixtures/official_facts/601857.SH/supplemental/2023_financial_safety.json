@@ -315,8 +315,18 @@
       }
     ]
   },
+  "current_portion_composition": {
+    "contract": "current_portion_composition_evidence_v1",
+    "derivation_definition_id": "DERIVE_INTEREST_BEARING_CURRENT_PORTION_001",
+    "derivation_version": "1",
+    "proof_status": "proven",
+    "aggregate_source_label": "一年内到期的非流动负债",
+    "company": {"source_page": "PDF page 172 / printed page 170", "source_table": "附注33：一年内到期的长期借款、应付债券、长期应付款、租赁负债", "aggregate_raw_value": 117816, "interest_bearing_components": [{"concept_id": "current_portion_of_long_term_borrowings", "source_label": "一年内到期的长期借款", "raw_value": 72532, "raw_unit": "人民币百万元", "classification": "interest_bearing"}, {"concept_id": "current_portion_of_bonds_payable", "source_label": "一年内到期的应付债券", "raw_value": 37269, "raw_unit": "人民币百万元", "classification": "interest_bearing"}, {"concept_id": "current_portion_of_lease_liabilities", "source_label": "一年内到期的租赁负债", "raw_value": 7773, "raw_unit": "人民币百万元", "classification": "interest_bearing"}], "excluded_components": [{"source_label": "一年内到期的长期应付款", "raw_value": 242, "raw_unit": "人民币百万元", "classification": "non_interest_bearing"}]},
+    "exchange": {"source_page": "PDF page 172 / printed page 170", "source_table": "附注33：一年内到期的长期借款、应付债券、长期应付款、租赁负债", "aggregate_raw_value": 117816, "interest_bearing_components": [{"concept_id": "current_portion_of_long_term_borrowings", "source_label": "一年内到期的长期借款", "raw_value": 72532, "raw_unit": "人民币百万元", "classification": "interest_bearing"}, {"concept_id": "current_portion_of_bonds_payable", "source_label": "一年内到期的应付债券", "raw_value": 37269, "raw_unit": "人民币百万元", "classification": "interest_bearing"}, {"concept_id": "current_portion_of_lease_liabilities", "source_label": "一年内到期的租赁负债", "raw_value": 7773, "raw_unit": "人民币百万元", "classification": "interest_bearing"}], "excluded_components": [{"source_label": "一年内到期的长期应付款", "raw_value": 242, "raw_unit": "人民币百万元", "classification": "non_interest_bearing"}]}
+  },
   "limitations": [
-    "Seven direct concepts are sourced from the consolidated balance sheet or cash-flow statement; no total_liabilities or generic interest_bearing_debt substitution is used for debt composition.",
+    "The prior aggregate statement row is retained as rejected audit evidence; it is not persisted as the canonical current-portion Fact.",
+    "The note enumerates three interest-bearing components and one excluded non-interest-bearing long-term-payables component; the derived value is the three-component sum.",
     "The company and exchange paths are official disclosures of the same annual reporting period; source independence is governed by the base annual bundle.",
     "2025 has no later annual-report review and remains not_yet_reviewable."
   ]

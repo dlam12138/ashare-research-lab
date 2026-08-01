@@ -10,6 +10,14 @@
   "review_status": "reviewed_unchanged",
   "document_relationship": "later annual-report comparative column",
   "changed_concepts": [],
+  "canonical_changed_concepts": [],
+  "rejected_aggregate_concepts": [],
+  "current_portion_components": {
+    "original": {"aggregate_raw_value": 101757, "current_portion_of_long_term_borrowings": 86316, "current_portion_of_bonds_payable": 6512, "current_portion_of_lease_liabilities": 8651, "excluded_long_term_payables": 278},
+    "later_comparative": {"aggregate_raw_value": 101757, "current_portion_of_long_term_borrowings": 86316, "current_portion_of_bonds_payable": 6512, "current_portion_of_lease_liabilities": 8651, "excluded_long_term_payables": 278},
+    "source_page": "PDF page 162 / printed page 160",
+    "proof_status": "proven"
+  },
   "concepts": [
     {
       "concept_id": "total_liabilities",

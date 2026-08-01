@@ -14,6 +14,20 @@
     "current_portion_of_interest_bearing_non_current_liabilities",
     "lease_liabilities"
   ],
+  "canonical_changed_concepts": [
+    "total_liabilities",
+    "current_portion_of_lease_liabilities",
+    "lease_liabilities"
+  ],
+  "rejected_aggregate_concepts": [
+    "current_portion_of_interest_bearing_non_current_liabilities"
+  ],
+  "current_portion_components": {
+    "original": {"aggregate_raw_value": 117816, "current_portion_of_long_term_borrowings": 72532, "current_portion_of_bonds_payable": 37269, "current_portion_of_lease_liabilities": 7773, "excluded_long_term_payables": 242},
+    "later_comparative": {"aggregate_raw_value": 117823, "current_portion_of_long_term_borrowings": 72532, "current_portion_of_bonds_payable": 37269, "current_portion_of_lease_liabilities": 7780, "excluded_long_term_payables": 242},
+    "source_page": "PDF page 168 / printed page 166",
+    "proof_status": "proven"
+  },
   "concepts": [
     {
       "concept_id": "total_liabilities",

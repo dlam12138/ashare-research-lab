@@ -13,6 +13,7 @@ import argparse
 import copy
 import hashlib
 import json
+import re
 import traceback
 from dataclasses import asdict, is_dataclass
 from datetime import date, datetime, timedelta
@@ -43,6 +44,13 @@ from ashare_research.reconciliation.financial_safety import (
     FINANCIAL_SAFETY_RECONCILIATION_RULE,
     FINANCIAL_SAFETY_RULE_ID,
     FINANCIAL_SAFETY_RULE_VERSION,
+)
+from ashare_research.reconciliation.financial_safety_derivation import (
+    CURRENT_PORTION_COMPONENT_IDS,
+    CURRENT_PORTION_CONCEPT_ID,
+    DERIVATION_DEFINITION_ID,
+    DERIVATION_VERSION,
+    build_current_portion_fact,
 )
 from ashare_research.reconciliation.models import ReconciliationStatus
 from ashare_research.reconciliation.service import (
@@ -78,6 +86,20 @@ SAFETY_CONCEPTS = (
     "bonds_payable",
     "lease_liabilities",
     "cash_and_cash_equivalents",
+)
+DIRECT_SAFETY_CONCEPTS = (
+    "total_liabilities",
+    "short_term_borrowings",
+    *CURRENT_PORTION_COMPONENT_IDS,
+    "long_term_borrowings",
+    "bonds_payable",
+    "lease_liabilities",
+    "cash_and_cash_equivalents",
+)
+STATEMENT_CURRENT_PORTION_CONCEPT = CURRENT_PORTION_CONCEPT_ID
+BASE_SAFETY_CONCEPTS = tuple(
+    concept for concept in SAFETY_CONCEPTS
+    if concept != STATEMENT_CURRENT_PORTION_CONCEPT
 )
 DEBT_CONCEPTS = (
     "short_term_borrowings",
@@ -253,9 +275,10 @@ def _validate_evidence(year: int) -> dict[str, Any]:
         facts = sources[source]
         _require(
             isinstance(facts, list)
-            and {item.get("concept_id") for item in facts} == set(SAFETY_CONCEPTS)
-            and len(facts) == len(SAFETY_CONCEPTS),
-            f"FY{year}/{source} direct concept set differs",
+            and {item.get("concept_id") for item in facts}
+            == set((*BASE_SAFETY_CONCEPTS, STATEMENT_CURRENT_PORTION_CONCEPT))
+            and len(facts) == len((*BASE_SAFETY_CONCEPTS, STATEMENT_CURRENT_PORTION_CONCEPT)),
+            f"FY{year}/{source} statement concept set differs",
         )
         by_source[source] = {}
         for item in facts:
@@ -302,13 +325,96 @@ def _validate_evidence(year: int) -> dict[str, Any]:
             document["source_tier"] == f"{source}_official",
             f"FY{year}/{source} source tier differs",
         )
+    composition = evidence.get("current_portion_composition")
+    _require(
+        isinstance(composition, dict)
+        and composition.get("contract") == "current_portion_composition_evidence_v1"
+        and composition.get("derivation_definition_id") == DERIVATION_DEFINITION_ID
+        and composition.get("derivation_version") == DERIVATION_VERSION
+        and composition.get("proof_status") == "proven",
+        f"FY{year} current-portion composition proof is not proven",
+    )
+    for source in ("company", "exchange"):
+        comp = composition.get(source)
+        _require(isinstance(comp, dict), f"FY{year}/{source} composition missing")
+        components = comp.get("interest_bearing_components")
+        excluded = comp.get("excluded_components")
+        _require(
+            isinstance(components, list)
+            and [item.get("concept_id") for item in components]
+            == list(CURRENT_PORTION_COMPONENT_IDS),
+            f"FY{year}/{source} current-portion component order differs",
+        )
+        _require(
+            isinstance(excluded, list)
+            and len(excluded) == 1
+            and excluded[0].get("classification") == "non_interest_bearing",
+            f"FY{year}/{source} excluded component evidence differs",
+        )
+        _require(
+            int(comp["aggregate_raw_value"])
+            == sum(int(item["raw_value"]) for item in components)
+            + sum(int(item["raw_value"]) for item in excluded),
+            f"FY{year}/{source} aggregate does not tie to disclosed note rows",
+        )
+        for item in components + excluded:
+            _require(
+                item.get("raw_unit") == "人民币百万元",
+                f"FY{year}/{source} component unit differs",
+            )
+            _require(
+                item.get("classification"),
+                f"FY{year}/{source} component classification missing",
+            )
+        page_match = re.search(
+            r"PDF page (\d+).*printed page (\d+)",
+            str(comp.get("source_page", "")),
+        )
+        _require(page_match is not None, f"FY{year}/{source} component page differs")
+        for item in components:
+            item.setdefault("pdf_page", int(page_match.group(1)))
+            item.setdefault("printed_page", int(page_match.group(2)))
+            item.setdefault("source_page", comp["source_page"])
+            item.setdefault("source_table", comp["source_table"])
+            item.setdefault("column_label", f"{year}年12月31日合并")
+            item.setdefault("comparative_column_label", f"{year - 1}年12月31日合并")
+            item["expected_normalized_value"] = int(item["raw_value"]) * 100
+            item["raw_value"] = str(item["raw_value"])
+            item["normalization_rule"] = "RMB_MILLION_TO_CNY_10K_X100"
+            item["unit"] = "万元"
+            item["scope"] = "CAS consolidated"
+            item["manual_review_status"] = "visually_verified_and_text_checked"
+            item["missing_reason"] = None
+            item["evidence_type"] = "audited_consolidated_note_component"
+            by_source[source][item["concept_id"]] = item
     for concept in SAFETY_CONCEPTS:
         _require(
             by_source["company"][concept]["expected_normalized_value"]
             == by_source["exchange"][concept]["expected_normalized_value"],
             f"FY{year}/{concept}: company and exchange values conflict",
         )
-    return {"bundle": bundle, "evidence": evidence, "by_source": by_source}
+    for concept in CURRENT_PORTION_COMPONENT_IDS:
+        _require(
+            by_source["company"][concept]["expected_normalized_value"]
+            == by_source["exchange"][concept]["expected_normalized_value"],
+            f"FY{year}/{concept}: company and exchange values conflict",
+        )
+    _require(
+        by_source["company"][STATEMENT_CURRENT_PORTION_CONCEPT]["expected_normalized_value"]
+        == int(composition["company"]["aggregate_raw_value"]) * 100,
+        f"FY{year}/company statement aggregate differs from note aggregate",
+    )
+    _require(
+        by_source["exchange"][STATEMENT_CURRENT_PORTION_CONCEPT]["expected_normalized_value"]
+        == int(composition["exchange"]["aggregate_raw_value"]) * 100,
+        f"FY{year}/exchange statement aggregate differs from note aggregate",
+    )
+    return {
+        "bundle": bundle,
+        "evidence": evidence,
+        "by_source": by_source,
+        "composition": composition,
+    }
 
 
 def _instant_context_id(year: int) -> str:
@@ -399,6 +505,19 @@ def _load_restatement_reviews(preflight: dict[str, Any]) -> dict[str, Any]:
         )
         for item in concepts:
             concept = item["concept_id"]
+            if concept == STATEMENT_CURRENT_PORTION_CONCEPT:
+                component_review = review.get("current_portion_components", {})
+                _require(
+                    int(item["original_raw_value"])
+                    == int(component_review.get("original", {}).get("aggregate_raw_value", -1))
+                    and int(item["later_comparative_raw_value"])
+                    == int(
+                        component_review.get("later_comparative", {})
+                        .get("aggregate_raw_value", -1)
+                    ),
+                    f"FY{target}/{concept} rejected aggregate audit differs",
+                )
+                continue
             original = preflight["source_facts"][target]["company"][concept]
             original_raw = int(item["original_raw_value"])
             later_raw = int(item["later_comparative_raw_value"])
@@ -413,8 +532,34 @@ def _load_restatement_reviews(preflight: dict[str, Any]) -> dict[str, Any]:
             _require(
                 item.get("later_source_page"), f"FY{target}/{concept} later source page missing"
             )
-            if original_raw != later_raw:
+            if (
+                original_raw != later_raw
+                and concept in SAFETY_CONCEPTS
+                and concept != STATEMENT_CURRENT_PORTION_CONCEPT
+            ):
                 changed.append((target, concept))
+        component_review = review.get("current_portion_components")
+        _require(
+            isinstance(component_review, dict)
+            and component_review.get("proof_status") == "proven",
+            f"FY{target} current-portion component restatement proof differs",
+        )
+        original_components = component_review.get("original", {})
+        later_components = component_review.get("later_comparative", {})
+        _require(
+            all(
+                key in original_components and key in later_components
+                for key in (
+                    "aggregate_raw_value",
+                    *CURRENT_PORTION_COMPONENT_IDS,
+                    "excluded_long_term_payables",
+                )
+            ),
+            f"FY{target} current-portion component restatement fields missing",
+        )
+        for component in CURRENT_PORTION_COMPONENT_IDS:
+            if int(original_components[component]) != int(later_components[component]):
+                changed.append((target, component))
         reviews[target] = review
     return {"reviews": reviews, "changed": changed, "R": len(changed)}
 
@@ -453,6 +598,49 @@ def _build_v2_raw_fact(
     return fact
 
 
+def _build_component_v2_raw_fact(
+    predecessor: dict[str, Any],
+    later_bundle: dict[str, Any],
+    source: str,
+    component_review: dict[str, Any],
+    concept: str,
+    *,
+    later_raw: int,
+    created_at: str,
+) -> dict[str, Any]:
+    """Build a v2 direct component fact from later note evidence."""
+    document = later_bundle["documents"][source]
+    fact = copy.deepcopy(predecessor)
+    fact.update(
+        value=later_raw * 100,
+        raw_value=later_raw,
+        normalized_value=later_raw * 100,
+        source_provider=document["source_provider"],
+        source_document=document["source_document"],
+        source_url=document["final_pdf_url"],
+        source_hash=document["sha256"],
+        source_page=component_review["source_page"],
+        source_table=(
+            f"{later_bundle['fiscal_year']}年12月31日附注："
+            "一年内到期的长期借款、应付债券、长期应付款、租赁负债"
+        ),
+        source_label=concept,
+        filing_date=document["announcement_date"],
+        announcement_date=document["announcement_date"],
+        available_at=document["announcement_date"],
+        fact_version=2,
+        restatement_version="restated_1",
+        supersedes_fact_id=predecessor["fact_id"],
+        verification_note=(
+            "visually verified and text checked against later comparative "
+            "note component evidence"
+        ),
+        created_at=created_at,
+    )
+    fact["fact_id"] = build_fact_id(fact)
+    return fact
+
+
 def _persist_facts(
     repo: FactRepository,
     validated: dict[int, dict[str, Any]],
@@ -466,7 +654,7 @@ def _persist_facts(
     v1_outputs: dict[tuple[int, str], dict[str, Any]] = {}
     persisted = []
     for year in YEARS:
-        for concept in SAFETY_CONCEPTS:
+        for concept in DIRECT_SAFETY_CONCEPTS:
             company = preflight["source_facts"][year]["company"][concept]
             exchange = preflight["source_facts"][year]["exchange"][concept]
             result = service.reconcile_official_pair(company, exchange)
@@ -480,24 +668,46 @@ def _persist_facts(
     v2_outputs: dict[tuple[int, str], dict[str, Any]] = {}
     for target, concept in restatement["changed"]:
         review = restatement["reviews"][target]
-        item = next(row for row in review["concepts"] if row["concept_id"] == concept)
         later_bundle = validated[target + 1]["bundle"]
-        company_v2 = _build_v2_raw_fact(
-            preflight["source_facts"][target]["company"][concept],
-            later_bundle,
-            "company",
-            item,
-            later_raw=int(item["later_comparative_raw_value"]),
-            created_at=created_at,
-        )
-        exchange_v2 = _build_v2_raw_fact(
-            preflight["source_facts"][target]["exchange"][concept],
-            later_bundle,
-            "exchange",
-            item,
-            later_raw=int(item["later_comparative_raw_value"]),
-            created_at=created_at,
-        )
+        if concept in CURRENT_PORTION_COMPONENT_IDS:
+            component_review = review["current_portion_components"]
+            later_raw = int(component_review["later_comparative"][concept])
+            company_v2 = _build_component_v2_raw_fact(
+                preflight["source_facts"][target]["company"][concept],
+                later_bundle,
+                "company",
+                component_review,
+                concept,
+                later_raw=later_raw,
+                created_at=created_at,
+            )
+            exchange_v2 = _build_component_v2_raw_fact(
+                preflight["source_facts"][target]["exchange"][concept],
+                later_bundle,
+                "exchange",
+                component_review,
+                concept,
+                later_raw=later_raw,
+                created_at=created_at,
+            )
+        else:
+            item = next(row for row in review["concepts"] if row["concept_id"] == concept)
+            company_v2 = _build_v2_raw_fact(
+                preflight["source_facts"][target]["company"][concept],
+                later_bundle,
+                "company",
+                item,
+                later_raw=int(item["later_comparative_raw_value"]),
+                created_at=created_at,
+            )
+            exchange_v2 = _build_v2_raw_fact(
+                preflight["source_facts"][target]["exchange"][concept],
+                later_bundle,
+                "exchange",
+                item,
+                later_raw=int(item["later_comparative_raw_value"]),
+                created_at=created_at,
+            )
         _validate_source_facts([company_v2, exchange_v2])
         result = service.reconcile_official_pair(
             company_v2,
@@ -510,7 +720,71 @@ def _persist_facts(
         )
         v2_outputs[(target, concept)] = result.output_fact
         persisted.append(asdict(result))
-    return {"v1": v1_outputs, "v2": v2_outputs, "reconciliations": persisted}
+    derived_v1: dict[int, dict[str, Any]] = {}
+    derived_v2: dict[int, dict[str, Any]] = {}
+    derived_facts: list[dict[str, Any]] = []
+    for year in YEARS:
+        component_facts = {
+            concept: v1_outputs[(year, concept)]
+            for concept in CURRENT_PORTION_COMPONENT_IDS
+        }
+        derived = build_current_portion_fact(
+            component_facts,
+            created_at=created_at,
+        )
+        with repo.transaction() as conn:
+            repo.store_facts([derived], conn=conn)
+            repo.store_lineage(
+                fact_id=derived["fact_id"],
+                run_id="derive_interest_bearing_current_portion",
+                source_provider=derived["source_provider"],
+                source_tier=derived["source_tier"],
+                source_method=DERIVATION_DEFINITION_ID,
+                parent_fact_ids=derived["input_fact_ids"],
+                role="derived_from_components",
+                conn=conn,
+            )
+        derived_v1[year] = derived
+        derived_facts.append(derived)
+    for target, concept in restatement["changed"]:
+        if concept not in CURRENT_PORTION_COMPONENT_IDS:
+            continue
+        review = restatement["reviews"][target]
+        predecessor = derived_v1[target]
+        components = {
+            name: v1_outputs[(target, name)]
+            for name in CURRENT_PORTION_COMPONENT_IDS
+        }
+        components[concept] = v2_outputs[(target, concept)]
+        derived = build_current_portion_fact(
+            components,
+            fact_version=2,
+            supersedes_fact_id=predecessor["fact_id"],
+            restatement_version="restated_1",
+            created_at=created_at,
+        )
+        with repo.transaction() as conn:
+            repo.store_facts([derived], conn=conn)
+            repo.store_lineage(
+                fact_id=derived["fact_id"],
+                run_id="derive_interest_bearing_current_portion",
+                source_provider=derived["source_provider"],
+                source_tier=derived["source_tier"],
+                source_method=DERIVATION_DEFINITION_ID,
+                parent_fact_ids=derived["input_fact_ids"],
+                role="derived_from_components",
+                conn=conn,
+            )
+        derived_v2[target] = derived
+        derived_facts.append(derived)
+    return {
+        "v1": v1_outputs,
+        "v2": v2_outputs,
+        "derived_v1": derived_v1,
+        "derived_v2": derived_v2,
+        "derived_facts": derived_facts,
+        "reconciliations": persisted,
+    }
 
 
 def _fact_maps(as_of: AsOfQuery, as_of_date: str) -> dict[str, dict[int, dict[str, Any]]]:
@@ -700,22 +974,99 @@ def _coverage_matrix(repo: FactRepository) -> list[dict[str, Any]]:
     ]
 
 
-def _debt_exclusivity(repo: FactRepository, coverage: list[dict[str, Any]]) -> list[dict[str, Any]]:
+def _debt_exclusivity(
+    repo: FactRepository,
+    coverage: list[dict[str, Any]],
+    validated: dict[int, dict[str, Any]],
+) -> list[dict[str, Any]]:
     latest = {}
     for row in coverage:
         latest[(row["fiscal_year"], row["concept_id"])] = row
     output = []
     for year in YEARS:
-        values = {concept: latest[(year, concept)]["value"] for concept in DEBT_CONCEPTS}
-        gross = sum(values.values())
+        composition = validated[year]["composition"]
+        company = composition["company"]
+        exchange = composition["exchange"]
+        company_components = {
+            item["concept_id"]: int(item["raw_value"]) * 100
+            for item in company["interest_bearing_components"]
+        }
+        exchange_components = {
+            item["concept_id"]: int(item["raw_value"]) * 100
+            for item in exchange["interest_bearing_components"]
+        }
+        excluded_company = sum(
+            int(item["raw_value"]) * 100 for item in company["excluded_components"]
+        )
+        excluded_exchange = sum(
+            int(item["raw_value"]) * 100 for item in exchange["excluded_components"]
+        )
+        disclosed_company = int(company["aggregate_raw_value"]) * 100
+        disclosed_exchange = int(exchange["aggregate_raw_value"]) * 100
+        component_sum = sum(company_components.values())
+        values = {
+            concept: latest[(year, concept)]["value"]
+            for concept in DEBT_CONCEPTS
+            if (year, concept) in latest
+        }
+        derived_versions = [
+            row for row in coverage
+            if row["fiscal_year"] == year
+            and row["concept_id"] == CURRENT_PORTION_CONCEPT_ID
+        ]
+        gross = sum(values.values()) if len(values) == len(DEBT_CONCEPTS) else None
+        proof_reasons = [
+            "both official sources enumerate the same three interest-bearing components",
+            "the excluded long-term-payables row is explicitly classified non-interest-bearing",
+            "aggregate equals interest-bearing components plus excluded long-term payables",
+        ]
+        proof_status = (
+            "proven"
+            if (
+                company_components == exchange_components
+                and excluded_company == excluded_exchange
+                and disclosed_company == component_sum + excluded_company
+                and disclosed_exchange == sum(exchange_components.values()) + excluded_exchange
+                and all((year, concept) in latest for concept in DEBT_CONCEPTS)
+            )
+            else "not_proven"
+        )
         output.append(
             {
                 "fiscal_year": year,
                 "direct_components": values,
                 "gross_interest_bearing_debt": gross,
-                "recomputed_sum": sum(values.values()),
-                "exact_tie_out": gross == sum(values.values()),
-                "mutually_exclusive": True,
+                "recomputed_sum": gross,
+                "exact_tie_out": disclosed_company == component_sum + excluded_company,
+                "mutually_exclusive": (
+                    proof_status == "proven"
+                    and len(company_components) == len(CURRENT_PORTION_COMPONENT_IDS)
+                ),
+                "proof_status": proof_status,
+                "aggregate_statement_evidence": {
+                    "source_label": composition["aggregate_source_label"],
+                    "company_value": disclosed_company,
+                    "exchange_value": disclosed_exchange,
+                    "company_source_page": company["source_page"],
+                    "exchange_source_page": exchange["source_page"],
+                    "rejected_as_canonical_current_portion": True,
+                    "rejection_reason": (
+                        "statement aggregate contains the separately disclosed "
+                        "non-interest-bearing long-term-payables component"
+                    ),
+                },
+                "current_portion_derivation": {
+                    "definition_id": DERIVATION_DEFINITION_ID,
+                    "version": DERIVATION_VERSION,
+                    "component_values": company_components,
+                    "excluded_non_interest_bearing_values": {
+                        "long_term_payables": excluded_company,
+                    },
+                    "interest_bearing_component_sum": component_sum,
+                    "aggregate_plus_excluded_sum": component_sum + excluded_company,
+                    "derived_fact_versions": derived_versions,
+                },
+                "proof_reasons": proof_reasons,
                 "forbidden_substitutions": ["total_liabilities", "interest_bearing_debt"],
                 "missing_components": [
                     concept for concept in DEBT_CONCEPTS if (year, concept) not in latest
@@ -834,7 +1185,7 @@ def run_financial_safety_vertical_slice(
         rule_engine = ReconciliationEngine(FINANCIAL_SAFETY_RECONCILIATION_RULE)
         for year in YEARS:
             source_facts[year] = {"company": {}, "exchange": {}}
-            for concept in SAFETY_CONCEPTS:
+            for concept in DIRECT_SAFETY_CONCEPTS:
                 for source in ("company", "exchange"):
                     item = validated[year]["by_source"][source][concept]
                     document = validated[year]["bundle"]["documents"][source]
@@ -884,21 +1235,41 @@ def run_financial_safety_vertical_slice(
             "lineage": conn.execute("SELECT COUNT(*) FROM fact_lineage").fetchone()[0],
             "audit": len(AsOfQuery(upstream_repo).get_all_versions_for_audit(SYMBOL)),
         }
-        _require(fact_counts["contexts"] == 11, f"contexts changed: {fact_counts}")
+        rejected_aggregate_count = conn.execute(
+            """SELECT COUNT(*) FROM financial_facts
+               WHERE concept_id = ? AND eligible_for_metrics = TRUE
+                 AND derivation_definition_id <> ?""",
+            [STATEMENT_CURRENT_PORTION_CONCEPT, DERIVATION_DEFINITION_ID],
+        ).fetchone()[0]
         _require(
-            fact_counts["facts"] == 201 + 3 * 35 + 3 * restatement["R"],
+            rejected_aggregate_count == 0,
+            "statement aggregate was persisted as a canonical eligible Fact",
+        )
+        _require(fact_counts["contexts"] == 11, f"contexts changed: {fact_counts}")
+        expected_direct_pairs = len(DIRECT_SAFETY_CONCEPTS) * len(YEARS)
+        expected_restatement_pairs = restatement["R"]
+        expected_derived = len(YEARS) + len(persisted_facts["derived_v2"])
+        _require(
+            fact_counts["facts"]
+            == 201
+            + 3 * expected_direct_pairs
+            + 3 * expected_restatement_pairs
+            + expected_derived,
             f"Fact count differs: {fact_counts}",
         )
         _require(
-            fact_counts["raw"] == 134 + 2 * 35 + 2 * restatement["R"],
+            fact_counts["raw"]
+            == 134 + 2 * expected_direct_pairs + 2 * expected_restatement_pairs,
             f"raw count differs: {fact_counts}",
         )
         _require(
-            fact_counts["reconciled"] == 67 + 35 + restatement["R"],
+            fact_counts["reconciled"]
+            == 67 + expected_direct_pairs + expected_restatement_pairs + expected_derived,
             f"reconciled count differs: {fact_counts}",
         )
         _require(
-            fact_counts["fact_links"] == 45 + 3 * restatement["R"],
+            fact_counts["fact_links"]
+            == 45 + 3 * expected_restatement_pairs + len(persisted_facts["derived_v2"]),
             f"fact links differ: {fact_counts}",
         )
         _require(
@@ -1010,7 +1381,7 @@ def run_financial_safety_vertical_slice(
         upstream_hash_after = _sha256(upstream_db)
         _require(upstream_hash_after != "", "upstream fact DB hash is empty")
         coverage = _coverage_matrix(upstream_repo)
-        debt = _debt_exclusivity(upstream_repo, coverage)
+        debt = _debt_exclusivity(upstream_repo, coverage, validated)
         metric_transitions = [
             {
                 "metric_id": row.metric_id,
@@ -1036,6 +1407,17 @@ def run_financial_safety_vertical_slice(
         ]
         _write_json(run_dir / "fact_coverage_matrix.json", coverage)
         _write_json(run_dir / "debt_component_exclusivity.json", debt)
+        _write_json(
+            run_dir / "current_portion_derivation.json",
+            {
+                "definition_id": DERIVATION_DEFINITION_ID,
+                "version": DERIVATION_VERSION,
+                "derived_facts": persisted_facts["derived_facts"],
+                "evidence": {
+                    year: validated[year]["composition"] for year in YEARS
+                },
+            },
+        )
         _write_json(
             run_dir / "financial_safety_metric_results.json",
             [asdict(row) for row in safety_results],
@@ -1065,6 +1447,13 @@ def run_financial_safety_vertical_slice(
                 "fact_counts": fact_counts,
                 "restatement_count": restatement["R"],
                 "changed_fact_concepts": restatement["changed"],
+                "rejected_statement_aggregate": STATEMENT_CURRENT_PORTION_CONCEPT,
+                "rejected_statement_aggregate_eligible_fact_count": rejected_aggregate_count,
+                "current_portion_derivation_definition_id": DERIVATION_DEFINITION_ID,
+                "current_portion_derivation_version": DERIVATION_VERSION,
+                "debt_component_proof_status": {
+                    item["fiscal_year"]: item["proof_status"] for item in debt
+                },
                 "financial_safety_counts": safety_counts,
                 "combined_counts": combined_counts,
                 "metric_pit_counts": [row["count"] for row in combined_snapshots],
