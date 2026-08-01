@@ -200,3 +200,121 @@ def test_invalid_fact_unit_rejected():
             revision_review_status="x", as_of_date="2022-04-01",
             created_at="2026-08-01T00:00:00+08:00",
         )
+
+
+# --- Stage 2D-D closure: input role-binding contract ---------------------
+# Inputs bind by their declared role position.  A missing middle input must
+# never let a later input inherit the vacated role, and a present input's
+# role must match its slot, not its position among the non-None survivors.
+
+
+def test_missing_opening_keeps_closing_in_closing_role():
+    """opening (secondary) absent, closing (tertiary) present: closing must
+    still bind to the 'closing' role, not be shifted into 'opening'."""
+    result, lineage = MetricEngine.compute(
+        ROE, symbol="601857.SH", fiscal_year=2021,
+        primary_fact=_fact(9216100, fid="np"),
+        secondary_fact=None, tertiary_fact=_fact(126381500, fid="cl"),
+        revision_review_status="x", as_of_date="2022-04-01",
+        created_at="2026-08-01T00:00:00+08:00",
+    )
+    assert result.status == MetricStatus.missing_input
+    roles = {row.input_fact_id: row.input_role for row in lineage}
+    assert roles == {"np": "numerator", "cl": "closing"}
+    # The absent opening's role must not be stolen by the present closing.
+    assert "opening" not in roles.values()
+
+
+def test_missing_numerator_keeps_opening_and_closing_roles():
+    """numerator (primary) absent, opening + closing present: neither must
+    shift forward into the numerator slot."""
+    result, lineage = MetricEngine.compute(
+        ROE, symbol="601857.SH", fiscal_year=2021,
+        primary_fact=None,
+        secondary_fact=_fact(121542100, fid="op", pe="2020-12-31"),
+        tertiary_fact=_fact(126381500, fid="cl"),
+        revision_review_status="x", as_of_date="2022-04-01",
+        created_at="2026-08-01T00:00:00+08:00",
+    )
+    assert result.status == MetricStatus.missing_input
+    roles = {row.input_fact_id: row.input_role for row in lineage}
+    assert roles == {"op": "opening", "cl": "closing"}
+    assert "numerator" not in roles.values()
+
+
+def test_missing_closing_keeps_numerator_and_opening_roles():
+    """closing (tertiary) absent: the two present inputs retain their
+    declared roles and the result is missing_input on 'closing'."""
+    result, lineage = MetricEngine.compute(
+        ROE, symbol="601857.SH", fiscal_year=2021,
+        primary_fact=_fact(9216100, fid="np"),
+        secondary_fact=_fact(121542100, fid="op", pe="2020-12-31"),
+        tertiary_fact=None,
+        revision_review_status="x", as_of_date="2022-04-01",
+        created_at="2026-08-01T00:00:00+08:00",
+    )
+    assert result.status == MetricStatus.missing_input
+    assert "closing" in result.missing_input_description
+    roles = {row.input_fact_id: row.input_role for row in lineage}
+    assert roles == {"np": "numerator", "op": "opening"}
+
+
+def test_two_role_definition_rejects_non_none_tertiary():
+    """A two-role metric given a non-None tertiary_fact must raise instead of
+    silently absorbing an untracked input."""
+    from ashare_research.metrics.engine import MetricInputError
+
+    revenue_yoy = MetricDefinitionRegistry.get("revenue_yoy")
+    with pytest.raises(MetricInputError):
+        MetricEngine.compute(
+            revenue_yoy, symbol="601857.SH", fiscal_year=2022,
+            primary_fact=_fact(100, fid="c", pe="2022-12-31"),
+            secondary_fact=_fact(80, fid="p", pe="2021-12-31", at="2022-04-01"),
+            tertiary_fact=_fact(999, fid="stray"),
+            revision_review_status="reviewed_unchanged",
+            as_of_date="2022-04-01", created_at="2026-08-01T00:00:00+08:00",
+        )
+
+
+def test_input_fact_ids_and_lineage_are_one_to_one():
+    """Every input_fact_id has exactly one lineage row and vice versa, for a
+    fully-computed ROE, a missing-input ROE, and a two-input metric."""
+    cases = []
+
+    full, full_lineage = MetricEngine.compute(
+        ROE, symbol="601857.SH", fiscal_year=2021,
+        primary_fact=_fact(9216100, fid="np"),
+        secondary_fact=_fact(121542100, fid="op", pe="2020-12-31"),
+        tertiary_fact=_fact(126381500, fid="cl"),
+        revision_review_status="reviewed_unchanged",
+        as_of_date="2022-04-01", created_at="2026-08-01T00:00:00+08:00",
+    )
+    cases.append((full, full_lineage))
+
+    partial, partial_lineage = MetricEngine.compute(
+        ROE, symbol="601857.SH", fiscal_year=2021,
+        primary_fact=_fact(9216100, fid="np"),
+        secondary_fact=None, tertiary_fact=_fact(126381500, fid="cl"),
+        revision_review_status="x", as_of_date="2022-04-01",
+        created_at="2026-08-01T00:00:00+08:00",
+    )
+    cases.append((partial, partial_lineage))
+
+    revenue_yoy = MetricDefinitionRegistry.get("revenue_yoy")
+    two, two_lineage = MetricEngine.compute(
+        revenue_yoy, symbol="601857.SH", fiscal_year=2022,
+        primary_fact=_fact(100, fid="c", pe="2022-12-31"),
+        secondary_fact=_fact(80, fid="p", pe="2021-12-31", at="2022-04-01"),
+        revision_review_status="reviewed_unchanged",
+        as_of_date="2022-04-01", created_at="2026-08-01T00:00:00+08:00",
+    )
+    cases.append((two, two_lineage))
+
+    for result, lineage in cases:
+        lineage_ids = [row.input_fact_id for row in lineage]
+        assert len(lineage_ids) == len(result.input_fact_ids)
+        assert set(lineage_ids) == set(result.input_fact_ids)
+        # No duplicate fact_id across the lineage (one role per bound input).
+        assert len(lineage_ids) == len(set(lineage_ids))
+        # Each lineage role is the declared role for that slot.
+        assert len({row.input_role for row in lineage}) == len(lineage)

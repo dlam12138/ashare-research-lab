@@ -86,17 +86,33 @@ class MetricEngine:
         as_of_date: str,
         created_at: str | None = None,
     ) -> tuple[MetricResult, list[MetricLineage]]:
-        facts = [
-            fact
-            for fact in (primary_fact, secondary_fact, tertiary_fact)
-            if fact is not None
+        # Bind each input to its declared role position.  Inputs are never
+        # shifted by dropping None entries: a missing opening must not let a
+        # present closing inherit the opening role.  Only the bound (role,
+        # fact) pairs whose fact is not None contribute input_fact_ids,
+        # available_at, and lineage, but each retains its declared role.
+        role_bindings = [
+            (definition.input_roles[0], primary_fact),
+            (definition.input_roles[1], secondary_fact),
         ]
-        for fact in facts:
+        if len(definition.input_roles) >= 3:
+            role_bindings.append((definition.input_roles[2], tertiary_fact))
+        elif tertiary_fact is not None:
+            # A two-role definition must never receive an extra tertiary
+            # fact: that would silently let an untracked input into the
+            # result, available_at, or a role-less lineage.  Reject it.
+            raise MetricInputError(
+                "tertiary_fact is not None for a two-role definition"
+            )
+        present = [
+            (role, fact) for role, fact in role_bindings if fact is not None
+        ]
+        for _role, fact in present:
             _fact_integer(fact)
-        input_fact_ids = tuple(str(fact["fact_id"]) for fact in facts)
+        input_fact_ids = tuple(str(fact["fact_id"]) for _role, fact in present)
         available_at = (
-            max(str(fact["available_at"]) for fact in facts)
-            if facts else as_of_date
+            max(str(fact["available_at"]) for _role, fact in present)
+            if present else as_of_date
         )
         period_end = (
             str(primary_fact["period_end"])
@@ -256,8 +272,6 @@ class MetricEngine:
         )
         lineage = [
             _lineage(result.metric_result_id, role, fact)
-            for role, fact in zip(
-                definition.input_roles, facts, strict=False,
-            )
+            for role, fact in present
         ]
         return result, lineage

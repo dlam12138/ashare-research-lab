@@ -48,6 +48,11 @@ ORIGINAL_38_RESULT_ID_SET_SHA256 = (
 DEFAULT_DB_SHA256 = (
     "4a71d3c7b88c0b16ae46ffb4f9bfbd006d91e0537e559235c9b5a1f919e2fce6"
 )
+# Stage 2D-D closure: the role-binding fix must leave the full combined
+# 70 Result IDs (63 prior + 7 ROE) byte-for-byte unchanged.
+COMBINED_70_RESULT_ID_SET_SHA256 = (
+    "bdd9d4fee9777f0c28f31056711675ab3acf98786bc09090cde25ab7ef551df0"
+)
 ROE_VALUES = {
     2021: Decimal("0.074346290551"),
     2022: Decimal("0.113122466185"),
@@ -318,3 +323,17 @@ def test_rerun_is_idempotent(tmp_path_factory: pytest.TempPathFactory):
     assert first["status"] == "passed" and second["status"] == "passed"
     assert first["new_metric_result_ids"] == second["new_metric_result_ids"]
     assert first["combined_counts"] == second["combined_counts"]
+
+
+def test_combined_70_result_ids_unchanged_after_role_binding_fix(
+    accepted_run: dict,
+):
+    """Stage 2D-D closure: hardening input role binding must not perturb any
+    of the 70 Result IDs (63 prior + 7 ROE).  Pin the full combined id set."""
+    results = _read(accepted_run, "metric_result_versions.json")
+    ids = sorted(r["metric_result_id"] for r in results)
+    assert len(ids) == COMBINED_EXPECTED["results"] == 70
+    digest = hashlib.sha256(
+        "\n".join(ids).encode("utf-8")
+    ).hexdigest()
+    assert digest == COMBINED_70_RESULT_ID_SET_SHA256

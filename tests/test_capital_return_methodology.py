@@ -96,7 +96,11 @@ PROTECTED_BLOBS = {
         # Stage 2D-D added the optional tertiary_fact (ROE three-input
         # branch); two-input behaviour/IDs unchanged. Blob advanced from
         # 7505cccc... to 0ae662fb....
-        "0ae662fba480d335dc9fd8b25317c4f38e189aae",
+        # Stage 2D-D closure fixed input role binding: inputs now bind by
+        # declared role (no None-shift), two-role defs reject a non-None
+        # tertiary_fact. Valid 3-input ROE / all valid 2-input results, IDs,
+        # available_at and semantics unchanged. Blob advanced to 244f3605....
+        "244f360554e90adcd0fca61d2f4c9cad9ea63d37",
     "src/ashare_research/metrics/definitions.py":
         "bb06f1e5d0358624fec8fb59863e9e2915a0bf6e",
     "src/ashare_research/metrics/earnings_quality_definitions.py":

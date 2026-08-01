@@ -55,7 +55,10 @@ PROTECTED_BLOBS = {
     "src/ashare_research/metrics/models.py":
         "9c979146b9917dd2bffddf39b0b6388852f501aa",
     "src/ashare_research/metrics/engine.py":
-        "0ae662fba480d335dc9fd8b25317c4f38e189aae",
+        # Stage 2D-D closure: input role binding hardened (no None-shift;
+        # two-role defs reject non-None tertiary_fact). Valid results/IDs
+        # unchanged. Blob advanced from 0ae662fb... to 244f3605....
+        "244f360554e90adcd0fca61d2f4c9cad9ea63d37",
     "src/ashare_research/facts/concepts.py":
         "f3a9d425c75a19a54313508d9b0f73b459a467f2",
     "src/ashare_research/tools/official_fact_metric_foundation.py":

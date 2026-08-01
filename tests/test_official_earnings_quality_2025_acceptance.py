@@ -61,7 +61,9 @@ PROTECTED_BLOBS = {
     "docs/value_scoring_readiness_gates.md":
         "abb73f82853e831b80879c9f60eb0594472c0738",
     "tests/test_value_evaluation_methodology.py":
-        "7ef8fdb50f12a64d4eda5786d11a070a2b2913f0",
+        # Cascade: Stage 2D-D closure advanced engine.py blob; this file's
+        # engine.py blob ref was updated, advancing its own blob to 6f4c3efd.
+        "6f4c3efd4e8757b1e09cfa86e31a37ed03e84649",
     "acceptance/m2_stage2ca_value_evaluation_methodology_baseline.md":
         "2d9bce7dfe6842682567326468b59b12077299b4",
     "acceptance/fixtures/official_facts/601857.SH/2025_annual.json":
