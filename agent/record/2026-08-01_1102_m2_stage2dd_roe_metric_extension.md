@@ -100,11 +100,27 @@
 
 ## 实际操作
 
-（进行中）
+### Stage 2D-D 主体（已完成，3 提交已 push：`72b8e22`/`80cbd4b`/`9501251`）
 
 1. 确认起点：分支/HEAD `0f48fa0`/worktree clean/stash 未动；记录基线哈希。
 2. 实测 2D-B foundation：确认 5 available_at 对齐、net_profit v1/v2、equity v1/v2、ROE 验收值精确复核。
 3. 读取 Metric Engine/Identity/Repository/definitions/earnings_quality_definitions/2C-D runner/2D-B runner/2D-C 合同。
+4. 新增 `capital_return_definitions.py`（ROE 定义）、`models.py` 枚举增值、`engine.py` 三输入扩展、runner、测试、验收报告。
+5. 同步三处 protected-blob 引用；门禁全过；3 提交逐个 push。
+
+### Stage 2D-D Engine 收口（本次，从 `9501251` 起，不新增事实/指标/方法）
+
+6. 确认起点：HEAD `9501251`、worktree clean、`stash@{0}` 未动。
+7. 定位 `engine.py` 角色绑定缺陷：`facts=[f for f in (primary,secondary,tertiary) if f is not None]` 再 `zip(input_roles, facts)`，
+   中间输入缺失时末位输入继承前序角色（closing 被标记为 opening）；两角色定义收到非 None `tertiary_fact` 被静默忽略。
+8. 修复 `engine.py`（blob `0ae662fb…`->`244f3605…`）：按声明角色构造 `role_bindings`，仅对非 None 绑定对生成
+   `input_fact_ids`/`lineage`，角色不移位；两角色定义收到非 None `tertiary_fact` 抛 `MetricInputError`。
+9. 新增 6 测试（5 单元 + 1 集成）：opening 缺失/closing 仍绑 closing、numerator 缺失/opening-closing 不移位、
+   closing 缺失/两角色正确、两角色定义拒非 None tertiary、input_fact_ids↔lineage 一一对应、组合 70 Result ID 集冻结。
+10. 跨阶段 protected-blob 同步：`engine.py` 新 blob 引用更新于 `test_capital_return_methodology.py`、
+    `test_value_evaluation_methodology.py`；后者自身 blob变化级联更新 `test_official_earnings_quality_2025_acceptance.py`。
+11. 实跑离线 runner 取真实 run_id 与不变性证据（见下"收口验证"）。
+12. 更新验收报告 Section 12（不重写原 PASS 历史）与本记录；2 提交逐个 push。
 
 ## 验证
 
@@ -132,12 +148,51 @@
 - models.py（`16e36169…`->`9c979146…`）与 engine.py（`7505cccc…`->`0ae662fb…`）blob 合法推进；
   三处 protected-blob 测试引用同步更新（2D-C `test_capital_return_methodology.py`、2C-D `test_official_earnings_quality_2025_acceptance.py`、`test_value_evaluation_methodology.py`）。
 
+## 收口验证（Stage 2D-D Engine 输入角色绑定，从 `9501251` 起）
+
+实际执行（全部通过）：
+
+1. `ruff check`（engine + 5 测试）：exit 0（All checks passed）。
+2. `compileall -q`（engine + 2 新测试）：exit 0。
+3. targeted pytest（capital_return_metric_definitions 15 + official_roe_metric_extension 18）：33 passed。
+4. full pytest：795 passed（2 warnings，均为既有 `test_quality.py`，与本任务无关；789 旧 + 6 新）。
+5. `git diff --check`：exit 0（仅 LF->CRLF 提示，非错误）。
+6. 污染检查：无 .duckdb/.wal/.pdf/.png 入库；默认 DB SHA 不变；`stash@{0}` 未动。
+
+实跑离线 runner（真实 run_manifest.json）：
+
+- `run_id=roe_metric_extension_601857_SH_2021_2025_20260801_130937_462232`；
+  `started_at=2026-08-01T13:09:37+08:00`、`completed_at=2026-08-01T13:09:41+08:00`、`status=passed`、
+  `transaction_committed=true`、`offline=true`、`network_access=pdf_access=cache_access=false`、`downloaded=0`。
+- 组合 70 Result ID 集合 SHA=`bdd9d4fee9777f0c28f31056711675ab3acf98786bc09090cde25ab7ef551df0`（新增冻结，证明修复后 70 ID 逐字不变）；
+  combined_counts 全匹配（results=70/computed=66/insufficient=4/links=15/lineage=143/final_latest=55/final_computed=51）。
+- 旧 63 ID 集=`34edbbc3…` 不变；旧 63 语义=`e988394f…` 不变；旧 38 Result ID 集=`730484f4…` 不变。
+- 上游 180 Fact ID 集=`2bd5b2d2…` 不变（eligible=60/PIT=47/links=39，before==after）。
+- ROE 7 版本/2 链/21 lineage/5 latest 全匹配；PIT latest=0/11/22/33/44/55、computed=0/7/18/29/40/51、insufficient=0/4/4/4/4/4。
+- 默认 `data/research.duckdb` SHA=`4a71d3c7…` before==after 不变；ROA `blocked`、scoring `not_implemented`、investment_advice `not_produced`。
+
+收口不变性证明：
+- 完整 3 输入 ROE 与所有有效 2 输入指标的 result/id/available_at/语义逐字不变（输入齐全时 `present` 与旧 `facts` 同序同集）。
+- 每个 input_fact_id 恰好一条 lineage、每条 lineage 恰好对应一个 input_fact_id（新单元测试覆盖完整/缺失/2 输入三场景）。
+- 既有 70 Result ID（63 旧 + 7 ROE）全部不变（70 ID 集冻结哈希证明）。
+- `models.py` blob 不变；`engine.py` blob 合法推进（`0ae662fb…`->`244f3605…`），三处 protected-blob 测试引用同步（跨阶段 surgical edit）。
+- Stage 2D-B/C 产物、Rule 001-004 代码、Concept Registry、旧 10 定义 blob 不变；`stash@{0}` 未动。
+
 ## 结果
 
 - ROE 透明 Metric 计算落地：2021-2025 ROE 全部 computed，7 版本/2 重述链/21 lineage/5 latest。
 - Metric Engine 最小三输入扩展（tertiary_fact 可选），旧 63 结果 ID/语义逐字不变。
 - 新增独立 ROE 定义 registry，不把 ROA 加入计算；ROA 仍 blocked。
 - 全部门禁通过；不新增 Fact、不计算 ROA/ROIC/评分、不访问网络/PDF/cache、不改 Schema/Identity/PIT。
+
+### 收口结果（Stage 2D-D Engine 输入角色绑定）
+
+- Engine 输入按声明角色绑定修复落地；中间输入缺失不再导致末位输入角色移位；
+  两角色定义收到非 None `tertiary_fact` 抛 `MetricInputError`。
+- 接口合同加固：每个 input_fact_id 恰好一条 lineage、角色与声明槽位一一对应。
+- 既有 70 Result ID（63 旧 + 7 ROE）全部不变（70 ID 集冻结哈希证明）；result/available_at/语义不变。
+- 新增 6 测试（5 单元 + 1 集成）全过；全量 795 passed。
+- 不新增事实、指标或方法；不进入 Stage 2D-E 或 ROA 计算。
 
 ## 遗留问题
 
@@ -167,13 +222,28 @@
 4. `tests/test_official_earnings_quality_2025_acceptance.py`（test_value_evaluation blob 引用同步）；
 5. `tests/test_value_evaluation_methodology.py`（models/engine blob 引用同步）。
 
+### 收口文件变更（Stage 2D-D Engine role-binding，6 处）
+
+修改（1 处核心修复 + 5 处测试/审计）：
+1. `src/ashare_research/metrics/engine.py`（输入按声明角色绑定；两角色定义拒非 None tertiary；blob `0ae662fb…`->`244f3605…`）；
+2. `tests/test_capital_return_metric_definitions.py`（新增 5 单元测试：角色绑定/拒绝/一一对应）；
+3. `tests/test_official_roe_metric_extension.py`（新增组合 70 Result ID 集冻结测试 + 常量）；
+4. `tests/test_capital_return_methodology.py`（engine.py blob 引用同步 `0ae662fb…`->`244f3605…`）；
+5. `tests/test_value_evaluation_methodology.py`（engine.py blob 引用同步；自身 blob `7ef8fdb5…`->`6f4c3efd…`）；
+6. `tests/test_official_earnings_quality_2025_acceptance.py`（级联：test_value_evaluation blob `7ef8fdb5…`->`6f4c3efd…`）；
+7. `acceptance/m2_stage2dd_petrochina_roe_metric_extension.md`（Section 12 收口：缺陷/修复/实跑 run_id/不变性）；
+8. `agent/record/2026-08-01_1102_m2_stage2dd_roe_metric_extension.md`（本记录收口）。
+
 ## 最终Git状态
 
 - 当前分支：`feat/m2-value-assessment-mvp`
 - 开始提交：`0f48fa0`
-- 本任务三个提交（逐个 push）：
+- Stage 2D-D 主体三个提交（逐个 push）：
   1. `72b8e22` `feat: add average-equity ROE metric`--ROE 定义 + Engine 三输入扩展 + 枚举
   2. `80cbd4b` `test: add PetroChina PIT ROE integration`--离线 runner + Definition/Integration 测试 + protected-blob 引用同步
-  3. 本提交 `docs: finalize PetroChina ROE metric acceptance`--验收报告 + 本工作记录
+  3. `9501251` `docs: finalize PetroChina ROE metric acceptance`--验收报告 + 本工作记录
+- Stage 2D-D Engine 收口两个提交（逐个 push，从 `9501251` 起）：
+  1. `fix: preserve metric input role bindings`--engine.py 角色绑定修复 + 新增 6 测试 + 跨阶段 protected-blob 同步
+  2. `docs: close Stage 2D-D engine acceptance`--验收报告 Section 12 + 本记录收口
 - `stash@{0}` 未动；默认 `data/research.duckdb` SHA 不变；最终 worktree clean。
 - 不 merge main，不建 Tag/Release；不进入 Stage 2D-E 或 ROA 计算。
