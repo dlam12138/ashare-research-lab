@@ -67,5 +67,5 @@ portion 的口径。依据 2021—2025 年报附注双官方证据，只有能�
 - 正式输出位于 `C:\m2e1\value_assessment\601857.SH\financial_safety_vertical_slice\2021_2025\e1`，manifest=`passed`；重跑同一 run id 仍幂等返回 `passed`。
 - 最终 runner：`354/232/122/58` Fact counts；statement aggregate eligible canonical Fact count=`0`；五年 current-portion proof=`proven`；financial-safety `4/25/25/0/5/116/20/20`；combined `16/102/98/4/22/280/80/76`。
 - 全量 pytest：`911 passed, 2 warnings`；warning 为既有 `tests/test_quality.py` 日期解析测试，不是本阶段失败。ruff、compileall、git diff --check、污染检查和六项 protected artifact tests 均通过。
-- default DB SHA 前后均为 `4a71d3c7b88c0b16ae46ffb4f9bfbd006d91e0537e559235c9b5a1f919e2fce6`；stash 原样保留；HEAD、origin、remote 均为 `6c0db0d7bf8f014cb075fa02f435703c3c689498`。
+- default DB SHA 前后均为 `4a71d3c7b88c0b16ae46ffb4f9bfbd006d91e0537e559235c9b5a1f919e2fce6`；stash 原样保留；HEAD、origin、remote 均为 `8e03bf6e18b04cbcf317c209ee5d6d900f130112`。
 - 已逐个 push 实现/证据、测试、文档及 append-only roadmap guard 提交；未 merge main、未建 Tag/Release，未入库 DB/PDF/PNG。
