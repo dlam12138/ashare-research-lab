@@ -84,7 +84,7 @@ PROTECTED_BLOBS = {
     # Stage 2D-E appended the 2D-D/2D-E status section (append-only);
     # blob advanced 04d323dd... -> a9fa3da1....
     "docs/value_fact_coverage_roadmap.md":
-        "59c5840c5946bc3de33f22b196ff41588c87300b",
+        "d0b83167243602710481584ca4934648c18c85d8",
     "docs/value_scoring_readiness_gates.md":
         "abb73f82853e831b80879c9f60eb0594472c0738",
     # --- Stage 2D-A artifacts (unchanged by 2D-B) ---
