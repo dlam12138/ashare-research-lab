@@ -78,6 +78,7 @@ class MetricEngine:
         fiscal_year: int,
         primary_fact: dict[str, Any] | None,
         secondary_fact: dict[str, Any] | None,
+        tertiary_fact: dict[str, Any] | None = None,
         missing_prior_is_history: bool = False,
         result_version: int = 1,
         supersedes_metric_result_id: str = "",
@@ -86,7 +87,9 @@ class MetricEngine:
         created_at: str | None = None,
     ) -> tuple[MetricResult, list[MetricLineage]]:
         facts = [
-            fact for fact in (primary_fact, secondary_fact) if fact is not None
+            fact
+            for fact in (primary_fact, secondary_fact, tertiary_fact)
+            if fact is not None
         ]
         for fact in facts:
             _fact_integer(fact)
@@ -121,6 +124,13 @@ class MetricEngine:
                 f"role={definition.input_roles[1]};"
                 f"concept_id={definition.input_concept_ids[1]};"
                 f"fiscal_year={fiscal_year - 1}"
+            )
+        elif tertiary_fact is None and len(definition.input_roles) >= 3:
+            status = MetricStatus.missing_input
+            missing = (
+                f"role={definition.input_roles[2]};"
+                f"concept_id={definition.input_concept_ids[2]};"
+                f"fiscal_year={fiscal_year}"
             )
         else:
             primary = Decimal(_fact_integer(primary_fact))
@@ -194,6 +204,26 @@ class MetricEngine:
                         status = MetricStatus.not_comparable_negative_revenue
                     else:
                         value = (primary / secondary).quantize(
+                            CANONICAL_QUANTUM,
+                            rounding=ROUND_HALF_EVEN,
+                        )
+                elif (
+                    definition.formula
+                    == "net_profit_attributable_to_parent / "
+                    "((opening_equity_attributable_to_parent + "
+                    "closing_equity_attributable_to_parent) / 2)"
+                ):
+                    opening = secondary
+                    closing = Decimal(_fact_integer(tertiary_fact))
+                    average = (opening + closing) / Decimal(2)
+                    if average == 0:
+                        status = MetricStatus.undefined_zero_denominator
+                    elif average < 0:
+                        status = (
+                            MetricStatus.not_comparable_negative_denominator
+                        )
+                    else:
+                        value = (primary / average).quantize(
                             CANONICAL_QUANTUM,
                             rounding=ROUND_HALF_EVEN,
                         )
