@@ -1,0 +1,82 @@
+{
+  "contract": "net_profit_official_facts_v1",
+  "base_bundle_path": "acceptance/fixtures/official_facts/601857.SH/2025_annual.json",
+  "base_bundle_sha256": "1cea469542ec4293658703167e7d10cc00b7ced21c9ce6a5e13843bed6e1caab",
+  "base_bundle_git_blob": "0ababb5262e6cbf1646e165ccfb3e7bfe2769670",
+  "symbol": "601857.SH",
+  "fiscal_year": 2025,
+  "report_type": "annual",
+  "accounting_standard": "CAS",
+  "consolidation_scope": "consolidated",
+  "language": "zh-CN",
+  "document_relationship": "same_report_different_bytes",
+  "period_type": "duration",
+  "period_start": "2025-01-01",
+  "period_end": "2025-12-31",
+  "reconciliation_rule_id": "RECON_OFFICIAL_NUMERIC_005",
+  "reconciliation_rule_version": "1",
+  "revision_review_status": "not_yet_reviewable",
+  "sources": {
+    "company": {
+      "facts": [
+        {
+          "concept_id": "net_profit",
+          "source_page": "PDF page 109 / printed page 107",
+          "pdf_page": 109,
+          "printed_page": 107,
+          "source_table": "2025年度合并及公司利润表",
+          "source_label": "净利润",
+          "column_label": "2025年度合并",
+          "source_display_value": "172,005",
+          "raw_value": "172005",
+          "raw_unit": "人民币百万元",
+          "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+          "expected_normalized_value": 17200500,
+          "evidence_type": "audited_consolidated_income_statement",
+          "evidence_scope": "audited_statement_line_item",
+          "official_direct_disclosure": true,
+          "manual_review_status": "visually_verified_twice"
+        }
+      ]
+    },
+    "exchange": {
+      "facts": [
+        {
+          "concept_id": "net_profit",
+          "source_page": "PDF page 109 / printed page 107",
+          "pdf_page": 109,
+          "printed_page": 107,
+          "source_table": "2025年度合并及公司利润表",
+          "source_label": "净利润",
+          "column_label": "2025年度合并",
+          "source_display_value": "172,005",
+          "raw_value": "172005",
+          "raw_unit": "人民币百万元",
+          "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+          "expected_normalized_value": 17200500,
+          "evidence_type": "audited_consolidated_income_statement",
+          "evidence_scope": "audited_statement_line_item",
+          "official_direct_disclosure": true,
+          "manual_review_status": "visually_verified_twice"
+        }
+      ]
+    }
+  },
+  "income_statement_bridge": {
+    "unit": "人民币百万元",
+    "scope": "consolidated_only",
+    "net_profit_direct_disclosure_line": 172005,
+    "net_profit_attributable_to_parent": 157302,
+    "minority_interest": 14703,
+    "computed_attributable_plus_minority": 172005,
+    "exact_tie_out": true,
+    "sign_convention": "positive is profit; parentheses are losses",
+    "bridge_status": "cross_check_only_not_a_fact_input",
+    "fact_creation": "net_profit_taken_from_direct_disclosure_line_only; the attributable+minority sum is evidence only"
+  },
+  "limitations": [
+    "净利润为经审计合并利润表直接披露行（含归母与非控股股东损益）；未使用归母净利润、扣非净利润、营业利润、利润总额或母公司单体净利润。",
+    "归母+少数股东损益加总仅作交叉校验，不生成正式 Fact。",
+    "duration Concept 复用既有年度 duration Context（601857.SH|2025|annual|consolidated），不新增 Context。"
+  ]
+}

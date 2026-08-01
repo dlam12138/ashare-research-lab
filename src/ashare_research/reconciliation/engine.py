@@ -66,6 +66,8 @@ EARNINGS_QUALITY_RULE_ID = "RECON_OFFICIAL_NUMERIC_003"
 EARNINGS_QUALITY_RULE_VERSION = "1"
 ROE_ROA_DENOMINATOR_RULE_ID = "RECON_OFFICIAL_NUMERIC_004"
 ROE_ROA_DENOMINATOR_RULE_VERSION = "1"
+NET_PROFIT_RULE_ID = "RECON_OFFICIAL_NUMERIC_005"
+NET_PROFIT_RULE_VERSION = "1"
 
 # Only these three concepts are reconcilable in the first version.
 SUPPORTED_CONCEPTS: frozenset[str] = frozenset({
@@ -129,6 +131,20 @@ ROE_ROA_DENOMINATOR_RECONCILIATION_RULE = NumericReconciliationRule(
         "total_assets",
         "equity_attributable_to_parent",
     }),
+)
+
+# Stage 2D-E: consolidated net profit (income statement, duration) -- the
+# ROA numerator.  ``net_profit`` is the directly disclosed consolidated
+# "净利润" line (parent + minority interests), never a value derived by
+# adding ``net_profit_attributable_to_parent`` and minority interest;
+# that sum is only an evidence-stage cross-check.  Dual-source
+# verification via the same gates 1-8 as Rules 001-004: exact Decimal
+# equality in canonical 万元, no tolerance, no averaging, no source
+# preference.
+NET_PROFIT_RECONCILIATION_RULE = NumericReconciliationRule(
+    rule_id=NET_PROFIT_RULE_ID,
+    version=NET_PROFIT_RULE_VERSION,
+    supported_concepts=frozenset({"net_profit"}),
 )
 
 # Decimal conversion factors for amount units -> canonical 万元.  Kept as

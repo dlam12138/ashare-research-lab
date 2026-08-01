@@ -82,7 +82,11 @@ PROTECTED_BLOBS = {
         "91e9db55b73a0b076a209f455ff302d50a2a7cc3",
     # Rule 001-004 reconciliation + Fact code unchanged.
     "src/ashare_research/reconciliation/engine.py":
-        "459adfc7506d02c8a04935fa1f110e497748ac87",
+        # Stage 2D-E added Rule 005 (RECON_OFFICIAL_NUMERIC_005,
+        # net_profit only) as a pure additive rule object; Rule 001-004
+        # semantics/outputs/identities are unchanged. Blob advanced from
+        # 459adfc7... to 828d7051....
+        "828d7051bd273c15139a3fc3cfd51cec2dfece1b",
     "src/ashare_research/reconciliation/service.py":
         "62837ed1ce07e94590a62975dbd5c6dc5c8d8c25",
     "src/ashare_research/validation/validator.py":

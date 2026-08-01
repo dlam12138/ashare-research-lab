@@ -69,7 +69,11 @@ PROTECTED_BLOBS = {
     "src/ashare_research/validation/version_chain.py":
         "292442c314df46379865cdefd1ab311ec7176c91",
     "src/ashare_research/reconciliation/engine.py":
-        "459adfc7506d02c8a04935fa1f110e497748ac87",
+        # Stage 2D-E added Rule 005 (RECON_OFFICIAL_NUMERIC_005,
+        # net_profit only) as a pure additive rule object; Rule 001-004
+        # semantics/outputs/identities are unchanged. Blob advanced from
+        # 459adfc7... to 828d7051....
+        "828d7051bd273c15139a3fc3cfd51cec2dfece1b",
     "src/ashare_research/validation/validator.py":
         "4f90195f7d5aca44b8830760dca66a757bd19dc4",
     "docs/value_evaluation_methodology_v1.md":

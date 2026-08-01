@@ -1,0 +1,27 @@
+{
+  "contract": "net_profit_restatement_evidence_v1",
+  "symbol": "601857.SH",
+  "target_fiscal_year": 2022,
+  "evidence_fiscal_year": 2023,
+  "evidence_bundle_path": "acceptance/fixtures/official_facts/601857.SH/2023_annual.json",
+  "concepts": [
+    {
+      "concept_id": "net_profit",
+      "original_raw_value": "163977",
+      "later_comparative_raw_value": "163343",
+      "later_comparative_attributable_to_parent": "148738",
+      "later_comparative_minority_interest": "14605",
+      "later_comparative_bridge_exact": true,
+      "raw_unit": "人民币百万元",
+      "changed": true,
+      "disclosed_change_reason": "Interpretation 16 / IAS 12 revisions",
+      "review_status": "reviewed_changed",
+      "company": {
+        "manual_review_status": "visually_verified_twice"
+      },
+      "exchange": {
+        "manual_review_status": "visually_verified_twice"
+      }
+    }
+  ]
+}
