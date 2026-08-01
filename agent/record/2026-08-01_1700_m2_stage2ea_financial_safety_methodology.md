@@ -61,5 +61,14 @@
 - Contamination check: no untracked `.duckdb`, `.db`, `.pdf`, or `.png` artifacts.
 - Existing protected tests confirmed Stage2D-B/C/D/E artifacts, Rule 001—005, prior metrics,
   default DB, and runner/report blobs unchanged after the roadmap exception was removed.
-- Remaining work: stage and push the review/test/acceptance commit, then verify clean worktree,
-  local/origin equality, stash identity, protected hashes, and final status.
+- Second commit: `7fc7275` — `docs: finalize post-capital-return north-star review`; pushed to
+  `origin/feat/m2-value-assessment-mvp`.
+- Final worktree: clean; `HEAD` and `origin/feat/m2-value-assessment-mvp` both equal
+  `7fc72755ac8ba6c6537f6e8d5f1fbe8454ddc28a`.
+- Final stash: unchanged; the pre-existing `protect pre-existing Stage 1B.4 record edit before
+  Stage 1C` stash remains present.
+- Final protected hashes match the initial snapshot, including default DB
+  `4a71d3c7b88c0b16ae46ffb4f9bfbd006d91e0537e559235c9b5a1f919e2fce6` and all frozen methodology,
+  input-contract, and scoring-gate files listed above.
+- Stage 2E-A range contains only the seven new acceptance/record/config/docs/test files; no
+  `src/` or `data/` path changed. No DB/PDF/PNG was added.
