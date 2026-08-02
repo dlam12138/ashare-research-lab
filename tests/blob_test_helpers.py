@@ -20,7 +20,10 @@ def canonical_worktree_blob(path: Path) -> str:
     """Hash text using each protected fixture's historical line-ending contract."""
 
     content = path.read_bytes()
-    relative = path.as_posix()
+    try:
+        relative = path.resolve().relative_to(Path.cwd().resolve()).as_posix()
+    except ValueError:
+        relative = path.as_posix()
     if relative in CRLF_LEGACY_BLOBS and b"\r\n" not in content:
         content = content.replace(b"\n", b"\r\n")
     header = f"blob {len(content)}\0".encode()
