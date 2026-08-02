@@ -103,8 +103,9 @@ these are content-addressed outputs, not hash-preserving compatibility shims.
 - Default DB SHA-256 before/after is
   `4a71d3c7b88c0b16ae46ffb4f9bfbd006d91e0537e559235c9b5a1f919e2fce6`;
   stash and `agent/goals/` remain protected.
-- Remote CI before edits was successful (`30744466406`). Post-push workflow
-  `30745949298` completed successfully on both Ubuntu and Windows clean-clone
+- Remote CI before edits was successful (`30744466406`). Post-push workflows
+  `30745949298` (the implementation head) and `30746189865` (the final
+  closeout head) completed successfully on both Ubuntu and Windows clean-clone
   jobs, including the full offline suite and Stage 2H.1 gates.
 
 ## Final boundary

@@ -133,7 +133,8 @@ statement remains preserved as a historical result, not as universe cardinality.
 
 ### Remote CI
 
-Post-push workflow `30745949298` completed successfully. Both
+Post-push workflows `30745949298` (implementation head) and `30746189865`
+(closeout head) completed successfully. Both
 `clean-clone (ubuntu-latest)` and `clean-clone (windows-latest)` passed the
 clean-clone/offline-input preflight, static/import gates, Stage 2G.2 contract
 gate, Stage 2H.1 risk-veto contract gate, independent capsule builds and
