@@ -8,8 +8,10 @@ The profile integrates the existing earnings/cash-quality, ROE/ROA, financial-sa
 
 ## Risk-veto statuses
 
-- `identity`: `observed`
-- `pit_future_leakage`: `observed`
-- `official_exchange_evidence`: `not_observed_within_bounded_evidence`
-- `currency_scope`: `observed`
-- `non_positive_comparables`: `observed`
+- `future_data_leakage`: `not_observed_within_bounded_evidence`
+- `canonical_identity_break`: `not_observed_within_bounded_evidence`
+- `official_exchange_evidence_gap`: `observed`
+- `non_positive_comparable_input`: `not_observed_within_bounded_evidence`
+- `governance_risk`: `not_evaluated`
+- `audit_risk`: `not_evaluated`
+- `related_party_risk`: `not_evaluated`

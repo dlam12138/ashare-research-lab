@@ -1,5 +1,70 @@
 {
   "as_of_trade_date": "2026-07-31",
+  "canonical_fact_input": {
+    "eligible_fact_count": 67,
+    "fact_count": 201,
+    "identity_status": "pass",
+    "logical_name": "net_profit.duckdb",
+    "pit_snapshot_dates": [
+      "2022-03-31",
+      "2022-04-01",
+      "2023-03-29",
+      "2023-03-30",
+      "2024-03-25",
+      "2024-03-26",
+      "2025-03-30",
+      "2025-03-31",
+      "2026-03-29",
+      "2026-03-30",
+      "2026-07-31"
+    ],
+    "required_concept_coverage": {
+      "cash_paid_for_fixed_assets": 6,
+      "equity_attributable_to_parent": 8,
+      "net_profit_attributable_to_parent": 7,
+      "operating_cash_flow": 6,
+      "revenue": 6
+    },
+    "schema_version": "2.1",
+    "sha256": "47a09e98a8062f72b6907bc6ec55927588e4a815517ba8b4c0b595507ada7f0e",
+    "used_fact_count": 33,
+    "used_fact_ids": [
+      "00a7319ffc9aeff068a71d1895a8ba05c042b289894d1e3e9e2a65aa3c5521f4",
+      "0263db7efe1b96fe00743e64af87eea76d75dce1365941139e9a87fe09be4129",
+      "109d4cdd03072680a5cb5325bbb38b40fcb0f834aac8661daa8db0c7ff0564c4",
+      "19e4884fedb6b2d37a89de73f4c44f8930ea620e7e817145cdb5377132786c5c",
+      "1b1612e8ca2f32f885d577d67f83bb02a4a7e2f8f220b64f25dbd3be7f4161d6",
+      "1e15d297a93bb8d290dd7a9282fa14473ccc38b1f2d4927caf1007ec5b2fb3f8",
+      "32a6f0876918e0178d246730c14c1d542f10d6aa953d233b7629ac2033125bd4",
+      "3356c5c1cb02b386d2d6d0720c81109f13191aad4d453ead86553267ab3c2e43",
+      "3ca12114806d0fc07bedfa0e78ee5c9b8c086d7d377aa27c2dfdb1d998bbd0e9",
+      "45a8911a4b1626157c179dc44880da947bde9dfda937d18f8464a9381606eb90",
+      "460056dc565a2ee49c9906554a29816a89ef25669390ecf3c6af407e5721e0f1",
+      "4d50fd7245c2c29409924c1cf4607c0d8d65530dab74beefb2c6208337fb4f93",
+      "4ec845de58f9c0d120bd06e783b234885605cb597cd6df915491250b268d1561",
+      "5dc4c375138e6cac5a26866d2120fc9d6bc68b69a19dabd56902ae0a6660b34f",
+      "5fde7bb54b26f2528b72cc04cc6a28289455e25f1faa4d78dceb9988e82e5a55",
+      "62c9961e2e5a2c19ba3885bf212764b706645c5c1b59d5e65bf23a6c1faf3e43",
+      "70b275562a63b6acd02b7aa4e9ef6cad6ac9fa9e5c55a6b1fd4d655280f47ccb",
+      "7eb6dbc54c5804849fc89cbfb3cb6434406d8cb4e38d29498f2c5eafbd8d1289",
+      "8d62e85945e56a637bf65425257231d793e9e2e61fb1ccd72c2566c257e95577",
+      "8fc1ab550cae3ec8ad73de2a0328dcc730bb76ee9d1abe89c04eeb884b8cb0dd",
+      "9009dbb2ddaf6981e33d68fafd2cce681c0c87e591d30a1fa366d0051b38df6c",
+      "932e9eb9ef2ee654f0a31036eb5bad324231c6274bbc5b9befe6d1c216b61da2",
+      "9a181c95213fbd68920bcf490a3903e8d608cf86505a4ff5524710b0c188e2a7",
+      "ad3b6e2a3675ce7e8a8e16bda427597b72d28e30808281e17cd4aa549949357a",
+      "b6dbcb21298994846d241b265f8847e2819642b47259732bd45670f953f0d510",
+      "c1f4119d6a60dd2e7d093e0d7f33c56603dcea3ea6cd3f9ea32bef6dc342db21",
+      "d082020ffd54095ac923e545c0c540449a7b8a3b7b1c78872b184423b9af065f",
+      "d3f70991ddb193324747fd7673274da61d56ffbfbac9a8a813ef3a1467072603",
+      "d9b223cb06f96359793d28cac41a30c068834b4979c358f48cca6af99734c2f4",
+      "e695784ac714744d5d8250e9b5efa4dd91291dd509e84719e9d534a04cc0c91d",
+      "edbac03ffc9b1bde84db242ece1cf7e5c8eddeb7e33337fbcc2cf3b04515d196",
+      "efe1cc1b1d0cdb4b09b828dd5a658295585ff5d398d0a51621d651110f75b6d5",
+      "fb2c528c6b9009465dfbed06dd1a76f7277ec2c78655d57aeb0da541f62ab534"
+    ],
+    "version_chain_status": "pass"
+  },
   "contract": "petrochina_value_profile_v1",
   "evidence": {
     "gaps": [
@@ -102,9 +167,12 @@
       "lineage": {
         "dividend_event_ids": [],
         "financial_fact_ids": [
-          "fact_68355a493cdadff40bfc9a94"
+          "9009dbb2ddaf6981e33d68fafd2cce681c0c87e591d30a1fa366d0051b38df6c"
         ],
-        "missing_event_ids": []
+        "missing_event_ids": [],
+        "share_timeline_ids": [
+          "share_e2fb0e416be93af602b999db"
+        ]
       },
       "score_eligible": false,
       "status": "computed",
@@ -116,9 +184,12 @@
       "lineage": {
         "dividend_event_ids": [],
         "financial_fact_ids": [
-          "fact_9cfd555bc7217239b1b01f5a"
+          "460056dc565a2ee49c9906554a29816a89ef25669390ecf3c6af407e5721e0f1"
         ],
-        "missing_event_ids": []
+        "missing_event_ids": [],
+        "share_timeline_ids": [
+          "share_e2fb0e416be93af602b999db"
+        ]
       },
       "score_eligible": false,
       "status": "computed",
@@ -130,9 +201,12 @@
       "lineage": {
         "dividend_event_ids": [],
         "financial_fact_ids": [
-          "fact_d2c082f270d9a8d5cf845c83"
+          "45a8911a4b1626157c179dc44880da947bde9dfda937d18f8464a9381606eb90"
         ],
-        "missing_event_ids": []
+        "missing_event_ids": [],
+        "share_timeline_ids": [
+          "share_e2fb0e416be93af602b999db"
+        ]
       },
       "score_eligible": false,
       "status": "computed",
@@ -144,10 +218,13 @@
       "lineage": {
         "dividend_event_ids": [],
         "financial_fact_ids": [
-          "fact_2a487f3014a2c3d81943ad81",
-          "fact_d478b1d908dcfefbf4feff2c"
+          "ad3b6e2a3675ce7e8a8e16bda427597b72d28e30808281e17cd4aa549949357a",
+          "5dc4c375138e6cac5a26866d2120fc9d6bc68b69a19dabd56902ae0a6660b34f"
         ],
-        "missing_event_ids": []
+        "missing_event_ids": [],
+        "share_timeline_ids": [
+          "share_e2fb0e416be93af602b999db"
+        ]
       },
       "score_eligible": false,
       "status": "computed",
@@ -162,6 +239,9 @@
         "missing_event_ids": [
           "dve2_40135402681a3e67ad7b9e96",
           "dve2_d9a78550b9e4eff7fd1e41b6"
+        ],
+        "share_timeline_ids": [
+          "share_e2fb0e416be93af602b999db"
         ]
       },
       "score_eligible": false,
@@ -177,6 +257,9 @@
         "missing_event_ids": [
           "dve2_40135402681a3e67ad7b9e96",
           "dve2_d9a78550b9e4eff7fd1e41b6"
+        ],
+        "share_timeline_ids": [
+          "share_e2fb0e416be93af602b999db"
         ]
       },
       "score_eligible": false,
@@ -315,13 +398,43 @@
       "missing_reason": "insufficient_valid_samples_for_one_or_more_windows"
     }
   },
-  "risk_veto_statuses": {
-    "currency_scope": "observed",
-    "identity": "observed",
-    "non_positive_comparables": "observed",
-    "official_exchange_evidence": "not_observed_within_bounded_evidence",
-    "pit_future_leakage": "observed"
-  },
+  "risk_veto_checks": [
+    {
+      "basis": "canonical available_at <= trade_date and PIT transitions audited",
+      "risk_id": "future_data_leakage",
+      "status": "not_observed_within_bounded_evidence"
+    },
+    {
+      "basis": "Fact Identity and version-chain validation passed",
+      "risk_id": "canonical_identity_break",
+      "status": "not_observed_within_bounded_evidence"
+    },
+    {
+      "basis": "nine bounded dividend events lack independently retrieved exchange payloads",
+      "risk_id": "official_exchange_evidence_gap",
+      "status": "observed"
+    },
+    {
+      "basis": "all computed comparable inputs were audited for positivity",
+      "risk_id": "non_positive_comparable_input",
+      "status": "not_observed_within_bounded_evidence"
+    },
+    {
+      "basis": "outside this valuation vertical slice",
+      "risk_id": "governance_risk",
+      "status": "not_evaluated"
+    },
+    {
+      "basis": "outside this valuation vertical slice",
+      "risk_id": "audit_risk",
+      "status": "not_evaluated"
+    },
+    {
+      "basis": "outside this valuation vertical slice",
+      "risk_id": "related_party_risk",
+      "status": "not_evaluated"
+    }
+  ],
   "scenarios": [
     {
       "base_value": 12.891587101393752,
@@ -377,5 +490,7 @@
     }
   ],
   "score_eligible": false,
+  "share_capital_timeline_status": "observed_with_explicit_a_h_split_gap",
+  "stage2g1_status": "pass_with_explicit_gaps",
   "symbol": "601857.SH"
 }
