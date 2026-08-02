@@ -114,10 +114,11 @@ historical evidence semantics, and clean-clone-safe guards for legacy no-mutatio
 and protected text-blob checks. Protected production blobs and historical baselines were
 not rewritten.
 
-## Final acceptance after push
+## Historical final acceptance after push
 
-- Final HEAD: `53a65539d6c02ffd25a85079b8004bf5c931ce10`; final push of
-  `feat/m2-value-assessment-mvp` succeeded. Local/origin tracking refs equal `0 0`.
+- Historical implementation head: `53a65539d6c02ffd25a85079b8004bf5c931ce10`;
+  the historical push of `feat/m2-value-assessment-mvp` succeeded and
+  local/origin tracking refs were equal `0 0`.
 - Fresh clone: `D:\tmp\stage2g2-clean-clone-中文-20260802-v7`, containing no `output/` or
   `data/research.duckdb` before testing. Exact installation command:
   `python -m pip install -e ".[dev]" --no-deps`.
@@ -174,7 +175,70 @@ Portable market test capsule: TRUSTED
 Real market input resolver: TRUSTED
 Rule007 issuer-exchange pair contract: TRUSTED
 Artifact manifest and reproduction verifier: TRUSTED
-Remote CI: NOT OBSERVED
+Historical remote CI observation: NOT OBSERVED
+PetroChina real value profile: COMPLETE WITH EXPLICIT GAPS
+ROIC: NOT YET
+Scoring: STILL NOT YET
+Market mechanism: NOT STARTED
+Next-stage implementation: NOT STARTED
+Next-stage selection: NORTH-STAR REVIEW REQUIRED
+```
+
+## M2 Stage 2G.2R remote CI and reproducibility closeout
+
+HEAD/evidence fields (the final remote head is intentionally not written into
+this committed record):
+
+```text
+task_start_head: 29c1e221eaec994d597e2b634fc4be4f6543d19a
+implementation_head: b4c450b4b1eb0e83100c7455e6c6df8ab5ef3dde
+acceptance_evidence_generated_at_commit: b4c450b4b1eb0e83100c7455e6c6df8ab5ef3dde
+reviewed_branch_head_at_time: b4c450b4b1eb0e83100c7455e6c6df8ab5ef3dde
+final_remote_head: not committed; final response/external review only
+workflow_run_commit: b4c450b4b1eb0e83100c7455e6c6df8ab5ef3dde
+workflow_run_id: 30730670937
+workflow_run_url: https://github.com/dlam12138/ashare-research-lab/actions/runs/30730670937
+```
+
+The later remote run passed independently on Ubuntu and Windows with Python
+3.11 and `fail-fast: false`. Both jobs passed clean-clone preflight, contract
+validation, independent A/B capsule builds and comparison, independent A/B
+artifact runs and comparison, and the full offline suite. The earlier run
+`30729995619` exposed a single Ubuntu-only hard-coded path-separator assertion;
+its Windows job was cancelled by the previous fail-fast matrix. This was
+classified as a test portability defect, not an infrastructure outage.
+
+Local closeout evidence at `b4c450b`:
+
+- Targeted tests: `93 passed`; full suite: `952 passed, 2 warnings`; Ruff,
+  compileall/import and diff checks passed.
+- Test capsule A/B logical digest:
+  `8d89d7d4a71f0e5dcaacccabc231e70411822f457c2dda9e03fe846c750f0ed1`.
+  Test run A/B logical artifact digest:
+  `27f878b7e7f6743f9f638916817fe881b891cd447ed9a18361de5dc8748d7da8`.
+- Explicit real preflight: 201 Fact rows / 33 used, 1,351 market rows, both
+  provider hashes, Identity/version-chain PASS, reconciliation PASS and
+  `network_used=false`. Real A/B logical artifact digest:
+  `4ddb72f6ad05cdc75bf40834f5ec78d94b74586465e17b8737a23f496e9a7a14`;
+  Rule007 remained 1 eligible event / 9 explicit gaps.
+- Rule007 now distinguishes exact issuer+exchange eligibility, three-source
+  supplemental designated evidence, issuer-only, exchange-only,
+  designated-only, no retrieved official source, conflicting official sources,
+  and incomplete/invalid evidence. Designated evidence is excluded from
+  reconciled Fact `input_fact_ids`; overwrite, tamper and deletion tests fail
+  closed.
+
+## Stage 2G.2R final verdict
+
+```text
+M2 Stage 2G.2R: PASS
+Ubuntu remote CI: PASS
+Windows remote CI: PASS
+Independent dual-build reproducibility: TRUSTED
+Independent dual-run reproducibility: TRUSTED
+Rule007 supplemental-source contract: TRUSTED
+Rule007 empty-source semantics: TRUSTED
+Clean-clone reproducibility: TRUSTED
 PetroChina real value profile: COMPLETE WITH EXPLICIT GAPS
 ROIC: NOT YET
 Scoring: STILL NOT YET

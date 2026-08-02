@@ -87,8 +87,12 @@ ashare-research inspect stock-daily 601857.SH --show-data
 
 ```powershell
 python -m ashare_research.tools.stage2g_reproducibility verify-contracts
-python -m ashare_research.tools.stage2g_reproducibility build-test-capsule --output .tmp-stage2g2
-python -m ashare_research.tools.stage2g_reproducibility run-test-capsule --capsule-dir .tmp-stage2g2
+python -m ashare_research.tools.stage2g_reproducibility build-test-capsule --output tmp/stage2g2-local/capsule-a
+python -m ashare_research.tools.stage2g_reproducibility build-test-capsule --output tmp/stage2g2-local/capsule-b
+python -m ashare_research.tools.stage2g_reproducibility compare-capsules --left tmp/stage2g2-local/capsule-a --right tmp/stage2g2-local/capsule-b
+python -m ashare_research.tools.stage2g_reproducibility run-test-capsule --capsule-dir tmp/stage2g2-local/capsule-a --output tmp/stage2g2-local/run-a --run-id stage2g2_local_ab
+python -m ashare_research.tools.stage2g_reproducibility run-test-capsule --capsule-dir tmp/stage2g2-local/capsule-b --output tmp/stage2g2-local/run-b --run-id stage2g2_local_ab
+python -m ashare_research.tools.stage2g_reproducibility compare-runs --left tmp/stage2g2-local/run-a/stage2g2_local_ab --right tmp/stage2g2-local/run-b/stage2g2_local_ab
 pytest -q
 ruff check src/ tests/
 ```

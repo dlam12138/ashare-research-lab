@@ -28,20 +28,20 @@ jobs:
       - name: Contract gate
         run: python -m ashare_research.tools.stage2g_reproducibility verify-contracts
       - name: Build isolated test capsule A
-        run: python -m ashare_research.tools.stage2g_reproducibility build-test-capsule --output .stage2g2-capsule-a
+        run: python -m ashare_research.tools.stage2g_reproducibility build-test-capsule --output tmp/stage2g2-ci/capsule-a
       - name: Build isolated test capsule B
-        run: python -m ashare_research.tools.stage2g_reproducibility build-test-capsule --output .stage2g2-capsule-b
+        run: python -m ashare_research.tools.stage2g_reproducibility build-test-capsule --output tmp/stage2g2-ci/capsule-b
       - name: Compare independent capsule builds
-        run: python -m ashare_research.tools.stage2g_reproducibility compare-capsules --left .stage2g2-capsule-a --right .stage2g2-capsule-b
+        run: python -m ashare_research.tools.stage2g_reproducibility compare-capsules --left tmp/stage2g2-ci/capsule-a --right tmp/stage2g2-ci/capsule-b
       - name: Run capsule A and verify artifacts
         run: |
-          python -m ashare_research.tools.stage2g_reproducibility run-test-capsule --capsule-dir .stage2g2-capsule-a --output .stage2g2-run-a --run-id stage2g2_test_capsule_a
-          python -m ashare_research.tools.stage2g_reproducibility verify-artifacts --run-dir .stage2g2-run-a/stage2g2_test_capsule_a
+          python -m ashare_research.tools.stage2g_reproducibility run-test-capsule --capsule-dir tmp/stage2g2-ci/capsule-a --output tmp/stage2g2-ci/run-a --run-id stage2g2_test_capsule_a
+          python -m ashare_research.tools.stage2g_reproducibility verify-artifacts --run-dir tmp/stage2g2-ci/run-a/stage2g2_test_capsule_a
       - name: Run capsule B and verify artifacts
         run: |
-          python -m ashare_research.tools.stage2g_reproducibility run-test-capsule --capsule-dir .stage2g2-capsule-b --output .stage2g2-run-b --run-id stage2g2_test_capsule_a
-          python -m ashare_research.tools.stage2g_reproducibility verify-artifacts --run-dir .stage2g2-run-b/stage2g2_test_capsule_a
+          python -m ashare_research.tools.stage2g_reproducibility run-test-capsule --capsule-dir tmp/stage2g2-ci/capsule-b --output tmp/stage2g2-ci/run-b --run-id stage2g2_test_capsule_a
+          python -m ashare_research.tools.stage2g_reproducibility verify-artifacts --run-dir tmp/stage2g2-ci/run-b/stage2g2_test_capsule_a
       - name: Compare independent capsule runs
-        run: python -m ashare_research.tools.stage2g_reproducibility compare-runs --left .stage2g2-run-a/stage2g2_test_capsule_a --right .stage2g2-run-b/stage2g2_test_capsule_a
+        run: python -m ashare_research.tools.stage2g_reproducibility compare-runs --left tmp/stage2g2-ci/run-a/stage2g2_test_capsule_a --right tmp/stage2g2-ci/run-b/stage2g2_test_capsule_a
       - name: Full offline test suite
         run: pytest -q

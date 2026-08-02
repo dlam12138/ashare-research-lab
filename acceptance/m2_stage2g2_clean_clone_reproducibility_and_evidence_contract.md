@@ -41,8 +41,9 @@ default DB hash, stash, final worktree and push equality.
 
 ## Final gate results
 
-- Final pushed commit: `53a65539d6c02ffd25a85079b8004bf5c931ce10` on
-  `feat/m2-value-assessment-mvp`; local/origin tracking refs are equal (`0 0`).
+- Historical implementation head for the prior Stage 2G.2 closeout was
+  `53a65539d6c02ffd25a85079b8004bf5c931ce10`; local/origin tracking refs were
+  equal (`0 0`) at that historical observation.
 - Fresh clone: `D:\tmp\stage2g2-clean-clone-中文-20260802-v7` (redacted operational
   path; spaces/non-ASCII path requirement exercised). Before testing it contained
   no `output/` and no `data/research.duckdb`. Installation used
@@ -78,11 +79,12 @@ default DB hash, stash, final worktree and push equality.
   `4a71d3c7b88c0b16ae46ffb4f9bfbd006d91e0537e559235c9b5a1f919e2fce6` and
   `stash@{0}` remains `protect pre-existing Stage 1B.4 record edit before Stage 1C`.
   Final worktree has only the preserved untracked `agent/goals/` directory.
-- GitHub Actions workflow is committed and locally validated; remote CI was not
-  observable and is therefore `NOT OBSERVED`. Real provider data was not
-  redistributed because redistribution rights were not asserted.
+- Historical remote-CI observation scope: `NOT OBSERVED` at the prior Stage 2G.2
+  closeout. The Stage 2G.2R section below records the later observed run.
+  Real provider data was not redistributed because redistribution rights were not
+  asserted.
 
-## Final verdict
+## Historical Stage 2G.2 verdict (before Stage 2G.2R)
 
 ```text
 M2 Stage 2G.2: CONDITIONAL PASS
@@ -105,5 +107,68 @@ Next-stage selection: NORTH-STAR REVIEW REQUIRED
 
 Real market data is not redistributed because provider redistribution rights are
 not asserted. The bounded evidence ledger retains nine exchange retrieval gaps
-and the A/H split gap. Remote GitHub Actions status is reported separately from
-local workflow validation.
+and the A/H split gap.
+
+## M2 Stage 2G.2R remote delivery closeout
+
+The following HEAD model avoids a self-referential committed final-head claim:
+
+```text
+task_start_head: 29c1e221eaec994d597e2b634fc4be4f6543d19a
+implementation_head: b4c450b4b1eb0e83100c7455e6c6df8ab5ef3dde
+acceptance_evidence_generated_at_commit: b4c450b4b1eb0e83100c7455e6c6df8ab5ef3dde
+reviewed_branch_head_at_time: b4c450b4b1eb0e83100c7455e6c6df8ab5ef3dde
+final_remote_head: not committed; report only in the final response/external review
+workflow_run_commit: b4c450b4b1eb0e83100c7455e6c6df8ab5ef3dde
+workflow_run_id: 30730670937
+workflow_run_url: https://github.com/dlam12138/ashare-research-lab/actions/runs/30730670937
+```
+
+The observed run used Python 3.11 on `ubuntu-latest` and `windows-latest`, with
+`fail-fast: false`. Ubuntu job `91450419099` and Windows job `91450419127` both
+passed every step: clean-clone preflight, contract validation, independent A/B
+capsule builds and comparison, independent A/B runs and artifact comparison, and
+the full offline suite. The prior run `30729995619` had one Ubuntu test failure
+from a hard-coded Windows path separator at
+`tests/test_reconciliation_contract_closure.py:367`; the Windows job was then
+cancelled by the old fail-fast matrix. This was a test portability failure, not
+an infrastructure failure, and is now normalized for both operating systems.
+
+Local implementation evidence at `implementation_head`:
+
+- Targeted Stage 2G/Rule007/reconciliation tests: `93 passed`; full suite:
+  `952 passed, 2 warnings`; Ruff, compileall/import and diff checks passed.
+- Independent test-capsule A/B builds compared six manifest outputs with logical
+  digest `8d89d7d4a71f0e5dcaacccabc231e70411822f457c2dda9e03fe846c750f0ed1`.
+  Independent test runs compared 16 artifacts with logical digest
+  `27f878b7e7f6743f9f638916817fe881b891cd447ed9a18361de5dc8748d7da8`.
+- Explicit real-input preflight passed with 201 Fact rows / 33 used, 1,351
+  market rows, both registered provider hashes, Identity/version-chain PASS,
+  reconciliation PASS and `network_used=false`. Two real runs compared 16
+  artifacts with logical digest
+  `4ddb72f6ad05cdc75bf40834f5ec78d94b74586465e17b8737a23f496e9a7a14` and
+  Rule007 remained 1 eligible event / 9 explicit gaps.
+- Rule007 now has explicit states for the exact pair, issuer/exchange plus a
+  designated supplemental source, issuer-only, exchange-only,
+  designated-only, no retrieved official source, conflicting official sources,
+  and incomplete/invalid evidence. Designated evidence is excluded from
+  reconciled `input_fact_ids`.
+
+## Stage 2G.2R final verdict
+
+```text
+M2 Stage 2G.2R: PASS
+Ubuntu remote CI: PASS
+Windows remote CI: PASS
+Independent dual-build reproducibility: TRUSTED
+Independent dual-run reproducibility: TRUSTED
+Rule007 supplemental-source contract: TRUSTED
+Rule007 empty-source semantics: TRUSTED
+Clean-clone reproducibility: TRUSTED
+PetroChina real value profile: COMPLETE WITH EXPLICIT GAPS
+ROIC: NOT YET
+Scoring: STILL NOT YET
+Market mechanism: NOT STARTED
+Next-stage implementation: NOT STARTED
+Next-stage selection: NORTH-STAR REVIEW REQUIRED
+```

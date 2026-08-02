@@ -30,6 +30,8 @@ The gates reject or make explicit:
 - future-data leakage in PIT selection;
 - source-pair substitution, including designated disclosure platforms used as
   the exchange side;
+- ambiguous Rule007 empty-source, conflicting-source and incomplete-evidence
+  states;
 - hidden network access;
 - unstable or unhashed output artifacts;
 - reports whose input manifest no longer matches their outputs;
@@ -53,8 +55,13 @@ committed fixed algorithm and are labelled `synthetic_test_only`.
 
 ```text
 python -m ashare_research.tools.stage2g_reproducibility verify-contracts
-python -m ashare_research.tools.stage2g_reproducibility build-test-capsule --output <tmp>
-python -m ashare_research.tools.stage2g_reproducibility run-test-capsule --capsule-dir <tmp>
+python -m ashare_research.tools.stage2g_reproducibility verify-clean-clone
+python -m ashare_research.tools.stage2g_reproducibility build-test-capsule --output <tmp>/capsule-a
+python -m ashare_research.tools.stage2g_reproducibility build-test-capsule --output <tmp>/capsule-b
+python -m ashare_research.tools.stage2g_reproducibility compare-capsules --left <tmp>/capsule-a --right <tmp>/capsule-b
+python -m ashare_research.tools.stage2g_reproducibility run-test-capsule --capsule-dir <tmp>/capsule-a --output <tmp>/run-a --run-id <id>
+python -m ashare_research.tools.stage2g_reproducibility run-test-capsule --capsule-dir <tmp>/capsule-b --output <tmp>/run-b --run-id <id>
+python -m ashare_research.tools.stage2g_reproducibility compare-runs --left <tmp>/run-a/<id> --right <tmp>/run-b/<id>
 python -m ashare_research.tools.stage2g_reproducibility verify-real-inputs --fact-db <db> --market-cache-root <root> --output <manifest>
 python -m ashare_research.tools.stage2g_reproducibility run-real --fact-db <db> --market-cache-root <root> --output <runs> --run-id <id>
 ```
@@ -62,6 +69,11 @@ python -m ashare_research.tools.stage2g_reproducibility run-real --fact-db <db> 
 `verify-contracts` and test-capsule mode are offline. Real mode fails closed
 with `missing_external_research_input` when an explicit cache is absent or a
 content hash does not match. It never reads `data/research.duckdb` implicitly.
+
+Capsule/run output directories are caller-owned and cannot be overwritten.
+Independent A/B comparisons require valid manifests and checksums on both sides;
+the logical digest excludes the caller output root and `run_id` while the raw
+checksums still detect byte-level changes.
 
 ## Explicit limits
 
