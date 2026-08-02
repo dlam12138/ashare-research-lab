@@ -22,17 +22,22 @@ from decimal import ROUND_HALF_EVEN, Decimal, getcontext
 from pathlib import Path
 from typing import Any
 
+import duckdb
 import pandas as pd
 
 from ashare_research.events.dividend_v2 import (
     validate_dividend_event_v2,
     validate_source_evidence,
 )
+from ashare_research.facts.as_of import AsOfQuery
+from ashare_research.facts.identity import validate_canonical_fact_ids
+from ashare_research.facts.repository import FactRepository
+from ashare_research.facts.service import FactService
+from ashare_research.validation.version_chain import VersionChainValidator
 
 getcontext().prec = 28
 QUANTUM = Decimal("0.000000000001")
 ROOT = Path(__file__).resolve().parents[3]
-DEFAULT_DB = ROOT / "data" / "research.duckdb"
 SYMBOL = "601857.SH"
 CACHE_ROOT = Path(r"D:\量化分析-cache")
 MARKET_CACHE_ROOT = CACHE_ROOT / "market-data" / SYMBOL
@@ -58,18 +63,19 @@ OBSERVATION_TYPES = (
     "trailing_12m_paid_dividend_yield",
     "latest_annual_fcf_proxy_yield",
 )
-ANNUAL_AVAILABLE_AT = {
-    2021: "2022-04-01",
-    2022: "2023-03-30",
-    2023: "2024-03-26",
-    2024: "2025-03-31",
-    2025: "2026-03-30",
+REQUIRED_FINANCIAL_CONCEPTS = (
+    "net_profit_attributable_to_parent",
+    "equity_attributable_to_parent",
+    "revenue",
+    "operating_cash_flow",
+    "cash_paid_for_fixed_assets",
+)
+DIVIDEND_SOURCE_VALUE_KEYS = {
+    "cash_dividend_total": "cash_dividend_total",
+    "cash_dividend_per_share": "cash_dividend_per_share",
+    "share_capital_on_record_date": "share_capital",
 }
-SHARES = {
-    "a_shares": "161922077818",
-    "h_shares": "21098900000",
-    "total_ordinary_shares": "183020977818",
-}
+SHARE_RUN_END = "2026-07-31"
 
 
 def _read_json(path: Path) -> dict[str, Any]:
@@ -119,11 +125,30 @@ def _package_version(package: str) -> str:
         return "unknown"
 
 
-def validate_dividend_evidence() -> dict[str, Any]:
-    """Validate source typing, locators, hashes, chronology, and Rule007 inputs."""
+def _source_payload_value(source: Mapping[str, Any], concept_id: str) -> Any:
+    """Read a Rule007 value from the source's own extracted payload."""
 
-    events = _read_json(EVENT_PATH)["events"]
-    sources = _read_json(EVIDENCE_PATH)["entries"]
+    payload = source.get("extracted_values")
+    source_key = DIVIDEND_SOURCE_VALUE_KEYS[concept_id]
+    if not isinstance(payload, Mapping) or source_key not in payload:
+        raise ValueError(
+            f"{source.get('source_evidence_id', 'unknown')}:missing_extracted_value:{source_key}"
+        )
+    return payload[source_key]
+
+
+def validate_dividend_evidence(
+    events: list[dict[str, Any]] | None = None,
+    sources: list[dict[str, Any]] | None = None,
+) -> dict[str, Any]:
+    """Validate source typing, locators, hashes, chronology, and Rule007 inputs.
+
+    ``event`` values are cross-checks only.  Raw Facts are constructed later
+    from each source's own ``extracted_values`` payload.
+    """
+
+    events = events if events is not None else _read_json(EVENT_PATH)["events"]
+    sources = sources if sources is not None else _read_json(EVIDENCE_PATH)["entries"]
     source_by_id = {item["source_evidence_id"]: item for item in sources}
     errors: list[str] = []
     for event in events:
@@ -140,13 +165,18 @@ def validate_dividend_evidence() -> dict[str, Any]:
     eligible: list[dict[str, Any]] = []
     gaps: list[dict[str, Any]] = []
     for event in events:
-        linked = [source_by_id[sid] for sid in event["source_evidence_ids"]]
+        linked = [
+            source_by_id[source_id]
+            for source_id in event.get("source_evidence_ids", [])
+            if source_id in source_by_id
+        ]
         real = [
             source
             for source in linked
             if source.get("retrieval_status") == "retrieved"
             and source.get("content_sha256")
             and source.get("independently_extracted")
+            and isinstance(source.get("extracted_values"), Mapping)
         ]
         issuer = [source for source in real if source["source_type"] == "issuer_official"]
         exchange = [
@@ -172,17 +202,38 @@ def validate_dividend_evidence() -> dict[str, Any]:
                     }
                 )
                 continue
-            left = issuer[0]["extracted_values"]
-            right = exchange[0]["extracted_values"]
-            comparable = all(
-                left.get(k) == right.get(k)
-                for k in (
-                    "cash_dividend_total",
-                    "cash_dividend_per_share",
-                    "share_capital",
-                    "currency",
-                    "share_scope",
-                )
+            comparable = True
+            for concept_id, _source_key in DIVIDEND_SOURCE_VALUE_KEYS.items():
+                try:
+                    source_values = [
+                        _source_payload_value(issuer[0], concept_id),
+                        _source_payload_value(exchange[0], concept_id),
+                    ]
+                    if concept_id == "share_capital_on_record_date":
+                        source_values = [str(value) for value in source_values]
+                    elif concept_id in {"cash_dividend_total", "cash_dividend_per_share"}:
+                        source_values = [_decimal(value) for value in source_values]
+                    comparable = comparable and source_values[0] == source_values[1]
+                    event_value = event.get(concept_id)
+                    if concept_id == "share_capital_on_record_date":
+                        comparable = comparable and str(event_value) == str(source_values[0])
+                    else:
+                        comparable = comparable and _decimal(event_value) == source_values[0]
+                except (KeyError, TypeError, ValueError):
+                    comparable = False
+                    break
+                if not comparable:
+                    break
+            comparable = comparable and all(
+                issuer[0]["extracted_values"].get(key)
+                == exchange[0]["extracted_values"].get(key)
+                for key in ("currency", "share_scope")
+            )
+            comparable = comparable and event.get("currency") == issuer[0]["extracted_values"].get(
+                "currency"
+            )
+            comparable = comparable and event.get("share_scope") == issuer[0]["extracted_values"].get(
+                "share_scope"
             )
             if comparable:
                 eligible.append(
@@ -220,6 +271,8 @@ def validate_dividend_evidence() -> dict[str, Any]:
         ),
         "gaps": gaps,
         "eligible": eligible,
+        "events": events,
+        "sources": sources,
     }
 
 
@@ -369,93 +422,346 @@ def _load_market(registry_path: Path | None = None) -> tuple[pd.DataFrame, dict[
     }
 
 
-def _financial_facts() -> list[dict[str, Any]]:
-    facts: list[dict[str, Any]] = []
-    base = ROOT / "acceptance" / "fixtures" / "official_facts" / SYMBOL
-    for year in range(2021, 2026):
-        bundle = _read_json(base / f"{year}_annual.json")
-        available_at = ANNUAL_AVAILABLE_AT[year]
-        for item in bundle["facts"]:
-            if item.get("source_key") != "company":
-                continue
-            value_cny = Decimal(str(item["expected_normalized_value"])) * Decimal("10000")
-            facts.append(
-                {
-                    "fact_id": _stable_id([SYMBOL, year, item["concept_id"], value_cny], "fact"),
-                    "symbol": SYMBOL,
-                    "concept_id": item["concept_id"],
-                    "fiscal_year": year,
-                    "period_end": f"{year}-12-31",
-                    "available_at": available_at,
-                    "value": value_cny,
-                    "unit": "CNY",
-                    "currency": "CNY",
-                    "source_evidence_ids": [
-                        bundle["documents"]["company"]["source_id"],
-                        bundle["documents"]["exchange"]["source_id"],
+def _public_market_registry(registry: Mapping[str, Any]) -> dict[str, Any]:
+    """Remove local cache paths before a registry is embedded in a run manifest."""
+
+    public = json.loads(json.dumps(registry))
+    for provider in public.get("providers", []):
+        for key in ("normalized_cache_path", "raw_response_path"):
+            if provider.get(key):
+                provider[key] = Path(str(provider[key])).name
+    return public
+
+
+class _ReadOnlyStore:
+    """Small adapter that lets the existing repository query a read-only conn."""
+
+    def __init__(self, connection: duckdb.DuckDBPyConnection) -> None:
+        self._connection = connection
+
+    def connect(self) -> duckdb.DuckDBPyConnection:
+        return self._connection
+
+
+def _json_scalar(value: Any) -> Any:
+    if value is None or (isinstance(value, float) and pd.isna(value)):
+        return None
+    if isinstance(value, pd.Timestamp):
+        return value.date().isoformat()
+    if isinstance(value, datetime | date):
+        return value.isoformat()
+    if hasattr(value, "item"):
+        return value.item()
+    return value
+
+
+def _value_in_cny(value: Any, unit: Any) -> Decimal:
+    """Convert a canonical monetary fact for calculation without changing its identity."""
+
+    amount = _decimal(value)
+    normalized_unit = str(unit or "").strip().upper()
+    multipliers = {
+        "CNY": Decimal("1"),
+        "RMB": Decimal("1"),
+        "万元": Decimal("10000"),
+        "CNY_10K": Decimal("10000"),
+        "RMB_10K": Decimal("10000"),
+        "人民币百万元": Decimal("1000000"),
+        "CNY_MILLION": Decimal("1000000"),
+        "RMB_MILLION": Decimal("1000000"),
+        "亿元": Decimal("100000000"),
+        "CNY_100M": Decimal("100000000"),
+        "RMB_100M": Decimal("100000000"),
+    }
+    if normalized_unit not in multipliers:
+        raise ValueError(f"unsupported canonical monetary unit: {unit!r}")
+    return (amount * multipliers[normalized_unit]).quantize(QUANTUM)
+
+
+def _canonical_fact_record(
+    row: Mapping[str, Any],
+    context_by_id: Mapping[str, Mapping[str, Any]],
+    lineage_by_fact_id: Mapping[str, list[dict[str, Any]]],
+) -> dict[str, Any]:
+    fact = {key: _json_scalar(value) for key, value in row.items()}
+    context = context_by_id.get(str(fact.get("context_id", "")), {})
+    fact["fact_id"] = str(fact["fact_id"])
+    fact["fiscal_year"] = int(context["fiscal_year"])
+    fact["period_type"] = str(context.get("period_type", ""))
+    fact["consolidation_scope"] = str(context.get("consolidation_scope", ""))
+    fact["currency"] = "CNY"
+    fact["value"] = _decimal(fact["value"])
+    fact["value_cny"] = _value_in_cny(fact["value"], fact.get("unit"))
+    fact["source_evidence_ids"] = [str(fact["source_id"])] if fact.get("source_id") else []
+    fact["lineage"] = lineage_by_fact_id.get(fact["fact_id"], [])
+    return fact
+
+
+def _is_annual_observation_fact(fact: Mapping[str, Any]) -> bool:
+    period_type = str(fact.get("period_type", "")).lower()
+    return period_type in {"annual", "fy"} or str(fact.get("period_end", "")).endswith(
+        "-12-31"
+    )
+
+
+def _load_canonical_facts(
+    fact_db: Path | str | None,
+    trade_dates: list[str] | None = None,
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """Read canonical Facts through the existing repository/PIT interfaces.
+
+    The database is opened read-only and is never initialized, migrated, or
+    written by this runner.  No fixture or runner-generated Fact identity is
+    available on this path.
+    """
+
+    if fact_db is None:
+        raise FileNotFoundError("missing_input: formal valuation requires --fact-db")
+    path = Path(fact_db)
+    if not path.is_file():
+        raise FileNotFoundError(f"missing_input: canonical fact DB not found: {path}")
+    input_hash = _sha256_bytes(path.read_bytes())
+    connection = duckdb.connect(str(path), read_only=True)
+    try:
+        tables = {
+            str(row[0])
+            for row in connection.execute(
+                "SELECT table_name FROM information_schema.tables WHERE table_schema='main'"
+            ).fetchall()
+        }
+        required_tables = {"financial_facts", "fact_contexts", "fact_lineage"}
+        missing_tables = sorted(required_tables - tables)
+        if missing_tables:
+            raise ValueError(f"missing_input: canonical fact DB missing tables: {missing_tables}")
+        schema_row = connection.execute(
+            "SELECT schema_version FROM fact_schema_meta WHERE schema_name='financial_facts' "
+            "ORDER BY applied_at DESC LIMIT 1"
+        ).fetchone()
+        schema_version = str(schema_row[0]) if schema_row else "unknown"
+        store = _ReadOnlyStore(connection)
+        repository = FactRepository(store)
+        as_of = AsOfQuery(repository)
+        service = FactService(repository, source_registry=None)
+        all_df = repository.query_facts(SYMBOL, include_unverified=True)
+        all_records = [
+            {key: _json_scalar(value) for key, value in row.items()}
+            for row in all_df.to_dict(orient="records")
+        ]
+        validate_canonical_fact_ids(all_records)
+        version_results = VersionChainValidator(repository).validate(
+            all_records, conn=connection
+        )
+        failed_versions = [result.target_id for result in version_results if not result.passed]
+        if failed_versions:
+            raise ValueError(f"canonical version chain failed: {failed_versions}")
+        context_df = connection.execute("SELECT * FROM fact_contexts").df()
+        context_by_id = {
+            str(row["context_id"]): {
+                key: _json_scalar(value) for key, value in row.items()
+            }
+            for row in context_df.to_dict(orient="records")
+        }
+        lineage_df = connection.execute("SELECT * FROM fact_lineage ORDER BY lineage_id").df()
+        lineage_by_fact_id: dict[str, list[dict[str, Any]]] = {}
+        for row in lineage_df.to_dict(orient="records"):
+            record = {key: _json_scalar(value) for key, value in row.items()}
+            lineage_by_fact_id.setdefault(str(record["fact_id"]), []).append(record)
+        all_records = [
+            _canonical_fact_record(row, context_by_id, lineage_by_fact_id)
+            for row in all_records
+        ]
+        annual_available_dates = sorted(
+            {
+                str(record["available_at"])
+                for record in all_records
+                if record["concept_id"] in REQUIRED_FINANCIAL_CONCEPTS
+                and _is_annual_observation_fact(record)
+                and record.get("available_at")
+            }
+        )
+        requested_dates = sorted(set(trade_dates or annual_available_dates + [SHARE_RUN_END]))
+        snapshots: dict[str, dict[str, dict[str, Any]]] = {}
+        selected: dict[str, dict[str, Any]] = {}
+        for as_of_date in requested_dates:
+            pit_frames = [
+                as_of.get_latest_available(
+                    SYMBOL,
+                    as_of_date,
+                    concept_ids=[
+                        concept_id
+                        for concept_id in REQUIRED_FINANCIAL_CONCEPTS
+                        if concept_id != "equity_attributable_to_parent"
                     ],
-                }
+                    consolidation_scope="consolidated",
+                ),
+                as_of.get_latest_available(
+                    SYMBOL,
+                    as_of_date,
+                    concept_ids=["equity_attributable_to_parent"],
+                    consolidation_scope="consolidated",
+                ),
+            ]
+            pit_df = pd.concat(pit_frames, ignore_index=True)
+            service_df = service.query_as_of(
+                SYMBOL, list(REQUIRED_FINANCIAL_CONCEPTS), as_of_date
             )
-        for filename, concept_id, source_value in (
-            (
-                f"{year}_roe_roa_denominators.json",
-                "equity_attributable_to_parent",
-                "equity_attributable_to_parent",
-            ),
-            (f"{year}_capex_cash.json", "cash_paid_for_fixed_assets", "capex"),
-        ):
-            supplemental = _read_json(base / "supplemental" / filename)
-            if concept_id == "equity_attributable_to_parent":
-                company_facts = supplemental["sources"]["company"]["facts"]
-                value = next(
-                    item["expected_normalized_value"]
-                    for item in company_facts
-                    if item["concept_id"] == concept_id
-                )
-            else:
-                value = supplemental["company"]["expected_normalized_value"]
-            value_cny = Decimal(str(value)) * Decimal("10000")
-            facts.append(
-                {
-                    "fact_id": _stable_id([SYMBOL, year, concept_id, value_cny], "fact"),
-                    "symbol": SYMBOL,
-                    "concept_id": concept_id,
-                    "fiscal_year": year,
-                    "period_end": f"{year}-12-31",
-                    "available_at": available_at,
-                    "value": value_cny,
-                    "unit": "CNY",
-                    "currency": "CNY",
-                    "source_evidence_ids": [
-                        f"official_facts:{SYMBOL}:{year}:annual",
-                        f"supplemental:{SYMBOL}:{year}:{source_value}",
-                    ],
-                }
+            service_ids = {str(value) for value in service_df.get("fact_id", pd.Series(dtype=str))}
+            snapshot_rows: dict[str, dict[str, Any]] = {}
+            for row in pit_df.to_dict(orient="records"):
+                record = _canonical_fact_record(row, context_by_id, lineage_by_fact_id)
+                if record["fact_id"] not in service_ids:
+                    raise ValueError(
+                        f"PIT interface disagreement for {record['fact_id']} at {as_of_date}"
+                    )
+                if not _is_annual_observation_fact(record):
+                    continue
+                snapshot_rows[record["fact_id"]] = record
+                selected[record["fact_id"]] = record
+            snapshots[as_of_date] = snapshot_rows
+        required_counts = {
+            concept_id: sum(
+                record["concept_id"] == concept_id for record in selected.values()
             )
+            for concept_id in REQUIRED_FINANCIAL_CONCEPTS
+        }
+        metadata = {
+            "logical_name": path.name,
+            "sha256": input_hash,
+            "schema_version": schema_version,
+            "fact_count": len(all_records),
+            "eligible_fact_count": sum(bool(row.get("eligible_for_metrics")) for row in all_records),
+            "used_fact_count": len(selected),
+            "used_fact_ids": sorted(selected),
+            "required_concept_coverage": required_counts,
+            "pit_snapshot_dates": sorted(snapshots),
+            "identity_status": "pass",
+            "version_chain_status": "pass",
+            "snapshots": snapshots,
+        }
+        return list(selected.values()), metadata
+    finally:
+        connection.close()
+
+
+def _financial_facts(
+    fact_db: Path | str | None = None,
+    trade_dates: list[str] | None = None,
+) -> list[dict[str, Any]]:
+    facts, _ = _load_canonical_facts(fact_db, trade_dates=trade_dates)
     return facts
 
 
-def _share_timeline(events: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    issuer_url = "https://www.petrochina.com.cn/petrochina/gsgg/202510/348943f415d042979c32ba8a098efe9f/files/8f457feea3ed4e7694c88c556d6b86ff.pdf"
-    rows = [
-        {
-            "timeline_id": _stable_id(
-                [SYMBOL, "ordinary_share_capital_timeline_v1", "2021-01-01", SHARES], "share"
-            ),
-            "effective_from": "2021-01-01",
-            "effective_to": "2026-07-31",
-            "a_shares": SHARES["a_shares"],
-            "h_shares": SHARES["h_shares"],
-            "total_ordinary_shares": SHARES["total_ordinary_shares"],
-            "share_scope": "A_and_H_ordinary_shares_distinct_and_combined_for_DPS",
-            "currency": "CNY",
-            "evidence_status": "official_issuer_source_recorded",
-            "source_url": issuer_url,
-            "canonical_market_cap_definition": False,
-            "diagnostic_name_if_multiplied_by_A_close": "a_share_price_implied_total_ordinary_equity_value",
+def _share_timeline(
+    events: list[dict[str, Any]],
+    sources: list[dict[str, Any]] | None = None,
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    """Build share-capital intervals from registered evidence records.
+
+    The current evidence set reports total ordinary shares but does not expose
+    an A/H split.  That remains an explicit evidence gap; total shares are
+    still usable for the A+H DPS basis without inventing the split.
+    """
+
+    if sources is None:
+        sources = _read_json(EVIDENCE_PATH)["entries"]
+    source_by_id = {source["source_evidence_id"]: source for source in sources}
+    records: list[dict[str, Any]] = []
+    for event in events:
+        effective_from = event.get("implementation_available_at")
+        if not effective_from:
+            continue
+        for source_id in event.get("source_evidence_ids", []):
+            source = source_by_id.get(source_id)
+            payload = source.get("extracted_values") if source else None
+            if not source or not isinstance(payload, Mapping):
+                continue
+            if source.get("retrieval_status") != "retrieved" or not source.get("content_sha256"):
+                continue
+            total = payload.get("share_capital")
+            if total in (None, ""):
+                continue
+            a_shares = payload.get("a_shares")
+            h_shares = payload.get("h_shares")
+            if a_shares is not None and h_shares is not None:
+                if _decimal(a_shares) + _decimal(h_shares) != _decimal(total):
+                    raise ValueError(f"share-capital inconsistency in evidence {source_id}")
+                validation_status = "verified_a_plus_h_equals_total"
+            else:
+                validation_status = "missing_evidence_a_h_split"
+            records.append(
+                {
+                    "evidence_id": source_id,
+                    "source_type": source.get("source_type"),
+                    "document_title": source.get("title"),
+                    "announcement_id": source.get("announcement_id"),
+                    "exact_url": source.get("exact_url"),
+                    "content_sha256": source.get("content_sha256"),
+                    "available_at": source.get("announcement_date"),
+                    "effective_from": effective_from,
+                    "a_shares": a_shares,
+                    "h_shares": h_shares,
+                    "total_ordinary_shares": str(total),
+                    "currency": payload.get("currency"),
+                    "share_scope": payload.get("share_scope"),
+                    "extraction_method": source.get("extraction_method"),
+                    "source_page": source.get("source_page"),
+                    "verification_status": "verified_source_payload",
+                    "share_validation_status": validation_status,
+                }
+            )
+    records.sort(key=lambda row: (row["effective_from"], row["available_at"], row["evidence_id"]))
+    grouped: dict[tuple[Any, ...], dict[str, Any]] = {}
+    for record in records:
+        key = (
+            record["effective_from"],
+            record["a_shares"],
+            record["h_shares"],
+            record["total_ordinary_shares"],
+            record["currency"],
+            record["share_scope"],
+        )
+        existing = grouped.get(key)
+        if existing is None:
+            grouped[key] = {
+                **record,
+                "evidence_ids": [record["evidence_id"]],
+                "available_at": record["available_at"],
+            }
+        else:
+            existing["evidence_ids"].append(record["evidence_id"])
+            existing["available_at"] = min(existing["available_at"], record["available_at"])
+            if existing["share_validation_status"] != "verified_a_plus_h_equals_total":
+                existing["share_validation_status"] = record["share_validation_status"]
+    starts = sorted(grouped.values(), key=lambda row: row["effective_from"])
+    rows: list[dict[str, Any]] = []
+    for index, record in enumerate(starts):
+        next_start = starts[index + 1]["effective_from"] if index + 1 < len(starts) else SHARE_RUN_END
+        effective_to = (
+            _date(next_start) - timedelta(days=1)
+            if index + 1 < len(starts)
+            else _date(SHARE_RUN_END)
+        )
+        row = {
+            key: value
+            for key, value in record.items()
+            if key not in {"evidence_id"}
         }
-    ]
-    return rows
+        row.update(
+            {
+                "timeline_id": _stable_id(
+                    [SYMBOL, "ordinary_share_capital_timeline_v1", row["effective_from"], row],
+                    "share",
+                ),
+                "effective_to": effective_to.isoformat(),
+                "canonical_market_cap_definition": False,
+                "diagnostic_name_if_multiplied_by_A_close": (
+                    "a_share_price_implied_total_ordinary_equity_value"
+                ),
+                "coverage_status": "evidence_bounded_interval",
+            }
+        )
+        rows.append(row)
+    return rows, records
 
 
 def _latest_fact(
@@ -464,19 +770,60 @@ def _latest_fact(
     candidates = [
         fact
         for fact in facts
-        if fact["concept_id"] == concept_id and _date(fact["available_at"]) <= trade_date
+        if fact["concept_id"] == concept_id
+        and _is_annual_observation_fact(fact)
+        and fact.get("available_at")
+        and _date(fact["available_at"]) <= trade_date
     ]
-    return max(candidates, key=lambda fact: fact["fiscal_year"]) if candidates else None
+    return (
+        max(
+            candidates,
+            key=lambda fact: (
+                fact["fiscal_year"],
+                str(fact.get("available_at", "")),
+                int(fact.get("fact_version", 1)),
+                str(fact.get("restatement_version", "")),
+                fact["fact_id"],
+            ),
+        )
+        if candidates
+        else None
+    )
 
 
-def _eligible_dividend_rows(evidence: dict[str, Any]) -> list[dict[str, Any]]:
+def _share_for_trade_date(
+    timeline: list[dict[str, Any]], trade_date: date
+) -> tuple[Decimal | None, str | None]:
+    candidates = [
+        row
+        for row in timeline
+        if row.get("total_ordinary_shares")
+        and row.get("available_at")
+        and _date(row["available_at"]) <= trade_date
+        and _date(row["effective_from"]) <= trade_date <= _date(row["effective_to"])
+    ]
+    if not candidates:
+        return None, None
+    row = max(candidates, key=lambda item: (item["effective_from"], item["available_at"]))
+    return _decimal(row["total_ordinary_shares"]), row["timeline_id"]
+
+
+def _eligible_dividend_rows(
+    evidence: dict[str, Any], reconciled_facts: list[dict[str, Any]]
+) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
     for item in evidence["eligible"]:
         event = item["event"]
+        dps_fact = next(
+            fact
+            for fact in reconciled_facts
+            if fact["event_id"] == event["event_id"]
+            and fact["concept_id"] == "cash_dividend_per_share"
+        )
         rows.append(
             {
                 "event_id": event["event_id"],
-                "dps": _decimal(event["cash_dividend_per_share"]),
+                "dps": _decimal(dps_fact["value"]),
                 "implementation_available_at": _date(event["implementation_available_at"]),
                 "payment_date": _date(event["payment_date"]),
                 "source_evidence_ids": [source["source_evidence_id"] for source in item["sources"]],
@@ -508,7 +855,8 @@ def _observation_value(
     close: Decimal,
     trade_day: date,
     facts: list[dict[str, Any]],
-    shares: Decimal,
+    shares: Decimal | None,
+    share_timeline_id: str | None,
     event_rows: list[dict[str, Any]],
     events: list[dict[str, Any]],
 ) -> tuple[Decimal | None, str, dict[str, Any]]:
@@ -516,38 +864,44 @@ def _observation_value(
         "financial_fact_ids": [],
         "dividend_event_ids": [],
         "missing_event_ids": [],
+        "share_timeline_ids": [share_timeline_id] if share_timeline_id else [],
     }
+    if shares is None and observation_type not in {
+        "trailing_12m_announced_dividend_yield",
+        "trailing_12m_paid_dividend_yield",
+    }:
+        return None, "missing_input", lineage
     if observation_type == "a_share_price_to_latest_annual_parent_earnings":
         fact = _latest_fact(facts, "net_profit_attributable_to_parent", trade_day)
         if not fact:
             return None, "missing_input", lineage
         lineage["financial_fact_ids"] = [fact["fact_id"]]
-        if fact["value"] <= 0:
+        if fact["value_cny"] <= 0:
             return None, "not_comparable_non_positive_earnings", lineage
-        return close / (fact["value"] / shares), "computed", lineage
+        return close / (fact["value_cny"] / shares), "computed", lineage
     if observation_type == "a_share_price_to_latest_year_end_parent_equity":
         fact = _latest_fact(facts, "equity_attributable_to_parent", trade_day)
         if not fact:
             return None, "missing_input", lineage
         lineage["financial_fact_ids"] = [fact["fact_id"]]
-        if fact["value"] <= 0:
+        if fact["value_cny"] <= 0:
             return None, "not_comparable_non_positive_equity", lineage
-        return close / (fact["value"] / shares), "computed", lineage
+        return close / (fact["value_cny"] / shares), "computed", lineage
     if observation_type == "a_share_price_to_latest_annual_revenue":
         fact = _latest_fact(facts, "revenue", trade_day)
         if not fact:
             return None, "missing_input", lineage
         lineage["financial_fact_ids"] = [fact["fact_id"]]
-        if fact["value"] <= 0:
+        if fact["value_cny"] <= 0:
             return None, "not_comparable_non_positive_revenue", lineage
-        return close / (fact["value"] / shares), "computed", lineage
+        return close / (fact["value_cny"] / shares), "computed", lineage
     if observation_type == "latest_annual_fcf_proxy_yield":
         ocf = _latest_fact(facts, "operating_cash_flow", trade_day)
         capex = _latest_fact(facts, "cash_paid_for_fixed_assets", trade_day)
         if not ocf or not capex:
             return None, "missing_input", lineage
         lineage["financial_fact_ids"] = [ocf["fact_id"], capex["fact_id"]]
-        return ((ocf["value"] - capex["value"]) / shares) / close, "computed", lineage
+        return ((ocf["value_cny"] - capex["value_cny"]) / shares) / close, "computed", lineage
     field = (
         "implementation_available_at"
         if observation_type == "trailing_12m_announced_dividend_yield"
@@ -676,13 +1030,130 @@ def _assert_no_forbidden_fields(value: Any, path: str = "root") -> None:
             _assert_no_forbidden_fields(child, f"{path}[{index}]")
 
 
+def _build_rule007_facts(evidence: Mapping[str, Any]) -> list[dict[str, Any]]:
+    """Build raw Rule007 Facts from each source payload, never from events."""
+
+    facts: list[dict[str, Any]] = []
+    for item in evidence["eligible"]:
+        event = item["event"]
+        for concept in DIVIDEND_SOURCE_VALUE_KEYS:
+            for source in item["sources"]:
+                payload = source["extracted_values"]
+                raw_value = _source_payload_value(source, concept)
+                facts.append(
+                    {
+                        "fact_id": _stable_id(
+                            [
+                                event["event_id"],
+                                source["source_evidence_id"],
+                                concept,
+                                source["content_sha256"],
+                            ],
+                            "div_fact",
+                        ),
+                        "event_id": event["event_id"],
+                        "event_type": event["event_type"],
+                        "source_fiscal_year": event["source_fiscal_year"],
+                        "concept_id": (
+                            "share_capital"
+                            if concept == "share_capital_on_record_date"
+                            else concept
+                        ),
+                        "source_payload_key": DIVIDEND_SOURCE_VALUE_KEYS[concept],
+                        "value": raw_value,
+                        "raw_value": raw_value,
+                        "currency": payload.get("currency"),
+                        "share_scope": payload.get("share_scope"),
+                        "source_type": source["source_type"],
+                        "source_evidence_id": source["source_evidence_id"],
+                        "source_id": source.get("source_id"),
+                        "source_document": source.get("title"),
+                        "source_url": source.get("exact_url"),
+                        "source_page": source.get("source_page"),
+                        "content_sha256": source["content_sha256"],
+                        "announcement_date": source.get("announcement_date"),
+                        "available_at": source.get("announcement_date"),
+                        "event_semantics": {
+                            "event_id": event["event_id"],
+                            "event_type": event["event_type"],
+                            "source_fiscal_year": event["source_fiscal_year"],
+                        },
+                        "eligible_for_rule007": True,
+                    }
+                )
+    return facts
+
+
+def _reconcile_rule007_facts(
+    evidence: Mapping[str, Any], raw_facts: list[dict[str, Any]]
+) -> list[dict[str, Any]]:
+    """Reconcile exactly two raw Facts and use their common public value."""
+
+    reconciled: list[dict[str, Any]] = []
+    for item in evidence["eligible"]:
+        event = item["event"]
+        for concept in DIVIDEND_SOURCE_VALUE_KEYS:
+            concept_id = "share_capital" if concept == "share_capital_on_record_date" else concept
+            raw_group = [
+                fact
+                for fact in raw_facts
+                if fact["event_id"] == event["event_id"] and fact["concept_id"] == concept_id
+            ]
+            if len(raw_group) != 2:
+                raise ValueError(
+                    f"Rule007 requires exactly two raw Facts for {event['event_id']}:{concept_id}"
+                )
+            first, second = raw_group
+            if (
+                first["value"] != second["value"]
+                or first["currency"] != second["currency"]
+                or first["share_scope"] != second["share_scope"]
+            ):
+                raise ValueError(f"{event['event_id']}:numeric_or_scope_conflict")
+            reconciled.append(
+                {
+                    "fact_id": _stable_id(
+                        [
+                            "RECON_OFFICIAL_NUMERIC_007",
+                            event["event_id"],
+                            concept,
+                            first["fact_id"],
+                            second["fact_id"],
+                        ],
+                        "reconciled_div_fact",
+                    ),
+                    "event_id": event["event_id"],
+                    "event_type": event["event_type"],
+                    "source_fiscal_year": event["source_fiscal_year"],
+                    "concept_id": concept_id,
+                    "value": first["value"],
+                    "currency": first["currency"],
+                    "share_scope": first["share_scope"],
+                    "rule_id": "RECON_OFFICIAL_NUMERIC_007",
+                    "input_fact_ids": [first["fact_id"], second["fact_id"]],
+                    "source_evidence_ids": [
+                        first["source_evidence_id"],
+                        second["source_evidence_id"],
+                    ],
+                    "evidence_status": "reconciled_dual_official",
+                    "eligible_for_dividend_inputs": True,
+                }
+            )
+    return reconciled
+
+
 def run_formal(
     output_root: Path | str | None = None,
     run_id: str = "stage2g_valuation_pit_20260801",
     registry_path: Path | None = None,
     publish_reports: bool = False,
+    fact_db: Path | str | None = None,
 ) -> dict[str, Any]:
-    """Run the fully offline Stage 2G valuation vertical slice."""
+    """Run the fully offline Stage 2G valuation vertical slice.
+
+    ``fact_db`` is mandatory in practice: omitting it is an explicit
+    ``missing_input`` failure, never a fixture or default-DB fallback.
+    """
 
     output_root = Path(output_root) if output_root else ROOT / "runs" / "stage2g"
     run_dir = output_root / run_id
@@ -698,16 +1169,54 @@ def run_formal(
     if market.empty:
         raise ValueError("no market observations")
     market["close"] = market["close"].round(2)
-    facts = _financial_facts()
-    shares = Decimal(SHARES["total_ordinary_shares"])
-    event_rows = _eligible_dividend_rows(evidence)
+    facts, fact_input = _load_canonical_facts(fact_db)
+    shares_timeline, share_evidence_ledger = _share_timeline(
+        events, sources=evidence["sources"]
+    )
+    _write_json(
+        run_dir / "share_capital_evidence_ledger.json",
+        {
+            "contract": "ordinary_share_capital_evidence_ledger_v1",
+            "records": share_evidence_ledger,
+        },
+    )
+    _write_json(
+        run_dir / "share_capital_timeline.json",
+        {
+            "contract": "ordinary_share_capital_timeline_v1",
+            "rows": shares_timeline,
+            "evidence_gap": (
+                "A/H split was not present in the registered source payloads; total ordinary "
+                "shares remain evidence-backed and usable for the combined DPS basis."
+            ),
+        },
+    )
+    rule007_facts = _build_rule007_facts(evidence)
+    reconciled_facts = _reconcile_rule007_facts(evidence, rule007_facts)
     observations: list[dict[str, Any]] = []
+    _write_json(
+        run_dir / "rule007_facts.json",
+        {"contract": "Rule007_corrected_dividend_facts_v2", "facts": rule007_facts},
+    )
+    _write_json(
+        run_dir / "rule007_reconciled_facts.json",
+        {"contract": "Rule007_reconciled_dividend_facts_v2", "facts": reconciled_facts},
+    )
+    event_rows = _eligible_dividend_rows(evidence, reconciled_facts)
     for _, market_row in market.iterrows():
         trade_day = _date(market_row["trade_date"])
         close = _decimal(market_row["close"])
+        shares, share_timeline_id = _share_for_trade_date(shares_timeline, trade_day)
         for observation_type in OBSERVATION_TYPES:
             value, status, lineage = _observation_value(
-                observation_type, close, trade_day, facts, shares, event_rows, events
+                observation_type,
+                close,
+                trade_day,
+                facts,
+                shares,
+                share_timeline_id,
+                event_rows,
+                events,
             )
             row = {
                 "observation_id": _stable_id(
@@ -731,95 +1240,9 @@ def run_formal(
     obs_df = pd.DataFrame(observations)
     obs_df.to_parquet(run_dir / "valuation_observations.parquet", index=False, engine="pyarrow")
     market.to_parquet(run_dir / "stock_daily_snapshot.parquet", index=False, engine="pyarrow")
-    shares_timeline = _share_timeline(events)
-    _write_json(
-        run_dir / "share_capital_timeline.json",
-        {"contract": "ordinary_share_capital_timeline_v1", "rows": shares_timeline},
-    )
-    rule007_facts: list[dict[str, Any]] = []
-    for item in evidence["eligible"]:
-        event = item["event"]
-        for concept in (
-            "cash_dividend_total",
-            "cash_dividend_per_share",
-            "share_capital_on_record_date",
-        ):
-            for source in item["sources"]:
-                rule007_facts.append(
-                    {
-                        "fact_id": _stable_id(
-                            [
-                                event["event_id"],
-                                source["source_evidence_id"],
-                                concept,
-                                source["content_sha256"],
-                            ],
-                            "div_fact",
-                        ),
-                        "event_id": event["event_id"],
-                        "concept_id": "share_capital"
-                        if concept == "share_capital_on_record_date"
-                        else concept,
-                        "value": event[concept],
-                        "source_type": source["source_type"],
-                        "source_evidence_id": source["source_evidence_id"],
-                        "content_sha256": source["content_sha256"],
-                        "eligible_for_rule007": True,
-                    }
-                )
-    _write_json(
-        run_dir / "rule007_facts.json",
-        {"contract": "Rule007_corrected_dividend_facts_v2", "facts": rule007_facts},
-    )
-    reconciled_facts: list[dict[str, Any]] = []
-    for item in evidence["eligible"]:
-        event = item["event"]
-        for concept in (
-            "cash_dividend_total",
-            "cash_dividend_per_share",
-            "share_capital_on_record_date",
-        ):
-            input_ids = [
-                fact["fact_id"]
-                for fact in rule007_facts
-                if fact["event_id"] == event["event_id"]
-                and fact["concept_id"]
-                == ("share_capital" if concept == "share_capital_on_record_date" else concept)
-            ]
-            reconciled_facts.append(
-                {
-                    "fact_id": _stable_id(
-                        ["RECON_OFFICIAL_NUMERIC_007", event["event_id"], concept, event[concept]],
-                        "reconciled_div_fact",
-                    ),
-                    "event_id": event["event_id"],
-                    "concept_id": "share_capital"
-                    if concept == "share_capital_on_record_date"
-                    else concept,
-                    "value": event[concept],
-                    "rule_id": "RECON_OFFICIAL_NUMERIC_007",
-                    "input_fact_ids": input_ids,
-                    "source_evidence_ids": [
-                        source["source_evidence_id"] for source in item["sources"]
-                    ],
-                    "evidence_status": "reconciled_dual_official",
-                    "eligible_for_dividend_inputs": True,
-                }
-            )
-    _write_json(
-        run_dir / "rule007_reconciled_facts.json",
-        {"contract": "Rule007_reconciled_dividend_facts_v2", "facts": reconciled_facts},
-    )
-    annual_fact_rows = [
-        {
-            key: (_json_default(value) if isinstance(value, Decimal | date) else value)
-            for key, value in fact.items()
-        }
-        for fact in facts
-    ]
     _write_json(
         run_dir / "financial_facts_pit_snapshot.json",
-        {"contract": "Fact_pit_snapshot_v1", "facts": annual_fact_rows},
+        {"contract": "Fact_pit_snapshot_v1", "facts": facts},
     )
     latest: dict[str, Any] = {}
     last_trade_date = str(market["trade_date"].iloc[-1])
@@ -857,10 +1280,33 @@ def run_formal(
         "future_leakage_check": "pass",
     }
     _write_json(run_dir / "pit_transitions.json", transitions)
+    missing_concepts = [
+        concept_id
+        for concept_id, count in fact_input["required_concept_coverage"].items()
+        if count == 0
+    ]
+    missing_share_split = any(
+        row["share_validation_status"] == "missing_evidence_a_h_split"
+        for row in shares_timeline
+    )
+    non_positive_status = (
+        "observed"
+        if any(str(status).startswith("not_comparable_non_positive") for status in obs_df["status"])
+        else "not_observed_within_bounded_evidence"
+    )
+    stage_status = (
+        "blocked_missing_canonical_input"
+        if missing_concepts or not shares_timeline
+        else "pass_with_explicit_gaps"
+    )
     gaps = {
         "contract": "evidence_gap_register_v1",
         "phase_a_status": evidence["status"],
         "gaps": evidence["gaps"],
+        "canonical_fact_gaps": missing_concepts,
+        "share_capital_gaps": (
+            ["a_h_split_not_present_in_registered_source_payloads"] if missing_share_split else []
+        ),
         "official_exchange_anchor_status": registry.get(
             "official_exchange_anchor_status", "not_available_in_offline_acquisition"
         ),
@@ -874,10 +1320,13 @@ def run_formal(
         "created_at": "2026-08-01T00:00:00+08:00",
         "mode": "formal_offline",
         "symbol": SYMBOL,
-        "default_db_path": str(DEFAULT_DB),
         "default_db_mutated": False,
-        "market_registry": registry,
+        "canonical_fact_input": {
+            key: value for key, value in fact_input.items() if key != "snapshots"
+        },
+        "market_registry": _public_market_registry(registry),
         "evidence_status": evidence["status"],
+        "stage2g1_status": stage_status,
         "observation_count": len(observations),
         "market_row_count": len(market),
         "market_date_range": {
@@ -903,6 +1352,14 @@ def run_formal(
             "rule007_eligible_event_count": evidence["rule007_eligible_event_count"],
             "gaps": evidence["gaps"],
         },
+        "canonical_fact_input": {
+            key: value for key, value in fact_input.items() if key != "snapshots"
+        },
+        "share_capital_timeline_status": (
+            "observed_with_explicit_a_h_split_gap"
+            if missing_share_split
+            else "observed"
+        ),
         "integrated_layers": {
             "earnings_cash_quality": "observed",
             "roe_roa": "observed",
@@ -912,13 +1369,44 @@ def run_formal(
             "roic": "not_evaluated",
             "daily_market_mechanism": "not_evaluated",
         },
-        "risk_veto_statuses": {
-            "identity": "observed",
-            "pit_future_leakage": "observed",
-            "official_exchange_evidence": "not_observed_within_bounded_evidence",
-            "currency_scope": "observed",
-            "non_positive_comparables": "observed",
-        },
+        "risk_veto_checks": [
+            {
+                "risk_id": "future_data_leakage",
+                "status": "not_observed_within_bounded_evidence",
+                "basis": "canonical available_at <= trade_date and PIT transitions audited",
+            },
+            {
+                "risk_id": "canonical_identity_break",
+                "status": "not_observed_within_bounded_evidence",
+                "basis": "Fact Identity and version-chain validation passed",
+            },
+            {
+                "risk_id": "official_exchange_evidence_gap",
+                "status": "observed",
+                "basis": "nine bounded dividend events lack independently retrieved exchange payloads",
+            },
+            {
+                "risk_id": "non_positive_comparable_input",
+                "status": non_positive_status,
+                "basis": "all computed comparable inputs were audited for positivity",
+            },
+            {
+                "risk_id": "governance_risk",
+                "status": "not_evaluated",
+                "basis": "outside this valuation vertical slice",
+            },
+            {
+                "risk_id": "audit_risk",
+                "status": "not_evaluated",
+                "basis": "outside this valuation vertical slice",
+            },
+            {
+                "risk_id": "related_party_risk",
+                "status": "not_evaluated",
+                "basis": "outside this valuation vertical slice",
+            },
+        ],
+        "stage2g1_status": stage_status,
         "score_eligible": False,
     }
     _assert_no_forbidden_fields(profile)
@@ -929,6 +1417,11 @@ def run_formal(
         "market_range": [str(market["trade_date"].min()), str(market["trade_date"].max())],
         "phase_a_status": evidence["status"],
         "rule007_eligible_event_count": evidence["rule007_eligible_event_count"],
+        "stage2g1_status": stage_status,
+        "canonical_fact_input": {
+            key: value for key, value in fact_input.items() if key != "snapshots"
+        },
+        "risk_veto_checks": profile["risk_veto_checks"],
         "last_trade_date": last_trade_date,
         "profile": profile,
     }
@@ -954,6 +1447,7 @@ def _write_summary_md(path: Path, summary: Mapping[str, Any]) -> None:
         f"Run ID: `{summary['run_id']}`",
         f"Market coverage: `{summary['market_range'][0]}` through `{summary['market_range'][1]}` ({summary['market_days']} days).",
         f"Phase A evidence: `{summary['phase_a_status']}`; Rule007 eligible events: `{summary['rule007_eligible_event_count']}`.",
+        f"Stage 2G.1 status: `{summary['stage2g1_status']}`; canonical Fact input: `{summary['canonical_fact_input']['logical_name']}` (`{summary['canonical_fact_input']['sha256']}`).",
         "",
         "## Latest observations",
         "",
@@ -962,6 +1456,15 @@ def _write_summary_md(path: Path, summary: Mapping[str, Any]) -> None:
     ]
     for name, item in profile["latest_observations"].items():
         lines.append(f"| `{name}` | {item.get('value_decimal') or '—'} | `{item['status']}` |")
+    lines.extend(
+        [
+            "",
+            "## Risk-veto checks",
+            "",
+        ]
+    )
+    for check in profile["risk_veto_checks"]:
+        lines.append(f"- `{check['risk_id']}`: `{check['status']}`")
     lines.extend(
         [
             "",
@@ -990,6 +1493,7 @@ def _publish_reports(
         f"Run `{run_dir.name}`; market range `{market['trade_date'].min()}` to `{market['trade_date'].max()}`; `{len(market)}` unadjusted trade days.",
         "",
         "The runner reuses the existing `stock_daily` model and applies only Facts/Events available by each trade date. The 2024 interim event is the only corrected dual-official Rule007 input in this bounded evidence snapshot; the other nine events remain issuer-only because exact exchange payloads were inaccessible.",
+        f"Canonical Fact input: `{profile['canonical_fact_input']['logical_name']}`; input SHA-256 `{profile['canonical_fact_input']['sha256']}`; Identity/version-chain status `{profile['canonical_fact_input']['identity_status']}`/`{profile['canonical_fact_input']['version_chain_status']}`.",
         "",
         "## Latest six observations",
         "",
@@ -1018,8 +1522,8 @@ def _publish_reports(
         "## Risk-veto statuses",
         "",
     ]
-    for key, value in profile["risk_veto_statuses"].items():
-        profile_md.append(f"- `{key}`: `{value}`")
+    for check in profile["risk_veto_checks"]:
+        profile_md.append(f"- `{check['risk_id']}`: `{check['status']}`")
     profile_md.append("")
     (reports / "petrochina_value_profile_2021_2026.md").write_text(
         "\n".join(profile_md), encoding="utf-8"
@@ -1030,12 +1534,16 @@ def _publish_reports(
         f"As of `{profile['as_of_trade_date']}`; evidence status `{evidence['status']}`; market days `{len(market)}`.",
         "",
         "Valuation is the selected next slice. The six observations are PIT-safe, unadjusted-price, evidence-aware measures. Dividend announcement and payment windows are intentionally separate. ROIC and market mechanism remain outside scope.",
+        f"Stage 2G.1 status: `{profile['stage2g1_status']}`; canonical Fact input: `{profile['canonical_fact_input']['logical_name']}` (`{profile['canonical_fact_input']['sha256']}`).",
         "",
         "| Observation | Value | Status |",
         "|---|---:|---|",
     ]
     for name, item in latest.items():
         one_page.append(f"| `{name}` | {item.get('value_decimal') or '—'} | `{item['status']}` |")
+    one_page.extend(["", "## Risk-veto checks", ""])
+    for check in profile["risk_veto_checks"]:
+        one_page.append(f"- `{check['risk_id']}`: `{check['status']}`")
     one_page.append("")
     (reports / "petrochina_value_profile_one_page.md").write_text(
         "\n".join(one_page), encoding="utf-8"
@@ -1051,13 +1559,18 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--formal", action="store_true")
     parser.add_argument("--publish-reports", action="store_true")
     parser.add_argument("--run-id", default="stage2g_valuation_pit_20260801")
+    parser.add_argument("--fact-db", type=Path)
     args = parser.parse_args(argv)
     if args.acquire:
         print(json.dumps(acquire_market_data(), ensure_ascii=False, indent=2))
     if args.formal or not args.acquire:
         print(
             json.dumps(
-                run_formal(run_id=args.run_id, publish_reports=args.publish_reports),
+                run_formal(
+                    run_id=args.run_id,
+                    publish_reports=args.publish_reports,
+                    fact_db=args.fact_db,
+                ),
                 ensure_ascii=False,
                 indent=2,
                 default=_json_default,
