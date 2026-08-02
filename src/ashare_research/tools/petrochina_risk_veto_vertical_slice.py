@@ -1,4 +1,4 @@
-"""Stage 2H.1 PetroChina PIT/supersession/evidence-lineage vertical slice."""
+"""Stage 2H.1R PetroChina PIT/supersession/evidence-lineage vertical slice."""
 
 from __future__ import annotations
 
@@ -23,13 +23,14 @@ from ashare_research.risk_veto.contracts import (
     NORMALIZATION_CONTRACT,
     OBSERVATION_CONTRACT,
     RISK_IDS,
+    RISK_UNIVERSE_CONTRACT,
     SEARCH_CONTRACT,
     STATUS_VOCABULARY,
     TRIGGER_RULES,
     _get_path,
     _transform_normalized_value,
     canonical_hash,
-    evaluate_observations,
+    evaluate_risk_universe_as_of,
     normalization_lineage_hash,
     stable_id,
     validate_contracts,
@@ -182,8 +183,10 @@ def _event(
     event_date: str,
     available_at: str,
     period: str,
-    evidence_ids: list[str],
-    source_types: list[str],
+    input_evidence_ids: list[str],
+    supplemental_evidence_ids: list[str],
+    input_source_types: list[str],
+    supplemental_source_types: list[str],
     classification: str,
     inputs: dict[str, Any],
     normalization_ids: list[str],
@@ -201,7 +204,9 @@ def _event(
         "event_date": event_date,
         "available_at": available_at,
         "period": period,
-        "evidence_ids": evidence_ids,
+        "input_evidence_ids": input_evidence_ids,
+        "supplemental_evidence_ids": supplemental_evidence_ids,
+        "all_evidence_ids": sorted(set(input_evidence_ids) | set(supplemental_evidence_ids)),
         "normalization_ids": normalization_ids,
         "input_lineage_hash": input_lineage_hash,
         "classification": classification,
@@ -214,7 +219,8 @@ def _event(
         "contract": EVENT_CONTRACT,
         "event_id": stable_id("risk_event", values),
         **values,
-        "source_types": source_types,
+        "input_source_types": input_source_types,
+        "supplemental_source_types": supplemental_source_types,
         "extraction_method": "formal_structured_rule_v2_from_normalized_evidence",
         "missing_reasons": missing_reasons or [],
         "warnings": warnings or [],
@@ -243,11 +249,32 @@ def _event_inputs(
     )
 
 
+def _event_evidence_split(
+    group_evidence_ids: list[str],
+    normalization_ids: list[str],
+    normalization_by_id: dict[str, dict[str, Any]],
+) -> tuple[list[str], list[str]]:
+    """Derive calculation inputs from norms; retain the rest as supplemental."""
+
+    input_ids = sorted(
+        {
+            item
+            for normalization_id in normalization_ids
+            for item in (
+                [normalization_by_id[normalization_id]["source_evidence_id"]]
+                + normalization_by_id[normalization_id]["denominator_evidence_ids"]
+            )
+        }
+    )
+    supplemental_ids = sorted(set(group_evidence_ids) - set(input_ids))
+    return input_ids, supplemental_ids
+
+
 def build_event_records(
     evidence: list[dict[str, Any]] | None = None,
     normalizations: list[dict[str, Any]] | None = None,
 ) -> list[dict[str, Any]]:
-    """Build v2 event records only from field-level normalized evidence."""
+    """Build v3 event records with deterministic and supplemental evidence split."""
 
     evidence = evidence or _load(EVIDENCE_PATH)["entries"]
     normalizations = normalizations or build_normalization_records(evidence)
@@ -271,8 +298,14 @@ def build_event_records(
         for group in annual["event_groups"]:
             group = {**group, "evidence_ids": annual["evidence_ids"]}
             ids, values, lineage = _event_inputs(group, normalizations)
-            source_types = sorted(
-                {evidence_by_id[item]["source_type"] for item in group["evidence_ids"]}
+            input_evidence_ids, supplemental_evidence_ids = _event_evidence_split(
+                group["evidence_ids"], ids, norm_by_id
+            )
+            input_source_types = sorted(
+                {evidence_by_id[item]["source_type"] for item in input_evidence_ids}
+            )
+            supplemental_source_types = sorted(
+                {evidence_by_id[item]["source_type"] for item in supplemental_evidence_ids}
             )
             available_at = _iso_max(
                 [evidence_by_id[item]["available_at"] for item in group["evidence_ids"]]
@@ -322,8 +355,10 @@ def build_event_records(
                     event_date=annual["event_date"],
                     available_at=available_at,
                     period=annual["period"],
-                    evidence_ids=group["evidence_ids"],
-                    source_types=source_types,
+                input_evidence_ids=input_evidence_ids,
+                supplemental_evidence_ids=supplemental_evidence_ids,
+                input_source_types=input_source_types,
+                supplemental_source_types=supplemental_source_types,
                     classification=classification,
                     inputs=values,
                     normalization_ids=ids,
@@ -334,6 +369,9 @@ def build_event_records(
     for restatement in inputs["restatements"]:
         ids, values, lineage = _event_inputs(restatement, normalizations)
         source = evidence_by_id[restatement["evidence_ids"][0]]
+        input_evidence_ids, supplemental_evidence_ids = _event_evidence_split(
+            restatement["evidence_ids"], ids, norm_by_id
+        )
         records.append(
             _event(
                 risk_id="material_error_restatement",
@@ -342,8 +380,10 @@ def build_event_records(
                 event_date=restatement["event_date"],
                 available_at=source["available_at"],
                 period=restatement["period"],
-                evidence_ids=restatement["evidence_ids"],
-                source_types=[source["source_type"]],
+                input_evidence_ids=input_evidence_ids,
+                supplemental_evidence_ids=supplemental_evidence_ids,
+                input_source_types=[source["source_type"]],
+                supplemental_source_types=[],
                 classification=values["restatement_classification"],
                 inputs=values,
                 normalization_ids=ids,
@@ -368,8 +408,10 @@ def build_event_records(
             event_date=gap["event_date"],
             available_at=search["available_at"],
             period=gap["period"],
-            evidence_ids=[],
-            source_types=[],
+            input_evidence_ids=[],
+            supplemental_evidence_ids=[],
+            input_source_types=[],
+            supplemental_source_types=[],
             classification="not_fully_retrieved",
             inputs={},
             normalization_ids=[],
@@ -505,7 +547,7 @@ def _write_formal_run(
     searches: list[dict[str, Any]],
     normalizations: list[dict[str, Any]],
 ) -> dict[str, Any]:
-    observations = evaluate_observations(
+    risk_universe = evaluate_risk_universe_as_of(
         symbol="601857.SH",
         as_of_date=as_of_date,
         events=events,
@@ -513,6 +555,7 @@ def _write_formal_run(
         evidence=evidence,
         normalizations=normalizations,
     )
+    observations = risk_universe["observations"]
     root.mkdir(parents=True)
     write_json(
         root / "source_evidence.json", {"contract": "risk_evidence_ledger_v1", "entries": evidence}
@@ -529,22 +572,37 @@ def _write_formal_run(
     )
     write_json(
         root / "risk_veto_observations.json",
-        {"contract": OBSERVATION_CONTRACT, "observations": observations},
+        {
+            "contract": OBSERVATION_CONTRACT,
+            "universe_contract": RISK_UNIVERSE_CONTRACT,
+            "observations": observations,
+            "slots": risk_universe["slots"],
+            "risk_universe_evaluation_id": risk_universe["deterministic_id"],
+        },
     )
     gap_count = sum(item["status"] == "missing_evidence" for item in observations)
+    missing_slot_count = risk_universe["missing_slot_count"]
     summary = {
-        "contract": "petrochina_risk_veto_vertical_slice_v2",
+        "contract": "petrochina_risk_veto_vertical_slice_v3",
         "symbol": "601857.SH",
         "as_of_date": as_of_date,
         "methodology_version": METHODOLOGY_VERSION,
         "code_version": CODE_VERSION,
         "observation_count": len(observations),
+        "risk_universe_contract": risk_universe["contract"],
+        "risk_slot_contract": "risk_evaluation_slot_v1",
+        "risk_universe_evaluation_id": risk_universe["deterministic_id"],
+        "expected_risk_count": risk_universe["expected_risk_count"],
+        "slot_count": len(risk_universe["slots"]),
+        "missing_slot_count": missing_slot_count,
         "missing_evidence_count": gap_count,
         "observed_risk_ids": [
             item["risk_id"] for item in observations if item["status"] == "observed"
         ],
         "missing_evidence_risk_ids": [
-            item["risk_id"] for item in observations if item["status"] == "missing_evidence"
+            item["risk_id"]
+            for item in risk_universe["slots"]
+            if item["evaluation_status"] == "missing_evidence"
         ],
         "search_pit_status": "pass",
         "event_supersession_status": "pass",
@@ -554,7 +612,7 @@ def _write_formal_run(
         "network_used": False,
         "default_db_mutated": False,
         "external_cache_verified": True,
-        "status": "conditional_pass" if gap_count else "pass",
+        "status": "conditional_pass" if gap_count or missing_slot_count else "pass",
         "warnings": [
             "missing evidence is not a negative conclusion",
             "KAMs are not modified opinions",
@@ -573,6 +631,26 @@ def _write_formal_run(
             REGISTRY_PATH,
         )
     ]
+    inputs.append(
+        {
+            "logical_name": "risk_contract_bundle",
+            "contract": "risk_contract_bundle_v1",
+            "versions": {
+                "event": EVENT_CONTRACT,
+                "observation": OBSERVATION_CONTRACT,
+                "universe": RISK_UNIVERSE_CONTRACT,
+                "slot": "risk_evaluation_slot_v1",
+            },
+            "sha256": canonical_hash(
+                {
+                    "event": EVENT_CONTRACT,
+                    "observation": OBSERVATION_CONTRACT,
+                    "universe": RISK_UNIVERSE_CONTRACT,
+                    "slot": "risk_evaluation_slot_v1",
+                }
+            ),
+        }
+    )
     manifest = finalize_artifacts(
         root,
         run_id=run_id,
@@ -586,6 +664,7 @@ def _write_formal_run(
         **summary,
         "run_id": run_id,
         "run_dir": run_id,
+        "risk_universe_evaluation": risk_universe,
         "observations": observations,
         "artifact_verification": {
             "logical_digest": manifest["logical_digest"],
@@ -737,8 +816,10 @@ def _synthetic_event(
         event_date="2025-01-01",
         available_at=available_at,
         period="SYNTHETIC",
-        evidence_ids=[source["source_evidence_id"]],
-        source_types=[source["source_type"]],
+        input_evidence_ids=[source["source_evidence_id"]],
+        supplemental_evidence_ids=[],
+        input_source_types=[source["source_type"]],
+        supplemental_source_types=[],
         classification=classification,
         inputs={item["target_field"]: item["normalized_value"] for item in normalizations},
         normalization_ids=[item["normalization_id"] for item in normalizations],
@@ -838,7 +919,7 @@ def run_test_capsule(output_root: Path | str, run_id: str) -> dict[str, Any]:
     validate_contracts(
         evidence=[source], events=events, search_registers=registers, normalizations=normalizations
     )
-    before = evaluate_observations(
+    before_universe = evaluate_risk_universe_as_of(
         symbol="601857.SH",
         as_of_date="2025-01-02",
         events=events,
@@ -846,7 +927,7 @@ def run_test_capsule(output_root: Path | str, run_id: str) -> dict[str, Any]:
         evidence=[source],
         normalizations=normalizations,
     )
-    after = evaluate_observations(
+    after_universe = evaluate_risk_universe_as_of(
         symbol="601857.SH",
         as_of_date="2025-01-03",
         events=events,
@@ -857,6 +938,8 @@ def run_test_capsule(output_root: Path | str, run_id: str) -> dict[str, Any]:
     run_dir = Path(output_root) / run_id
     if run_dir.exists():
         raise FileExistsError(f"refusing to overwrite existing run: {run_dir}")
+    before = before_universe["observations"]
+    after = after_universe["observations"]
     run_dir.mkdir(parents=True)
     write_json(run_dir / "synthetic_source_evidence.json", {"entries": [source]})
     write_json(run_dir / "synthetic_normalizations.json", {"entries": normalizations})
@@ -864,6 +947,14 @@ def run_test_capsule(output_root: Path | str, run_id: str) -> dict[str, Any]:
     write_json(run_dir / "synthetic_search_register.json", {"entries": registers})
     write_json(run_dir / "synthetic_observations_before.json", {"observations": before})
     write_json(run_dir / "synthetic_observations_after.json", {"observations": after})
+    write_json(
+        run_dir / "synthetic_risk_universe_before.json",
+        before_universe,
+    )
+    write_json(
+        run_dir / "synthetic_risk_universe_after.json",
+        after_universe,
+    )
     write_json(
         run_dir / "summary.json",
         {
@@ -876,6 +967,9 @@ def run_test_capsule(output_root: Path | str, run_id: str) -> dict[str, Any]:
             ],
             "correction_supersedes": correction["supersedes"],
             "pit_as_of_dates": ["2025-01-02", "2025-01-03"],
+            "risk_slot_count": 8,
+            "before_slot_count": len(before_universe["slots"]),
+            "after_slot_count": len(after_universe["slots"]),
             "score_eligible": False,
             "network_used": False,
             "default_db_mutated": False,
@@ -889,6 +983,13 @@ def run_test_capsule(output_root: Path | str, run_id: str) -> dict[str, Any]:
             {
                 "logical_name": "synthetic_contracts",
                 "sha256": stable_id("input", {"events": events, "normalizations": normalizations}),
+                "contract": "risk_contract_bundle_v1",
+                "versions": {
+                    "event": EVENT_CONTRACT,
+                    "observation": OBSERVATION_CONTRACT,
+                    "universe": RISK_UNIVERSE_CONTRACT,
+                    "slot": "risk_evaluation_slot_v1",
+                },
             }
         ],
         evidence_gap_count=0,

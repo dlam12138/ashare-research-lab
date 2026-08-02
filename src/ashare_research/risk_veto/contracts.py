@@ -1,4 +1,4 @@
-"""Stage 2H.1 versioned PIT, supersession and evidence-lineage contracts."""
+"""Stage 2H.1R versioned PIT, supersession and evidence-lineage contracts."""
 
 from __future__ import annotations
 
@@ -10,12 +10,14 @@ from datetime import UTC, date, datetime
 from typing import Any
 
 METHODOLOGY_VERSION = "risk_veto_methodology_v2"
-CODE_VERSION = "stage2h1_risk_veto_v1"
+CODE_VERSION = "stage2h1r_risk_veto_v1"
 EVIDENCE_CONTRACT = "risk_evidence_record_v1"
-EVENT_CONTRACT = "risk_event_record_v2"
-OBSERVATION_CONTRACT = "risk_veto_observation_v2"
+EVENT_CONTRACT = "risk_event_record_v3"
+OBSERVATION_CONTRACT = "risk_veto_observation_v3"
 SEARCH_CONTRACT = "bounded_search_register_v2"
 NORMALIZATION_CONTRACT = "risk_evidence_normalization_record_v1"
+RISK_UNIVERSE_CONTRACT = "risk_universe_evaluation_v1"
+RISK_SLOT_CONTRACT = "risk_evaluation_slot_v1"
 
 STATUS_VOCABULARY = (
     "observed",
@@ -450,7 +452,7 @@ def validate_event_evidence_lineage(
     evidence: list[dict[str, Any]],
     normalizations: list[dict[str, Any]],
 ) -> dict[str, Any]:
-    """Prove event inputs from evidence fields and normalization records."""
+    """Prove deterministic inputs and keep supplemental evidence out of lineage."""
 
     evidence_by_id = {record["source_evidence_id"]: record for record in evidence}
     normalization_by_id = {record["normalization_id"]: record for record in normalizations}
@@ -458,7 +460,17 @@ def validate_event_evidence_lineage(
         validate_evidence_record(record)
     for record in normalizations:
         validate_normalization_record(record)
-    for evidence_id in event["evidence_ids"]:
+    input_ids = list(event["input_evidence_ids"])
+    supplemental_ids = list(event["supplemental_evidence_ids"])
+    all_ids = list(event["all_evidence_ids"])
+    if len(input_ids) != len(set(input_ids)) or len(supplemental_ids) != len(set(supplemental_ids)):
+        raise RiskVetoContractError("event evidence IDs must be unique")
+    if set(input_ids) & set(supplemental_ids):
+        raise RiskVetoContractError("event input and supplemental evidence overlap")
+    expected_all = sorted(set(input_ids) | set(supplemental_ids))
+    if all_ids != expected_all:
+        raise RiskVetoContractError("event all_evidence_ids is not the ordered union")
+    for evidence_id in all_ids:
         if evidence_id not in evidence_by_id:
             raise RiskVetoContractError(f"event references unknown evidence: {evidence_id}")
     selected: list[dict[str, Any]] = []
@@ -490,8 +502,8 @@ def validate_event_evidence_lineage(
             raise RiskVetoContractError(
                 f"normalization transformed value mismatch: {record['normalization_id']}"
             )
-        if not set(record["denominator_evidence_ids"]) <= set(event["evidence_ids"]):
-            raise RiskVetoContractError("normalization denominator is outside event evidence")
+        if not set(record["denominator_evidence_ids"]) <= set(input_ids):
+            raise RiskVetoContractError("normalization denominator must be input evidence")
         if not _not_after(source["available_at"], record["available_at"]):
             raise RiskVetoContractError("normalization available_at precedes source evidence")
         selected.append(record)
@@ -505,14 +517,30 @@ def validate_event_evidence_lineage(
     expected_inputs = {record["target_field"]: record["normalized_value"] for record in selected}
     if event["inputs"] != expected_inputs:
         raise RiskVetoContractError(f"event inputs are not reconstructible: {event['event_id']}")
-    expected_sources = sorted(
-        {evidence_by_id[item]["source_type"] for item in event["evidence_ids"]}
+    expected_input_ids = sorted(
+        {
+            item
+            for record in selected
+            for item in [record["source_evidence_id"], *record["denominator_evidence_ids"]]
+        }
     )
-    if event["source_types"] != expected_sources:
+    if input_ids != expected_input_ids:
         raise RiskVetoContractError(
-            f"event source types are not evidence-derived: {event['event_id']}"
+            "event input evidence is not reconstructible from normalization"
         )
-    availability = [evidence_by_id[item]["available_at"] for item in event["evidence_ids"]]
+    expected_input_sources = sorted({evidence_by_id[item]["source_type"] for item in input_ids})
+    expected_supplemental_sources = sorted(
+        {evidence_by_id[item]["source_type"] for item in supplemental_ids}
+    )
+    if event["input_source_types"] != expected_input_sources:
+        raise RiskVetoContractError(
+            f"event input source types are not evidence-derived: {event['event_id']}"
+        )
+    if event["supplemental_source_types"] != expected_supplemental_sources:
+        raise RiskVetoContractError(
+            f"event supplemental source types are not evidence-derived: {event['event_id']}"
+        )
+    availability = [evidence_by_id[item]["available_at"] for item in all_ids]
     availability.extend(record["available_at"] for record in selected)
     if availability and not all(_not_after(item, event["available_at"]) for item in availability):
         raise RiskVetoContractError(f"event available_at precedes an input: {event['event_id']}")
@@ -522,7 +550,9 @@ def validate_event_evidence_lineage(
     return {
         "status": "pass",
         "normalization_ids": [record["normalization_id"] for record in selected],
-        "source_evidence_ids": event["evidence_ids"],
+        "input_evidence_ids": input_ids,
+        "supplemental_evidence_ids": supplemental_ids,
+        "all_evidence_ids": all_ids,
         "input_lineage_hash": expected_hash,
     }
 
@@ -538,7 +568,9 @@ def _event_identity_payload(record: dict[str, Any]) -> dict[str, Any]:
             "event_date",
             "available_at",
             "period",
-            "evidence_ids",
+            "input_evidence_ids",
+            "supplemental_evidence_ids",
+            "all_evidence_ids",
             "normalization_ids",
             "input_lineage_hash",
             "classification",
@@ -563,8 +595,11 @@ def validate_event_record(record: dict[str, Any]) -> None:
             "event_date",
             "available_at",
             "period",
-            "evidence_ids",
-            "source_types",
+            "input_evidence_ids",
+            "supplemental_evidence_ids",
+            "all_evidence_ids",
+            "input_source_types",
+            "supplemental_source_types",
             "extraction_method",
             "classification",
             "trigger_version",
@@ -586,9 +621,28 @@ def validate_event_record(record: dict[str, Any]) -> None:
         _parse_datetime(record[field], field)
     if record["status"] not in STATUS_VOCABULARY or record["score_eligible"] is not False:
         raise RiskVetoContractError("invalid event status or score eligibility")
-    if not isinstance(record["evidence_ids"], list) or not isinstance(record["source_types"], list):
+    if any(
+        not isinstance(record[field], list)
+        for field in (
+            "input_evidence_ids",
+            "supplemental_evidence_ids",
+            "all_evidence_ids",
+            "input_source_types",
+            "supplemental_source_types",
+        )
+    ):
         raise RiskVetoContractError("event evidence/source types must be lists")
-    if any(source not in TRUE_SOURCE_TYPES for source in record["source_types"]):
+    if set(record["input_evidence_ids"]) & set(record["supplemental_evidence_ids"]):
+        raise RiskVetoContractError("event input and supplemental evidence overlap")
+    if record["all_evidence_ids"] != sorted(
+        set(record["input_evidence_ids"]) | set(record["supplemental_evidence_ids"])
+    ):
+        raise RiskVetoContractError("event all_evidence_ids is not the ordered union")
+    if any(
+        source not in TRUE_SOURCE_TYPES
+        for field in ("input_source_types", "supplemental_source_types")
+        for source in record[field]
+    ):
         raise RiskVetoContractError("event contains an untrusted source type")
     if not isinstance(record["normalization_ids"], list) or not _HEX64.fullmatch(
         record["input_lineage_hash"]
@@ -719,6 +773,9 @@ def _observation_identity_payload(record: dict[str, Any]) -> dict[str, Any]:
             "superseded_event_ids",
             "applied_supersession_edges",
             "event_version_resolution_status",
+            "input_evidence_ids",
+            "supplemental_evidence_ids",
+            "all_evidence_ids",
             "search_register_id",
             "search_contract_version",
             "search_available_at",
@@ -749,7 +806,9 @@ def validate_observation(record: dict[str, Any]) -> None:
             "superseded_event_ids",
             "applied_supersession_edges",
             "event_version_resolution_status",
-            "evidence_ids",
+            "input_evidence_ids",
+            "supplemental_evidence_ids",
+            "all_evidence_ids",
             "search_register_id",
             "search_contract_version",
             "search_available_at",
@@ -790,6 +849,17 @@ def validate_observation(record: dict[str, Any]) -> None:
         raise RiskVetoContractError("event version resolution did not pass")
     if not isinstance(record["applied_supersession_edges"], list):
         raise RiskVetoContractError("supersession edges must be a list")
+    if any(
+        not isinstance(record[field], list)
+        for field in ("input_evidence_ids", "supplemental_evidence_ids", "all_evidence_ids")
+    ):
+        raise RiskVetoContractError("observation evidence fields must be lists")
+    if set(record["input_evidence_ids"]) & set(record["supplemental_evidence_ids"]):
+        raise RiskVetoContractError("observation input and supplemental evidence overlap")
+    if record["all_evidence_ids"] != sorted(
+        set(record["input_evidence_ids"]) | set(record["supplemental_evidence_ids"])
+    ):
+        raise RiskVetoContractError("observation all_evidence_ids is not the ordered union")
     expected = stable_id("risk_observation", _observation_identity_payload(record))
     if record["deterministic_id"] != expected or record["observation_id"] != expected:
         raise RiskVetoContractError("observation deterministic ID mismatch")
@@ -821,9 +891,15 @@ def evaluate_observations(
         resolution = resolve_active_events_as_of(symbol, risk_id, as_of_date, events)
         active_events = resolution["active_events"]
         active_event_ids = resolution["active_event_ids"]
-        event_evidence_ids = sorted(
-            {item for event in active_events for item in event["evidence_ids"]}
+        input_evidence_ids = sorted(
+            {item for event in active_events for item in event["input_evidence_ids"]}
         )
+        supplemental_evidence_ids = sorted(
+            {item for event in active_events for item in event["supplemental_evidence_ids"]}
+        )
+        all_evidence_ids = sorted(set(input_evidence_ids) | set(supplemental_evidence_ids))
+        if set(input_evidence_ids) & set(supplemental_evidence_ids):
+            raise RiskVetoContractError("active event evidence has input/supplemental overlap")
         missing_reasons = sorted(
             {reason for event in active_events for reason in event["missing_reasons"] if reason}
         )
@@ -842,12 +918,12 @@ def evaluate_observations(
         else:
             status = "not_observed_within_bounded_evidence"
         availability = [event["available_at"] for event in active_events]
-        availability.extend(evidence_by_id[item]["available_at"] for item in event_evidence_ids)
+        availability.extend(evidence_by_id[item]["available_at"] for item in all_evidence_ids)
         if register is not None:
             availability.append(register["available_at"])
         if not availability:
             # There is no conclusion to expose for a risk with no PIT-visible
-            # input.  It is intentionally omitted from the historical slice.
+            # input.  The public universe evaluator will publish its slot.
             continue
         conclusion_available_at = max(
             availability, key=lambda item: _parse_datetime(item, "available_at")
@@ -879,7 +955,9 @@ def evaluate_observations(
             "superseded_event_ids": resolution["superseded_event_ids"],
             "applied_supersession_edges": resolution["applied_supersession_edges"],
             "event_version_resolution_status": resolution["event_version_resolution_status"],
-            "evidence_ids": event_evidence_ids,
+            "input_evidence_ids": input_evidence_ids,
+            "supplemental_evidence_ids": supplemental_evidence_ids,
+            "all_evidence_ids": all_evidence_ids,
             "search_register_id": register["search_register_id"] if register else None,
             "search_contract_version": register["contract_version"] if register else None,
             "search_available_at": register["available_at"] if register else None,
@@ -890,7 +968,7 @@ def evaluate_observations(
             "inputs": inputs,
             "missing_reasons": sorted(set(missing_reasons)),
             "warnings": warnings,
-            "lineage_status": "pass" if event_evidence_ids or register else "missing_evidence",
+            "lineage_status": "pass" if all_evidence_ids or register else "missing_evidence",
             "deterministic_id": "",
             "supersedes": None,
             "code_version": code_version,
@@ -903,6 +981,268 @@ def evaluate_observations(
         validate_observation(record)
         results.append(record)
     return results
+
+
+def _risk_slot_identity_payload(record: dict[str, Any]) -> dict[str, Any]:
+    return {
+        key: record[key]
+        for key in (
+            "symbol",
+            "risk_id",
+            "evaluation_as_of_date",
+            "evaluation_status",
+            "observation_emitted",
+            "observation_id",
+            "conclusion_available_at",
+            "selected_search_register_id",
+            "visible_active_event_ids",
+            "visible_input_evidence_ids",
+            "missing_reasons",
+            "lineage_status",
+        )
+    }
+
+
+def validate_risk_universe_evaluation(record: dict[str, Any]) -> None:
+    """Validate a complete, fixed-cardinality risk evaluation snapshot."""
+
+    _require(
+        record,
+        (
+            "contract",
+            "symbol",
+            "evaluation_as_of_date",
+            "expected_risk_ids",
+            "expected_risk_count",
+            "emitted_observation_count",
+            "slots",
+            "observations",
+            "completeness_status",
+            "missing_slot_count",
+            "deterministic_id",
+            "score_eligible",
+        ),
+        "risk universe evaluation",
+    )
+    if record["contract"] != RISK_UNIVERSE_CONTRACT or record["score_eligible"] is not False:
+        raise RiskVetoContractError("invalid risk universe contract or score eligibility")
+    if record["expected_risk_ids"] != list(RISK_IDS) or record["expected_risk_count"] != len(
+        RISK_IDS
+    ):
+        raise RiskVetoContractError("risk universe expected IDs are not the frozen eight")
+    if len(record["slots"]) != len(RISK_IDS):
+        raise RiskVetoContractError("risk universe must contain exactly eight slots")
+    if {item.get("risk_id") for item in record["slots"]} != set(RISK_IDS):
+        raise RiskVetoContractError("risk universe slot IDs are incomplete or unknown")
+    if len({item["risk_id"] for item in record["slots"]}) != len(RISK_IDS):
+        raise RiskVetoContractError("risk universe contains duplicate risk slots")
+    observations = record["observations"]
+    if len(observations) != record["emitted_observation_count"]:
+        raise RiskVetoContractError("risk universe observation count mismatch")
+    observation_by_id: dict[str, dict[str, Any]] = {}
+    for observation in observations:
+        validate_observation(observation)
+        if observation["symbol"] != record["symbol"] or observation["evaluation_as_of_date"] != (
+            record["evaluation_as_of_date"]
+        ):
+            raise RiskVetoContractError("observation is outside risk universe identity")
+        if observation["observation_id"] in observation_by_id:
+            raise RiskVetoContractError("duplicate risk observation ID in universe")
+        observation_by_id[observation["observation_id"]] = observation
+    emitted = 0
+    expected_slots: list[dict[str, Any]] = []
+    for slot in record["slots"]:
+        _require(
+            slot,
+            (
+                "contract",
+                "slot_id",
+                "symbol",
+                "risk_id",
+                "evaluation_as_of_date",
+                "evaluation_status",
+                "observation_emitted",
+                "observation_id",
+                "conclusion_available_at",
+                "selected_search_register_id",
+                "visible_active_event_ids",
+                "visible_input_evidence_ids",
+                "missing_reasons",
+                "lineage_status",
+                "score_eligible",
+            ),
+            "risk evaluation slot",
+        )
+        if slot["contract"] != RISK_SLOT_CONTRACT or slot["score_eligible"] is not False:
+            raise RiskVetoContractError("invalid risk evaluation slot contract")
+        if slot["symbol"] != record["symbol"] or slot["evaluation_as_of_date"] != (
+            record["evaluation_as_of_date"]
+        ):
+            raise RiskVetoContractError("slot is outside risk universe identity")
+        if slot["evaluation_status"] not in STATUS_VOCABULARY:
+            raise RiskVetoContractError("invalid risk evaluation slot status")
+        if not isinstance(slot["observation_emitted"], bool):
+            raise RiskVetoContractError("slot observation_emitted must be boolean")
+        if not isinstance(slot["missing_reasons"], list):
+            raise RiskVetoContractError("slot missing_reasons must be a list")
+        if not isinstance(slot["visible_active_event_ids"], list) or not isinstance(
+            slot["visible_input_evidence_ids"], list
+        ):
+            raise RiskVetoContractError("slot visible lineage fields must be lists")
+        if slot["observation_emitted"]:
+            emitted += 1
+            if slot["observation_id"] not in observation_by_id:
+                raise RiskVetoContractError("emitted slot does not reference an observation")
+            observation = observation_by_id[slot["observation_id"]]
+            if observation["risk_id"] != slot["risk_id"] or observation["status"] != (
+                slot["evaluation_status"]
+            ):
+                raise RiskVetoContractError("slot and observation status or risk ID mismatch")
+            if slot["conclusion_available_at"] != observation["conclusion_available_at"]:
+                raise RiskVetoContractError("slot conclusion availability mismatch")
+            if slot["selected_search_register_id"] != observation["search_register_id"]:
+                raise RiskVetoContractError("slot search-register identity mismatch")
+            if slot["visible_active_event_ids"] != observation["active_event_ids"]:
+                raise RiskVetoContractError("slot active-event identity mismatch")
+            if slot["visible_input_evidence_ids"] != observation["input_evidence_ids"]:
+                raise RiskVetoContractError("slot input-evidence identity mismatch")
+        else:
+            if slot["observation_id"] is not None or slot["conclusion_available_at"] is not None:
+                raise RiskVetoContractError("unemitted slot contains a fabricated observation")
+            if slot["evaluation_status"] != "missing_evidence":
+                raise RiskVetoContractError("unemitted slot must be missing_evidence")
+            if "no PIT-visible input" not in " ".join(slot["missing_reasons"]):
+                raise RiskVetoContractError("unemitted slot must explain missing PIT input")
+        expected_slots.append(slot)
+        if stable_id("risk_slot", _risk_slot_identity_payload(slot)) != slot["slot_id"]:
+            raise RiskVetoContractError("risk slot deterministic ID mismatch")
+    if emitted != record["emitted_observation_count"]:
+        raise RiskVetoContractError("emitted slot count does not match universe count")
+    if set(observation_by_id) != {
+        slot["observation_id"] for slot in record["slots"] if slot["observation_emitted"]
+    }:
+        raise RiskVetoContractError("every observation must be referenced by exactly one slot")
+    if record["missing_slot_count"] != len(RISK_IDS) - emitted:
+        raise RiskVetoContractError("risk universe missing slot count mismatch")
+    expected_id = stable_id(
+        "risk_universe",
+        {
+            "symbol": record["symbol"],
+            "evaluation_as_of_date": record["evaluation_as_of_date"],
+            "expected_risk_ids": record["expected_risk_ids"],
+            "slots": record["slots"],
+        },
+    )
+    if record["deterministic_id"] != expected_id:
+        raise RiskVetoContractError("risk universe deterministic ID mismatch")
+
+
+def evaluate_risk_universe_as_of(
+    *,
+    symbol: str,
+    as_of_date: str,
+    events: list[dict[str, Any]],
+    search_registers: list[dict[str, Any]],
+    evidence: list[dict[str, Any]],
+    normalizations: list[dict[str, Any]],
+    code_version: str = CODE_VERSION,
+) -> dict[str, Any]:
+    """Evaluate all eight risk slots without inventing unavailable observations."""
+
+    observations = evaluate_observations(
+        symbol=symbol,
+        as_of_date=as_of_date,
+        events=events,
+        search_registers=search_registers,
+        evidence=evidence,
+        normalizations=normalizations,
+        code_version=code_version,
+    )
+    observations_by_risk = {item["risk_id"]: item for item in observations}
+    slots: list[dict[str, Any]] = []
+    for risk_id in RISK_IDS:
+        register = select_search_register_as_of(risk_id, as_of_date, search_registers)
+        resolution = resolve_active_events_as_of(symbol, risk_id, as_of_date, events)
+        active_events = resolution["active_events"]
+        visible_input_evidence_ids = sorted(
+            {item for event in active_events for item in event["input_evidence_ids"]}
+        )
+        observation = observations_by_risk.get(risk_id)
+        if observation is not None:
+            status = observation["status"]
+            observation_emitted = True
+            observation_id = observation["observation_id"]
+            conclusion_available_at = observation["conclusion_available_at"]
+            missing_reasons = observation["missing_reasons"]
+            lineage_status = observation["lineage_status"]
+            selected_search_register_id = observation["search_register_id"]
+        else:
+            status = "missing_evidence"
+            observation_emitted = False
+            observation_id = None
+            conclusion_available_at = None
+            missing_reasons = []
+            if register is None:
+                missing_reasons.append(
+                    "no PIT-visible search register with coverage_end <= as_of_date"
+                )
+            if not active_events:
+                missing_reasons.append("no PIT-visible active event evidence")
+            if not register and not active_events and not visible_input_evidence_ids:
+                missing_reasons.append("no PIT-visible input")
+            missing_reasons = sorted(set(missing_reasons))
+            lineage_status = "pass" if register or active_events else "missing_evidence"
+            selected_search_register_id = None
+        slot = {
+            "contract": RISK_SLOT_CONTRACT,
+            "slot_id": "",
+            "symbol": symbol,
+            "risk_id": risk_id,
+            "evaluation_as_of_date": as_of_date,
+            "evaluation_status": status,
+            "observation_emitted": observation_emitted,
+            "observation_id": observation_id,
+            "conclusion_available_at": conclusion_available_at,
+            "selected_search_register_id": selected_search_register_id,
+            "visible_active_event_ids": resolution["active_event_ids"],
+            "visible_input_evidence_ids": visible_input_evidence_ids,
+            "missing_reasons": missing_reasons,
+            "lineage_status": lineage_status,
+            "code_version": code_version,
+            "score_eligible": False,
+        }
+        slot["slot_id"] = stable_id("risk_slot", _risk_slot_identity_payload(slot))
+        slots.append(slot)
+    record = {
+        "contract": RISK_UNIVERSE_CONTRACT,
+        "symbol": symbol,
+        "evaluation_as_of_date": as_of_date,
+        "expected_risk_ids": list(RISK_IDS),
+        "expected_risk_count": len(RISK_IDS),
+        "emitted_observation_count": len(observations),
+        "slots": slots,
+        "observations": observations,
+        "completeness_status": (
+            "complete"
+            if len(observations) == len(RISK_IDS)
+            else "complete_with_explicit_missing_slots"
+        ),
+        "missing_slot_count": len(RISK_IDS) - len(observations),
+        "deterministic_id": "",
+        "code_version": code_version,
+        "score_eligible": False,
+    }
+    record["deterministic_id"] = stable_id(
+        "risk_universe",
+        {
+            "symbol": symbol,
+            "evaluation_as_of_date": as_of_date,
+            "expected_risk_ids": list(RISK_IDS),
+            "slots": slots,
+        },
+    )
+    validate_risk_universe_evaluation(record)
+    return record
 
 
 def validate_contracts(
