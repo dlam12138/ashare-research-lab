@@ -12,6 +12,8 @@ import hashlib
 import json
 from pathlib import Path
 
+from blob_test_helpers import canonical_worktree_blob
+
 from ashare_research.facts.contexts import (
     build_context_id,
     compute_period_dates,
@@ -35,10 +37,7 @@ def _sha256(path: Path) -> str:
 
 
 def _git_blob(path: Path) -> str:
-    content = path.read_bytes()
-    return hashlib.sha1(  # noqa: S324
-        f"blob {len(content)}\0".encode() + content
-    ).hexdigest()
+    return canonical_worktree_blob(path)
 
 
 def _load(path: Path) -> dict:
@@ -222,4 +221,3 @@ def test_two_instant_contexts_are_distinct_from_annual_duration_context():
     for year in (2024, 2025):
         start, end = compute_period_dates(year, PeriodType.instant)
         assert start == end == f"{year}-12-31"
-

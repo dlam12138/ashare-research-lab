@@ -14,6 +14,8 @@ import hashlib
 import json
 from pathlib import Path
 
+from blob_test_helpers import canonical_worktree_blob
+
 from ashare_research.facts.contexts import build_context_id
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -62,10 +64,7 @@ def _sha256(path: Path) -> str:
 
 
 def _git_blob(path: Path) -> str:
-    content = path.read_bytes()
-    return hashlib.sha1(  # noqa: S324
-        f"blob {len(content)}\0".encode() + content
-    ).hexdigest()
+    return canonical_worktree_blob(path)
 
 
 def _load(path: Path) -> dict:

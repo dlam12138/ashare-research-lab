@@ -12,12 +12,12 @@ default database / stash.
 
 from __future__ import annotations
 
-import hashlib
 import json
 import subprocess
 from pathlib import Path
 
 import pytest
+from blob_test_helpers import canonical_worktree_blob
 
 from ashare_research.storage.default_db_guard import hash_optional_default_db
 
@@ -119,10 +119,7 @@ PROTECTED_BLOBS = {
 
 
 def _git_blob(path: Path) -> str:
-    content = path.read_bytes()
-    return hashlib.sha1(  # noqa: S324
-        f"blob {len(content)}\0".encode() + content
-    ).hexdigest()
+    return canonical_worktree_blob(path)
 
 
 def _walk_keys(value, prefix=""):

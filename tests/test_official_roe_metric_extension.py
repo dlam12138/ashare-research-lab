@@ -15,6 +15,7 @@ from decimal import Decimal
 from pathlib import Path
 
 import pytest
+from blob_test_helpers import canonical_worktree_blob
 
 from ashare_research.metrics.capital_return_definitions import (
     CapitalReturnMetricDefinitionRegistry,
@@ -116,10 +117,7 @@ PROTECTED_BLOBS = {
 
 
 def _git_blob(path: Path) -> str:
-    content = path.read_bytes()
-    return hashlib.sha1(  # noqa: S324
-        f"blob {len(content)}\0".encode() + content
-    ).hexdigest()
+    return canonical_worktree_blob(path)
 
 
 def _read(run: dict, name: str):

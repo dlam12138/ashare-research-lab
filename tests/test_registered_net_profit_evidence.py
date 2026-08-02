@@ -13,6 +13,7 @@ import json
 from pathlib import Path
 
 import pytest
+from blob_test_helpers import canonical_worktree_blob
 
 ROOT = Path(__file__).resolve().parents[1]
 BUNDLE_DIR = ROOT / "acceptance/fixtures/official_facts/601857.SH"
@@ -66,8 +67,7 @@ def _sha256(path: Path) -> str:
 
 
 def _git_blob(path: Path) -> str:
-    data = path.read_bytes()
-    return hashlib.sha1(b"blob %d\x00" % len(data) + data).hexdigest()  # noqa: S324
+    return canonical_worktree_blob(path)
 
 
 def _load(path: Path) -> dict:

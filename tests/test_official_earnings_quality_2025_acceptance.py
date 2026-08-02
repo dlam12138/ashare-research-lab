@@ -3,13 +3,13 @@
 from __future__ import annotations
 
 import ast
-import hashlib
 import json
 import shutil
 from pathlib import Path
 
 import duckdb
 import pytest
+from blob_test_helpers import canonical_worktree_blob
 
 from ashare_research.facts.identity import build_fact_id
 from ashare_research.storage.default_db_guard import hash_optional_default_db
@@ -82,10 +82,7 @@ def _sha256(path: Path) -> str:
 
 
 def _git_blob(path: Path) -> str:
-    content = path.read_bytes()
-    return hashlib.sha1(  # noqa: S324
-        f"blob {len(content)}\0".encode() + content
-    ).hexdigest()
+    return canonical_worktree_blob(path)
 
 
 def _read(run: dict, name: str):
