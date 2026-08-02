@@ -8,18 +8,26 @@ Stage 2G.1 status: `pass_with_explicit_gaps`; canonical Fact input: `net_profit.
 | Observation | Value | Status |
 |---|---:|---|
 | `a_share_price_to_latest_annual_parent_earnings` | 12.89158710139375214555441126 | `computed` |
-| `a_share_price_to_latest_year_end_parent_equity` | 1.278558916853412321468089815 | `computed` |
 | `a_share_price_to_latest_annual_revenue` | 0.7079400874030893683960273264 | `computed` |
+| `a_share_price_to_latest_year_end_parent_equity` | 1.278558916853412321468089815 | `computed` |
+| `latest_annual_fcf_proxy_yield` | 0.05903773727554334316827771199 | `computed` |
 | `trailing_12m_announced_dividend_yield` | — | `missing_input` |
 | `trailing_12m_paid_dividend_yield` | — | `missing_input` |
-| `latest_annual_fcf_proxy_yield` | 0.05903773727554334316827771199 | `computed` |
 
-## Risk-veto checks
+## Technical integrity checks
 
 - `future_data_leakage`: `not_observed_within_bounded_evidence`
 - `canonical_identity_break`: `not_observed_within_bounded_evidence`
 - `official_exchange_evidence_gap`: `observed`
 - `non_positive_comparable_input`: `not_observed_within_bounded_evidence`
-- `governance_risk`: `not_evaluated`
-- `audit_risk`: `not_evaluated`
-- `related_party_risk`: `not_evaluated`
+
+## Canonical current risk slots
+
+- `modified_audit_opinion`: `not_observed_within_bounded_evidence`; emitted `True`
+- `going_concern_material_uncertainty`: `not_observed_within_bounded_evidence`; emitted `True`
+- `formal_regulatory_investigation_or_major_discipline`: `missing_evidence`; emitted `True`
+- `material_error_restatement`: `not_observed_within_bounded_evidence`; emitted `True`
+- `controlling_shareholder_pledge_risk`: `not_observed_within_bounded_evidence`; emitted `True`
+- `material_related_party_transaction_risk`: `not_observed_within_bounded_evidence`; emitted `True`
+- `controlling_shareholder_fund_occupation_or_related_guarantee`: `missing_evidence`; emitted `True`
+- `repeated_equity_financing_or_material_dilution`: `not_observed_within_bounded_evidence`; emitted `True`

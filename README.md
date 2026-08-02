@@ -7,7 +7,7 @@
 > [!IMPORTANT]
 > 本项目仅用于数据分析、统计研究和软件工程学习，不构成任何投资建议，也不提供自动交易能力。
 
-**当前阶段：Milestone 1 数据底座已完成；Milestone 2 价值评估 MVP 进行中（Stage 2H 风险否决证据切片已完成）**
+**当前阶段：Milestone 1 数据底座已完成；Milestone 2 价值评估 MVP 进行中（Stage 2H.1R 风险宇宙与 canonical profile 收口）**
 
 ---
 
@@ -20,7 +20,7 @@
 
 当前已完成第一阶段的**免费数据底座**：可运行、可测试、可追溯的本地数据基础设施。M2 已有 PetroChina（601857.SH）一份 PIT value profile 纵向切片；收益/现金、ROE/ROA、财务安全、股息和估值均已有阶段性能力。Stage 2G.2 增加了 clean-clone 测试胶囊、显式真实输入解析器、Rule007 严格来源配对和 artifact checksums。
 
-M2 当前切片的正式验收见：[Stage 2G.1 trusted-lineage closeout](acceptance/m2_stage2g1_trusted_lineage_closeout.md)、[Stage 2H risk-veto evidence](acceptance/m2_stage2h_petrochina_risk_veto_evidence.md) 和 [PetroChina value profile](reports/petrochina_value_profile_2021_2026.md)。Stage 2F 仍保留 9 个交易所股息证据缺口；Stage 2H 的监管/纪律与相关资金占用搜索缺口保持为 `missing_evidence`，不会被改写为负面结论。
+M2 当前切片的正式验收见：[Stage 2G.1 trusted-lineage closeout](acceptance/m2_stage2g1_trusted_lineage_closeout.md)、[Stage 2H risk-veto evidence](acceptance/m2_stage2h_petrochina_risk_veto_evidence.md)、[Stage 2H.1R historical/profile closeout](acceptance/m2_stage2h1r_historical_risk_completeness_and_profile_canonicalization.md) 和 [PetroChina value profile](reports/petrochina_value_profile_2021_2026.md)。Stage 2F 仍保留 9 个交易所股息证据缺口；Stage 2H 的监管/纪律与相关资金占用搜索缺口保持为 `missing_evidence`，不会被改写为负面结论。
 
 ---
 
@@ -114,7 +114,17 @@ python -m ashare_research.tools.petrochina_risk_veto_vertical_slice run-test-cap
   --output tmp/stage2h-test `
   --run-id stage2h_test_capsule
 pytest -q tests/test_stage2h_risk_veto.py
+pytest -q tests/test_stage2h1r_historical_completeness.py
 ```
+
+Stage 2H.1R 的当前风险状态唯一 canonical 路径是
+`reports/petrochina_value_profile.json:current_risk_veto_profile`，固定输出
+8 个 `risk_evaluation_slot_v1`。`observations` 可以少于 8，但 slot 不会消失；
+没有 PIT-visible input 的 slot 保持 `missing_evidence`。完整风险档案见
+[canonical risk-veto profile](reports/petrochina_risk_veto_profile_2021_2026.md)。
+旧的 `governance_risk`、`audit_risk` 和 `related_party_risk` 只在
+`legacy_risk_veto_checks` 中保留，且 `current=false`、`do_not_use_for_current_profile=true`；
+消费者不得把它们当作当前结论。
 
 Stage 2H stops at evidence status and veto eligibility. It does not start ROIC,
 scoring, web search, target price, recommendation, automatic trading, or

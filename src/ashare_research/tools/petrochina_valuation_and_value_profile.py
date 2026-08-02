@@ -87,48 +87,48 @@ def _read_json(path: Path) -> dict[str, Any]:
 
 
 def _stage2h_risk_payload() -> dict[str, Any]:
-    """Integrate the committed Stage 2H.1 report without re-evaluating risk."""
+    """Integrate the committed canonical Stage 2H.1R universe without re-evaluating risk."""
 
     report_path = ROOT / "reports" / "petrochina_risk_veto_report.json"
     if not report_path.is_file():
         return {
-            "contract_version": "risk_veto_observation_v2",
+            "contract_version": "risk_universe_evaluation_v1",
             "methodology_version": "risk_veto_methodology_v2",
             "formal_run_status": "not_evaluated",
+            "universe_evaluation_id": None,
+            "expected_risk_count": 8,
+            "risk_slots": [],
             "score_eligible": False,
             "observed_risk_ids": [],
-            "missing_evidence_risk_ids": list(),
+            "missing_evidence_risk_ids": [],
             "observations": [],
             "lineage_status": "missing_evidence",
         }
     report = _read_json(report_path)
-    observations = report.get("observations", [])
+    universe = report.get("risk_universe_evaluation", {})
+    observations = universe.get("observations", report.get("observations", []))
+    slots = universe.get("slots", [])
     return {
-        "contract_version": "risk_veto_observation_v2",
+        "contract_version": universe.get("contract", "risk_universe_evaluation_v1"),
         "methodology_version": report.get("methodology_version", "risk_veto_methodology_v2"),
         "formal_run_status": report.get("status", "not_evaluated"),
         "as_of_date": report.get("as_of_date"),
+        "universe_evaluation_id": universe.get(
+            "deterministic_id", report.get("risk_universe_evaluation_id")
+        ),
+        "expected_risk_count": universe.get("expected_risk_count", 8),
+        "risk_slots": slots,
         "score_eligible": False,
         "observed_risk_ids": report.get("observed_risk_ids", []),
         "missing_evidence_risk_ids": report.get("missing_evidence_risk_ids", []),
         "lineage_status": report.get("evidence_lineage_status", "missing_evidence"),
         "search_pit_status": report.get("search_pit_status", "missing_evidence"),
         "event_supersession_status": report.get("event_supersession_status", "missing_evidence"),
-        "observations": [
-            {
-                "risk_id": item["risk_id"],
-                "status": item["status"],
-                "observation_id": item["observation_id"],
-                "available_at": item["available_at"],
-                "conclusion_available_at": item["conclusion_available_at"],
-                "active_event_ids": item["active_event_ids"],
-                "superseded_event_ids": item["superseded_event_ids"],
-                "search_register_id": item["search_register_id"],
-                "search_contract_version": item["search_contract_version"],
-                "lineage_status": item["lineage_status"],
-            }
-            for item in observations
-        ],
+        "observations": observations,
+        "missing_slot_count": universe.get("missing_slot_count", 8 - len(observations)),
+        "completeness_status": universe.get(
+            "completeness_status", "complete_with_explicit_missing_slots"
+        ),
     }
 
 
@@ -1483,7 +1483,7 @@ def run_formal(
             "roic": "not_evaluated",
             "daily_market_mechanism": "not_evaluated",
         },
-        "risk_veto_checks": [
+        "technical_integrity_checks": [
             {
                 "risk_id": "future_data_leakage",
                 "status": "not_observed_within_bounded_evidence",
@@ -1504,23 +1504,48 @@ def run_formal(
                 "status": non_positive_status,
                 "basis": "all computed comparable inputs were audited for positivity",
             },
+        ],
+        "current_risk_veto_profile": _stage2h_risk_payload(),
+        "legacy_risk_veto_checks": [
             {
                 "risk_id": "governance_risk",
-                "status": "not_evaluated",
-                "basis": "outside this valuation vertical slice",
+                "status_at_original_stage": "not_evaluated",
+                "legacy": True,
+                "current": False,
+                "superseded_by": [
+                    "formal_regulatory_investigation_or_major_discipline",
+                    "controlling_shareholder_pledge_risk",
+                    "repeated_equity_financing_or_material_dilution",
+                ],
+                "superseded_at_stage": "M2 Stage 2H",
+                "do_not_use_for_current_profile": True,
             },
             {
                 "risk_id": "audit_risk",
-                "status": "not_evaluated",
-                "basis": "outside this valuation vertical slice",
+                "status_at_original_stage": "not_evaluated",
+                "legacy": True,
+                "current": False,
+                "superseded_by": [
+                    "modified_audit_opinion",
+                    "going_concern_material_uncertainty",
+                    "material_error_restatement",
+                ],
+                "superseded_at_stage": "M2 Stage 2H",
+                "do_not_use_for_current_profile": True,
             },
             {
                 "risk_id": "related_party_risk",
-                "status": "not_evaluated",
-                "basis": "outside this valuation vertical slice",
+                "status_at_original_stage": "not_evaluated",
+                "legacy": True,
+                "current": False,
+                "superseded_by": [
+                    "material_related_party_transaction_risk",
+                    "controlling_shareholder_fund_occupation_or_related_guarantee",
+                ],
+                "superseded_at_stage": "M2 Stage 2H",
+                "do_not_use_for_current_profile": True,
             },
         ],
-        "stage2h_risk_veto": _stage2h_risk_payload(),
         "stage2g1_status": stage_status,
         "score_eligible": False,
     }
@@ -1536,7 +1561,8 @@ def run_formal(
         "canonical_fact_input": {
             key: value for key, value in fact_input.items() if key != "snapshots"
         },
-        "risk_veto_checks": profile["risk_veto_checks"],
+        "technical_integrity_checks": profile["technical_integrity_checks"],
+        "current_risk_veto_profile": profile["current_risk_veto_profile"],
         "last_trade_date": last_trade_date,
         "profile": profile,
     }
@@ -1584,11 +1610,11 @@ def _write_summary_md(path: Path, summary: Mapping[str, Any]) -> None:
     lines.extend(
         [
             "",
-            "## Risk-veto checks",
+            "## Technical integrity checks",
             "",
         ]
     )
-    for check in profile["risk_veto_checks"]:
+    for check in profile["technical_integrity_checks"]:
         lines.append(f"- `{check['risk_id']}`: `{check['status']}`")
     lines.extend(
         [
@@ -1646,25 +1672,31 @@ def _publish_reports(
         "",
         "The profile integrates the existing earnings/cash-quality, ROE/ROA, financial-safety, dividend, and PIT valuation layers. Announced and paid dividend yields are separate. Nine exact exchange payloads remain finite evidence gaps; their affected dividend inputs are partial or missing while non-dividend valuation continues.",
         "",
-        "## Risk-veto statuses",
+        "## Technical integrity checks",
         "",
     ]
-    for check in profile["risk_veto_checks"]:
+    for check in profile["technical_integrity_checks"]:
         profile_md.append(f"- `{check['risk_id']}`: `{check['status']}`")
-    stage2h = profile.get("stage2h_risk_veto", {})
+    stage2h = profile.get("current_risk_veto_profile", {})
     profile_md.extend(
         [
             "",
-            "## Stage 2H.1 PIT risk-veto statuses",
+            "## Canonical current Stage 2H.1R risk profile",
             "",
             f"Contract `{stage2h.get('contract_version')}`; methodology `{stage2h.get('methodology_version')}`; formal status `{stage2h.get('formal_run_status')}`.",
             "Missing evidence remains missing evidence and is not a negative conclusion.",
         ]
     )
-    for observation in stage2h.get("observations", []):
+    for slot in stage2h.get("risk_slots", []):
         profile_md.append(
-            f"- `{observation['risk_id']}`: `{observation['status']}`; available `{observation['available_at']}`; search `{observation.get('search_register_id')}`"
+            f"- `{slot['risk_id']}`: `{slot['evaluation_status']}`; emitted `{slot['observation_emitted']}`; observation `{slot.get('observation_id')}`"
         )
+    profile_md.extend(
+        [
+            "",
+            "Legacy migration: `governance_risk`, `audit_risk`, and `related_party_risk` are retained only under `legacy_risk_veto_checks` with `current=false`, `legacy=true`, and `do_not_use_for_current_profile=true`. Consumers must read `current_risk_veto_profile`.",
+        ]
+    )
     profile_md.append("")
     (reports / "petrochina_value_profile_2021_2026.md").write_text(
         "\n".join(profile_md), encoding="utf-8"
@@ -1682,9 +1714,14 @@ def _publish_reports(
     ]
     for name, item in latest.items():
         one_page.append(f"| `{name}` | {item.get('value_decimal') or '—'} | `{item['status']}` |")
-    one_page.extend(["", "## Risk-veto checks", ""])
-    for check in profile["risk_veto_checks"]:
+    one_page.extend(["", "## Technical integrity checks", ""])
+    for check in profile["technical_integrity_checks"]:
         one_page.append(f"- `{check['risk_id']}`: `{check['status']}`")
+    one_page.extend(["", "## Canonical current risk slots", ""])
+    for slot in profile["current_risk_veto_profile"].get("risk_slots", []):
+        one_page.append(
+            f"- `{slot['risk_id']}`: `{slot['evaluation_status']}`; emitted `{slot['observation_emitted']}`"
+        )
     one_page.append("")
     (reports / "petrochina_value_profile_one_page.md").write_text(
         "\n".join(one_page), encoding="utf-8"
