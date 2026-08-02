@@ -4,7 +4,7 @@
 - Assessment as-of: `2026-08-02`
 - Evidence gate: **BLOCKED_WITH_EXPLICIT_GAPS**
 - Shadow: **NOT_RUN**
-- Registry SHA256: `fe7d5d280801e54c51a3bae96031f8441a6dd8fa0debd7a54005233eb499eb79`
+- Registry SHA256: `dd3dd0bc522344b50df375a72ca220255ae5678e111d11f2a3c1cc7e45bc25f8`
 - Canonical inventory SHA256: `cb675690dd619d01534872c2bc98e9e0f6da80ff4f2ff586978d464c70fece57`
 
 This is an evidence gate. It does not calculate ROIC, create a Metric Result, or modify the value profile.
@@ -13,22 +13,22 @@ This is an evidence gate. It does not calculate ROIC, create a Metric Result, or
 
 | FY | Ready | Partial | Missing | Scope | Period | PIT | Restatement | Methodology | N/A |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 2020 | 2 | 0 | 23 | 0 | 0 | 0 | 0 | 0 | 1 |
-| 2021 | 12 | 0 | 13 | 0 | 0 | 0 | 0 | 0 | 1 |
-| 2022 | 12 | 0 | 13 | 0 | 0 | 0 | 0 | 0 | 1 |
-| 2023 | 12 | 0 | 13 | 0 | 0 | 0 | 0 | 0 | 1 |
-| 2024 | 12 | 0 | 13 | 0 | 0 | 0 | 0 | 0 | 1 |
-| 2025 | 12 | 0 | 13 | 0 | 0 | 0 | 0 | 0 | 1 |
+| 2020 | 3 | 1 | 26 | 0 | 0 | 0 | 0 | 0 | 1 |
+| 2021 | 13 | 1 | 16 | 0 | 0 | 0 | 0 | 0 | 1 |
+| 2022 | 13 | 1 | 16 | 0 | 0 | 0 | 0 | 0 | 1 |
+| 2023 | 13 | 1 | 16 | 0 | 0 | 0 | 0 | 0 | 1 |
+| 2024 | 13 | 1 | 16 | 0 | 0 | 0 | 0 | 0 | 1 |
+| 2025 | 13 | 1 | 16 | 0 | 0 | 0 | 0 | 0 | 1 |
 
 ## Primary-formula blocking gaps
 
 - FY2020 `nopat.operating_profit` / `operating_profit`: **missing_official_fact** (canonical_concept_absent_for_fiscal_year)
-- FY2020 `nopat.finance_cost_adjustment` / `finance_cost_adjustment`: **missing_official_fact** (canonical_concept_absent_for_fiscal_year)
-- FY2021 `nopat.finance_cost_adjustment` / `finance_cost_adjustment`: **missing_official_fact** (canonical_concept_absent_for_fiscal_year)
-- FY2022 `nopat.finance_cost_adjustment` / `finance_cost_adjustment`: **missing_official_fact** (canonical_concept_absent_for_fiscal_year)
-- FY2023 `nopat.finance_cost_adjustment` / `finance_cost_adjustment`: **missing_official_fact** (canonical_concept_absent_for_fiscal_year)
-- FY2024 `nopat.finance_cost_adjustment` / `finance_cost_adjustment`: **missing_official_fact** (canonical_concept_absent_for_fiscal_year)
-- FY2025 `nopat.finance_cost_adjustment` / `finance_cost_adjustment`: **missing_official_fact** (canonical_concept_absent_for_fiscal_year)
+- FY2020 `nopat.finance_cost_adjustment` / `finance_cost_adjustment`: **missing_official_fact** (registry_components_unready)
+- FY2021 `nopat.finance_cost_adjustment` / `finance_cost_adjustment`: **missing_official_fact** (registry_components_unready)
+- FY2022 `nopat.finance_cost_adjustment` / `finance_cost_adjustment`: **missing_official_fact** (registry_components_unready)
+- FY2023 `nopat.finance_cost_adjustment` / `finance_cost_adjustment`: **missing_official_fact** (registry_components_unready)
+- FY2024 `nopat.finance_cost_adjustment` / `finance_cost_adjustment`: **missing_official_fact** (registry_components_unready)
+- FY2025 `nopat.finance_cost_adjustment` / `finance_cost_adjustment`: **missing_official_fact** (registry_components_unready)
 - FY2020 `nopat.lease_interest_expense` / `lease_interest_expense`: **missing_official_fact** (canonical_concept_absent_for_fiscal_year)
 - FY2021 `nopat.lease_interest_expense` / `lease_interest_expense`: **missing_official_fact** (canonical_concept_absent_for_fiscal_year)
 - FY2022 `nopat.lease_interest_expense` / `lease_interest_expense`: **missing_official_fact** (canonical_concept_absent_for_fiscal_year)
@@ -110,6 +110,30 @@ This is an evidence gate. It does not calculate ROIC, create a Metric Result, or
 - FY2024 `invested_capital.noninterest_bearing_operating_liabilities` / `noninterest_bearing_operating_liabilities`: **missing_official_fact** (canonical_concept_absent_for_fiscal_year)
 - FY2025 `invested_capital.noninterest_bearing_operating_liabilities` / `noninterest_bearing_operating_liabilities`: **missing_official_fact** (canonical_concept_absent_for_fiscal_year)
 - FY2020 `invested_capital.interest_bearing_debt_total` / `interest_bearing_debt_total`: **missing_official_fact** (registry_components_unready)
+- FY2020 `nopat.finance_cost_excluding_lease_interest` / `finance_cost_excluding_lease_interest`: **missing_official_fact** (canonical_concept_absent_for_fiscal_year)
+- FY2021 `nopat.finance_cost_excluding_lease_interest` / `finance_cost_excluding_lease_interest`: **missing_official_fact** (canonical_concept_absent_for_fiscal_year)
+- FY2022 `nopat.finance_cost_excluding_lease_interest` / `finance_cost_excluding_lease_interest`: **missing_official_fact** (canonical_concept_absent_for_fiscal_year)
+- FY2023 `nopat.finance_cost_excluding_lease_interest` / `finance_cost_excluding_lease_interest`: **missing_official_fact** (canonical_concept_absent_for_fiscal_year)
+- FY2024 `nopat.finance_cost_excluding_lease_interest` / `finance_cost_excluding_lease_interest`: **missing_official_fact** (canonical_concept_absent_for_fiscal_year)
+- FY2025 `nopat.finance_cost_excluding_lease_interest` / `finance_cost_excluding_lease_interest`: **missing_official_fact** (canonical_concept_absent_for_fiscal_year)
+- FY2020 `invested_capital.qualifying_non_operating_assets` / `qualifying_non_operating_assets`: **partially_ready** (one_or_more_registry_components_unready)
+- FY2021 `invested_capital.qualifying_non_operating_assets` / `qualifying_non_operating_assets`: **partially_ready** (one_or_more_registry_components_unready)
+- FY2022 `invested_capital.qualifying_non_operating_assets` / `qualifying_non_operating_assets`: **partially_ready** (one_or_more_registry_components_unready)
+- FY2023 `invested_capital.qualifying_non_operating_assets` / `qualifying_non_operating_assets`: **partially_ready** (one_or_more_registry_components_unready)
+- FY2024 `invested_capital.qualifying_non_operating_assets` / `qualifying_non_operating_assets`: **partially_ready** (one_or_more_registry_components_unready)
+- FY2025 `invested_capital.qualifying_non_operating_assets` / `qualifying_non_operating_assets`: **partially_ready** (one_or_more_registry_components_unready)
+- FY2020 `invested_capital.restricted_cash` / `restricted_cash`: **missing_official_fact** (canonical_concept_absent_for_fiscal_year)
+- FY2021 `invested_capital.restricted_cash` / `restricted_cash`: **missing_official_fact** (canonical_concept_absent_for_fiscal_year)
+- FY2022 `invested_capital.restricted_cash` / `restricted_cash`: **missing_official_fact** (canonical_concept_absent_for_fiscal_year)
+- FY2023 `invested_capital.restricted_cash` / `restricted_cash`: **missing_official_fact** (canonical_concept_absent_for_fiscal_year)
+- FY2024 `invested_capital.restricted_cash` / `restricted_cash`: **missing_official_fact** (canonical_concept_absent_for_fiscal_year)
+- FY2025 `invested_capital.restricted_cash` / `restricted_cash`: **missing_official_fact** (canonical_concept_absent_for_fiscal_year)
+- FY2020 `invested_capital.non_operating_financial_assets` / `non_operating_financial_assets`: **missing_official_fact** (canonical_concept_absent_for_fiscal_year)
+- FY2021 `invested_capital.non_operating_financial_assets` / `non_operating_financial_assets`: **missing_official_fact** (canonical_concept_absent_for_fiscal_year)
+- FY2022 `invested_capital.non_operating_financial_assets` / `non_operating_financial_assets`: **missing_official_fact** (canonical_concept_absent_for_fiscal_year)
+- FY2023 `invested_capital.non_operating_financial_assets` / `non_operating_financial_assets`: **missing_official_fact** (canonical_concept_absent_for_fiscal_year)
+- FY2024 `invested_capital.non_operating_financial_assets` / `non_operating_financial_assets`: **missing_official_fact** (canonical_concept_absent_for_fiscal_year)
+- FY2025 `invested_capital.non_operating_financial_assets` / `non_operating_financial_assets`: **missing_official_fact** (canonical_concept_absent_for_fiscal_year)
 
 ## Frozen controls
 

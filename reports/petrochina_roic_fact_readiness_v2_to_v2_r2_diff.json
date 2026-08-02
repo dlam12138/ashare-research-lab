@@ -1,0 +1,53 @@
+{
+  "schema": "roic_fact_readiness_v2_to_v2_r2_diff_v1",
+  "historical_report": "reports/petrochina_roic_fact_readiness_2020_2025_v2.json@7e9c04d6377f519374140a112e5b198f220b6119",
+  "historical_report_sha256": "c0ef83c38b1e3883b43c105fb481c526b4848697024ffe7217bacea4c5efc8cc",
+  "corrected_report": "reports/petrochina_roic_fact_readiness_2020_2025_v2.json",
+  "corrected_report_sha256": "0f0bf2d53202419d871bc086c23a45513d658907e4dc3a30da755069cc0adc9d",
+  "historical_matrix_cells": 156,
+  "corrected_matrix_cells": 186,
+  "historical_status_summary": {"missing_official_fact": 88, "not_applicable": 6, "ready": 62},
+  "corrected_status_summary": {"missing_official_fact": 106, "not_applicable": 6, "partially_ready": 6, "ready": 68},
+  "historical_primary_formula_blocking_cells": 69,
+  "corrected_primary_formula_blocking_cells": 81,
+  "methodology_migration": {
+    "historical_mixed_role": "invested_capital.non_operating_asset_boundary",
+    "historical_cells_incorrectly_presented_as_resolved_not_applicable": 6,
+    "historical_role_new_status": "not_applicable migration tombstone",
+    "replacement_policy_role": "policy.non_operating_asset_classification",
+    "replacement_policy_cells": 6,
+    "replacement_policy_status": "ready",
+    "replacement_policy_reason": "decision contract has a resolved rule, version and deterministic digest",
+    "replacement_amount_role": "invested_capital.qualifying_non_operating_assets",
+    "replacement_amount_cells": 6,
+    "replacement_amount_status": "partially_ready",
+    "replacement_amount_reason": "deterministic amount remains incomplete until canonical supporting components are ready"
+  },
+  "primary_blocker_change_explanation": [
+    "finance_cost_adjustment changed from an unstructured direct gap to a two-component deterministic derivation",
+    "lease interest remains a required component and is now explicitly covered",
+    "qualifying non-operating assets is a separate deterministic primary role",
+    "new supporting and amount roles increase the matrix without converting secondary gaps into primary blockers"
+  ],
+  "plan_diff": {
+    "historical_schema": "roic_official_fact_acquisition_plan_v2",
+    "corrected_schema": "roic_official_fact_acquisition_plan_v3",
+    "historical_item_count": 11,
+    "corrected_item_count": 11,
+    "added_roles": [
+      "nopat.finance_cost_excluding_lease_interest",
+      "nopat.lease_interest_expense",
+      "invested_capital.restricted_cash",
+      "invested_capital.non_operating_financial_assets"
+    ],
+    "removed_direct_acquisition_roles": [
+      "nopat.finance_cost_adjustment",
+      "invested_capital.non_operating_asset_boundary",
+      "nopat.other_non_operating_income_expense",
+      "invested_capital.goodwill"
+    ],
+    "reclassified_role": "nopat.asset_disposal_gain_loss moved from secondary to primary A",
+    "secondary_non_blocking_role": "nopat.other_non_operating_income_expense",
+    "corrected_plan_digest": "aedaebcaa5b85fd4bbfa39f77c2ac09a55c548cf2bb099cdc008271aa3340215"
+  }
+}

@@ -15,8 +15,12 @@
   "inventory_fact_count": 354,
   "inventory_context_count": 11,
   "repository_pit_probe": null,
-  "registry_path": "D:/量化分析/config/roic_concept_registry_v1.json",
-  "registry_sha256": "fe7d5d280801e54c51a3bae96031f8441a6dd8fa0debd7a54005233eb499eb79",
+  "registry_logical_path": "config/roic_concept_registry_v2.json",
+  "registry_sha256": "dd3dd0bc522344b50df375a72ca220255ae5678e111d11f2a3c1cc7e45bc25f8",
+  "dependency_graph_logical_path": "config/roic_formula_dependency_graph_v1.json",
+  "dependency_graph_sha256": "30901560c2cb3106f02e5ebca832802f5f6e6913f5e949046384eebfc2364f80",
+  "methodology_decisions_logical_path": "config/roic_methodology_decisions_v1.json",
+  "methodology_decisions_sha256": "2b8b048dcacee4eff6d074705b818e1ca133a89ce6a894fd3a7b81a739a21cd1",
   "formula_candidate": "B_operating_profit_bridge_financing_view",
   "formula_status": "frozen_primary_candidate_not_production_metric",
   "formal_statuses": [
@@ -56,9 +60,9 @@
   },
   "coverage_by_year": {
     "2020": {
-      "ready": 2,
-      "partially_ready": 0,
-      "missing_official_fact": 23,
+      "ready": 3,
+      "partially_ready": 1,
+      "missing_official_fact": 26,
       "scope_mismatch": 0,
       "period_mismatch": 0,
       "PIT_unavailable": 0,
@@ -67,9 +71,9 @@
       "not_applicable": 1
     },
     "2021": {
-      "ready": 12,
-      "partially_ready": 0,
-      "missing_official_fact": 13,
+      "ready": 13,
+      "partially_ready": 1,
+      "missing_official_fact": 16,
       "scope_mismatch": 0,
       "period_mismatch": 0,
       "PIT_unavailable": 0,
@@ -78,9 +82,9 @@
       "not_applicable": 1
     },
     "2022": {
-      "ready": 12,
-      "partially_ready": 0,
-      "missing_official_fact": 13,
+      "ready": 13,
+      "partially_ready": 1,
+      "missing_official_fact": 16,
       "scope_mismatch": 0,
       "period_mismatch": 0,
       "PIT_unavailable": 0,
@@ -89,9 +93,9 @@
       "not_applicable": 1
     },
     "2023": {
-      "ready": 12,
-      "partially_ready": 0,
-      "missing_official_fact": 13,
+      "ready": 13,
+      "partially_ready": 1,
+      "missing_official_fact": 16,
       "scope_mismatch": 0,
       "period_mismatch": 0,
       "PIT_unavailable": 0,
@@ -100,9 +104,9 @@
       "not_applicable": 1
     },
     "2024": {
-      "ready": 12,
-      "partially_ready": 0,
-      "missing_official_fact": 13,
+      "ready": 13,
+      "partially_ready": 1,
+      "missing_official_fact": 16,
       "scope_mismatch": 0,
       "period_mismatch": 0,
       "PIT_unavailable": 0,
@@ -111,9 +115,9 @@
       "not_applicable": 1
     },
     "2025": {
-      "ready": 12,
-      "partially_ready": 0,
-      "missing_official_fact": 13,
+      "ready": 13,
+      "partially_ready": 1,
+      "missing_official_fact": 16,
       "scope_mismatch": 0,
       "period_mismatch": 0,
       "PIT_unavailable": 0,
@@ -123,9 +127,10 @@
     }
   },
   "status_summary": {
-    "missing_official_fact": 88,
+    "missing_official_fact": 106,
     "not_applicable": 6,
-    "ready": 62
+    "partially_ready": 6,
+    "ready": 68
   },
   "blocking_gaps": [
     {
@@ -144,7 +149,7 @@
       "canonical_concept_id": "finance_cost_adjustment",
       "status": "missing_official_fact",
       "reason_codes": [
-        "canonical_concept_absent_for_fiscal_year"
+        "registry_components_unready"
       ],
       "blocker_severity": "hard"
     },
@@ -154,7 +159,7 @@
       "canonical_concept_id": "finance_cost_adjustment",
       "status": "missing_official_fact",
       "reason_codes": [
-        "canonical_concept_absent_for_fiscal_year"
+        "registry_components_unready"
       ],
       "blocker_severity": "hard"
     },
@@ -164,7 +169,7 @@
       "canonical_concept_id": "finance_cost_adjustment",
       "status": "missing_official_fact",
       "reason_codes": [
-        "canonical_concept_absent_for_fiscal_year"
+        "registry_components_unready"
       ],
       "blocker_severity": "hard"
     },
@@ -174,7 +179,7 @@
       "canonical_concept_id": "finance_cost_adjustment",
       "status": "missing_official_fact",
       "reason_codes": [
-        "canonical_concept_absent_for_fiscal_year"
+        "registry_components_unready"
       ],
       "blocker_severity": "hard"
     },
@@ -184,7 +189,7 @@
       "canonical_concept_id": "finance_cost_adjustment",
       "status": "missing_official_fact",
       "reason_codes": [
-        "canonical_concept_absent_for_fiscal_year"
+        "registry_components_unready"
       ],
       "blocker_severity": "hard"
     },
@@ -194,7 +199,7 @@
       "canonical_concept_id": "finance_cost_adjustment",
       "status": "missing_official_fact",
       "reason_codes": [
-        "canonical_concept_absent_for_fiscal_year"
+        "registry_components_unready"
       ],
       "blocker_severity": "hard"
     },
@@ -446,7 +451,7 @@
       "reason_codes": [
         "canonical_concept_absent_for_fiscal_year"
       ],
-      "blocker_severity": "hard"
+      "blocker_severity": "reconciliation"
     },
     {
       "fiscal_year": 2021,
@@ -456,7 +461,7 @@
       "reason_codes": [
         "canonical_concept_absent_for_fiscal_year"
       ],
-      "blocker_severity": "hard"
+      "blocker_severity": "reconciliation"
     },
     {
       "fiscal_year": 2022,
@@ -466,7 +471,7 @@
       "reason_codes": [
         "canonical_concept_absent_for_fiscal_year"
       ],
-      "blocker_severity": "hard"
+      "blocker_severity": "reconciliation"
     },
     {
       "fiscal_year": 2023,
@@ -476,7 +481,7 @@
       "reason_codes": [
         "canonical_concept_absent_for_fiscal_year"
       ],
-      "blocker_severity": "hard"
+      "blocker_severity": "reconciliation"
     },
     {
       "fiscal_year": 2024,
@@ -486,7 +491,7 @@
       "reason_codes": [
         "canonical_concept_absent_for_fiscal_year"
       ],
-      "blocker_severity": "hard"
+      "blocker_severity": "reconciliation"
     },
     {
       "fiscal_year": 2025,
@@ -496,7 +501,7 @@
       "reason_codes": [
         "canonical_concept_absent_for_fiscal_year"
       ],
-      "blocker_severity": "hard"
+      "blocker_severity": "reconciliation"
     },
     {
       "fiscal_year": 2020,
@@ -1007,6 +1012,246 @@
         "registry_components_unready"
       ],
       "blocker_severity": "hard"
+    },
+    {
+      "fiscal_year": 2020,
+      "role_id": "nopat.finance_cost_excluding_lease_interest",
+      "canonical_concept_id": "finance_cost_excluding_lease_interest",
+      "status": "missing_official_fact",
+      "reason_codes": [
+        "canonical_concept_absent_for_fiscal_year"
+      ],
+      "blocker_severity": "hard"
+    },
+    {
+      "fiscal_year": 2021,
+      "role_id": "nopat.finance_cost_excluding_lease_interest",
+      "canonical_concept_id": "finance_cost_excluding_lease_interest",
+      "status": "missing_official_fact",
+      "reason_codes": [
+        "canonical_concept_absent_for_fiscal_year"
+      ],
+      "blocker_severity": "hard"
+    },
+    {
+      "fiscal_year": 2022,
+      "role_id": "nopat.finance_cost_excluding_lease_interest",
+      "canonical_concept_id": "finance_cost_excluding_lease_interest",
+      "status": "missing_official_fact",
+      "reason_codes": [
+        "canonical_concept_absent_for_fiscal_year"
+      ],
+      "blocker_severity": "hard"
+    },
+    {
+      "fiscal_year": 2023,
+      "role_id": "nopat.finance_cost_excluding_lease_interest",
+      "canonical_concept_id": "finance_cost_excluding_lease_interest",
+      "status": "missing_official_fact",
+      "reason_codes": [
+        "canonical_concept_absent_for_fiscal_year"
+      ],
+      "blocker_severity": "hard"
+    },
+    {
+      "fiscal_year": 2024,
+      "role_id": "nopat.finance_cost_excluding_lease_interest",
+      "canonical_concept_id": "finance_cost_excluding_lease_interest",
+      "status": "missing_official_fact",
+      "reason_codes": [
+        "canonical_concept_absent_for_fiscal_year"
+      ],
+      "blocker_severity": "hard"
+    },
+    {
+      "fiscal_year": 2025,
+      "role_id": "nopat.finance_cost_excluding_lease_interest",
+      "canonical_concept_id": "finance_cost_excluding_lease_interest",
+      "status": "missing_official_fact",
+      "reason_codes": [
+        "canonical_concept_absent_for_fiscal_year"
+      ],
+      "blocker_severity": "hard"
+    },
+    {
+      "fiscal_year": 2020,
+      "role_id": "invested_capital.qualifying_non_operating_assets",
+      "canonical_concept_id": "qualifying_non_operating_assets",
+      "status": "partially_ready",
+      "reason_codes": [
+        "one_or_more_registry_components_unready"
+      ],
+      "blocker_severity": "hard"
+    },
+    {
+      "fiscal_year": 2021,
+      "role_id": "invested_capital.qualifying_non_operating_assets",
+      "canonical_concept_id": "qualifying_non_operating_assets",
+      "status": "partially_ready",
+      "reason_codes": [
+        "one_or_more_registry_components_unready"
+      ],
+      "blocker_severity": "hard"
+    },
+    {
+      "fiscal_year": 2022,
+      "role_id": "invested_capital.qualifying_non_operating_assets",
+      "canonical_concept_id": "qualifying_non_operating_assets",
+      "status": "partially_ready",
+      "reason_codes": [
+        "one_or_more_registry_components_unready"
+      ],
+      "blocker_severity": "hard"
+    },
+    {
+      "fiscal_year": 2023,
+      "role_id": "invested_capital.qualifying_non_operating_assets",
+      "canonical_concept_id": "qualifying_non_operating_assets",
+      "status": "partially_ready",
+      "reason_codes": [
+        "one_or_more_registry_components_unready"
+      ],
+      "blocker_severity": "hard"
+    },
+    {
+      "fiscal_year": 2024,
+      "role_id": "invested_capital.qualifying_non_operating_assets",
+      "canonical_concept_id": "qualifying_non_operating_assets",
+      "status": "partially_ready",
+      "reason_codes": [
+        "one_or_more_registry_components_unready"
+      ],
+      "blocker_severity": "hard"
+    },
+    {
+      "fiscal_year": 2025,
+      "role_id": "invested_capital.qualifying_non_operating_assets",
+      "canonical_concept_id": "qualifying_non_operating_assets",
+      "status": "partially_ready",
+      "reason_codes": [
+        "one_or_more_registry_components_unready"
+      ],
+      "blocker_severity": "hard"
+    },
+    {
+      "fiscal_year": 2020,
+      "role_id": "invested_capital.restricted_cash",
+      "canonical_concept_id": "restricted_cash",
+      "status": "missing_official_fact",
+      "reason_codes": [
+        "canonical_concept_absent_for_fiscal_year"
+      ],
+      "blocker_severity": "methodology_support"
+    },
+    {
+      "fiscal_year": 2021,
+      "role_id": "invested_capital.restricted_cash",
+      "canonical_concept_id": "restricted_cash",
+      "status": "missing_official_fact",
+      "reason_codes": [
+        "canonical_concept_absent_for_fiscal_year"
+      ],
+      "blocker_severity": "methodology_support"
+    },
+    {
+      "fiscal_year": 2022,
+      "role_id": "invested_capital.restricted_cash",
+      "canonical_concept_id": "restricted_cash",
+      "status": "missing_official_fact",
+      "reason_codes": [
+        "canonical_concept_absent_for_fiscal_year"
+      ],
+      "blocker_severity": "methodology_support"
+    },
+    {
+      "fiscal_year": 2023,
+      "role_id": "invested_capital.restricted_cash",
+      "canonical_concept_id": "restricted_cash",
+      "status": "missing_official_fact",
+      "reason_codes": [
+        "canonical_concept_absent_for_fiscal_year"
+      ],
+      "blocker_severity": "methodology_support"
+    },
+    {
+      "fiscal_year": 2024,
+      "role_id": "invested_capital.restricted_cash",
+      "canonical_concept_id": "restricted_cash",
+      "status": "missing_official_fact",
+      "reason_codes": [
+        "canonical_concept_absent_for_fiscal_year"
+      ],
+      "blocker_severity": "methodology_support"
+    },
+    {
+      "fiscal_year": 2025,
+      "role_id": "invested_capital.restricted_cash",
+      "canonical_concept_id": "restricted_cash",
+      "status": "missing_official_fact",
+      "reason_codes": [
+        "canonical_concept_absent_for_fiscal_year"
+      ],
+      "blocker_severity": "methodology_support"
+    },
+    {
+      "fiscal_year": 2020,
+      "role_id": "invested_capital.non_operating_financial_assets",
+      "canonical_concept_id": "non_operating_financial_assets",
+      "status": "missing_official_fact",
+      "reason_codes": [
+        "canonical_concept_absent_for_fiscal_year"
+      ],
+      "blocker_severity": "hard"
+    },
+    {
+      "fiscal_year": 2021,
+      "role_id": "invested_capital.non_operating_financial_assets",
+      "canonical_concept_id": "non_operating_financial_assets",
+      "status": "missing_official_fact",
+      "reason_codes": [
+        "canonical_concept_absent_for_fiscal_year"
+      ],
+      "blocker_severity": "hard"
+    },
+    {
+      "fiscal_year": 2022,
+      "role_id": "invested_capital.non_operating_financial_assets",
+      "canonical_concept_id": "non_operating_financial_assets",
+      "status": "missing_official_fact",
+      "reason_codes": [
+        "canonical_concept_absent_for_fiscal_year"
+      ],
+      "blocker_severity": "hard"
+    },
+    {
+      "fiscal_year": 2023,
+      "role_id": "invested_capital.non_operating_financial_assets",
+      "canonical_concept_id": "non_operating_financial_assets",
+      "status": "missing_official_fact",
+      "reason_codes": [
+        "canonical_concept_absent_for_fiscal_year"
+      ],
+      "blocker_severity": "hard"
+    },
+    {
+      "fiscal_year": 2024,
+      "role_id": "invested_capital.non_operating_financial_assets",
+      "canonical_concept_id": "non_operating_financial_assets",
+      "status": "missing_official_fact",
+      "reason_codes": [
+        "canonical_concept_absent_for_fiscal_year"
+      ],
+      "blocker_severity": "hard"
+    },
+    {
+      "fiscal_year": 2025,
+      "role_id": "invested_capital.non_operating_financial_assets",
+      "canonical_concept_id": "non_operating_financial_assets",
+      "status": "missing_official_fact",
+      "reason_codes": [
+        "canonical_concept_absent_for_fiscal_year"
+      ],
+      "blocker_severity": "hard"
     }
   ],
   "primary_formula_blocking_gaps": [
@@ -1026,7 +1271,7 @@
       "canonical_concept_id": "finance_cost_adjustment",
       "status": "missing_official_fact",
       "reason_codes": [
-        "canonical_concept_absent_for_fiscal_year"
+        "registry_components_unready"
       ],
       "blocker_severity": "hard"
     },
@@ -1036,7 +1281,7 @@
       "canonical_concept_id": "finance_cost_adjustment",
       "status": "missing_official_fact",
       "reason_codes": [
-        "canonical_concept_absent_for_fiscal_year"
+        "registry_components_unready"
       ],
       "blocker_severity": "hard"
     },
@@ -1046,7 +1291,7 @@
       "canonical_concept_id": "finance_cost_adjustment",
       "status": "missing_official_fact",
       "reason_codes": [
-        "canonical_concept_absent_for_fiscal_year"
+        "registry_components_unready"
       ],
       "blocker_severity": "hard"
     },
@@ -1056,7 +1301,7 @@
       "canonical_concept_id": "finance_cost_adjustment",
       "status": "missing_official_fact",
       "reason_codes": [
-        "canonical_concept_absent_for_fiscal_year"
+        "registry_components_unready"
       ],
       "blocker_severity": "hard"
     },
@@ -1066,7 +1311,7 @@
       "canonical_concept_id": "finance_cost_adjustment",
       "status": "missing_official_fact",
       "reason_codes": [
-        "canonical_concept_absent_for_fiscal_year"
+        "registry_components_unready"
       ],
       "blocker_severity": "hard"
     },
@@ -1076,7 +1321,7 @@
       "canonical_concept_id": "finance_cost_adjustment",
       "status": "missing_official_fact",
       "reason_codes": [
-        "canonical_concept_absent_for_fiscal_year"
+        "registry_components_unready"
       ],
       "blocker_severity": "hard"
     },
@@ -1314,66 +1559,6 @@
       "fiscal_year": 2025,
       "role_id": "nopat.asset_disposal_gain_loss",
       "canonical_concept_id": "asset_disposal_gain_loss",
-      "status": "missing_official_fact",
-      "reason_codes": [
-        "canonical_concept_absent_for_fiscal_year"
-      ],
-      "blocker_severity": "hard"
-    },
-    {
-      "fiscal_year": 2020,
-      "role_id": "nopat.other_non_operating_income_expense",
-      "canonical_concept_id": "other_non_operating_income_expense",
-      "status": "missing_official_fact",
-      "reason_codes": [
-        "canonical_concept_absent_for_fiscal_year"
-      ],
-      "blocker_severity": "hard"
-    },
-    {
-      "fiscal_year": 2021,
-      "role_id": "nopat.other_non_operating_income_expense",
-      "canonical_concept_id": "other_non_operating_income_expense",
-      "status": "missing_official_fact",
-      "reason_codes": [
-        "canonical_concept_absent_for_fiscal_year"
-      ],
-      "blocker_severity": "hard"
-    },
-    {
-      "fiscal_year": 2022,
-      "role_id": "nopat.other_non_operating_income_expense",
-      "canonical_concept_id": "other_non_operating_income_expense",
-      "status": "missing_official_fact",
-      "reason_codes": [
-        "canonical_concept_absent_for_fiscal_year"
-      ],
-      "blocker_severity": "hard"
-    },
-    {
-      "fiscal_year": 2023,
-      "role_id": "nopat.other_non_operating_income_expense",
-      "canonical_concept_id": "other_non_operating_income_expense",
-      "status": "missing_official_fact",
-      "reason_codes": [
-        "canonical_concept_absent_for_fiscal_year"
-      ],
-      "blocker_severity": "hard"
-    },
-    {
-      "fiscal_year": 2024,
-      "role_id": "nopat.other_non_operating_income_expense",
-      "canonical_concept_id": "other_non_operating_income_expense",
-      "status": "missing_official_fact",
-      "reason_codes": [
-        "canonical_concept_absent_for_fiscal_year"
-      ],
-      "blocker_severity": "hard"
-    },
-    {
-      "fiscal_year": 2025,
-      "role_id": "nopat.other_non_operating_income_expense",
-      "canonical_concept_id": "other_non_operating_income_expense",
       "status": "missing_official_fact",
       "reason_codes": [
         "canonical_concept_absent_for_fiscal_year"
@@ -1699,6 +1884,186 @@
         "registry_components_unready"
       ],
       "blocker_severity": "hard"
+    },
+    {
+      "fiscal_year": 2020,
+      "role_id": "nopat.finance_cost_excluding_lease_interest",
+      "canonical_concept_id": "finance_cost_excluding_lease_interest",
+      "status": "missing_official_fact",
+      "reason_codes": [
+        "canonical_concept_absent_for_fiscal_year"
+      ],
+      "blocker_severity": "hard"
+    },
+    {
+      "fiscal_year": 2021,
+      "role_id": "nopat.finance_cost_excluding_lease_interest",
+      "canonical_concept_id": "finance_cost_excluding_lease_interest",
+      "status": "missing_official_fact",
+      "reason_codes": [
+        "canonical_concept_absent_for_fiscal_year"
+      ],
+      "blocker_severity": "hard"
+    },
+    {
+      "fiscal_year": 2022,
+      "role_id": "nopat.finance_cost_excluding_lease_interest",
+      "canonical_concept_id": "finance_cost_excluding_lease_interest",
+      "status": "missing_official_fact",
+      "reason_codes": [
+        "canonical_concept_absent_for_fiscal_year"
+      ],
+      "blocker_severity": "hard"
+    },
+    {
+      "fiscal_year": 2023,
+      "role_id": "nopat.finance_cost_excluding_lease_interest",
+      "canonical_concept_id": "finance_cost_excluding_lease_interest",
+      "status": "missing_official_fact",
+      "reason_codes": [
+        "canonical_concept_absent_for_fiscal_year"
+      ],
+      "blocker_severity": "hard"
+    },
+    {
+      "fiscal_year": 2024,
+      "role_id": "nopat.finance_cost_excluding_lease_interest",
+      "canonical_concept_id": "finance_cost_excluding_lease_interest",
+      "status": "missing_official_fact",
+      "reason_codes": [
+        "canonical_concept_absent_for_fiscal_year"
+      ],
+      "blocker_severity": "hard"
+    },
+    {
+      "fiscal_year": 2025,
+      "role_id": "nopat.finance_cost_excluding_lease_interest",
+      "canonical_concept_id": "finance_cost_excluding_lease_interest",
+      "status": "missing_official_fact",
+      "reason_codes": [
+        "canonical_concept_absent_for_fiscal_year"
+      ],
+      "blocker_severity": "hard"
+    },
+    {
+      "fiscal_year": 2020,
+      "role_id": "invested_capital.qualifying_non_operating_assets",
+      "canonical_concept_id": "qualifying_non_operating_assets",
+      "status": "partially_ready",
+      "reason_codes": [
+        "one_or_more_registry_components_unready"
+      ],
+      "blocker_severity": "hard"
+    },
+    {
+      "fiscal_year": 2021,
+      "role_id": "invested_capital.qualifying_non_operating_assets",
+      "canonical_concept_id": "qualifying_non_operating_assets",
+      "status": "partially_ready",
+      "reason_codes": [
+        "one_or_more_registry_components_unready"
+      ],
+      "blocker_severity": "hard"
+    },
+    {
+      "fiscal_year": 2022,
+      "role_id": "invested_capital.qualifying_non_operating_assets",
+      "canonical_concept_id": "qualifying_non_operating_assets",
+      "status": "partially_ready",
+      "reason_codes": [
+        "one_or_more_registry_components_unready"
+      ],
+      "blocker_severity": "hard"
+    },
+    {
+      "fiscal_year": 2023,
+      "role_id": "invested_capital.qualifying_non_operating_assets",
+      "canonical_concept_id": "qualifying_non_operating_assets",
+      "status": "partially_ready",
+      "reason_codes": [
+        "one_or_more_registry_components_unready"
+      ],
+      "blocker_severity": "hard"
+    },
+    {
+      "fiscal_year": 2024,
+      "role_id": "invested_capital.qualifying_non_operating_assets",
+      "canonical_concept_id": "qualifying_non_operating_assets",
+      "status": "partially_ready",
+      "reason_codes": [
+        "one_or_more_registry_components_unready"
+      ],
+      "blocker_severity": "hard"
+    },
+    {
+      "fiscal_year": 2025,
+      "role_id": "invested_capital.qualifying_non_operating_assets",
+      "canonical_concept_id": "qualifying_non_operating_assets",
+      "status": "partially_ready",
+      "reason_codes": [
+        "one_or_more_registry_components_unready"
+      ],
+      "blocker_severity": "hard"
+    },
+    {
+      "fiscal_year": 2020,
+      "role_id": "invested_capital.non_operating_financial_assets",
+      "canonical_concept_id": "non_operating_financial_assets",
+      "status": "missing_official_fact",
+      "reason_codes": [
+        "canonical_concept_absent_for_fiscal_year"
+      ],
+      "blocker_severity": "hard"
+    },
+    {
+      "fiscal_year": 2021,
+      "role_id": "invested_capital.non_operating_financial_assets",
+      "canonical_concept_id": "non_operating_financial_assets",
+      "status": "missing_official_fact",
+      "reason_codes": [
+        "canonical_concept_absent_for_fiscal_year"
+      ],
+      "blocker_severity": "hard"
+    },
+    {
+      "fiscal_year": 2022,
+      "role_id": "invested_capital.non_operating_financial_assets",
+      "canonical_concept_id": "non_operating_financial_assets",
+      "status": "missing_official_fact",
+      "reason_codes": [
+        "canonical_concept_absent_for_fiscal_year"
+      ],
+      "blocker_severity": "hard"
+    },
+    {
+      "fiscal_year": 2023,
+      "role_id": "invested_capital.non_operating_financial_assets",
+      "canonical_concept_id": "non_operating_financial_assets",
+      "status": "missing_official_fact",
+      "reason_codes": [
+        "canonical_concept_absent_for_fiscal_year"
+      ],
+      "blocker_severity": "hard"
+    },
+    {
+      "fiscal_year": 2024,
+      "role_id": "invested_capital.non_operating_financial_assets",
+      "canonical_concept_id": "non_operating_financial_assets",
+      "status": "missing_official_fact",
+      "reason_codes": [
+        "canonical_concept_absent_for_fiscal_year"
+      ],
+      "blocker_severity": "hard"
+    },
+    {
+      "fiscal_year": 2025,
+      "role_id": "invested_capital.non_operating_financial_assets",
+      "canonical_concept_id": "non_operating_financial_assets",
+      "status": "missing_official_fact",
+      "reason_codes": [
+        "canonical_concept_absent_for_fiscal_year"
+      ],
+      "blocker_severity": "hard"
     }
   ],
   "matrix": [
@@ -1740,6 +2105,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -1803,6 +2176,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "252fe65ca6d3f9fc14578fe9333eeeace10c51f43058fb4846d58b15306942f0",
@@ -1965,6 +2346,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "05f138124096190dc9b9393d773fb631e85066c78689f5f3ec7c5e75f1acf71c",
@@ -2130,6 +2519,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "444467ccc5091372a81054be74501dfd4d5d015312bee33da9c6b98cc50aceee",
@@ -2398,6 +2795,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "37a5504eefffbd9fb2c9f9de9c9941cdb1a9f17a789bd6c93011f8860805daba",
@@ -2560,6 +2965,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "2a98f29f9c371c6d52fed66efdcd9bb5a0bf6acec95752d699cfea135c3b469c",
@@ -2666,10 +3079,10 @@
       "fiscal_year": 2020,
       "role_id": "nopat.finance_cost_adjustment",
       "canonical_concept_id": "finance_cost_adjustment",
-      "input_type": "direct_fact",
+      "input_type": "deterministic_derivation",
       "status": "missing_official_fact",
       "reason_codes": [
-        "canonical_concept_absent_for_fiscal_year"
+        "registry_components_unready"
       ],
       "blocker_severity": "hard",
       "selected_fact_id": null,
@@ -2697,19 +3110,37 @@
       "supersedes_fact_id": null,
       "selected_as_of": "2026-08-02",
       "acquisition_required": true,
-      "derivation_status": "not_applicable",
+      "derivation_status": "incomplete",
       "methodology_choice_status": "not_applicable",
-      "pit_audit": {}
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
+      "pit_audit": {},
+      "component_statuses": [
+        {
+          "role_id": "nopat.finance_cost_excluding_lease_interest",
+          "status": "missing_official_fact"
+        },
+        {
+          "role_id": "nopat.lease_interest_expense",
+          "status": "missing_official_fact"
+        }
+      ]
     },
     {
       "symbol": "601857.SH",
       "fiscal_year": 2021,
       "role_id": "nopat.finance_cost_adjustment",
       "canonical_concept_id": "finance_cost_adjustment",
-      "input_type": "direct_fact",
+      "input_type": "deterministic_derivation",
       "status": "missing_official_fact",
       "reason_codes": [
-        "canonical_concept_absent_for_fiscal_year"
+        "registry_components_unready"
       ],
       "blocker_severity": "hard",
       "selected_fact_id": null,
@@ -2737,19 +3168,37 @@
       "supersedes_fact_id": null,
       "selected_as_of": "2026-08-02",
       "acquisition_required": true,
-      "derivation_status": "not_applicable",
+      "derivation_status": "incomplete",
       "methodology_choice_status": "not_applicable",
-      "pit_audit": {}
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
+      "pit_audit": {},
+      "component_statuses": [
+        {
+          "role_id": "nopat.finance_cost_excluding_lease_interest",
+          "status": "missing_official_fact"
+        },
+        {
+          "role_id": "nopat.lease_interest_expense",
+          "status": "missing_official_fact"
+        }
+      ]
     },
     {
       "symbol": "601857.SH",
       "fiscal_year": 2022,
       "role_id": "nopat.finance_cost_adjustment",
       "canonical_concept_id": "finance_cost_adjustment",
-      "input_type": "direct_fact",
+      "input_type": "deterministic_derivation",
       "status": "missing_official_fact",
       "reason_codes": [
-        "canonical_concept_absent_for_fiscal_year"
+        "registry_components_unready"
       ],
       "blocker_severity": "hard",
       "selected_fact_id": null,
@@ -2777,19 +3226,37 @@
       "supersedes_fact_id": null,
       "selected_as_of": "2026-08-02",
       "acquisition_required": true,
-      "derivation_status": "not_applicable",
+      "derivation_status": "incomplete",
       "methodology_choice_status": "not_applicable",
-      "pit_audit": {}
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
+      "pit_audit": {},
+      "component_statuses": [
+        {
+          "role_id": "nopat.finance_cost_excluding_lease_interest",
+          "status": "missing_official_fact"
+        },
+        {
+          "role_id": "nopat.lease_interest_expense",
+          "status": "missing_official_fact"
+        }
+      ]
     },
     {
       "symbol": "601857.SH",
       "fiscal_year": 2023,
       "role_id": "nopat.finance_cost_adjustment",
       "canonical_concept_id": "finance_cost_adjustment",
-      "input_type": "direct_fact",
+      "input_type": "deterministic_derivation",
       "status": "missing_official_fact",
       "reason_codes": [
-        "canonical_concept_absent_for_fiscal_year"
+        "registry_components_unready"
       ],
       "blocker_severity": "hard",
       "selected_fact_id": null,
@@ -2817,19 +3284,37 @@
       "supersedes_fact_id": null,
       "selected_as_of": "2026-08-02",
       "acquisition_required": true,
-      "derivation_status": "not_applicable",
+      "derivation_status": "incomplete",
       "methodology_choice_status": "not_applicable",
-      "pit_audit": {}
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
+      "pit_audit": {},
+      "component_statuses": [
+        {
+          "role_id": "nopat.finance_cost_excluding_lease_interest",
+          "status": "missing_official_fact"
+        },
+        {
+          "role_id": "nopat.lease_interest_expense",
+          "status": "missing_official_fact"
+        }
+      ]
     },
     {
       "symbol": "601857.SH",
       "fiscal_year": 2024,
       "role_id": "nopat.finance_cost_adjustment",
       "canonical_concept_id": "finance_cost_adjustment",
-      "input_type": "direct_fact",
+      "input_type": "deterministic_derivation",
       "status": "missing_official_fact",
       "reason_codes": [
-        "canonical_concept_absent_for_fiscal_year"
+        "registry_components_unready"
       ],
       "blocker_severity": "hard",
       "selected_fact_id": null,
@@ -2857,19 +3342,37 @@
       "supersedes_fact_id": null,
       "selected_as_of": "2026-08-02",
       "acquisition_required": true,
-      "derivation_status": "not_applicable",
+      "derivation_status": "incomplete",
       "methodology_choice_status": "not_applicable",
-      "pit_audit": {}
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
+      "pit_audit": {},
+      "component_statuses": [
+        {
+          "role_id": "nopat.finance_cost_excluding_lease_interest",
+          "status": "missing_official_fact"
+        },
+        {
+          "role_id": "nopat.lease_interest_expense",
+          "status": "missing_official_fact"
+        }
+      ]
     },
     {
       "symbol": "601857.SH",
       "fiscal_year": 2025,
       "role_id": "nopat.finance_cost_adjustment",
       "canonical_concept_id": "finance_cost_adjustment",
-      "input_type": "direct_fact",
+      "input_type": "deterministic_derivation",
       "status": "missing_official_fact",
       "reason_codes": [
-        "canonical_concept_absent_for_fiscal_year"
+        "registry_components_unready"
       ],
       "blocker_severity": "hard",
       "selected_fact_id": null,
@@ -2897,9 +3400,27 @@
       "supersedes_fact_id": null,
       "selected_as_of": "2026-08-02",
       "acquisition_required": true,
-      "derivation_status": "not_applicable",
+      "derivation_status": "incomplete",
       "methodology_choice_status": "not_applicable",
-      "pit_audit": {}
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
+      "pit_audit": {},
+      "component_statuses": [
+        {
+          "role_id": "nopat.finance_cost_excluding_lease_interest",
+          "status": "missing_official_fact"
+        },
+        {
+          "role_id": "nopat.lease_interest_expense",
+          "status": "missing_official_fact"
+        }
+      ]
     },
     {
       "symbol": "601857.SH",
@@ -2939,6 +3460,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -2979,6 +3508,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -3019,6 +3556,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -3059,6 +3604,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -3099,6 +3652,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -3139,6 +3700,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -3179,6 +3748,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -3219,6 +3796,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -3259,6 +3844,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -3299,6 +3892,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -3339,6 +3940,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -3379,6 +3988,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -3419,6 +4036,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -3459,6 +4084,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -3499,6 +4132,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -3539,6 +4180,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -3579,6 +4228,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -3619,6 +4276,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -3659,6 +4324,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -3699,6 +4372,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -3739,6 +4420,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -3779,6 +4468,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -3819,6 +4516,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -3859,6 +4564,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -3871,7 +4584,7 @@
       "reason_codes": [
         "canonical_concept_absent_for_fiscal_year"
       ],
-      "blocker_severity": "hard",
+      "blocker_severity": "reconciliation",
       "selected_fact_id": null,
       "candidate_fact_ids": [],
       "context_id": null,
@@ -3896,9 +4609,17 @@
       "restatement_version": null,
       "supersedes_fact_id": null,
       "selected_as_of": "2026-08-02",
-      "acquisition_required": true,
+      "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -3911,7 +4632,7 @@
       "reason_codes": [
         "canonical_concept_absent_for_fiscal_year"
       ],
-      "blocker_severity": "hard",
+      "blocker_severity": "reconciliation",
       "selected_fact_id": null,
       "candidate_fact_ids": [],
       "context_id": null,
@@ -3936,9 +4657,17 @@
       "restatement_version": null,
       "supersedes_fact_id": null,
       "selected_as_of": "2026-08-02",
-      "acquisition_required": true,
+      "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -3951,7 +4680,7 @@
       "reason_codes": [
         "canonical_concept_absent_for_fiscal_year"
       ],
-      "blocker_severity": "hard",
+      "blocker_severity": "reconciliation",
       "selected_fact_id": null,
       "candidate_fact_ids": [],
       "context_id": null,
@@ -3976,9 +4705,17 @@
       "restatement_version": null,
       "supersedes_fact_id": null,
       "selected_as_of": "2026-08-02",
-      "acquisition_required": true,
+      "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -3991,7 +4728,7 @@
       "reason_codes": [
         "canonical_concept_absent_for_fiscal_year"
       ],
-      "blocker_severity": "hard",
+      "blocker_severity": "reconciliation",
       "selected_fact_id": null,
       "candidate_fact_ids": [],
       "context_id": null,
@@ -4016,9 +4753,17 @@
       "restatement_version": null,
       "supersedes_fact_id": null,
       "selected_as_of": "2026-08-02",
-      "acquisition_required": true,
+      "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -4031,7 +4776,7 @@
       "reason_codes": [
         "canonical_concept_absent_for_fiscal_year"
       ],
-      "blocker_severity": "hard",
+      "blocker_severity": "reconciliation",
       "selected_fact_id": null,
       "candidate_fact_ids": [],
       "context_id": null,
@@ -4056,9 +4801,17 @@
       "restatement_version": null,
       "supersedes_fact_id": null,
       "selected_as_of": "2026-08-02",
-      "acquisition_required": true,
+      "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -4071,7 +4824,7 @@
       "reason_codes": [
         "canonical_concept_absent_for_fiscal_year"
       ],
-      "blocker_severity": "hard",
+      "blocker_severity": "reconciliation",
       "selected_fact_id": null,
       "candidate_fact_ids": [],
       "context_id": null,
@@ -4096,9 +4849,17 @@
       "restatement_version": null,
       "supersedes_fact_id": null,
       "selected_as_of": "2026-08-02",
-      "acquisition_required": true,
+      "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -4139,6 +4900,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -4179,6 +4948,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -4219,6 +4996,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -4259,6 +5044,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -4299,6 +5092,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -4339,6 +5140,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -4379,6 +5188,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -4419,6 +5236,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -4459,6 +5284,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -4499,6 +5332,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -4539,6 +5380,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -4579,6 +5428,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -4642,6 +5499,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "2adfe7fdec0a6c9f9d460c08773fa1b04aad6429291afe6131f3ce7e5f936dbf",
@@ -4804,6 +5669,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "4d50fd7245c2c29409924c1cf4607c0d8d65530dab74beefb2c6208337fb4f93",
@@ -4969,6 +5842,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "0f362e1f09ab09f079d149e478458c27193a27793e9effc3a2a073839e4f72d0",
@@ -5240,6 +6121,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "19e4884fedb6b2d37a89de73f4c44f8930ea620e7e817145cdb5377132786c5c",
@@ -5508,6 +6397,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "a52be201040a2483d256186ee68a03db4ab4384cb86f4038bc8538bdcd91b295",
@@ -5670,6 +6567,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "45a8911a4b1626157c179dc44880da947bde9dfda937d18f8464a9381606eb90",
@@ -5809,6 +6714,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -5849,6 +6762,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -5889,6 +6810,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -5929,6 +6858,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -5969,6 +6906,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -6009,6 +6954,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -6049,6 +7002,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -6112,6 +7073,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "0c675d2ae5ee129b681b8f26b4d38ccac2e64f4d5dc62120b07385516e70b604",
@@ -6274,6 +7243,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "0ebc7ae785f0a0aef690d3688b8fed3105a041036fb602d40decd6d56fcbf80f",
@@ -6436,6 +7413,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "1795bbed10b8a599bc7d031e26f01002ec78eb93252cf661f9de43277bbfe9e3",
@@ -6598,6 +7583,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "3c100463b6a555d7058fc830bb0b3025a8f556dd39ecbe1da2c842d74e392b82",
@@ -6760,6 +7753,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "40cdbbae8802efbdd8959471401ff85575ea2dbeae79c86099d7e9df82d0ba02",
@@ -6899,6 +7900,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -6962,6 +7971,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "4765ca68980c4770fc229d9584c961679609c058910bd58391c50183223612d7",
@@ -7124,6 +8141,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "b88165497e607c9b9b377fbf6365974850e0b650ca8fe92ce10168f3989ea294",
@@ -7286,6 +8311,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "1346184bff02463d0360f6bd27fe23c576a51dd217d754dc21680a03389b8985",
@@ -7448,6 +8481,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "28b9182cfb577b54e3e16766a6774ea1226d28bee6e0656d89a2c745b932fac0",
@@ -7610,6 +8651,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "49054b4fdec505690d2051238489245a007c508e5012df2b8bb548e31d35e922",
@@ -7749,6 +8798,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -7812,6 +8869,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "4cbca53a3387d7bd5541a2fafa1d9ab91d64d1fa194a8f52f0feac7ce263c149",
@@ -7974,6 +9039,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "226ffe3fa1430176a4158ffe430100a06452bc705147dbd04aca7c5f2657b1ef",
@@ -8136,6 +9209,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "32bdc29feb4680687b0f013d276f04691f51a7ed50a6db03f3763c7bfb7ceb9a",
@@ -8298,6 +9379,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "26b2264a87f8d674e0a2b1d5bf06855f450dd7458e6e529a178bbc3647822dcd",
@@ -8460,6 +9549,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "21ffc2f2b2f8b4f2d70be7d2e04593dbde8aa812840dce62c9dd8c13e7f626c3",
@@ -8599,6 +9696,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -8662,6 +9767,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "264d8fbf73afaab7e5aba2353432bcd9b8283d839f0f2f782669bddca50d5a88",
@@ -8824,6 +9937,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "052b280dc85e1b9d9fbe67c57d50fbe0331d6dd5b094b96242760d1923fb53a0",
@@ -8986,6 +10107,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "0088e3ece15c9c0ba892051752da67b590070049b8eb9cdeeaf32a23588ebac0",
@@ -9148,6 +10277,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "44b7428dcb561d58396e660fc77ed43517a5c834823f8da098fab53b5c821816",
@@ -9310,6 +10447,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "5d12997ce337030cab4bff999cd3f6e4c059488ab2a8f3b783cb163e50915d29",
@@ -9449,6 +10594,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -9512,6 +10665,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "555dfc50b94844eb261bc7a8b4c140a12185e992e21680e03037b2eaa9b3a1b7",
@@ -9674,6 +10835,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "91074bd8c72318f310fc482402bb34e500c45048db7ecdd056ccabe96c16527c",
@@ -9836,6 +11005,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "9d61646340f12c83a7a728b856b27cd86f19ede50b9a6ef9679bd19aa4778dca",
@@ -9998,6 +11175,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "3d9b60a645f679f5be1a012b0319d1e61b230c857d5665f8c49ace92b7a490f9",
@@ -10160,6 +11345,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "00dde181d8c1a7b1139d7eff43e3965f804c69ec6b063cc992ea124beff7559a",
@@ -10299,6 +11492,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -10362,6 +11563,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "3948cb848659f888c4b20c1333d89c4ca4b553a48ce75ffa3fd1235c451a8feb",
@@ -10524,6 +11733,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "60bbcaee01e138bfcd44118dc3e1ce87ae565b3038306143bdef85370fcdd40e",
@@ -10689,6 +11906,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "067343ea05fcfa101622e9d031fc9d61bb53da3ac61cba268dafb1db25934d63",
@@ -10957,6 +12182,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "26b4e795c43e8bb9fa71efc48948822dacfc98e9c70ef5dce0cd19220581ebb2",
@@ -11119,6 +12352,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "24704b9c9019e0e8b309e6d306655adbb7a9b1da6616101e6cd3e3ff269bc2df",
@@ -11258,6 +12499,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -11321,6 +12570,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "11bc71a66bfdc59337795d745e5667a3a925ebfdc9255e89fa8cbc790608efd6",
@@ -11483,6 +12740,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "b4fc7bd50c4323436dad4766ef59ec7e42e464dfe3c94a896646daaa361e33bc",
@@ -11648,6 +12913,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "273b2985eec79ac938c3f46c9cda7ea7274b0af2e84bf8359b2bcd2bfae2cb15",
@@ -11916,6 +13189,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "6bc918982fd3931cb61f6546379c6882c20007bac2ce72b38a70455a09c691fc",
@@ -12078,6 +13359,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "1e69ae7e2c9b163dc5cf747ba75e4717d1c16c3508ef130323eb32620deb3cc5",
@@ -12240,6 +13529,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "48238f43f5cd7a4c8bbad61f20484dda04008444b64c6db852e422c39cbc6092",
@@ -12402,6 +13699,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "5aa4f6558a184f1109ef0a1b5c3ad414120b4be207f7c17efc76b0db12860225",
@@ -12567,6 +13872,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "207919bea2a35688dd0f3f8c6f60964147505824847e7057507a4e8768de9dd8",
@@ -12838,6 +14151,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "17a79057c92771181f820ccd9e077fccc098be81bfc1874894991f0f048fa7df",
@@ -13106,6 +14427,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "0d464352b3e788362d7c5864c50d9a18c136a43374910d9526e22ededee94c30",
@@ -13268,6 +14597,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "43dac63a557127d59337a4f36380d892a79373c1f319bd8824d0f83300b68a31",
@@ -13407,6 +14744,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -13470,6 +14815,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "327c04ac2e7a04d993c12bff6238e1f5f8d7905c288450039dffa5506c6746d8",
@@ -13632,6 +14985,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "312870c332ec3754bb8e7d9643f9ea9999c2865fd33beaf7f871cac1b71330d2",
@@ -13794,6 +15155,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "704a37dcf0acb14b0920a218ee65a1012cc4a8c2626b6e0021316546f9017214",
@@ -13956,6 +15325,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "b6111a8f20002f7a1c4046d03f0df21f6db9683954245c05bf1d3f95e3ae4c1f",
@@ -14118,6 +15495,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {
         "candidate_fact_ids": [
           "6bb9c0a3c2fae40a50a22beead27e377fdc0e3d8f187b6b9fd2679d47e1077cd",
@@ -14227,9 +15612,9 @@
       "input_type": "methodology_choice",
       "status": "not_applicable",
       "reason_codes": [
-        "methodology_frozen_and_not_fact_applicable"
+        "deprecated_methodology_role_not_applicable"
       ],
-      "blocker_severity": "hard",
+      "blocker_severity": "none",
       "selected_fact_id": null,
       "candidate_fact_ids": [],
       "context_id": null,
@@ -14256,7 +15641,15 @@
       "selected_as_of": "2026-08-02",
       "acquisition_required": false,
       "derivation_status": "not_applicable",
-      "methodology_choice_status": "resolved_in_registry",
+      "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -14267,9 +15660,9 @@
       "input_type": "methodology_choice",
       "status": "not_applicable",
       "reason_codes": [
-        "methodology_frozen_and_not_fact_applicable"
+        "deprecated_methodology_role_not_applicable"
       ],
-      "blocker_severity": "hard",
+      "blocker_severity": "none",
       "selected_fact_id": null,
       "candidate_fact_ids": [],
       "context_id": null,
@@ -14296,7 +15689,15 @@
       "selected_as_of": "2026-08-02",
       "acquisition_required": false,
       "derivation_status": "not_applicable",
-      "methodology_choice_status": "resolved_in_registry",
+      "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -14307,9 +15708,9 @@
       "input_type": "methodology_choice",
       "status": "not_applicable",
       "reason_codes": [
-        "methodology_frozen_and_not_fact_applicable"
+        "deprecated_methodology_role_not_applicable"
       ],
-      "blocker_severity": "hard",
+      "blocker_severity": "none",
       "selected_fact_id": null,
       "candidate_fact_ids": [],
       "context_id": null,
@@ -14336,7 +15737,15 @@
       "selected_as_of": "2026-08-02",
       "acquisition_required": false,
       "derivation_status": "not_applicable",
-      "methodology_choice_status": "resolved_in_registry",
+      "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -14347,9 +15756,9 @@
       "input_type": "methodology_choice",
       "status": "not_applicable",
       "reason_codes": [
-        "methodology_frozen_and_not_fact_applicable"
+        "deprecated_methodology_role_not_applicable"
       ],
-      "blocker_severity": "hard",
+      "blocker_severity": "none",
       "selected_fact_id": null,
       "candidate_fact_ids": [],
       "context_id": null,
@@ -14376,7 +15785,15 @@
       "selected_as_of": "2026-08-02",
       "acquisition_required": false,
       "derivation_status": "not_applicable",
-      "methodology_choice_status": "resolved_in_registry",
+      "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -14387,9 +15804,9 @@
       "input_type": "methodology_choice",
       "status": "not_applicable",
       "reason_codes": [
-        "methodology_frozen_and_not_fact_applicable"
+        "deprecated_methodology_role_not_applicable"
       ],
-      "blocker_severity": "hard",
+      "blocker_severity": "none",
       "selected_fact_id": null,
       "candidate_fact_ids": [],
       "context_id": null,
@@ -14416,7 +15833,15 @@
       "selected_as_of": "2026-08-02",
       "acquisition_required": false,
       "derivation_status": "not_applicable",
-      "methodology_choice_status": "resolved_in_registry",
+      "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -14427,9 +15852,9 @@
       "input_type": "methodology_choice",
       "status": "not_applicable",
       "reason_codes": [
-        "methodology_frozen_and_not_fact_applicable"
+        "deprecated_methodology_role_not_applicable"
       ],
-      "blocker_severity": "hard",
+      "blocker_severity": "none",
       "selected_fact_id": null,
       "candidate_fact_ids": [],
       "context_id": null,
@@ -14456,7 +15881,15 @@
       "selected_as_of": "2026-08-02",
       "acquisition_required": false,
       "derivation_status": "not_applicable",
-      "methodology_choice_status": "resolved_in_registry",
+      "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -14497,6 +15930,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -14537,6 +15978,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -14577,6 +16026,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -14617,6 +16074,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -14657,6 +16122,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -14697,6 +16170,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -14737,6 +16218,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -14777,6 +16266,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -14817,6 +16314,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -14857,6 +16362,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -14897,6 +16410,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -14937,6 +16458,14 @@
       "acquisition_required": true,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -14977,6 +16506,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -15017,6 +16554,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -15057,6 +16602,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -15097,6 +16650,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -15137,6 +16698,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -15177,6 +16746,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -15217,6 +16794,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -15257,6 +16842,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -15297,6 +16890,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -15337,6 +16938,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -15377,6 +16986,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -15417,6 +17034,14 @@
       "acquisition_required": false,
       "derivation_status": "not_applicable",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {}
     },
     {
@@ -15457,6 +17082,14 @@
       "acquisition_required": true,
       "derivation_status": "incomplete",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {},
       "component_statuses": [
         {
@@ -15549,6 +17182,14 @@
       "acquisition_required": false,
       "derivation_status": "ready",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {},
       "component_statuses": [
         {
@@ -15641,6 +17282,14 @@
       "acquisition_required": false,
       "derivation_status": "ready",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {},
       "component_statuses": [
         {
@@ -15739,6 +17388,14 @@
       "acquisition_required": false,
       "derivation_status": "ready",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {},
       "component_statuses": [
         {
@@ -15831,6 +17488,14 @@
       "acquisition_required": false,
       "derivation_status": "ready",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {},
       "component_statuses": [
         {
@@ -15923,6 +17588,14 @@
       "acquisition_required": false,
       "derivation_status": "ready",
       "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
       "pit_audit": {},
       "component_statuses": [
         {
@@ -15954,7 +17627,1717 @@
           "status": "ready"
         }
       ]
+    },
+    {
+      "symbol": "601857.SH",
+      "fiscal_year": 2020,
+      "role_id": "nopat.finance_cost_excluding_lease_interest",
+      "canonical_concept_id": "finance_cost_excluding_lease_interest",
+      "input_type": "direct_fact",
+      "status": "missing_official_fact",
+      "reason_codes": [
+        "canonical_concept_absent_for_fiscal_year"
+      ],
+      "blocker_severity": "hard",
+      "selected_fact_id": null,
+      "candidate_fact_ids": [],
+      "context_id": null,
+      "concept_version": null,
+      "period_start": null,
+      "period_end": null,
+      "period_type": null,
+      "scope": null,
+      "accounting_standard": null,
+      "unit": null,
+      "currency": null,
+      "source_id": null,
+      "source_type": null,
+      "source_tier": null,
+      "source_locator": null,
+      "content_sha256": null,
+      "source_evidence": [],
+      "verification_status": null,
+      "eligible": null,
+      "available_at": null,
+      "fact_version": null,
+      "restatement_version": null,
+      "supersedes_fact_id": null,
+      "selected_as_of": "2026-08-02",
+      "acquisition_required": true,
+      "derivation_status": "not_applicable",
+      "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
+      "pit_audit": {}
+    },
+    {
+      "symbol": "601857.SH",
+      "fiscal_year": 2021,
+      "role_id": "nopat.finance_cost_excluding_lease_interest",
+      "canonical_concept_id": "finance_cost_excluding_lease_interest",
+      "input_type": "direct_fact",
+      "status": "missing_official_fact",
+      "reason_codes": [
+        "canonical_concept_absent_for_fiscal_year"
+      ],
+      "blocker_severity": "hard",
+      "selected_fact_id": null,
+      "candidate_fact_ids": [],
+      "context_id": null,
+      "concept_version": null,
+      "period_start": null,
+      "period_end": null,
+      "period_type": null,
+      "scope": null,
+      "accounting_standard": null,
+      "unit": null,
+      "currency": null,
+      "source_id": null,
+      "source_type": null,
+      "source_tier": null,
+      "source_locator": null,
+      "content_sha256": null,
+      "source_evidence": [],
+      "verification_status": null,
+      "eligible": null,
+      "available_at": null,
+      "fact_version": null,
+      "restatement_version": null,
+      "supersedes_fact_id": null,
+      "selected_as_of": "2026-08-02",
+      "acquisition_required": true,
+      "derivation_status": "not_applicable",
+      "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
+      "pit_audit": {}
+    },
+    {
+      "symbol": "601857.SH",
+      "fiscal_year": 2022,
+      "role_id": "nopat.finance_cost_excluding_lease_interest",
+      "canonical_concept_id": "finance_cost_excluding_lease_interest",
+      "input_type": "direct_fact",
+      "status": "missing_official_fact",
+      "reason_codes": [
+        "canonical_concept_absent_for_fiscal_year"
+      ],
+      "blocker_severity": "hard",
+      "selected_fact_id": null,
+      "candidate_fact_ids": [],
+      "context_id": null,
+      "concept_version": null,
+      "period_start": null,
+      "period_end": null,
+      "period_type": null,
+      "scope": null,
+      "accounting_standard": null,
+      "unit": null,
+      "currency": null,
+      "source_id": null,
+      "source_type": null,
+      "source_tier": null,
+      "source_locator": null,
+      "content_sha256": null,
+      "source_evidence": [],
+      "verification_status": null,
+      "eligible": null,
+      "available_at": null,
+      "fact_version": null,
+      "restatement_version": null,
+      "supersedes_fact_id": null,
+      "selected_as_of": "2026-08-02",
+      "acquisition_required": true,
+      "derivation_status": "not_applicable",
+      "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
+      "pit_audit": {}
+    },
+    {
+      "symbol": "601857.SH",
+      "fiscal_year": 2023,
+      "role_id": "nopat.finance_cost_excluding_lease_interest",
+      "canonical_concept_id": "finance_cost_excluding_lease_interest",
+      "input_type": "direct_fact",
+      "status": "missing_official_fact",
+      "reason_codes": [
+        "canonical_concept_absent_for_fiscal_year"
+      ],
+      "blocker_severity": "hard",
+      "selected_fact_id": null,
+      "candidate_fact_ids": [],
+      "context_id": null,
+      "concept_version": null,
+      "period_start": null,
+      "period_end": null,
+      "period_type": null,
+      "scope": null,
+      "accounting_standard": null,
+      "unit": null,
+      "currency": null,
+      "source_id": null,
+      "source_type": null,
+      "source_tier": null,
+      "source_locator": null,
+      "content_sha256": null,
+      "source_evidence": [],
+      "verification_status": null,
+      "eligible": null,
+      "available_at": null,
+      "fact_version": null,
+      "restatement_version": null,
+      "supersedes_fact_id": null,
+      "selected_as_of": "2026-08-02",
+      "acquisition_required": true,
+      "derivation_status": "not_applicable",
+      "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
+      "pit_audit": {}
+    },
+    {
+      "symbol": "601857.SH",
+      "fiscal_year": 2024,
+      "role_id": "nopat.finance_cost_excluding_lease_interest",
+      "canonical_concept_id": "finance_cost_excluding_lease_interest",
+      "input_type": "direct_fact",
+      "status": "missing_official_fact",
+      "reason_codes": [
+        "canonical_concept_absent_for_fiscal_year"
+      ],
+      "blocker_severity": "hard",
+      "selected_fact_id": null,
+      "candidate_fact_ids": [],
+      "context_id": null,
+      "concept_version": null,
+      "period_start": null,
+      "period_end": null,
+      "period_type": null,
+      "scope": null,
+      "accounting_standard": null,
+      "unit": null,
+      "currency": null,
+      "source_id": null,
+      "source_type": null,
+      "source_tier": null,
+      "source_locator": null,
+      "content_sha256": null,
+      "source_evidence": [],
+      "verification_status": null,
+      "eligible": null,
+      "available_at": null,
+      "fact_version": null,
+      "restatement_version": null,
+      "supersedes_fact_id": null,
+      "selected_as_of": "2026-08-02",
+      "acquisition_required": true,
+      "derivation_status": "not_applicable",
+      "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
+      "pit_audit": {}
+    },
+    {
+      "symbol": "601857.SH",
+      "fiscal_year": 2025,
+      "role_id": "nopat.finance_cost_excluding_lease_interest",
+      "canonical_concept_id": "finance_cost_excluding_lease_interest",
+      "input_type": "direct_fact",
+      "status": "missing_official_fact",
+      "reason_codes": [
+        "canonical_concept_absent_for_fiscal_year"
+      ],
+      "blocker_severity": "hard",
+      "selected_fact_id": null,
+      "candidate_fact_ids": [],
+      "context_id": null,
+      "concept_version": null,
+      "period_start": null,
+      "period_end": null,
+      "period_type": null,
+      "scope": null,
+      "accounting_standard": null,
+      "unit": null,
+      "currency": null,
+      "source_id": null,
+      "source_type": null,
+      "source_tier": null,
+      "source_locator": null,
+      "content_sha256": null,
+      "source_evidence": [],
+      "verification_status": null,
+      "eligible": null,
+      "available_at": null,
+      "fact_version": null,
+      "restatement_version": null,
+      "supersedes_fact_id": null,
+      "selected_as_of": "2026-08-02",
+      "acquisition_required": true,
+      "derivation_status": "not_applicable",
+      "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": null,
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
+      "pit_audit": {}
+    },
+    {
+      "symbol": "601857.SH",
+      "fiscal_year": 2020,
+      "role_id": "policy.non_operating_asset_classification",
+      "canonical_concept_id": "non_operating_asset_classification_policy",
+      "input_type": "methodology_choice",
+      "status": "ready",
+      "reason_codes": [
+        "methodology_decision_resolved"
+      ],
+      "blocker_severity": "hard",
+      "selected_fact_id": null,
+      "candidate_fact_ids": [],
+      "context_id": null,
+      "concept_version": null,
+      "period_start": null,
+      "period_end": null,
+      "period_type": null,
+      "scope": null,
+      "accounting_standard": null,
+      "unit": null,
+      "currency": null,
+      "source_id": null,
+      "source_type": null,
+      "source_tier": null,
+      "source_locator": null,
+      "content_sha256": null,
+      "source_evidence": [],
+      "verification_status": null,
+      "eligible": null,
+      "available_at": "2026-08-02",
+      "fact_version": null,
+      "restatement_version": null,
+      "supersedes_fact_id": null,
+      "selected_as_of": "2026-08-02",
+      "acquisition_required": false,
+      "derivation_status": "not_applicable",
+      "methodology_choice_status": "resolved",
+      "methodology_decision_id": "policy.non_operating_asset_classification",
+      "methodology_decision_version": "1",
+      "methodology_resolution_status": "resolved",
+      "decision_rule_digest": "251ef6275b3715bbd422422e2881c52844f211d7d417b9511a0395659a7c28e0",
+      "supporting_fact_roles": [
+        "invested_capital.cash_and_cash_equivalents",
+        "invested_capital.restricted_cash",
+        "invested_capital.non_operating_financial_assets",
+        "invested_capital.associate_investment",
+        "invested_capital.joint_venture_investment"
+      ],
+      "supporting_fact_statuses": [
+        {
+          "role_id": "invested_capital.cash_and_cash_equivalents",
+          "status": "missing_official_fact"
+        },
+        {
+          "role_id": "invested_capital.restricted_cash",
+          "status": "missing_official_fact"
+        },
+        {
+          "role_id": "invested_capital.non_operating_financial_assets",
+          "status": "missing_official_fact"
+        },
+        {
+          "role_id": "invested_capital.associate_investment",
+          "status": "missing_official_fact"
+        },
+        {
+          "role_id": "invested_capital.joint_venture_investment",
+          "status": "missing_official_fact"
+        }
+      ],
+      "unresolved_reasons": [],
+      "score_eligible": false,
+      "pit_audit": {}
+    },
+    {
+      "symbol": "601857.SH",
+      "fiscal_year": 2021,
+      "role_id": "policy.non_operating_asset_classification",
+      "canonical_concept_id": "non_operating_asset_classification_policy",
+      "input_type": "methodology_choice",
+      "status": "ready",
+      "reason_codes": [
+        "methodology_decision_resolved"
+      ],
+      "blocker_severity": "hard",
+      "selected_fact_id": null,
+      "candidate_fact_ids": [],
+      "context_id": null,
+      "concept_version": null,
+      "period_start": null,
+      "period_end": null,
+      "period_type": null,
+      "scope": null,
+      "accounting_standard": null,
+      "unit": null,
+      "currency": null,
+      "source_id": null,
+      "source_type": null,
+      "source_tier": null,
+      "source_locator": null,
+      "content_sha256": null,
+      "source_evidence": [],
+      "verification_status": null,
+      "eligible": null,
+      "available_at": "2026-08-02",
+      "fact_version": null,
+      "restatement_version": null,
+      "supersedes_fact_id": null,
+      "selected_as_of": "2026-08-02",
+      "acquisition_required": false,
+      "derivation_status": "not_applicable",
+      "methodology_choice_status": "resolved",
+      "methodology_decision_id": "policy.non_operating_asset_classification",
+      "methodology_decision_version": "1",
+      "methodology_resolution_status": "resolved",
+      "decision_rule_digest": "251ef6275b3715bbd422422e2881c52844f211d7d417b9511a0395659a7c28e0",
+      "supporting_fact_roles": [
+        "invested_capital.cash_and_cash_equivalents",
+        "invested_capital.restricted_cash",
+        "invested_capital.non_operating_financial_assets",
+        "invested_capital.associate_investment",
+        "invested_capital.joint_venture_investment"
+      ],
+      "supporting_fact_statuses": [
+        {
+          "role_id": "invested_capital.cash_and_cash_equivalents",
+          "status": "ready"
+        },
+        {
+          "role_id": "invested_capital.restricted_cash",
+          "status": "missing_official_fact"
+        },
+        {
+          "role_id": "invested_capital.non_operating_financial_assets",
+          "status": "missing_official_fact"
+        },
+        {
+          "role_id": "invested_capital.associate_investment",
+          "status": "missing_official_fact"
+        },
+        {
+          "role_id": "invested_capital.joint_venture_investment",
+          "status": "missing_official_fact"
+        }
+      ],
+      "unresolved_reasons": [],
+      "score_eligible": false,
+      "pit_audit": {}
+    },
+    {
+      "symbol": "601857.SH",
+      "fiscal_year": 2022,
+      "role_id": "policy.non_operating_asset_classification",
+      "canonical_concept_id": "non_operating_asset_classification_policy",
+      "input_type": "methodology_choice",
+      "status": "ready",
+      "reason_codes": [
+        "methodology_decision_resolved"
+      ],
+      "blocker_severity": "hard",
+      "selected_fact_id": null,
+      "candidate_fact_ids": [],
+      "context_id": null,
+      "concept_version": null,
+      "period_start": null,
+      "period_end": null,
+      "period_type": null,
+      "scope": null,
+      "accounting_standard": null,
+      "unit": null,
+      "currency": null,
+      "source_id": null,
+      "source_type": null,
+      "source_tier": null,
+      "source_locator": null,
+      "content_sha256": null,
+      "source_evidence": [],
+      "verification_status": null,
+      "eligible": null,
+      "available_at": "2026-08-02",
+      "fact_version": null,
+      "restatement_version": null,
+      "supersedes_fact_id": null,
+      "selected_as_of": "2026-08-02",
+      "acquisition_required": false,
+      "derivation_status": "not_applicable",
+      "methodology_choice_status": "resolved",
+      "methodology_decision_id": "policy.non_operating_asset_classification",
+      "methodology_decision_version": "1",
+      "methodology_resolution_status": "resolved",
+      "decision_rule_digest": "251ef6275b3715bbd422422e2881c52844f211d7d417b9511a0395659a7c28e0",
+      "supporting_fact_roles": [
+        "invested_capital.cash_and_cash_equivalents",
+        "invested_capital.restricted_cash",
+        "invested_capital.non_operating_financial_assets",
+        "invested_capital.associate_investment",
+        "invested_capital.joint_venture_investment"
+      ],
+      "supporting_fact_statuses": [
+        {
+          "role_id": "invested_capital.cash_and_cash_equivalents",
+          "status": "ready"
+        },
+        {
+          "role_id": "invested_capital.restricted_cash",
+          "status": "missing_official_fact"
+        },
+        {
+          "role_id": "invested_capital.non_operating_financial_assets",
+          "status": "missing_official_fact"
+        },
+        {
+          "role_id": "invested_capital.associate_investment",
+          "status": "missing_official_fact"
+        },
+        {
+          "role_id": "invested_capital.joint_venture_investment",
+          "status": "missing_official_fact"
+        }
+      ],
+      "unresolved_reasons": [],
+      "score_eligible": false,
+      "pit_audit": {}
+    },
+    {
+      "symbol": "601857.SH",
+      "fiscal_year": 2023,
+      "role_id": "policy.non_operating_asset_classification",
+      "canonical_concept_id": "non_operating_asset_classification_policy",
+      "input_type": "methodology_choice",
+      "status": "ready",
+      "reason_codes": [
+        "methodology_decision_resolved"
+      ],
+      "blocker_severity": "hard",
+      "selected_fact_id": null,
+      "candidate_fact_ids": [],
+      "context_id": null,
+      "concept_version": null,
+      "period_start": null,
+      "period_end": null,
+      "period_type": null,
+      "scope": null,
+      "accounting_standard": null,
+      "unit": null,
+      "currency": null,
+      "source_id": null,
+      "source_type": null,
+      "source_tier": null,
+      "source_locator": null,
+      "content_sha256": null,
+      "source_evidence": [],
+      "verification_status": null,
+      "eligible": null,
+      "available_at": "2026-08-02",
+      "fact_version": null,
+      "restatement_version": null,
+      "supersedes_fact_id": null,
+      "selected_as_of": "2026-08-02",
+      "acquisition_required": false,
+      "derivation_status": "not_applicable",
+      "methodology_choice_status": "resolved",
+      "methodology_decision_id": "policy.non_operating_asset_classification",
+      "methodology_decision_version": "1",
+      "methodology_resolution_status": "resolved",
+      "decision_rule_digest": "251ef6275b3715bbd422422e2881c52844f211d7d417b9511a0395659a7c28e0",
+      "supporting_fact_roles": [
+        "invested_capital.cash_and_cash_equivalents",
+        "invested_capital.restricted_cash",
+        "invested_capital.non_operating_financial_assets",
+        "invested_capital.associate_investment",
+        "invested_capital.joint_venture_investment"
+      ],
+      "supporting_fact_statuses": [
+        {
+          "role_id": "invested_capital.cash_and_cash_equivalents",
+          "status": "ready"
+        },
+        {
+          "role_id": "invested_capital.restricted_cash",
+          "status": "missing_official_fact"
+        },
+        {
+          "role_id": "invested_capital.non_operating_financial_assets",
+          "status": "missing_official_fact"
+        },
+        {
+          "role_id": "invested_capital.associate_investment",
+          "status": "missing_official_fact"
+        },
+        {
+          "role_id": "invested_capital.joint_venture_investment",
+          "status": "missing_official_fact"
+        }
+      ],
+      "unresolved_reasons": [],
+      "score_eligible": false,
+      "pit_audit": {}
+    },
+    {
+      "symbol": "601857.SH",
+      "fiscal_year": 2024,
+      "role_id": "policy.non_operating_asset_classification",
+      "canonical_concept_id": "non_operating_asset_classification_policy",
+      "input_type": "methodology_choice",
+      "status": "ready",
+      "reason_codes": [
+        "methodology_decision_resolved"
+      ],
+      "blocker_severity": "hard",
+      "selected_fact_id": null,
+      "candidate_fact_ids": [],
+      "context_id": null,
+      "concept_version": null,
+      "period_start": null,
+      "period_end": null,
+      "period_type": null,
+      "scope": null,
+      "accounting_standard": null,
+      "unit": null,
+      "currency": null,
+      "source_id": null,
+      "source_type": null,
+      "source_tier": null,
+      "source_locator": null,
+      "content_sha256": null,
+      "source_evidence": [],
+      "verification_status": null,
+      "eligible": null,
+      "available_at": "2026-08-02",
+      "fact_version": null,
+      "restatement_version": null,
+      "supersedes_fact_id": null,
+      "selected_as_of": "2026-08-02",
+      "acquisition_required": false,
+      "derivation_status": "not_applicable",
+      "methodology_choice_status": "resolved",
+      "methodology_decision_id": "policy.non_operating_asset_classification",
+      "methodology_decision_version": "1",
+      "methodology_resolution_status": "resolved",
+      "decision_rule_digest": "251ef6275b3715bbd422422e2881c52844f211d7d417b9511a0395659a7c28e0",
+      "supporting_fact_roles": [
+        "invested_capital.cash_and_cash_equivalents",
+        "invested_capital.restricted_cash",
+        "invested_capital.non_operating_financial_assets",
+        "invested_capital.associate_investment",
+        "invested_capital.joint_venture_investment"
+      ],
+      "supporting_fact_statuses": [
+        {
+          "role_id": "invested_capital.cash_and_cash_equivalents",
+          "status": "ready"
+        },
+        {
+          "role_id": "invested_capital.restricted_cash",
+          "status": "missing_official_fact"
+        },
+        {
+          "role_id": "invested_capital.non_operating_financial_assets",
+          "status": "missing_official_fact"
+        },
+        {
+          "role_id": "invested_capital.associate_investment",
+          "status": "missing_official_fact"
+        },
+        {
+          "role_id": "invested_capital.joint_venture_investment",
+          "status": "missing_official_fact"
+        }
+      ],
+      "unresolved_reasons": [],
+      "score_eligible": false,
+      "pit_audit": {}
+    },
+    {
+      "symbol": "601857.SH",
+      "fiscal_year": 2025,
+      "role_id": "policy.non_operating_asset_classification",
+      "canonical_concept_id": "non_operating_asset_classification_policy",
+      "input_type": "methodology_choice",
+      "status": "ready",
+      "reason_codes": [
+        "methodology_decision_resolved"
+      ],
+      "blocker_severity": "hard",
+      "selected_fact_id": null,
+      "candidate_fact_ids": [],
+      "context_id": null,
+      "concept_version": null,
+      "period_start": null,
+      "period_end": null,
+      "period_type": null,
+      "scope": null,
+      "accounting_standard": null,
+      "unit": null,
+      "currency": null,
+      "source_id": null,
+      "source_type": null,
+      "source_tier": null,
+      "source_locator": null,
+      "content_sha256": null,
+      "source_evidence": [],
+      "verification_status": null,
+      "eligible": null,
+      "available_at": "2026-08-02",
+      "fact_version": null,
+      "restatement_version": null,
+      "supersedes_fact_id": null,
+      "selected_as_of": "2026-08-02",
+      "acquisition_required": false,
+      "derivation_status": "not_applicable",
+      "methodology_choice_status": "resolved",
+      "methodology_decision_id": "policy.non_operating_asset_classification",
+      "methodology_decision_version": "1",
+      "methodology_resolution_status": "resolved",
+      "decision_rule_digest": "251ef6275b3715bbd422422e2881c52844f211d7d417b9511a0395659a7c28e0",
+      "supporting_fact_roles": [
+        "invested_capital.cash_and_cash_equivalents",
+        "invested_capital.restricted_cash",
+        "invested_capital.non_operating_financial_assets",
+        "invested_capital.associate_investment",
+        "invested_capital.joint_venture_investment"
+      ],
+      "supporting_fact_statuses": [
+        {
+          "role_id": "invested_capital.cash_and_cash_equivalents",
+          "status": "ready"
+        },
+        {
+          "role_id": "invested_capital.restricted_cash",
+          "status": "missing_official_fact"
+        },
+        {
+          "role_id": "invested_capital.non_operating_financial_assets",
+          "status": "missing_official_fact"
+        },
+        {
+          "role_id": "invested_capital.associate_investment",
+          "status": "missing_official_fact"
+        },
+        {
+          "role_id": "invested_capital.joint_venture_investment",
+          "status": "missing_official_fact"
+        }
+      ],
+      "unresolved_reasons": [],
+      "score_eligible": false,
+      "pit_audit": {}
+    },
+    {
+      "symbol": "601857.SH",
+      "fiscal_year": 2020,
+      "role_id": "invested_capital.qualifying_non_operating_assets",
+      "canonical_concept_id": "qualifying_non_operating_assets",
+      "input_type": "deterministic_derivation",
+      "status": "partially_ready",
+      "reason_codes": [
+        "one_or_more_registry_components_unready"
+      ],
+      "blocker_severity": "hard",
+      "selected_fact_id": null,
+      "candidate_fact_ids": [],
+      "context_id": null,
+      "concept_version": null,
+      "period_start": null,
+      "period_end": null,
+      "period_type": null,
+      "scope": null,
+      "accounting_standard": null,
+      "unit": null,
+      "currency": null,
+      "source_id": null,
+      "source_type": null,
+      "source_tier": null,
+      "source_locator": null,
+      "content_sha256": null,
+      "source_evidence": [],
+      "verification_status": null,
+      "eligible": null,
+      "available_at": null,
+      "fact_version": null,
+      "restatement_version": null,
+      "supersedes_fact_id": null,
+      "selected_as_of": "2026-08-02",
+      "acquisition_required": true,
+      "derivation_status": "incomplete",
+      "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": "policy.non_operating_asset_classification",
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
+      "pit_audit": {},
+      "component_statuses": [
+        {
+          "role_id": "policy.non_operating_asset_classification",
+          "status": "ready"
+        },
+        {
+          "role_id": "invested_capital.associate_investment",
+          "status": "missing_official_fact"
+        },
+        {
+          "role_id": "invested_capital.joint_venture_investment",
+          "status": "missing_official_fact"
+        },
+        {
+          "role_id": "invested_capital.non_operating_financial_assets",
+          "status": "missing_official_fact"
+        }
+      ]
+    },
+    {
+      "symbol": "601857.SH",
+      "fiscal_year": 2021,
+      "role_id": "invested_capital.qualifying_non_operating_assets",
+      "canonical_concept_id": "qualifying_non_operating_assets",
+      "input_type": "deterministic_derivation",
+      "status": "partially_ready",
+      "reason_codes": [
+        "one_or_more_registry_components_unready"
+      ],
+      "blocker_severity": "hard",
+      "selected_fact_id": null,
+      "candidate_fact_ids": [],
+      "context_id": null,
+      "concept_version": null,
+      "period_start": null,
+      "period_end": null,
+      "period_type": null,
+      "scope": null,
+      "accounting_standard": null,
+      "unit": null,
+      "currency": null,
+      "source_id": null,
+      "source_type": null,
+      "source_tier": null,
+      "source_locator": null,
+      "content_sha256": null,
+      "source_evidence": [],
+      "verification_status": null,
+      "eligible": null,
+      "available_at": null,
+      "fact_version": null,
+      "restatement_version": null,
+      "supersedes_fact_id": null,
+      "selected_as_of": "2026-08-02",
+      "acquisition_required": true,
+      "derivation_status": "incomplete",
+      "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": "policy.non_operating_asset_classification",
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
+      "pit_audit": {},
+      "component_statuses": [
+        {
+          "role_id": "policy.non_operating_asset_classification",
+          "status": "ready"
+        },
+        {
+          "role_id": "invested_capital.associate_investment",
+          "status": "missing_official_fact"
+        },
+        {
+          "role_id": "invested_capital.joint_venture_investment",
+          "status": "missing_official_fact"
+        },
+        {
+          "role_id": "invested_capital.non_operating_financial_assets",
+          "status": "missing_official_fact"
+        }
+      ]
+    },
+    {
+      "symbol": "601857.SH",
+      "fiscal_year": 2022,
+      "role_id": "invested_capital.qualifying_non_operating_assets",
+      "canonical_concept_id": "qualifying_non_operating_assets",
+      "input_type": "deterministic_derivation",
+      "status": "partially_ready",
+      "reason_codes": [
+        "one_or_more_registry_components_unready"
+      ],
+      "blocker_severity": "hard",
+      "selected_fact_id": null,
+      "candidate_fact_ids": [],
+      "context_id": null,
+      "concept_version": null,
+      "period_start": null,
+      "period_end": null,
+      "period_type": null,
+      "scope": null,
+      "accounting_standard": null,
+      "unit": null,
+      "currency": null,
+      "source_id": null,
+      "source_type": null,
+      "source_tier": null,
+      "source_locator": null,
+      "content_sha256": null,
+      "source_evidence": [],
+      "verification_status": null,
+      "eligible": null,
+      "available_at": null,
+      "fact_version": null,
+      "restatement_version": null,
+      "supersedes_fact_id": null,
+      "selected_as_of": "2026-08-02",
+      "acquisition_required": true,
+      "derivation_status": "incomplete",
+      "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": "policy.non_operating_asset_classification",
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
+      "pit_audit": {},
+      "component_statuses": [
+        {
+          "role_id": "policy.non_operating_asset_classification",
+          "status": "ready"
+        },
+        {
+          "role_id": "invested_capital.associate_investment",
+          "status": "missing_official_fact"
+        },
+        {
+          "role_id": "invested_capital.joint_venture_investment",
+          "status": "missing_official_fact"
+        },
+        {
+          "role_id": "invested_capital.non_operating_financial_assets",
+          "status": "missing_official_fact"
+        }
+      ]
+    },
+    {
+      "symbol": "601857.SH",
+      "fiscal_year": 2023,
+      "role_id": "invested_capital.qualifying_non_operating_assets",
+      "canonical_concept_id": "qualifying_non_operating_assets",
+      "input_type": "deterministic_derivation",
+      "status": "partially_ready",
+      "reason_codes": [
+        "one_or_more_registry_components_unready"
+      ],
+      "blocker_severity": "hard",
+      "selected_fact_id": null,
+      "candidate_fact_ids": [],
+      "context_id": null,
+      "concept_version": null,
+      "period_start": null,
+      "period_end": null,
+      "period_type": null,
+      "scope": null,
+      "accounting_standard": null,
+      "unit": null,
+      "currency": null,
+      "source_id": null,
+      "source_type": null,
+      "source_tier": null,
+      "source_locator": null,
+      "content_sha256": null,
+      "source_evidence": [],
+      "verification_status": null,
+      "eligible": null,
+      "available_at": null,
+      "fact_version": null,
+      "restatement_version": null,
+      "supersedes_fact_id": null,
+      "selected_as_of": "2026-08-02",
+      "acquisition_required": true,
+      "derivation_status": "incomplete",
+      "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": "policy.non_operating_asset_classification",
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
+      "pit_audit": {},
+      "component_statuses": [
+        {
+          "role_id": "policy.non_operating_asset_classification",
+          "status": "ready"
+        },
+        {
+          "role_id": "invested_capital.associate_investment",
+          "status": "missing_official_fact"
+        },
+        {
+          "role_id": "invested_capital.joint_venture_investment",
+          "status": "missing_official_fact"
+        },
+        {
+          "role_id": "invested_capital.non_operating_financial_assets",
+          "status": "missing_official_fact"
+        }
+      ]
+    },
+    {
+      "symbol": "601857.SH",
+      "fiscal_year": 2024,
+      "role_id": "invested_capital.qualifying_non_operating_assets",
+      "canonical_concept_id": "qualifying_non_operating_assets",
+      "input_type": "deterministic_derivation",
+      "status": "partially_ready",
+      "reason_codes": [
+        "one_or_more_registry_components_unready"
+      ],
+      "blocker_severity": "hard",
+      "selected_fact_id": null,
+      "candidate_fact_ids": [],
+      "context_id": null,
+      "concept_version": null,
+      "period_start": null,
+      "period_end": null,
+      "period_type": null,
+      "scope": null,
+      "accounting_standard": null,
+      "unit": null,
+      "currency": null,
+      "source_id": null,
+      "source_type": null,
+      "source_tier": null,
+      "source_locator": null,
+      "content_sha256": null,
+      "source_evidence": [],
+      "verification_status": null,
+      "eligible": null,
+      "available_at": null,
+      "fact_version": null,
+      "restatement_version": null,
+      "supersedes_fact_id": null,
+      "selected_as_of": "2026-08-02",
+      "acquisition_required": true,
+      "derivation_status": "incomplete",
+      "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": "policy.non_operating_asset_classification",
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
+      "pit_audit": {},
+      "component_statuses": [
+        {
+          "role_id": "policy.non_operating_asset_classification",
+          "status": "ready"
+        },
+        {
+          "role_id": "invested_capital.associate_investment",
+          "status": "missing_official_fact"
+        },
+        {
+          "role_id": "invested_capital.joint_venture_investment",
+          "status": "missing_official_fact"
+        },
+        {
+          "role_id": "invested_capital.non_operating_financial_assets",
+          "status": "missing_official_fact"
+        }
+      ]
+    },
+    {
+      "symbol": "601857.SH",
+      "fiscal_year": 2025,
+      "role_id": "invested_capital.qualifying_non_operating_assets",
+      "canonical_concept_id": "qualifying_non_operating_assets",
+      "input_type": "deterministic_derivation",
+      "status": "partially_ready",
+      "reason_codes": [
+        "one_or_more_registry_components_unready"
+      ],
+      "blocker_severity": "hard",
+      "selected_fact_id": null,
+      "candidate_fact_ids": [],
+      "context_id": null,
+      "concept_version": null,
+      "period_start": null,
+      "period_end": null,
+      "period_type": null,
+      "scope": null,
+      "accounting_standard": null,
+      "unit": null,
+      "currency": null,
+      "source_id": null,
+      "source_type": null,
+      "source_tier": null,
+      "source_locator": null,
+      "content_sha256": null,
+      "source_evidence": [],
+      "verification_status": null,
+      "eligible": null,
+      "available_at": null,
+      "fact_version": null,
+      "restatement_version": null,
+      "supersedes_fact_id": null,
+      "selected_as_of": "2026-08-02",
+      "acquisition_required": true,
+      "derivation_status": "incomplete",
+      "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": "policy.non_operating_asset_classification",
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
+      "pit_audit": {},
+      "component_statuses": [
+        {
+          "role_id": "policy.non_operating_asset_classification",
+          "status": "ready"
+        },
+        {
+          "role_id": "invested_capital.associate_investment",
+          "status": "missing_official_fact"
+        },
+        {
+          "role_id": "invested_capital.joint_venture_investment",
+          "status": "missing_official_fact"
+        },
+        {
+          "role_id": "invested_capital.non_operating_financial_assets",
+          "status": "missing_official_fact"
+        }
+      ]
+    },
+    {
+      "symbol": "601857.SH",
+      "fiscal_year": 2020,
+      "role_id": "invested_capital.restricted_cash",
+      "canonical_concept_id": "restricted_cash",
+      "input_type": "direct_fact",
+      "status": "missing_official_fact",
+      "reason_codes": [
+        "canonical_concept_absent_for_fiscal_year"
+      ],
+      "blocker_severity": "methodology_support",
+      "selected_fact_id": null,
+      "candidate_fact_ids": [],
+      "context_id": null,
+      "concept_version": null,
+      "period_start": null,
+      "period_end": null,
+      "period_type": null,
+      "scope": null,
+      "accounting_standard": null,
+      "unit": null,
+      "currency": null,
+      "source_id": null,
+      "source_type": null,
+      "source_tier": null,
+      "source_locator": null,
+      "content_sha256": null,
+      "source_evidence": [],
+      "verification_status": null,
+      "eligible": null,
+      "available_at": null,
+      "fact_version": null,
+      "restatement_version": null,
+      "supersedes_fact_id": null,
+      "selected_as_of": "2026-08-02",
+      "acquisition_required": false,
+      "derivation_status": "not_applicable",
+      "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": "policy.non_operating_asset_classification",
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
+      "pit_audit": {}
+    },
+    {
+      "symbol": "601857.SH",
+      "fiscal_year": 2021,
+      "role_id": "invested_capital.restricted_cash",
+      "canonical_concept_id": "restricted_cash",
+      "input_type": "direct_fact",
+      "status": "missing_official_fact",
+      "reason_codes": [
+        "canonical_concept_absent_for_fiscal_year"
+      ],
+      "blocker_severity": "methodology_support",
+      "selected_fact_id": null,
+      "candidate_fact_ids": [],
+      "context_id": null,
+      "concept_version": null,
+      "period_start": null,
+      "period_end": null,
+      "period_type": null,
+      "scope": null,
+      "accounting_standard": null,
+      "unit": null,
+      "currency": null,
+      "source_id": null,
+      "source_type": null,
+      "source_tier": null,
+      "source_locator": null,
+      "content_sha256": null,
+      "source_evidence": [],
+      "verification_status": null,
+      "eligible": null,
+      "available_at": null,
+      "fact_version": null,
+      "restatement_version": null,
+      "supersedes_fact_id": null,
+      "selected_as_of": "2026-08-02",
+      "acquisition_required": false,
+      "derivation_status": "not_applicable",
+      "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": "policy.non_operating_asset_classification",
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
+      "pit_audit": {}
+    },
+    {
+      "symbol": "601857.SH",
+      "fiscal_year": 2022,
+      "role_id": "invested_capital.restricted_cash",
+      "canonical_concept_id": "restricted_cash",
+      "input_type": "direct_fact",
+      "status": "missing_official_fact",
+      "reason_codes": [
+        "canonical_concept_absent_for_fiscal_year"
+      ],
+      "blocker_severity": "methodology_support",
+      "selected_fact_id": null,
+      "candidate_fact_ids": [],
+      "context_id": null,
+      "concept_version": null,
+      "period_start": null,
+      "period_end": null,
+      "period_type": null,
+      "scope": null,
+      "accounting_standard": null,
+      "unit": null,
+      "currency": null,
+      "source_id": null,
+      "source_type": null,
+      "source_tier": null,
+      "source_locator": null,
+      "content_sha256": null,
+      "source_evidence": [],
+      "verification_status": null,
+      "eligible": null,
+      "available_at": null,
+      "fact_version": null,
+      "restatement_version": null,
+      "supersedes_fact_id": null,
+      "selected_as_of": "2026-08-02",
+      "acquisition_required": false,
+      "derivation_status": "not_applicable",
+      "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": "policy.non_operating_asset_classification",
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
+      "pit_audit": {}
+    },
+    {
+      "symbol": "601857.SH",
+      "fiscal_year": 2023,
+      "role_id": "invested_capital.restricted_cash",
+      "canonical_concept_id": "restricted_cash",
+      "input_type": "direct_fact",
+      "status": "missing_official_fact",
+      "reason_codes": [
+        "canonical_concept_absent_for_fiscal_year"
+      ],
+      "blocker_severity": "methodology_support",
+      "selected_fact_id": null,
+      "candidate_fact_ids": [],
+      "context_id": null,
+      "concept_version": null,
+      "period_start": null,
+      "period_end": null,
+      "period_type": null,
+      "scope": null,
+      "accounting_standard": null,
+      "unit": null,
+      "currency": null,
+      "source_id": null,
+      "source_type": null,
+      "source_tier": null,
+      "source_locator": null,
+      "content_sha256": null,
+      "source_evidence": [],
+      "verification_status": null,
+      "eligible": null,
+      "available_at": null,
+      "fact_version": null,
+      "restatement_version": null,
+      "supersedes_fact_id": null,
+      "selected_as_of": "2026-08-02",
+      "acquisition_required": false,
+      "derivation_status": "not_applicable",
+      "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": "policy.non_operating_asset_classification",
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
+      "pit_audit": {}
+    },
+    {
+      "symbol": "601857.SH",
+      "fiscal_year": 2024,
+      "role_id": "invested_capital.restricted_cash",
+      "canonical_concept_id": "restricted_cash",
+      "input_type": "direct_fact",
+      "status": "missing_official_fact",
+      "reason_codes": [
+        "canonical_concept_absent_for_fiscal_year"
+      ],
+      "blocker_severity": "methodology_support",
+      "selected_fact_id": null,
+      "candidate_fact_ids": [],
+      "context_id": null,
+      "concept_version": null,
+      "period_start": null,
+      "period_end": null,
+      "period_type": null,
+      "scope": null,
+      "accounting_standard": null,
+      "unit": null,
+      "currency": null,
+      "source_id": null,
+      "source_type": null,
+      "source_tier": null,
+      "source_locator": null,
+      "content_sha256": null,
+      "source_evidence": [],
+      "verification_status": null,
+      "eligible": null,
+      "available_at": null,
+      "fact_version": null,
+      "restatement_version": null,
+      "supersedes_fact_id": null,
+      "selected_as_of": "2026-08-02",
+      "acquisition_required": false,
+      "derivation_status": "not_applicable",
+      "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": "policy.non_operating_asset_classification",
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
+      "pit_audit": {}
+    },
+    {
+      "symbol": "601857.SH",
+      "fiscal_year": 2025,
+      "role_id": "invested_capital.restricted_cash",
+      "canonical_concept_id": "restricted_cash",
+      "input_type": "direct_fact",
+      "status": "missing_official_fact",
+      "reason_codes": [
+        "canonical_concept_absent_for_fiscal_year"
+      ],
+      "blocker_severity": "methodology_support",
+      "selected_fact_id": null,
+      "candidate_fact_ids": [],
+      "context_id": null,
+      "concept_version": null,
+      "period_start": null,
+      "period_end": null,
+      "period_type": null,
+      "scope": null,
+      "accounting_standard": null,
+      "unit": null,
+      "currency": null,
+      "source_id": null,
+      "source_type": null,
+      "source_tier": null,
+      "source_locator": null,
+      "content_sha256": null,
+      "source_evidence": [],
+      "verification_status": null,
+      "eligible": null,
+      "available_at": null,
+      "fact_version": null,
+      "restatement_version": null,
+      "supersedes_fact_id": null,
+      "selected_as_of": "2026-08-02",
+      "acquisition_required": false,
+      "derivation_status": "not_applicable",
+      "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": "policy.non_operating_asset_classification",
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
+      "pit_audit": {}
+    },
+    {
+      "symbol": "601857.SH",
+      "fiscal_year": 2020,
+      "role_id": "invested_capital.non_operating_financial_assets",
+      "canonical_concept_id": "non_operating_financial_assets",
+      "input_type": "direct_fact",
+      "status": "missing_official_fact",
+      "reason_codes": [
+        "canonical_concept_absent_for_fiscal_year"
+      ],
+      "blocker_severity": "hard",
+      "selected_fact_id": null,
+      "candidate_fact_ids": [],
+      "context_id": null,
+      "concept_version": null,
+      "period_start": null,
+      "period_end": null,
+      "period_type": null,
+      "scope": null,
+      "accounting_standard": null,
+      "unit": null,
+      "currency": null,
+      "source_id": null,
+      "source_type": null,
+      "source_tier": null,
+      "source_locator": null,
+      "content_sha256": null,
+      "source_evidence": [],
+      "verification_status": null,
+      "eligible": null,
+      "available_at": null,
+      "fact_version": null,
+      "restatement_version": null,
+      "supersedes_fact_id": null,
+      "selected_as_of": "2026-08-02",
+      "acquisition_required": true,
+      "derivation_status": "not_applicable",
+      "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": "policy.non_operating_asset_classification",
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
+      "pit_audit": {}
+    },
+    {
+      "symbol": "601857.SH",
+      "fiscal_year": 2021,
+      "role_id": "invested_capital.non_operating_financial_assets",
+      "canonical_concept_id": "non_operating_financial_assets",
+      "input_type": "direct_fact",
+      "status": "missing_official_fact",
+      "reason_codes": [
+        "canonical_concept_absent_for_fiscal_year"
+      ],
+      "blocker_severity": "hard",
+      "selected_fact_id": null,
+      "candidate_fact_ids": [],
+      "context_id": null,
+      "concept_version": null,
+      "period_start": null,
+      "period_end": null,
+      "period_type": null,
+      "scope": null,
+      "accounting_standard": null,
+      "unit": null,
+      "currency": null,
+      "source_id": null,
+      "source_type": null,
+      "source_tier": null,
+      "source_locator": null,
+      "content_sha256": null,
+      "source_evidence": [],
+      "verification_status": null,
+      "eligible": null,
+      "available_at": null,
+      "fact_version": null,
+      "restatement_version": null,
+      "supersedes_fact_id": null,
+      "selected_as_of": "2026-08-02",
+      "acquisition_required": true,
+      "derivation_status": "not_applicable",
+      "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": "policy.non_operating_asset_classification",
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
+      "pit_audit": {}
+    },
+    {
+      "symbol": "601857.SH",
+      "fiscal_year": 2022,
+      "role_id": "invested_capital.non_operating_financial_assets",
+      "canonical_concept_id": "non_operating_financial_assets",
+      "input_type": "direct_fact",
+      "status": "missing_official_fact",
+      "reason_codes": [
+        "canonical_concept_absent_for_fiscal_year"
+      ],
+      "blocker_severity": "hard",
+      "selected_fact_id": null,
+      "candidate_fact_ids": [],
+      "context_id": null,
+      "concept_version": null,
+      "period_start": null,
+      "period_end": null,
+      "period_type": null,
+      "scope": null,
+      "accounting_standard": null,
+      "unit": null,
+      "currency": null,
+      "source_id": null,
+      "source_type": null,
+      "source_tier": null,
+      "source_locator": null,
+      "content_sha256": null,
+      "source_evidence": [],
+      "verification_status": null,
+      "eligible": null,
+      "available_at": null,
+      "fact_version": null,
+      "restatement_version": null,
+      "supersedes_fact_id": null,
+      "selected_as_of": "2026-08-02",
+      "acquisition_required": true,
+      "derivation_status": "not_applicable",
+      "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": "policy.non_operating_asset_classification",
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
+      "pit_audit": {}
+    },
+    {
+      "symbol": "601857.SH",
+      "fiscal_year": 2023,
+      "role_id": "invested_capital.non_operating_financial_assets",
+      "canonical_concept_id": "non_operating_financial_assets",
+      "input_type": "direct_fact",
+      "status": "missing_official_fact",
+      "reason_codes": [
+        "canonical_concept_absent_for_fiscal_year"
+      ],
+      "blocker_severity": "hard",
+      "selected_fact_id": null,
+      "candidate_fact_ids": [],
+      "context_id": null,
+      "concept_version": null,
+      "period_start": null,
+      "period_end": null,
+      "period_type": null,
+      "scope": null,
+      "accounting_standard": null,
+      "unit": null,
+      "currency": null,
+      "source_id": null,
+      "source_type": null,
+      "source_tier": null,
+      "source_locator": null,
+      "content_sha256": null,
+      "source_evidence": [],
+      "verification_status": null,
+      "eligible": null,
+      "available_at": null,
+      "fact_version": null,
+      "restatement_version": null,
+      "supersedes_fact_id": null,
+      "selected_as_of": "2026-08-02",
+      "acquisition_required": true,
+      "derivation_status": "not_applicable",
+      "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": "policy.non_operating_asset_classification",
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
+      "pit_audit": {}
+    },
+    {
+      "symbol": "601857.SH",
+      "fiscal_year": 2024,
+      "role_id": "invested_capital.non_operating_financial_assets",
+      "canonical_concept_id": "non_operating_financial_assets",
+      "input_type": "direct_fact",
+      "status": "missing_official_fact",
+      "reason_codes": [
+        "canonical_concept_absent_for_fiscal_year"
+      ],
+      "blocker_severity": "hard",
+      "selected_fact_id": null,
+      "candidate_fact_ids": [],
+      "context_id": null,
+      "concept_version": null,
+      "period_start": null,
+      "period_end": null,
+      "period_type": null,
+      "scope": null,
+      "accounting_standard": null,
+      "unit": null,
+      "currency": null,
+      "source_id": null,
+      "source_type": null,
+      "source_tier": null,
+      "source_locator": null,
+      "content_sha256": null,
+      "source_evidence": [],
+      "verification_status": null,
+      "eligible": null,
+      "available_at": null,
+      "fact_version": null,
+      "restatement_version": null,
+      "supersedes_fact_id": null,
+      "selected_as_of": "2026-08-02",
+      "acquisition_required": true,
+      "derivation_status": "not_applicable",
+      "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": "policy.non_operating_asset_classification",
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
+      "pit_audit": {}
+    },
+    {
+      "symbol": "601857.SH",
+      "fiscal_year": 2025,
+      "role_id": "invested_capital.non_operating_financial_assets",
+      "canonical_concept_id": "non_operating_financial_assets",
+      "input_type": "direct_fact",
+      "status": "missing_official_fact",
+      "reason_codes": [
+        "canonical_concept_absent_for_fiscal_year"
+      ],
+      "blocker_severity": "hard",
+      "selected_fact_id": null,
+      "candidate_fact_ids": [],
+      "context_id": null,
+      "concept_version": null,
+      "period_start": null,
+      "period_end": null,
+      "period_type": null,
+      "scope": null,
+      "accounting_standard": null,
+      "unit": null,
+      "currency": null,
+      "source_id": null,
+      "source_type": null,
+      "source_tier": null,
+      "source_locator": null,
+      "content_sha256": null,
+      "source_evidence": [],
+      "verification_status": null,
+      "eligible": null,
+      "available_at": null,
+      "fact_version": null,
+      "restatement_version": null,
+      "supersedes_fact_id": null,
+      "selected_as_of": "2026-08-02",
+      "acquisition_required": true,
+      "derivation_status": "not_applicable",
+      "methodology_choice_status": "not_applicable",
+      "methodology_decision_id": "policy.non_operating_asset_classification",
+      "methodology_decision_version": null,
+      "methodology_resolution_status": null,
+      "decision_rule_digest": null,
+      "supporting_fact_roles": [],
+      "supporting_fact_statuses": [],
+      "unresolved_reasons": [],
+      "score_eligible": false,
+      "pit_audit": {}
     }
   ],
-  "report_sha256": "c0ef83c38b1e3883b43c105fb481c526b4848697024ffe7217bacea4c5efc8cc"
+  "report_sha256": "0f0bf2d53202419d871bc086c23a45513d658907e4dc3a30da755069cc0adc9d"
 }

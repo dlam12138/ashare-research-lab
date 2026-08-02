@@ -18,9 +18,16 @@ from typing import Any
 
 from ashare_research.facts.identity import build_fact_id
 from ashare_research.tools.roic_contracts import (
+    DEPENDENCY_GRAPH_PATH,
     FORMAL_STATUSES,
+    METHODOLOGY_DECISIONS_PATH,
     REGISTRY_PATH,
+    canonical_digest,
+    decisions_by_id,
+    dependency_graph_digest,
     entries_by_role,
+    load_dependency_graph,
+    load_methodology_decisions,
     load_registry,
     registry_digest,
 )
@@ -345,7 +352,9 @@ def _build_cell(
     all_facts: dict[str, dict[str, Any]],
     assessment_as_of: str,
     entries_map: dict[str, dict[str, Any]],
+    decisions_map: dict[str, dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
+    decisions_map = decisions_map or decisions_by_id(load_methodology_decisions())
     base = {
         "symbol": SYMBOL,
         "fiscal_year": year,
@@ -382,11 +391,71 @@ def _build_cell(
         "acquisition_required": False,
         "derivation_status": "not_applicable",
         "methodology_choice_status": "not_applicable",
+        "methodology_decision_id": entry.get("methodology_decision_id"),
+        "methodology_decision_version": None,
+        "methodology_resolution_status": None,
+        "decision_rule_digest": None,
+        "supporting_fact_roles": [],
+        "supporting_fact_statuses": [],
+        "unresolved_reasons": [],
+        "score_eligible": False,
         "pit_audit": {},
     }
     if entry["input_type"] == "methodology_choice":
-        base["reason_codes"] = ["methodology_frozen_and_not_fact_applicable"]
-        base["methodology_choice_status"] = "resolved_in_registry"
+        decision_id = entry.get("methodology_decision_id")
+        decision = decisions_map.get(str(decision_id), {})
+        if not decision_id:
+            base["reason_codes"] = ["deprecated_methodology_role_not_applicable"]
+            base["methodology_choice_status"] = "not_applicable"
+            return base
+        supporting_roles = list(decision.get("supporting_fact_roles", []))
+        supporting_statuses = []
+        for supporting_role in supporting_roles:
+            supporting_entry = entries_map.get(supporting_role)
+            if supporting_entry is None:
+                supporting_statuses.append(
+                    {"role_id": supporting_role, "status": "missing_official_fact"}
+                )
+                continue
+            supporting_cell = _build_cell(
+                entry=supporting_entry,
+                year=year,
+                facts=facts,
+                contexts=contexts,
+                all_facts=all_facts,
+                assessment_as_of=assessment_as_of,
+                entries_map=entries_map,
+                decisions_map=decisions_map,
+            )
+            supporting_statuses.append(
+                {"role_id": supporting_role, "status": supporting_cell["status"]}
+            )
+        resolution = decision.get("resolution_status", "unresolved")
+        unresolved_reasons = []
+        if resolution in {"unresolved", "awaiting_supporting_facts"}:
+            unresolved_reasons.append(f"decision_resolution_status:{resolution}")
+        if not decision.get("decision_version") or not decision.get("decision_rule"):
+            unresolved_reasons.append("decision_rule_or_version_missing")
+        base.update(
+            {
+                "methodology_decision_version": decision.get("decision_version"),
+                "methodology_resolution_status": resolution,
+                "decision_rule_digest": canonical_digest(decision.get("decision_rule", "")),
+                "supporting_fact_roles": supporting_roles,
+                "supporting_fact_statuses": supporting_statuses,
+                "unresolved_reasons": unresolved_reasons,
+                "available_at": decision.get("effective_from"),
+            }
+        )
+        if unresolved_reasons:
+            base["status"] = "methodology_unresolved"
+            base["reason_codes"] = unresolved_reasons
+            base["methodology_choice_status"] = "methodology_unresolved"
+            base["acquisition_required"] = False
+        else:
+            base["status"] = "ready"
+            base["reason_codes"] = ["methodology_decision_resolved"]
+            base["methodology_choice_status"] = "resolved"
         return base
     if entry["input_type"] == "deterministic_derivation":
         component_cells = [
@@ -398,6 +467,7 @@ def _build_cell(
                 all_facts=all_facts,
                 assessment_as_of=assessment_as_of,
                 entries_map=entries_map,
+                decisions_map=decisions_map,
             )
             for component in entry["derivation_components"]
         ]
@@ -513,10 +583,15 @@ def build_readiness_report(
     fact_db: Path | None = None,
     inventory_path: Path = INVENTORY_V2_PATH,
     registry_path: Path = REGISTRY_PATH,
+    dependency_graph_path: Path = DEPENDENCY_GRAPH_PATH,
+    methodology_decisions_path: Path = METHODOLOGY_DECISIONS_PATH,
     assessment_as_of: str = "2026-08-02",
 ) -> dict[str, Any]:
     """Build a deterministic readiness report; no shadow calculation is run."""
     registry = load_registry(registry_path)
+    dependency_graph = load_dependency_graph(dependency_graph_path)
+    methodology_decisions = load_methodology_decisions(methodology_decisions_path)
+    decisions_map = decisions_by_id(methodology_decisions)
     entries_map = entries_by_role(registry)
     if _date_or_none(assessment_as_of) is None:
         raise ValueError("assessment_as_of must be YYYY-MM-DD")
@@ -530,7 +605,7 @@ def build_readiness_report(
             path = Path(directory) / "inventory.json"
             export_inventory(fact_db, path, symbol=registry["symbol"])
             inventory = load_inventory(path)
-        inventory_source = f"explicit_read_only_fact_db:{fact_db}"
+        inventory_source = "explicit_read_only_fact_db"
     else:
         repository_probe = None
         inventory = load_inventory(inventory_path)
@@ -547,6 +622,7 @@ def build_readiness_report(
             all_facts=all_facts,
             assessment_as_of=assessment_as_of,
             entries_map=entries_map,
+            decisions_map=decisions_map,
         )
         for entry in registry["entries"]
         for year in registry["assessment_years"]
@@ -582,13 +658,17 @@ def build_readiness_report(
         "inventory_fact_count": inventory["fact_count"],
         "inventory_context_count": inventory["context_count"],
         "repository_pit_probe": repository_probe,
-        "registry_path": str(Path(registry_path).as_posix()),
+        "registry_logical_path": "config/roic_concept_registry_v2.json",
         "registry_sha256": registry_digest(registry),
+        "dependency_graph_logical_path": "config/roic_formula_dependency_graph_v1.json",
+        "dependency_graph_sha256": dependency_graph_digest(dependency_graph),
+        "methodology_decisions_logical_path": "config/roic_methodology_decisions_v1.json",
+        "methodology_decisions_sha256": canonical_digest(methodology_decisions),
         "formula_candidate": registry["formula_candidate"],
         "formula_status": "frozen_primary_candidate_not_production_metric",
         "formal_statuses": list(FORMAL_STATUSES),
         "evidence_gate": "BLOCKED_WITH_EXPLICIT_GAPS"
-        if blocking_gaps
+        if primary_formula_blocking_gaps
         else "SUFFICIENT_FOR_ONE_YEAR_FEASIBILITY",
         "shadow": {
             "status": "NOT_RUN",
@@ -734,7 +814,7 @@ def build_v1_v2_diff(
             )
     diff = {
         "schema": "roic_fact_readiness_v1_to_v2_diff",
-        "v1_report": str(Path(v1_path).as_posix()),
+        "v1_report": "reports/petrochina_roic_fact_readiness_2020_2025.json",
         "v2_report": "reports/petrochina_roic_fact_readiness_2020_2025_v2.json",
         "v1_schema": old.get("schema"),
         "v2_schema": v2_report.get("schema"),

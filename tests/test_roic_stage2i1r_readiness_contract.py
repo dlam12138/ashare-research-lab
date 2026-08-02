@@ -218,10 +218,14 @@ def test_nine_formal_statuses_are_exercised_by_contract_fixtures() -> None:
     context = _context()
     valid = _fact(context_id=context["context_id"])
     assert _validate_fact(valid, context, entries["nopat.operating_profit"], "2026-08-02")[0] == []
-    assert (
-        entries["invested_capital.non_operating_asset_boundary"]["missing_status"]
-        == "methodology_unresolved"
-    )
+    policy = entries["policy.non_operating_asset_classification"]
+    assert policy["missing_status"] == "methodology_unresolved"
+    assert policy["input_type"] == "methodology_choice"
+    policy_cells = [
+        cell for cell in build_readiness_report()["matrix"] if cell["role_id"] == policy["role_id"]
+    ]
+    assert {cell["status"] for cell in policy_cells} == {"ready"}
+    assert {cell["methodology_resolution_status"] for cell in policy_cells} == {"resolved"}
     assert (
         _build_cell(
             entry=entries["invested_capital.interest_bearing_debt_total"],

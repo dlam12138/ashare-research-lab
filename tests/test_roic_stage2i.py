@@ -66,7 +66,11 @@ def test_roic_contract_and_acquisition_plan_are_non_production() -> None:
         )
     )
 
-    assert methodology["status"] == "frozen_stage2i_readiness_only"
+    assert methodology["status"] == "frozen_stage2i1r2_acquisition_gate_only"
+    assert methodology["concept_registry"] == "config/roic_concept_registry_v2.json"
+    assert methodology["formula_dependency_graph"] == (
+        "config/roic_formula_dependency_graph_v1.json"
+    )
     assert methodology["production_metric_allowed"] is False
     assert methodology["score_eligible"] is False
     assert methodology["forbidden_nopat_inputs"] == [
