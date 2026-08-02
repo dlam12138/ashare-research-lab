@@ -22,9 +22,13 @@ def test_roic_readiness_is_blocked_without_silent_fallbacks() -> None:
     assert report["shadow"]["production_metric_created"] is False
     assert report["shadow"]["current_value_profile_changed"] is False
     assert "direct operating-tax" in report["shadow"]["reason"]
-    assert any(gap["concept_id"] == "operating_tax_expense" for gap in report["blocking_gaps"])
-    assert any(gap["concept_id"] == "nci" for gap in report["blocking_gaps"])
-    assert any(gap["concept_id"] == "goodwill" for gap in report["blocking_gaps"])
+    assert any(
+        gap["canonical_concept_id"] == "operating_tax_expense" for gap in report["blocking_gaps"]
+    )
+    assert any(
+        gap["canonical_concept_id"] == "non_controlling_interest" for gap in report["blocking_gaps"]
+    )
+    assert any(gap["canonical_concept_id"] == "goodwill" for gap in report["blocking_gaps"])
 
 
 def test_canonical_inventory_has_exact_fact_ids_and_pit_versions() -> None:
@@ -36,17 +40,20 @@ def test_canonical_inventory_has_exact_fact_ids_and_pit_versions() -> None:
     assert all(
         re.fullmatch(r"[0-9a-f]{64}", fact_id)
         for cell in ready_cells
-        for fact_id in cell["canonical_fact_ids"]
+        for fact_id in cell["candidate_fact_ids"]
     )
     restated = [
         cell
         for cell in cells
-        if cell["concept_id"] in {"equity_attributable_to_parent", "total_assets"}
+        if cell["canonical_concept_id"] in {"equity_attributable_to_parent", "total_assets"}
         and cell["fiscal_year"] in {2022, 2023}
-        and len(cell["canonical_fact_ids"]) > 1
+        and len(cell["candidate_fact_ids"]) > 1
     ]
     assert restated
-    assert all(cell["available_at"] == sorted(cell["available_at"]) for cell in restated)
+    assert all(
+        cell["pit_audit"]["visible_fact_ids"] == sorted(cell["pit_audit"]["visible_fact_ids"])
+        for cell in restated
+    )
 
 
 def test_roic_contract_and_acquisition_plan_are_non_production() -> None:
@@ -54,7 +61,7 @@ def test_roic_contract_and_acquisition_plan_are_non_production() -> None:
         (ROOT / "config" / "value_evaluation_methodology_roic_v1.json").read_text(encoding="utf-8")
     )
     plan = json.loads(
-        (ROOT / "config" / "roic_official_fact_acquisition_plan_v1.json").read_text(
+        (ROOT / "config" / "roic_official_fact_acquisition_plan_v2.json").read_text(
             encoding="utf-8"
         )
     )
