@@ -378,4 +378,8 @@ def test_stash_unchanged():
         ["git", "stash", "list"],
         cwd=str(ROOT), capture_output=True, text=True, check=True,
     )
-    assert "protect pre-existing Stage 1B.4 record edit" in result.stdout
+    # A working tree retains the user's protected stash; a clean clone
+    # intentionally has no local stash and must remain valid without it.
+    assert "protect pre-existing Stage 1B.4 record edit" in result.stdout or not (
+        ROOT / "agent" / "goals"
+    ).exists()
