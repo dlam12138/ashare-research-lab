@@ -16,4 +16,3 @@ Every item must be checked against `config/roic_concept_registry_v1.json`,
 with exact symbol, Context, period type, scope, unit/currency, official
 source evidence, PIT availability and a legal supersedes chain. No item may
 be renamed to hide a missing official fact.
-
