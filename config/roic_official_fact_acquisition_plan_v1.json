@@ -1,0 +1,76 @@
+{
+  "schema": "roic_official_fact_acquisition_plan_v1",
+  "symbol": "601857.SH",
+  "status": "required",
+  "formula_candidate": "B_operating_profit_bridge_financing_view",
+  "minimum_feasibility_year": 2024,
+  "opening_balance_year": 2023,
+  "scope": "PetroChina consolidated CAS annual-report family",
+  "duration_inputs": [
+    "operating_profit",
+    "finance_cost",
+    "interest_expense",
+    "lease_interest_expense",
+    "borrowing_cost_capitalized_or_expensed",
+    "investment_income",
+    "associate_jv_income",
+    "fair_value_change",
+    "disposal_gain_loss",
+    "impairment_or_reversal",
+    "other_non_operating_income_expense",
+    "income_tax_expense",
+    "deferred_tax_expense",
+    "operating_tax_expense_allocation_evidence",
+    "profit_before_tax"
+  ],
+  "balance_inputs": [
+    "equity_attributable_to_parent",
+    "nci",
+    "short_term_borrowings",
+    "current_portion_of_long_term_borrowings",
+    "current_portion_of_bonds_payable",
+    "long_term_borrowings",
+    "bonds_payable",
+    "current_portion_of_lease_liabilities",
+    "lease_liabilities",
+    "interest_bearing_long_term_payables",
+    "cash_and_cash_equivalents",
+    "monetary_funds",
+    "restricted_cash",
+    "financial_assets_at_fair_value",
+    "financial_assets_at_amortized_cost",
+    "associate_investment",
+    "joint_venture_investment",
+    "goodwill",
+    "total_assets",
+    "noninterest_bearing_operating_liabilities"
+  ],
+  "years": {
+    "minimum_batch": [2023, 2024],
+    "full_expansion": [2020, 2021, 2022, 2023, 2024, 2025]
+  },
+  "source_requirements": {
+    "official_source_types": ["company_annual_report", "audited_financial_statements", "exchange_official_announcement"],
+    "dual_source_required": true,
+    "record_fields": ["source_url", "source_hash", "source_document", "source_page", "source_table", "source_label", "scope", "period_end", "announcement_date", "available_at", "restatement_version", "supersedes_fact_id"],
+    "pit": "maximum_available_at",
+    "restatement": "superseding_canonical_fact_wins"
+  },
+  "hard_rejections": [
+    "net_profit_as_nopat",
+    "parent_attributable_profit_as_nopat",
+    "ebitda_as_nopat",
+    "generic_debt_or_total_liabilities_as_debt",
+    "all_cash_silent_subtraction",
+    "ending_invested_capital_without_opening_balance",
+    "reported_etr_or_statutory_rate_as_direct_operating_tax",
+    "manual_or_llm_plug"
+  ],
+  "production_effects": {
+    "register_roic_metric": false,
+    "insert_metric_result": false,
+    "change_current_value_profile": false,
+    "run_scoring": false,
+    "run_web_or_market_mechanism": false
+  }
+}

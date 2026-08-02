@@ -1,0 +1,95 @@
+{
+  "methodology_id": "value_evaluation_methodology_roic_v1",
+  "schema_version": "1.0",
+  "version": "1",
+  "status": "frozen_stage2i_readiness_only",
+  "scope": "petrochina_consolidated_CAS",
+  "score_eligible": false,
+  "production_metric_allowed": false,
+  "decimal": {
+    "precision": 28,
+    "rounding": "ROUND_HALF_EVEN",
+    "canonical_quantum": "0.000000000001"
+  },
+  "identity": "NOPAT / ((opening_invested_capital + closing_invested_capital) / 2)",
+  "primary_nopat_candidate": "operating_profit_bridge",
+  "nopat_candidates": {
+    "ebit_bridge": {
+      "formula": "profit_before_tax + eligible_interest_expense - normalized_operating_tax",
+      "status": "rejected_primary_candidate",
+      "reason": "profit_before_tax contains non-operating items and interest/lease/capitalized components are not yet fully separated"
+    },
+    "operating_profit_bridge": {
+      "formula": "operating_profit + eligible_finance_cost_adjustment - matched_non_operating_items - directly_allocated_operating_tax",
+      "status": "primary_acquisition_candidate",
+      "clean_ebit_label_allowed": false,
+      "requires_official_adjustments": true
+    },
+    "directly_adjusted_operating_earnings": {
+      "formula": "official_operating_earnings_plus_or_minus_each_registered_adjustment - directly_allocated_operating_tax",
+      "status": "not_selected_primary",
+      "requires_every_adjustment_official": true
+    }
+  },
+  "forbidden_nopat_inputs": [
+    "net_profit",
+    "net_profit_attributable_to_parent",
+    "EBITDA",
+    "llm_generated_adjustment",
+    "manual_balancing_plug"
+  ],
+  "tax_policy": {
+    "primary": "directly_allocated_operating_tax",
+    "evidence_bridge": ["current_tax", "deferred_tax", "income_tax_expense"],
+    "fallback_order": ["reported_effective_tax_rate", "normalized_multi_year_effective_tax_rate", "statutory_tax_rate"],
+    "fallback_label": "proxy_not_canonical_nopat",
+    "valid_range": "report_and_flag_out_of_range; do_not_clip",
+    "loss_year": "not_computable_without_direct_operating_tax",
+    "negative_pretax": "not_computable_without_direct_operating_tax",
+    "one_off_tax": "retain_and_flag",
+    "current_deferred": "do_not_silently_allocate"
+  },
+  "invested_capital_policy": {
+    "primary_view": "financing_view",
+    "formula": "parent_equity + NCI + short_term_borrowings + current_interest_bearing_non_current_liabilities + long_term_borrowings + bonds_payable + current_lease_liabilities + non_current_lease_liabilities + interest_bearing_long_term_payables - qualifying_non_operating_assets",
+    "reconciliation_view": "operating_assets - non_interest_bearing_operating_liabilities",
+    "reconcile_views_when_facts_permit": true,
+    "do_not_average_views": true
+  },
+  "component_policies": {
+    "nci": "include_with_consolidated_nopat",
+    "debt": "include_explicit_components_only",
+    "leases": "include_current_and_non_current_when_lease_interest_is_matched",
+    "associates_jv": "exclude_investment_and_income_by_default; include_both_only_with_evidence",
+    "goodwill": "include_by_default; no_impairment_reversal",
+    "deferred_tax": "conditional_with_registered_scope",
+    "cash": "do_not_subtract_all_cash; subtract_only_evidenced_qualifying_non_operating_cash",
+    "monetary_funds": "conditional_proxy_only_with_boundary_proof",
+    "restricted_cash": "exclude_by_default",
+    "financial_investments": "match_asset_and_income_scope",
+    "operating_current_liabilities": "operating_view_only_when_non_interest_bearing_is_proven"
+  },
+  "average_balance_policy": {
+    "formula": "(opening + closing) / 2",
+    "opening_required": true,
+    "closing_required": true,
+    "ending_balance_fallback": false,
+    "fy2021_requires_fy2020_opening": true
+  },
+  "pit_policy": {
+    "available_at": "max(all_numerator_adjustment_opening_closing_inputs)",
+    "as_of_selection": "latest_visible_version_only",
+    "historical_versions_retained": true,
+    "restatement_propagation": "superseding_shadow_result"
+  },
+  "status_policy": {
+    "zero_denominator": "undefined_zero_denominator",
+    "negative_denominator": "not_comparable_negative_denominator",
+    "missing_input": "missing_official_fact",
+    "scope_mismatch": "scope_mismatch",
+    "insufficient_opening": "opening_balance_required",
+    "score_eligible": false
+  },
+  "industry_applicability": ["non_financial_integrated_oil_and_gas"],
+  "references_reviewed": ["cfa_capital_allocation_2026", "damodaran_definitions", "financetoolkit", "openbb_standard_models", "mof_cas", "petrochina_annual_reports", "repository_fact_metric_pit_contracts"]
+}
