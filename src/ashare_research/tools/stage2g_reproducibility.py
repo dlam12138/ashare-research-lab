@@ -10,14 +10,16 @@ from __future__ import annotations
 
 import argparse
 import json
+import subprocess
 from pathlib import Path
 from typing import Any
 
-from ashare_research.reproducibility.artifacts import verify_artifacts
+from ashare_research.reproducibility.artifacts import compare_artifact_runs, verify_artifacts
 from ashare_research.reproducibility.capsule import (
     MARKET_FIXTURE_DIR,
     build_temp_fact_db,
     build_test_capsule,
+    compare_capsules,
     export_facts,
     validate_snapshot,
     verify_capsule_manifest,
@@ -36,6 +38,17 @@ from ashare_research.tools.petrochina_valuation_and_value_profile import (
 
 COMMITTED_SNAPSHOT = ROOT / "tests" / "fixtures" / "stage2g" / "canonical_fact_snapshot_v1"
 COMMITTED_REGISTRY = ROOT / "events" / "market_data_snapshot_registry.json"
+REQUIRED_RULE007_STATUSES = {
+    "issuer_exchange_rule007_eligible",
+    "issuer_plus_designated_platform_verified",
+    "exchange_plus_designated_platform_verified",
+    "issuer_only",
+    "exchange_only",
+    "designated_platform_only",
+    "no_retrieved_official_source",
+    "conflicting_official_sources",
+    "incomplete_or_invalid_evidence",
+}
 
 
 def _json(value: Any) -> str:
@@ -46,6 +59,11 @@ def verify_contracts() -> dict[str, Any]:
     snapshot = validate_snapshot(COMMITTED_SNAPSHOT)
     registry = json.loads(COMMITTED_REGISTRY.read_text(encoding="utf-8"))
     MarketSnapshotResolver.validate_registry_contract(registry)
+    if REQUIRED_RULE007_STATUSES - set(RULE007_PAIR_REGISTRY):
+        raise ValueError(
+            "Rule007 registry missing statuses: "
+            + ", ".join(sorted(REQUIRED_RULE007_STATUSES - set(RULE007_PAIR_REGISTRY)))
+        )
     evidence = validate_dividend_evidence()
     if any(
         item["event"]["event_id"] in evidence["rule007_eligible_events"]
@@ -92,7 +110,9 @@ def verify_contracts() -> dict[str, Any]:
 
 
 def run_test_capsule(
-    capsule_dir: Path | str, output_root: Path | str | None = None
+    capsule_dir: Path | str,
+    output_root: Path | str | None = None,
+    run_id: str = "stage2g2_test_capsule",
 ) -> dict[str, Any]:
     root = Path(capsule_dir)
     manifest = verify_capsule_manifest(root)
@@ -103,7 +123,7 @@ def run_test_capsule(
     run_root = Path(output_root) if output_root is not None else root / "runs"
     result = run_formal(
         output_root=run_root,
-        run_id="stage2g2_test_capsule",
+        run_id=run_id,
         fact_db=temp_db,
         registry_path=root / "market_data_snapshot_registry_v2.json",
         market_mode="test_capsule",
@@ -129,6 +149,90 @@ def run_test_capsule(
         "artifact_verification": artifact,
         "network_used": False,
         "default_db_mutated": False,
+    }
+
+
+def verify_clean_clone() -> dict[str, Any]:
+    """Verify that a clean-clone gate has no local research inputs or state."""
+
+    forbidden_paths = [
+        ROOT / "data" / "research.duckdb",
+        ROOT / "output",
+        ROOT / "runs",
+        ROOT / ".cache",
+        ROOT / "cache",
+    ]
+    present = [str(path.relative_to(ROOT)) for path in forbidden_paths if path.exists()]
+    data_roots = [
+        ROOT / "data" / name
+        for name in ("raw", "parquet", "staging", "quarantine", "reports")
+    ]
+    unexpected_data = [
+        str(path.relative_to(ROOT))
+        for data_root in data_roots
+        if data_root.exists()
+        for path in data_root.rglob("*")
+        if path.is_file() and path.name != ".gitkeep"
+    ]
+    status = subprocess.run(
+        ["git", "status", "--porcelain"], cwd=ROOT, capture_output=True, text=True, check=True
+    ).stdout.strip()
+    stash = subprocess.run(
+        ["git", "stash", "list"], cwd=ROOT, capture_output=True, text=True, check=True
+    ).stdout.strip()
+    tracked_secret_names = [
+        line
+        for line in subprocess.run(
+            ["git", "ls-files"], cwd=ROOT, capture_output=True, text=True, check=True
+        ).stdout.splitlines()
+        if any(token in Path(line).name.lower() for token in (".env", "credentials", "secret"))
+    ]
+    path_scan_files = [
+        ROOT / "src" / "ashare_research" / "reproducibility",
+        ROOT / ".github" / "workflows" / "stage2g-reproducibility.yml",
+    ]
+    private_absolute_paths: list[str] = []
+    for candidate in path_scan_files:
+        files = [candidate] if candidate.is_file() else list(candidate.rglob("*"))
+        for path in files:
+            if path.is_file() and path.suffix in {".py", ".yml", ".yaml"}:
+                text = path.read_text(encoding="utf-8")
+                if any(
+                    marker in text
+                    for marker in ("D:\\量化分析", "C:\\Users\\", "/home/", "/Users/")
+                ):
+                    private_absolute_paths.append(str(path.relative_to(ROOT)))
+    if (
+        present
+        or unexpected_data
+        or status
+        or stash
+        or tracked_secret_names
+        or private_absolute_paths
+    ):
+        raise ValueError(
+            "clean-clone preflight failed: "
+            + json.dumps(
+                {
+                    "forbidden_paths": present,
+                    "unexpected_data": unexpected_data,
+                    "worktree": status,
+                    "stash": stash,
+                    "tracked_secret_names": tracked_secret_names,
+                    "private_absolute_paths": private_absolute_paths,
+                },
+                ensure_ascii=False,
+                sort_keys=True,
+            )
+        )
+    return {
+        "status": "pass",
+        "offline": True,
+        "default_db_present": False,
+        "output_or_cache_present": False,
+        "stash_present": False,
+        "tracked_secret_names": [],
+        "private_absolute_paths": [],
     }
 
 
@@ -227,6 +331,14 @@ def _parser() -> argparse.ArgumentParser:
     run_test = sub.add_parser("run-test-capsule")
     run_test.add_argument("--capsule-dir", type=Path, required=True)
     run_test.add_argument("--output", type=Path)
+    run_test.add_argument("--run-id", default="stage2g2_test_capsule")
+    compare_capsule_parser = sub.add_parser("compare-capsules")
+    compare_capsule_parser.add_argument("--left", type=Path, required=True)
+    compare_capsule_parser.add_argument("--right", type=Path, required=True)
+    compare_runs_parser = sub.add_parser("compare-runs")
+    compare_runs_parser.add_argument("--left", type=Path, required=True)
+    compare_runs_parser.add_argument("--right", type=Path, required=True)
+    sub.add_parser("verify-clean-clone")
     real_preflight = sub.add_parser("verify-real-inputs")
     real_preflight.add_argument("--fact-db", type=Path, required=True)
     real_preflight.add_argument("--market-cache-root", type=Path, required=True)
@@ -253,7 +365,13 @@ def main(argv: list[str] | None = None) -> int:
     elif args.command == "build-test-capsule":
         result = build_test_capsule(args.output, committed_snapshot_dir=COMMITTED_SNAPSHOT)
     elif args.command == "run-test-capsule":
-        result = run_test_capsule(args.capsule_dir, args.output)
+        result = run_test_capsule(args.capsule_dir, args.output, args.run_id)
+    elif args.command == "compare-capsules":
+        result = compare_capsules(args.left, args.right)
+    elif args.command == "compare-runs":
+        result = compare_artifact_runs(args.left, args.right)
+    elif args.command == "verify-clean-clone":
+        result = verify_clean_clone()
     elif args.command == "verify-real-inputs":
         result = verify_real_inputs(
             fact_db=args.fact_db,
@@ -273,7 +391,7 @@ def main(argv: list[str] | None = None) -> int:
     else:
         result = verify_artifacts(args.run_dir)
     print(_json(result))
-    return 0
+    return 1 if result.get("status") == "fail" else 0
 
 
 if __name__ == "__main__":

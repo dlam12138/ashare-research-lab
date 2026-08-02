@@ -277,18 +277,7 @@ def test_percentiles_are_descriptive_and_scenarios_have_no_opinion_fields(tmp_pa
     )
 
 
-def test_offline_formal_run_is_idempotent(tmp_path: Path) -> None:
-    first = _run_formal(tmp_path, "idempotent-test")
-    run_dir = Path(first["run_dir"])
-    before = {
-        path.name: hashlib.sha256(path.read_bytes()).hexdigest()
-        for path in run_dir.iterdir()
-        if path.is_file()
-    }
-    second = _run_formal(tmp_path, "idempotent-test")
-    after = {
-        path.name: hashlib.sha256(path.read_bytes()).hexdigest()
-        for path in Path(second["run_dir"]).iterdir()
-        if path.is_file()
-    }
-    assert before == after
+def test_offline_formal_run_refuses_overwrite(tmp_path: Path) -> None:
+    _run_formal(tmp_path, "overwrite-test")
+    with pytest.raises(FileExistsError, match="overwrite"):
+        _run_formal(tmp_path, "overwrite-test")

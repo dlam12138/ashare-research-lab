@@ -364,7 +364,9 @@ class TestSourceTierSingleEnum:
             for node in ast.walk(tree):
                 if isinstance(node, ast.ClassDef) and node.name == "SourceTier":
                     defs.append(str(py))
-        assert defs == ["src\\ashare_research\\facts\\models.py"], defs
+        assert [Path(path).as_posix() for path in defs] == [
+            "src/ashare_research/facts/models.py"
+        ], defs
 
     def test_fact_source_base_reuses_fact_model_source_tier(self):
         from ashare_research.fact_sources.base import SourceTier as BaseTier

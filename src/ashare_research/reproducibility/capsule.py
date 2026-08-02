@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import csv
+import hashlib
 import json
 import shutil
 from datetime import date
@@ -389,6 +390,8 @@ def build_test_capsule(
     """Build a complete portable capsule in a caller-owned directory."""
 
     out = Path(output_dir)
+    if out.exists():
+        raise FileExistsError(f"refusing to overwrite existing test capsule: {out}")
     out.mkdir(parents=True, exist_ok=True)
     snapshot = validate_snapshot(committed_snapshot_dir)
     snapshot_out = out / "canonical_fact_snapshot_v1"
@@ -443,6 +446,10 @@ def build_test_capsule(
             "never a real-mode fallback"
         ),
     }
+    manifest["logical_digest"] = hashlib.sha256(
+        json.dumps(manifest, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+        .encode("utf-8")
+    ).hexdigest()
     _write_stable(out / CAPSULE_MANIFEST, manifest)
     return manifest
 
@@ -460,4 +467,48 @@ def verify_capsule_manifest(capsule_dir: Path | str) -> dict[str, Any]:
         if not path.is_file() or sha256_file(path) != output["sha256"]:
             raise ValueError(f"capsule artifact mismatch: {output['relative_path']}")
     validate_snapshot(root / "canonical_fact_snapshot_v1")
+    expected_digest = hashlib.sha256(
+        json.dumps(
+            {key: value for key, value in manifest.items() if key != "logical_digest"},
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+    ).hexdigest()
+    if manifest.get("logical_digest") != expected_digest:
+        raise ValueError("capsule manifest logical digest mismatch")
     return manifest
+
+
+def compare_capsules(left_dir: Path | str, right_dir: Path | str) -> dict[str, Any]:
+    """Compare independent capsule builds, including every manifest output."""
+
+    left = Path(left_dir)
+    right = Path(right_dir)
+    left_manifest = verify_capsule_manifest(left)
+    right_manifest = verify_capsule_manifest(right)
+    differences: list[str] = []
+    if left_manifest.get("logical_digest") != right_manifest.get("logical_digest"):
+        differences.append("logical_digest_diff")
+    if left_manifest != right_manifest:
+        differences.append("capsule_manifest_diff")
+    left_outputs = {
+        item["relative_path"]: item["sha256"] for item in left_manifest.get("outputs", [])
+    }
+    right_outputs = {
+        item["relative_path"]: item["sha256"] for item in right_manifest.get("outputs", [])
+    }
+    if left_outputs != right_outputs:
+        differences.append("capsule_output_checksums_diff")
+    return {
+        "status": "fail" if differences else "pass",
+        "differences": differences,
+        "left": {
+            "logical_digest": left_manifest.get("logical_digest"),
+            "output_count": len(left_outputs),
+        },
+        "right": {
+            "logical_digest": right_manifest.get("logical_digest"),
+            "output_count": len(right_outputs),
+        },
+    }

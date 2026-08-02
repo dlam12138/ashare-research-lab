@@ -176,6 +176,8 @@ def validate_dividend_evidence(
         ]
         pair, pair_errors = select_rule007_sources(linked)
         errors.extend(f"{event['event_id']}:{error}" for error in pair_errors)
+        if "conflicting_official_source_values" in pair_errors:
+            errors.append(f"{event['event_id']}:numeric_or_scope_conflict")
         selected = pair["selected"]
         issuer = selected.get("issuer_official")
         exchange = selected.get("exchange_official")
@@ -1167,6 +1169,10 @@ def run_formal(
         raise ValueError("test_capsule mode cannot publish real research reports")
     output_root = Path(output_root) if output_root else ROOT / "runs" / "stage2g"
     run_dir = output_root / run_id
+    if run_dir.exists():
+        raise FileExistsError(
+            f"refusing to overwrite existing Stage 2G run directory: {run_dir}"
+        )
     run_dir.mkdir(parents=True, exist_ok=True)
     evidence = validate_dividend_evidence()
     if evidence["errors"]:

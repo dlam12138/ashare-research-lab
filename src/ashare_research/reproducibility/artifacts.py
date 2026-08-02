@@ -13,6 +13,19 @@ ARTIFACT_MANIFEST = "artifact_manifest.json"
 CHECKSUMS = "checksums.sha256"
 REPRO_REPORT = "reproducibility_report.json"
 METADATA_FILES = {ARTIFACT_MANIFEST, CHECKSUMS, REPRO_REPORT}
+_LOGICAL_MANIFEST_FIELDS = (
+    "contract",
+    "mode",
+    "deterministic_timestamp_policy",
+    "network_used",
+    "default_db_mutated",
+    "inputs",
+    "outputs",
+    "evidence_gap_count",
+    "rule007_eligibility_count",
+    "score_eligible",
+    "forbidden_feature_checks",
+)
 
 
 def sha256_file(path: Path) -> str:
@@ -31,6 +44,39 @@ def write_json(path: Path, value: Any) -> None:
         encoding="utf-8",
     )
     temporary.replace(path)
+
+
+def _logical_manifest_payload(manifest: dict[str, Any]) -> dict[str, Any]:
+    """Return the canonical run identity without run/environment/path noise."""
+
+    outputs = [
+        {
+            "logical_artifact": item["logical_artifact"],
+            "sha256": item["sha256"],
+            "size_bytes": item["size_bytes"],
+        }
+        for item in manifest.get("outputs", [])
+    ]
+    payload = {
+        key: manifest.get(key)
+        for key in _LOGICAL_MANIFEST_FIELDS
+        if key != "outputs"
+    }
+    payload["outputs"] = sorted(outputs, key=lambda item: item["logical_artifact"])
+    return payload
+
+
+def logical_artifact_digest(manifest: dict[str, Any]) -> str:
+    """Hash logical inputs/outputs, excluding run_id and output/environment paths."""
+
+    return hashlib.sha256(
+        json.dumps(
+            _logical_manifest_payload(manifest),
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+    ).hexdigest()
 
 
 def _code_commit() -> str:
@@ -104,6 +150,7 @@ def finalize_artifacts(
             "market_mechanism": "not_started",
         },
     }
+    artifact_manifest["logical_digest"] = logical_artifact_digest(artifact_manifest)
     write_json(root / ARTIFACT_MANIFEST, artifact_manifest)
     (root / CHECKSUMS).write_text(
         "".join(f"{item['sha256']}  {item['relative_path']}\n" for item in outputs),
@@ -133,7 +180,10 @@ def verify_artifacts(run_dir: Path | str) -> dict[str, Any]:
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     if manifest.get("contract") != "artifact_manifest_v2":
         raise ValueError("unsupported artifact manifest contract")
-    if any(Path(item["relative_path"]).is_absolute() for item in manifest.get("outputs", [])):
+    if any(
+        Path(item["relative_path"]).is_absolute() or ".." in Path(item["relative_path"]).parts
+        for item in manifest.get("outputs", [])
+    ):
         raise ValueError("artifact manifest contains an absolute output path")
     expected = {item["relative_path"]: item for item in manifest.get("outputs", [])}
     actual = {path.as_posix(): root / path for path in _relative_files(root)}
@@ -159,6 +209,9 @@ def verify_artifacts(run_dir: Path | str) -> dict[str, Any]:
         "artifact_manifest_verified"
     ):
         raise ValueError("reproducibility report does not match artifact manifest")
+    expected_logical_digest = logical_artifact_digest(manifest)
+    if manifest.get("logical_digest") != expected_logical_digest:
+        raise ValueError("artifact manifest logical digest mismatch")
     serialized = json.dumps(manifest, ensure_ascii=False, sort_keys=True)
     if "D:\\" in serialized or "D:/" in serialized or "\\\\" in serialized:
         raise ValueError("artifact manifest contains a private or absolute path")
@@ -170,4 +223,45 @@ def verify_artifacts(run_dir: Path | str) -> dict[str, Any]:
         "sha256": hashlib.sha256(
             json.dumps(manifest, ensure_ascii=False, sort_keys=True).encode()
         ).hexdigest(),
+        "logical_digest": expected_logical_digest,
+    }
+
+
+def compare_artifact_runs(left_dir: Path | str, right_dir: Path | str) -> dict[str, Any]:
+    """Compare two independently written runs and fail closed on any diff."""
+
+    left = Path(left_dir)
+    right = Path(right_dir)
+    left_verification = verify_artifacts(left)
+    right_verification = verify_artifacts(right)
+    left_manifest = json.loads((left / ARTIFACT_MANIFEST).read_text(encoding="utf-8"))
+    right_manifest = json.loads((right / ARTIFACT_MANIFEST).read_text(encoding="utf-8"))
+    left_report = json.loads((left / REPRO_REPORT).read_text(encoding="utf-8"))
+    right_report = json.loads((right / REPRO_REPORT).read_text(encoding="utf-8"))
+    differences: list[str] = []
+    if _logical_manifest_payload(left_manifest) != _logical_manifest_payload(right_manifest):
+        differences.append("logical_artifact_manifest_diff")
+    if left_verification["logical_digest"] != right_verification["logical_digest"]:
+        differences.append("logical_digest_diff")
+    left_checksums = (left / CHECKSUMS).read_text(encoding="utf-8")
+    right_checksums = (right / CHECKSUMS).read_text(encoding="utf-8")
+    if left_checksums != right_checksums:
+        differences.append("checksums_diff")
+    left_report.pop("run_id", None)
+    right_report.pop("run_id", None)
+    if left_report != right_report:
+        differences.append("reproducibility_report_diff")
+    return {
+        "status": "fail" if differences else "pass",
+        "differences": differences,
+        "left": {
+            "run_id": left_manifest.get("run_id"),
+            "logical_digest": left_verification["logical_digest"],
+            "output_count": left_verification["output_count"],
+        },
+        "right": {
+            "run_id": right_manifest.get("run_id"),
+            "logical_digest": right_verification["logical_digest"],
+            "output_count": right_verification["output_count"],
+        },
     }

@@ -8,14 +8,22 @@ from pathlib import Path
 
 import pytest
 
-from ashare_research.reproducibility.artifacts import verify_artifacts
+from ashare_research.reproducibility.artifacts import (
+    compare_artifact_runs,
+    logical_artifact_digest,
+    verify_artifacts,
+)
 from ashare_research.reproducibility.capsule import (
     build_temp_fact_db,
     build_test_capsule,
+    compare_capsules,
     validate_snapshot,
 )
 from ashare_research.reproducibility.market import MarketSnapshotResolver
+from ashare_research.reproducibility.rule007 import select_rule007_sources
 from ashare_research.tools.petrochina_valuation_and_value_profile import (
+    _build_rule007_facts,
+    _reconcile_rule007_facts,
     validate_dividend_evidence,
 )
 from ashare_research.tools.stage2g_reproducibility import (
@@ -57,14 +65,55 @@ def test_missing_context_fails_before_temporary_db_import(tmp_path: Path) -> Non
 
 
 def test_test_capsule_build_and_run_are_artifact_verified(tmp_path: Path) -> None:
-    capsule = tmp_path / "capsule"
-    build_test_capsule(capsule, committed_snapshot_dir=SNAPSHOT)
-    first = run_test_capsule(capsule)
-    second = run_test_capsule(capsule)
+    capsule_a = tmp_path / "capsule-a"
+    capsule_b = tmp_path / "capsule-b"
+    build_test_capsule(capsule_a, committed_snapshot_dir=SNAPSHOT)
+    build_test_capsule(capsule_b, committed_snapshot_dir=SNAPSHOT)
+    assert compare_capsules(capsule_a, capsule_b)["status"] == "pass"
+    first = run_test_capsule(
+        capsule_a,
+        output_root=tmp_path / "run-a",
+        run_id="stage2g2_test_capsule_a",
+    )
+    second = run_test_capsule(
+        capsule_b,
+        output_root=tmp_path / "run-b",
+        run_id="stage2g2_test_capsule_a",
+    )
     assert first["status"] == second["status"] == "pass"
     assert first["observation_count"] == second["observation_count"] == 8106
-    assert first["artifact_verification"]["sha256"] == second["artifact_verification"]["sha256"]
-    assert verify_artifacts(capsule / "runs" / "stage2g2_test_capsule")["status"] == "pass"
+    run_a = tmp_path / "run-a" / "stage2g2_test_capsule_a"
+    run_b = tmp_path / "run-b" / "stage2g2_test_capsule_a"
+    assert verify_artifacts(run_a)["status"] == "pass"
+    assert verify_artifacts(run_b)["status"] == "pass"
+    comparison = compare_artifact_runs(run_a, run_b)
+    assert comparison["status"] == "pass"
+    assert comparison["left"]["logical_digest"] == comparison["right"]["logical_digest"]
+    manifest = json.loads((run_a / "artifact_manifest.json").read_text(encoding="utf-8"))
+    changed_run_id = {**manifest, "run_id": "different-run-id"}
+    assert logical_artifact_digest(manifest) == logical_artifact_digest(changed_run_id)
+    with pytest.raises(FileExistsError, match="overwrite"):
+        run_test_capsule(
+            capsule_a,
+            output_root=tmp_path / "run-a",
+            run_id="stage2g2_test_capsule_a",
+        )
+    with pytest.raises(FileExistsError, match="overwrite"):
+        build_test_capsule(capsule_a, committed_snapshot_dir=SNAPSHOT)
+
+
+def test_dual_run_tamper_and_delete_fail_artifact_integrity(tmp_path: Path) -> None:
+    capsule = tmp_path / "capsule"
+    build_test_capsule(capsule, committed_snapshot_dir=SNAPSHOT)
+    run_test_capsule(capsule, output_root=tmp_path / "run", run_id="tamper-test")
+    run_dir = tmp_path / "run" / "tamper-test"
+    target = run_dir / "summary.json"
+    target.write_text(target.read_text(encoding="utf-8") + "tampered\n", encoding="utf-8")
+    with pytest.raises(ValueError, match="artifact integrity failure"):
+        verify_artifacts(run_dir)
+    target.unlink()
+    with pytest.raises(ValueError, match="artifact integrity failure"):
+        verify_artifacts(run_dir)
 
 
 def test_market_registry_has_no_absolute_paths_and_resolves_only_explicit_root(
@@ -113,6 +162,109 @@ def test_rule007_designated_platform_is_not_exchange_side() -> None:
     assert result["eligible"] == []
     assert any(
         gap["status"] == "issuer_plus_designated_platform_verified" for gap in result["gaps"]
+    )
+
+
+def _rule_source(source_id: str, source_type: str, *, value: str = "1.00") -> dict:
+    return {
+        "source_evidence_id": source_id,
+        "source_type": source_type,
+        "retrieval_status": "retrieved",
+        "content_sha256": f"hash-{source_id}",
+        "independently_extracted": True,
+        "extracted_values": {
+            "cash_dividend_total": value,
+            "cash_dividend_per_share": value,
+        "share_capital": "100",
+            "currency": "CNY",
+            "share_scope": "ordinary_total",
+        },
+    }
+
+
+@pytest.mark.parametrize(
+    ("sources", "expected"),
+    [
+        ([], "no_retrieved_official_source"),
+        (
+            [
+                {
+                    "source_evidence_id": "unretrieved",
+                    "source_type": "issuer_official",
+                    "retrieval_status": "not_retrieved",
+                }
+            ],
+            "no_retrieved_official_source",
+        ),
+        ([_rule_source("issuer", "issuer_official")], "issuer_only"),
+        ([_rule_source("exchange", "exchange_official")], "exchange_only"),
+        (
+            [_rule_source("designated", "designated_disclosure_platform")],
+            "designated_platform_only",
+        ),
+        (
+            [
+                _rule_source("issuer", "issuer_official"),
+                _rule_source("designated", "designated_disclosure_platform"),
+            ],
+            "issuer_plus_designated_platform_verified",
+        ),
+        (
+            [
+                _rule_source("exchange", "exchange_official"),
+                _rule_source("designated", "designated_disclosure_platform"),
+            ],
+            "exchange_plus_designated_platform_verified",
+        ),
+        (
+            [
+                _rule_source("issuer", "issuer_official"),
+                _rule_source("exchange", "exchange_official"),
+            ],
+            "issuer_exchange_rule007_eligible",
+        ),
+        ([{}], "incomplete_or_invalid_evidence"),
+    ],
+)
+def test_rule007_source_state_boundaries(sources: list[dict], expected: str) -> None:
+    pair, errors = select_rule007_sources(sources)
+    assert pair["status"] == expected
+    assert pair["rule007_eligible"] is (expected == "issuer_exchange_rule007_eligible")
+    if expected == "no_retrieved_official_source":
+        assert not errors
+
+
+def test_rule007_three_sources_keep_designated_supplemental_out_of_fact_inputs() -> None:
+    events = json.loads(
+        (ROOT / "events" / "dividend_events_2021_2026_v2.json").read_text(encoding="utf-8")
+    )["events"]
+    sources = json.loads(
+        (ROOT / "events" / "dividend_source_evidence_2021_2026.json").read_text(encoding="utf-8")
+    )["entries"]
+    event = next(
+        item
+        for item in events
+        if item["source_fiscal_year"] == 2024 and item["event_type"] == "interim"
+    )
+    exchange = next(
+        item for item in sources if item["source_evidence_id"] == "2024-interim-exchange"
+    )
+    designated = dict(exchange)
+    designated["source_evidence_id"] = "2024-interim-designated-supplemental"
+    designated["source_type"] = "designated_disclosure_platform"
+    designated["content_sha256"] = "supplemental-hash"
+    event["source_evidence_ids"] = [
+        *event["source_evidence_ids"],
+        designated["source_evidence_id"],
+    ]
+    result = validate_dividend_evidence(events, [*sources, designated])
+    eligible = next(item for item in result["eligible"] if item["event"] is event)
+    assert eligible["pair_contract"]["status"] == "issuer_exchange_rule007_eligible"
+    assert eligible["pair_contract"]["supplemental_sources"] == [designated]
+    raw = _build_rule007_facts({"eligible": [eligible]})
+    reconciled = _reconcile_rule007_facts({"eligible": [eligible]}, raw)
+    assert all(
+        designated["source_evidence_id"] not in item["input_fact_ids"] for item in reconciled
     )
 
 
