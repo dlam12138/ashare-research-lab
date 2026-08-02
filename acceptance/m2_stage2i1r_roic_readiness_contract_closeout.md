@@ -44,3 +44,13 @@ row or default DB write was made.
 
 Next-stage acquisition is allowed only through the v2 minimum plan. Scoring and
 market-mechanism work remain not started.
+
+## Stage 2I.1R2 supersession note
+
+The acceptance and its then-current acquisition-allowed conclusion above are
+retained as historical evidence. Stage 2I.1R2 found that v1 registry
+classification, v2 plan layering, finance/lease composition and methodology
+readiness were not one executable contract. The old hand-written acquisition
+permission is therefore superseded by
+`acceptance/m2_stage2i1r2_acquisition_gate_consistency_closeout.md`; only the
+new structured v3 coverage validator can issue the current decision.

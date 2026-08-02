@@ -7,7 +7,7 @@
 > [!IMPORTANT]
 > 本项目仅用于数据分析、统计研究和软件工程学习，不构成任何投资建议，也不提供自动交易能力。
 
-**当前阶段：Milestone 1 数据底座已完成；Milestone 2 价值评估 MVP 进行中（Stage 2I.1R ROIC readiness contract closeout；official fact acquisition required）**
+**当前阶段：Milestone 1 数据底座已完成；Milestone 2 价值评估 MVP 进行中（Stage 2I.1R2 ROIC acquisition gate consistency closeout；official fact acquisition required）**
 
 ---
 
@@ -22,7 +22,7 @@
 
 M2 当前切片的正式验收见：[Stage 2G.1 trusted-lineage closeout](acceptance/m2_stage2g1_trusted_lineage_closeout.md)、[Stage 2H risk-veto evidence](acceptance/m2_stage2h_petrochina_risk_veto_evidence.md)、[Stage 2H.1R historical/profile closeout](acceptance/m2_stage2h1r_historical_risk_completeness_and_profile_canonicalization.md) 和 [PetroChina value profile](reports/petrochina_value_profile_2021_2026.md)。Stage 2F 仍保留 9 个交易所股息证据缺口；Stage 2H 的监管/纪律与相关资金占用搜索缺口保持为 `missing_evidence`，不会被改写为负面结论。
 
-ROIC readiness 的当前 contract closeout 见 [Stage 2I.1R](acceptance/m2_stage2i1r_roic_readiness_contract_closeout.md)。它只审计 canonical official-fact readiness，不创建 ROIC Metric 或 shadow value；下一步仅允许按 v2 最小 acquisition plan 补齐 FY2023/FY2024 官方证据。
+ROIC acquisition gate 的当前 closeout 见 [Stage 2I.1R2](acceptance/m2_stage2i1r2_acquisition_gate_consistency_closeout.md)。公式 dependency graph、registry v2、方法决策、readiness 和 FY2023/FY2024 plan v3 已成为同一验证合同；只有 `reports/petrochina_roic_acquisition_plan_v3_coverage.json` 的 validator PASS 才能允许下一阶段采集。本阶段没有采集 Fact、运行 shadow、创建生产 ROIC 或开启评分。
 
 ---
 

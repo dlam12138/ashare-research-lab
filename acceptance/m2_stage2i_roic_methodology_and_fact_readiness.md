@@ -54,3 +54,11 @@ acquired and no shadow or production result was run.
 
 See `acceptance/m2_stage2i1r_roic_readiness_contract_closeout.md` for the
 final Stage 2I.1R decision.
+
+## Stage 2I.1R2 subsequent correction
+
+Stage 2I.1R remains historical. Stage 2I.1R2 further freezes formula
+dependencies, separates methodology decisions from monetary derivations,
+migrates formal readiness to registry v2 and replaces the v2 acquisition plan
+with validator-governed plan v3. See
+`acceptance/m2_stage2i1r2_acquisition_gate_consistency_closeout.md`.
