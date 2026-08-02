@@ -125,9 +125,8 @@ and the fresh North-Star gate are recorded below as they are executed.
 
 ## Result
 
-Stage 2I is complete through the evidence decision and is waiting only for
-the required final local/clean-clone/Ubuntu/Windows delivery gates. Decision:
-`ROIC_FACT_ACQUISITION_REQUIRED`.
+Stage 2I is complete through the evidence decision and delivery gates.
+Decision: `ROIC_FACT_ACQUISITION_REQUIRED`.
 
 ## Open issues
 
@@ -139,4 +138,15 @@ the required final local/clean-clone/Ubuntu/Windows delivery gates. Decision:
 
 ## Final Git state
 
-Pending final delivery-gate verification, scoped commit and push.
+- Scoped implementation commit: `e0fb6d6b932134d58bab046534f56b5adde77d3d`
+  (`docs: freeze Stage 2I ROIC readiness gate`), pushed to
+  `origin/feat/m2-value-assessment-mvp`.
+- GitHub Actions run `30747869003`: Ubuntu job `91496492109` and Windows job
+  `91496492106` both completed with `success`, including full offline suites.
+- Final local checks preserved the default DB SHA-256
+  `4a71d3c7b88c0b16ae46ffb4f9bfbd006d91e0537e559235c9b5a1f919e2fce6`, the
+  Stage 1B.4-protection stash, the protected `354/102/16` baseline and all
+  four untracked `agent/goals/` files.
+- No production ROIC Metric, Metric Result, value-profile change, shadow
+  value, scoring, Web, target-price, recommendation, trading, or
+  market-mechanism artifact was created.
