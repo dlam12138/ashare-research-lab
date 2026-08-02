@@ -1,8 +1,8 @@
 # M2 Stage 2H.1 Risk Search PIT, Supersession and Evidence-Lineage Closeout
 
-Date: 2026-08-02  
-Symbol: `601857.SH`  
-Methodology: `risk_veto_methodology_v2`  
+Date: 2026-08-02
+Symbol: `601857.SH`
+Methodology: `risk_veto_methodology_v2`
 Formal as-of: `2026-08-02`
 
 ## Result
