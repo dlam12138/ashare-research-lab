@@ -70,9 +70,57 @@ not modify the default DB, stash, protected baseline or untracked goals files.
 
 ## Execution log
 
-Implementation and verification results will be appended in order. No PASS
-verdict is recorded until the final remote Ubuntu/Windows CI run succeeds.
+- North-Star Review was completed before implementation and remained `ALLOWED`
+  for the bounded Stage 2H risk-veto slice.
+- Preserved v1 search/event ledgers and added v2 PIT search, v2 event grouping,
+  v2 official registry and field-level normalization contracts. The source
+  evidence ledger now also carries the required 2021 going-concern field.
+- Implemented fail-closed search version chains, PIT selection, event active /
+  superseded resolution, evidence-to-normalization reconstruction, conflict
+  checks, complete official-cache mapping, and observation availability/id
+  requirements. Stage 2G.2 resolver/artifact/clean-clone infrastructure is
+  reused.
+- Contract gate: `pass_with_explicit_gaps`; 8 risks, 10 evidence IDs, 8 unique
+  registry objects, 36 events, 105 normalization records, and 8 search
+  registers.
+- Real cache preflight: `pass`, 10/10 evidence mappings verified by real
+  content SHA-256, object key and byte size; no network and no default DB
+  mutation.
+- Real formal run `petrochina_stage2h1_real_final`: `conditional_pass`, 8
+  observations, 0 observed triggers, and 2 explicit `missing_evidence` risks.
+  Artifact logical digest:
+  `a18db13689cb28c1492b068800740039f1a34ac72b5d55865c135c04fb50e36e`.
+- Historical as-of run `petrochina_stage2h1_historical_20250401` retained
+  seven missing-search observations because current v2 registers were not
+  PIT-visible at that date.
+- Synthetic correction capsule passed before/after PIT evaluation and
+  supersession; two independent capsule artifacts compare identically.
+- Focused Stage 2H.1 tests: `9 passed`. Full offline suite: `961 passed, 2
+  warnings`; warnings are the existing pandas date-format warnings in
+  `tests/test_quality.py`.
+- Clean clone: Stage 2G.2 `verify-clean-clone` pass, Ruff pass, compile pass,
+  Stage 2H.1 contract pass and focused tests `9 passed`.
+- Coherent commits were created and pushed: `eb31e35` implementation closeout
+  and `1c0abf6` lineage fail-closed hardening. Remote branch and local HEAD
+  both equal `1c0abf624bf2cb8f2b7cc563806d190647b58d34`.
+- Remote CI run `30743985521` completed successfully on both
+  `clean-clone (ubuntu-latest)` at 10:36:07 and
+  `clean-clone (windows-latest)` at 10:38:50.
 
 ## Final result
 
-Pending Stage 2H.1 implementation and full remote verification.
+Final Stage 2H.1 result is `CONDITIONAL PASS`: the contracts and execution
+gates are trusted, while the two bounded search gaps remain explicit
+`missing_evidence`. No ROIC, scoring, Web, target-price, recommendation,
+automatic-trading or market-mechanism work was started.
+
+Final artifacts:
+
+- Risk-veto report SHA-256:
+  `e86a6153e1162e54675b959742e150e53c4ab7ad9b346f7642f980c86996e616`.
+- Integrated value-profile JSON SHA-256:
+  `6f63edc96a5736fd4c69c08d517107566ee3a6d012450da3edf5457b6f877780`.
+- Default DB SHA-256 remains
+  `4a71d3c7b88c0b16ae46ffb4f9bfbd006d91e0537e559235c9b5a1f919e2fce6`.
+- Stash remains present; the only worktree entry is preserved untracked
+  `agent/goals/`.
