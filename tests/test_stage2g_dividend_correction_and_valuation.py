@@ -20,6 +20,7 @@ from ashare_research.events.dividend_v2 import (  # noqa: E402
     event_status_as_of,
     validate_source_evidence,
 )
+from ashare_research.reproducibility.capsule import build_test_capsule
 from ashare_research.tools.petrochina_valuation_and_value_profile import (  # noqa: E402
     FORBIDDEN_FIELDS,
     _build_rule007_facts,
@@ -31,19 +32,26 @@ from ashare_research.tools.petrochina_valuation_and_value_profile import (  # no
 )
 
 ROOT = Path(__file__).parents[1]
-FACT_DB = (
-    ROOT
-    / "output"
-    / "601857.SH"
-    / "net_profit_official_facts"
-    / "2021_2025"
-    / "stage2de_trial"
-    / "net_profit.duckdb"
-)
+SNAPSHOT_DIR = ROOT / "tests" / "fixtures" / "stage2g" / "canonical_fact_snapshot_v1"
 
 
 def _run_formal(tmp_path: Path, run_id: str):
-    return run_formal(output_root=tmp_path, run_id=run_id, fact_db=FACT_DB)
+    capsule_dir = tmp_path / "test_capsule"
+    build_test_capsule(capsule_dir, committed_snapshot_dir=SNAPSHOT_DIR)
+    return run_formal(
+        output_root=tmp_path,
+        run_id=run_id,
+        fact_db=capsule_dir / "temporary_fact.duckdb",
+        registry_path=capsule_dir / "market_data_snapshot_registry_v2.json",
+        market_mode="test_capsule",
+        market_fixture_root=capsule_dir / "market_test_capsule_v1",
+        fact_input_contract={
+            "logical_name": "canonical_fact_snapshot_v1/facts.json",
+            "schema_version": "stage2g_canonical_fact_snapshot_v1",
+            "sha256": "68d63be1e5a5c13f9e3e136ac1297d867e1a9a72cae46c1444342e5e6602d45f",
+            "row_count": 33,
+        },
+    )
 
 
 def _source(source_id: str) -> dict:
@@ -177,7 +185,7 @@ def test_formal_runner_reuses_stock_daily_and_reconciles_two_providers(tmp_path:
     assert manifest["network_used"] is False
     assert manifest["market_row_count"] == 1351
     assert manifest["market_date_range"] == {"start": "2021-01-04", "end": "2026-07-31"}
-    assert manifest["market_registry"]["reconciliation_status"] == "pass"
+    assert manifest["market_registry"]["reconciliation_status"].startswith("pass")
     assert (run_dir / "stock_daily_snapshot.parquet").exists()
     assert not (run_dir / "market_observations.parquet").exists()
     prices = pd.read_parquet(run_dir / "stock_daily_snapshot.parquet")
@@ -186,8 +194,17 @@ def test_formal_runner_reuses_stock_daily_and_reconciles_two_providers(tmp_path:
 
 
 def test_formal_runner_requires_explicit_canonical_fact_input(tmp_path: Path) -> None:
+    capsule_dir = tmp_path / "test_capsule"
+    build_test_capsule(capsule_dir, committed_snapshot_dir=SNAPSHOT_DIR)
     with pytest.raises(FileNotFoundError, match="missing_input"):
-        run_formal(output_root=tmp_path, run_id="missing-fact-db", fact_db=tmp_path / "missing.duckdb")
+        run_formal(
+            output_root=tmp_path,
+            run_id="missing-fact-db",
+            fact_db=tmp_path / "missing.duckdb",
+            registry_path=capsule_dir / "market_data_snapshot_registry_v2.json",
+            market_mode="test_capsule",
+            market_fixture_root=capsule_dir / "market_test_capsule_v1",
+        )
 
 
 def test_six_formulas_and_pit_no_future_leakage(tmp_path: Path) -> None:
@@ -201,7 +218,7 @@ def test_six_formulas_and_pit_no_future_leakage(tmp_path: Path) -> None:
         "trailing_12m_paid_dividend_yield",
         "latest_annual_fcf_proxy_yield",
     }
-    facts = _financial_facts(FACT_DB)
+    facts = _financial_facts(tmp_path / "test_capsule" / "temporary_fact.duckdb")
     fact_by_id = {fact["fact_id"]: fact for fact in facts}
     before_2025 = obs[
         (obs["trade_date"] == "2025-03-28")

@@ -33,14 +33,18 @@ from ashare_research.facts.as_of import AsOfQuery
 from ashare_research.facts.identity import validate_canonical_fact_ids
 from ashare_research.facts.repository import FactRepository
 from ashare_research.facts.service import FactService
+from ashare_research.reproducibility.artifacts import finalize_artifacts, sha256_file
+from ashare_research.reproducibility.market import (
+    MarketSnapshotResolver,
+    read_market_frame,
+)
+from ashare_research.reproducibility.rule007 import select_rule007_sources
 from ashare_research.validation.version_chain import VersionChainValidator
 
 getcontext().prec = 28
 QUANTUM = Decimal("0.000000000001")
 ROOT = Path(__file__).resolve().parents[3]
 SYMBOL = "601857.SH"
-CACHE_ROOT = Path(r"D:\量化分析-cache")
-MARKET_CACHE_ROOT = CACHE_ROOT / "market-data" / SYMBOL
 EVIDENCE_PATH = ROOT / "events" / "dividend_source_evidence_2021_2026.json"
 EVENT_PATH = ROOT / "events" / "dividend_events_2021_2026_v2.json"
 METHODOLOGY_PATH = ROOT / "config" / "value_evaluation_methodology_valuation_pit_v1.json"
@@ -170,24 +174,15 @@ def validate_dividend_evidence(
             for source_id in event.get("source_evidence_ids", [])
             if source_id in source_by_id
         ]
-        real = [
-            source
-            for source in linked
-            if source.get("retrieval_status") == "retrieved"
-            and source.get("content_sha256")
-            and source.get("independently_extracted")
-            and isinstance(source.get("extracted_values"), Mapping)
-        ]
-        issuer = [source for source in real if source["source_type"] == "issuer_official"]
-        exchange = [
-            source
-            for source in real
-            if source["source_type"] in {"exchange_official", "designated_disclosure_platform"}
-        ]
-        if issuer and exchange:
-            if issuer[0].get("content_sha256") == exchange[0].get("content_sha256"):
+        pair, pair_errors = select_rule007_sources(linked)
+        errors.extend(f"{event['event_id']}:{error}" for error in pair_errors)
+        selected = pair["selected"]
+        issuer = selected.get("issuer_official")
+        exchange = selected.get("exchange_official")
+        if pair["rule007_eligible"] and issuer and exchange:
+            if issuer.get("content_sha256") == exchange.get("content_sha256"):
                 if not (
-                    issuer[0].get("same_content_mirror") and exchange[0].get("same_content_mirror")
+                    issuer.get("same_content_mirror") and exchange.get("same_content_mirror")
                 ):
                     errors.append(
                         f"{event['event_id']}:same_content_hash_requires_same_content_mirror"
@@ -199,6 +194,7 @@ def validate_dividend_evidence(
                         "status": "same_content_mirror_not_independent",
                         "gap": "same PDF bytes are not an independent compilation claim",
                         "available_source_types": ["issuer_official", "exchange_official"],
+                        "pair_contract": pair,
                     }
                 )
                 continue
@@ -206,8 +202,8 @@ def validate_dividend_evidence(
             for concept_id, _source_key in DIVIDEND_SOURCE_VALUE_KEYS.items():
                 try:
                     source_values = [
-                        _source_payload_value(issuer[0], concept_id),
-                        _source_payload_value(exchange[0], concept_id),
+                        _source_payload_value(issuer, concept_id),
+                        _source_payload_value(exchange, concept_id),
                     ]
                     if concept_id == "share_capital_on_record_date":
                         source_values = [str(value) for value in source_values]
@@ -225,23 +221,24 @@ def validate_dividend_evidence(
                 if not comparable:
                     break
             comparable = comparable and all(
-                issuer[0]["extracted_values"].get(key)
-                == exchange[0]["extracted_values"].get(key)
+                issuer["extracted_values"].get(key)
+                == exchange["extracted_values"].get(key)
                 for key in ("currency", "share_scope")
             )
-            comparable = comparable and event.get("currency") == issuer[0]["extracted_values"].get(
+            comparable = comparable and event.get("currency") == issuer["extracted_values"].get(
                 "currency"
             )
-            comparable = comparable and event.get("share_scope") == issuer[0]["extracted_values"].get(
+            comparable = comparable and event.get("share_scope") == issuer["extracted_values"].get(
                 "share_scope"
             )
             if comparable:
                 eligible.append(
                     {
                         "event": event,
-                        "sources": [issuer[0], exchange[0]],
-                        "same_content_mirror": issuer[0].get("content_sha256")
-                        == exchange[0].get("content_sha256"),
+                        "sources": [issuer, exchange],
+                        "pair_contract": pair,
+                        "same_content_mirror": issuer.get("content_sha256")
+                        == exchange.get("content_sha256"),
                     }
                 )
             else:
@@ -251,9 +248,17 @@ def validate_dividend_evidence(
                 {
                     "event_id": event["event_id"],
                     "event_key": f"{event['source_fiscal_year']}-{event['event_type']}",
-                    "status": event.get("evidence_status"),
+                    "status": pair["status"],
                     "gap": event.get("evidence_gap"),
-                    "available_source_types": sorted({source["source_type"] for source in real}),
+                    "available_source_types": sorted(
+                        {
+                            source["source_type"]
+                            for source in linked
+                            if source.get("retrieval_status") == "retrieved"
+                            and source.get("content_sha256")
+                        }
+                    ),
+                    "pair_contract": pair,
                 }
             )
     return {
@@ -293,13 +298,14 @@ def _normalise_daily(df: pd.DataFrame, provider: str) -> pd.DataFrame:
     return out.reset_index(drop=True)
 
 
-def acquire_market_data(cache_root: Path = MARKET_CACHE_ROOT) -> dict[str, Any]:
+def acquire_market_data(cache_root: Path | str) -> dict[str, Any]:
     """Acquire both providers into the external cache and write a registry.
 
     This is the only network-capable path.  It reuses the repository providers
     and writes versioned content-addressed Parquet snapshots outside the repo.
     """
 
+    cache_root = Path(cache_root)
     sys.path.insert(0, str(ROOT / "src"))
     from ashare_research.providers.akshare_provider import AKShareProvider
     from ashare_research.providers.baostock_provider import BaostockProvider
@@ -347,11 +353,14 @@ def acquire_market_data(cache_root: Path = MARKET_CACHE_ROOT) -> dict[str, Any]:
         target = provider_dir / f"{digest}.parquet"
         shutil.copyfile(temp, target)
         temp.unlink()
+        object_key = f"{name}/{digest}.parquet"
         records.append(
             {
                 "provider": name,
                 "provider_version": _package_version(package),
-                "normalized_cache_path": str(target),
+                "logical_name": f"{SYMBOL}_{name}_daily_unadjusted",
+                "object_key": object_key,
+                "snapshot_sha256": digest,
                 "sha256": digest,
                 "date_range": {
                     "start": str(df["trade_date"].min()),
@@ -360,16 +369,18 @@ def acquire_market_data(cache_root: Path = MARKET_CACHE_ROOT) -> dict[str, Any]:
                 "row_count": int(len(df)),
                 "adjustment": "none",
                 "fields_units": {"close": "CNY/share", "volume": "share", "amount": "CNY"},
-                "raw_response_path": getattr(provider, "last_raw_path", None),
+                "retrieval_status": "verified_external",
                 "acquisition_warning": acquisition_warning,
             }
         )
-    first = pd.read_parquet(records[0]["normalized_cache_path"])
-    second = pd.read_parquet(records[1]["normalized_cache_path"])
+    first = read_market_frame(cache_root / records[0]["object_key"])
+    second = read_market_frame(cache_root / records[1]["object_key"])
     common = first.merge(second, on="trade_date", suffixes=("_baostock", "_akshare"))
     common["close_difference"] = (common["close_baostock"] - common["close_akshare"]).abs()
     registry = {
-        "contract": "market_data_snapshot_registry_v1",
+        "contract": "market_data_snapshot_registry_v2",
+        "schema_version": "2.0",
+        "data_class": "external_real_data_cache",
         "symbol": SYMBOL,
         "date_range": {"start": "2021-01-01", "end": "2026-07-31"},
         "providers": records,
@@ -380,56 +391,49 @@ def acquire_market_data(cache_root: Path = MARKET_CACHE_ROOT) -> dict[str, Any]:
         if (common["close_difference"] <= 0.01).all()
         else "fail_mass_unexplained_difference",
         "official_exchange_anchor_status": "not_available_in_offline_acquisition",
+        "network_used": True,
     }
     _write_json(ROOT / "events" / "market_data_snapshot_registry.json", registry)
     return registry
 
 
-def _load_market(registry_path: Path | None = None) -> tuple[pd.DataFrame, dict[str, Any]]:
+def _load_market(
+    registry_path: Path | None = None,
+    *,
+    market_mode: str,
+    market_cache_root: Path | str | None = None,
+    market_fixture_root: Path | str | None = None,
+) -> tuple[pd.DataFrame, dict[str, Any]]:
     registry_path = registry_path or (ROOT / "events" / "market_data_snapshot_registry.json")
-    if registry_path.exists():
-        registry = _read_json(registry_path)
-        provider_records = registry.get("providers", [])
-        if not provider_records:
-            raise ValueError("market registry has no providers")
-        paths = [Path(record["normalized_cache_path"]) for record in provider_records]
-        if not all(path.exists() for path in paths):
-            raise FileNotFoundError("registered market cache snapshot is missing")
-        frames = [
-            _normalise_daily(pd.read_parquet(path), record["provider"])
-            for path, record in zip(paths, provider_records, strict=False)
-        ]
-        common = frames[0]
-        for frame in frames[1:]:
-            common = common.merge(
-                frame[["trade_date", "close"]], on="trade_date", suffixes=("", "_other")
-            )
-            if not (common["close"] - common["close_other"]).abs().le(0.01).all():
-                raise ValueError("mass/unexplained market close difference")
-            common = common.drop(columns=["close_other"])
-        return frames[0], registry
-    fallback = ROOT / "data" / "parquet" / "stock_daily" / "601857_SH.parquet"
-    return _normalise_daily(pd.read_parquet(fallback), "stock_daily_existing"), {
-        "contract": "market_data_snapshot_registry_v1",
-        "reconciliation_status": "partial_evidence_no_registered_acquisition_snapshot",
-        "providers": [
-            {
-                "provider": "stock_daily_existing",
-                "normalized_cache_path": str(fallback),
-                "row_count": 18,
-            }
-        ],
-    }
+    resolver = MarketSnapshotResolver(
+        registry_path,
+        mode=market_mode,
+        cache_root=market_cache_root,
+        fixture_root=market_fixture_root,
+    )
+    resolved, registry = resolver.resolve()
+    frames = [
+        _normalise_daily(read_market_frame(path), record["provider"])
+        for path, record in resolved
+    ]
+    common = frames[0]
+    for frame in frames[1:]:
+        common = common.merge(
+            frame[["trade_date", "close"]], on="trade_date", suffixes=("", "_other")
+        )
+        if not (common["close"] - common["close_other"]).abs().le(0.01).all():
+            raise ValueError("mass/unexplained market close difference")
+        common = common.drop(columns=["close_other"])
+    return frames[0], registry
 
 
 def _public_market_registry(registry: Mapping[str, Any]) -> dict[str, Any]:
-    """Remove local cache paths before a registry is embedded in a run manifest."""
+    """Expose logical market identity without a resolved local path."""
 
     public = json.loads(json.dumps(registry))
     for provider in public.get("providers", []):
-        for key in ("normalized_cache_path", "raw_response_path"):
-            if provider.get(key):
-                provider[key] = Path(str(provider[key])).name
+        provider.pop("normalized_cache_path", None)
+        provider.pop("raw_response_path", None)
     return public
 
 
@@ -1148,6 +1152,10 @@ def run_formal(
     registry_path: Path | None = None,
     publish_reports: bool = False,
     fact_db: Path | str | None = None,
+    market_mode: str = "real_research",
+    market_cache_root: Path | str | None = None,
+    market_fixture_root: Path | str | None = None,
+    fact_input_contract: Mapping[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Run the fully offline Stage 2G valuation vertical slice.
 
@@ -1155,6 +1163,8 @@ def run_formal(
     ``missing_input`` failure, never a fixture or default-DB fallback.
     """
 
+    if publish_reports and market_mode != "real_research":
+        raise ValueError("test_capsule mode cannot publish real research reports")
     output_root = Path(output_root) if output_root else ROOT / "runs" / "stage2g"
     run_dir = output_root / run_id
     run_dir.mkdir(parents=True, exist_ok=True)
@@ -1162,7 +1172,12 @@ def run_formal(
     if evidence["errors"]:
         raise ValueError("dividend evidence validation failed: " + "; ".join(evidence["errors"]))
     events = _read_json(EVENT_PATH)["events"]
-    market, registry = _load_market(registry_path)
+    market, registry = _load_market(
+        registry_path,
+        market_mode=market_mode,
+        market_cache_root=market_cache_root,
+        market_fixture_root=market_fixture_root,
+    )
     market = market[
         (market["trade_date"] >= "2021-01-01") & (market["trade_date"] <= "2026-07-31")
     ].copy()
@@ -1170,6 +1185,16 @@ def run_formal(
         raise ValueError("no market observations")
     market["close"] = market["close"].round(2)
     facts, fact_input = _load_canonical_facts(fact_db)
+    if fact_input_contract is not None:
+        fact_input = {
+            **fact_input,
+            "logical_name": str(fact_input_contract.get("logical_name", "facts.json")),
+            "sha256": str(fact_input_contract["sha256"]),
+            "fact_count": int(fact_input_contract.get("row_count", fact_input["fact_count"])),
+            "schema_version": str(
+                fact_input_contract.get("schema_version", fact_input["schema_version"])
+            ),
+        }
     shares_timeline, share_evidence_ledger = _share_timeline(
         events, sources=evidence["sources"]
     )
@@ -1314,12 +1339,61 @@ def run_formal(
         "non_dividend_valuation_continues": True,
     }
     _write_json(run_dir / "evidence_gap_register.json", gaps)
+    input_manifest = [
+        {
+            "logical_dataset_name": fact_input["logical_name"],
+            "contract_version": fact_input["schema_version"],
+            "sha256": fact_input["sha256"],
+            "row_count": fact_input["fact_count"],
+            "date_range": {
+                "start": min(fact["available_at"] for fact in facts),
+                "end": max(fact["available_at"] for fact in facts),
+            },
+            "authoritative": market_mode == "real_research",
+            "test_only": market_mode == "test_capsule",
+        },
+        {
+            "logical_dataset_name": "events/dividend_events_2021_2026_v2.json",
+            "contract_version": "dividend_event_record_v2",
+            "sha256": sha256_file(EVENT_PATH),
+            "row_count": len(events),
+            "date_range": {"start": "2021-01-01", "end": "2026-06-26"},
+            "authoritative": True,
+            "test_only": False,
+        },
+        {
+            "logical_dataset_name": "events/dividend_source_evidence_2021_2026.json",
+            "contract_version": "dividend_source_evidence_v2",
+            "sha256": sha256_file(EVIDENCE_PATH),
+            "row_count": len(evidence["sources"]),
+            "date_range": {"start": "2021-09-09", "end": "2026-06-22"},
+            "authoritative": True,
+            "test_only": False,
+        },
+    ]
+    input_manifest.extend(
+        {
+            "logical_dataset_name": str(provider.get("logical_name", provider["provider"])),
+            "contract_version": registry.get("contract", "market_data_snapshot_registry_v2"),
+            "sha256": provider["sha256"],
+            "row_count": provider["row_count"],
+            "date_range": provider["date_range"],
+            "authoritative": market_mode == "real_research",
+            "test_only": market_mode == "test_capsule",
+        }
+        for provider in registry.get("providers", [])
+    )
     manifest = {
-        "contract": "stage2g_run_manifest_v1",
+        "contract": "stage2g_run_manifest_v2",
         "run_id": run_id,
-        "created_at": "2026-08-01T00:00:00+08:00",
-        "mode": "formal_offline",
+        "created_at": "2026-08-02T00:00:00+08:00",
+        "mode": market_mode,
         "symbol": SYMBOL,
+        "code_commit": "recorded_by_artifact_manifest",
+        "python_version": sys.version.split()[0],
+        "platform": sys.platform,
+        "inputs": input_manifest,
+        "outputs": [],
         "default_db_mutated": False,
         "canonical_fact_input": {
             key: value for key, value in fact_input.items() if key != "snapshots"
@@ -1337,6 +1411,16 @@ def run_formal(
         "rule007_reconciled_fact_count": len(reconciled_facts),
         "score_eligible": False,
         "network_used": False,
+        "evidence_gap_count": len(evidence["gaps"]),
+        "rule007_eligibility_count": evidence["rule007_eligible_event_count"],
+        "forbidden_feature_checks": {
+            "roic": "not_started",
+            "scoring": "not_started",
+            "target_price": "not_started",
+            "recommendation": "not_started",
+            "automatic_trading": "not_started",
+            "market_mechanism": "not_started",
+        },
     }
     _write_json(run_dir / "run_manifest.json", manifest)
     profile = {
@@ -1427,6 +1511,15 @@ def run_formal(
     }
     _write_json(run_dir / "summary.json", summary)
     _write_summary_md(run_dir / "summary.md", summary)
+    artifact_manifest = finalize_artifacts(
+        run_dir,
+        run_id=run_id,
+        mode=market_mode,
+        inputs=input_manifest,
+        evidence_gap_count=len(evidence["gaps"]),
+        rule007_eligible_count=evidence["rule007_eligible_event_count"],
+        score_eligible=False,
+    )
     if publish_reports:
         _publish_reports(run_dir, profile, percentiles, scenarios, evidence, market, registry)
     return {
@@ -1436,6 +1529,7 @@ def run_formal(
         "profile": profile,
         "percentiles": percentiles,
         "scenarios": scenarios,
+        "artifact_manifest": artifact_manifest,
     }
 
 
@@ -1560,9 +1654,15 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--publish-reports", action="store_true")
     parser.add_argument("--run-id", default="stage2g_valuation_pit_20260801")
     parser.add_argument("--fact-db", type=Path)
+    parser.add_argument("--market-cache-root", type=Path)
+    parser.add_argument("--market-registry", type=Path)
+    parser.add_argument("--market-mode", choices=("real_research", "test_capsule"), default="real_research")
+    parser.add_argument("--market-fixture-root", type=Path)
     args = parser.parse_args(argv)
     if args.acquire:
-        print(json.dumps(acquire_market_data(), ensure_ascii=False, indent=2))
+        if args.market_cache_root is None:
+            parser.error("--acquire requires --market-cache-root")
+        print(json.dumps(acquire_market_data(args.market_cache_root), ensure_ascii=False, indent=2))
     if args.formal or not args.acquire:
         print(
             json.dumps(
@@ -1570,6 +1670,10 @@ def main(argv: list[str] | None = None) -> int:
                     run_id=args.run_id,
                     publish_reports=args.publish_reports,
                     fact_db=args.fact_db,
+                    registry_path=args.market_registry,
+                    market_mode=args.market_mode,
+                    market_cache_root=args.market_cache_root,
+                    market_fixture_root=args.market_fixture_root,
                 ),
                 ensure_ascii=False,
                 indent=2,
