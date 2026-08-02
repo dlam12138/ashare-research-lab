@@ -42,3 +42,15 @@ The evidence gate is `BLOCKED_WITH_EXPLICIT_GAPS`. The one-year shadow status is
 `ROIC_FACT_ACQUISITION_REQUIRED`
 
 This decision is not a conditional formula pass. Stage 2I stops here until the specified official facts are acquired and accepted.
+
+## Stage 2I.1R closeout correction
+
+The original Stage 2I acceptance above is retained as historical evidence.
+Stage 2I.1R closes the contract hardening only: the single concept registry,
+strict nine-state matrix, symbol/Context/scope/period/unit/source/PIT checks,
+legal supersedes-chain selector, canonical inventory v2, and bounded FY2023 /
+FY2024 acquisition plan are now the current contract. No ROIC fact was
+acquired and no shadow or production result was run.
+
+See `acceptance/m2_stage2i1r_roic_readiness_contract_closeout.md` for the
+final Stage 2I.1R decision.

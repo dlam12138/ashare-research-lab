@@ -1,8 +1,9 @@
 # PetroChina ROIC Fact-Readiness Matrix
 
 This file defines the deterministic audit dimensions. The generated FY2020–FY2025
-matrix is `reports/petrochina_roic_fact_readiness.md` and its machine-readable
-counterpart is `reports/petrochina_roic_fact_readiness.json`.
+matrix is `reports/petrochina_roic_fact_readiness_2020_2025_v2.md` and its
+machine-readable counterpart is
+`reports/petrochina_roic_fact_readiness_2020_2025_v2.json`.
 
 Each row must retain:
 

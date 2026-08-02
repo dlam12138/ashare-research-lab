@@ -7,7 +7,7 @@
 > [!IMPORTANT]
 > 本项目仅用于数据分析、统计研究和软件工程学习，不构成任何投资建议，也不提供自动交易能力。
 
-**当前阶段：Milestone 1 数据底座已完成；Milestone 2 价值评估 MVP 进行中（Stage 2H.1R 风险宇宙与 canonical profile 收口）**
+**当前阶段：Milestone 1 数据底座已完成；Milestone 2 价值评估 MVP 进行中（Stage 2I.1R ROIC readiness contract closeout；official fact acquisition required）**
 
 ---
 
@@ -21,6 +21,8 @@
 当前已完成第一阶段的**免费数据底座**：可运行、可测试、可追溯的本地数据基础设施。M2 已有 PetroChina（601857.SH）一份 PIT value profile 纵向切片；收益/现金、ROE/ROA、财务安全、股息和估值均已有阶段性能力。Stage 2G.2 增加了 clean-clone 测试胶囊、显式真实输入解析器、Rule007 严格来源配对和 artifact checksums。
 
 M2 当前切片的正式验收见：[Stage 2G.1 trusted-lineage closeout](acceptance/m2_stage2g1_trusted_lineage_closeout.md)、[Stage 2H risk-veto evidence](acceptance/m2_stage2h_petrochina_risk_veto_evidence.md)、[Stage 2H.1R historical/profile closeout](acceptance/m2_stage2h1r_historical_risk_completeness_and_profile_canonicalization.md) 和 [PetroChina value profile](reports/petrochina_value_profile_2021_2026.md)。Stage 2F 仍保留 9 个交易所股息证据缺口；Stage 2H 的监管/纪律与相关资金占用搜索缺口保持为 `missing_evidence`，不会被改写为负面结论。
+
+ROIC readiness 的当前 contract closeout 见 [Stage 2I.1R](acceptance/m2_stage2i1r_roic_readiness_contract_closeout.md)。它只审计 canonical official-fact readiness，不创建 ROIC Metric 或 shadow value；下一步仅允许按 v2 最小 acquisition plan 补齐 FY2023/FY2024 官方证据。
 
 ---
 
