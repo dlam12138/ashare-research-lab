@@ -7,7 +7,7 @@
 > [!IMPORTANT]
 > 本项目仅用于数据分析、统计研究和软件工程学习，不构成任何投资建议，也不提供自动交易能力。
 
-**当前阶段：Milestone 1 数据底座已完成；Milestone 2 价值评估 MVP 进行中**
+**当前阶段：Milestone 1 数据底座已完成；Milestone 2 价值评估 MVP 进行中（Stage 2G.2 可复现性收口）**
 
 ---
 
@@ -18,7 +18,7 @@
 1. **个股价值评估** — 企业质量、估值吸引力、价值兑现能力、风险否决项（M2 正在实现）
 2. **市场机制验证** — 用统计方法检验个股与市场之间的可复现关系（尚未开始）
 
-当前已完成第一阶段的**免费数据底座**：可运行、可测试、可追溯的本地数据基础设施。M2 已有 PetroChina（601857.SH）一份 PIT value profile 纵向切片；收益/现金、ROE/ROA、财务安全、股息和估值均已有阶段性能力。
+当前已完成第一阶段的**免费数据底座**：可运行、可测试、可追溯的本地数据基础设施。M2 已有 PetroChina（601857.SH）一份 PIT value profile 纵向切片；收益/现金、ROE/ROA、财务安全、股息和估值均已有阶段性能力。Stage 2G.2 增加了 clean-clone 测试胶囊、显式真实输入解析器、Rule007 严格来源配对和 artifact checksums。
 
 M2 当前切片的正式验收见：[Stage 2G.1 trusted-lineage closeout](acceptance/m2_stage2g1_trusted_lineage_closeout.md) 和 [PetroChina value profile](reports/petrochina_value_profile_2021_2026.md)。Stage 2F 仍保留 9 个交易所证据缺口；只有完成 Stage 2G.1 后，才能称为该纵向切片的 canonical lineage closeout。
 
@@ -80,6 +80,39 @@ ashare-research fetch-index-daily 000001 --start 2026-05-01 --end 2026-07-27 --p
 ```powershell
 ashare-research inspect stock-daily 601857.SH --show-data
 ```
+
+### 7. Stage 2G.2 可复现测试
+
+普通测试不依赖 `output/`、`data/research.duckdb`、外部行情缓存或网络：
+
+```powershell
+python -m ashare_research.tools.stage2g_reproducibility verify-contracts
+python -m ashare_research.tools.stage2g_reproducibility build-test-capsule --output .tmp-stage2g2
+python -m ashare_research.tools.stage2g_reproducibility run-test-capsule --capsule-dir .tmp-stage2g2
+pytest -q
+ruff check src/ tests/
+```
+
+测试胶囊中的 Fact 是由 canonical Fact 仓库导出的有界 read model；行情是固定算法生成的
+`synthetic_test_only` CSV。它们只用于显式 `test_capsule` 模式，不是 PetroChina 真实输入，
+不会成为真实报告的 fallback。
+
+真实本地验收必须显式提供 canonical DB 与外部行情缓存根目录：
+
+```powershell
+python -m ashare_research.tools.stage2g_reproducibility verify-real-inputs `
+  --fact-db <canonical-db> `
+  --market-cache-root <external-market-cache> `
+  --output <preflight.json>
+python -m ashare_research.tools.stage2g_reproducibility run-real `
+  --fact-db <canonical-db> `
+  --market-cache-root <external-market-cache> `
+  --output <run-root> --run-id stage2g2_real_local
+```
+
+真实 provider 数据与 PDF 不随仓库重新分发；缺失或 hash 不匹配时失败并报告
+`missing_external_research_input`，不会回退到本地小 Parquet 或测试胶囊。详见
+[Stage 2G.2 reproduction guide](docs/stage2g_reproduction_guide.md)。
 
 ---
 
@@ -205,6 +238,8 @@ ruff check src/ tests/
 - Web 界面、目标价、推荐和自动交易尚未实现
 - 当前 value profile 只覆盖 PetroChina（601857.SH）这一份 PIT 纵向切片
 - Stage 2F 仍有 9 个交易所证据缺口；股本 A/H 拆分也需继续补充登记证据
+- 当前严格 Rule007 只有 1 个 issuer-official + exchange-official eligible event；指定披露平台不计为 exchange side
+- 真实行情缓存是外部输入，仓库只提交 path-independent registry；clean-clone 只使用 synthetic test capsule
 - 数据日期间隔较小时，免费接口可能返回空结果
 - 不同数据源的成交量单位可能不一致（已在标准化层转换）
 - AKShare 接口字段可能随版本变化（已做字段检查，缺失时明确报错）
