@@ -131,11 +131,28 @@ statement remains preserved as a historical result, not as universe cardinality.
   record edit before Stage 1C`.
 - `agent/goals/` remains untracked and preserved.
 
-### Remaining closeout
+### Remote CI
 
-Coherent commits, push, post-push Ubuntu/Windows CI, final protected-state
-hash/status checks, and the final report remain pending.
+Post-push workflow `30745949298` completed successfully. Both
+`clean-clone (ubuntu-latest)` and `clean-clone (windows-latest)` passed the
+clean-clone/offline-input preflight, static/import gates, Stage 2G.2 contract
+gate, Stage 2H.1 risk-veto contract gate, independent capsule builds and
+comparisons, artifact verification, synthetic risk capsule comparisons, and
+the full offline test suite.
 
 ## Final status
 
-Pending post-push CI and final protected-state verification.
+M2 Stage 2H.1R: **CONDITIONAL PASS**.
+
+Trusted: eight-risk PIT universe, slot contract, input/supplemental evidence
+lineage, canonical current value-profile node, legacy placeholder migration,
+artifact/cache reproducibility, and CI clean-clone gates.
+
+PetroChina risk-veto profile: **UPDATED WITH EXPLICIT GAPS**. The two
+bounded-search gaps remain `missing_evidence`; they are not negative
+conclusions. The prior seven-observation historical statement is preserved as
+historical evidence, while every evaluation now has eight explicit slots.
+
+The default DB, stash, and untracked `agent/goals/` remain protected. ROIC,
+scoring, Web, target price, recommendation, automatic trading, and
+market-mechanism work remain not started. Stop after this final report.
