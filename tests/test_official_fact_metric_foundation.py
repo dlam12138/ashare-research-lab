@@ -11,6 +11,7 @@ from pathlib import Path
 import duckdb
 import pytest
 
+from ashare_research.storage.default_db_guard import hash_optional_default_db
 from ashare_research.tools.official_fact_metric_foundation import (
     run_metric_foundation,
 )
@@ -34,6 +35,7 @@ TOOL_PATH = (
     / "official_fact_metric_foundation.py"
 )
 DEFAULT_DB = ROOT / "data" / "research.duckdb"
+DEFAULT_DB_ABSENT_SENTINEL = "default-db-not-present-in-clean-clone"
 DERIVATION_FILES = [
     ROOT / "src" / "ashare_research" / "derivations" / name
     for name in ("definitions.py", "engine.py")
@@ -321,7 +323,7 @@ def test_tool_imports_no_network_or_pdf_packages():
 
 
 def test_run_preserves_default_database_and_protected_sources(tmp_path: Path):
-    default_before = hashlib.sha256(DEFAULT_DB.read_bytes()).hexdigest()
+    default_before = hash_optional_default_db(DEFAULT_DB, DEFAULT_DB_ABSENT_SENTINEL)
     protected = {
         path: hashlib.sha256(path.read_bytes()).hexdigest()
         for path in [*DERIVATION_FILES, *STAGE1DB_FILES]
@@ -333,7 +335,7 @@ def test_run_preserves_default_database_and_protected_sources(tmp_path: Path):
         run_id="metric_immutable",
     )
     assert result["status"] == "passed"
-    assert hashlib.sha256(DEFAULT_DB.read_bytes()).hexdigest() == default_before
+    assert hash_optional_default_db(DEFAULT_DB, DEFAULT_DB_ABSENT_SENTINEL) == default_before
     assert protected == {
         path: hashlib.sha256(path.read_bytes()).hexdigest()
         for path in protected

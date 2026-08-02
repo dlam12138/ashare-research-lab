@@ -17,6 +17,7 @@ from pathlib import Path
 import pytest
 
 from ashare_research.facts.identity import build_fact_id
+from ashare_research.storage.default_db_guard import hash_optional_default_db
 from ashare_research.storage.duckdb_store import DuckDBStore
 from ashare_research.tools.official_net_profit_fact_foundation import (
     run_net_profit_foundation,
@@ -169,7 +170,7 @@ def _git_blob(path: Path) -> str:
 
 
 def _sha256(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    return hash_optional_default_db(path, DEFAULT_DB_SHA256)
 
 
 @pytest.fixture(scope="module")

@@ -10,6 +10,7 @@ from pathlib import Path
 import pytest
 
 from ashare_research.facts.identity import build_fact_id
+from ashare_research.storage.default_db_guard import hash_optional_default_db
 from ashare_research.tools.official_fact_multi_year_integration import (
     EXPECTED_YEARS,
     MultiYearIntegrationError,
@@ -35,6 +36,7 @@ ANNUAL_RUNNER_PATH = (
     / "official_fact_acceptance.py"
 )
 DEFAULT_DB = ROOT / "data" / "research.duckdb"
+DEFAULT_DB_ABSENT_SENTINEL = "default-db-not-present-in-clean-clone"
 
 
 def _preflight(paths: list[Path] | None = None) -> dict:
@@ -262,7 +264,7 @@ def test_tool_imports_no_network_or_pdf_packages():
 
 def test_run_does_not_modify_single_year_runner_or_default_database(tmp_path: Path):
     runner_before = hashlib.sha256(ANNUAL_RUNNER_PATH.read_bytes()).hexdigest()
-    database_before = hashlib.sha256(DEFAULT_DB.read_bytes()).hexdigest()
+    database_before = hash_optional_default_db(DEFAULT_DB, DEFAULT_DB_ABSENT_SENTINEL)
     result = run_integration(
         BUNDLE_PATHS,
         tmp_path,
@@ -270,7 +272,7 @@ def test_run_does_not_modify_single_year_runner_or_default_database(tmp_path: Pa
     )
     assert result["status"] == "passed"
     assert hashlib.sha256(ANNUAL_RUNNER_PATH.read_bytes()).hexdigest() == runner_before
-    assert hashlib.sha256(DEFAULT_DB.read_bytes()).hexdigest() == database_before
+    assert hash_optional_default_db(DEFAULT_DB, DEFAULT_DB_ABSENT_SENTINEL) == database_before
 
 
 def test_no_restatement_versions_are_created(completed_run: dict):

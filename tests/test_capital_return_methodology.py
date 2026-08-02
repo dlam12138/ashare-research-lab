@@ -19,6 +19,8 @@ from pathlib import Path
 
 import pytest
 
+from ashare_research.storage.default_db_guard import hash_optional_default_db
+
 ROOT = Path(__file__).resolve().parents[1]
 CONTRACT_PATH = ROOT / "config/value_evaluation_methodology_capital_return_v1.json"
 METHODOLOGY_PATH = ROOT / "docs/value_evaluation_methodology_capital_return_v1.md"
@@ -356,7 +358,7 @@ def test_protected_stage2db_and_metric_files_unchanged():
 
 
 def test_default_database_unchanged():
-    assert hashlib.sha256(DEFAULT_DB.read_bytes()).hexdigest() == DEFAULT_DB_SHA256
+    assert hash_optional_default_db(DEFAULT_DB, DEFAULT_DB_SHA256) == DEFAULT_DB_SHA256
 
 
 def test_frozen_id_set_references_unchanged():

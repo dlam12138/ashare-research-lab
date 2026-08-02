@@ -18,6 +18,7 @@ from pathlib import Path
 import pytest
 
 from ashare_research.facts.identity import build_fact_id
+from ashare_research.storage.default_db_guard import hash_optional_default_db
 from ashare_research.tools.official_roe_roa_denominator_foundation import (
     CONCEPTS,
     DEFAULT_DB,
@@ -121,7 +122,7 @@ PROTECTED_BLOBS = {
 
 
 def _sha256(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    return hash_optional_default_db(path, DEFAULT_DB_SHA256)
 
 
 def _git_blob(path: Path) -> str:

@@ -15,6 +15,7 @@ from ashare_research.metrics.cashflow_definitions import (
     CashFlowMetricDefinitionRegistry,
 )
 from ashare_research.metrics.definitions import MetricDefinitionRegistry
+from ashare_research.storage.default_db_guard import hash_optional_default_db
 from ashare_research.tools.official_cashflow_metric_extension import (
     EXPECTED_2023_TRANSITIONS,
     EXPECTED_LATEST_VALUES,
@@ -112,7 +113,7 @@ PROTECTED_BLOBS = {
 
 
 def _sha256(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    return hash_optional_default_db(path, DEFAULT_DB_SHA256)
 
 
 def _git_blob(path: Path) -> str:

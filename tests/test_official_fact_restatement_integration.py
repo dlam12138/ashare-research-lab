@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import ast
-import hashlib
 import json
 from pathlib import Path
 
@@ -11,6 +10,7 @@ import pytest
 
 from ashare_research.facts.identity import build_fact_id
 from ashare_research.facts.repository import FactRepository
+from ashare_research.storage.default_db_guard import hash_optional_default_db
 from ashare_research.storage.duckdb_store import DuckDBStore
 from ashare_research.tools.official_fact_multi_year_integration import (
     EXPECTED_YEARS,
@@ -40,6 +40,7 @@ TOOL_PATH = (
     / "official_fact_restatement_integration.py"
 )
 DEFAULT_DB = ROOT / "data" / "research.duckdb"
+DEFAULT_DB_ABSENT_SENTINEL = "default-db-not-present-in-clean-clone"
 
 
 def _annual() -> dict:
@@ -367,7 +368,7 @@ def test_tool_imports_no_network_or_pdf_packages():
 
 
 def test_run_does_not_modify_default_database(tmp_path: Path):
-    before = hashlib.sha256(DEFAULT_DB.read_bytes()).hexdigest()
+    before = hash_optional_default_db(DEFAULT_DB, DEFAULT_DB_ABSENT_SENTINEL)
     result = run_integration(
         BUNDLE_PATHS,
         EVIDENCE_PATHS,
@@ -375,4 +376,4 @@ def test_run_does_not_modify_default_database(tmp_path: Path):
         run_id="restatement_default_db_immutability",
     )
     assert result["status"] == "passed"
-    assert hashlib.sha256(DEFAULT_DB.read_bytes()).hexdigest() == before
+    assert hash_optional_default_db(DEFAULT_DB, DEFAULT_DB_ABSENT_SENTINEL) == before
