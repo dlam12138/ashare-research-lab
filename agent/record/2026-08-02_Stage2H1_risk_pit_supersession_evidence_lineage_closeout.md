@@ -100,12 +100,15 @@ not modify the default DB, stash, protected baseline or untracked goals files.
   `tests/test_quality.py`.
 - Clean clone: Stage 2G.2 `verify-clean-clone` pass, Ruff pass, compile pass,
   Stage 2H.1 contract pass and focused tests `9 passed`.
-- Coherent commits were created and pushed: `eb31e35` implementation closeout
-  and `1c0abf6` lineage fail-closed hardening. Remote branch and local HEAD
-  both equal `1c0abf624bf2cb8f2b7cc563806d190647b58d34`.
-- Remote CI run `30743985521` completed successfully on both
+- Coherent commits were created and pushed: `eb31e35` implementation closeout,
+  `1c0abf6` lineage fail-closed hardening, and `6839436` final-gate record.
+  Remote branch and local HEAD both equal
+  `6839436c512f2a952ca520300bcb202f73ef17c9`.
+- Remote implementation CI run `30743985521` completed successfully on both
   `clean-clone (ubuntu-latest)` at 10:36:07 and
-  `clean-clone (windows-latest)` at 10:38:50.
+  `clean-clone (windows-latest)` at 10:38:50. The final-gate record CI run
+  `30744256581` also completed successfully on Ubuntu at 10:44:33 and Windows
+  at 10:46:45.
 
 ## Final result
 
