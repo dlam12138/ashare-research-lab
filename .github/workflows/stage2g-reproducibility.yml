@@ -27,6 +27,8 @@ jobs:
           python -m compileall -q src
       - name: Contract gate
         run: python -m ashare_research.tools.stage2g_reproducibility verify-contracts
+      - name: Stage 2H risk-veto contract gate
+        run: python -m ashare_research.tools.petrochina_risk_veto_vertical_slice verify-contracts
       - name: Build isolated test capsule A
         run: python -m ashare_research.tools.stage2g_reproducibility build-test-capsule --output tmp/stage2g2-ci/capsule-a
       - name: Build isolated test capsule B
@@ -43,5 +45,11 @@ jobs:
           python -m ashare_research.tools.stage2g_reproducibility verify-artifacts --run-dir tmp/stage2g2-ci/run-b/stage2g2_test_capsule_a
       - name: Compare independent capsule runs
         run: python -m ashare_research.tools.stage2g_reproducibility compare-runs --left tmp/stage2g2-ci/run-a/stage2g2_test_capsule_a --right tmp/stage2g2-ci/run-b/stage2g2_test_capsule_a
+      - name: Stage 2H synthetic risk capsule A
+        run: python -m ashare_research.tools.petrochina_risk_veto_vertical_slice run-test-capsule --output tmp/stage2h-ci/run-a --run-id stage2h_test_capsule
+      - name: Stage 2H synthetic risk capsule B
+        run: python -m ashare_research.tools.petrochina_risk_veto_vertical_slice run-test-capsule --output tmp/stage2h-ci/run-b --run-id stage2h_test_capsule
+      - name: Compare Stage 2H synthetic risk capsules
+        run: python -m ashare_research.tools.petrochina_risk_veto_vertical_slice compare-runs --left tmp/stage2h-ci/run-a/stage2h_test_capsule --right tmp/stage2h-ci/run-b/stage2h_test_capsule
       - name: Full offline test suite
         run: pytest -q

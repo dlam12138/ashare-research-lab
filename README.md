@@ -7,7 +7,7 @@
 > [!IMPORTANT]
 > 本项目仅用于数据分析、统计研究和软件工程学习，不构成任何投资建议，也不提供自动交易能力。
 
-**当前阶段：Milestone 1 数据底座已完成；Milestone 2 价值评估 MVP 进行中（Stage 2G.2 可复现性收口）**
+**当前阶段：Milestone 1 数据底座已完成；Milestone 2 价值评估 MVP 进行中（Stage 2H 风险否决证据切片已完成）**
 
 ---
 
@@ -20,7 +20,7 @@
 
 当前已完成第一阶段的**免费数据底座**：可运行、可测试、可追溯的本地数据基础设施。M2 已有 PetroChina（601857.SH）一份 PIT value profile 纵向切片；收益/现金、ROE/ROA、财务安全、股息和估值均已有阶段性能力。Stage 2G.2 增加了 clean-clone 测试胶囊、显式真实输入解析器、Rule007 严格来源配对和 artifact checksums。
 
-M2 当前切片的正式验收见：[Stage 2G.1 trusted-lineage closeout](acceptance/m2_stage2g1_trusted_lineage_closeout.md) 和 [PetroChina value profile](reports/petrochina_value_profile_2021_2026.md)。Stage 2F 仍保留 9 个交易所证据缺口；只有完成 Stage 2G.1 后，才能称为该纵向切片的 canonical lineage closeout。
+M2 当前切片的正式验收见：[Stage 2G.1 trusted-lineage closeout](acceptance/m2_stage2g1_trusted_lineage_closeout.md)、[Stage 2H risk-veto evidence](acceptance/m2_stage2h_petrochina_risk_veto_evidence.md) 和 [PetroChina value profile](reports/petrochina_value_profile_2021_2026.md)。Stage 2F 仍保留 9 个交易所股息证据缺口；Stage 2H 的监管/纪律与相关资金占用搜索缺口保持为 `missing_evidence`，不会被改写为负面结论。
 
 ---
 
@@ -96,6 +96,29 @@ python -m ashare_research.tools.stage2g_reproducibility compare-runs --left tmp/
 pytest -q
 ruff check src/ tests/
 ```
+
+### 8. Stage 2H 风险否决证据切片
+
+正式评估只读取提交的证据/事件/有界搜索台账，默认离线、PIT-aware、不可写默认数据库；官方 PDF 获取必须显式指定外部内容寻址缓存：
+
+```powershell
+python -m ashare_research.tools.petrochina_risk_veto_vertical_slice verify-contracts
+python -m ashare_research.tools.petrochina_risk_veto_vertical_slice acquisition-preflight `
+  --official-cache-root <official-pdf-cache> `
+  --output tmp/stage2h-preflight.json
+python -m ashare_research.tools.petrochina_risk_veto_vertical_slice run-offline-formal `
+  --output tmp/stage2h-run `
+  --run-id petrochina_stage2h `
+  --official-cache-root <official-pdf-cache>
+python -m ashare_research.tools.petrochina_risk_veto_vertical_slice run-test-capsule `
+  --output tmp/stage2h-test `
+  --run-id stage2h_test_capsule
+pytest -q tests/test_stage2h_risk_veto.py
+```
+
+Stage 2H stops at evidence status and veto eligibility. It does not start ROIC,
+scoring, web search, target price, recommendation, automatic trading, or
+market-mechanism work.
 
 测试胶囊中的 Fact 是由 canonical Fact 仓库导出的有界 read model；行情是固定算法生成的
 `synthetic_test_only` CSV。它们只用于显式 `test_capsule` 模式，不是 PetroChina 真实输入，

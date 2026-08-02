@@ -435,6 +435,81 @@
       "status": "not_evaluated"
     }
   ],
+  "stage2h_risk_veto": {
+    "as_of_date": "2026-08-02",
+    "methodology_version": "risk_veto_methodology_v1",
+    "formal_run_status": "conditional_pass",
+    "score_eligible": false,
+    "observed_risk_ids": [],
+    "missing_evidence_risk_ids": [
+      "formal_regulatory_investigation_or_major_discipline",
+      "controlling_shareholder_fund_occupation_or_related_guarantee"
+    ],
+    "observations": [
+      {
+        "risk_id": "modified_audit_opinion",
+        "status": "not_observed_within_bounded_evidence",
+        "trigger_version": "modified_audit_opinion_v1",
+        "search_register_id": "pc-search-modified-audit-opinion-v1",
+        "available_at": "2026-03-30"
+      },
+      {
+        "risk_id": "going_concern_material_uncertainty",
+        "status": "not_observed_within_bounded_evidence",
+        "trigger_version": "going_concern_material_uncertainty_v1",
+        "search_register_id": "pc-search-going-concern-v1",
+        "available_at": "2026-03-30"
+      },
+      {
+        "risk_id": "formal_regulatory_investigation_or_major_discipline",
+        "status": "missing_evidence",
+        "trigger_version": "formal_regulatory_investigation_or_major_discipline_v1",
+        "search_register_id": "pc-search-regulatory-v1",
+        "available_at": "2026-08-02"
+      },
+      {
+        "risk_id": "material_error_restatement",
+        "status": "not_observed_within_bounded_evidence",
+        "trigger_version": "material_error_restatement_v1",
+        "search_register_id": "pc-search-restatement-v1",
+        "available_at": "2026-03-30"
+      },
+      {
+        "risk_id": "controlling_shareholder_pledge_risk",
+        "status": "not_observed_within_bounded_evidence",
+        "trigger_version": "controlling_shareholder_pledge_risk_v1",
+        "search_register_id": "pc-search-pledge-v1",
+        "available_at": "2026-03-30"
+      },
+      {
+        "risk_id": "material_related_party_transaction_risk",
+        "status": "not_observed_within_bounded_evidence",
+        "trigger_version": "material_related_party_transaction_risk_v1",
+        "search_register_id": "pc-search-rpt-v1",
+        "available_at": "2026-03-30"
+      },
+      {
+        "risk_id": "controlling_shareholder_fund_occupation_or_related_guarantee",
+        "status": "missing_evidence",
+        "trigger_version": "fund_occupation_or_related_guarantee_v1",
+        "search_register_id": "pc-search-fund-occupation-v1",
+        "available_at": "2026-08-02"
+      },
+      {
+        "risk_id": "repeated_equity_financing_or_material_dilution",
+        "status": "not_observed_within_bounded_evidence",
+        "trigger_version": "repeated_equity_financing_or_material_dilution_v1",
+        "search_register_id": "pc-search-financing-v1",
+        "available_at": "2026-03-30"
+      }
+    ],
+    "warnings": [
+      "missing_evidence is not a negative conclusion",
+      "key audit matters are not modified opinions",
+      "ordinary related-party transactions are not abuse",
+      "proposed financing is not realized dilution"
+    ]
+  },
   "scenarios": [
     {
       "base_value": 12.891587101393752,

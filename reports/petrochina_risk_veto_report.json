@@ -1,0 +1,31 @@
+{
+  "artifact_manifest": {
+    "logical_digest": "d12aec768955c7d8bf0ed839045a9f3b53c596822390a05f4df0931241a4f61c",
+    "sha256": "e113bcc35d79c7dc5d1af8657f92c436ab46254672b339c5df3fd10285d1bc1f"
+  },
+  "as_of_date": "2026-08-02",
+  "code_version": "stage2h_risk_veto_v1",
+  "contract": "petrochina_risk_veto_vertical_slice_v1",
+  "default_db_mutated": false,
+  "external_cache_verified": true,
+  "methodology_version": "risk_veto_methodology_v1",
+  "missing_evidence_count": 2,
+  "missing_evidence_risk_ids": [
+    "formal_regulatory_investigation_or_major_discipline",
+    "controlling_shareholder_fund_occupation_or_related_guarantee"
+  ],
+  "network_used": false,
+  "observation_count": 8,
+  "observed_risk_ids": [],
+  "run_dir": "petrochina_stage2h_final",
+  "run_id": "petrochina_stage2h_final",
+  "score_eligible": false,
+  "status": "conditional_pass",
+  "symbol": "601857.SH",
+  "warnings": [
+    "missing evidence is not a negative conclusion",
+    "KAMs are not modified opinions",
+    "ordinary related-party activity is not abuse",
+    "proposed financing is not realized dilution"
+  ]
+}
