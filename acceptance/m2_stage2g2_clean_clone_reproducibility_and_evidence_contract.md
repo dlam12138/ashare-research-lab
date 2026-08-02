@@ -41,7 +41,7 @@ default DB hash, stash, final worktree and push equality.
 
 ## Final gate results
 
-- Final pushed commit: `11884a92269f150bcddf5df0f71676c188348982` on
+- Final pushed commit: `53a65539d6c02ffd25a85079b8004bf5c931ce10` on
   `feat/m2-value-assessment-mvp`; local/origin tracking refs are equal (`0 0`).
 - Fresh clone: `D:\tmp\stage2g2-clean-clone-中文-20260802-v7` (redacted operational
   path; spaces/non-ASCII path requirement exercised). Before testing it contained

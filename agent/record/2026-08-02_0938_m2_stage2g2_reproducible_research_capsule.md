@@ -116,7 +116,7 @@ not rewritten.
 
 ## Final acceptance after push
 
-- Final HEAD: `11884a92269f150bcddf5df0f71676c188348982`; final push of
+- Final HEAD: `53a65539d6c02ffd25a85079b8004bf5c931ce10`; final push of
   `feat/m2-value-assessment-mvp` succeeded. Local/origin tracking refs equal `0 0`.
 - Fresh clone: `D:\tmp\stage2g2-clean-clone-中文-20260802-v7`, containing no `output/` or
   `data/research.duckdb` before testing. Exact installation command:
