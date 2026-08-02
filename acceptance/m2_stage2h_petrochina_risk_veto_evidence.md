@@ -87,6 +87,10 @@ standards, OpenBB, OpenLineage and Arelle references.
   date-format warnings in `tests/test_quality.py`.
 - Final formal report: `reports/petrochina_risk_veto_report.json`; final run logical
   digest `d12aec768955c7d8bf0ed839045a9f3b53c596822390a05f4df0931241a4f61c`.
+- Hosted CI workflow [30742074822](https://github.com/dlam12138/ashare-research-lab/actions/runs/30742074822)
+  on commit `197b94b4cbf05fa1ae4acc36d471df942f807e28` completed successfully. Both
+  `clean-clone (ubuntu-latest)` and `clean-clone (windows-latest)` passed the Stage
+  2G.2 gates, Stage 2H contract/synthetic gates and the full offline suite.
 
 ## Protected state
 
@@ -96,5 +100,5 @@ baseline remains `354 Fact / 102 Metric Result / 16 definitions`. The pre-existi
 stash remains present, and `agent/goals/` remains untracked and unmodified by the
 implementation.
 
-Final clean-clone and remote Ubuntu/Windows CI results are appended after those gates
-complete.
+Final clean-clone and remote Ubuntu/Windows CI gates are complete; no additional
+research scope is opened by this acceptance.

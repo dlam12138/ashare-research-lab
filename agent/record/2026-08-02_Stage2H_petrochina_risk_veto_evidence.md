@@ -137,7 +137,22 @@ market-mechanism work.
     - `reports/petrochina_value_profile_2021_2026.md`: `af9f55aea26d680887ed7384f4e8151edcc15aa3b175488a34c9a1d1dfca258e`
     - `docs/risk_veto_methodology_v1.md`: `ba5a5cde7f8404cfab02958ca6a176245c468a4ebb345f1b61559e02f65ec961`
     - `docs/post_valuation_north_star_review.md`: `92a4a3060470757f93eec0b3cebe66977d1987d01b3b28c35199c7a1ea5288b`
+11. Clean-clone and hosted delivery gates completed after commit `197b94b4cbf05fa1ae4acc36d471df942f807e28`:
+    - Fresh local clone: Stage 2G.2 clean-clone `pass`, Stage 2H contract `pass_with_explicit_gaps`,
+      synthetic capsule artifact verification `pass`.
+    - GitHub Actions run `30742074822` completed `success`; Ubuntu job `91481136428` completed
+      `success` at 2026-08-02 17:37:56 China time and Windows job `91481136378` completed
+      `success` at 2026-08-02 17:40:03 China time. Both ran the full offline suite.
+    - Push completed to `origin/feat/m2-value-assessment-mvp`.
+12. Final protected-state recheck: default DB SHA-256 remains
+    `4a71d3c7b88c0b16ae46ffb4f9bfbd006d91e0537e559235c9b5a1f919e2fce6`; stash `{0}` remains
+    present; `agent/goals/` remains untracked; no other worktree or default DB mutation was
+    introduced.
 
 ## Final result
 
-Pending final clean-clone gate, remote Ubuntu/Windows CI, coherent commit and push.
+**CONDITIONAL PASS.** Stage 2H is complete at the evidence/veto boundary. No trigger
+was observed within the bounded evidence; two areas remain `missing_evidence`. The
+default DB, stash, protected baselines and untracked goals file are preserved. Stop
+here as required; no ROIC, scoring, Web, target-price, recommendation, automatic-
+trading or market-mechanism work was started.
