@@ -137,13 +137,23 @@ references. No network fact collection or fact mutation is permitted.
   `cb675690dd619d01534872c2bc98e9e0f6da80ff4f2ff586978d464c70fece57`
   and file SHA-256
   `4deb1a8ff00bb0270bf4c1cddf1d8b08b05b748ffb1f99b5a1b5ddede1b1e041`.
-- Default DB, stash and untracked goals remain unchanged. Commit-state clean
-  clone and final remote Ubuntu/Windows CI are pending.
+- The first local clone full-suite invocation was intentionally retained as a
+  failed execution record: it ran from the parent repository and produced 15
+  failures / 76 setup errors from relative-path lookup. Re-running from the
+  clone root passed `996 passed, 2 warnings`; targeted was `29 passed`, and
+  Ruff/import/readiness/coverage also passed. The ignored temporary clone could
+  not be removed because the execution policy rejected recursive deletion; it
+  is not tracked and did not affect Git or CI.
+- GitHub Actions run `30752858635` at implementation head `6aebbb5` passed:
+  Ubuntu job `91509863079` and Windows job `91509863101`, including clean-clone
+  preflight, static/import, Stage 2G/2H capsule contracts and full pytest.
+- Default DB, stash and untracked goals remain unchanged.
 
 ## Result
 
-Implementation and local gates pass. Final acceptance and acquisition remain
-blocked until commit-state clean clone and final Ubuntu/Windows CI succeed.
+Implementation, local/clean-clone gates, push and remote Ubuntu/Windows CI
+passed. The validator-generated next-stage acquisition decision is `ALLOWED`;
+no acquisition or shadow work was started.
 
 ## Open issues
 
@@ -159,5 +169,19 @@ Scoped commits so far:
 - `a6dd79f fix: separate ROIC methodology decisions from fact roles`
 - `136921f test: enforce complete ROIC acquisition gate coverage`
 
-Final documentation/record commits, push and CI are pending. `agent/goals/`
-remains untracked and protected.
+The first four commits were pushed and passed remote run `30752858635`. This
+record/acceptance closeout is the final documentation-only commit, after which
+one final CI run must pass before reporting completion. `agent/goals/` remains
+untracked and protected.
+
+## Final decision
+
+- M2 Stage 2I.1R2: `PASS`
+- Dependency graph, finance/lease composition, registry classification,
+  methodology readiness, validator and artifact portability: trusted.
+- Non-operating-asset policy: frozen.
+- Blocker coverage: complete.
+- Shadow: not run; production ROIC: not created; scoring and market mechanism:
+  not started.
+- Stage 2I decision: `ROIC_FACT_ACQUISITION_REQUIRED`.
+- Next-stage acquisition: `ALLOWED` through plan v3 only.

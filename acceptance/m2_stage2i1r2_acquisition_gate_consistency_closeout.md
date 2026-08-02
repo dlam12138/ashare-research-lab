@@ -1,6 +1,6 @@
 # M2 Stage 2I.1R2 ROIC acquisition gate consistency closeout
 
-Status: `PENDING_FINAL_CI`
+Status: `ACCEPTED_WITH_ACQUISITION_REQUIRED`
 
 ## Scope and historical correction
 
@@ -70,8 +70,7 @@ The structured coverage artifact currently reports PASS with 38 covered
 blocker/year cells and empty uncovered, orphan, mislayered and duplicate lists.
 Plan digest:
 `aedaebcaa5b85fd4bbfa39f77c2ac09a55c548cf2bb099cdc008271aa3340215`.
-This local result does not become final acceptance until all required local,
-clean-clone, Ubuntu and Windows gates pass.
+All required local, clean-clone, Ubuntu and Windows gates passed.
 
 ## Portability and safeguards
 
@@ -80,9 +79,35 @@ the runtime working directory. Tests cover Windows drive paths, Unix
 home/temp paths and different working directories. Shadow remains `NOT_RUN`;
 production ROIC and scoring remain closed.
 
+## Engineering gates and remote CI
+
+- Stage 2I/2I.1R/2I.1R2 targeted: `29 passed`.
+- Full local and correctly rooted clean-clone suites: `996 passed, 2` existing
+  date-format warnings each.
+- Fact Identity/PIT/restatement: `106 passed`; ROE/ROA/financial safety:
+  `130 passed`; Stage 2G: `32 passed`; Stage 2H/2H.1R: `15 passed`.
+- Ruff, compile/import, `git diff --check`, readiness/coverage A/B,
+  alternate-working-directory portability, secret and pollution scans passed.
+- GitHub Actions run `30752858635` at head `6aebbb5` passed both clean-clone
+  jobs: Ubuntu job `91509863079` and Windows job `91509863101`, including the
+  full offline suite and all Stage 2G/2H capsule gates.
+- The default DB SHA-256, protected inventory, stash and untracked goals remain
+  unchanged.
+
 ## Final decision
 
-Pending final engineering gates and remote CI. Until those complete:
-
-- M2 Stage 2I.1R2: `BLOCKED`
-- Next-stage acquisition: `NOT ALLOWED`
+- M2 Stage 2I.1R2: `PASS`
+- ROIC formula dependency graph: `TRUSTED`
+- Finance-cost/lease-interest composition: `TRUSTED`
+- Primary/secondary role classification: `TRUSTED`
+- Methodology-choice readiness: `TRUSTED`
+- Non-operating-asset policy: `FROZEN`
+- Acquisition-plan blocker coverage: `COMPLETE`
+- Acquisition-plan validator: `TRUSTED`
+- Committed-artifact portability: `TRUSTED`
+- Shadow feasibility: `NOT RUN`
+- Production ROIC Metric/Result: `NOT CREATED`
+- Stage 2I decision: `ROIC_FACT_ACQUISITION_REQUIRED`
+- Next-stage acquisition: `ALLOWED`
+- Scoring: `STILL NOT YET`
+- Market mechanism: `NOT STARTED`
