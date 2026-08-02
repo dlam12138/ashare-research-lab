@@ -1,7 +1,9 @@
-*.json text eol=lf
 *.csv text eol=lf
 *.sha256 text eol=lf
 *.py text eol=lf
 *.md text eol=lf
 *.yml text eol=lf
 *.yaml text eol=lf
+events/dividend_source_evidence_2021_2026.json text eol=lf
+events/market_data_snapshot_registry.json text eol=lf
+tests/fixtures/stage2g/canonical_fact_snapshot_v1/*.json text eol=lf
