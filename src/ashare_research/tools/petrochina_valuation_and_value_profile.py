@@ -1511,6 +1511,8 @@ def run_formal(
     }
     _write_json(run_dir / "summary.json", summary)
     _write_summary_md(run_dir / "summary.md", summary)
+    if publish_reports:
+        _publish_reports(run_dir, profile, percentiles, scenarios, evidence, market, registry)
     artifact_manifest = finalize_artifacts(
         run_dir,
         run_id=run_id,
@@ -1520,8 +1522,6 @@ def run_formal(
         rule007_eligible_count=evidence["rule007_eligible_event_count"],
         score_eligible=False,
     )
-    if publish_reports:
-        _publish_reports(run_dir, profile, percentiles, scenarios, evidence, market, registry)
     return {
         "run_dir": str(run_dir),
         "manifest": manifest,
@@ -1580,6 +1580,8 @@ def _publish_reports(
 ) -> None:
     reports = ROOT / "reports"
     reports.mkdir(parents=True, exist_ok=True)
+    published_reports = run_dir / "published_reports"
+    published_reports.mkdir(parents=True, exist_ok=True)
     latest = profile["latest_observations"]
     md = [
         "# PetroChina PIT valuation report 2021–2026",
@@ -1643,6 +1645,13 @@ def _publish_reports(
         "\n".join(one_page), encoding="utf-8"
     )
     _write_json(reports / "petrochina_value_profile.json", profile)
+    for name in (
+        "petrochina_valuation_pit_2021_2026.md",
+        "petrochina_value_profile_2021_2026.md",
+        "petrochina_value_profile_one_page.md",
+        "petrochina_value_profile.json",
+    ):
+        shutil.copyfile(reports / name, published_reports / name)
 
 
 def main(argv: list[str] | None = None) -> int:
