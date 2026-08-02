@@ -1,10 +1,12 @@
-# ROIC Input Contract v1 / Stage 2I.1R registry binding
+# ROIC Input Contract v1.1 / Stage 2I.1R2 registry binding
 
 This contract defines the evidence boundary for `value_evaluation_methodology_roic_v1`.
 It is an input/readiness contract, not permission to write the default database or
 create a production ROIC Metric Result.
 
-The single naming authority is `config/roic_concept_registry_v1.json`. Every
+The formal naming authority is `config/roic_concept_registry_v2.json`, bound
+to `config/roic_formula_dependency_graph_v1.json`. The unchanged v1 registry
+is historical migration evidence only. Every
 role, canonical concept, alias, derivation component and acquisition reference
 must resolve there. Aliases are migration/error diagnostics only; an alias can
 never make a row ready.
@@ -28,11 +30,13 @@ deterministic derivation with:
 | Registry role | Canonical concept ID | Period | Status requirement |
 |---|---|---|---|
 | operating earnings base | `operating_profit` | annual duration | exact official fact |
-| `nopat.finance_cost_adjustment` | `finance_cost_adjustment` | annual duration | official composition; no generic proxy |
-| lease interest | `lease_interest_expense` | annual duration | required when leases are included |
+| `nopat.finance_cost_adjustment` | `finance_cost_adjustment` | annual duration | deterministic parent; never directly acquired |
+| finance core | `finance_cost_excluding_lease_interest` | annual duration | official component, explicit lease exclusion |
+| lease interest | `lease_interest_expense` | annual duration | official component included once in finance parent |
 | investment income | `investment_income` | annual duration | required when removing associate/investment scope |
 | `nopat.fair_value_net_change` | `fair_value_net_change` | annual duration | required if included in operating profit |
-| disposal/other adjustment | `asset_disposal_gain_loss`, `other_non_operating_income_expense` | annual duration | exact official note mapping |
+| asset disposal adjustment | `asset_disposal_gain_loss` | annual duration | independent primary adjustment inside operating profit |
+| other non-operating income/expense | `other_non_operating_income_expense` | annual duration | secondary only; outside operating profit already |
 | operating tax | `operating_tax_expense` or direct allocated tax bridge | annual duration | required for canonical NOPAT |
 
 ## Primary financing-view invested-capital roles
@@ -44,7 +48,8 @@ deterministic derivation with:
 | debt | `short_term_borrowings`, `long_term_borrowings`, `bonds_payable` | instant | components only |
 | `invested_capital.interest_bearing_debt_total` | `interest_bearing_debt_total` | instant | deterministic derivation; all registry components required |
 | leases | `current_portion_of_lease_liabilities`, `lease_liabilities` | instant | matched to lease-interest treatment |
-| non-operating asset boundary | `non_operating_asset_boundary` | instant | classification must be explicit and matched to numerator |
+| classification policy | `non_operating_asset_classification_policy` | no Fact period/value | resolved methodology decision, never acquired |
+| qualifying non-operating assets | `qualifying_non_operating_assets` | instant | deterministic monetary derivation, never directly acquired |
 | goodwill | `goodwill` | instant | included by default |
 | deferred tax | `deferred_tax_assets`, `deferred_tax_liabilities` | instant | conditional scope |
 

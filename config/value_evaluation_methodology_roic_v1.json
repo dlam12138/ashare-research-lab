@@ -1,9 +1,11 @@
 {
   "methodology_id": "value_evaluation_methodology_roic_v1",
-  "schema_version": "1.0",
-  "version": "1",
-  "status": "frozen_stage2i_readiness_only",
-  "concept_registry": "config/roic_concept_registry_v1.json",
+  "schema_version": "1.1",
+  "version": "1.1R2",
+  "status": "frozen_stage2i1r2_acquisition_gate_only",
+  "concept_registry": "config/roic_concept_registry_v2.json",
+  "formula_dependency_graph": "config/roic_formula_dependency_graph_v1.json",
+  "methodology_decisions": "config/roic_methodology_decisions_v1.json",
   "readiness_report_schema": "roic_fact_readiness_report_v2",
   "formal_statuses": ["ready", "partially_ready", "missing_official_fact", "scope_mismatch", "period_mismatch", "PIT_unavailable", "restatement_unresolved", "methodology_unresolved", "not_applicable"],
   "scope": "petrochina_consolidated_CAS",
@@ -23,7 +25,7 @@
       "reason": "profit_before_tax contains non-operating items and interest/lease/capitalized components are not yet fully separated"
     },
     "operating_profit_bridge": {
-      "formula": "operating_profit + eligible_finance_cost_adjustment - matched_non_operating_items - directly_allocated_operating_tax",
+      "formula": "operating_profit + finance_cost_adjustment - investment_income - fair_value_net_change - asset_disposal_gain_loss - operating_tax_expense",
       "status": "primary_acquisition_candidate",
       "clean_ebit_label_allowed": false,
       "requires_official_adjustments": true
@@ -69,7 +71,8 @@
     "cash": "do_not_subtract_all_cash; subtract_only_evidenced_qualifying_non_operating_cash",
     "monetary_funds": "conditional_proxy_only_with_boundary_proof",
     "restricted_cash": "exclude_by_default",
-    "non_operating_asset_boundary": "match_each_asset_and_income_scope_no_aggregate_proxy",
+    "non_operating_asset_classification": "resolved rule in roic_methodology_decisions_v1; never an amount-bearing Fact",
+    "qualifying_non_operating_assets": "deterministic derivation from classified canonical Facts; no manual entry or aggregate proxy",
     "operating_current_liabilities": "operating_view_only_when_non_interest_bearing_is_proven"
   },
   "average_balance_policy": {

@@ -47,12 +47,25 @@ all adjustments are directly evidenced.
 
 ```text
 operating_earnings_before_tax = operating_profit
-                              + eligible_finance_cost_adjustment
+                              + finance_cost_adjustment
                               - investment_income_included_in_operating_profit
                               - fair_value_net_change_included_in_operating_profit
-                              - other_non_operating_items_included_in_operating_profit
+                              - asset_disposal_gain_loss_included_in_operating_profit
 NOPAT = operating_earnings_before_tax - directly_allocated_operating_tax
 ```
+
+Stage 2I.1R2 freezes `finance_cost_adjustment` as the deterministic composite
+`finance_cost_excluding_lease_interest + lease_interest_expense`. Only the
+composite parent enters the bridge. Both official components must be ready;
+neither component is added again, and an inseparable disclosure remains
+unready rather than becoming a manual plug.
+
+Investment income, fair-value net change and asset-disposal gain/loss are
+independent signed adjustments because CAS presents them inside operating
+profit. Other non-operating income/expense follows operating profit and is a
+secondary reconciliation item, not a primary adjustment. These classifications
+are frozen from statement membership before acquisition and never from the
+size or sign of PetroChina values.
 
 This is not called clean EBIT. The primary candidate is selected because the
 audited operating-profit line already exists in the canonical evidence layer,
@@ -140,6 +153,17 @@ explained, not averaged away. A mismatch blocks a canonical result.
 | Deferred tax | Conditional; include only with a registered operating/non-operating classification and tax bridge | Deferred-tax asset/liability note |
 | Operating current liabilities | Included in operating view only when non-interest-bearing classification is direct and complete | Payables, contract liabilities, tax and employee-benefit notes |
 | Major operating assets | Included in operating view; oil/gas properties, PPE, construction in progress and exploration expenditure remain distinct evidence concepts | Audited statement and asset notes |
+
+The former mixed `non_operating_asset_boundary` role is superseded. The
+amount-free `policy.non_operating_asset_classification` decision is resolved in
+`config/roic_methodology_decisions_v1.json`. The monetary
+`invested_capital.qualifying_non_operating_assets` is a separate deterministic
+derivation and cannot be acquired or entered directly. The rule does not
+subtract all cash, never treats restricted cash as freely deductible, does not
+guess operating cash, admits financial assets only with official
+non-operating-purpose evidence, matches associate/JV deductions to the NOPAT
+income adjustment, retains unproven assets with an evidence limitation and
+forbids a balance-sheet plug.
 
 ## 6. Matching, averaging, PIT and restatement
 

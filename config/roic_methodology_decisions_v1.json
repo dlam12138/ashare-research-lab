@@ -1,0 +1,42 @@
+{
+  "schema": "roic_methodology_decisions_v1",
+  "version": "1",
+  "decisions": [
+    {
+      "decision_id": "policy.non_operating_asset_classification",
+      "decision_version": "1",
+      "resolution_status": "resolved",
+      "decision_rule": "Deduct only canonical asset facts whose official disclosure proves non-operating purpose and whose related income is removed from NOPAT; never deduct all cash or create a balance-sheet plug.",
+      "supporting_fact_roles": [
+        "invested_capital.cash_and_cash_equivalents",
+        "invested_capital.restricted_cash",
+        "invested_capital.non_operating_financial_assets",
+        "invested_capital.associate_investment",
+        "invested_capital.joint_venture_investment"
+      ],
+      "excluded_fact_roles": [
+        "invested_capital.total_assets",
+        "invested_capital.non_operating_asset_boundary"
+      ],
+      "classification_rules": [
+        "cash_and_cash_equivalents is not automatically deductible",
+        "restricted cash is never treated as freely deductible cash",
+        "operating cash is not deducted by subjective judgment",
+        "a financial asset is deductible only when official disclosure proves its non-operating purpose",
+        "associate and joint-venture deductions must match removal of their investment income from NOPAT",
+        "an unproven asset class defaults to retained in invested capital with an evidence limitation"
+      ],
+      "fallback_behavior": "retain_unproven_asset_in_invested_capital_and_flag_evidence_limitation",
+      "limitations": [
+        "No balancing plug is permitted.",
+        "A resolved rule does not make the derived amount ready when supporting facts are missing."
+      ],
+      "effective_from": "2026-08-02",
+      "references": [
+        "docs/value_evaluation_methodology_roic_v1.md",
+        "docs/roic_input_contract.md",
+        "existing_stage2i_cfa_damodaran_financetoolkit_mof_cas_review"
+      ]
+    }
+  ]
+}
