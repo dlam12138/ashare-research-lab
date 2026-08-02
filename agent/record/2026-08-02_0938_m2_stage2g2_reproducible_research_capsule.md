@@ -108,10 +108,77 @@ fetches, or bundled third-party market data.
 - Test capsule build/run: PASS; 1,351 synthetic rows, 8,106 observations, artifact
   verification PASS; repeated run hash was identical.
 
-Remaining: clean-clone validation after push, final pollution/path/secret scans, commit and
-push verification, remote CI observation, and final report update.
+The final pushed implementation added two portability corrections found by the real
+fresh-clone gate: deterministic LF checkout for Stage 2G contracts without changing
+historical evidence semantics, and clean-clone-safe guards for legacy no-mutation probes
+and protected text-blob checks. Protected production blobs and historical baselines were
+not rewritten.
 
-## Result and remaining issues
+## Final acceptance after push
 
-Implementation is complete but delivery is pending the final clean clone, protected-state,
-pollution, commit, push and report gates.
+- Final HEAD: `11884a92269f150bcddf5df0f71676c188348982`; final push of
+  `feat/m2-value-assessment-mvp` succeeded. Local/origin tracking refs equal `0 0`.
+- Fresh clone: `D:\tmp\stage2g2-clean-clone-中文-20260802-v7`, containing no `output/` or
+  `data/research.duckdb` before testing. Exact installation command:
+  `python -m pip install -e ".[dev]" --no-deps`.
+- Fresh-clone commands and results: `verify-contracts` PASS; two capsule builds PASS;
+  two capsule runs PASS; two artifact verifications PASS; targeted Stage 2G tests
+  `21 passed`; full `pytest -q` `941 passed, 40 warnings` in `169.88s`; Ruff PASS;
+  compileall/import PASS. Both capsule runs were 1,351 synthetic market days and
+  8,106 observations. Logical artifact hash:
+  `f2e81c7b3700a76adea9f35e8b7deec87c06e67cbfd073433997b10a3c3f498d`; both artifact
+  manifest files were byte-identical, file SHA-256
+  `4f4a29e90f7daa75479afe15cced69e1a2e84c77e91cd32b637cd9df752b9337`.
+- The clean clone had no pre-existing ignored input. The full legacy suite created only
+  ignored run-scoped test outputs under `output/value_assessment`; no tracked artifact,
+  default DB, external cache or network input was required. Stage 2G deliverables passed
+  private-absolute-path, secret and forbidden-artifact scans. Historical acceptance
+  records retain their prior cache-path prose and were not rewritten.
+- Final explicit real preflight: PASS; canonical DB 201 rows/33 used, market 1,351 rows,
+  both provider hashes verified, reconciliation PASS, Identity/version-chain PASS,
+  network false. Two formal runs: PASS WITH EXPLICIT GAPS; 19 files each, byte-identical,
+  artifact verifier PASS, logical hash
+  `6f6c68535090fc85c17fd7e052bd5b9d404e47b68f0a02b05e6b2a246b2e36a8`.
+- Final default DB SHA-256 remains
+  `4a71d3c7b88c0b16ae46ffb4f9bfbd006d91e0537e559235c9b5a1f919e2fce6`; protected
+  baseline remains 354 Facts / 102 Metric Results / 16 definitions; stash remains
+  `stash@{0}` with message `protect pre-existing Stage 1B.4 record edit before Stage 1C`.
+  Final worktree contains only the preserved untracked `agent/goals/` directory.
+
+## References and borrowed designs
+
+- Reviewed before implementation: North-Star/project guidance, `agent/agent.md`,
+  `CLAUDE.md`, `agent/record/README.md`, the latest Stage 2G/2F records, README,
+  Stage 2G.1 acceptance, the target valuation runner and Stage 2G tests, Fact
+  Identity/Context/Repository/Service/AsOf/version-chain/storage modules, both
+  ledgers, `.gitignore`, `pyproject.toml`, existing scripts and all protected-baseline
+  tests.
+- Borrowed pytest `tmp_path` isolation, DuckDB read-only real inputs plus repository
+  schema rebuild for temporary capsules, OpenLineage-shaped run/input/output metadata
+  with checksummed facets, and GitHub Actions clean-checkout OS/version matrices.
+- Not copied: pytest plugins, lineage services, Marquez, catalogs, orchestration
+  frameworks, network fetches, or third-party raw market responses.
+- Repository-specific cuts: bounded canonical JSON read-model export rather than a
+  committed DuckDB, deterministic synthetic market rows rather than redistributed
+  provider data, explicit external roots for real research, fixed logical test
+  timestamps, strict Rule007 issuer/exchange pairing, and no next-stage valuation,
+  ROIC, scoring, recommendation, Web, trading or market-mechanism work.
+
+## Final verdict
+
+```text
+M2 Stage 2G.2: CONDITIONAL PASS
+Clean-clone default test suite: TRUSTED
+Portable canonical Fact capsule: TRUSTED
+Portable market test capsule: TRUSTED
+Real market input resolver: TRUSTED
+Rule007 issuer-exchange pair contract: TRUSTED
+Artifact manifest and reproduction verifier: TRUSTED
+Remote CI: NOT OBSERVED
+PetroChina real value profile: COMPLETE WITH EXPLICIT GAPS
+ROIC: NOT YET
+Scoring: STILL NOT YET
+Market mechanism: NOT STARTED
+Next-stage implementation: NOT STARTED
+Next-stage selection: NORTH-STAR REVIEW REQUIRED
+```
