@@ -1,0 +1,17 @@
+{
+  "contract": "market_data_snapshot_registry_v2",
+  "data_class": "official_document",
+  "symbol": "601857.SH",
+  "dataset": "petrochina_risk_official_documents_2021_2025",
+  "registry_version": "stage2h1_official_evidence_registry_v2",
+  "providers": [
+    {"logical_name":"pc-2021-issuer-annual","object_key":"badab8f25c48184e16469f4ac542ff5ac5087b2a376ae3c95cd31b3793cd7a99.pdf","sha256":"badab8f25c48184e16469f4ac542ff5ac5087b2a376ae3c95cd31b3793cd7a99","byte_size":4714421,"retrieval_status":"verified_external","evidence_ids":["pc-2021-issuer-annual"]},
+    {"logical_name":"pc-2021-exchange-annual","object_key":"939de04e6502dc61be1a1fd3b12a4b9faaa0eb52e3996134810581391a93841f.pdf","sha256":"939de04e6502dc61be1a1fd3b12a4b9faaa0eb52e3996134810581391a93841f","byte_size":5115948,"retrieval_status":"verified_external","evidence_ids":["pc-2021-exchange-annual"]},
+    {"logical_name":"pc-2022-issuer-annual","object_key":"fea19e9033bbcff24357575d02da3e9b8ddda7d5bbcdd7cabfb018a7e35615c1.pdf","sha256":"fea19e9033bbcff24357575d02da3e9b8ddda7d5bbcdd7cabfb018a7e35615c1","byte_size":12261788,"retrieval_status":"verified_external","evidence_ids":["pc-2022-issuer-annual"]},
+    {"logical_name":"pc-2022-exchange-annual","object_key":"da64c67d9e575c3cfcfbd892ce5e8c19d4cf8ca07d51c47df01be2fa4587d861.pdf","sha256":"da64c67d9e575c3cfcfbd892ce5e8c19d4cf8ca07d51c47df01be2fa4587d861","byte_size":12257199,"retrieval_status":"verified_external","evidence_ids":["pc-2022-exchange-annual"]},
+    {"logical_name":"pc-2023-issuer-and-exchange-annual","object_key":"b845502e533311280f89d59c2a92c67f94f2be17451e51e55f93a1d52abe6692.pdf","sha256":"b845502e533311280f89d59c2a92c67f94f2be17451e51e55f93a1d52abe6692","byte_size":12437650,"retrieval_status":"verified_external","evidence_ids":["pc-2023-issuer-annual","pc-2023-exchange-annual"]},
+    {"logical_name":"pc-2024-issuer-and-exchange-annual","object_key":"15a2de01653ceefa46fdd18a02a127f434f06db02da9efb0b62c3a12a35a9bba.pdf","sha256":"15a2de01653ceefa46fdd18a02a127f434f06db02da9efb0b62c3a12a35a9bba","byte_size":11167845,"retrieval_status":"verified_external","evidence_ids":["pc-2024-issuer-annual","pc-2024-exchange-annual"]},
+    {"logical_name":"pc-2025-issuer-annual","object_key":"0eba96bd4e815187e7b64645f523f2b5d363ca3fea8168a63ec930f624715f8d.pdf","sha256":"0eba96bd4e815187e7b64645f523f2b5d363ca3fea8168a63ec930f624715f8d","byte_size":10608680,"retrieval_status":"verified_external","evidence_ids":["pc-2025-issuer-annual"]},
+    {"logical_name":"pc-2025-exchange-annual","object_key":"840b15aa4dc38745a6b86a3656063e6a73081ce87407acb0ca93554f4e836e65.pdf","sha256":"840b15aa4dc38745a6b86a3656063e6a73081ce87407acb0ca93554f4e836e65","byte_size":9416509,"retrieval_status":"verified_external","evidence_ids":["pc-2025-exchange-annual"]}
+  ]
+}

@@ -86,6 +86,52 @@ def _read_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
+def _stage2h_risk_payload() -> dict[str, Any]:
+    """Integrate the committed Stage 2H.1 report without re-evaluating risk."""
+
+    report_path = ROOT / "reports" / "petrochina_risk_veto_report.json"
+    if not report_path.is_file():
+        return {
+            "contract_version": "risk_veto_observation_v2",
+            "methodology_version": "risk_veto_methodology_v2",
+            "formal_run_status": "not_evaluated",
+            "score_eligible": False,
+            "observed_risk_ids": [],
+            "missing_evidence_risk_ids": list(),
+            "observations": [],
+            "lineage_status": "missing_evidence",
+        }
+    report = _read_json(report_path)
+    observations = report.get("observations", [])
+    return {
+        "contract_version": "risk_veto_observation_v2",
+        "methodology_version": report.get("methodology_version", "risk_veto_methodology_v2"),
+        "formal_run_status": report.get("status", "not_evaluated"),
+        "as_of_date": report.get("as_of_date"),
+        "score_eligible": False,
+        "observed_risk_ids": report.get("observed_risk_ids", []),
+        "missing_evidence_risk_ids": report.get("missing_evidence_risk_ids", []),
+        "lineage_status": report.get("evidence_lineage_status", "missing_evidence"),
+        "search_pit_status": report.get("search_pit_status", "missing_evidence"),
+        "event_supersession_status": report.get("event_supersession_status", "missing_evidence"),
+        "observations": [
+            {
+                "risk_id": item["risk_id"],
+                "status": item["status"],
+                "observation_id": item["observation_id"],
+                "available_at": item["available_at"],
+                "conclusion_available_at": item["conclusion_available_at"],
+                "active_event_ids": item["active_event_ids"],
+                "superseded_event_ids": item["superseded_event_ids"],
+                "search_register_id": item["search_register_id"],
+                "search_contract_version": item["search_contract_version"],
+                "lineage_status": item["lineage_status"],
+            }
+            for item in observations
+        ],
+    }
+
+
 def _sha256_bytes(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
@@ -183,9 +229,7 @@ def validate_dividend_evidence(
         exchange = selected.get("exchange_official")
         if pair["rule007_eligible"] and issuer and exchange:
             if issuer.get("content_sha256") == exchange.get("content_sha256"):
-                if not (
-                    issuer.get("same_content_mirror") and exchange.get("same_content_mirror")
-                ):
+                if not (issuer.get("same_content_mirror") and exchange.get("same_content_mirror")):
                     errors.append(
                         f"{event['event_id']}:same_content_hash_requires_same_content_mirror"
                     )
@@ -223,8 +267,7 @@ def validate_dividend_evidence(
                 if not comparable:
                     break
             comparable = comparable and all(
-                issuer["extracted_values"].get(key)
-                == exchange["extracted_values"].get(key)
+                issuer["extracted_values"].get(key) == exchange["extracted_values"].get(key)
                 for key in ("currency", "share_scope")
             )
             comparable = comparable and event.get("currency") == issuer["extracted_values"].get(
@@ -415,8 +458,7 @@ def _load_market(
     )
     resolved, registry = resolver.resolve()
     frames = [
-        _normalise_daily(read_market_frame(path), record["provider"])
-        for path, record in resolved
+        _normalise_daily(read_market_frame(path), record["provider"]) for path, record in resolved
     ]
     common = frames[0]
     for frame in frames[1:]:
@@ -505,9 +547,7 @@ def _canonical_fact_record(
 
 def _is_annual_observation_fact(fact: Mapping[str, Any]) -> bool:
     period_type = str(fact.get("period_type", "")).lower()
-    return period_type in {"annual", "fy"} or str(fact.get("period_end", "")).endswith(
-        "-12-31"
-    )
+    return period_type in {"annual", "fy"} or str(fact.get("period_end", "")).endswith("-12-31")
 
 
 def _load_canonical_facts(
@@ -554,17 +594,13 @@ def _load_canonical_facts(
             for row in all_df.to_dict(orient="records")
         ]
         validate_canonical_fact_ids(all_records)
-        version_results = VersionChainValidator(repository).validate(
-            all_records, conn=connection
-        )
+        version_results = VersionChainValidator(repository).validate(all_records, conn=connection)
         failed_versions = [result.target_id for result in version_results if not result.passed]
         if failed_versions:
             raise ValueError(f"canonical version chain failed: {failed_versions}")
         context_df = connection.execute("SELECT * FROM fact_contexts").df()
         context_by_id = {
-            str(row["context_id"]): {
-                key: _json_scalar(value) for key, value in row.items()
-            }
+            str(row["context_id"]): {key: _json_scalar(value) for key, value in row.items()}
             for row in context_df.to_dict(orient="records")
         }
         lineage_df = connection.execute("SELECT * FROM fact_lineage ORDER BY lineage_id").df()
@@ -573,8 +609,7 @@ def _load_canonical_facts(
             record = {key: _json_scalar(value) for key, value in row.items()}
             lineage_by_fact_id.setdefault(str(record["fact_id"]), []).append(record)
         all_records = [
-            _canonical_fact_record(row, context_by_id, lineage_by_fact_id)
-            for row in all_records
+            _canonical_fact_record(row, context_by_id, lineage_by_fact_id) for row in all_records
         ]
         annual_available_dates = sorted(
             {
@@ -608,9 +643,7 @@ def _load_canonical_facts(
                 ),
             ]
             pit_df = pd.concat(pit_frames, ignore_index=True)
-            service_df = service.query_as_of(
-                SYMBOL, list(REQUIRED_FINANCIAL_CONCEPTS), as_of_date
-            )
+            service_df = service.query_as_of(SYMBOL, list(REQUIRED_FINANCIAL_CONCEPTS), as_of_date)
             service_ids = {str(value) for value in service_df.get("fact_id", pd.Series(dtype=str))}
             snapshot_rows: dict[str, dict[str, Any]] = {}
             for row in pit_df.to_dict(orient="records"):
@@ -625,9 +658,7 @@ def _load_canonical_facts(
                 selected[record["fact_id"]] = record
             snapshots[as_of_date] = snapshot_rows
         required_counts = {
-            concept_id: sum(
-                record["concept_id"] == concept_id for record in selected.values()
-            )
+            concept_id: sum(record["concept_id"] == concept_id for record in selected.values())
             for concept_id in REQUIRED_FINANCIAL_CONCEPTS
         }
         metadata = {
@@ -635,7 +666,9 @@ def _load_canonical_facts(
             "sha256": input_hash,
             "schema_version": schema_version,
             "fact_count": len(all_records),
-            "eligible_fact_count": sum(bool(row.get("eligible_for_metrics")) for row in all_records),
+            "eligible_fact_count": sum(
+                bool(row.get("eligible_for_metrics")) for row in all_records
+            ),
             "used_fact_count": len(selected),
             "used_fact_ids": sorted(selected),
             "required_concept_coverage": required_counts,
@@ -741,17 +774,15 @@ def _share_timeline(
     starts = sorted(grouped.values(), key=lambda row: row["effective_from"])
     rows: list[dict[str, Any]] = []
     for index, record in enumerate(starts):
-        next_start = starts[index + 1]["effective_from"] if index + 1 < len(starts) else SHARE_RUN_END
+        next_start = (
+            starts[index + 1]["effective_from"] if index + 1 < len(starts) else SHARE_RUN_END
+        )
         effective_to = (
             _date(next_start) - timedelta(days=1)
             if index + 1 < len(starts)
             else _date(SHARE_RUN_END)
         )
-        row = {
-            key: value
-            for key, value in record.items()
-            if key not in {"evidence_id"}
-        }
+        row = {key: value for key, value in record.items() if key not in {"evidence_id"}}
         row.update(
             {
                 "timeline_id": _stable_id(
@@ -1170,9 +1201,7 @@ def run_formal(
     output_root = Path(output_root) if output_root else ROOT / "runs" / "stage2g"
     run_dir = output_root / run_id
     if run_dir.exists():
-        raise FileExistsError(
-            f"refusing to overwrite existing Stage 2G run directory: {run_dir}"
-        )
+        raise FileExistsError(f"refusing to overwrite existing Stage 2G run directory: {run_dir}")
     run_dir.mkdir(parents=True, exist_ok=True)
     evidence = validate_dividend_evidence()
     if evidence["errors"]:
@@ -1201,9 +1230,7 @@ def run_formal(
                 fact_input_contract.get("schema_version", fact_input["schema_version"])
             ),
         }
-    shares_timeline, share_evidence_ledger = _share_timeline(
-        events, sources=evidence["sources"]
-    )
+    shares_timeline, share_evidence_ledger = _share_timeline(events, sources=evidence["sources"])
     _write_json(
         run_dir / "share_capital_evidence_ledger.json",
         {
@@ -1317,8 +1344,7 @@ def run_formal(
         if count == 0
     ]
     missing_share_split = any(
-        row["share_validation_status"] == "missing_evidence_a_h_split"
-        for row in shares_timeline
+        row["share_validation_status"] == "missing_evidence_a_h_split" for row in shares_timeline
     )
     non_positive_status = (
         "observed"
@@ -1446,9 +1472,7 @@ def run_formal(
             key: value for key, value in fact_input.items() if key != "snapshots"
         },
         "share_capital_timeline_status": (
-            "observed_with_explicit_a_h_split_gap"
-            if missing_share_split
-            else "observed"
+            "observed_with_explicit_a_h_split_gap" if missing_share_split else "observed"
         ),
         "integrated_layers": {
             "earnings_cash_quality": "observed",
@@ -1496,6 +1520,7 @@ def run_formal(
                 "basis": "outside this valuation vertical slice",
             },
         ],
+        "stage2h_risk_veto": _stage2h_risk_payload(),
         "stage2g1_status": stage_status,
         "score_eligible": False,
     }
@@ -1626,6 +1651,20 @@ def _publish_reports(
     ]
     for check in profile["risk_veto_checks"]:
         profile_md.append(f"- `{check['risk_id']}`: `{check['status']}`")
+    stage2h = profile.get("stage2h_risk_veto", {})
+    profile_md.extend(
+        [
+            "",
+            "## Stage 2H.1 PIT risk-veto statuses",
+            "",
+            f"Contract `{stage2h.get('contract_version')}`; methodology `{stage2h.get('methodology_version')}`; formal status `{stage2h.get('formal_run_status')}`.",
+            "Missing evidence remains missing evidence and is not a negative conclusion.",
+        ]
+    )
+    for observation in stage2h.get("observations", []):
+        profile_md.append(
+            f"- `{observation['risk_id']}`: `{observation['status']}`; available `{observation['available_at']}`; search `{observation.get('search_register_id')}`"
+        )
     profile_md.append("")
     (reports / "petrochina_value_profile_2021_2026.md").write_text(
         "\n".join(profile_md), encoding="utf-8"
@@ -1671,7 +1710,9 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--fact-db", type=Path)
     parser.add_argument("--market-cache-root", type=Path)
     parser.add_argument("--market-registry", type=Path)
-    parser.add_argument("--market-mode", choices=("real_research", "test_capsule"), default="real_research")
+    parser.add_argument(
+        "--market-mode", choices=("real_research", "test_capsule"), default="real_research"
+    )
     parser.add_argument("--market-fixture-root", type=Path)
     args = parser.parse_args(argv)
     if args.acquire:

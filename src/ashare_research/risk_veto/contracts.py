@@ -1,9 +1,4 @@
-"""Versioned evidence, event, search and veto-observation contracts.
-
-The module is intentionally deterministic.  It classifies only explicit,
-structured inputs and never turns a missing search result into a negative
-conclusion.
-"""
+"""Stage 2H.1 versioned PIT, supersession and evidence-lineage contracts."""
 
 from __future__ import annotations
 
@@ -11,15 +6,16 @@ import hashlib
 import json
 import re
 from collections import defaultdict
-from datetime import date
+from datetime import UTC, date, datetime
 from typing import Any
 
-METHODOLOGY_VERSION = "risk_veto_methodology_v1"
-CODE_VERSION = "stage2h_risk_veto_v1"
+METHODOLOGY_VERSION = "risk_veto_methodology_v2"
+CODE_VERSION = "stage2h1_risk_veto_v1"
 EVIDENCE_CONTRACT = "risk_evidence_record_v1"
-EVENT_CONTRACT = "risk_event_record_v1"
-OBSERVATION_CONTRACT = "risk_veto_observation_v1"
-SEARCH_CONTRACT = "bounded_search_register_v1"
+EVENT_CONTRACT = "risk_event_record_v2"
+OBSERVATION_CONTRACT = "risk_veto_observation_v2"
+SEARCH_CONTRACT = "bounded_search_register_v2"
+NORMALIZATION_CONTRACT = "risk_evidence_normalization_record_v1"
 
 STATUS_VOCABULARY = (
     "observed",
@@ -88,17 +84,21 @@ _HEX64 = re.compile(r"^[0-9a-f]{64}$")
 
 
 class RiskVetoContractError(ValueError):
-    """Raised when a Stage 2H contract is incomplete or non-deterministic."""
+    """Raised when a Stage 2H.1 contract is incomplete or unsafe."""
 
 
 def _canonical(value: Any) -> str:
     return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
 
 
+def canonical_hash(value: Any) -> str:
+    return hashlib.sha256(_canonical(value).encode("utf-8")).hexdigest()
+
+
 def stable_id(prefix: str, value: Any) -> str:
     """Return a content-addressed ID without machine-specific paths."""
 
-    return f"{prefix}_{hashlib.sha256(_canonical(value).encode('utf-8')).hexdigest()[:24]}"
+    return f"{prefix}_{canonical_hash(value)[:24]}"
 
 
 def _require(record: dict[str, Any], fields: tuple[str, ...], label: str) -> None:
@@ -107,13 +107,42 @@ def _require(record: dict[str, Any], fields: tuple[str, ...], label: str) -> Non
         raise RiskVetoContractError(f"{label} missing required fields: {', '.join(missing)}")
 
 
-def _date_like(value: Any, field: str) -> None:
+def _parse_datetime(value: Any, field: str) -> datetime:
     if not isinstance(value, str) or not value:
         raise RiskVetoContractError(f"{field} must be a non-empty ISO date or timestamp")
     try:
-        date.fromisoformat(value[:10])
-    except ValueError as exc:
-        raise RiskVetoContractError(f"{field} is not ISO date-like: {value}") from exc
+        parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    except ValueError:
+        try:
+            parsed = datetime.combine(date.fromisoformat(value), datetime.min.time())
+        except ValueError as exc:
+            raise RiskVetoContractError(f"{field} is not ISO date-like: {value}") from exc
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=UTC)
+    return parsed
+
+
+def _date_text(value: Any) -> str:
+    return str(value)[:10]
+
+
+def _not_after(left: str, right: str) -> bool:
+    return _parse_datetime(left, "left") <= _parse_datetime(right, "right")
+
+
+def _get_path(record: dict[str, Any], path: str) -> Any:
+    value: Any = record
+    for segment in path.split("."):
+        if not isinstance(value, dict) or segment not in value:
+            raise RiskVetoContractError(f"missing source field path: {path}")
+        value = value[segment]
+    return value
+
+
+def _values_equal(left: Any, right: Any) -> bool:
+    if isinstance(left, float) or isinstance(right, float):
+        return abs(float(left) - float(right)) <= 1e-12
+    return left == right
 
 
 def validate_evidence_record(record: dict[str, Any]) -> None:
@@ -148,12 +177,13 @@ def validate_evidence_record(record: dict[str, Any]) -> None:
         raise RiskVetoContractError("unsupported evidence contract")
     if record["source_type"] not in TRUE_SOURCE_TYPES:
         raise RiskVetoContractError(f"untrusted source type: {record['source_type']}")
-    _date_like(record["announcement_date"], "announcement_date")
-    _date_like(record["retrieved_at"], "retrieved_at")
-    _date_like(record["available_at"], "available_at")
+    _parse_datetime(record["announcement_date"], "announcement_date")
+    _parse_datetime(record["retrieved_at"], "retrieved_at")
+    _parse_datetime(record["available_at"], "available_at")
     if not isinstance(record["exact_url"], str) or not record["exact_url"].startswith("https://"):
         raise RiskVetoContractError("exact_url must be an official HTTPS locator")
-    if record["locator_sha256"] != hashlib.sha256(record["exact_url"].encode()).hexdigest():
+    expected_locator = hashlib.sha256(record["exact_url"].encode()).hexdigest()
+    if record["locator_sha256"] != expected_locator:
         raise RiskVetoContractError(f"locator hash mismatch: {record['source_evidence_id']}")
     if not _HEX64.fullmatch(str(record["content_sha256"])):
         raise RiskVetoContractError(
@@ -184,41 +214,340 @@ def validate_search_register(record: dict[str, Any]) -> None:
         record,
         (
             "contract",
+            "contract_version",
             "search_register_id",
             "risk_id",
+            "coverage_start",
+            "coverage_end",
+            "query_started_at",
+            "query_completed_at",
+            "available_at",
             "systems",
-            "date_range",
-            "search_terms",
+            "terms",
             "identifiers",
-            "query_time",
+            "completeness",
+            "completeness_basis",
             "result_count",
             "retrieved_count",
+            "rejected_count",
             "rejected_candidates",
             "anti_bot_gaps",
             "network_gaps",
-            "completeness",
-            "completeness_basis",
+            "supersedes_search_register_id",
+            "code_version",
         ),
         "search register",
     )
-    if record["contract"] != SEARCH_CONTRACT or record["risk_id"] not in RISK_IDS:
-        raise RiskVetoContractError("invalid search register identity")
+    if record["contract"] != SEARCH_CONTRACT or record["contract_version"] != SEARCH_CONTRACT:
+        raise RiskVetoContractError("unsupported search register contract")
+    if record["risk_id"] not in RISK_IDS:
+        raise RiskVetoContractError("invalid search register risk ID")
+    for field in (
+        "coverage_start",
+        "coverage_end",
+        "query_started_at",
+        "query_completed_at",
+        "available_at",
+    ):
+        _parse_datetime(record[field], field)
+    if not _not_after(record["coverage_start"], record["coverage_end"]):
+        raise RiskVetoContractError("search coverage dates are reversed")
+    if not _not_after(record["query_started_at"], record["query_completed_at"]):
+        raise RiskVetoContractError("search query timestamps are reversed")
+    if not _not_after(record["query_completed_at"], record["available_at"]):
+        raise RiskVetoContractError("search available_at precedes query completion")
     if not isinstance(record["systems"], list) or not record["systems"]:
         raise RiskVetoContractError("bounded search systems are required")
-    if not isinstance(record["date_range"], dict) or not {"start", "end"} <= set(
-        record["date_range"]
-    ):
-        raise RiskVetoContractError("bounded search date range is required")
-    _date_like(record["date_range"]["start"], "date_range.start")
-    _date_like(record["date_range"]["end"], "date_range.end")
-    _date_like(record["query_time"], "query_time")
-    for field in ("result_count", "retrieved_count"):
+    if not isinstance(record["terms"], list) or not isinstance(record["identifiers"], list):
+        raise RiskVetoContractError("search terms and identifiers must be lists")
+    for field in ("result_count", "retrieved_count", "rejected_count"):
         if not isinstance(record[field], int) or record[field] < 0:
-            raise RiskVetoContractError(f"{field} must be a non-negative integer")
-    if not isinstance(record["rejected_candidates"], list):
-        raise RiskVetoContractError("rejected candidates must be a list")
+            raise RiskVetoContractError(f"{field} must be non-negative")
+    if record["rejected_count"] != len(record["rejected_candidates"]):
+        raise RiskVetoContractError("rejected_count does not match rejected_candidates")
     if not isinstance(record["completeness"], bool) or not record["completeness_basis"]:
         raise RiskVetoContractError("search completeness must be explicit")
+    for field in ("anti_bot_gaps", "network_gaps"):
+        if not isinstance(record[field], list):
+            raise RiskVetoContractError(f"{field} must be a list")
+
+
+def validate_search_register_chain(
+    search_registers: list[dict[str, Any]], *, research_cutoff: str | None = None
+) -> dict[str, Any]:
+    """Validate all search versions before any PIT selection."""
+
+    by_id: dict[str, dict[str, Any]] = {}
+    for record in search_registers:
+        validate_search_register(record)
+        key = record["search_register_id"]
+        if key in by_id:
+            raise RiskVetoContractError(f"duplicate search register ID: {key}")
+        by_id[key] = record
+    if research_cutoff is not None:
+        for record in search_registers:
+            if not _not_after(record["coverage_end"], research_cutoff):
+                raise RiskVetoContractError(
+                    f"search coverage exceeds research cutoff: {record['search_register_id']}"
+                )
+    child_by_parent: dict[str, list[str]] = defaultdict(list)
+    for record in search_registers:
+        parent = record["supersedes_search_register_id"]
+        if parent is None:
+            continue
+        if parent not in by_id:
+            raise RiskVetoContractError(f"missing superseded search register: {parent}")
+        prior = by_id[parent]
+        if prior["risk_id"] != record["risk_id"]:
+            raise RiskVetoContractError("search supersession crosses risk IDs")
+        if not _not_after(prior["available_at"], record["available_at"]):
+            raise RiskVetoContractError("search supersession has reverse availability order")
+        child_by_parent[parent].append(record["search_register_id"])
+    if any(len(children) > 1 for children in child_by_parent.values()):
+        raise RiskVetoContractError("search supersession has conflicting branches")
+    for start in by_id:
+        seen: set[str] = set()
+        cursor = start
+        while cursor:
+            if cursor in seen:
+                raise RiskVetoContractError("search supersession cycle detected")
+            seen.add(cursor)
+            cursor = by_id[cursor]["supersedes_search_register_id"]
+    return {"status": "pass", "register_count": len(by_id), "version_chain_valid": True}
+
+
+def select_search_register_as_of(
+    risk_id: str,
+    as_of_date: str,
+    search_registers: list[dict[str, Any]],
+    *,
+    research_cutoff: str | None = None,
+) -> dict[str, Any] | None:
+    """Select the latest valid PIT register, or return None fail-closed."""
+
+    validate_search_register_chain(search_registers, research_cutoff=research_cutoff)
+    records = [record for record in search_registers if record["risk_id"] == risk_id]
+    visible = [record for record in records if _not_after(record["available_at"], as_of_date)]
+    visible_ids = {record["search_register_id"] for record in visible}
+    superseded_visible: set[str] = set()
+    by_id = {record["search_register_id"]: record for record in records}
+    for record in visible:
+        cursor = record["supersedes_search_register_id"]
+        while cursor and cursor in visible_ids:
+            superseded_visible.add(cursor)
+            cursor = by_id[cursor]["supersedes_search_register_id"]
+    candidates = [
+        record
+        for record in visible
+        if record["search_register_id"] not in superseded_visible
+        and _not_after(record["coverage_end"], as_of_date)
+    ]
+    if not candidates:
+        return None
+    candidates.sort(
+        key=lambda record: (
+            record["available_at"],
+            record["query_completed_at"],
+            record["search_register_id"],
+        )
+    )
+    selected = candidates[-1]
+    if len(candidates) > 1 and (
+        candidates[-1]["available_at"] == candidates[-2]["available_at"]
+        and candidates[-1]["query_completed_at"] == candidates[-2]["query_completed_at"]
+    ):
+        raise RiskVetoContractError("search register selection has an unresolved tie")
+    return selected
+
+
+def validate_normalization_record(record: dict[str, Any]) -> None:
+    _require(
+        record,
+        (
+            "contract",
+            "normalization_id",
+            "risk_id",
+            "event_semantic_key",
+            "target_field",
+            "source_evidence_id",
+            "source_field_path",
+            "raw_value",
+            "raw_unit",
+            "normalized_value",
+            "normalized_unit",
+            "transform",
+            "denominator_fact_ids",
+            "denominator_evidence_ids",
+            "rounding_policy",
+            "formula_version",
+            "verification_status",
+            "warnings",
+            "available_at",
+            "code_version",
+        ),
+        "normalization record",
+    )
+    if record["contract"] != NORMALIZATION_CONTRACT or record["risk_id"] not in RISK_IDS:
+        raise RiskVetoContractError("invalid normalization contract or risk ID")
+    if not isinstance(record["denominator_fact_ids"], list) or not isinstance(
+        record["denominator_evidence_ids"], list
+    ):
+        raise RiskVetoContractError("normalization denominator IDs must be lists")
+    if record["verification_status"] not in {"verified", "unresolved_conflict", "missing_evidence"}:
+        raise RiskVetoContractError("invalid normalization verification status")
+    if not isinstance(record["warnings"], list):
+        raise RiskVetoContractError("normalization warnings must be a list")
+    _parse_datetime(record["available_at"], "normalization.available_at")
+
+
+def _transform_normalized_value(record: dict[str, Any], evidence: dict[str, Any]) -> Any:
+    transform = record["transform"]
+    raw = record["raw_value"]
+    if transform == "identity" or transform == "reported_ratio_identity_v1":
+        return raw
+    if transform == "audit_opinion_to_class_v1":
+        if raw in {"standard_unmodified", "unmodified", "unqualified"}:
+            return "unmodified"
+        if raw in {"qualified", "adverse", "disclaimer"}:
+            return raw
+        raise RiskVetoContractError(f"unknown audit opinion normalization: {raw}")
+    if transform == "ratio_from_evidence_fields_v1":
+        denominator_path = record.get("denominator_field_path")
+        if not denominator_path:
+            raise RiskVetoContractError("ratio normalization has no denominator path")
+        denominator = _get_path(evidence, denominator_path)
+        if float(denominator) == 0:
+            raise RiskVetoContractError("ratio normalization has zero denominator")
+        return float(raw) / float(denominator)
+    raise RiskVetoContractError(f"unsupported normalization transform: {transform}")
+
+
+def normalization_lineage_hash(records: list[dict[str, Any]]) -> str:
+    return canonical_hash(
+        [
+            {
+                key: record[key]
+                for key in (
+                    "normalization_id",
+                    "target_field",
+                    "source_evidence_id",
+                    "source_field_path",
+                    "raw_value",
+                    "normalized_value",
+                    "transform",
+                    "denominator_fact_ids",
+                    "denominator_evidence_ids",
+                    "formula_version",
+                )
+            }
+            for record in sorted(records, key=lambda item: item["normalization_id"])
+        ]
+    )
+
+
+def validate_event_evidence_lineage(
+    event: dict[str, Any],
+    evidence: list[dict[str, Any]],
+    normalizations: list[dict[str, Any]],
+) -> dict[str, Any]:
+    """Prove event inputs from evidence fields and normalization records."""
+
+    evidence_by_id = {record["source_evidence_id"]: record for record in evidence}
+    normalization_by_id = {record["normalization_id"]: record for record in normalizations}
+    for record in evidence:
+        validate_evidence_record(record)
+    for record in normalizations:
+        validate_normalization_record(record)
+    for evidence_id in event["evidence_ids"]:
+        if evidence_id not in evidence_by_id:
+            raise RiskVetoContractError(f"event references unknown evidence: {evidence_id}")
+    selected: list[dict[str, Any]] = []
+    for normalization_id in event["normalization_ids"]:
+        if normalization_id not in normalization_by_id:
+            raise RiskVetoContractError(
+                f"event references unknown normalization: {normalization_id}"
+            )
+        record = normalization_by_id[normalization_id]
+        if (
+            record["risk_id"] != event["risk_id"]
+            or record["event_semantic_key"] != event["semantic_key"]
+        ):
+            raise RiskVetoContractError("normalization semantic identity does not match event")
+        if record["verification_status"] != "verified":
+            raise RiskVetoContractError(
+                f"event uses unresolved normalization: {record['normalization_id']}"
+            )
+        source = evidence_by_id.get(record["source_evidence_id"])
+        if source is None:
+            raise RiskVetoContractError("normalization references unknown evidence")
+        actual_raw = _get_path(source, record["source_field_path"])
+        if not _values_equal(actual_raw, record["raw_value"]):
+            raise RiskVetoContractError(
+                f"normalization raw value mismatch: {record['normalization_id']}"
+            )
+        recalculated = _transform_normalized_value(record, source)
+        if not _values_equal(recalculated, record["normalized_value"]):
+            raise RiskVetoContractError(
+                f"normalization transformed value mismatch: {record['normalization_id']}"
+            )
+        if not set(record["denominator_evidence_ids"]) <= set(event["evidence_ids"]):
+            raise RiskVetoContractError("normalization denominator is outside event evidence")
+        if not _not_after(source["available_at"], record["available_at"]):
+            raise RiskVetoContractError("normalization available_at precedes source evidence")
+        selected.append(record)
+    fields_seen: set[str] = set()
+    for record in selected:
+        if record["target_field"] in fields_seen:
+            raise RiskVetoContractError(
+                f"conflicting duplicate normalized field: {record['target_field']}"
+            )
+        fields_seen.add(record["target_field"])
+    expected_inputs = {record["target_field"]: record["normalized_value"] for record in selected}
+    if event["inputs"] != expected_inputs:
+        raise RiskVetoContractError(f"event inputs are not reconstructible: {event['event_id']}")
+    expected_sources = sorted(
+        {evidence_by_id[item]["source_type"] for item in event["evidence_ids"]}
+    )
+    if event["source_types"] != expected_sources:
+        raise RiskVetoContractError(
+            f"event source types are not evidence-derived: {event['event_id']}"
+        )
+    availability = [evidence_by_id[item]["available_at"] for item in event["evidence_ids"]]
+    availability.extend(record["available_at"] for record in selected)
+    if availability and not all(_not_after(item, event["available_at"]) for item in availability):
+        raise RiskVetoContractError(f"event available_at precedes an input: {event['event_id']}")
+    expected_hash = normalization_lineage_hash(selected)
+    if expected_hash != event["input_lineage_hash"]:
+        raise RiskVetoContractError(f"event input lineage hash mismatch: {event['event_id']}")
+    return {
+        "status": "pass",
+        "normalization_ids": [record["normalization_id"] for record in selected],
+        "source_evidence_ids": event["evidence_ids"],
+        "input_lineage_hash": expected_hash,
+    }
+
+
+def _event_identity_payload(record: dict[str, Any]) -> dict[str, Any]:
+    return {
+        key: record[key]
+        for key in (
+            "symbol",
+            "risk_id",
+            "semantic_key",
+            "event_type",
+            "event_date",
+            "available_at",
+            "period",
+            "evidence_ids",
+            "normalization_ids",
+            "input_lineage_hash",
+            "classification",
+            "trigger_version",
+            "inputs",
+            "status",
+            "supersedes",
+        )
+    }
 
 
 def validate_event_record(record: dict[str, Any]) -> None:
@@ -229,6 +558,7 @@ def validate_event_record(record: dict[str, Any]) -> None:
             "event_id",
             "symbol",
             "risk_id",
+            "semantic_key",
             "event_type",
             "event_date",
             "available_at",
@@ -239,6 +569,8 @@ def validate_event_record(record: dict[str, Any]) -> None:
             "classification",
             "trigger_version",
             "inputs",
+            "normalization_ids",
+            "input_lineage_hash",
             "status",
             "missing_reasons",
             "warnings",
@@ -250,38 +582,95 @@ def validate_event_record(record: dict[str, Any]) -> None:
     )
     if record["contract"] != EVENT_CONTRACT or record["risk_id"] not in RISK_IDS:
         raise RiskVetoContractError("invalid event identity")
-    _date_like(record["event_date"], "event_date")
-    _date_like(record["available_at"], "available_at")
-    if record["status"] not in STATUS_VOCABULARY:
-        raise RiskVetoContractError("invalid event status")
-    if record["score_eligible"] is not False:
-        raise RiskVetoContractError("Stage 2H events are not score eligible")
+    for field in ("event_date", "available_at"):
+        _parse_datetime(record[field], field)
+    if record["status"] not in STATUS_VOCABULARY or record["score_eligible"] is not False:
+        raise RiskVetoContractError("invalid event status or score eligibility")
     if not isinstance(record["evidence_ids"], list) or not isinstance(record["source_types"], list):
         raise RiskVetoContractError("event evidence/source types must be lists")
     if any(source not in TRUE_SOURCE_TYPES for source in record["source_types"]):
         raise RiskVetoContractError("event contains an untrusted source type")
-    expected = stable_id(
-        "risk_event",
-        {
-            key: record[key]
-            for key in (
-                "symbol",
-                "risk_id",
-                "event_type",
-                "event_date",
-                "available_at",
-                "period",
-                "evidence_ids",
-                "classification",
-                "trigger_version",
-                "inputs",
-                "status",
-                "supersedes",
-            )
-        },
-    )
+    if not isinstance(record["normalization_ids"], list) or not _HEX64.fullmatch(
+        record["input_lineage_hash"]
+    ):
+        raise RiskVetoContractError("event normalization lineage is malformed")
+    expected = stable_id("risk_event", _event_identity_payload(record))
     if record["event_id"] != expected:
         raise RiskVetoContractError(f"event deterministic ID mismatch: {record['event_id']}")
+
+
+def validate_event_supersession_chain(events: list[dict[str, Any]]) -> dict[str, Any]:
+    by_id: dict[str, dict[str, Any]] = {}
+    for event in events:
+        validate_event_record(event)
+        if event["event_id"] in by_id:
+            raise RiskVetoContractError(f"duplicate event ID: {event['event_id']}")
+        by_id[event["event_id"]] = event
+    children: dict[str, list[str]] = defaultdict(list)
+    for event in events:
+        parent_id = event["supersedes"]
+        if parent_id is None:
+            continue
+        if parent_id == event["event_id"] or parent_id not in by_id:
+            raise RiskVetoContractError(f"invalid superseded event: {parent_id}")
+        parent = by_id[parent_id]
+        if (parent["symbol"], parent["risk_id"], parent["semantic_key"]) != (
+            event["symbol"],
+            event["risk_id"],
+            event["semantic_key"],
+        ):
+            raise RiskVetoContractError("event supersession crosses identity or semantic key")
+        if not _not_after(parent["available_at"], event["available_at"]):
+            raise RiskVetoContractError("event supersession has reverse availability order")
+        children[parent_id].append(event["event_id"])
+    if any(len(items) > 1 for items in children.values()):
+        raise RiskVetoContractError("event supersession has conflicting branches")
+    for start in by_id:
+        seen: set[str] = set()
+        cursor = start
+        while cursor:
+            if cursor in seen:
+                raise RiskVetoContractError("event supersession cycle detected")
+            seen.add(cursor)
+            cursor = by_id[cursor]["supersedes"]
+    return {"status": "pass", "event_count": len(by_id), "supersession_chain_valid": True}
+
+
+def resolve_active_events_as_of(
+    symbol: str,
+    risk_id: str,
+    as_of_date: str,
+    events: list[dict[str, Any]],
+) -> dict[str, Any]:
+    """Return only active events visible at a PIT research date."""
+
+    validate_event_supersession_chain(events)
+    scoped = [
+        event for event in events if event["symbol"] == symbol and event["risk_id"] == risk_id
+    ]
+    visible = [event for event in scoped if _not_after(event["available_at"], as_of_date)]
+    visible_ids = {event["event_id"] for event in visible}
+    by_id = {event["event_id"]: event for event in scoped}
+    superseded: set[str] = set()
+    edges: list[dict[str, str]] = []
+    for event in visible:
+        cursor = event["supersedes"]
+        if cursor and cursor in visible_ids:
+            edges.append({"superseder_event_id": event["event_id"], "superseded_event_id": cursor})
+        while cursor and cursor in visible_ids:
+            superseded.add(cursor)
+            cursor = by_id[cursor]["supersedes"]
+    active = [event for event in visible if event["event_id"] not in superseded]
+    active.sort(key=lambda event: (event["event_date"], event["available_at"], event["event_id"]))
+    return {
+        "status": "pass",
+        "active_events": active,
+        "visible_event_ids": [event["event_id"] for event in visible],
+        "active_event_ids": [event["event_id"] for event in active],
+        "superseded_event_ids": sorted(superseded),
+        "applied_supersession_edges": edges,
+        "event_version_resolution_status": "pass",
+    }
 
 
 def _triggered(risk_id: str, inputs: dict[str, Any]) -> bool:
@@ -317,6 +706,33 @@ def _triggered(risk_id: str, inputs: dict[str, Any]) -> bool:
     raise RiskVetoContractError(f"unknown risk ID: {risk_id}")
 
 
+def _observation_identity_payload(record: dict[str, Any]) -> dict[str, Any]:
+    return {
+        key: record[key]
+        for key in (
+            "symbol",
+            "risk_id",
+            "evaluation_as_of_date",
+            "conclusion_available_at",
+            "status",
+            "active_event_ids",
+            "superseded_event_ids",
+            "applied_supersession_edges",
+            "event_version_resolution_status",
+            "search_register_id",
+            "search_contract_version",
+            "search_available_at",
+            "search_coverage_end",
+            "bounded_search_complete",
+            "search_gap_reasons",
+            "trigger_version",
+            "inputs",
+            "missing_reasons",
+            "lineage_status",
+        )
+    }
+
+
 def validate_observation(record: dict[str, Any]) -> None:
     _require(
         record,
@@ -325,15 +741,26 @@ def validate_observation(record: dict[str, Any]) -> None:
             "observation_id",
             "symbol",
             "risk_id",
-            "as_of_date",
+            "evaluation_as_of_date",
+            "available_at",
+            "conclusion_available_at",
             "status",
-            "event_ids",
+            "active_event_ids",
+            "superseded_event_ids",
+            "applied_supersession_edges",
+            "event_version_resolution_status",
             "evidence_ids",
             "search_register_id",
+            "search_contract_version",
+            "search_available_at",
+            "search_coverage_end",
+            "bounded_search_complete",
+            "search_gap_reasons",
             "trigger_version",
             "inputs",
             "missing_reasons",
             "warnings",
+            "lineage_status",
             "deterministic_id",
             "supersedes",
             "code_version",
@@ -345,25 +772,26 @@ def validate_observation(record: dict[str, Any]) -> None:
         raise RiskVetoContractError("invalid observation identity")
     if record["status"] not in STATUS_VOCABULARY or record["score_eligible"] is not False:
         raise RiskVetoContractError("invalid observation status or score eligibility")
-    _date_like(record["as_of_date"], "as_of_date")
-    if record["deterministic_id"] != stable_id(
-        "risk_observation",
-        {
-            key: record[key]
-            for key in (
-                "symbol",
-                "risk_id",
-                "as_of_date",
-                "status",
-                "event_ids",
-                "evidence_ids",
-                "search_register_id",
-                "trigger_version",
-                "inputs",
-                "missing_reasons",
-            )
-        },
+    _parse_datetime(record["evaluation_as_of_date"], "evaluation_as_of_date")
+    _parse_datetime(record["available_at"], "available_at")
+    if record["available_at"] != record["conclusion_available_at"]:
+        raise RiskVetoContractError("available_at must equal conclusion_available_at")
+    if not _not_after(record["available_at"], record["evaluation_as_of_date"]):
+        raise RiskVetoContractError("observation conclusion is not available at evaluation as-of")
+    if record["search_available_at"] is not None:
+        _parse_datetime(record["search_available_at"], "search_available_at")
+        if not _not_after(record["search_available_at"], record["evaluation_as_of_date"]):
+            raise RiskVetoContractError("search register is not PIT-visible")
+    if record["search_coverage_end"] is not None and not _not_after(
+        record["search_coverage_end"], record["evaluation_as_of_date"]
     ):
+        raise RiskVetoContractError("search coverage exceeds evaluation as-of")
+    if record["event_version_resolution_status"] != "pass":
+        raise RiskVetoContractError("event version resolution did not pass")
+    if not isinstance(record["applied_supersession_edges"], list):
+        raise RiskVetoContractError("supersession edges must be a list")
+    expected = stable_id("risk_observation", _observation_identity_payload(record))
+    if record["deterministic_id"] != expected or record["observation_id"] != expected:
         raise RiskVetoContractError("observation deterministic ID mismatch")
 
 
@@ -374,93 +802,102 @@ def evaluate_observations(
     events: list[dict[str, Any]],
     search_registers: list[dict[str, Any]],
     evidence: list[dict[str, Any]],
+    normalizations: list[dict[str, Any]],
     code_version: str = CODE_VERSION,
 ) -> list[dict[str, Any]]:
-    """Evaluate all eight risks using PIT-visible events and bounded searches."""
+    """Evaluate active, PIT-visible events and the PIT-selected search register."""
 
     for record in evidence:
         validate_evidence_record(record)
-    for record in search_registers:
-        validate_search_register(record)
+    validate_search_register_chain(search_registers)
     for record in events:
         validate_event_record(record)
+        validate_event_evidence_lineage(record, evidence, normalizations)
+    validate_event_supersession_chain(events)
     evidence_by_id = {record["source_evidence_id"]: record for record in evidence}
-    registers = {record["risk_id"]: record for record in search_registers}
-    grouped: dict[str, list[dict[str, Any]]] = defaultdict(list)
-    for event in events:
-        if event["symbol"] == symbol and event["available_at"][:10] <= as_of_date:
-            grouped[event["risk_id"]].append(event)
     results: list[dict[str, Any]] = []
     for risk_id in RISK_IDS:
-        risk_events = grouped[risk_id]
-        register = registers.get(risk_id)
-        event_ids = [event["event_id"] for event in risk_events]
-        evidence_ids = sorted({item for event in risk_events for item in event["evidence_ids"]})
-        missing_reasons = sorted(
-            {reason for event in risk_events for reason in event["missing_reasons"] if reason}
+        register = select_search_register_as_of(risk_id, as_of_date, search_registers)
+        resolution = resolve_active_events_as_of(symbol, risk_id, as_of_date, events)
+        active_events = resolution["active_events"]
+        active_event_ids = resolution["active_event_ids"]
+        event_evidence_ids = sorted(
+            {item for event in active_events for item in event["evidence_ids"]}
         )
-        warnings = sorted({warning for event in risk_events for warning in event["warnings"]})
-        triggered = [event for event in risk_events if _triggered(risk_id, event["inputs"])]
-        if triggered:
-            status = "observed"
-        elif any(event["status"] == "missing_evidence" for event in risk_events) or not register:
+        missing_reasons = sorted(
+            {reason for event in active_events for reason in event["missing_reasons"] if reason}
+        )
+        warnings = sorted({warning for event in active_events for warning in event["warnings"]})
+        if register is None:
+            missing_reasons.append("no PIT-visible search register with coverage_end <= as_of_date")
             status = "missing_evidence"
         elif not register["completeness"]:
-            status = "missing_evidence"
             missing_reasons.append("bounded search register is incomplete")
+            status = "missing_evidence"
+        elif any(_triggered(risk_id, event["inputs"]) for event in active_events):
+            status = "observed"
+        elif not active_events:
+            missing_reasons.append("no PIT-visible active event evidence")
+            status = "missing_evidence"
         else:
             status = "not_observed_within_bounded_evidence"
-        if not evidence_ids:
-            available_at = as_of_date
-        else:
-            # An aggregate conclusion is not available until its latest
-            # included source is available.  Using the earliest source would
-            # create a silent look-ahead error in downstream PIT consumers.
-            available_at = max(evidence_by_id[item]["available_at"][:10] for item in evidence_ids)
+        availability = [event["available_at"] for event in active_events]
+        availability.extend(evidence_by_id[item]["available_at"] for item in event_evidence_ids)
+        if register is not None:
+            availability.append(register["available_at"])
+        if not availability:
+            # There is no conclusion to expose for a risk with no PIT-visible
+            # input.  It is intentionally omitted from the historical slice.
+            continue
+        conclusion_available_at = max(
+            availability, key=lambda item: _parse_datetime(item, "available_at")
+        ).replace("Z", "+00:00")
+        if not _not_after(conclusion_available_at, as_of_date):
+            continue
+        search_gap_reasons = (
+            list(register["network_gaps"] + register["anti_bot_gaps"])
+            if register
+            else ["search register not PIT-visible"]
+        )
         inputs = {
-            "triggered_event_count": len(triggered),
-            "pit_visible_event_count": len(risk_events),
+            "triggered_event_count": sum(
+                _triggered(risk_id, event["inputs"]) for event in active_events
+            ),
+            "pit_visible_event_count": len(active_events),
             "bounded_search_complete": bool(register and register["completeness"]),
         }
         record = {
             "contract": OBSERVATION_CONTRACT,
-            "observation_id": stable_id(
-                "risk_observation", {"symbol": symbol, "risk_id": risk_id, "as_of_date": as_of_date}
-            ),
+            "observation_id": "",
             "symbol": symbol,
             "risk_id": risk_id,
-            "as_of_date": as_of_date,
-            "available_at": available_at,
+            "evaluation_as_of_date": as_of_date,
+            "available_at": conclusion_available_at,
+            "conclusion_available_at": conclusion_available_at,
             "status": status,
-            "event_ids": event_ids,
-            "evidence_ids": evidence_ids,
+            "active_event_ids": active_event_ids,
+            "superseded_event_ids": resolution["superseded_event_ids"],
+            "applied_supersession_edges": resolution["applied_supersession_edges"],
+            "event_version_resolution_status": resolution["event_version_resolution_status"],
+            "evidence_ids": event_evidence_ids,
             "search_register_id": register["search_register_id"] if register else None,
+            "search_contract_version": register["contract_version"] if register else None,
+            "search_available_at": register["available_at"] if register else None,
+            "search_coverage_end": register["coverage_end"] if register else None,
+            "bounded_search_complete": bool(register and register["completeness"]),
+            "search_gap_reasons": sorted(set(search_gap_reasons)),
             "trigger_version": TRIGGER_RULES[risk_id]["version"],
             "inputs": inputs,
-            "missing_reasons": missing_reasons,
+            "missing_reasons": sorted(set(missing_reasons)),
             "warnings": warnings,
+            "lineage_status": "pass" if event_evidence_ids or register else "missing_evidence",
             "deterministic_id": "",
             "supersedes": None,
             "code_version": code_version,
             "score_eligible": False,
         }
         record["deterministic_id"] = stable_id(
-            "risk_observation",
-            {
-                key: record[key]
-                for key in (
-                    "symbol",
-                    "risk_id",
-                    "as_of_date",
-                    "status",
-                    "event_ids",
-                    "evidence_ids",
-                    "search_register_id",
-                    "trigger_version",
-                    "inputs",
-                    "missing_reasons",
-                )
-            },
+            "risk_observation", _observation_identity_payload(record)
         )
         record["observation_id"] = record["deterministic_id"]
         validate_observation(record)
@@ -473,13 +910,15 @@ def validate_contracts(
     evidence: list[dict[str, Any]],
     events: list[dict[str, Any]],
     search_registers: list[dict[str, Any]],
+    normalizations: list[dict[str, Any]],
 ) -> dict[str, Any]:
     for record in evidence:
         validate_evidence_record(record)
+    validate_search_register_chain(search_registers)
     for record in events:
         validate_event_record(record)
-    for record in search_registers:
-        validate_search_register(record)
+        validate_event_evidence_lineage(record, evidence, normalizations)
+    validate_event_supersession_chain(events)
     if {record["risk_id"] for record in search_registers} != set(RISK_IDS):
         raise RiskVetoContractError("one bounded search register is required per risk")
     return {
@@ -487,6 +926,7 @@ def validate_contracts(
         "methodology_version": METHODOLOGY_VERSION,
         "evidence_count": len(evidence),
         "event_count": len(events),
+        "normalization_count": len(normalizations),
         "search_register_count": len(search_registers),
         "risk_count": len(RISK_IDS),
         "score_eligible": False,
