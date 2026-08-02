@@ -1,0 +1,229 @@
+{
+  "schema": "roic_acquisition_plan_coverage_v1",
+  "validation_status": "PASS",
+  "target_year": 2024,
+  "opening_year": 2023,
+  "covered_blockers": [
+    {
+      "role_id": "invested_capital.associate_investment",
+      "fiscal_year": 2023
+    },
+    {
+      "role_id": "invested_capital.associate_investment",
+      "fiscal_year": 2024
+    },
+    {
+      "role_id": "invested_capital.bonds_payable",
+      "fiscal_year": 2023
+    },
+    {
+      "role_id": "invested_capital.bonds_payable",
+      "fiscal_year": 2024
+    },
+    {
+      "role_id": "invested_capital.current_portion_of_bonds_payable",
+      "fiscal_year": 2023
+    },
+    {
+      "role_id": "invested_capital.current_portion_of_bonds_payable",
+      "fiscal_year": 2024
+    },
+    {
+      "role_id": "invested_capital.current_portion_of_lease_liabilities",
+      "fiscal_year": 2023
+    },
+    {
+      "role_id": "invested_capital.current_portion_of_lease_liabilities",
+      "fiscal_year": 2024
+    },
+    {
+      "role_id": "invested_capital.current_portion_of_long_term_borrowings",
+      "fiscal_year": 2023
+    },
+    {
+      "role_id": "invested_capital.current_portion_of_long_term_borrowings",
+      "fiscal_year": 2024
+    },
+    {
+      "role_id": "invested_capital.interest_bearing_debt_total",
+      "fiscal_year": 2023
+    },
+    {
+      "role_id": "invested_capital.interest_bearing_debt_total",
+      "fiscal_year": 2024
+    },
+    {
+      "role_id": "invested_capital.joint_venture_investment",
+      "fiscal_year": 2023
+    },
+    {
+      "role_id": "invested_capital.joint_venture_investment",
+      "fiscal_year": 2024
+    },
+    {
+      "role_id": "invested_capital.lease_liabilities",
+      "fiscal_year": 2023
+    },
+    {
+      "role_id": "invested_capital.lease_liabilities",
+      "fiscal_year": 2024
+    },
+    {
+      "role_id": "invested_capital.long_term_borrowings",
+      "fiscal_year": 2023
+    },
+    {
+      "role_id": "invested_capital.long_term_borrowings",
+      "fiscal_year": 2024
+    },
+    {
+      "role_id": "invested_capital.non_controlling_interest",
+      "fiscal_year": 2023
+    },
+    {
+      "role_id": "invested_capital.non_controlling_interest",
+      "fiscal_year": 2024
+    },
+    {
+      "role_id": "invested_capital.non_operating_financial_assets",
+      "fiscal_year": 2023
+    },
+    {
+      "role_id": "invested_capital.non_operating_financial_assets",
+      "fiscal_year": 2024
+    },
+    {
+      "role_id": "invested_capital.parent_equity",
+      "fiscal_year": 2023
+    },
+    {
+      "role_id": "invested_capital.parent_equity",
+      "fiscal_year": 2024
+    },
+    {
+      "role_id": "invested_capital.qualifying_non_operating_assets",
+      "fiscal_year": 2023
+    },
+    {
+      "role_id": "invested_capital.qualifying_non_operating_assets",
+      "fiscal_year": 2024
+    },
+    {
+      "role_id": "invested_capital.short_term_borrowings",
+      "fiscal_year": 2023
+    },
+    {
+      "role_id": "invested_capital.short_term_borrowings",
+      "fiscal_year": 2024
+    },
+    {
+      "role_id": "nopat.asset_disposal_gain_loss",
+      "fiscal_year": 2024
+    },
+    {
+      "role_id": "nopat.fair_value_net_change",
+      "fiscal_year": 2024
+    },
+    {
+      "role_id": "nopat.finance_cost_adjustment",
+      "fiscal_year": 2024
+    },
+    {
+      "role_id": "nopat.finance_cost_excluding_lease_interest",
+      "fiscal_year": 2024
+    },
+    {
+      "role_id": "nopat.investment_income",
+      "fiscal_year": 2024
+    },
+    {
+      "role_id": "nopat.lease_interest_expense",
+      "fiscal_year": 2024
+    },
+    {
+      "role_id": "nopat.operating_profit",
+      "fiscal_year": 2024
+    },
+    {
+      "role_id": "policy.non_operating_asset_classification",
+      "fiscal_year": 2023
+    },
+    {
+      "role_id": "policy.non_operating_asset_classification",
+      "fiscal_year": 2024
+    },
+    {
+      "role_id": "tax.operating_tax_expense",
+      "fiscal_year": 2024
+    }
+  ],
+  "uncovered_blockers": [],
+  "orphan_items": [],
+  "mislayered_items": [],
+  "duplicated_contributions": [],
+  "methodology_dependencies": [
+    {
+      "role_id": "policy.non_operating_asset_classification",
+      "fiscal_year": 2023,
+      "resolution_status": "resolved",
+      "supporting_fact_roles": [
+        "invested_capital.cash_and_cash_equivalents",
+        "invested_capital.restricted_cash",
+        "invested_capital.non_operating_financial_assets",
+        "invested_capital.associate_investment",
+        "invested_capital.joint_venture_investment"
+      ]
+    },
+    {
+      "role_id": "policy.non_operating_asset_classification",
+      "fiscal_year": 2024,
+      "resolution_status": "resolved",
+      "supporting_fact_roles": [
+        "invested_capital.cash_and_cash_equivalents",
+        "invested_capital.restricted_cash",
+        "invested_capital.non_operating_financial_assets",
+        "invested_capital.associate_investment",
+        "invested_capital.joint_venture_investment"
+      ]
+    },
+    {
+      "role_id": "policy.non_operating_asset_classification",
+      "fiscal_year": 2023,
+      "resolution_status": "resolved",
+      "supporting_fact_roles": [
+        "invested_capital.cash_and_cash_equivalents",
+        "invested_capital.restricted_cash",
+        "invested_capital.non_operating_financial_assets",
+        "invested_capital.associate_investment",
+        "invested_capital.joint_venture_investment"
+      ]
+    },
+    {
+      "role_id": "policy.non_operating_asset_classification",
+      "fiscal_year": 2024,
+      "resolution_status": "resolved",
+      "supporting_fact_roles": [
+        "invested_capital.cash_and_cash_equivalents",
+        "invested_capital.restricted_cash",
+        "invested_capital.non_operating_financial_assets",
+        "invested_capital.associate_investment",
+        "invested_capital.joint_venture_investment"
+      ]
+    }
+  ],
+  "ready_roles_not_acquired": [
+    {
+      "role_id": "invested_capital.cash_and_cash_equivalents",
+      "fiscal_year": 2023
+    },
+    {
+      "role_id": "invested_capital.cash_and_cash_equivalents",
+      "fiscal_year": 2024
+    }
+  ],
+  "registry_sha256": "dd3dd0bc522344b50df375a72ca220255ae5678e111d11f2a3c1cc7e45bc25f8",
+  "dependency_graph_sha256": "30901560c2cb3106f02e5ebca832802f5f6e6913f5e949046384eebfc2364f80",
+  "readiness_report_sha256": "0f0bf2d53202419d871bc086c23a45513d658907e4dc3a30da755069cc0adc9d",
+  "plan_digest": "aedaebcaa5b85fd4bbfa39f77c2ac09a55c548cf2bb099cdc008271aa3340215",
+  "next_stage_acquisition": "ALLOWED"
+}
