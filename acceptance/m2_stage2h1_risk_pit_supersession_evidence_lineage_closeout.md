@@ -55,3 +55,22 @@ not abuse; and proposed financing is not realized dilution.
 
 No ROIC, scoring, Web, target-price, recommendation, automatic-trading or
 market-mechanism work was started.
+
+## Stage 2H.1R follow-up correction
+
+The historical seven-observation result above is retained as the actual Stage
+2H.1 output. Stage 2H.1R does not rewrite that history; it changes the public
+evaluation contract so a historical run always returns the frozen eight-risk
+universe as eight `risk_evaluation_slot_v1` slots. For the 2025-04-01 PIT
+rerun, seven observations are emitted from visible evidence and the regulatory
+risk has one explicit un-emitted `missing_evidence` slot with
+`no PIT-visible input`.
+
+The event contract is now `risk_event_record_v3` and the observation contract is
+`risk_veto_observation_v3`. Input, supplemental, and all evidence IDs are
+separate; supplemental material is excluded from `input_lineage_hash` and
+trigger reconstruction. The canonical current profile is now
+`current_risk_veto_profile`; the former broad placeholders are retained only
+as explicitly legacy, non-current, superseded checks. The Stage 2H.1R
+acceptance records the new hashes and gates without deleting this historical
+closeout.

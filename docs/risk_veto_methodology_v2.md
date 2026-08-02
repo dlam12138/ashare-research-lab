@@ -1,8 +1,9 @@
-# Stage 2H.1 Risk-Veto Methodology v2
+# Stage 2H.1R Risk-Veto Methodology v2 / v3 contracts
 
-This is the frozen implementation contract for the Stage 2H.1 closeout. The v1
-methodology and v1 ledgers remain historical records; v2 adds provenance
-controls without changing the eight risk IDs or their trigger boundaries.
+This is the frozen implementation contract for the Stage 2H.1R closeout. The v1
+methodology and v1 ledgers remain historical records; the v2 methodology remains
+the trigger baseline. Stage 2H.1R adds provenance and fixed-universe controls
+without changing the eight risk IDs or their trigger boundaries.
 
 ## Frozen boundaries
 
@@ -23,9 +24,14 @@ controls without changing the eight risk IDs or their trigger boundaries.
 ## Contracts
 
 `risk_veto_methodology_v2` uses `bounded_search_register_v2`,
-`risk_event_record_v2`, `risk_evidence_normalization_record_v1`, and
-`risk_veto_observation_v2`. Event input values are reconstructed from
+`risk_event_record_v3`, `risk_evidence_normalization_record_v1`,
+`risk_veto_observation_v3`, `risk_universe_evaluation_v1`, and
+`risk_evaluation_slot_v1`. Event input values are reconstructed from
 field-level normalization records, not copied from an event-input summary.
+Each event and observation separates `input_evidence_ids` from
+`supplemental_evidence_ids`; only the input set participates in
+`input_lineage_hash`. The public risk-universe evaluator emits exactly eight
+slots even when no observation can be published.
 Every evidence, search, event, normalization and observation record carries a
 PIT `available_at` (observations additionally require
 `conclusion_available_at`). IDs include the relevant version, identity and
