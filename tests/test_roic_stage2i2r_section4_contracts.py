@@ -112,6 +112,9 @@ def test_reconciled_validator_requires_ordered_dual_evidence_and_digest():
             for x in evidence
         ]
     )
+    identity = stage._reconciliation_identity_payload(evidence)["identity_digest"]
+    fact["source_id"] = f"reconciled:test:{identity}"
+    fact["fact_id"] = stage.build_fact_id(fact)
     assert stage.validate_reconciled_fact(fact)["status"] == "TRUSTED"
     fact["source_evidence"] = list(reversed(evidence))
     with pytest.raises(ValueError):

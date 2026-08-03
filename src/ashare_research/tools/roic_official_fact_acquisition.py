@@ -178,10 +178,10 @@ _SPEC_ROLE_MAP = {
 for _sid, (_role, _concept) in _SPEC_ROLE_MAP.items():
     EXTRACTION_SPECS[_sid].update(
         {
-        "extraction_spec_id": _sid,
-        "role_id": _role,
-        "concept_id": _concept,
-        "fiscal_year": "cell_year",
+            "extraction_spec_id": _sid,
+            "role_id": _role,
+            "concept_id": _concept,
+            "fiscal_year": "cell_year",
             "source_report_year": "registry_metadata",
             "source_page": "registry_locator",
             "printed_page": "registry_locator",
@@ -1013,21 +1013,7 @@ def _reconciled_fact(cell: ExtractedCell, inputs: list[dict[str, Any]]) -> dict[
     )
     if [item["source_type"] for item in ordered] != ["company_official", "exchange_official"]:
         raise ValueError("reconciliation requires issuer then exchange evidence")
-    evidence_digest = canonical_digest(
-        {
-            "order_semantics_id": EVIDENCE_ORDER_SEMANTICS_ID,
-            "order_semantics_version": EVIDENCE_ORDER_SEMANTICS_VERSION,
-            "evidence": [
-                {
-                    "fact_id": item["fact_id"],
-                    "source_id": item["source_id"],
-                    "source_type": item["source_type"],
-                    "content_sha256": item["content_sha256"],
-                }
-                for item in ordered
-            ],
-        }
-    )
+    evidence_digest = _reconciliation_identity_payload(ordered)["identity_digest"]
     source_id = (
         f"reconciled:{cell.concept_id}:{cell.fiscal_year}:"
         f"{RECONCILIATION_RULE_ID}:v{RECONCILIATION_RULE_VERSION}:{evidence_digest}"
@@ -1108,6 +1094,24 @@ def _reconciled_fact(cell: ExtractedCell, inputs: list[dict[str, Any]]) -> dict[
     return fact
 
 
+def _reconciliation_identity_payload(ordered: list[dict[str, Any]]) -> dict[str, Any]:
+    evidence = [
+        {
+            "fact_id": item["fact_id"],
+            "source_id": item["source_id"],
+            "source_type": item["source_type"],
+            "content_sha256": item["content_sha256"],
+        }
+        for item in ordered
+    ]
+    payload = {
+        "order_semantics_id": EVIDENCE_ORDER_SEMANTICS_ID,
+        "order_semantics_version": EVIDENCE_ORDER_SEMANTICS_VERSION,
+        "evidence": evidence,
+    }
+    return {"payload": payload, "identity_digest": canonical_digest(payload)}
+
+
 def validate_reconciled_fact(fact: dict[str, Any]) -> dict[str, Any]:
     """Validate canonical derived-source semantics and complete dual evidence."""
     if (
@@ -1144,6 +1148,13 @@ def validate_reconciled_fact(fact: dict[str, Any]) -> dict[str, Any]:
         raise ValueError("evidence ordering identity mismatch")
     if fact.get("input_fact_ids") != ",".join(e.get("fact_id") for e in evidence):
         raise ValueError("ordered input Fact IDs do not match evidence")
+    expected_identity = _reconciliation_identity_payload(evidence)["identity_digest"]
+    if expected_identity not in fact.get("source_id", ""):
+        raise ValueError("reconciliation source identity mismatch")
+    candidate = dict(fact)
+    candidate.pop("fact_id", None)
+    if build_fact_id(candidate) != fact.get("fact_id"):
+        raise ValueError("reconciled Fact ID mismatch")
     return {"status": "TRUSTED", "evidence_count": len(evidence)}
 
 
