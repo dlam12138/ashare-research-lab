@@ -1,14 +1,104 @@
 {
-  "schema": "roic_stage2i2r_old_new_report_v1",
-  "hardcoded_constants_removed": true,
-  "capture_derived_values_and_ids": true,
-  "finance_operands": ["finance_cost_amount", "lease_interest_amount"],
-  "finance_formula": "abs(finance_cost_amount)-lease_interest_amount",
-  "reconciled_source_semantics": {"old": "exchange_official", "new": "reconciled_derived"},
-  "dual_evidence_set_preserved": true,
-  "static_missing_declarations_replaced_by_executed_searches": true,
+  "schema": "roic_stage2i2r_old_new_report_v2",
+  "old_artifact_set_sha256": "363f53a2e906cadfb464a3116cc212b629daf94af67fd2d01848b6d155806de9",
+  "new_artifact_set_sha256": "90632b11b4784a019f8765237fe0d4bafcf1b8a80ff5c681a57fba3798da2483",
+  "fact_id_comparison": [
+    {
+      "acquisition_id": "A-2024-asset-disposal",
+      "fiscal_year": 2024,
+      "old_fact_id": null,
+      "current_fact_id": "5d7e7435a6d5a1a4cb1f1fe441458527e3bf147e9908340ba87cf43baab426f0",
+      "old_source_type": "exchange_official",
+      "current_source_type": "reconciled_derived",
+      "current_evidence_set_digest": "0bf0180b43b966c03d7091bd80341da7b30f03db2e02d885c6a8adb17d07572c",
+      "economic_value_unchanged": true
+    },
+    {
+      "acquisition_id": "A-2024-fair-value",
+      "fiscal_year": 2024,
+      "old_fact_id": null,
+      "current_fact_id": "e1a0cd1aa6ed22f3861042353b7227ab658eda124193d6d90e3d29b99e2b20df",
+      "old_source_type": "exchange_official",
+      "current_source_type": "reconciled_derived",
+      "current_evidence_set_digest": "9e80293f9aa9b7c8429f659db3c16bf0c3f43552268d5609419780d635835e88",
+      "economic_value_unchanged": true
+    },
+    {
+      "acquisition_id": "A-2024-finance-core",
+      "fiscal_year": 2024,
+      "old_fact_id": null,
+      "current_fact_id": "fc3112ace4925bfc776955bf71813565a4f1c9add4901fd6d9a0e92a8475a34d",
+      "old_source_type": "exchange_official",
+      "current_source_type": "reconciled_derived",
+      "current_evidence_set_digest": "c7e3437c54f6fa64db3e474ba902aa5899388d326cd9780aa5665726c135d536",
+      "economic_value_unchanged": true
+    },
+    {
+      "acquisition_id": "A-2024-investment-income",
+      "fiscal_year": 2024,
+      "old_fact_id": null,
+      "current_fact_id": "c7d728ad5a85f30ded3d94a4e60c30cded5451b08c76301268bd95e7d97b0509",
+      "old_source_type": "exchange_official",
+      "current_source_type": "reconciled_derived",
+      "current_evidence_set_digest": "4c2a6e64e69f0c6682c6fd80179ef2c5e5ea37b80b8d7c0c8f685bbe409e6540",
+      "economic_value_unchanged": true
+    },
+    {
+      "acquisition_id": "B-2023-2024-nci",
+      "fiscal_year": 2023,
+      "old_fact_id": null,
+      "current_fact_id": "56d73f8d567bcc35515475b1f81685f089f5fd539c3923c252a243cd1cacdbd3",
+      "old_source_type": "exchange_official",
+      "current_source_type": "reconciled_derived",
+      "current_evidence_set_digest": "0b036fb1fc0db9d14aa97645cd488d30c57696a546b9c11f35d4137c36d75043",
+      "economic_value_unchanged": true
+    },
+    {
+      "acquisition_id": "B-2023-2024-nci",
+      "fiscal_year": 2024,
+      "old_fact_id": null,
+      "current_fact_id": "7d52dde2084e23bc22cc26b95869ad62b97da36eaede56003bd29a99aa240fe2",
+      "old_source_type": "exchange_official",
+      "current_source_type": "reconciled_derived",
+      "current_evidence_set_digest": "b89b041aad4c24635fac27bb08b40a4e67208d601ed4884cef66626f01bf878b",
+      "economic_value_unchanged": true
+    },
+    {
+      "acquisition_id": "B-2024-lease-interest",
+      "fiscal_year": 2024,
+      "old_fact_id": null,
+      "current_fact_id": "d57ef6b2b88b0a13a247aab095a168216e9d87289754906f389ca54fe5146b05",
+      "old_source_type": "exchange_official",
+      "current_source_type": "reconciled_derived",
+      "current_evidence_set_digest": "6e14799672bc0f111f44f6889448fbd5487af4cdeadbd52168bc874df4aa3247",
+      "economic_value_unchanged": true
+    },
+    {
+      "acquisition_id": "C-2023-2024-restricted-cash",
+      "fiscal_year": 2023,
+      "old_fact_id": null,
+      "current_fact_id": "8c2b7bfc07e7713ad60afb31984e5341d6f0dbb5cac4b1c4752dfcbbbc349566",
+      "old_source_type": "exchange_official",
+      "current_source_type": "reconciled_derived",
+      "current_evidence_set_digest": "f8cc6fec965d83c6aa34464b2b08278172673604db7af52fa4e82064f0752043",
+      "economic_value_unchanged": true
+    },
+    {
+      "acquisition_id": "C-2023-2024-restricted-cash",
+      "fiscal_year": 2024,
+      "old_fact_id": null,
+      "current_fact_id": "cbfddefa98aba11750ba35e8c38f1cbb9d61e9787c83bd06a59633370ceb48aa",
+      "old_source_type": "exchange_official",
+      "current_source_type": "reconciled_derived",
+      "current_evidence_set_digest": "2d6fd2cef50b4dadfc367acf06a493d0400253e4fff0e15083ce2618f7df5c18",
+      "economic_value_unchanged": true
+    }
+  ],
+  "static_to_executed_search": true,
   "comparative_evidence_bound": true,
-  "old_gate": "ROIC_FACT_GAPS_REMAIN",
-  "new_gate": "ROIC_FACT_GAPS_REMAIN",
-  "economic_outcome": {"acquired": 9, "explicit_gaps": 7, "shadow_status": "NOT_RUN"}
+  "gate_behavior": "three_state_fail_closed",
+  "unchanged_economic_outcome": {
+    "acquired": 9,
+    "gaps": 7
+  }
 }
