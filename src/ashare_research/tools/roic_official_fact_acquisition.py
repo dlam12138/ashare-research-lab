@@ -532,7 +532,7 @@ def extract_cells(cache_root: Path) -> list[ExtractedCell]:
             input_excerpt_hashes=(hashlib.sha256(lease_note.encode()).hexdigest(),),
         )
     )
-    for acquisition_id, role, concept, pattern, page, printed, note, title, row in [
+    for acquisition_id, role, concept, _pattern, page, printed, note, title, row in [
         (
             "A-2024-investment-income",
             "nopat.investment_income",
