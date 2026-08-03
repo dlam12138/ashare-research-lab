@@ -62,6 +62,48 @@ ALLOWED_RESULTS = {
 GATE_RULE_ID = "roic-acquisition-three-state-v1"
 DECIMAL_CONTEXT = Context(prec=28, rounding=ROUND_HALF_EVEN)
 
+# Versioned, machine-readable extraction contract.  Numeric literals are never
+# part of this contract; values are obtained exclusively from named captures.
+EXTRACTION_SPEC_VERSION = "3"
+EXTRACTION_SPECS = {
+    "roic-extract-finance-core-v3": {"acquisition_id": "A-2024-finance-core", "capture_groups": ["finance", "lease"], "transform": "abs(finance_cost_amount)-lease_interest_amount"},
+    "roic-extract-lease-interest-v3": {"acquisition_id": "B-2024-lease-interest", "capture_groups": ["lease"]},
+}
+
+
+def classify_search_match(*, term: str, excerpt: str, acquisition_id: str) -> tuple[str, str]:
+    """Classify a match from its actual structure/excerpt, never its cell alone."""
+    text = f"{term} {excerpt}"
+    if re.search(r"税率|所得税费用|当期所得税|递延所得税", text):
+        return "tax_proxy_only", "TAX_PROXY_ONLY"
+    if re.search(r"合计|汇总|单项不重大|合营企业和联营企业", text):
+        return "aggregate_only_disclosure", "AGGREGATE_ONLY_DISCLOSURE"
+    if re.search(r"非经营|非主营", text) and re.search(r"收益|利息收入", text):
+        return "acceptable_exact_fact", "ACCEPTABLE_EXACT_FACT"
+    if re.search(r"金融资产|交易性金融资产|其他权益工具投资", text):
+        return "purpose_income_linkage_missing", "PURPOSE_INCOME_LINKAGE_MISSING"
+    if re.search(r"经营|营业利润", text) and "税" in text:
+        return "candidate_insufficient_scope", "CANDIDATE_INSUFFICIENT_SCOPE"
+    return "irrelevant", "IRRELEVANT"
+
+
+def validate_extraction_cells(cells: list[ExtractedCell]) -> dict[str, Any]:
+    """Independently recompute normalized values and derived finance operands."""
+    for cell in cells:
+        if not cell.capture_group or not cell.captured_raw_text:
+            raise ValueError("capture group/span evidence is required")
+        if cell.raw_value == "无":
+            if "无" not in cell.captured_raw_text:
+                raise ValueError("explicit absence requires matched absence statement")
+            continue
+        if cell.captured_operands and cell.concept_id == "finance_cost_excluding_lease_interest":
+            expected = _decimal(cell.captured_operands["finance_cost_amount"]).copy_abs() - _decimal(cell.captured_operands["lease_interest_amount"])
+            if _decimal(cell.raw_value) != expected:
+                raise ValueError("finance derivation is not recomputable")
+        elif _decimal(cell.normalized_value) != _decimal(cell.raw_value) * Decimal(cell.conversion_multiplier):
+            raise ValueError("normalized value is not recomputable")
+    return {"status": "TRUSTED", "cell_count": len(cells)}
+
 
 def decide_acquisition_gate(
     readiness_status: str,
@@ -449,7 +491,7 @@ def extract_cells(cache_root: Path) -> list[ExtractedCell]:
                 excerpt=f"{finance_stmt}|{lease_note}",
             ),
             derivation=f"captured finance={finance_raw}; captured lease={lease_raw}; Decimal(abs(finance)-lease)={parent_raw}",
-            extraction_spec_id="roic-extract-finance-core-v2",
+            extraction_spec_id="roic-extract-finance-core-v3",
             capture_group="finance,lease",
             capture_span=(finance_match.start("finance"), lease_match.end("lease")),
             captured_raw_text=f"{finance_stmt}|{lease_note}",
@@ -482,7 +524,7 @@ def extract_cells(cache_root: Path) -> list[ExtractedCell]:
                 "component of finance_cost_adjustment; never contributes "
                 "independently after parent"
             ),
-            extraction_spec_id="roic-extract-lease-interest-v2",
+            extraction_spec_id="roic-extract-lease-interest-v3",
             capture_group="lease",
             capture_span=lease_match.span("lease"),
             captured_raw_text=lease_note,
@@ -551,7 +593,7 @@ def extract_cells(cache_root: Path) -> list[ExtractedCell]:
                     unit="金额单位为人民币百万元",
                     excerpt=excerpt,
                 ),
-                extraction_spec_id=f"roic-extract-{concept}-v2",
+                extraction_spec_id=f"roic-extract-{concept}-v3",
                 capture_group="target",
                 capture_span=match.span("target"),
                 captured_raw_text=excerpt,
@@ -586,7 +628,7 @@ def extract_cells(cache_root: Path) -> list[ExtractedCell]:
                     unit="金额单位为人民币百万元",
                     excerpt=excerpt,
                 ),
-                extraction_spec_id="roic-extract-nci-v2",
+                extraction_spec_id="roic-extract-nci-v3",
                 capture_group="target",
                 capture_span=match.span("target"),
                 captured_raw_text=excerpt,
@@ -596,13 +638,13 @@ def extract_cells(cache_root: Path) -> list[ExtractedCell]:
     restricted_2023_match = _match(
         p23[153],
         (
-            r"货币资金中有账面价值为 21\.40 亿元"
-            r"\(2022 年 12 月 31 日：25\.86 亿元\)"
+            rf"货币资金中有账面价值为 (?P<target>{number}) 亿元"
+            rf"\(2022 年 12 月 31 日：(?P<comparative>{number}) 亿元\)"
             r"的保证金账户存款作为美元借款质押"
         ),
     )
     restricted_2023 = restricted_2023_match.group(0)
-    restricted_2023_raw = re.search(r"(?P<target>21\.40)", restricted_2023_match.group(0)).group("target")
+    restricted_2023_raw = restricted_2023_match.group("target")
     results.append(
         _cell(
             acquisition_id="C-2023-2024-restricted-cash",
@@ -628,14 +670,14 @@ def extract_cells(cache_root: Path) -> list[ExtractedCell]:
                 "pledged guarantee-account deposit securing USD borrowings; "
                 "never freely deductible cash"
             ),
-            extraction_spec_id="roic-extract-restricted-cash-2023-v2",
+            extraction_spec_id="roic-extract-restricted-cash-2023-v3",
             capture_group="target",
             capture_span=restricted_2023_match.span(),
             captured_raw_text=restricted_2023,
         )
     )
     restricted_2024_match = _match(
-        p24[148], r"货币资金中无保证金账户存款作为美元借款质押\(2023 年 12 月 31 日：21\.40 亿元\)"
+        p24[148], rf"货币资金中无保证金账户存款作为美元借款质押\(2023 年 12 月 31 日：{number} 亿元\)"
     )
     restricted_2024 = restricted_2024_match.group(0)
     results.append(
@@ -664,7 +706,7 @@ def extract_cells(cache_root: Path) -> list[ExtractedCell]:
                 "source explicitly states no guarantee-account deposit securing "
                 "USD borrowings; never freely deductible cash"
             ),
-            extraction_spec_id="roic-extract-restricted-cash-2024-v2",
+            extraction_spec_id="roic-extract-restricted-cash-2024-v3",
             capture_group="absence_statement",
             capture_span=restricted_2024_match.span(),
             captured_raw_text=restricted_2024,
@@ -1000,6 +1042,10 @@ def _missing_records() -> list[dict[str, Any]]:
                 "search_register_id": f"stage2i2r-search-{index:02d}",
                 "search_spec_id": f"roic-search-spec-{record['acquisition_id']}-{record['fiscal_year']}-v2",
                 "search_spec_version": "2",
+                "target_semantic_requirement": record["role_id"],
+                "acceptance_patterns": ["exact target-year row with matching scope/unit"],
+                "exclusion_patterns": ["proxy", "aggregate", "residual", "unlinked purpose"],
+                "rejection_reason_codes": ["ACCEPTABLE_EXACT_FACT", "CANDIDATE_INSUFFICIENT_SCOPE", "AGGREGATE_ONLY_DISCLOSURE", "TAX_PROXY_ONLY", "PURPOSE_INCOME_LINKAGE_MISSING", "IRRELEVANT"],
                 "query_started_at": completed,
                 "query_completed_at": completed,
                 "available_at": completed,
@@ -1020,11 +1066,14 @@ def _missing_records() -> list[dict[str, Any]]:
     return records
 
 
-def execute_bounded_searches(cache_root: Path) -> list[dict[str, Any]]:
+def execute_bounded_searches(cache_root: Path, *, clock: Any | None = None) -> list[dict[str, Any]]:
     """Execute every registered gap search against verified cache objects."""
     verify_official_cache(cache_root)
     pages = _page_texts(cache_root)
-    now = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+    clock = clock or (lambda: time.time())
+    started_epoch = clock()
+    now = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(started_epoch))
+    completed = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(started_epoch + 1))
     records = _missing_records()
     source = {item["evidence_id"]: item for item in _load(SOURCE_PATH)["entries"]}
     # Search identity is content/spec based.  Runtime timestamps are deliberately
@@ -1037,8 +1086,8 @@ def execute_bounded_searches(cache_root: Path) -> list[dict[str, Any]]:
             objects_by_year.setdefault(year, []).append(obj)
     for record in records:
         record["query_started_at"] = now
-        record["query_completed_at"] = now
-        record["available_at"] = max(now, max(source[eid]["available_at"] for eid in source))
+        record["query_completed_at"] = completed
+        record["available_at"] = max(completed, max(source[eid]["available_at"] for eid in record["source_evidence_ids"]))
         target_year = int(record["fiscal_year"])
         # Include the target report and FY2024 comparative when required; never
         # claim that unrelated objects were searched for this cell.
@@ -1064,12 +1113,9 @@ def execute_bounded_searches(cache_root: Path) -> list[dict[str, Any]]:
                         if offset < 0:
                             break
                         excerpt = text_page[max(0, offset - 80):offset + len(term) + 80]
-                        if record["acquisition_id"] == "A-2024-operating-tax":
-                            classification, reason_code = "tax_proxy_only", "TAX_PROXY_ONLY"
-                        elif record["acquisition_id"] in {"B-2023-2024-associate", "B-2023-2024-jv"}:
-                            classification, reason_code = "aggregate_only_disclosure", "AGGREGATE_ONLY_DISCLOSURE"
-                        else:
-                            classification, reason_code = "purpose_income_linkage_missing", "PURPOSE_INCOME_LINKAGE_MISSING"
+                        classification, reason_code = classify_search_match(
+                            term=term, excerpt=excerpt, acquisition_id=record["acquisition_id"]
+                        )
                         for obj in year_objects:
                             if obj not in search_objects:
                                 continue
@@ -1238,16 +1284,10 @@ def run_formal(
     result = _acquisition_result(bundle, missing)
     # Derive validator results from the produced records rather than trusting
     # literal gate inputs.  These checks are intentionally fail-closed.
-    extraction_ok = True
-    for cell in cells:
-        try:
-            if cell.captured_operands and cell.concept_id == "finance_cost_excluding_lease_interest":
-                expected = format(_decimal(cell.captured_operands["finance_cost_amount"]).copy_abs() - _decimal(cell.captured_operands["lease_interest_amount"]), "f")
-                extraction_ok &= Decimal(cell.raw_value) == Decimal(expected)
-            elif cell.raw_value != "无":
-                extraction_ok &= Decimal(cell.normalized_value) == _decimal(cell.raw_value) * Decimal(cell.conversion_multiplier)
-        except Exception:
-            extraction_ok = False
+    try:
+        extraction_ok = validate_extraction_cells(cells)["status"] == "TRUSTED"
+    except Exception:
+        extraction_ok = False
     reconciliation_ok = all(
         fact.get("source_type") == "reconciled_derived" and fact.get("source_tier") == "dual_official_reconciled"
         for fact in bundle["facts"] if fact.get("eligible_for_metrics")
@@ -1274,8 +1314,8 @@ def run_formal(
             "fact_context_identity": "TRUSTED" if identity_ok else "NOT TRUSTED",
             "pit_restatement": "TRUSTED" if identity_ok else "NOT TRUSTED",
             "bounded_search_execution": "TRUSTED" if search_ok else "NOT TRUSTED",
-            "artifact_verification": "TRUSTED" if inventory_path.is_file() else "NOT TRUSTED",
-            "plan_v3_coverage": "TRUSTED" if len(result["cells"]) == 16 else "NOT TRUSTED",
+            "artifact_verification": "TRUSTED" if inventory_path.is_file() and inventory.get("snapshot_sha256") else "NOT TRUSTED",
+            "plan_v3_coverage": "TRUSTED" if len(result["cells"]) == 16 and {c["plan_acquisition_id"] for c in result["cells"]} == APPROVED_IDS else "NOT TRUSTED",
         },
     )
     coverage = {
