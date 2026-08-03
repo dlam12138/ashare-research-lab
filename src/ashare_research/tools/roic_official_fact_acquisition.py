@@ -81,7 +81,7 @@ EXTRACTION_SPECS = {
         **_COMMON_SPEC,
         "acquisition_id": "A-2024-finance-core",
         "capture_groups": ["finance", "lease"],
-        "named_capture_pattern": rf"(?P<finance>{GENERIC_NUMBER_PATTERN}).*(?P<lease>{GENERIC_NUMBER_PATTERN})",
+        "named_capture_pattern": rf"(?P<finance>{GENERIC_NUMBER_PATTERN}).*(?P<lease>{GENERIC_NUMBER_PATTERN})",  # noqa: E501
         "operand_names": ["finance_cost_amount", "lease_interest_amount"],
         "transform_expression_id": "finance_minus_lease",
         "formula": "abs(finance_cost_amount)-lease_interest_amount",
@@ -99,7 +99,7 @@ EXTRACTION_SPECS = {
         **_COMMON_SPEC,
         "acquisition_id": "A-2024-investment-income",
         "capture_groups": ["target", "comparative"],
-        "named_capture_pattern": rf"(?P<label>.+?)\\s+(?P<note>\\d+)\\s+(?P<target>{GENERIC_NUMBER_PATTERN})\\s+(?P<comparative>{GENERIC_NUMBER_PATTERN})",
+        "named_capture_pattern": rf"(?P<label>.+?)\\s+(?P<note>\\d+)\\s+(?P<target>{GENERIC_NUMBER_PATTERN})\\s+(?P<comparative>{GENERIC_NUMBER_PATTERN})",  # noqa: E501
         "operand_names": ["target"],
         "transform_expression_id": "identity",
         "formula": "target",
@@ -108,7 +108,7 @@ EXTRACTION_SPECS = {
         **_COMMON_SPEC,
         "acquisition_id": "A-2024-fair-value",
         "capture_groups": ["target", "comparative"],
-        "named_capture_pattern": rf"(?P<label>.+?)\\s+(?P<note>\\d+)\\s+(?P<target>{GENERIC_NUMBER_PATTERN})\\s+(?P<comparative>{GENERIC_NUMBER_PATTERN})",
+        "named_capture_pattern": rf"(?P<label>.+?)\\s+(?P<note>\\d+)\\s+(?P<target>{GENERIC_NUMBER_PATTERN})\\s+(?P<comparative>{GENERIC_NUMBER_PATTERN})",  # noqa: E501
         "operand_names": ["target"],
         "transform_expression_id": "identity",
         "formula": "target",
@@ -117,7 +117,7 @@ EXTRACTION_SPECS = {
         **_COMMON_SPEC,
         "acquisition_id": "A-2024-asset-disposal",
         "capture_groups": ["target", "comparative"],
-        "named_capture_pattern": rf"(?P<label>.+?)\\s+(?P<note>\\d+)\\s+(?P<target>{GENERIC_NUMBER_PATTERN})\\s+(?P<comparative>{GENERIC_NUMBER_PATTERN})",
+        "named_capture_pattern": rf"(?P<label>.+?)\\s+(?P<note>\\d+)\\s+(?P<target>{GENERIC_NUMBER_PATTERN})\\s+(?P<comparative>{GENERIC_NUMBER_PATTERN})",  # noqa: E501
         "operand_names": ["target"],
         "transform_expression_id": "identity",
         "formula": "target",
@@ -126,7 +126,7 @@ EXTRACTION_SPECS = {
         **_COMMON_SPEC,
         "acquisition_id": "B-2023-2024-nci",
         "capture_groups": ["target", "comparative"],
-        "named_capture_pattern": rf"少数股东权益\\s+(?P<note>\\d+)\\s+(?P<target>{GENERIC_NUMBER_PATTERN})\\s+(?P<comparative>{GENERIC_NUMBER_PATTERN})",
+        "named_capture_pattern": rf"少数股东权益\\s+(?P<note>\\d+)\\s+(?P<target>{GENERIC_NUMBER_PATTERN})\\s+(?P<comparative>{GENERIC_NUMBER_PATTERN})",  # noqa: E501
         "operand_names": ["target"],
         "transform_expression_id": "identity",
         "formula": "target",
@@ -135,7 +135,7 @@ EXTRACTION_SPECS = {
         **_COMMON_SPEC,
         "acquisition_id": "C-2023-2024-restricted-cash",
         "capture_groups": ["target", "comparative"],
-        "named_capture_pattern": rf"账面价值为 (?P<target>{GENERIC_NUMBER_PATTERN}) 亿元.*?：(?P<comparative>{GENERIC_NUMBER_PATTERN}) 亿元",
+        "named_capture_pattern": rf"账面价值为 (?P<target>{GENERIC_NUMBER_PATTERN}) 亿元.*?：(?P<comparative>{GENERIC_NUMBER_PATTERN}) 亿元",  # noqa: E501
         "operand_names": ["target"],
         "source_unit": "亿元",
         "transform_expression_id": "identity",
