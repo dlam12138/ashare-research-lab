@@ -1,6 +1,6 @@
 # M2 Stage 2I.2R — Official Fact Extraction and Lineage Closeout
 
-Status: `CONDITIONAL PASS` pending independent Sol review and remote CI.
+Status: `IMPLEMENTATION IN PROGRESS` — final acceptance is withheld pending the complete validation matrix and remote CI.
 
 This supersedes the Stage 2I.2 extraction interpretation while preserving its
 audit artifacts and the economic outcome: 9 acquired cells, 7 explicit gaps,

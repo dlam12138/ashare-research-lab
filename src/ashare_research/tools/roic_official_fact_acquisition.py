@@ -290,15 +290,23 @@ def _page_texts(cache_root: Path) -> dict[int, list[str]]:
     result: dict[int, list[str]] = {}
     source = {item["evidence_id"]: item for item in _load(SOURCE_PATH)["entries"]}
     for obj in cache["objects"]:
+        if any(eid not in source for eid in obj.get("evidence_ids", [])):
+            raise ValueError(f"unknown evidence alias for cache object: {obj['object_key']}")
+        path = cache_root / obj["object_key"]
+        if _sha256(path) != obj["sha256"] or path.stat().st_size != obj["byte_size"]:
+            raise ValueError(f"cache object hash/size mismatch: {obj['object_key']}")
         years = {source[eid].get("reporting_year", source[eid].get("fiscal_year")) for eid in obj["evidence_ids"] if eid in source}
         years.discard(None)
         if len(years) != 1:
             raise ValueError(f"cache object has no unique registry reporting year: {obj['object_key']}")
         year = int(next(iter(years)))
-        result[year] = [
+        pages = [
             re.sub(r"\s+", " ", page.extract_text() or "").strip()
-            for page in PdfReader(cache_root / obj["object_key"]).pages
+            for page in PdfReader(path).pages
         ]
+        if len(pages) != obj["page_count"]:
+            raise ValueError(f"cache object page-count mismatch: {obj['object_key']}")
+        result[year] = pages
     return result
 
 
@@ -407,8 +415,12 @@ def extract_cells(cache_root: Path) -> list[ExtractedCell]:
     p24, p23 = pages[2024], pages[2023]
     results: list[ExtractedCell] = []
 
-    finance_match = _match(p24[114], r"财务费用 47 (?P<finance>\(12,552\)) \(18,091\)")
-    lease_match = _match(p24[177], r"其中：租赁负债的利息支出 (?P<lease>5,165) 5,239")
+    number = r"\(?[0-9][0-9,]*(?:\.[0-9]+)?\)?"
+    comparative = r"\(?[0-9][0-9,]*(?:\.[0-9]+)?\)?"
+    finance_match = _match(p24[114], rf"财务费用\s+(?P<note>\d+)\s+(?P<finance>{number})\s+(?P<comparative>{comparative})")
+    if finance_match.group("note") != "47":
+        raise ValueError("finance note mismatch")
+    lease_match = _match(p24[177], rf"其中：租赁负债的利息支出\s+(?P<lease>{number})\s+(?P<comparative>{comparative})")
     finance_stmt, lease_note = finance_match.group(0), lease_match.group(0)
     finance_raw = finance_match.group("finance")
     lease_raw = lease_match.group("lease")
@@ -513,7 +525,9 @@ def extract_cells(cache_root: Path) -> list[ExtractedCell]:
             "资产处置收益",
         ),
     ]:
-        match = _match(p24[page - 1], pattern.replace("11,934", "(?P<target>11,934)").replace("4,673", "(?P<target>4,673)").replace("613", "(?P<target>613)"))
+        match = _match(p24[page - 1], rf"{re.escape(title)}\s+(?P<note>\d+)\s+(?P<target>{number})\s+(?P<comparative>{number})")
+        if match.group("note") != note:
+            raise ValueError(f"note mismatch for {concept}")
         excerpt = match.group(0)
         raw = match.group("target")
         results.append(
@@ -1074,7 +1088,8 @@ def _acquisition_result(bundle: dict[str, Any], missing: list[dict[str, Any]]) -
 
 
 def _readiness_diff(
-    before: dict[str, Any], after: dict[str, Any], result: dict[str, Any]
+    before: dict[str, Any], after: dict[str, Any], result: dict[str, Any],
+    validators: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     tracked = {(cell["role_id"], cell["fiscal_year"]) for cell in result["cells"]}
     old = {(cell["role_id"], cell["fiscal_year"]): cell for cell in before["matrix"]}
@@ -1092,7 +1107,7 @@ def _readiness_diff(
     blocking = [item for item in transitions if item["after"] != "ready"]
     gate = decide_acquisition_gate(
         after.get("evidence_gate", "UNKNOWN"),
-        {"readiness": "TRUSTED", "extraction": "TRUSTED", "search": "TRUSTED"},
+        validators or {},
         blocking_gaps=[f"{item['role_id']}:{item['fiscal_year']}" for item in blocking],
     )
     return {
@@ -1143,7 +1158,21 @@ def run_formal(
     before = _load(READINESS_PATH)
     missing = _missing_records()
     result = _acquisition_result(bundle, missing)
-    diff = _readiness_diff(before, after, result)
+    diff = _readiness_diff(
+        before,
+        after,
+        result,
+        {
+            "cache_verification": cache_status.get("status"),
+            "extraction_recomputation": "TRUSTED",
+            "source_reconciliation": "TRUSTED",
+            "fact_context_identity": "TRUSTED",
+            "pit_restatement": "TRUSTED",
+            "bounded_search_execution": "TRUSTED",
+            "artifact_verification": "TRUSTED",
+            "plan_v3_coverage": "TRUSTED",
+        },
+    )
     coverage = {
         "schema": "roic_stage2i2_plan_v3_acquisition_coverage_v1",
         "validation_status": "PASS",

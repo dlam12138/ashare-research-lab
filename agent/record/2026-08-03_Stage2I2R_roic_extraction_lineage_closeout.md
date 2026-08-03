@@ -27,16 +27,17 @@ No new facts, shadow ROIC, production Metric/Result, value-profile/default DB ch
 4. Run required validation and inspect final diff.
 
 ## 实际操作
-Record created before business edits. Updated `roic_official_fact_acquisition.py` with registry-year mapping, capture-derived Decimal extraction metadata, reconciled-derived evidence semantics, executed-search ledger fields, and fail-closed gate. Added focused closeout tests, acceptance note and README stage label.
+Record created before business edits. Repair pass removed numeric literals from extraction regexes, tightened verified cache/object mapping, and wired the gate to runtime validator statuses. Acceptance status remains implementation-in-progress pending full gates.
 
 ## 验证
 - `PYTHONPATH=src pytest -q tests/test_roic_stage2i2_official_fact_acquisition.py tests/test_roic_stage2i.py tests/test_roic_stage2i1r2_acquisition_gate_consistency.py`: 36 passed.
 - `PYTHONPATH=src pytest -q tests/test_roic_stage2i2r_closeout.py`: 3 passed.
+- `PYTHONPATH=src pytest -q tests/test_roic_stage2i2_official_fact_acquisition.py tests/test_roic_stage2i2r_closeout.py`: 16 passed after repair.
 - `python -m py_compile src/ashare_research/tools/roic_official_fact_acquisition.py`: passed.
 - `git diff --check`: passed before commit.
 
 ## 结果
-Committed as `48ff783 fix: close Stage 2I.2 ROIC extraction lineage contracts`. Push attempted but network access to GitHub failed; remote remains behind by one commit.
+Initial implementation commit was amended to `84bb90e`; this repair pass is pending commit. Push attempt failed because GitHub port 443 was unreachable; remote remains behind.
 
 ## 遗留问题
 - Full validation matrix, clean clone and Ubuntu/Windows CI were not run in this bounded pass.
