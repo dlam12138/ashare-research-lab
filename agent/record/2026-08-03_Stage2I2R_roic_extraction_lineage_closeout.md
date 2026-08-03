@@ -16,6 +16,16 @@ ROIC Stage 2I.2R tool, focused tests, reports/acceptance and this record only.
 ## 非目标
 No new facts, shadow ROIC, production Metric/Result, value-profile/default DB changes, Stage 2I.3, scoring or Web work.
 
+## Final implementation evidence
+
+- Final implementation commits: `9654e5b`, `c26c69c`, `e6343d3`.
+- Formal cache rerun A/B: both produced 9 economic facts, 16 Plan cells,
+  `ROIC_FACT_GAPS_REMAIN`, and `shadow_status=NOT_RUN`; artifact comparison
+  passed with 12 files and no mismatches.
+- Final full pytest: 1012 passed, 2 warnings. Ruff and compileall passed.
+- Corrected artifacts are committed under `reports/*stage2i2r*`; historical
+  Stage 2I.2 report paths were restored unchanged.
+
 ## 开始前状态
 - Branch and HEAD verified as above; tracked tree clean; untracked .codex, AGENTS.md and agent/goals preserved.
 - Existing implementation is Stage 2I.2 and contains hardcoded extraction constants, static missing records and a two-state decision expression.
