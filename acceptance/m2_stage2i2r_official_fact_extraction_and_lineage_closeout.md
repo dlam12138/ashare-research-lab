@@ -1,6 +1,6 @@
 # M2 Stage 2I.2R — Official Fact Extraction and Lineage Closeout
 
-Status: `IMPLEMENTATION IN PROGRESS` — final acceptance is withheld pending the complete validation matrix and remote CI.
+Status: `IMPLEMENTATION COMPLETE — PENDING SOL FINAL REVIEW`.
 
 This supersedes the Stage 2I.2 extraction interpretation while preserving its
 audit artifacts and the economic outcome: 9 acquired cells, 7 explicit gaps,
@@ -27,5 +27,6 @@ Plan v3 IDs/cells, shadow state, or external cache objects were modified.
 
 ## Validation
 
-Targeted Stage 2I.2 tests pass with `PYTHONPATH=src`; full contract, clean-clone,
-cross-directory and remote CI evidence remains for final Sol review.
+Targeted Stage 2I.2R tests: 22 passed. Full pytest at final implementation HEAD:
+1012 passed, 2 warnings. Ruff, compileall, formal A/B and artifact comparison pass.
+Formal decision is `ROIC_FACT_GAPS_REMAIN`; shadow remains `NOT_RUN`.

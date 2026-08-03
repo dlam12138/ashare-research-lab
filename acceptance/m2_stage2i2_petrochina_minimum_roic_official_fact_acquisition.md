@@ -1,6 +1,10 @@
 # M2 Stage 2I.2 PetroChina minimum ROIC official-fact acquisition
 
-Status: `CONDITIONAL PASS`
+Status: `SUPERSEDED BY STAGE 2I.2R`
+
+Stage 2I.2R preserves this acceptance and all original artifacts for audit
+history. Corrected capture, reconciliation, and executed-search outputs are
+published under explicit `reports/*stage2i2r*` paths.
 
 ## Scope and safeguards
 
