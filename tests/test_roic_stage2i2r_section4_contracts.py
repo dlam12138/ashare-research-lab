@@ -93,6 +93,8 @@ def test_reconciled_validator_requires_ordered_dual_evidence_and_digest():
         },
     ]
     fact = {
+        "concept_id": "test_concept",
+        "period_end": "2024-12-31",
         "source_type": "reconciled_derived",
         "source_tier": "dual_official_reconciled",
         "source_evidence": evidence,
@@ -113,7 +115,10 @@ def test_reconciled_validator_requires_ordered_dual_evidence_and_digest():
         ]
     )
     identity = stage._reconciliation_identity_payload(evidence)["identity_digest"]
-    fact["source_id"] = f"reconciled:test:{identity}"
+    fact["source_id"] = (
+        f"reconciled:test_concept:2024:{stage.RECONCILIATION_RULE_ID}:"
+        f"v{stage.RECONCILIATION_RULE_VERSION}:{identity}"
+    )
     fact["fact_id"] = stage.build_fact_id(fact)
     assert stage.validate_reconciled_fact(fact)["status"] == "TRUSTED"
     fact["source_evidence"] = list(reversed(evidence))
