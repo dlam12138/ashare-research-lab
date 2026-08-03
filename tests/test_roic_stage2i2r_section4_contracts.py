@@ -1,9 +1,9 @@
-from decimal import Decimal
-
-import pytest
 import hashlib
 import json
+from decimal import Decimal
 from pathlib import Path
+
+import pytest
 
 from ashare_research.tools import roic_official_fact_acquisition as stage
 
