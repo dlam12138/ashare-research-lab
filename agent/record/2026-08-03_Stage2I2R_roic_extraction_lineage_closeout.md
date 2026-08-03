@@ -4,7 +4,7 @@ Date: 2026-08-03  |  Branch: `feat/m2-value-assessment-mvp`
 
 ## Baseline and final state
 
-- Verified baseline: `13952788`; final HEAD: `8302188c374c68c9248e2e269a3574b64697ccd6`.
+- Verified baseline: `13952788`; final evidence HEAD: `78c4c4eaec0cd63eb17df49b35203e4270cdda24`.
 - Local, origin, and remote branch are equal; protected `.codex/`, `AGENTS.md`,
   `agent/goals/`, and stash entry are unchanged.
 - Historical Stage 2I.2 report paths were restored unchanged. Corrected outputs
@@ -21,15 +21,14 @@ Stage 2I.3 was started.
 
 ## Validation evidence
 
-- Full pytest at final HEAD: **1018 passed, 2 warnings**.
-- Targeted Stage 2I.2R suites: **9 passed**; Ruff all checks passed; compileall/import passed.
+- Full pytest at implementation HEAD `b7707ad`: **1028 passed, 2 warnings**.
+- Targeted Stage 2I.2R suites: **17 passed**; Ruff all checks passed; compileall/import passed.
 - Formal A/B: both 9 economic facts/16 cells, `ROIC_FACT_GAPS_REMAIN`,
   `shadow_status=NOT_RUN`; artifact count 12, mismatches 0; digest
   `ff96e7c1244712280941f077aa94f20eb958788990c636408bbc2bc1314c59f2`.
 - Independent clean clone at `D:\tmp\stage2i2r_local_clean_8302188\repo`:
   Ruff/import/compileall passed, full pytest 1018 passed, formal A/B passed.
-- Final CI run `30813327936`: Windows job `91684983105` and Ubuntu job
-  `91684983234` both successful.
+- Final CI run `30816144047`: Windows and Ubuntu jobs both successful.
 
 ## Protected evidence
 
