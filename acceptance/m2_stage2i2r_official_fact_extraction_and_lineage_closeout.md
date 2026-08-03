@@ -27,13 +27,14 @@ Plan v3 IDs/cells, shadow state, or external cache objects were modified.
 
 ## Validation
 
-Targeted Stage 2I.2R tests: 20 passed. Full pytest at implementation HEAD
-`b7707ad`: 1028 passed, 2 warnings; current documentation-head clean clone
-at `ebf901d` reproduced 1029 passed, 2 warnings. Final test-only commits `aa47ce4`,
-`6af8a5c`, `a9cb27c`, `90c2d3d`, and `78c4c4e` preserve that result while
-refreshing the platform-stable manifest verifier. Final CI run `30816554022`
-passed on both Windows and Ubuntu; formal decision is
-`ROIC_FACT_GAPS_REMAIN`; shadow remains `NOT_RUN`.
+Validated code HEAD: `7341a2d`. Targeted Stage 2I.2R tests: 76 passed. Full
+pytest: 1043 passed, 2 warnings (main worktree 254.94s; clean clone 155.25s).
+Fresh, cross-working-directory, and clean-clone formal A/B runs produced digest
+`90632b11b4784a019f8765237fe0d4bafcf1b8a80ff5c681a57fba3798da2483`, 12
+artifacts, and zero mismatches. Final-head CI run `30825336850` passed on
+Ubuntu job `91725407528` and Windows job `91725407544`.
 
-Corrected serialized extraction lineage is independently recomputable. Formal
-A/B artifact digest: `a323b4de6e987fa307bbf6b3c47e2e1403512bfa4872b7d1c12cd9574897ca35`.
+Corrected serialized extraction lineage is independently recomputable. The
+final identities, typed specs, and internal committed packet verify against
+`cb35113e81016ac9de2cd966b48174af425cfdb2aeb3fc5a0341afbe6cd1e57f`.
+Older `a323...` and `1028/1029` figures are superseded historical evidence.

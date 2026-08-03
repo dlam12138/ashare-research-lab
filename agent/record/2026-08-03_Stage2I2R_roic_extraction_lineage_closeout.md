@@ -4,7 +4,7 @@ Date: 2026-08-03  |  Branch: `feat/m2-value-assessment-mvp`
 
 ## Baseline and final state
 
-- Verified baseline: `c0d253f77479771742abad8319ef38825c7fb299`; final evidence HEAD: `78c4c4eaec0cd63eb17df49b35203e4270cdda24`.
+- Validated code HEAD: `7341a2d`.
 - Local, origin, and remote branch are equal; protected `.codex/`, `AGENTS.md`,
   `agent/goals/`, and stash entry are unchanged.
 - Historical Stage 2I.2 report paths were restored unchanged. Corrected outputs
@@ -21,19 +21,15 @@ Stage 2I.3 was started.
 
 ## Validation evidence
 
-- Full pytest at implementation HEAD `b7707ad`: **1028 passed, 2 warnings**;
-  independent clean clone of pre-documentation HEAD `ebf901d` reproduced
-  **1029 passed, 2 warnings** with Ruff and compileall/import passing.
-- Targeted Stage 2I.2R suites: **20 passed**; Ruff all checks passed; compileall/import passed.
-- Formal A/B: both 9 economic facts/16 cells, `ROIC_FACT_GAPS_REMAIN`,
-  `shadow_status=NOT_RUN`; artifact count 12, mismatches 0; corrected digest
-  `a323b4de6e987fa307bbf6b3c47e2e1403512bfa4872b7d1c12cd9574897ca35`.
+- Targeted Stage 2I.2R suites: **76 passed**; Ruff all checks passed; compileall/import passed.
+- Full pytest: **1043 passed, 2 warnings** (main worktree 254.94s; clean clone 155.25s).
+- Fresh, cross-cwd, and clean-clone formal A/B: both 9 economic facts/16 cells,
+  `ROIC_FACT_GAPS_REMAIN`, `shadow_status=NOT_RUN`; artifact count 12,
+  mismatches 0; digest `90632b11b4784a019f8765237fe0d4bafcf1b8a80ff5c681a57fba3798da2483`.
 - Independent clean clone at `D:\tmp\stage2i2r_local_clean_8302188\repo`:
   Ruff/import/compileall passed, full pytest 1018 passed, formal A/B passed.
-- Final completed CI evidence before this terminal documentation commit was
-  run `30816554022`, with Windows and Ubuntu jobs successful. The terminal
-  documentation commit and its CI run are recorded in the Sol final handoff
-  because a commit cannot truthfully name its own future hash.
+- Final-head CI run `30825336850`: Ubuntu job `91725407528` and Windows job
+  `91725407544` both successful.
 
 ## Protected evidence
 
@@ -42,6 +38,9 @@ Inventory facts: 354. Protected baseline fixture records 102 Metric Results and
 16 definitions. Methodology files are verified from their actual repository
 hashes in the final acceptance packet. Existing Stage 2F/2H risks remain out of
 scope and unresolved.
+The committed internal packet digest is
+`cb35113e81016ac9de2cd966b48174af425cfdb2aeb3fc5a0341afbe6cd1e57f`;
+older `a323...`, `1028`, and `1029` figures are superseded historical evidence.
 
 ## Decision
 
