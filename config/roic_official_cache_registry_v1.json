@@ -1,0 +1,28 @@
+{
+  "schema": "roic_official_cache_registry_v1",
+  "data_class": "official_document",
+  "symbol": "601857.SH",
+  "cache_root_policy": "explicit_external_only",
+  "objects": [
+    {
+      "object_key": "objects/b845502e533311280f89d59c2a92c67f94f2be17451e51e55f93a1d52abe6692.pdf",
+      "sha256": "b845502e533311280f89d59c2a92c67f94f2be17451e51e55f93a1d52abe6692",
+      "byte_size": 12437650,
+      "page_count": 293,
+      "media_type": "application/pdf",
+      "evidence_ids": ["pc-roic-2023-issuer-annual-cas", "pc-roic-2023-exchange-annual-cas"],
+      "acquisition_method": "promoted_verified_stage2h_official_cache_after_bounded_network_failure"
+    },
+    {
+      "object_key": "objects/15a2de01653ceefa46fdd18a02a127f434f06db02da9efb0b62c3a12a35a9bba.pdf",
+      "sha256": "15a2de01653ceefa46fdd18a02a127f434f06db02da9efb0b62c3a12a35a9bba",
+      "byte_size": 11167845,
+      "page_count": 280,
+      "media_type": "application/pdf",
+      "evidence_ids": ["pc-roic-2024-issuer-annual-cas", "pc-roic-2024-exchange-annual-cas"],
+      "acquisition_method": "promoted_verified_stage2h_official_cache_after_bounded_network_failure"
+    }
+  ],
+  "forbidden_fallbacks": ["Downloads", "browser_cache", "repository_tmp", "test_capsule"],
+  "formal_network_access": false
+}
