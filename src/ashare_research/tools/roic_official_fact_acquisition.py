@@ -1132,9 +1132,15 @@ def validate_reconciled_fact(fact: dict[str, Any]) -> dict[str, Any]:
         ]
     ):
         raise ValueError("evidence-set digest mismatch")
-    if fact.get("derivation_definition_id") != RECONCILIATION_RULE_ID or fact.get("derivation_version") != RECONCILIATION_RULE_VERSION:
+    if (
+        fact.get("derivation_definition_id") != RECONCILIATION_RULE_ID
+        or fact.get("derivation_version") != RECONCILIATION_RULE_VERSION
+    ):
         raise ValueError("reconciliation rule identity mismatch")
-    if fact.get("evidence_order_semantics_id") != EVIDENCE_ORDER_SEMANTICS_ID or fact.get("evidence_order_semantics_version") != EVIDENCE_ORDER_SEMANTICS_VERSION:
+    if (
+        fact.get("evidence_order_semantics_id") != EVIDENCE_ORDER_SEMANTICS_ID
+        or fact.get("evidence_order_semantics_version") != EVIDENCE_ORDER_SEMANTICS_VERSION
+    ):
         raise ValueError("evidence ordering identity mismatch")
     if fact.get("input_fact_ids") != ",".join(e.get("fact_id") for e in evidence):
         raise ValueError("ordered input Fact IDs do not match evidence")

@@ -96,6 +96,11 @@ def test_reconciled_validator_requires_ordered_dual_evidence_and_digest():
         "source_type": "reconciled_derived",
         "source_tier": "dual_official_reconciled",
         "source_evidence": evidence,
+        "derivation_definition_id": stage.RECONCILIATION_RULE_ID,
+        "derivation_version": stage.RECONCILIATION_RULE_VERSION,
+        "evidence_order_semantics_id": stage.EVIDENCE_ORDER_SEMANTICS_ID,
+        "evidence_order_semantics_version": stage.EVIDENCE_ORDER_SEMANTICS_VERSION,
+        "input_fact_ids": "i,e",
     }
     fact["evidence_set_digest"] = stage.canonical_digest(
         [
