@@ -1049,6 +1049,8 @@ def execute_bounded_searches(cache_root: Path) -> list[dict[str, Any]]:
         record["content_object_ids"] = [obj["object_key"] for obj in search_objects]
         record["source_evidence_ids"] = sorted({eid for obj in search_objects for eid in obj["evidence_ids"]})
         record["content_sha256_values"] = sorted({obj["sha256"] for obj in search_objects})
+        record["required_official_evidence_ids"] = list(record["source_evidence_ids"])
+        record["required_content_hashes"] = list(record["content_sha256_values"])
         matches = []
         for year, text_pages in pages.items():
             if year not in {target_year, 2024} or not any(obj in search_objects for obj in objects_by_year.get(year, [])):
