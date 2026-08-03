@@ -1,0 +1,14 @@
+{
+  "schema": "roic_stage2i2r_old_new_report_v1",
+  "hardcoded_constants_removed": true,
+  "capture_derived_values_and_ids": true,
+  "finance_operands": ["finance_cost_amount", "lease_interest_amount"],
+  "finance_formula": "abs(finance_cost_amount)-lease_interest_amount",
+  "reconciled_source_semantics": {"old": "exchange_official", "new": "reconciled_derived"},
+  "dual_evidence_set_preserved": true,
+  "static_missing_declarations_replaced_by_executed_searches": true,
+  "comparative_evidence_bound": true,
+  "old_gate": "ROIC_FACT_GAPS_REMAIN",
+  "new_gate": "ROIC_FACT_GAPS_REMAIN",
+  "economic_outcome": {"acquired": 9, "explicit_gaps": 7, "shadow_status": "NOT_RUN"}
+}
