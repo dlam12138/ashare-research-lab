@@ -1119,7 +1119,6 @@ def execute_bounded_searches(cache_root: Path, *, clock: Any | None = None) -> l
     for record in records:
         record["query_started_at"] = now
         record["query_completed_at"] = completed
-        record["available_at"] = max(completed, max(source[eid]["available_at"] for eid in record["source_evidence_ids"]))
         target_year = int(record["fiscal_year"])
         # Include the target report and FY2024 comparative when required; never
         # claim that unrelated objects were searched for this cell.
@@ -1130,6 +1129,7 @@ def execute_bounded_searches(cache_root: Path, *, clock: Any | None = None) -> l
         record["content_object_ids"] = [obj["object_key"] for obj in search_objects]
         record["source_evidence_ids"] = sorted({eid for obj in search_objects for eid in obj["evidence_ids"]})
         record["content_sha256_values"] = sorted({obj["sha256"] for obj in search_objects})
+        record["available_at"] = max(completed, max(source[eid]["available_at"] for eid in record["source_evidence_ids"]))
         record["required_official_evidence_ids"] = list(record["source_evidence_ids"])
         record["required_content_hashes"] = list(record["content_sha256_values"])
         matches = []
