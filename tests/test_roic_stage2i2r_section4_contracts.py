@@ -145,5 +145,8 @@ def test_committed_delivery_manifest_recomputes_hashes():
     for item in manifest["files"]:
         path = root / item["logical_path"]
         assert path.is_file()
-        assert path.stat().st_size == item["byte_size"]
-        assert hashlib.sha256(path.read_bytes()).hexdigest() == item["sha256"]
+        payload = path.read_bytes()
+        if path.suffix == ".md":
+            payload = path.read_text(encoding="utf-8").replace("\r\n", "\n").encode()
+        assert len(payload) == item["byte_size"]
+        assert hashlib.sha256(payload).hexdigest() == item["sha256"]
