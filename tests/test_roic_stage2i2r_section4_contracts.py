@@ -1,5 +1,6 @@
 import hashlib
 import json
+import re
 from decimal import Decimal
 from pathlib import Path
 
@@ -150,3 +151,25 @@ def test_committed_delivery_manifest_recomputes_hashes():
             payload = path.read_text(encoding="utf-8").replace("\r\n", "\n").encode()
         assert len(payload) == item["byte_size"]
         assert hashlib.sha256(payload).hexdigest() == item["sha256"]
+
+
+def test_definition_specs_compile_and_have_a1_contract():
+    for spec_id, spec in stage.EXTRACTION_SPECS.items():
+        assert spec["version"] == "3"
+        groups = re.compile(spec["named_capture_pattern"]).groupindex
+        assert set(spec["capture_groups"]).issubset(groups)
+        for field in (
+            "extraction_spec_id",
+            "acquisition_id",
+            "role_id",
+            "concept_id",
+            "fiscal_year",
+            "source_unit",
+            "deterministic_transform",
+            "sign_rule",
+            "extraction_method_version",
+        ):
+            assert field in spec
+        assert not any(
+            token in spec["named_capture_pattern"] for token in ("12552", "5165", "7387")
+        )
