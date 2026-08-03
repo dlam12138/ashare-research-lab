@@ -141,7 +141,7 @@ def test_committed_delivery_manifest_recomputes_hashes():
     )
     assert (
         manifest["formal_artifact_set_sha256"]
-        == "ff96e7c1244712280941f077aa94f20eb958788990c636408bbc2bc1314c59f2"
+            == "90632b11b4784a019f8765237fe0d4bafcf1b8a80ff5c681a57fba3798da2483"
     )
     for item in manifest["files"]:
         path = root / item["logical_path"]
