@@ -65,50 +65,136 @@ DECIMAL_CONTEXT = Context(prec=28, rounding=ROUND_HALF_EVEN)
 # Versioned, machine-readable extraction contract.  Numeric literals are never
 # part of this contract; values are obtained exclusively from named captures.
 EXTRACTION_SPEC_VERSION = "3"
+GENERIC_NUMBER_PATTERN = r"\\(?[0-9][0-9,]*(?:\\.[0-9]+)?\\)?"
+_COMMON_SPEC = {
+    "version": "3",
+    "source_roles": ["issuer_official", "exchange_official"],
+    "source_unit": "人民币百万元",
+    "sign_rule": "source_accounting_sign_identity",
+    "rounding_policy": "ROUND_HALF_EVEN",
+    "review_status": "verified",
+    "ocr_used": False,
+    "llm_used": False,
+}
 EXTRACTION_SPECS = {
     "roic-extract-finance-core-v3": {
+        **_COMMON_SPEC,
         "acquisition_id": "A-2024-finance-core",
         "capture_groups": ["finance", "lease"],
-        "transform": "abs(finance_cost_amount)-lease_interest_amount",
+        "named_capture_pattern": rf"(?P<finance>{GENERIC_NUMBER_PATTERN}).*(?P<lease>{GENERIC_NUMBER_PATTERN})",
+        "operand_names": ["finance_cost_amount", "lease_interest_amount"],
+        "transform_expression_id": "finance_minus_lease",
+        "formula": "abs(finance_cost_amount)-lease_interest_amount",
     },
     "roic-extract-lease-interest-v3": {
+        **_COMMON_SPEC,
         "acquisition_id": "B-2024-lease-interest",
         "capture_groups": ["lease"],
+        "named_capture_pattern": rf"(?P<lease>{GENERIC_NUMBER_PATTERN})",
+        "operand_names": ["lease_interest_amount"],
+        "transform_expression_id": "identity",
+        "formula": "lease_interest_amount",
     },
     "roic-extract-investment_income-v3": {
+        **_COMMON_SPEC,
         "acquisition_id": "A-2024-investment-income",
         "capture_groups": ["target", "comparative"],
-        "named_pattern": "label note target comparative NUMBER",
+        "named_capture_pattern": rf"(?P<label>.+?)\\s+(?P<note>\\d+)\\s+(?P<target>{GENERIC_NUMBER_PATTERN})\\s+(?P<comparative>{GENERIC_NUMBER_PATTERN})",
         "operand_names": ["target"],
+        "transform_expression_id": "identity",
+        "formula": "target",
     },
     "roic-extract-fair_value_net_change-v3": {
+        **_COMMON_SPEC,
         "acquisition_id": "A-2024-fair-value",
         "capture_groups": ["target", "comparative"],
-        "named_pattern": "label note target comparative NUMBER",
+        "named_capture_pattern": rf"(?P<label>.+?)\\s+(?P<note>\\d+)\\s+(?P<target>{GENERIC_NUMBER_PATTERN})\\s+(?P<comparative>{GENERIC_NUMBER_PATTERN})",
         "operand_names": ["target"],
+        "transform_expression_id": "identity",
+        "formula": "target",
     },
     "roic-extract-asset_disposal_gain_loss-v3": {
+        **_COMMON_SPEC,
         "acquisition_id": "A-2024-asset-disposal",
         "capture_groups": ["target", "comparative"],
-        "named_pattern": "label note target comparative NUMBER",
+        "named_capture_pattern": rf"(?P<label>.+?)\\s+(?P<note>\\d+)\\s+(?P<target>{GENERIC_NUMBER_PATTERN})\\s+(?P<comparative>{GENERIC_NUMBER_PATTERN})",
         "operand_names": ["target"],
+        "transform_expression_id": "identity",
+        "formula": "target",
     },
     "roic-extract-nci-v3": {
+        **_COMMON_SPEC,
         "acquisition_id": "B-2023-2024-nci",
         "capture_groups": ["target", "comparative"],
-        "pattern": "nci note target comparative",
+        "named_capture_pattern": rf"少数股东权益\\s+(?P<note>\\d+)\\s+(?P<target>{GENERIC_NUMBER_PATTERN})\\s+(?P<comparative>{GENERIC_NUMBER_PATTERN})",
+        "operand_names": ["target"],
+        "transform_expression_id": "identity",
+        "formula": "target",
     },
     "roic-extract-restricted-cash-2023-v3": {
+        **_COMMON_SPEC,
         "acquisition_id": "C-2023-2024-restricted-cash",
         "capture_groups": ["target", "comparative"],
-        "pattern": "pledge target comparative",
+        "named_capture_pattern": rf"账面价值为 (?P<target>{GENERIC_NUMBER_PATTERN}) 亿元.*?：(?P<comparative>{GENERIC_NUMBER_PATTERN}) 亿元",
+        "operand_names": ["target"],
+        "source_unit": "亿元",
+        "transform_expression_id": "identity",
+        "formula": "target",
     },
     "roic-extract-restricted-cash-2024-v3": {
+        **_COMMON_SPEC,
         "acquisition_id": "C-2023-2024-restricted-cash",
         "capture_groups": ["absence_statement"],
-        "pattern": "explicit absence statement",
+        "named_capture_pattern": r"无保证金账户存款作为美元借款质押",
+        "operand_names": [],
+        "source_unit": "亿元",
+        "transform_expression_id": "explicit_absence",
+        "formula": "0",
+        "explicit_absence_rule": "matched absence statement required",
     },
 }
+_SPEC_ROLE_MAP = {
+    "roic-extract-finance-core-v3": (
+        "nopat.finance_cost_excluding_lease_interest",
+        "finance_cost_excluding_lease_interest",
+    ),
+    "roic-extract-lease-interest-v3": ("nopat.lease_interest_expense", "lease_interest_expense"),
+    "roic-extract-investment_income-v3": ("nopat.investment_income", "investment_income"),
+    "roic-extract-fair_value_net_change-v3": (
+        "nopat.fair_value_net_change",
+        "fair_value_net_change",
+    ),
+    "roic-extract-asset_disposal_gain_loss-v3": (
+        "nopat.asset_disposal_gain_loss",
+        "asset_disposal_gain_loss",
+    ),
+    "roic-extract-nci-v3": (
+        "invested_capital.non_controlling_interest",
+        "non_controlling_interest",
+    ),
+    "roic-extract-restricted-cash-2023-v3": ("invested_capital.restricted_cash", "restricted_cash"),
+    "roic-extract-restricted-cash-2024-v3": ("invested_capital.restricted_cash", "restricted_cash"),
+}
+for _sid, (_role, _concept) in _SPEC_ROLE_MAP.items():
+    EXTRACTION_SPECS[_sid].update(
+        {
+            "extraction_spec_id": _sid,
+            "role_id": _role,
+            "concept_id": _concept,
+            "source_report_year": "registry_metadata",
+            "source_page": "registry_locator",
+            "printed_page": "registry_locator",
+            "note": "registry_locator",
+            "table": "registry_locator",
+            "row": "registry_locator",
+            "column": "registry_locator",
+            "period_type": "registry_period",
+            "conversion_multiplier": "registry_unit_conversion",
+            "extraction_method_version": "pypdf_embedded_text_regex_v3",
+            "deterministic_transform": EXTRACTION_SPECS[_sid]["transform_expression_id"],
+            "captured_operand_names": EXTRACTION_SPECS[_sid]["operand_names"],
+        }
+    )
 RECONCILIATION_RULE_ID = "official_dual_source_reconciliation"
 RECONCILIATION_RULE_VERSION = "2"
 EVIDENCE_ORDER_SEMANTICS_ID = "issuer_then_exchange"
