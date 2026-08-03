@@ -141,7 +141,7 @@ def test_committed_delivery_manifest_recomputes_hashes():
     )
     assert (
         manifest["formal_artifact_set_sha256"]
-            == "90632b11b4784a019f8765237fe0d4bafcf1b8a80ff5c681a57fba3798da2483"
+        == "90632b11b4784a019f8765237fe0d4bafcf1b8a80ff5c681a57fba3798da2483"
     )
     for item in manifest["files"]:
         path = root / item["logical_path"]
@@ -173,3 +173,15 @@ def test_definition_specs_compile_and_have_a1_contract():
         assert not any(
             token in spec["named_capture_pattern"] for token in ("12552", "5165", "7387")
         )
+
+
+def test_old_new_report_has_distinct_ids_and_identity_sections():
+    report = json.loads(
+        (
+            Path(__file__).parents[1] / "reports/petrochina_roic_stage2i2r_old_new_report.json"
+        ).read_text()
+    )
+    rows = report["fact_id_comparison"]
+    assert len(rows) == 9
+    assert all(row["old_fact_id"] != row["current_fact_id"] for row in rows)
+    assert all(row["current_identity"]["evidence"] for row in rows)
