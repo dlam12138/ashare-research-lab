@@ -35,8 +35,8 @@
     },
     {
       "logical_path": "reports/petrochina_roic_stage2i2r_extraction_specs_v3.json",
-      "sha256": "4be4d169cd6874aad444dc89381b5f659cbada3e90405694566b3bf0110da286",
-      "byte_size": 7930
+      "sha256": "c450923b9057efa2ce4a16711753f6e74a5e66d3d7263a68b97e94b893b54205",
+      "byte_size": 7718
     },
     {
       "logical_path": "reports/petrochina_roic_stage2i2r_gate_matrix.json",
@@ -84,5 +84,5 @@
       "byte_size": 2198050
     }
   ],
-  "committed_artifact_set_sha256": "970775131698951be6cf0be59940d6ed0fdb352419ac23d7a454051a135f3560"
+  "committed_artifact_set_sha256": "fd81f4334abc5f9b1593803606979cb3c636b9ff536042de76ec735094a8b377"
 }
