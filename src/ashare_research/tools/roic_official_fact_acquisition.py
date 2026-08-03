@@ -75,20 +75,23 @@ EXTRACTION_SPECS = {
         "acquisition_id": "B-2024-lease-interest",
         "capture_groups": ["lease"],
     },
-    "roic-extract-investment-income-v3": {
+    "roic-extract-investment_income-v3": {
         "acquisition_id": "A-2024-investment-income",
         "capture_groups": ["target", "comparative"],
-        "pattern": "label note target comparative",
+        "named_pattern": "label note target comparative NUMBER",
+        "operand_names": ["target"],
     },
-    "roic-extract-fair-value-v3": {
+    "roic-extract-fair_value_net_change-v3": {
         "acquisition_id": "A-2024-fair-value",
         "capture_groups": ["target", "comparative"],
-        "pattern": "label note target comparative",
+        "named_pattern": "label note target comparative NUMBER",
+        "operand_names": ["target"],
     },
-    "roic-extract-asset-disposal-v3": {
+    "roic-extract-asset_disposal_gain_loss-v3": {
         "acquisition_id": "A-2024-asset-disposal",
         "capture_groups": ["target", "comparative"],
-        "pattern": "label note target comparative",
+        "named_pattern": "label note target comparative NUMBER",
+        "operand_names": ["target"],
     },
     "roic-extract-nci-v3": {
         "acquisition_id": "B-2023-2024-nci",
@@ -924,15 +927,19 @@ def _reconciled_fact(cell: ExtractedCell, inputs: list[dict[str, Any]]) -> dict[
     if [item["source_type"] for item in ordered] != ["company_official", "exchange_official"]:
         raise ValueError("reconciliation requires issuer then exchange evidence")
     evidence_digest = canonical_digest(
-        [
-            {
-                "fact_id": item["fact_id"],
-                "source_id": item["source_id"],
-                "source_type": item["source_type"],
-                "content_sha256": item["content_sha256"],
-            }
-            for item in ordered
-        ]
+        {
+            "order_semantics_id": EVIDENCE_ORDER_SEMANTICS_ID,
+            "order_semantics_version": EVIDENCE_ORDER_SEMANTICS_VERSION,
+            "evidence": [
+                {
+                    "fact_id": item["fact_id"],
+                    "source_id": item["source_id"],
+                    "source_type": item["source_type"],
+                    "content_sha256": item["content_sha256"],
+                }
+                for item in ordered
+            ],
+        }
     )
     source_id = (
         f"reconciled:{cell.concept_id}:{cell.fiscal_year}:"
