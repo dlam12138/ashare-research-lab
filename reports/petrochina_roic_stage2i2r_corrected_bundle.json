@@ -1341,7 +1341,9 @@
     {
       "acquisition_id": "A-2024-asset-disposal",
       "role_id": "nopat.asset_disposal_gain_loss",
+      "concept_id": "asset_disposal_gain_loss",
       "fiscal_year": 2024,
+      "period_type": "annual",
       "source_fact_ids": [
         "13461d4c7668e6036f43ee4a4af07b2ef34c24eff8f1e792bff3ab7290954836",
         "6e90a6938bf48fc01355fae8022b3d8e938ca9b20cce96d57a9d10fc79acd5aa"
@@ -1360,6 +1362,33 @@
       "rounding_rule": "Decimal precision 28 ROUND_HALF_EVEN; no material rounding",
       "purpose": "",
       "derivation": "",
+      "extraction_spec_id": "roic-extract-asset_disposal_gain_loss-v3",
+      "extraction_spec_version": "1",
+      "source_evidence_ids": [
+        "pc-roic-2024-issuer-annual-cas",
+        "pc-roic-2024-exchange-annual-cas"
+      ],
+      "content_object_ids": [],
+      "capture_group": "target",
+      "match_count": 1,
+      "capture_span": [
+        743,
+        746
+      ],
+      "captured_raw_text": "资产处置收益 53 613 498",
+      "captured_operands": {},
+      "operand_names": [],
+      "derivation_formula": "identity",
+      "derivation_input_digest": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "captured_source_sign": "positive",
+      "source_unit": "人民币百万元",
+      "transform_expression_id": "identity",
+      "input_excerpt_hashes": [],
+      "excerpt_hash": "b8564e04411657902e030d85fd9981853f3d51771cc6ff01172b0628f2811235",
+      "rounding_policy": "ROUND_HALF_EVEN",
+      "review_status": "verified",
+      "ocr_used": false,
+      "llm_used": false,
       "locator": {
         "evidence_ids": [
           "pc-roic-2024-issuer-annual-cas",
@@ -1383,7 +1412,9 @@
     {
       "acquisition_id": "A-2024-fair-value",
       "role_id": "nopat.fair_value_net_change",
+      "concept_id": "fair_value_net_change",
       "fiscal_year": 2024,
+      "period_type": "annual",
       "source_fact_ids": [
         "0317b1e094fbf6408c536b57a880dd3aa818f7d6832dff58ccbd5ff94b1a29c6",
         "d14236d3ef62de00e8cf3e5b84494b257fddefeffffc795e2c3d2b3f202444c3"
@@ -1402,6 +1433,33 @@
       "rounding_rule": "Decimal precision 28 ROUND_HALF_EVEN; no material rounding",
       "purpose": "",
       "derivation": "",
+      "extraction_spec_id": "roic-extract-fair_value_net_change-v3",
+      "extraction_spec_version": "1",
+      "source_evidence_ids": [
+        "pc-roic-2024-issuer-annual-cas",
+        "pc-roic-2024-exchange-annual-cas"
+      ],
+      "content_object_ids": [],
+      "capture_group": "target",
+      "match_count": 1,
+      "capture_span": [
+        636,
+        641
+      ],
+      "captured_raw_text": "公允价值变动收益 50 4,673 2,008",
+      "captured_operands": {},
+      "operand_names": [],
+      "derivation_formula": "identity",
+      "derivation_input_digest": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "captured_source_sign": "positive",
+      "source_unit": "人民币百万元",
+      "transform_expression_id": "identity",
+      "input_excerpt_hashes": [],
+      "excerpt_hash": "04c93eab0764e1fd056435ff9cbc16ceed4078e614a89e5ec9c0802328523e77",
+      "rounding_policy": "ROUND_HALF_EVEN",
+      "review_status": "verified",
+      "ocr_used": false,
+      "llm_used": false,
       "locator": {
         "evidence_ids": [
           "pc-roic-2024-issuer-annual-cas",
@@ -1425,7 +1483,9 @@
     {
       "acquisition_id": "A-2024-finance-core",
       "role_id": "nopat.finance_cost_excluding_lease_interest",
+      "concept_id": "finance_cost_excluding_lease_interest",
       "fiscal_year": 2024,
+      "period_type": "annual",
       "source_fact_ids": [
         "b9d8228d603b5316420630fdf0afa037ce8e890236a11de3fe72db96b0e36546",
         "7b89871113fd626ae5276311a6c8db5333e1fd5cdef5710ff4c9c791c70956a2"
@@ -1444,6 +1504,42 @@
       "rounding_rule": "Decimal precision 28 ROUND_HALF_EVEN; no material rounding",
       "purpose": "",
       "derivation": "captured finance=(12,552); captured lease=5,165; Decimal(abs(finance)-lease)=7387",
+      "extraction_spec_id": "roic-extract-finance-core-v3",
+      "extraction_spec_version": "1",
+      "source_evidence_ids": [
+        "pc-roic-2024-issuer-annual-cas",
+        "pc-roic-2024-exchange-annual-cas"
+      ],
+      "content_object_ids": [],
+      "capture_group": "finance,lease",
+      "match_count": 1,
+      "capture_span": [
+        404,
+        118
+      ],
+      "captured_raw_text": "财务费用 47 (12,552) (18,091)|其中：租赁负债的利息支出 5,165 5,239",
+      "captured_operands": {
+        "finance_cost_amount": "(12,552)",
+        "lease_interest_amount": "5,165"
+      },
+      "operand_names": [
+        "finance_cost_amount",
+        "lease_interest_amount"
+      ],
+      "derivation_formula": "captured finance=(12,552); captured lease=5,165; Decimal(abs(finance)-lease)=7387",
+      "derivation_input_digest": "28006d2ee3bfeddb1cea57a248e99cb357de2338f1930b96215132f98504110c",
+      "captured_source_sign": "positive",
+      "source_unit": "人民币百万元",
+      "transform_expression_id": "captured finance=(12,552); captured lease=5,165; Decimal(abs(finance)-lease)=7387",
+      "input_excerpt_hashes": [
+        "a882e45bf06dcca51b5ae6acadbaa03d4304df0adc6fc0763d40892b279e5277",
+        "a6a8f80f228214f3b629b3cf52ea134a0645fa5c9f9d162334c03f796008de8d"
+      ],
+      "excerpt_hash": "e71f8ac3370c22959eaacf551e7f1d36a2f208f3c07a79cabe0043764692d12a",
+      "rounding_policy": "ROUND_HALF_EVEN",
+      "review_status": "verified",
+      "ocr_used": false,
+      "llm_used": false,
       "locator": {
         "evidence_ids": [
           "pc-roic-2024-issuer-annual-cas",
@@ -1467,7 +1563,9 @@
     {
       "acquisition_id": "A-2024-investment-income",
       "role_id": "nopat.investment_income",
+      "concept_id": "investment_income",
       "fiscal_year": 2024,
+      "period_type": "annual",
       "source_fact_ids": [
         "6ae3d3604792eb360b83843179a4251757f974a684445705f34a64aca44db3b2",
         "0ac15837a1f4182185cdf91e3efc90882ba859338bccad09ce5353b8cbc0cde9"
@@ -1486,6 +1584,33 @@
       "rounding_rule": "Decimal precision 28 ROUND_HALF_EVEN; no material rounding",
       "purpose": "",
       "derivation": "",
+      "extraction_spec_id": "roic-extract-investment_income-v3",
+      "extraction_spec_version": "1",
+      "source_evidence_ids": [
+        "pc-roic-2024-issuer-annual-cas",
+        "pc-roic-2024-exchange-annual-cas"
+      ],
+      "content_object_ids": [],
+      "capture_group": "target",
+      "match_count": 1,
+      "capture_span": [
+        550,
+        556
+      ],
+      "captured_raw_text": "投资收益 49 11,934 9,554",
+      "captured_operands": {},
+      "operand_names": [],
+      "derivation_formula": "identity",
+      "derivation_input_digest": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "captured_source_sign": "positive",
+      "source_unit": "人民币百万元",
+      "transform_expression_id": "identity",
+      "input_excerpt_hashes": [],
+      "excerpt_hash": "aaff356e4cde1b64fcafa17ae5d4fcf3e7b0b495ca8673d151fbb887d3ec0958",
+      "rounding_policy": "ROUND_HALF_EVEN",
+      "review_status": "verified",
+      "ocr_used": false,
+      "llm_used": false,
       "locator": {
         "evidence_ids": [
           "pc-roic-2024-issuer-annual-cas",
@@ -1509,7 +1634,9 @@
     {
       "acquisition_id": "B-2023-2024-nci",
       "role_id": "invested_capital.non_controlling_interest",
+      "concept_id": "non_controlling_interest",
       "fiscal_year": 2023,
+      "period_type": "instant",
       "source_fact_ids": [
         "9ce4845aa85c248d3ece032bb0cf06613b11c71376e6daf497cbf47cbae140ff",
         "1ea4e4b81bcd61ace3a66eefb599f8f45cecb3f6dbf7a47fc26b7b14ba3db623"
@@ -1528,6 +1655,33 @@
       "rounding_rule": "Decimal precision 28 ROUND_HALF_EVEN; no material rounding",
       "purpose": "",
       "derivation": "",
+      "extraction_spec_id": "roic-extract-nci-v3",
+      "extraction_spec_version": "1",
+      "source_evidence_ids": [
+        "pc-roic-2023-issuer-annual-cas",
+        "pc-roic-2023-exchange-annual-cas"
+      ],
+      "content_object_ids": [],
+      "capture_group": "target",
+      "match_count": 1,
+      "capture_span": [
+        1193,
+        1200
+      ],
+      "captured_raw_text": "少数股东权益 42 184,211 168,550 - -",
+      "captured_operands": {},
+      "operand_names": [],
+      "derivation_formula": "identity",
+      "derivation_input_digest": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "captured_source_sign": "positive",
+      "source_unit": "人民币百万元",
+      "transform_expression_id": "identity",
+      "input_excerpt_hashes": [],
+      "excerpt_hash": "5d50050c2785f45c8493e5babb524b75a47d4c37bdfc255c843c31d98edc63d7",
+      "rounding_policy": "ROUND_HALF_EVEN",
+      "review_status": "verified",
+      "ocr_used": false,
+      "llm_used": false,
       "locator": {
         "evidence_ids": [
           "pc-roic-2023-issuer-annual-cas",
@@ -1551,7 +1705,9 @@
     {
       "acquisition_id": "B-2023-2024-nci",
       "role_id": "invested_capital.non_controlling_interest",
+      "concept_id": "non_controlling_interest",
       "fiscal_year": 2024,
+      "period_type": "instant",
       "source_fact_ids": [
         "c804eead959af27d39a3ae78d0adef746097a11c1cb3367fae3c8dd51f8b70c7",
         "324d73184c99f33a8a260102b2a24d2bcb0469999ffe3788454a12bbc5b70cef"
@@ -1570,6 +1726,33 @@
       "rounding_rule": "Decimal precision 28 ROUND_HALF_EVEN; no material rounding",
       "purpose": "",
       "derivation": "",
+      "extraction_spec_id": "roic-extract-nci-v3",
+      "extraction_spec_version": "1",
+      "source_evidence_ids": [
+        "pc-roic-2024-issuer-annual-cas",
+        "pc-roic-2024-exchange-annual-cas"
+      ],
+      "content_object_ids": [],
+      "capture_group": "target",
+      "match_count": 1,
+      "capture_span": [
+        1192,
+        1199
+      ],
+      "captured_raw_text": "少数股东权益 41 194,492 184,211 - -",
+      "captured_operands": {},
+      "operand_names": [],
+      "derivation_formula": "identity",
+      "derivation_input_digest": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "captured_source_sign": "positive",
+      "source_unit": "人民币百万元",
+      "transform_expression_id": "identity",
+      "input_excerpt_hashes": [],
+      "excerpt_hash": "c597af72ea8d4dde19e4f94dcea59f308a74f3c7a35bbba3149c52889737046a",
+      "rounding_policy": "ROUND_HALF_EVEN",
+      "review_status": "verified",
+      "ocr_used": false,
+      "llm_used": false,
       "locator": {
         "evidence_ids": [
           "pc-roic-2024-issuer-annual-cas",
@@ -1593,7 +1776,9 @@
     {
       "acquisition_id": "B-2024-lease-interest",
       "role_id": "nopat.lease_interest_expense",
+      "concept_id": "lease_interest_expense",
       "fiscal_year": 2024,
+      "period_type": "annual",
       "source_fact_ids": [
         "1007732a527cbde98136f7aa992675f581c789d0742d99e650489cb7aa16489e",
         "81ff9fb1ca18b32e0584fc99ae2788b8f615e81a74a66e9ee732b666f1db8cc4"
@@ -1612,6 +1797,39 @@
       "rounding_rule": "Decimal precision 28 ROUND_HALF_EVEN; no material rounding",
       "purpose": "",
       "derivation": "component of finance_cost_adjustment; never contributes independently after parent",
+      "extraction_spec_id": "roic-extract-lease-interest-v3",
+      "extraction_spec_version": "1",
+      "source_evidence_ids": [
+        "pc-roic-2024-issuer-annual-cas",
+        "pc-roic-2024-exchange-annual-cas"
+      ],
+      "content_object_ids": [],
+      "capture_group": "lease",
+      "match_count": 1,
+      "capture_span": [
+        113,
+        118
+      ],
+      "captured_raw_text": "其中：租赁负债的利息支出 5,165 5,239",
+      "captured_operands": {
+        "lease_interest_amount": "5,165"
+      },
+      "operand_names": [
+        "lease_interest_amount"
+      ],
+      "derivation_formula": "component of finance_cost_adjustment; never contributes independently after parent",
+      "derivation_input_digest": "b0121c78fcaa70ca70a1975b06cfd58baea2bbb1884210f9bb9c40cbe2000fdc",
+      "captured_source_sign": "positive",
+      "source_unit": "人民币百万元",
+      "transform_expression_id": "component of finance_cost_adjustment; never contributes independently after parent",
+      "input_excerpt_hashes": [
+        "a6a8f80f228214f3b629b3cf52ea134a0645fa5c9f9d162334c03f796008de8d"
+      ],
+      "excerpt_hash": "a6a8f80f228214f3b629b3cf52ea134a0645fa5c9f9d162334c03f796008de8d",
+      "rounding_policy": "ROUND_HALF_EVEN",
+      "review_status": "verified",
+      "ocr_used": false,
+      "llm_used": false,
       "locator": {
         "evidence_ids": [
           "pc-roic-2024-issuer-annual-cas",
@@ -1635,7 +1853,9 @@
     {
       "acquisition_id": "C-2023-2024-restricted-cash",
       "role_id": "invested_capital.restricted_cash",
+      "concept_id": "restricted_cash",
       "fiscal_year": 2023,
+      "period_type": "instant",
       "source_fact_ids": [
         "f8584bec08513356cf713f389b247f2aa7fd2b3eef916fb264bb8be14fb65d0b",
         "82b0cf462b1cbb37a0f286cd85135ea22b3ea536dd4f07dcb0a64cbaa5b204e6"
@@ -1654,6 +1874,33 @@
       "rounding_rule": "Decimal precision 28 ROUND_HALF_EVEN; no material rounding",
       "purpose": "pledged guarantee-account deposit securing USD borrowings; never freely deductible cash",
       "derivation": "",
+      "extraction_spec_id": "roic-extract-restricted-cash-2023-v3",
+      "extraction_spec_version": "1",
+      "source_evidence_ids": [
+        "pc-roic-2023-issuer-annual-cas",
+        "pc-roic-2023-exchange-annual-cas"
+      ],
+      "content_object_ids": [],
+      "capture_group": "target",
+      "match_count": 1,
+      "capture_span": [
+        86,
+        149
+      ],
+      "captured_raw_text": "货币资金中有账面价值为 21.40 亿元(2022 年 12 月 31 日：25.86 亿元)的保证金账户存款作为美元借款质押",
+      "captured_operands": {},
+      "operand_names": [],
+      "derivation_formula": "identity",
+      "derivation_input_digest": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "captured_source_sign": "positive",
+      "source_unit": "亿元",
+      "transform_expression_id": "identity",
+      "input_excerpt_hashes": [],
+      "excerpt_hash": "4214055e7f7150378282cef49efbdd03947635ab5d0ece6a535a4e23b4de63fe",
+      "rounding_policy": "ROUND_HALF_EVEN",
+      "review_status": "verified",
+      "ocr_used": false,
+      "llm_used": false,
       "locator": {
         "evidence_ids": [
           "pc-roic-2023-issuer-annual-cas",
@@ -1677,7 +1924,9 @@
     {
       "acquisition_id": "C-2023-2024-restricted-cash",
       "role_id": "invested_capital.restricted_cash",
+      "concept_id": "restricted_cash",
       "fiscal_year": 2024,
+      "period_type": "instant",
       "source_fact_ids": [
         "84f170f4d74c8dce09cc0e14c2860669ee940ef85fb87d50638b89b8fbe78f09",
         "299760ed7f017109c0cbb6843c29f91d0fd982f3e2d6b748e1651f23ba5ff4bb"
@@ -1696,6 +1945,33 @@
       "rounding_rule": "Decimal precision 28 ROUND_HALF_EVEN; no material rounding",
       "purpose": "source explicitly states no guarantee-account deposit securing USD borrowings; never freely deductible cash",
       "derivation": "",
+      "extraction_spec_id": "roic-extract-restricted-cash-2024-v3",
+      "extraction_spec_version": "1",
+      "source_evidence_ids": [
+        "pc-roic-2024-issuer-annual-cas",
+        "pc-roic-2024-exchange-annual-cas"
+      ],
+      "content_object_ids": [],
+      "capture_group": "absence_statement",
+      "match_count": 1,
+      "capture_span": [
+        452,
+        500
+      ],
+      "captured_raw_text": "货币资金中无保证金账户存款作为美元借款质押(2023 年 12 月 31 日：21.40 亿元)",
+      "captured_operands": {},
+      "operand_names": [],
+      "derivation_formula": "identity",
+      "derivation_input_digest": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+      "captured_source_sign": "explicit_absence",
+      "source_unit": "亿元",
+      "transform_expression_id": "identity",
+      "input_excerpt_hashes": [],
+      "excerpt_hash": "71fc5bb77d8fc60ffa7029edf002bae96353bb77e575858bcaccdedc2eb31576",
+      "rounding_policy": "ROUND_HALF_EVEN",
+      "review_status": "verified",
+      "ocr_used": false,
+      "llm_used": false,
       "locator": {
         "evidence_ids": [
           "pc-roic-2024-issuer-annual-cas",

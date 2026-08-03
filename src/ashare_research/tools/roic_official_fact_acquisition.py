@@ -116,6 +116,41 @@ def validate_extraction_cells(cells: list[ExtractedCell]) -> dict[str, Any]:
     return {"status": "TRUSTED", "cell_count": len(cells)}
 
 
+def validate_serialized_extraction(economic_facts: list[dict[str, Any]]) -> dict[str, Any]:
+    """Recompute every normalized value from the serialized output contract."""
+    for item in economic_facts:
+        required = (
+            "extraction_spec_id",
+            "extraction_spec_version",
+            "capture_group",
+            "captured_raw_text",
+            "locator",
+            "normalized_decimal_value",
+            "conversion_multiplier",
+        )
+        if any(key not in item or item[key] in (None, "") for key in required):
+            raise ValueError("serialized extraction lineage is incomplete")
+        raw = item["raw_value"]
+        if raw == "无":
+            if "无" not in item["captured_raw_text"] or item["normalized_decimal_value"] != "0":
+                raise ValueError("serialized explicit absence cannot be recomputed")
+            continue
+        operands = item.get("captured_operands") or {}
+        if item["concept_id"] == "finance_cost_excluding_lease_interest":
+            if set(("finance_cost_amount", "lease_interest_amount")) - set(operands):
+                raise ValueError("serialized finance operands missing")
+            expected = _decimal(operands["finance_cost_amount"]).copy_abs() - _decimal(
+                operands["lease_interest_amount"]
+            )
+            if _decimal(raw) != expected:
+                raise ValueError("serialized finance derivation mismatch")
+        elif _decimal(item["normalized_decimal_value"]) != _decimal(raw) * Decimal(
+            item["conversion_multiplier"]
+        ):
+            raise ValueError("serialized normalized value mismatch")
+    return {"status": "TRUSTED", "economic_fact_count": len(economic_facts)}
+
+
 def decide_acquisition_gate(
     readiness_status: str,
     validators: dict[str, Any] | None = None,
@@ -970,7 +1005,9 @@ def build_fact_bundle(cells: list[ExtractedCell]) -> dict[str, Any]:
             {
                 "acquisition_id": cell.acquisition_id,
                 "role_id": cell.role_id,
+                "concept_id": cell.concept_id,
                 "fiscal_year": cell.fiscal_year,
+                "period_type": cell.period_type,
                 "source_fact_ids": [item["fact_id"] for item in inputs],
                 "canonical_fact_id": reconciled["fact_id"],
                 "context_id": reconciled["context_id"],
@@ -986,6 +1023,27 @@ def build_fact_bundle(cells: list[ExtractedCell]) -> dict[str, Any]:
                 "rounding_rule": "Decimal precision 28 ROUND_HALF_EVEN; no material rounding",
                 "purpose": cell.purpose,
                 "derivation": cell.derivation,
+                "extraction_spec_id": cell.extraction_spec_id,
+                "extraction_spec_version": cell.extraction_spec_version,
+                "source_evidence_ids": list(cell.locator.get("evidence_ids", [])),
+                "content_object_ids": list(cell.locator.get("content_object_ids", [])),
+                "capture_group": cell.capture_group,
+                "match_count": 1,
+                "capture_span": list(cell.capture_span) if cell.capture_span else None,
+                "captured_raw_text": cell.captured_raw_text,
+                "captured_operands": cell.captured_operands or {},
+                "operand_names": sorted((cell.captured_operands or {}).keys()),
+                "derivation_formula": cell.derivation or "identity",
+                "derivation_input_digest": canonical_digest(cell.captured_operands or {}),
+                "captured_source_sign": cell.raw_sign_presentation,
+                "source_unit": cell.raw_unit,
+                "transform_expression_id": cell.derivation or "identity",
+                "input_excerpt_hashes": list(cell.input_excerpt_hashes),
+                "excerpt_hash": cell.locator.get("source_excerpt_sha256", ""),
+                "rounding_policy": "ROUND_HALF_EVEN",
+                "review_status": "verified",
+                "ocr_used": bool(cell.locator.get("ocr_used", False)),
+                "llm_used": False,
                 "locator": cell.locator,
                 "reconciliation_status": "acquired_verified",
             }
@@ -1162,8 +1220,7 @@ def _missing_records() -> list[dict[str, Any]]:
             {
                 "search_register_id": f"stage2i2r-search-{index:02d}",
                 "search_spec_id": (
-                    f"roic-search-spec-{record['acquisition_id']}-"
-                    f"{record['fiscal_year']}-v2"
+                    f"roic-search-spec-{record['acquisition_id']}-{record['fiscal_year']}-v2"
                 ),
                 "search_spec_version": "2",
                 "target_semantic_requirement": record["role_id"],
@@ -1446,7 +1503,10 @@ def run_formal(
     # Derive validator results from the produced records rather than trusting
     # literal gate inputs.  These checks are intentionally fail-closed.
     try:
-        extraction_ok = validate_extraction_cells(cells)["status"] == "TRUSTED"
+        extraction_ok = (
+            validate_extraction_cells(cells)["status"] == "TRUSTED"
+            and validate_serialized_extraction(bundle["economic_facts"])["status"] == "TRUSTED"
+        )
     except Exception:
         extraction_ok = False
     reconciliation_ok = all(
