@@ -34,3 +34,6 @@ at `ebf901d` reproduced 1029 passed, 2 warnings. Final test-only commits `aa47ce
 refreshing the platform-stable manifest verifier. Final CI run `30816554022`
 passed on both Windows and Ubuntu; formal decision is
 `ROIC_FACT_GAPS_REMAIN`; shadow remains `NOT_RUN`.
+
+Corrected serialized extraction lineage is independently recomputable. Formal
+A/B artifact digest: `a323b4de6e987fa307bbf6b3c47e2e1403512bfa4872b7d1c12cd9574897ca35`.

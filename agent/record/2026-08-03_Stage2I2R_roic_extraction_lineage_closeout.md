@@ -26,8 +26,8 @@ Stage 2I.3 was started.
   **1029 passed, 2 warnings** with Ruff and compileall/import passing.
 - Targeted Stage 2I.2R suites: **20 passed**; Ruff all checks passed; compileall/import passed.
 - Formal A/B: both 9 economic facts/16 cells, `ROIC_FACT_GAPS_REMAIN`,
-  `shadow_status=NOT_RUN`; artifact count 12, mismatches 0; digest
-  `ff96e7c1244712280941f077aa94f20eb958788990c636408bbc2bc1314c59f2`.
+  `shadow_status=NOT_RUN`; artifact count 12, mismatches 0; corrected digest
+  `a323b4de6e987fa307bbf6b3c47e2e1403512bfa4872b7d1c12cd9574897ca35`.
 - Independent clean clone at `D:\tmp\stage2i2r_local_clean_8302188\repo`:
   Ruff/import/compileall passed, full pytest 1018 passed, formal A/B passed.
 - Final completed CI evidence before this terminal documentation commit was
