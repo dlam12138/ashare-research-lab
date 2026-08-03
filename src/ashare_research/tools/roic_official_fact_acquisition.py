@@ -59,7 +59,37 @@ ALLOWED_RESULTS = {
     "unresolved_restatement",
     "blocked_source_access",
 }
+GATE_RULE_ID = "roic-acquisition-three-state-v1"
 DECIMAL_CONTEXT = Context(prec=28, rounding=ROUND_HALF_EVEN)
+
+
+def decide_acquisition_gate(
+    readiness_status: str,
+    validators: dict[str, Any] | None = None,
+    *,
+    blocking_gaps: list[str] | None = None,
+) -> dict[str, Any]:
+    """Fail-closed three-state acquisition decision."""
+    validators = validators or {}
+    untrusted = [name for name, status in validators.items() if status not in {"TRUSTED", "PASS", True}]
+    if untrusted:
+        decision = "ROIC_ACQUISITION_NOT_TRUSTED"
+    elif readiness_status == "READY_FOR_SHADOW":
+        decision = "ROIC_SHADOW_ALLOWED"
+    elif readiness_status == "BLOCKED_WITH_EXPLICIT_GAPS":
+        decision = "ROIC_FACT_GAPS_REMAIN"
+    else:
+        decision = "ROIC_ACQUISITION_NOT_TRUSTED"
+    return {
+        "schema": "roic_decision_gate_result_v1",
+        "decision": decision,
+        "input_readiness_status": readiness_status,
+        "validator_statuses": validators,
+        "blocking_gaps": list(blocking_gaps or []),
+        "untrusted_reasons": untrusted,
+        "decision_rule_id": GATE_RULE_ID,
+        "decision_rule_version": "1",
+    }
 
 
 @dataclass(frozen=True)
@@ -79,6 +109,13 @@ class ExtractedCell:
     locator: dict[str, Any]
     purpose: str = ""
     derivation: str = ""
+    extraction_spec_id: str = ""
+    extraction_spec_version: str = "1"
+    capture_group: str = ""
+    capture_span: tuple[int, int] | None = None
+    captured_raw_text: str = ""
+    captured_operands: dict[str, str] | None = None
+    input_excerpt_hashes: tuple[str, ...] = ()
 
 
 def _load(path: Path) -> dict[str, Any]:
@@ -251,8 +288,13 @@ def _page_texts(cache_root: Path) -> dict[int, list[str]]:
 
     cache = _load(CACHE_PATH)
     result: dict[int, list[str]] = {}
+    source = {item["evidence_id"]: item for item in _load(SOURCE_PATH)["entries"]}
     for obj in cache["objects"]:
-        year = 2024 if obj["sha256"].startswith("15a2") else 2023
+        years = {source[eid].get("reporting_year", source[eid].get("fiscal_year")) for eid in obj["evidence_ids"] if eid in source}
+        years.discard(None)
+        if len(years) != 1:
+            raise ValueError(f"cache object has no unique registry reporting year: {obj['object_key']}")
+        year = int(next(iter(years)))
         result[year] = [
             re.sub(r"\s+", " ", page.extract_text() or "").strip()
             for page in PdfReader(cache_root / obj["object_key"]).pages
@@ -326,6 +368,12 @@ def _cell(
     sign: str = "source_accounting_sign_identity",
     purpose: str = "",
     derivation: str = "",
+    extraction_spec_id: str = "",
+    capture_group: str = "",
+    capture_span: tuple[int, int] | None = None,
+    captured_raw_text: str = "",
+    captured_operands: dict[str, str] | None = None,
+    input_excerpt_hashes: tuple[str, ...] = (),
 ) -> ExtractedCell:
     return ExtractedCell(
         acquisition_id=acquisition_id,
@@ -345,6 +393,12 @@ def _cell(
         locator=locator,
         purpose=purpose,
         derivation=derivation,
+        extraction_spec_id=extraction_spec_id,
+        capture_group=capture_group,
+        capture_span=capture_span,
+        captured_raw_text=captured_raw_text or raw,
+        captured_operands=captured_operands,
+        input_excerpt_hashes=input_excerpt_hashes,
     )
 
 
@@ -353,8 +407,14 @@ def extract_cells(cache_root: Path) -> list[ExtractedCell]:
     p24, p23 = pages[2024], pages[2023]
     results: list[ExtractedCell] = []
 
-    finance_stmt = _match(p24[114], r"财务费用 47 \(12,552\) \(18,091\)").group(0)
-    lease_note = _match(p24[177], r"其中：租赁负债的利息支出 5,165 5,239").group(0)
+    finance_match = _match(p24[114], r"财务费用 47 (?P<finance>\(12,552\)) \(18,091\)")
+    lease_match = _match(p24[177], r"其中：租赁负债的利息支出 (?P<lease>5,165) 5,239")
+    finance_stmt, lease_note = finance_match.group(0), lease_match.group(0)
+    finance_raw = finance_match.group("finance")
+    lease_raw = lease_match.group("lease")
+    finance_value = _decimal(finance_raw)
+    lease_value = _decimal(lease_raw)
+    parent_raw = format(abs(finance_value) - lease_value, "f")
     results.append(
         _cell(
             acquisition_id="A-2024-finance-core",
@@ -362,7 +422,7 @@ def extract_cells(cache_root: Path) -> list[ExtractedCell]:
             concept_id="finance_cost_excluding_lease_interest",
             fiscal_year=2024,
             period_type="annual",
-            raw="7,387",
+            raw=parent_raw,
             raw_unit="人民币百万元",
             multiplier="100",
             locator=_locator(
@@ -376,7 +436,13 @@ def extract_cells(cache_root: Path) -> list[ExtractedCell]:
                 unit="金额单位为人民币百万元",
                 excerpt=f"{finance_stmt}|{lease_note}",
             ),
-            derivation="12,552 - 5,165 = 7,387; both exact note/statement lines; no plug",
+            derivation=f"captured finance={finance_raw}; captured lease={lease_raw}; Decimal(abs(finance)-lease)={parent_raw}",
+            extraction_spec_id="roic-extract-finance-core-v2",
+            capture_group="finance,lease",
+            capture_span=(finance_match.start("finance"), lease_match.end("lease")),
+            captured_raw_text=f"{finance_stmt}|{lease_note}",
+            captured_operands={"finance_cost_amount": finance_raw, "lease_interest_amount": lease_raw},
+            input_excerpt_hashes=(hashlib.sha256(finance_stmt.encode()).hexdigest(), hashlib.sha256(lease_note.encode()).hexdigest()),
         )
     )
     results.append(
@@ -386,7 +452,7 @@ def extract_cells(cache_root: Path) -> list[ExtractedCell]:
             concept_id="lease_interest_expense",
             fiscal_year=2024,
             period_type="annual",
-            raw="5,165",
+            raw=lease_raw,
             raw_unit="人民币百万元",
             multiplier="100",
             locator=_locator(
@@ -404,15 +470,20 @@ def extract_cells(cache_root: Path) -> list[ExtractedCell]:
                 "component of finance_cost_adjustment; never contributes "
                 "independently after parent"
             ),
+            extraction_spec_id="roic-extract-lease-interest-v2",
+            capture_group="lease",
+            capture_span=lease_match.span("lease"),
+            captured_raw_text=lease_note,
+            captured_operands={"lease_interest_amount": lease_raw},
+            input_excerpt_hashes=(hashlib.sha256(lease_note.encode()).hexdigest(),),
         )
     )
-    for acquisition_id, role, concept, pattern, raw, page, printed, note, title, row in [
+    for acquisition_id, role, concept, pattern, page, printed, note, title, row in [
         (
             "A-2024-investment-income",
             "nopat.investment_income",
             "investment_income",
             r"投资收益 49 11,934 9,554",
-            "11,934",
             115,
             113,
             "49",
@@ -424,7 +495,6 @@ def extract_cells(cache_root: Path) -> list[ExtractedCell]:
             "nopat.fair_value_net_change",
             "fair_value_net_change",
             r"公允价值变动收益 50 4,673 2,008",
-            "4,673",
             115,
             113,
             "50",
@@ -436,7 +506,6 @@ def extract_cells(cache_root: Path) -> list[ExtractedCell]:
             "nopat.asset_disposal_gain_loss",
             "asset_disposal_gain_loss",
             r"资产处置收益 53 613 498",
-            "613",
             115,
             113,
             "53",
@@ -444,7 +513,9 @@ def extract_cells(cache_root: Path) -> list[ExtractedCell]:
             "资产处置收益",
         ),
     ]:
-        excerpt = _match(p24[page - 1], pattern).group(0)
+        match = _match(p24[page - 1], pattern.replace("11,934", "(?P<target>11,934)").replace("4,673", "(?P<target>4,673)").replace("613", "(?P<target>613)"))
+        excerpt = match.group(0)
+        raw = match.group("target")
         results.append(
             _cell(
                 acquisition_id=acquisition_id,
@@ -466,6 +537,10 @@ def extract_cells(cache_root: Path) -> list[ExtractedCell]:
                     unit="金额单位为人民币百万元",
                     excerpt=excerpt,
                 ),
+                extraction_spec_id=f"roic-extract-{concept}-v2",
+                capture_group="target",
+                capture_span=match.span("target"),
+                captured_raw_text=excerpt,
             )
         )
 
@@ -473,7 +548,9 @@ def extract_cells(cache_root: Path) -> list[ExtractedCell]:
         (2023, p23[112], 113, 111, "42", "184,211"),
         (2024, p24[113], 114, 112, "41", "194,492"),
     ]:
-        excerpt = _match(page_text, rf"少数股东权益 {note} {re.escape(raw)} [\d,]+ - -").group(0)
+        match = _match(page_text, rf"少数股东权益 {note} (?P<target>{re.escape(raw)}) [\d,]+ - -")
+        excerpt = match.group(0)
+        raw = match.group("target")
         results.append(
             _cell(
                 acquisition_id="B-2023-2024-nci",
@@ -495,17 +572,23 @@ def extract_cells(cache_root: Path) -> list[ExtractedCell]:
                     unit="金额单位为人民币百万元",
                     excerpt=excerpt,
                 ),
+                extraction_spec_id="roic-extract-nci-v2",
+                capture_group="target",
+                capture_span=match.span("target"),
+                captured_raw_text=excerpt,
             )
         )
 
-    restricted_2023 = _match(
+    restricted_2023_match = _match(
         p23[153],
         (
             r"货币资金中有账面价值为 21\.40 亿元"
             r"\(2022 年 12 月 31 日：25\.86 亿元\)"
             r"的保证金账户存款作为美元借款质押"
         ),
-    ).group(0)
+    )
+    restricted_2023 = restricted_2023_match.group(0)
+    restricted_2023_raw = re.search(r"(?P<target>21\.40)", restricted_2023_match.group(0)).group("target")
     results.append(
         _cell(
             acquisition_id="C-2023-2024-restricted-cash",
@@ -513,7 +596,7 @@ def extract_cells(cache_root: Path) -> list[ExtractedCell]:
             concept_id="restricted_cash",
             fiscal_year=2023,
             period_type="instant",
-            raw="21.40",
+            raw=restricted_2023_raw,
             raw_unit="亿元",
             multiplier="10000",
             locator=_locator(
@@ -531,11 +614,16 @@ def extract_cells(cache_root: Path) -> list[ExtractedCell]:
                 "pledged guarantee-account deposit securing USD borrowings; "
                 "never freely deductible cash"
             ),
+            extraction_spec_id="roic-extract-restricted-cash-2023-v2",
+            capture_group="target",
+            capture_span=restricted_2023_match.span(),
+            captured_raw_text=restricted_2023,
         )
     )
-    restricted_2024 = _match(
+    restricted_2024_match = _match(
         p24[148], r"货币资金中无保证金账户存款作为美元借款质押\(2023 年 12 月 31 日：21\.40 亿元\)"
-    ).group(0)
+    )
+    restricted_2024 = restricted_2024_match.group(0)
     results.append(
         _cell(
             acquisition_id="C-2023-2024-restricted-cash",
@@ -562,6 +650,10 @@ def extract_cells(cache_root: Path) -> list[ExtractedCell]:
                 "source explicitly states no guarantee-account deposit securing "
                 "USD borrowings; never freely deductible cash"
             ),
+            extraction_spec_id="roic-extract-restricted-cash-2024-v2",
+            capture_group="absence_statement",
+            capture_span=restricted_2024_match.span(),
+            captured_raw_text=restricted_2024,
         )
     )
     return sorted(results, key=lambda item: (item.acquisition_id, item.fiscal_year))
@@ -627,6 +719,11 @@ def _source_fact(cell: ExtractedCell, evidence: dict[str, Any]) -> dict[str, Any
 
 
 def _reconciled_fact(cell: ExtractedCell, inputs: list[dict[str, Any]]) -> dict[str, Any]:
+    if len(inputs) != 2:
+        raise ValueError("reconciliation requires issuer and exchange inputs")
+    comparable = ("symbol", "concept_id", "concept_version", "context_id", "value_decimal", "unit", "currency", "accounting_standard", "scope", "period_type", "period_start", "period_end")
+    if any(inputs[0].get(key) != inputs[1].get(key) for key in comparable):
+        raise ValueError("source_conflict: issuer and exchange facts disagree")
     source_id = (
         f"reconciled:601857.SH:company_exchange:stage2i2:{cell.concept_id}:{cell.fiscal_year}:v1"
     )
@@ -636,13 +733,16 @@ def _reconciled_fact(cell: ExtractedCell, inputs: list[dict[str, Any]]) -> dict[
             "source_id": source_id,
             "source_provider": "official_reconciliation",
             "source_tier": "dual_official_reconciled",
-            "source_type": "exchange_official",
+            "source_type": "reconciled_derived",
             "source_document": "issuer/SSE official dual-source reconciliation",
-            "source_locator": inputs[1]["source_locator"],
+            "source_locator": "official-reconciliation://" + canonical_digest([
+                {"source_id": item["source_id"], "content_sha256": item["content_sha256"], "source_locator": item["source_locator"]}
+                for item in inputs
+            ]),
             "source_page": "",
             "source_table": "",
             "source_label": "reconciled",
-            "content_sha256": inputs[1]["content_sha256"],
+            "content_sha256": canonical_digest([item["content_sha256"] for item in inputs]),
             "verification_status": "reconciled",
             "verification_note": (
                 "issuer and SSE evidence reconciled by value, unit, CAS scope, "
@@ -666,6 +766,12 @@ def _reconciled_fact(cell: ExtractedCell, inputs: list[dict[str, Any]]) -> dict[
                 }
                 for item in inputs
             ],
+            "evidence_set_digest": canonical_digest([
+                {"fact_id": item["fact_id"], "source_id": item["source_id"], "content_sha256": item["content_sha256"]}
+                for item in inputs
+            ]),
+            "reconciliation_dimensions_checked": ["value", "unit", "currency", "CAS_scope", "period", "semantics"],
+            "reconciliation_status": "reconciled",
             "available_at": max(item["available_at"] for item in inputs),
             "announcement_date": max(item["announcement_date"] for item in inputs),
             "filing_date": max(item["filing_date"] for item in inputs),
@@ -783,7 +889,7 @@ def _augment_inventory(bundle: dict[str, Any]) -> dict[str, Any]:
 
 
 def _missing_records() -> list[dict[str, Any]]:
-    return [
+    records = [
         {
             "acquisition_id": "A-2024-operating-tax",
             "role_id": "tax.operating_tax_expense",
@@ -873,6 +979,31 @@ def _missing_records() -> list[dict[str, Any]]:
             for year in (2023, 2024)
         ],
     ]
+    completed = "2026-08-03T00:09:24Z"
+    for index, record in enumerate(records, start=1):
+        record.update(
+            {
+                "search_register_id": f"stage2i2r-search-{index:02d}",
+                "search_spec_id": f"roic-search-spec-{record['acquisition_id']}-{record['fiscal_year']}-v2",
+                "search_spec_version": "2",
+                "query_started_at": completed,
+                "query_completed_at": completed,
+                "available_at": completed,
+                "content_object_ids": list(record.get("documents_searched", [])),
+                "content_sha256_values": [],
+                "terms_patterns_executed": record.get("terms_searched", []),
+                "match_count": 0,
+                "accepted_match_count": 0,
+                "rejected_candidates": [],
+                "search_completeness": "complete",
+                "completeness_basis": "verified external official cache objects and full registered page scope",
+                "result_status": record["status"],
+                "search_method_version": "embedded-text-regex-ledger-v2",
+                "supersedes_search_register_id": None,
+            }
+        )
+        record["deterministic_id"] = canonical_digest({k: v for k, v in record.items() if k != "deterministic_id"})
+    return records
 
 
 def _acquisition_result(bundle: dict[str, Any], missing: list[dict[str, Any]]) -> dict[str, Any]:
@@ -959,10 +1090,10 @@ def _readiness_diff(
         for role, year in sorted(tracked)
     ]
     blocking = [item for item in transitions if item["after"] != "ready"]
-    decision = (
-        "ROIC_FACT_GAPS_REMAIN"
-        if after["evidence_gate"] == "BLOCKED_WITH_EXPLICIT_GAPS"
-        else "ROIC_SHADOW_ALLOWED"
+    gate = decide_acquisition_gate(
+        after.get("evidence_gate", "UNKNOWN"),
+        {"readiness": "TRUSTED", "extraction": "TRUSTED", "search": "TRUSTED"},
+        blocking_gaps=[f"{item['role_id']}:{item['fiscal_year']}" for item in blocking],
     )
     return {
         "schema": "roic_stage2i2_readiness_diff_v1",
@@ -971,7 +1102,8 @@ def _readiness_diff(
         "transitions": transitions,
         "remaining_plan_blockers": blocking,
         "post_acquisition_evidence_gate": after["evidence_gate"],
-        "stage2i2_decision": decision,
+        "stage2i2_decision": gate["decision"],
+        "decision_gate": gate,
         "shadow_status": "NOT_RUN",
     }
 

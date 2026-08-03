@@ -7,7 +7,7 @@
 > [!IMPORTANT]
 > 本项目仅用于数据分析、统计研究和软件工程学习，不构成任何投资建议，也不提供自动交易能力。
 
-**当前阶段：Milestone 1 数据底座已完成；Milestone 2 价值评估 MVP 进行中（Stage 2I.2 ROIC official-fact acquisition；7 个事实缺口仍阻止 shadow）**
+**当前阶段：Milestone 1 数据底座已完成；Milestone 2 价值评估 MVP 进行中（Stage 2I.2R ROIC extraction/lineage closeout；7 个事实缺口仍阻止 shadow）**
 
 ---
 
