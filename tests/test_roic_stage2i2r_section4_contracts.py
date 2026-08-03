@@ -154,7 +154,7 @@ def test_committed_delivery_manifest_recomputes_hashes():
 
 
 def test_definition_specs_compile_and_have_a1_contract():
-    for spec_id, spec in stage.EXTRACTION_SPECS.items():
+    for _spec_id, spec in stage.EXTRACTION_SPECS.items():
         assert spec["version"] == "3"
         groups = re.compile(spec["named_capture_pattern"]).groupindex
         assert set(spec["capture_groups"]).issubset(groups)
