@@ -185,3 +185,16 @@ def test_old_new_report_has_distinct_ids_and_identity_sections():
     assert len(rows) == 9
     assert all(row["old_fact_id"] != row["current_fact_id"] for row in rows)
     assert all(row["current_identity"]["evidence"] for row in rows)
+
+
+def test_internal_artifact_manifest_maps_committed_stage2i2r_files():
+    root = Path(__file__).parents[1]
+    manifest = json.loads(
+        (root / "reports/petrochina_roic_stage2i2r_artifact_manifest.json").read_text()
+    )
+    for item in manifest["files"]:
+        path = root / item["logical_path"]
+        assert path.is_file()
+        payload = path.read_text(encoding="utf-8").replace("\r\n", "\n").encode()
+        assert len(payload) == item["byte_size"]
+        assert hashlib.sha256(payload).hexdigest() == item["sha256"]
