@@ -255,6 +255,91 @@ def test_reconciliation_comparable_conflicts_fail(field):
         stage._reconciled_fact(None, [left, right])
 
 
+def _minimal_reconciliation_inputs():
+    cell = stage.ExtractedCell(
+        "a",
+        "r",
+        "c",
+        2024,
+        "instant",
+        "1",
+        "1",
+        "positive",
+        "u",
+        "1",
+        "1",
+        "identity",
+        {"evidence_ids": []},
+    )
+    base = {
+        "symbol": "X",
+        "concept_id": "c",
+        "concept_version": "1",
+        "context_id": "ctx",
+        "value_decimal": "1",
+        "unit": "u",
+        "currency": "CNY",
+        "accounting_standard": "CAS",
+        "scope": "consolidated",
+        "period_type": "instant",
+        "period_start": "2024-12-31",
+        "period_end": "2024-12-31",
+        "source_tier": "official",
+        "source_document": "d",
+        "source_locator": "path",
+        "source_page": "p",
+        "source_table": "t",
+        "source_label": "l",
+        "verification_status": "verified",
+        "eligible_for_metrics": False,
+        "is_derived": False,
+        "input_fact_ids": "",
+        "source_evidence": [],
+        "content_sha256": "h",
+        "available_at": "2024-01-01",
+        "announcement_date": "2024-01-01",
+        "filing_date": "2024-01-01",
+    }
+    return cell, [
+        dict(base, fact_id="a", source_id="s1", source_type="company_official"),
+        dict(base, fact_id="b", source_id="s2", source_type="exchange_official"),
+    ]
+
+
+def test_reconciliation_rule_and_order_versions_change_real_fact_id(monkeypatch):
+    cell, inputs = _minimal_reconciliation_inputs()
+    first = stage._reconciled_fact(cell, inputs)["fact_id"]
+    monkeypatch.setattr(stage, "RECONCILIATION_RULE_VERSION", "9")
+    assert stage._reconciled_fact(cell, inputs)["fact_id"] != first
+    monkeypatch.setattr(stage, "RECONCILIATION_RULE_VERSION", "2")
+    monkeypatch.setattr(stage, "EVIDENCE_ORDER_SEMANTICS_VERSION", "9")
+    assert stage._reconciled_fact(cell, inputs)["fact_id"] != first
+
+
+def test_reconciliation_paths_stable_and_available_at_max():
+    cell, inputs = _minimal_reconciliation_inputs()
+    inputs[0]["available_at"] = "2025-01-01"
+    inputs[1]["available_at"] = "2025-02-01"
+    first = stage._reconciled_fact(cell, inputs)
+    reversed_fact = stage._reconciled_fact(cell, list(reversed(inputs)))
+    assert first["fact_id"] == reversed_fact["fact_id"]
+    assert first["available_at"] == "2025-02-01"
+    inputs[0]["source_locator"] = "different-path"
+    assert stage._reconciled_fact(cell, inputs)["fact_id"] == first["fact_id"]
+
+
+def test_reconciled_validator_rejects_source_and_fact_id_tamper():
+    cell, inputs = _minimal_reconciliation_inputs()
+    fact = stage._reconciled_fact(cell, inputs)
+    stage.validate_reconciled_fact(fact)
+    bad = dict(fact, source_id=fact["source_id"] + "x")
+    with pytest.raises(ValueError):
+        stage.validate_reconciled_fact(bad)
+    bad = dict(fact, fact_id="0" * 64)
+    with pytest.raises(ValueError):
+        stage.validate_reconciled_fact(bad)
+
+
 def test_internal_artifact_manifest_maps_committed_stage2i2r_files():
     root = Path(__file__).parents[1]
     manifest = json.loads(
