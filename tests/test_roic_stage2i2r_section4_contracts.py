@@ -1,6 +1,9 @@
 from decimal import Decimal
 
 import pytest
+import hashlib
+import json
+from pathlib import Path
 
 from ashare_research.tools import roic_official_fact_acquisition as stage
 
@@ -128,3 +131,19 @@ def test_search_identity_changes_when_spec_or_source_changes():
         {k: v for k, v in records[0].items() if k != "deterministic_id"}
     )
     assert changed != first
+
+
+def test_committed_delivery_manifest_recomputes_hashes():
+    root = Path(__file__).parents[1]
+    manifest = json.loads(
+        (root / "reports/petrochina_roic_stage2i2r_delivery_manifest.json").read_text()
+    )
+    assert (
+        manifest["formal_artifact_set_sha256"]
+        == "ff96e7c1244712280941f077aa94f20eb958788990c636408bbc2bc1314c59f2"
+    )
+    for item in manifest["files"]:
+        path = root / item["logical_path"]
+        assert path.is_file()
+        assert path.stat().st_size == item["byte_size"]
+        assert hashlib.sha256(path.read_bytes()).hexdigest() == item["sha256"]
