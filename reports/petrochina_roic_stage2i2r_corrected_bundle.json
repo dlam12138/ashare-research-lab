@@ -87,11 +87,11 @@
       "concept_id": "asset_disposal_gain_loss",
       "concept_version": "1",
       "context_id": "601857.SH|2024|annual|consolidated",
-      "source_id": "reconciled:601857.SH:company_exchange:stage2i2:asset_disposal_gain_loss:2024:v1",
+      "source_id": "reconciled:asset_disposal_gain_loss:2024:official_dual_source_reconciliation:v2:b52057fea9db425e430dff7bb174af25943336e9e5a2e5e7f1b983072dcdfe24",
       "fact_version": 1,
       "restatement_version": "original",
       "derivation_definition_id": "official_dual_source_reconciliation",
-      "derivation_version": "1",
+      "derivation_version": "2",
       "supersedes_fact_id": null,
       "value_decimal": "61300",
       "unit": "万元",
@@ -140,7 +140,7 @@
           "content_sha256": "15a2de01653ceefa46fdd18a02a127f434f06db02da9efb0b62c3a12a35a9bba"
         }
       ],
-      "fact_id": "3c5f5616f0bc587c0f88f4dcf953d49af23ecb54d33b674ca2ec341c177bf8fc",
+      "fact_id": "5d7e7435a6d5a1a4cb1f1fe441458527e3bf147e9908340ba87cf43baab426f0",
       "evidence_set_digest": "0bf0180b43b966c03d7091bd80341da7b30f03db2e02d885c6a8adb17d07572c",
       "reconciliation_dimensions_checked": [
         "value",
@@ -150,7 +150,9 @@
         "period",
         "semantics"
       ],
-      "reconciliation_status": "reconciled"
+      "reconciliation_status": "reconciled",
+      "evidence_order_semantics_id": "issuer_then_exchange",
+      "evidence_order_semantics_version": "1"
     },
     {
       "symbol": "601857.SH",
@@ -235,11 +237,11 @@
       "concept_id": "fair_value_net_change",
       "concept_version": "1",
       "context_id": "601857.SH|2024|annual|consolidated",
-      "source_id": "reconciled:601857.SH:company_exchange:stage2i2:fair_value_net_change:2024:v1",
+      "source_id": "reconciled:fair_value_net_change:2024:official_dual_source_reconciliation:v2:8c739ff6ec0e29fde48de7fe3450b5931137716ad29d5f3fbb56304d47633b22",
       "fact_version": 1,
       "restatement_version": "original",
       "derivation_definition_id": "official_dual_source_reconciliation",
-      "derivation_version": "1",
+      "derivation_version": "2",
       "supersedes_fact_id": null,
       "value_decimal": "467300",
       "unit": "万元",
@@ -288,7 +290,7 @@
           "content_sha256": "15a2de01653ceefa46fdd18a02a127f434f06db02da9efb0b62c3a12a35a9bba"
         }
       ],
-      "fact_id": "05122c72af2f47956a35d6e12a918698a2f61e716b122732d897cfe53eea2667",
+      "fact_id": "e1a0cd1aa6ed22f3861042353b7227ab658eda124193d6d90e3d29b99e2b20df",
       "evidence_set_digest": "9e80293f9aa9b7c8429f659db3c16bf0c3f43552268d5609419780d635835e88",
       "reconciliation_dimensions_checked": [
         "value",
@@ -298,7 +300,9 @@
         "period",
         "semantics"
       ],
-      "reconciliation_status": "reconciled"
+      "reconciliation_status": "reconciled",
+      "evidence_order_semantics_id": "issuer_then_exchange",
+      "evidence_order_semantics_version": "1"
     },
     {
       "symbol": "601857.SH",
@@ -383,11 +387,11 @@
       "concept_id": "finance_cost_excluding_lease_interest",
       "concept_version": "1",
       "context_id": "601857.SH|2024|annual|consolidated",
-      "source_id": "reconciled:601857.SH:company_exchange:stage2i2:finance_cost_excluding_lease_interest:2024:v1",
+      "source_id": "reconciled:finance_cost_excluding_lease_interest:2024:official_dual_source_reconciliation:v2:18b7ca5f36f9672a7003af923e5f2d682f0629afc52774987aac2bb7243c86ca",
       "fact_version": 1,
       "restatement_version": "original",
       "derivation_definition_id": "official_dual_source_reconciliation",
-      "derivation_version": "1",
+      "derivation_version": "2",
       "supersedes_fact_id": null,
       "value_decimal": "738700",
       "unit": "万元",
@@ -436,7 +440,7 @@
           "content_sha256": "15a2de01653ceefa46fdd18a02a127f434f06db02da9efb0b62c3a12a35a9bba"
         }
       ],
-      "fact_id": "69ca13d7fc66752e99d579624a8a03797ca51a071fa60b5d4c39fe9b8b5fe99d",
+      "fact_id": "fc3112ace4925bfc776955bf71813565a4f1c9add4901fd6d9a0e92a8475a34d",
       "evidence_set_digest": "c7e3437c54f6fa64db3e474ba902aa5899388d326cd9780aa5665726c135d536",
       "reconciliation_dimensions_checked": [
         "value",
@@ -446,7 +450,9 @@
         "period",
         "semantics"
       ],
-      "reconciliation_status": "reconciled"
+      "reconciliation_status": "reconciled",
+      "evidence_order_semantics_id": "issuer_then_exchange",
+      "evidence_order_semantics_version": "1"
     },
     {
       "symbol": "601857.SH",
@@ -531,11 +537,11 @@
       "concept_id": "investment_income",
       "concept_version": "1",
       "context_id": "601857.SH|2024|annual|consolidated",
-      "source_id": "reconciled:601857.SH:company_exchange:stage2i2:investment_income:2024:v1",
+      "source_id": "reconciled:investment_income:2024:official_dual_source_reconciliation:v2:19ee566f42b61a9751512eaeb02ea7cdfa718afafde380be8b5d7fa683d16180",
       "fact_version": 1,
       "restatement_version": "original",
       "derivation_definition_id": "official_dual_source_reconciliation",
-      "derivation_version": "1",
+      "derivation_version": "2",
       "supersedes_fact_id": null,
       "value_decimal": "1193400",
       "unit": "万元",
@@ -584,7 +590,7 @@
           "content_sha256": "15a2de01653ceefa46fdd18a02a127f434f06db02da9efb0b62c3a12a35a9bba"
         }
       ],
-      "fact_id": "69d9b5072bdc8c611d67867899d85d143019dc611acc6434fe6a6bc0d38b8970",
+      "fact_id": "c7d728ad5a85f30ded3d94a4e60c30cded5451b08c76301268bd95e7d97b0509",
       "evidence_set_digest": "4c2a6e64e69f0c6682c6fd80179ef2c5e5ea37b80b8d7c0c8f685bbe409e6540",
       "reconciliation_dimensions_checked": [
         "value",
@@ -594,7 +600,9 @@
         "period",
         "semantics"
       ],
-      "reconciliation_status": "reconciled"
+      "reconciliation_status": "reconciled",
+      "evidence_order_semantics_id": "issuer_then_exchange",
+      "evidence_order_semantics_version": "1"
     },
     {
       "symbol": "601857.SH",
@@ -679,11 +687,11 @@
       "concept_id": "non_controlling_interest",
       "concept_version": "1",
       "context_id": "601857.SH|2023|instant|consolidated",
-      "source_id": "reconciled:601857.SH:company_exchange:stage2i2:non_controlling_interest:2023:v1",
+      "source_id": "reconciled:non_controlling_interest:2023:official_dual_source_reconciliation:v2:9c557e917ec31ab33b303e4d4ac5431157c906b042027485371e1ecf9c380f81",
       "fact_version": 1,
       "restatement_version": "original",
       "derivation_definition_id": "official_dual_source_reconciliation",
-      "derivation_version": "1",
+      "derivation_version": "2",
       "supersedes_fact_id": null,
       "value_decimal": "18421100",
       "unit": "万元",
@@ -732,7 +740,7 @@
           "content_sha256": "b845502e533311280f89d59c2a92c67f94f2be17451e51e55f93a1d52abe6692"
         }
       ],
-      "fact_id": "3b386b1d9aa7cb848c55db9032829a53fb7b73c033b1a5776cd2703b9d79e391",
+      "fact_id": "56d73f8d567bcc35515475b1f81685f089f5fd539c3923c252a243cd1cacdbd3",
       "evidence_set_digest": "0b036fb1fc0db9d14aa97645cd488d30c57696a546b9c11f35d4137c36d75043",
       "reconciliation_dimensions_checked": [
         "value",
@@ -742,7 +750,9 @@
         "period",
         "semantics"
       ],
-      "reconciliation_status": "reconciled"
+      "reconciliation_status": "reconciled",
+      "evidence_order_semantics_id": "issuer_then_exchange",
+      "evidence_order_semantics_version": "1"
     },
     {
       "symbol": "601857.SH",
@@ -827,11 +837,11 @@
       "concept_id": "non_controlling_interest",
       "concept_version": "1",
       "context_id": "601857.SH|2024|instant|consolidated",
-      "source_id": "reconciled:601857.SH:company_exchange:stage2i2:non_controlling_interest:2024:v1",
+      "source_id": "reconciled:non_controlling_interest:2024:official_dual_source_reconciliation:v2:70ab1804f3da47bafa8bd9177daf105529fd5613454138c4623c6c1f706baa20",
       "fact_version": 1,
       "restatement_version": "original",
       "derivation_definition_id": "official_dual_source_reconciliation",
-      "derivation_version": "1",
+      "derivation_version": "2",
       "supersedes_fact_id": null,
       "value_decimal": "19449200",
       "unit": "万元",
@@ -880,7 +890,7 @@
           "content_sha256": "15a2de01653ceefa46fdd18a02a127f434f06db02da9efb0b62c3a12a35a9bba"
         }
       ],
-      "fact_id": "0507249898b80be99e468d52c5b3e7bf887c12f17f38c1df0a541f24762d79cd",
+      "fact_id": "7d52dde2084e23bc22cc26b95869ad62b97da36eaede56003bd29a99aa240fe2",
       "evidence_set_digest": "b89b041aad4c24635fac27bb08b40a4e67208d601ed4884cef66626f01bf878b",
       "reconciliation_dimensions_checked": [
         "value",
@@ -890,7 +900,9 @@
         "period",
         "semantics"
       ],
-      "reconciliation_status": "reconciled"
+      "reconciliation_status": "reconciled",
+      "evidence_order_semantics_id": "issuer_then_exchange",
+      "evidence_order_semantics_version": "1"
     },
     {
       "symbol": "601857.SH",
@@ -975,11 +987,11 @@
       "concept_id": "lease_interest_expense",
       "concept_version": "1",
       "context_id": "601857.SH|2024|annual|consolidated",
-      "source_id": "reconciled:601857.SH:company_exchange:stage2i2:lease_interest_expense:2024:v1",
+      "source_id": "reconciled:lease_interest_expense:2024:official_dual_source_reconciliation:v2:549073aaa485c8aaa8f02092cc13a329455558da2d0c2b44ea8f11c0bbfea7bd",
       "fact_version": 1,
       "restatement_version": "original",
       "derivation_definition_id": "official_dual_source_reconciliation",
-      "derivation_version": "1",
+      "derivation_version": "2",
       "supersedes_fact_id": null,
       "value_decimal": "516500",
       "unit": "万元",
@@ -1028,7 +1040,7 @@
           "content_sha256": "15a2de01653ceefa46fdd18a02a127f434f06db02da9efb0b62c3a12a35a9bba"
         }
       ],
-      "fact_id": "0092f007bbb5564a4cf74db4d22b63c24132379bc0f1db1a3cc2ccf27e2097b0",
+      "fact_id": "d57ef6b2b88b0a13a247aab095a168216e9d87289754906f389ca54fe5146b05",
       "evidence_set_digest": "6e14799672bc0f111f44f6889448fbd5487af4cdeadbd52168bc874df4aa3247",
       "reconciliation_dimensions_checked": [
         "value",
@@ -1038,7 +1050,9 @@
         "period",
         "semantics"
       ],
-      "reconciliation_status": "reconciled"
+      "reconciliation_status": "reconciled",
+      "evidence_order_semantics_id": "issuer_then_exchange",
+      "evidence_order_semantics_version": "1"
     },
     {
       "symbol": "601857.SH",
@@ -1123,11 +1137,11 @@
       "concept_id": "restricted_cash",
       "concept_version": "1",
       "context_id": "601857.SH|2023|instant|consolidated",
-      "source_id": "reconciled:601857.SH:company_exchange:stage2i2:restricted_cash:2023:v1",
+      "source_id": "reconciled:restricted_cash:2023:official_dual_source_reconciliation:v2:e5dcc4e07780db22c68885a4b23733eb6b57b4fd31ea87028617db934c33fb1f",
       "fact_version": 1,
       "restatement_version": "original",
       "derivation_definition_id": "official_dual_source_reconciliation",
-      "derivation_version": "1",
+      "derivation_version": "2",
       "supersedes_fact_id": null,
       "value_decimal": "214000.00",
       "unit": "万元",
@@ -1176,7 +1190,7 @@
           "content_sha256": "b845502e533311280f89d59c2a92c67f94f2be17451e51e55f93a1d52abe6692"
         }
       ],
-      "fact_id": "ed7c48eb6b334f6b543ec3a9d2877dba5021efc5c437500f2d3d88bc34965eb7",
+      "fact_id": "8c2b7bfc07e7713ad60afb31984e5341d6f0dbb5cac4b1c4752dfcbbbc349566",
       "evidence_set_digest": "f8cc6fec965d83c6aa34464b2b08278172673604db7af52fa4e82064f0752043",
       "reconciliation_dimensions_checked": [
         "value",
@@ -1186,7 +1200,9 @@
         "period",
         "semantics"
       ],
-      "reconciliation_status": "reconciled"
+      "reconciliation_status": "reconciled",
+      "evidence_order_semantics_id": "issuer_then_exchange",
+      "evidence_order_semantics_version": "1"
     },
     {
       "symbol": "601857.SH",
@@ -1271,11 +1287,11 @@
       "concept_id": "restricted_cash",
       "concept_version": "1",
       "context_id": "601857.SH|2024|instant|consolidated",
-      "source_id": "reconciled:601857.SH:company_exchange:stage2i2:restricted_cash:2024:v1",
+      "source_id": "reconciled:restricted_cash:2024:official_dual_source_reconciliation:v2:27d23b4912d16b424fe5c53a1fd800547527d8ee48bcd62490952721fce30796",
       "fact_version": 1,
       "restatement_version": "original",
       "derivation_definition_id": "official_dual_source_reconciliation",
-      "derivation_version": "1",
+      "derivation_version": "2",
       "supersedes_fact_id": null,
       "value_decimal": "0",
       "unit": "万元",
@@ -1324,7 +1340,7 @@
           "content_sha256": "15a2de01653ceefa46fdd18a02a127f434f06db02da9efb0b62c3a12a35a9bba"
         }
       ],
-      "fact_id": "2bd3c8d91485a2c71ac99b8b1acd2734188a582574a112aa229158b7cfc2de1c",
+      "fact_id": "cbfddefa98aba11750ba35e8c38f1cbb9d61e9787c83bd06a59633370ceb48aa",
       "evidence_set_digest": "2d6fd2cef50b4dadfc367acf06a493d0400253e4fff0e15083ce2618f7df5c18",
       "reconciliation_dimensions_checked": [
         "value",
@@ -1334,7 +1350,9 @@
         "period",
         "semantics"
       ],
-      "reconciliation_status": "reconciled"
+      "reconciliation_status": "reconciled",
+      "evidence_order_semantics_id": "issuer_then_exchange",
+      "evidence_order_semantics_version": "1"
     }
   ],
   "economic_facts": [
@@ -1348,7 +1366,7 @@
         "13461d4c7668e6036f43ee4a4af07b2ef34c24eff8f1e792bff3ab7290954836",
         "6e90a6938bf48fc01355fae8022b3d8e938ca9b20cce96d57a9d10fc79acd5aa"
       ],
-      "canonical_fact_id": "3c5f5616f0bc587c0f88f4dcf953d49af23ecb54d33b674ca2ec341c177bf8fc",
+      "canonical_fact_id": "5d7e7435a6d5a1a4cb1f1fe441458527e3bf147e9908340ba87cf43baab426f0",
       "context_id": "601857.SH|2024|annual|consolidated",
       "raw_value": "613",
       "raw_numeric_string": "613",
@@ -1368,13 +1386,17 @@
         "pc-roic-2024-issuer-annual-cas",
         "pc-roic-2024-exchange-annual-cas"
       ],
-      "content_object_ids": [],
+      "content_object_ids": [
+        "objects/15a2de01653ceefa46fdd18a02a127f434f06db02da9efb0b62c3a12a35a9bba.pdf",
+        "objects/15a2de01653ceefa46fdd18a02a127f434f06db02da9efb0b62c3a12a35a9bba.pdf"
+      ],
       "capture_group": "target",
       "match_count": 1,
       "capture_span": [
         743,
         746
       ],
+      "operand_capture_spans": {},
       "captured_raw_text": "资产处置收益 53 613 498",
       "captured_operands": {},
       "operand_names": [],
@@ -1419,7 +1441,7 @@
         "0317b1e094fbf6408c536b57a880dd3aa818f7d6832dff58ccbd5ff94b1a29c6",
         "d14236d3ef62de00e8cf3e5b84494b257fddefeffffc795e2c3d2b3f202444c3"
       ],
-      "canonical_fact_id": "05122c72af2f47956a35d6e12a918698a2f61e716b122732d897cfe53eea2667",
+      "canonical_fact_id": "e1a0cd1aa6ed22f3861042353b7227ab658eda124193d6d90e3d29b99e2b20df",
       "context_id": "601857.SH|2024|annual|consolidated",
       "raw_value": "4,673",
       "raw_numeric_string": "4,673",
@@ -1439,13 +1461,17 @@
         "pc-roic-2024-issuer-annual-cas",
         "pc-roic-2024-exchange-annual-cas"
       ],
-      "content_object_ids": [],
+      "content_object_ids": [
+        "objects/15a2de01653ceefa46fdd18a02a127f434f06db02da9efb0b62c3a12a35a9bba.pdf",
+        "objects/15a2de01653ceefa46fdd18a02a127f434f06db02da9efb0b62c3a12a35a9bba.pdf"
+      ],
       "capture_group": "target",
       "match_count": 1,
       "capture_span": [
         636,
         641
       ],
+      "operand_capture_spans": {},
       "captured_raw_text": "公允价值变动收益 50 4,673 2,008",
       "captured_operands": {},
       "operand_names": [],
@@ -1490,7 +1516,7 @@
         "b9d8228d603b5316420630fdf0afa037ce8e890236a11de3fe72db96b0e36546",
         "7b89871113fd626ae5276311a6c8db5333e1fd5cdef5710ff4c9c791c70956a2"
       ],
-      "canonical_fact_id": "69ca13d7fc66752e99d579624a8a03797ca51a071fa60b5d4c39fe9b8b5fe99d",
+      "canonical_fact_id": "fc3112ace4925bfc776955bf71813565a4f1c9add4901fd6d9a0e92a8475a34d",
       "context_id": "601857.SH|2024|annual|consolidated",
       "raw_value": "7387",
       "raw_numeric_string": "7387",
@@ -1510,13 +1536,23 @@
         "pc-roic-2024-issuer-annual-cas",
         "pc-roic-2024-exchange-annual-cas"
       ],
-      "content_object_ids": [],
+      "content_object_ids": [
+        "objects/15a2de01653ceefa46fdd18a02a127f434f06db02da9efb0b62c3a12a35a9bba.pdf",
+        "objects/15a2de01653ceefa46fdd18a02a127f434f06db02da9efb0b62c3a12a35a9bba.pdf"
+      ],
       "capture_group": "finance,lease",
       "match_count": 1,
-      "capture_span": [
-        404,
-        118
-      ],
+      "capture_span": null,
+      "operand_capture_spans": {
+        "finance_cost_amount": [
+          404,
+          412
+        ],
+        "lease_interest_amount": [
+          113,
+          118
+        ]
+      },
       "captured_raw_text": "财务费用 47 (12,552) (18,091)|其中：租赁负债的利息支出 5,165 5,239",
       "captured_operands": {
         "finance_cost_amount": "(12,552)",
@@ -1570,7 +1606,7 @@
         "6ae3d3604792eb360b83843179a4251757f974a684445705f34a64aca44db3b2",
         "0ac15837a1f4182185cdf91e3efc90882ba859338bccad09ce5353b8cbc0cde9"
       ],
-      "canonical_fact_id": "69d9b5072bdc8c611d67867899d85d143019dc611acc6434fe6a6bc0d38b8970",
+      "canonical_fact_id": "c7d728ad5a85f30ded3d94a4e60c30cded5451b08c76301268bd95e7d97b0509",
       "context_id": "601857.SH|2024|annual|consolidated",
       "raw_value": "11,934",
       "raw_numeric_string": "11,934",
@@ -1590,13 +1626,17 @@
         "pc-roic-2024-issuer-annual-cas",
         "pc-roic-2024-exchange-annual-cas"
       ],
-      "content_object_ids": [],
+      "content_object_ids": [
+        "objects/15a2de01653ceefa46fdd18a02a127f434f06db02da9efb0b62c3a12a35a9bba.pdf",
+        "objects/15a2de01653ceefa46fdd18a02a127f434f06db02da9efb0b62c3a12a35a9bba.pdf"
+      ],
       "capture_group": "target",
       "match_count": 1,
       "capture_span": [
         550,
         556
       ],
+      "operand_capture_spans": {},
       "captured_raw_text": "投资收益 49 11,934 9,554",
       "captured_operands": {},
       "operand_names": [],
@@ -1641,7 +1681,7 @@
         "9ce4845aa85c248d3ece032bb0cf06613b11c71376e6daf497cbf47cbae140ff",
         "1ea4e4b81bcd61ace3a66eefb599f8f45cecb3f6dbf7a47fc26b7b14ba3db623"
       ],
-      "canonical_fact_id": "3b386b1d9aa7cb848c55db9032829a53fb7b73c033b1a5776cd2703b9d79e391",
+      "canonical_fact_id": "56d73f8d567bcc35515475b1f81685f089f5fd539c3923c252a243cd1cacdbd3",
       "context_id": "601857.SH|2023|instant|consolidated",
       "raw_value": "184,211",
       "raw_numeric_string": "184,211",
@@ -1661,13 +1701,17 @@
         "pc-roic-2023-issuer-annual-cas",
         "pc-roic-2023-exchange-annual-cas"
       ],
-      "content_object_ids": [],
+      "content_object_ids": [
+        "objects/b845502e533311280f89d59c2a92c67f94f2be17451e51e55f93a1d52abe6692.pdf",
+        "objects/b845502e533311280f89d59c2a92c67f94f2be17451e51e55f93a1d52abe6692.pdf"
+      ],
       "capture_group": "target",
       "match_count": 1,
       "capture_span": [
         1193,
         1200
       ],
+      "operand_capture_spans": {},
       "captured_raw_text": "少数股东权益 42 184,211 168,550 - -",
       "captured_operands": {},
       "operand_names": [],
@@ -1712,7 +1756,7 @@
         "c804eead959af27d39a3ae78d0adef746097a11c1cb3367fae3c8dd51f8b70c7",
         "324d73184c99f33a8a260102b2a24d2bcb0469999ffe3788454a12bbc5b70cef"
       ],
-      "canonical_fact_id": "0507249898b80be99e468d52c5b3e7bf887c12f17f38c1df0a541f24762d79cd",
+      "canonical_fact_id": "7d52dde2084e23bc22cc26b95869ad62b97da36eaede56003bd29a99aa240fe2",
       "context_id": "601857.SH|2024|instant|consolidated",
       "raw_value": "194,492",
       "raw_numeric_string": "194,492",
@@ -1732,13 +1776,17 @@
         "pc-roic-2024-issuer-annual-cas",
         "pc-roic-2024-exchange-annual-cas"
       ],
-      "content_object_ids": [],
+      "content_object_ids": [
+        "objects/15a2de01653ceefa46fdd18a02a127f434f06db02da9efb0b62c3a12a35a9bba.pdf",
+        "objects/15a2de01653ceefa46fdd18a02a127f434f06db02da9efb0b62c3a12a35a9bba.pdf"
+      ],
       "capture_group": "target",
       "match_count": 1,
       "capture_span": [
         1192,
         1199
       ],
+      "operand_capture_spans": {},
       "captured_raw_text": "少数股东权益 41 194,492 184,211 - -",
       "captured_operands": {},
       "operand_names": [],
@@ -1783,7 +1831,7 @@
         "1007732a527cbde98136f7aa992675f581c789d0742d99e650489cb7aa16489e",
         "81ff9fb1ca18b32e0584fc99ae2788b8f615e81a74a66e9ee732b666f1db8cc4"
       ],
-      "canonical_fact_id": "0092f007bbb5564a4cf74db4d22b63c24132379bc0f1db1a3cc2ccf27e2097b0",
+      "canonical_fact_id": "d57ef6b2b88b0a13a247aab095a168216e9d87289754906f389ca54fe5146b05",
       "context_id": "601857.SH|2024|annual|consolidated",
       "raw_value": "5,165",
       "raw_numeric_string": "5,165",
@@ -1803,13 +1851,17 @@
         "pc-roic-2024-issuer-annual-cas",
         "pc-roic-2024-exchange-annual-cas"
       ],
-      "content_object_ids": [],
+      "content_object_ids": [
+        "objects/15a2de01653ceefa46fdd18a02a127f434f06db02da9efb0b62c3a12a35a9bba.pdf",
+        "objects/15a2de01653ceefa46fdd18a02a127f434f06db02da9efb0b62c3a12a35a9bba.pdf"
+      ],
       "capture_group": "lease",
       "match_count": 1,
       "capture_span": [
         113,
         118
       ],
+      "operand_capture_spans": {},
       "captured_raw_text": "其中：租赁负债的利息支出 5,165 5,239",
       "captured_operands": {
         "lease_interest_amount": "5,165"
@@ -1860,7 +1912,7 @@
         "f8584bec08513356cf713f389b247f2aa7fd2b3eef916fb264bb8be14fb65d0b",
         "82b0cf462b1cbb37a0f286cd85135ea22b3ea536dd4f07dcb0a64cbaa5b204e6"
       ],
-      "canonical_fact_id": "ed7c48eb6b334f6b543ec3a9d2877dba5021efc5c437500f2d3d88bc34965eb7",
+      "canonical_fact_id": "8c2b7bfc07e7713ad60afb31984e5341d6f0dbb5cac4b1c4752dfcbbbc349566",
       "context_id": "601857.SH|2023|instant|consolidated",
       "raw_value": "21.40",
       "raw_numeric_string": "21.40",
@@ -1880,13 +1932,17 @@
         "pc-roic-2023-issuer-annual-cas",
         "pc-roic-2023-exchange-annual-cas"
       ],
-      "content_object_ids": [],
+      "content_object_ids": [
+        "objects/b845502e533311280f89d59c2a92c67f94f2be17451e51e55f93a1d52abe6692.pdf",
+        "objects/b845502e533311280f89d59c2a92c67f94f2be17451e51e55f93a1d52abe6692.pdf"
+      ],
       "capture_group": "target",
       "match_count": 1,
       "capture_span": [
         86,
         149
       ],
+      "operand_capture_spans": {},
       "captured_raw_text": "货币资金中有账面价值为 21.40 亿元(2022 年 12 月 31 日：25.86 亿元)的保证金账户存款作为美元借款质押",
       "captured_operands": {},
       "operand_names": [],
@@ -1931,7 +1987,7 @@
         "84f170f4d74c8dce09cc0e14c2860669ee940ef85fb87d50638b89b8fbe78f09",
         "299760ed7f017109c0cbb6843c29f91d0fd982f3e2d6b748e1651f23ba5ff4bb"
       ],
-      "canonical_fact_id": "2bd3c8d91485a2c71ac99b8b1acd2734188a582574a112aa229158b7cfc2de1c",
+      "canonical_fact_id": "cbfddefa98aba11750ba35e8c38f1cbb9d61e9787c83bd06a59633370ceb48aa",
       "context_id": "601857.SH|2024|instant|consolidated",
       "raw_value": "无",
       "raw_numeric_string": "0",
@@ -1951,13 +2007,17 @@
         "pc-roic-2024-issuer-annual-cas",
         "pc-roic-2024-exchange-annual-cas"
       ],
-      "content_object_ids": [],
+      "content_object_ids": [
+        "objects/15a2de01653ceefa46fdd18a02a127f434f06db02da9efb0b62c3a12a35a9bba.pdf",
+        "objects/15a2de01653ceefa46fdd18a02a127f434f06db02da9efb0b62c3a12a35a9bba.pdf"
+      ],
       "capture_group": "absence_statement",
       "match_count": 1,
       "capture_span": [
         452,
         500
       ],
+      "operand_capture_spans": {},
       "captured_raw_text": "货币资金中无保证金账户存款作为美元借款质押(2023 年 12 月 31 日：21.40 亿元)",
       "captured_operands": {},
       "operand_names": [],
