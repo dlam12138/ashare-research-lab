@@ -75,6 +75,36 @@ EXTRACTION_SPECS = {
         "acquisition_id": "B-2024-lease-interest",
         "capture_groups": ["lease"],
     },
+    "roic-extract-investment-income-v3": {
+        "acquisition_id": "A-2024-investment-income",
+        "capture_groups": ["target", "comparative"],
+        "pattern": "label note target comparative",
+    },
+    "roic-extract-fair-value-v3": {
+        "acquisition_id": "A-2024-fair-value",
+        "capture_groups": ["target", "comparative"],
+        "pattern": "label note target comparative",
+    },
+    "roic-extract-asset-disposal-v3": {
+        "acquisition_id": "A-2024-asset-disposal",
+        "capture_groups": ["target", "comparative"],
+        "pattern": "label note target comparative",
+    },
+    "roic-extract-nci-v3": {
+        "acquisition_id": "B-2023-2024-nci",
+        "capture_groups": ["target", "comparative"],
+        "pattern": "nci note target comparative",
+    },
+    "roic-extract-restricted-cash-2023-v3": {
+        "acquisition_id": "C-2023-2024-restricted-cash",
+        "capture_groups": ["target", "comparative"],
+        "pattern": "pledge target comparative",
+    },
+    "roic-extract-restricted-cash-2024-v3": {
+        "acquisition_id": "C-2023-2024-restricted-cash",
+        "capture_groups": ["absence_statement"],
+        "pattern": "explicit absence statement",
+    },
 }
 RECONCILIATION_RULE_ID = "official_dual_source_reconciliation"
 RECONCILIATION_RULE_VERSION = "2"
@@ -134,6 +164,15 @@ def validate_serialized_extraction(economic_facts: list[dict[str, Any]]) -> dict
         )
         if any(key not in item or item[key] in (None, "") for key in required):
             raise ValueError("serialized extraction lineage is incomplete")
+        if not item.get("content_object_ids"):
+            raise ValueError("serialized content object binding is missing")
+        for span in (item.get("operand_capture_spans") or {}).values():
+            if len(span) != 2 or span[0] > span[1]:
+                raise ValueError("invalid operand capture span")
+        excerpt = item["captured_raw_text"]
+        expected_hash = item.get("excerpt_hash")
+        if expected_hash and hashlib.sha256(excerpt.encode()).hexdigest() != expected_hash:
+            raise ValueError("captured excerpt hash mismatch")
         raw = item["raw_value"]
         if raw == "无":
             if "无" not in item["captured_raw_text"] or item["normalized_decimal_value"] != "0":
@@ -209,6 +248,7 @@ class ExtractedCell:
     capture_span: tuple[int, int] | None = None
     captured_raw_text: str = ""
     captured_operands: dict[str, str] | None = None
+    captured_operand_spans: dict[str, tuple[int, int]] | None = None
     input_excerpt_hashes: tuple[str, ...] = ()
 
 
@@ -480,6 +520,7 @@ def _cell(
     capture_span: tuple[int, int] | None = None,
     captured_raw_text: str = "",
     captured_operands: dict[str, str] | None = None,
+    captured_operand_spans: dict[str, tuple[int, int]] | None = None,
     input_excerpt_hashes: tuple[str, ...] = (),
 ) -> ExtractedCell:
     return ExtractedCell(
@@ -505,6 +546,7 @@ def _cell(
         capture_span=capture_span,
         captured_raw_text=captured_raw_text or raw,
         captured_operands=captured_operands,
+        captured_operand_spans=captured_operand_spans,
         input_excerpt_hashes=input_excerpt_hashes,
     )
 
@@ -559,11 +601,15 @@ def extract_cells(cache_root: Path) -> list[ExtractedCell]:
             ),
             extraction_spec_id="roic-extract-finance-core-v3",
             capture_group="finance,lease",
-            capture_span=(finance_match.start("finance"), lease_match.end("lease")),
+            capture_span=None,
             captured_raw_text=f"{finance_stmt}|{lease_note}",
             captured_operands={
                 "finance_cost_amount": finance_raw,
                 "lease_interest_amount": lease_raw,
+            },
+            captured_operand_spans={
+                "finance_cost_amount": finance_match.span("finance"),
+                "lease_interest_amount": lease_match.span("lease"),
             },
             input_excerpt_hashes=(
                 hashlib.sha256(finance_stmt.encode()).hexdigest(),
@@ -1021,6 +1067,10 @@ def validate_search_results(records: list[dict[str, Any]]) -> dict[str, Any]:
 
 def build_fact_bundle(cells: list[ExtractedCell]) -> dict[str, Any]:
     evidence = {item["evidence_id"]: item for item in _load(SOURCE_PATH)["entries"]}
+    cache_objects = _load(CACHE_PATH)["objects"]
+    object_by_evidence = {
+        eid: obj["object_key"] for obj in cache_objects for eid in obj.get("evidence_ids", [])
+    }
     facts, economic = [], []
     for cell in cells:
         inputs = [_source_fact(cell, evidence[eid]) for eid in cell.locator["evidence_ids"]]
@@ -1051,18 +1101,18 @@ def build_fact_bundle(cells: list[ExtractedCell]) -> dict[str, Any]:
                 "extraction_spec_id": cell.extraction_spec_id,
                 "extraction_spec_version": cell.extraction_spec_version,
                 "source_evidence_ids": list(cell.locator.get("evidence_ids", [])),
-                "content_object_ids": list(
-                    cell.locator.get("content_object_ids", cell.locator.get("evidence_ids", []))
-                ),
+                "content_object_ids": [
+                    object_by_evidence[eid]
+                    for eid in cell.locator.get("evidence_ids", [])
+                    if eid in object_by_evidence
+                ],
                 "capture_group": cell.capture_group,
                 "match_count": 1,
                 "capture_span": None
                 if len(cell.captured_operands or {}) > 1
                 else (list(cell.capture_span) if cell.capture_span else None),
                 "operand_capture_spans": (
-                    {name: list(cell.capture_span) for name in (cell.captured_operands or {})}
-                    if cell.captured_operands
-                    else {}
+                    {name: list(span) for name, span in (cell.captured_operand_spans or {}).items()}
                 ),
                 "captured_raw_text": cell.captured_raw_text,
                 "captured_operands": cell.captured_operands or {},
