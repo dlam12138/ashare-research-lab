@@ -69,10 +69,15 @@
       "byte_size": 834850
     },
     {
+      "logical_path": "reports/petrochina_roic_stage2i2r_readiness.md",
+      "sha256": "5e970e575b0aec4b11b042f295e78205f59b4abb2d080902fdc31b39ca2e35b5",
+      "byte_size": 17203
+    },
+    {
       "logical_path": "reports/petrochina_roic_stage2i2r_search_results_v2.json",
       "sha256": "1ad0f1835533787d5a444774b199b97125f850d175178eae7e8523befb649f37",
       "byte_size": 2198050
     }
   ],
-  "committed_artifact_set_sha256": "ef0f3ce085bbae23b19e3e58e231cd4a36d25da12b5e8ef01d2e6ed2397c2b4d"
+  "committed_artifact_set_sha256": "0e73e6bb147f2c0cfce94c047c49e731baf3938dbfb68b01a46a0c3e3714488b"
 }
