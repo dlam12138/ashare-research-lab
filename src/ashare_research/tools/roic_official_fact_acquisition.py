@@ -1095,6 +1095,10 @@ def _reconciled_fact(cell: ExtractedCell, inputs: list[dict[str, Any]]) -> dict[
 
 
 def _reconciliation_identity_payload(ordered: list[dict[str, Any]]) -> dict[str, Any]:
+    ordered = sorted(
+        ordered,
+        key=lambda item: (0 if item["source_type"] == "company_official" else 1, item["source_id"]),
+    )
     evidence = [
         {
             "fact_id": item["fact_id"],
@@ -1149,7 +1153,11 @@ def validate_reconciled_fact(fact: dict[str, Any]) -> dict[str, Any]:
     if fact.get("input_fact_ids") != ",".join(e.get("fact_id") for e in evidence):
         raise ValueError("ordered input Fact IDs do not match evidence")
     expected_identity = _reconciliation_identity_payload(evidence)["identity_digest"]
-    if expected_identity not in fact.get("source_id", ""):
+    expected_source_id = (
+        f"reconciled:{fact.get('concept_id')}:{fact.get('period_end', '').split('-')[0]}:"
+        f"{RECONCILIATION_RULE_ID}:v{RECONCILIATION_RULE_VERSION}:{expected_identity}"
+    )
+    if fact.get("source_id") != expected_source_id:
         raise ValueError("reconciliation source identity mismatch")
     candidate = dict(fact)
     candidate.pop("fact_id", None)

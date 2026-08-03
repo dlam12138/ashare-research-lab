@@ -195,6 +195,66 @@ def test_old_new_report_has_distinct_ids_and_identity_sections():
     assert all(row["current_identity"]["evidence"] for row in rows)
 
 
+def test_reconciliation_identity_mutations_and_order_stability():
+    base = [
+        {
+            "fact_id": "a",
+            "source_id": "sa",
+            "source_type": "company_official",
+            "content_sha256": "ha",
+        },
+        {
+            "fact_id": "b",
+            "source_id": "sb",
+            "source_type": "exchange_official",
+            "content_sha256": "hb",
+        },
+    ]
+    original = stage._reconciliation_identity_payload(base)["identity_digest"]
+    assert (
+        stage._reconciliation_identity_payload(list(reversed(base)))["identity_digest"] == original
+    )
+    for key in ("fact_id", "source_id", "source_type", "content_sha256"):
+        changed = [dict(x) for x in base]
+        changed[0][key] = changed[0][key] + "-changed"
+        assert stage._reconciliation_identity_payload(changed)["identity_digest"] != original
+
+
+@pytest.mark.parametrize(
+    "field",
+    ["value_decimal", "unit", "currency", "scope", "period_end", "context_id", "concept_id"],
+)
+def test_reconciliation_comparable_conflicts_fail(field):
+    left = {
+        "symbol": "X",
+        "concept_id": "c",
+        "concept_version": "1",
+        "context_id": "ctx",
+        "value_decimal": "1",
+        "unit": "u",
+        "currency": "CNY",
+        "accounting_standard": "CAS",
+        "scope": "consolidated",
+        "period_type": "instant",
+        "period_start": "2024-12-31",
+        "period_end": "2024-12-31",
+        "source_id": "s1",
+        "source_type": "company_official",
+        "source_tier": "company_official",
+        "content_sha256": "a",
+        "available_at": "2025-01-01",
+        "announcement_date": "2025-01-01",
+        "filing_date": "2025-01-01",
+        "fact_id": "a",
+    }
+    right = dict(
+        left, source_id="s2", source_type="exchange_official", content_sha256="b", fact_id="b"
+    )
+    right[field] = "different"
+    with pytest.raises(ValueError):
+        stage._reconciled_fact(None, [left, right])
+
+
 def test_internal_artifact_manifest_maps_committed_stage2i2r_files():
     root = Path(__file__).parents[1]
     manifest = json.loads(
