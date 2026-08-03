@@ -1022,7 +1022,7 @@ def _missing_records() -> list[dict[str, Any]]:
 
 def execute_bounded_searches(cache_root: Path) -> list[dict[str, Any]]:
     """Execute every registered gap search against verified cache objects."""
-    verified = verify_official_cache(cache_root)
+    verify_official_cache(cache_root)
     pages = _page_texts(cache_root)
     now = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
     records = _missing_records()
