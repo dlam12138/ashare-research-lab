@@ -66,8 +66,15 @@ DECIMAL_CONTEXT = Context(prec=28, rounding=ROUND_HALF_EVEN)
 # part of this contract; values are obtained exclusively from named captures.
 EXTRACTION_SPEC_VERSION = "3"
 EXTRACTION_SPECS = {
-    "roic-extract-finance-core-v3": {"acquisition_id": "A-2024-finance-core", "capture_groups": ["finance", "lease"], "transform": "abs(finance_cost_amount)-lease_interest_amount"},
-    "roic-extract-lease-interest-v3": {"acquisition_id": "B-2024-lease-interest", "capture_groups": ["lease"]},
+    "roic-extract-finance-core-v3": {
+        "acquisition_id": "A-2024-finance-core",
+        "capture_groups": ["finance", "lease"],
+        "transform": "abs(finance_cost_amount)-lease_interest_amount",
+    },
+    "roic-extract-lease-interest-v3": {
+        "acquisition_id": "B-2024-lease-interest",
+        "capture_groups": ["lease"],
+    },
 }
 
 
@@ -97,10 +104,14 @@ def validate_extraction_cells(cells: list[ExtractedCell]) -> dict[str, Any]:
                 raise ValueError("explicit absence requires matched absence statement")
             continue
         if cell.captured_operands and cell.concept_id == "finance_cost_excluding_lease_interest":
-            expected = _decimal(cell.captured_operands["finance_cost_amount"]).copy_abs() - _decimal(cell.captured_operands["lease_interest_amount"])
+            expected = _decimal(
+                cell.captured_operands["finance_cost_amount"]
+            ).copy_abs() - _decimal(cell.captured_operands["lease_interest_amount"])
             if _decimal(cell.raw_value) != expected:
                 raise ValueError("finance derivation is not recomputable")
-        elif _decimal(cell.normalized_value) != _decimal(cell.raw_value) * Decimal(cell.conversion_multiplier):
+        elif _decimal(cell.normalized_value) != _decimal(cell.raw_value) * Decimal(
+            cell.conversion_multiplier
+        ):
             raise ValueError("normalized value is not recomputable")
     return {"status": "TRUSTED", "cell_count": len(cells)}
 
@@ -113,7 +124,9 @@ def decide_acquisition_gate(
 ) -> dict[str, Any]:
     """Fail-closed three-state acquisition decision."""
     validators = validators or {}
-    untrusted = [name for name, status in validators.items() if status not in {"TRUSTED", "PASS", True}]
+    untrusted = [
+        name for name, status in validators.items() if status not in {"TRUSTED", "PASS", True}
+    ]
     if untrusted:
         decision = "ROIC_ACQUISITION_NOT_TRUSTED"
     elif readiness_status == "READY_FOR_SHADOW":
@@ -337,14 +350,19 @@ def _page_texts(cache_root: Path) -> dict[int, list[str]]:
         path = cache_root / obj["object_key"]
         if _sha256(path) != obj["sha256"] or path.stat().st_size != obj["byte_size"]:
             raise ValueError(f"cache object hash/size mismatch: {obj['object_key']}")
-        years = {source[eid].get("reporting_year", source[eid].get("fiscal_year")) for eid in obj["evidence_ids"] if eid in source}
+        years = {
+            source[eid].get("reporting_year", source[eid].get("fiscal_year"))
+            for eid in obj["evidence_ids"]
+            if eid in source
+        }
         years.discard(None)
         if len(years) != 1:
-            raise ValueError(f"cache object has no unique registry reporting year: {obj['object_key']}")
+            raise ValueError(
+                f"cache object has no unique registry reporting year: {obj['object_key']}"
+            )
         year = int(next(iter(years)))
         pages = [
-            re.sub(r"\s+", " ", page.extract_text() or "").strip()
-            for page in PdfReader(path).pages
+            re.sub(r"\s+", " ", page.extract_text() or "").strip() for page in PdfReader(path).pages
         ]
         if len(pages) != obj["page_count"]:
             raise ValueError(f"cache object page-count mismatch: {obj['object_key']}")
@@ -459,10 +477,16 @@ def extract_cells(cache_root: Path) -> list[ExtractedCell]:
 
     number = r"\(?[0-9][0-9,]*(?:\.[0-9]+)?\)?"
     comparative = r"\(?[0-9][0-9,]*(?:\.[0-9]+)?\)?"
-    finance_match = _match(p24[114], rf"财务费用\s+(?P<note>\d+)\s+(?P<finance>{number})\s+(?P<comparative>{comparative})")
+    finance_match = _match(
+        p24[114],
+        rf"财务费用\s+(?P<note>\d+)\s+(?P<finance>{number})\s+(?P<comparative>{comparative})",
+    )
     if finance_match.group("note") != "47":
         raise ValueError("finance note mismatch")
-    lease_match = _match(p24[177], rf"其中：租赁负债的利息支出\s+(?P<lease>{number})\s+(?P<comparative>{comparative})")
+    lease_match = _match(
+        p24[177],
+        rf"其中：租赁负债的利息支出\s+(?P<lease>{number})\s+(?P<comparative>{comparative})",
+    )
     finance_stmt, lease_note = finance_match.group(0), lease_match.group(0)
     finance_raw = finance_match.group("finance")
     lease_raw = lease_match.group("lease")
@@ -490,13 +514,22 @@ def extract_cells(cache_root: Path) -> list[ExtractedCell]:
                 unit="金额单位为人民币百万元",
                 excerpt=f"{finance_stmt}|{lease_note}",
             ),
-            derivation=f"captured finance={finance_raw}; captured lease={lease_raw}; Decimal(abs(finance)-lease)={parent_raw}",
+            derivation=(
+                f"captured finance={finance_raw}; captured lease={lease_raw}; "
+                f"Decimal(abs(finance)-lease)={parent_raw}"
+            ),
             extraction_spec_id="roic-extract-finance-core-v3",
             capture_group="finance,lease",
             capture_span=(finance_match.start("finance"), lease_match.end("lease")),
             captured_raw_text=f"{finance_stmt}|{lease_note}",
-            captured_operands={"finance_cost_amount": finance_raw, "lease_interest_amount": lease_raw},
-            input_excerpt_hashes=(hashlib.sha256(finance_stmt.encode()).hexdigest(), hashlib.sha256(lease_note.encode()).hexdigest()),
+            captured_operands={
+                "finance_cost_amount": finance_raw,
+                "lease_interest_amount": lease_raw,
+            },
+            input_excerpt_hashes=(
+                hashlib.sha256(finance_stmt.encode()).hexdigest(),
+                hashlib.sha256(lease_note.encode()).hexdigest(),
+            ),
         )
     )
     results.append(
@@ -521,8 +554,7 @@ def extract_cells(cache_root: Path) -> list[ExtractedCell]:
                 excerpt=lease_note,
             ),
             derivation=(
-                "component of finance_cost_adjustment; never contributes "
-                "independently after parent"
+                "component of finance_cost_adjustment; never contributes independently after parent"
             ),
             extraction_spec_id="roic-extract-lease-interest-v3",
             capture_group="lease",
@@ -567,7 +599,10 @@ def extract_cells(cache_root: Path) -> list[ExtractedCell]:
             "资产处置收益",
         ),
     ]:
-        match = _match(p24[page - 1], rf"{re.escape(title)}\s+(?P<note>\d+)\s+(?P<target>{number})\s+(?P<comparative>{number})")
+        match = _match(
+            p24[page - 1],
+            rf"{re.escape(title)}\s+(?P<note>\d+)\s+(?P<target>{number})\s+(?P<comparative>{number})",
+        )
         if match.group("note") != note:
             raise ValueError(f"note mismatch for {concept}")
         excerpt = match.group(0)
@@ -604,7 +639,10 @@ def extract_cells(cache_root: Path) -> list[ExtractedCell]:
         (2023, p23[112], 113, 111, "42"),
         (2024, p24[113], 114, 112, "41"),
     ]:
-        match = _match(page_text, rf"少数股东权益\s+{note}\s+(?P<target>{number})\s+(?P<comparative>{number})\s+-\s+-")
+        match = _match(
+            page_text,
+            rf"少数股东权益\s+{note}\s+(?P<target>{number})\s+(?P<comparative>{number})\s+-\s+-",
+        )
         excerpt = match.group(0)
         raw = match.group("target")
         results.append(
@@ -677,7 +715,8 @@ def extract_cells(cache_root: Path) -> list[ExtractedCell]:
         )
     )
     restricted_2024_match = _match(
-        p24[148], rf"货币资金中无保证金账户存款作为美元借款质押\(2023 年 12 月 31 日：{number} 亿元\)"
+        p24[148],
+        rf"货币资金中无保证金账户存款作为美元借款质押\(2023 年 12 月 31 日：{number} 亿元\)",
     )
     restricted_2024 = restricted_2024_match.group(0)
     results.append(
@@ -777,7 +816,20 @@ def _source_fact(cell: ExtractedCell, evidence: dict[str, Any]) -> dict[str, Any
 def _reconciled_fact(cell: ExtractedCell, inputs: list[dict[str, Any]]) -> dict[str, Any]:
     if len(inputs) != 2:
         raise ValueError("reconciliation requires issuer and exchange inputs")
-    comparable = ("symbol", "concept_id", "concept_version", "context_id", "value_decimal", "unit", "currency", "accounting_standard", "scope", "period_type", "period_start", "period_end")
+    comparable = (
+        "symbol",
+        "concept_id",
+        "concept_version",
+        "context_id",
+        "value_decimal",
+        "unit",
+        "currency",
+        "accounting_standard",
+        "scope",
+        "period_type",
+        "period_start",
+        "period_end",
+    )
     if any(inputs[0].get(key) != inputs[1].get(key) for key in comparable):
         raise ValueError("source_conflict: issuer and exchange facts disagree")
     source_id = (
@@ -791,18 +843,24 @@ def _reconciled_fact(cell: ExtractedCell, inputs: list[dict[str, Any]]) -> dict[
             "source_tier": "dual_official_reconciled",
             "source_type": "reconciled_derived",
             "source_document": "issuer/SSE official dual-source reconciliation",
-            "source_locator": "official-reconciliation://" + canonical_digest([
-                {"source_id": item["source_id"], "content_sha256": item["content_sha256"], "source_locator": item["source_locator"]}
-                for item in inputs
-            ]),
+            "source_locator": "official-reconciliation://"
+            + canonical_digest(
+                [
+                    {
+                        "source_id": item["source_id"],
+                        "content_sha256": item["content_sha256"],
+                        "source_locator": item["source_locator"],
+                    }
+                    for item in inputs
+                ]
+            ),
             "source_page": "",
             "source_table": "",
             "source_label": "reconciled",
             "content_sha256": canonical_digest([item["content_sha256"] for item in inputs]),
             "verification_status": "reconciled",
             "verification_note": (
-                "issuer and SSE evidence reconciled by value, unit, CAS scope, "
-                "period and semantics"
+                "issuer and SSE evidence reconciled by value, unit, CAS scope, period and semantics"
             ),
             "eligible_for_metrics": True,
             "is_derived": True,
@@ -822,11 +880,24 @@ def _reconciled_fact(cell: ExtractedCell, inputs: list[dict[str, Any]]) -> dict[
                 }
                 for item in inputs
             ],
-            "evidence_set_digest": canonical_digest([
-                {"fact_id": item["fact_id"], "source_id": item["source_id"], "content_sha256": item["content_sha256"]}
-                for item in inputs
-            ]),
-            "reconciliation_dimensions_checked": ["value", "unit", "currency", "CAS_scope", "period", "semantics"],
+            "evidence_set_digest": canonical_digest(
+                [
+                    {
+                        "fact_id": item["fact_id"],
+                        "source_id": item["source_id"],
+                        "content_sha256": item["content_sha256"],
+                    }
+                    for item in inputs
+                ]
+            ),
+            "reconciliation_dimensions_checked": [
+                "value",
+                "unit",
+                "currency",
+                "CAS_scope",
+                "period",
+                "semantics",
+            ],
             "reconciliation_status": "reconciled",
             "available_at": max(item["available_at"] for item in inputs),
             "announcement_date": max(item["announcement_date"] for item in inputs),
@@ -839,15 +910,27 @@ def _reconciled_fact(cell: ExtractedCell, inputs: list[dict[str, Any]]) -> dict[
 
 def validate_reconciled_fact(fact: dict[str, Any]) -> dict[str, Any]:
     """Validate canonical derived-source semantics and complete dual evidence."""
-    if fact.get("source_type") != "reconciled_derived" or fact.get("source_tier") != "dual_official_reconciled":
+    if (
+        fact.get("source_type") != "reconciled_derived"
+        or fact.get("source_tier") != "dual_official_reconciled"
+    ):
         raise ValueError("derived fact must use reconciled-derived source semantics")
     evidence = fact.get("source_evidence") or []
-    if len(evidence) != 2 or [e.get("source_type") for e in evidence] != ["company_official", "exchange_official"]:
+    if len(evidence) != 2 or [e.get("source_type") for e in evidence] != [
+        "company_official",
+        "exchange_official",
+    ]:
         raise ValueError("complete issuer/exchange evidence set required")
-    if fact.get("evidence_set_digest") != canonical_digest([
-        {"fact_id": e.get("fact_id"), "source_id": e.get("source_id"), "content_sha256": e.get("content_sha256")}
-        for e in evidence
-    ]):
+    if fact.get("evidence_set_digest") != canonical_digest(
+        [
+            {
+                "fact_id": e.get("fact_id"),
+                "source_id": e.get("source_id"),
+                "content_sha256": e.get("content_sha256"),
+            }
+            for e in evidence
+        ]
+    ):
         raise ValueError("evidence-set digest mismatch")
     return {"status": "TRUSTED", "evidence_count": len(evidence)}
 
@@ -864,7 +947,14 @@ def validate_search_results(records: list[dict[str, Any]]) -> dict[str, Any]:
         if record.get("available_at", "") < record.get("query_completed_at", ""):
             raise ValueError("available_at is earlier than completion")
         for match in record.get("rejected_candidates", []):
-            if match.get("classification") not in {"acceptable_exact_fact", "candidate_insufficient_scope", "aggregate_only_disclosure", "tax_proxy_only", "purpose_income_linkage_missing", "irrelevant"}:
+            if match.get("classification") not in {
+                "acceptable_exact_fact",
+                "candidate_insufficient_scope",
+                "aggregate_only_disclosure",
+                "tax_proxy_only",
+                "purpose_income_linkage_missing",
+                "irrelevant",
+            }:
                 raise ValueError("unknown match classification")
     return {"status": "TRUSTED", "record_count": len(records)}
 
@@ -959,8 +1049,7 @@ def _augment_inventory(bundle: dict[str, Any]) -> dict[str, Any]:
             "source_count": len(inventory["sources"]),
             "lineage_count": len(inventory["lineage"]),
             "authority": (
-                "isolated Stage 2I.2 verified fact bundle; default DB not "
-                "opened or written"
+                "isolated Stage 2I.2 verified fact bundle; default DB not opened or written"
             ),
         }
     )
@@ -1072,12 +1161,22 @@ def _missing_records() -> list[dict[str, Any]]:
         record.update(
             {
                 "search_register_id": f"stage2i2r-search-{index:02d}",
-                "search_spec_id": f"roic-search-spec-{record['acquisition_id']}-{record['fiscal_year']}-v2",
+                "search_spec_id": (
+                    f"roic-search-spec-{record['acquisition_id']}-"
+                    f"{record['fiscal_year']}-v2"
+                ),
                 "search_spec_version": "2",
                 "target_semantic_requirement": record["role_id"],
                 "acceptance_patterns": ["exact target-year row with matching scope/unit"],
                 "exclusion_patterns": ["proxy", "aggregate", "residual", "unlinked purpose"],
-                "rejection_reason_codes": ["ACCEPTABLE_EXACT_FACT", "CANDIDATE_INSUFFICIENT_SCOPE", "AGGREGATE_ONLY_DISCLOSURE", "TAX_PROXY_ONLY", "PURPOSE_INCOME_LINKAGE_MISSING", "IRRELEVANT"],
+                "rejection_reason_codes": [
+                    "ACCEPTABLE_EXACT_FACT",
+                    "CANDIDATE_INSUFFICIENT_SCOPE",
+                    "AGGREGATE_ONLY_DISCLOSURE",
+                    "TAX_PROXY_ONLY",
+                    "PURPOSE_INCOME_LINKAGE_MISSING",
+                    "IRRELEVANT",
+                ],
                 "query_started_at": completed,
                 "query_completed_at": completed,
                 "available_at": completed,
@@ -1088,13 +1187,17 @@ def _missing_records() -> list[dict[str, Any]]:
                 "accepted_match_count": 0,
                 "rejected_candidates": [],
                 "search_completeness": "complete",
-                "completeness_basis": "verified external official cache objects and full registered page scope",
+                "completeness_basis": (
+                    "verified external official cache objects and full registered page scope"
+                ),
                 "result_status": record["status"],
                 "search_method_version": "embedded-text-regex-ledger-v2",
                 "supersedes_search_register_id": None,
             }
         )
-        record["deterministic_id"] = canonical_digest({k: v for k, v in record.items() if k != "deterministic_id"})
+        record["deterministic_id"] = canonical_digest(
+            {k: v for k, v in record.items() if k != "deterministic_id"}
+        )
     return records
 
 
@@ -1113,7 +1216,10 @@ def execute_bounded_searches(cache_root: Path, *, clock: Any | None = None) -> l
     objects_by_year: dict[int, list[dict[str, Any]]] = {}
     registry = _load(CACHE_PATH)
     for obj in registry["objects"]:
-        years = {int(source[eid].get("reporting_year", source[eid].get("fiscal_year"))) for eid in obj["evidence_ids"]}
+        years = {
+            int(source[eid].get("reporting_year", source[eid].get("fiscal_year")))
+            for eid in obj["evidence_ids"]
+        }
         for year in years:
             objects_by_year.setdefault(year, []).append(obj)
     for record in records:
@@ -1124,17 +1230,25 @@ def execute_bounded_searches(cache_root: Path, *, clock: Any | None = None) -> l
         # claim that unrelated objects were searched for this cell.
         search_objects = objects_by_year.get(target_year, [])
         if target_year == 2023:
-            search_objects += [obj for obj in objects_by_year.get(2024, []) if obj not in search_objects]
+            search_objects += [
+                obj for obj in objects_by_year.get(2024, []) if obj not in search_objects
+            ]
         record["documents_searched"] = [obj["object_key"] for obj in search_objects]
         record["content_object_ids"] = [obj["object_key"] for obj in search_objects]
-        record["source_evidence_ids"] = sorted({eid for obj in search_objects for eid in obj["evidence_ids"]})
+        record["source_evidence_ids"] = sorted(
+            {eid for obj in search_objects for eid in obj["evidence_ids"]}
+        )
         record["content_sha256_values"] = sorted({obj["sha256"] for obj in search_objects})
-        record["available_at"] = max(completed, max(source[eid]["available_at"] for eid in record["source_evidence_ids"]))
+        record["available_at"] = max(
+            completed, max(source[eid]["available_at"] for eid in record["source_evidence_ids"])
+        )
         record["required_official_evidence_ids"] = list(record["source_evidence_ids"])
         record["required_content_hashes"] = list(record["content_sha256_values"])
         matches = []
         for year, text_pages in pages.items():
-            if year not in {target_year, 2024} or not any(obj in search_objects for obj in objects_by_year.get(year, [])):
+            if year not in {target_year, 2024} or not any(
+                obj in search_objects for obj in objects_by_year.get(year, [])
+            ):
                 continue
             year_objects = objects_by_year.get(year, [])
             for page_no, text_page in enumerate(text_pages, start=1):
@@ -1144,7 +1258,7 @@ def execute_bounded_searches(cache_root: Path, *, clock: Any | None = None) -> l
                         offset = text_page.find(term, start)
                         if offset < 0:
                             break
-                        excerpt = text_page[max(0, offset - 80):offset + len(term) + 80]
+                        excerpt = text_page[max(0, offset - 80) : offset + len(term) + 80]
                         classification, reason_code = classify_search_match(
                             term=term, excerpt=excerpt, acquisition_id=record["acquisition_id"]
                         )
@@ -1152,26 +1266,35 @@ def execute_bounded_searches(cache_root: Path, *, clock: Any | None = None) -> l
                             if obj not in search_objects:
                                 continue
                             for evidence_id in obj["evidence_ids"]:
-                                matches.append({
-                                    "term": term,
-                                    "report_year": year,
-                                    "evidence_id": evidence_id,
-                                    "content_object_id": obj["object_key"],
-                                    "content_sha256": obj["sha256"],
-                                    "page": page_no,
-                                    "span": [offset, offset + len(term)],
-                                    "excerpt_text": excerpt,
-                                    "excerpt_sha256": hashlib.sha256(excerpt.encode()).hexdigest(),
-                                    "classification": classification,
-                                    "reason_code": reason_code,
-                                })
+                                matches.append(
+                                    {
+                                        "term": term,
+                                        "report_year": year,
+                                        "evidence_id": evidence_id,
+                                        "content_object_id": obj["object_key"],
+                                        "content_sha256": obj["sha256"],
+                                        "page": page_no,
+                                        "span": [offset, offset + len(term)],
+                                        "excerpt_text": excerpt,
+                                        "excerpt_sha256": hashlib.sha256(
+                                            excerpt.encode()
+                                        ).hexdigest(),
+                                        "classification": classification,
+                                        "reason_code": reason_code,
+                                    }
+                                )
                         start = offset + len(term)
         record["match_count"] = len(matches)
         record["accepted_match_count"] = 0
         record["rejected_candidates"] = matches
         record["search_completeness"] = "complete"
         record["completeness_basis"] = "all verified cache objects and all pages searched"
-        identity_fields = {k: v for k, v in record.items() if k not in {"deterministic_id", "query_started_at", "query_completed_at", "available_at"}}
+        identity_fields = {
+            k: v
+            for k, v in record.items()
+            if k
+            not in {"deterministic_id", "query_started_at", "query_completed_at", "available_at"}
+        }
         record["deterministic_id"] = canonical_digest(identity_fields)
     return records
 
@@ -1244,7 +1367,9 @@ def _acquisition_result(bundle: dict[str, Any], missing: list[dict[str, Any]]) -
 
 
 def _readiness_diff(
-    before: dict[str, Any], after: dict[str, Any], result: dict[str, Any],
+    before: dict[str, Any],
+    after: dict[str, Any],
+    result: dict[str, Any],
     validators: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     tracked = {(cell["role_id"], cell["fiscal_year"]) for cell in result["cells"]}
@@ -1325,8 +1450,10 @@ def run_formal(
     except Exception:
         extraction_ok = False
     reconciliation_ok = all(
-        fact.get("source_type") == "reconciled_derived" and fact.get("source_tier") == "dual_official_reconciled"
-        for fact in bundle["facts"] if fact.get("eligible_for_metrics")
+        fact.get("source_type") == "reconciled_derived"
+        and fact.get("source_tier") == "dual_official_reconciled"
+        for fact in bundle["facts"]
+        if fact.get("eligible_for_metrics")
     )
     identity_ok = True
     try:
@@ -1348,8 +1475,13 @@ def run_formal(
             "fact_context_identity": "TRUSTED" if identity_ok else "NOT TRUSTED",
             "pit_restatement": "TRUSTED" if identity_ok else "NOT TRUSTED",
             "bounded_search_execution": "TRUSTED" if search_ok else "NOT TRUSTED",
-            "artifact_verification": "TRUSTED" if inventory_path.is_file() and inventory.get("snapshot_sha256") else "NOT TRUSTED",
-            "plan_v3_coverage": "TRUSTED" if len(result["cells"]) == 16 and {c["plan_acquisition_id"] for c in result["cells"]} == APPROVED_IDS else "NOT TRUSTED",
+            "artifact_verification": "TRUSTED"
+            if inventory_path.is_file() and inventory.get("snapshot_sha256")
+            else "NOT TRUSTED",
+            "plan_v3_coverage": "TRUSTED"
+            if len(result["cells"]) == 16
+            and {c["plan_acquisition_id"] for c in result["cells"]} == APPROVED_IDS
+            else "NOT TRUSTED",
         },
     )
     coverage = {
@@ -1375,8 +1507,7 @@ def run_formal(
                 "unchanged_184211_RMB_million_corroboration_no_new_economic_version"
             ),
             "restricted_cash": (
-                "unchanged_prior_year_restricted_cash_corroboration_"
-                "no_new_economic_version"
+                "unchanged_prior_year_restricted_cash_corroboration_no_new_economic_version"
             ),
             "associate_and_jv": "combined_scope_remains_ambiguous_no_version_created",
         },
@@ -1477,9 +1608,7 @@ def publish_reports(
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser()
-    parser.add_argument(
-        "mode", choices=["acquire", "verify-cache", "formal", "compare", "publish"]
-    )
+    parser.add_argument("mode", choices=["acquire", "verify-cache", "formal", "compare", "publish"])
     parser.add_argument("--official-cache-root", type=Path)
     parser.add_argument("--output-root", type=Path, default=ROOT / "tmp" / "stage2i2_runs")
     parser.add_argument("--run-id", default="stage2i2_formal_v1")
