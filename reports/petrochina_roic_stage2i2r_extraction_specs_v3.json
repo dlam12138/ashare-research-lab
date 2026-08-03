@@ -1,0 +1,8 @@
+{
+  "schema": "roic_extraction_spec_v3",
+  "version": "3",
+  "specs": [
+    {"extraction_spec_id": "roic-extract-finance-core-v3", "acquisition_id": "A-2024-finance-core", "capture_groups": ["finance", "lease"], "transform": "abs(finance_cost_amount)-lease_interest_amount", "source_unit": "人民币百万元"},
+    {"extraction_spec_id": "roic-extract-lease-interest-v3", "acquisition_id": "B-2024-lease-interest", "capture_groups": ["lease"], "transform": "identity", "source_unit": "人民币百万元"}
+  ]
+}

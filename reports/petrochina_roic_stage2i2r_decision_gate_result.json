@@ -1,0 +1,9 @@
+{
+  "schema": "roic_decision_gate_result_v1",
+  "decision": "ROIC_FACT_GAPS_REMAIN",
+  "input_readiness_status": "BLOCKED_WITH_EXPLICIT_GAPS",
+  "decision_rule_id": "roic-acquisition-three-state-v1",
+  "decision_rule_version": "1",
+  "shadow_status": "NOT_RUN",
+  "production_metric_result_created": false
+}
