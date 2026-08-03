@@ -21,14 +21,19 @@ Stage 2I.3 was started.
 
 ## Validation evidence
 
-- Full pytest at implementation HEAD `b7707ad`: **1028 passed, 2 warnings**.
+- Full pytest at implementation HEAD `b7707ad`: **1028 passed, 2 warnings**;
+  independent clean clone of pre-documentation HEAD `ebf901d` reproduced
+  **1029 passed, 2 warnings** with Ruff and compileall/import passing.
 - Targeted Stage 2I.2R suites: **17 passed**; Ruff all checks passed; compileall/import passed.
 - Formal A/B: both 9 economic facts/16 cells, `ROIC_FACT_GAPS_REMAIN`,
   `shadow_status=NOT_RUN`; artifact count 12, mismatches 0; digest
   `ff96e7c1244712280941f077aa94f20eb958788990c636408bbc2bc1314c59f2`.
 - Independent clean clone at `D:\tmp\stage2i2r_local_clean_8302188\repo`:
   Ruff/import/compileall passed, full pytest 1018 passed, formal A/B passed.
-- Final CI run `30816144047`: Windows and Ubuntu jobs both successful.
+- Final completed CI evidence before this terminal documentation commit was
+  run `30816554022`, with Windows and Ubuntu jobs successful. The terminal
+  documentation commit and its CI run are recorded in the Sol final handoff
+  because a commit cannot truthfully name its own future hash.
 
 ## Protected evidence
 
