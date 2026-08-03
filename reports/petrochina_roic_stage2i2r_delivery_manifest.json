@@ -1,0 +1,83 @@
+{
+  "schema": "roic_stage2i2r_delivery_manifest_v1",
+  "formal_artifact_set_sha256": "ff96e7c1244712280941f077aa94f20eb958788990c636408bbc2bc1314c59f2",
+  "superseded_stage2i2_artifact_set_sha256": "363f53d1b8b4c22d5c9bb3ad39f86a0ec7a9df1b2b7dfb8dc8bc1e5a95ea47e9",
+  "files": [
+    {
+      "logical_path": "reports/petrochina_roic_stage2i2r_acquisition_result.json",
+      "sha256": "f6d2685e5baae3accbbee5e45d9fc82b5675a92de91c629ba986e70dfa799c99",
+      "byte_size": 23705
+    },
+    {
+      "logical_path": "reports/petrochina_roic_stage2i2r_artifact_manifest.json",
+      "sha256": "9ce03b55d80575104b8c817a6a9dff656da167fb759c8f7b622f4faae60f9e4c",
+      "byte_size": 2124
+    },
+    {
+      "logical_path": "reports/petrochina_roic_stage2i2r_bounded_search_result_v2.json",
+      "sha256": "1ad0f1835533787d5a444774b199b97125f850d175178eae7e8523befb649f37",
+      "byte_size": 2198050
+    },
+    {
+      "logical_path": "reports/petrochina_roic_stage2i2r_contract_verification.json",
+      "sha256": "ab0beaa0e7155e9df2feb81f153ca5b1416f59b7df59b722b5e776244cdd7ab1",
+      "byte_size": 413
+    },
+    {
+      "logical_path": "reports/petrochina_roic_stage2i2r_corrected_bundle.json",
+      "sha256": "f5a58448cd92330ba143c619c8dc29f8039e7ee91242a90b0e09f32a39504f40",
+      "byte_size": 80169
+    },
+    {
+      "logical_path": "reports/petrochina_roic_stage2i2r_decision_gate_result.json",
+      "sha256": "3a801f35e29e48c2271cb237caaa4039067d2c9283718946e945ad15b93c0ea1",
+      "byte_size": 308
+    },
+    {
+      "logical_path": "reports/petrochina_roic_stage2i2r_extraction_specs_v3.json",
+      "sha256": "f0df46c3a23a75251ebe8eeb86a288bc5849b8f4c570b1019698f54194b28e45",
+      "byte_size": 514
+    },
+    {
+      "logical_path": "reports/petrochina_roic_stage2i2r_gate_matrix.json",
+      "sha256": "7784089f0f62d75565f647445da2c4706fe55be312cd56ae9ea755fd88c8a572",
+      "byte_size": 411
+    },
+    {
+      "logical_path": "reports/petrochina_roic_stage2i2r_isolated_inventory.json",
+      "sha256": "37d7c40eeccf0d156491e293232804cc9255747ace5101067530b8742235cbdf",
+      "byte_size": 1287294
+    },
+    {
+      "logical_path": "reports/petrochina_roic_stage2i2r_old_new_diff.json",
+      "sha256": "ac21416c807a438679678016c1b1fc92dacefc3152077afb2cca4e17f5819c4f",
+      "byte_size": 7889
+    },
+    {
+      "logical_path": "reports/petrochina_roic_stage2i2r_pit_verification.json",
+      "sha256": "14529c7404c84db05b0b79705dfd8b5e53009c5f6a386684c90719e88bf95a0a",
+      "byte_size": 543
+    },
+    {
+      "logical_path": "reports/petrochina_roic_stage2i2r_plan_coverage.json",
+      "sha256": "7784089f0f62d75565f647445da2c4706fe55be312cd56ae9ea755fd88c8a572",
+      "byte_size": 411
+    },
+    {
+      "logical_path": "reports/petrochina_roic_stage2i2r_readiness.json",
+      "sha256": "087a0811f6211a44e189f50e712f10f77029b5a4d74367499202a4b45a451ed6",
+      "byte_size": 834850
+    },
+    {
+      "logical_path": "reports/petrochina_roic_stage2i2r_readiness.md",
+      "sha256": "6a55af944d70b0451b9935f50418c61a7c3c29daa8e1516621864aca4f336e55",
+      "byte_size": 17343
+    },
+    {
+      "logical_path": "reports/petrochina_roic_stage2i2r_search_results_v2.json",
+      "sha256": "1ad0f1835533787d5a444774b199b97125f850d175178eae7e8523befb649f37",
+      "byte_size": 2198050
+    }
+  ],
+  "committed_artifact_set_sha256": "ba9d9ef473f4c61714d8d4544ff42401ba9ec691382156ee3000c16d0df056a7"
+}

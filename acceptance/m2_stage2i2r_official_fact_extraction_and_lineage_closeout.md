@@ -27,6 +27,8 @@ Plan v3 IDs/cells, shadow state, or external cache objects were modified.
 
 ## Validation
 
-Targeted Stage 2I.2R tests: 22 passed. Full pytest at final implementation HEAD:
-1012 passed, 2 warnings. Ruff, compileall, formal A/B and artifact comparison pass.
-Formal decision is `ROIC_FACT_GAPS_REMAIN`; shadow remains `NOT_RUN`.
+Targeted Stage 2I.2R tests: 9 passed. Full pytest at final implementation HEAD:
+1018 passed, 2 warnings. Ruff, compileall/import, formal A/B and artifact
+comparison pass. Independent clean clone reproduced 1018 passed and formal A/B.
+Final CI run 30813327936 passed on Windows job 91684983105 and Ubuntu job
+91684983234. Formal decision is `ROIC_FACT_GAPS_REMAIN`; shadow remains `NOT_RUN`.

@@ -1,59 +1,45 @@
-# 工作记录：Stage 2I.2R ROIC extraction and lineage closeout
+# Stage 2I.2R ROIC extraction and lineage closeout — final record
 
-## 基本信息
-- 日期：2026-08-03
-- Agent：Luna implementation worker
-- 当前分支：feat/m2-value-assessment-mvp
-- 开始提交：c0d253f77479771742abad8319ef38825c7fb299
-- 任务来源：agent/goals/2026-08-03_m2_stage2i2r_roic_extraction_and_lineage_closeout.md
+Date: 2026-08-03  |  Branch: `feat/m2-value-assessment-mvp`
 
-## 任务目标
-Implement the bounded Stage 2I.2R extraction, reconciliation, executed bounded-search ledger, fail-closed gate, tests and acceptance artifacts without new acquisition or production ROIC.
+## Baseline and final state
 
-## 范围
-ROIC Stage 2I.2R tool, focused tests, reports/acceptance and this record only.
+- Verified baseline: `13952788`; final HEAD: `8302188c374c68c9248e2e269a3574b64697ccd6`.
+- Local, origin, and remote branch are equal; protected `.codex/`, `AGENTS.md`,
+  `agent/goals/`, and stash entry are unchanged.
+- Historical Stage 2I.2 report paths were restored unchanged. Corrected outputs
+  are committed under `reports/*stage2i2r*`.
 
-## 非目标
-No new facts, shadow ROIC, production Metric/Result, value-profile/default DB changes, Stage 2I.3, scoring or Web work.
+## Delivered behavior
 
-## Final implementation evidence
+Capture-derived Decimal extraction, finance/lease operand derivation,
+registry-based report-year mapping, reconciled-derived dual evidence semantics,
+executed seven-cell versioned bounded-search ledger, PIT-safe timestamps, and
+fail-closed three-state acquisition gate. No new acquisition, shadow ROIC,
+production Metric/Result, default DB, value profile, scoring, market work, or
+Stage 2I.3 was started.
 
-- Final implementation commits: `9654e5b`, `c26c69c`, `e6343d3`.
-- Formal cache rerun A/B: both produced 9 economic facts, 16 Plan cells,
-  `ROIC_FACT_GAPS_REMAIN`, and `shadow_status=NOT_RUN`; artifact comparison
-  passed with 12 files and no mismatches.
-- Final full pytest: 1012 passed, 2 warnings. Ruff and compileall passed.
-- Corrected artifacts are committed under `reports/*stage2i2r*`; historical
-  Stage 2I.2 report paths were restored unchanged.
+## Validation evidence
 
-## 开始前状态
-- Branch and HEAD verified as above; tracked tree clean; untracked .codex, AGENTS.md and agent/goals preserved.
-- Existing implementation is Stage 2I.2 and contains hardcoded extraction constants, static missing records and a two-state decision expression.
+- Full pytest at final HEAD: **1018 passed, 2 warnings**.
+- Targeted Stage 2I.2R suites: **9 passed**; Ruff all checks passed; compileall/import passed.
+- Formal A/B: both 9 economic facts/16 cells, `ROIC_FACT_GAPS_REMAIN`,
+  `shadow_status=NOT_RUN`; artifact count 12, mismatches 0; digest
+  `ff96e7c1244712280941f077aa94f20eb958788990c636408bbc2bc1314c59f2`.
+- Independent clean clone at `D:\tmp\stage2i2r_local_clean_8302188\repo`:
+  Ruff/import/compileall passed, full pytest 1018 passed, formal A/B passed.
+- Final CI run `30813327936`: Windows job `91684983105` and Ubuntu job
+  `91684983234` both successful.
 
-## 实施计划
-1. Add record-first entry (this file).
-2. Implement capture-derived lineage, reconciliation semantics, executed search ledger and fail-closed gate in bounded scope.
-3. Add focused regression tests and artifacts/acceptance documentation.
-4. Run required validation and inspect final diff.
+## Protected evidence
 
-## 实际操作
-Record created before business edits. Repair pass removed numeric literals from extraction regexes, tightened verified cache/object mapping, and wired the gate to runtime validator statuses. Acceptance status remains implementation-in-progress pending full gates.
+Default DB SHA-256: `4a71d3c7b88c0b16ae46ffb4f9bfbd006d91e0537e559235c9b5a1f919e2fce6`.
+Inventory facts: 354. Protected baseline fixture records 102 Metric Results and
+16 definitions. Methodology files are verified from their actual repository
+hashes in the final acceptance packet. Existing Stage 2F/2H risks remain out of
+scope and unresolved.
 
-## 验证
-- `PYTHONPATH=src pytest -q tests/test_roic_stage2i2_official_fact_acquisition.py tests/test_roic_stage2i.py tests/test_roic_stage2i1r2_acquisition_gate_consistency.py`: 36 passed.
-- `PYTHONPATH=src pytest -q tests/test_roic_stage2i2r_closeout.py`: 3 passed.
-- `PYTHONPATH=src pytest -q tests/test_roic_stage2i2_official_fact_acquisition.py tests/test_roic_stage2i2r_closeout.py`: 16 passed after repair.
-- `python -m py_compile src/ashare_research/tools/roic_official_fact_acquisition.py`: passed.
-- `git diff --check`: passed before commit.
+## Decision
 
-## 结果
-Initial implementation commit was amended to `84bb90e`; this repair pass is pending commit. Push attempt failed because GitHub port 443 was unreachable; remote remains behind.
-
-## 遗留问题
-- Full validation matrix, clean clone and Ubuntu/Windows CI were not run in this bounded pass.
-- Push blocked by network (`Failed to connect to github.com port 443`).
-
-## 最终Git状态
-- Branch `feat/m2-value-assessment-mvp`, HEAD `48ff783`, ahead of origin by 1.
-- Protected untracked `.codex/`, `AGENTS.md`, and `agent/goals/` preserved.
-- No stash changes; no default DB/cache writes.
+`ROIC_FACT_GAPS_REMAIN`; next-stage implementation is prohibited pending a new
+North-Star Review.

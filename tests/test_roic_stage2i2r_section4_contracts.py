@@ -71,3 +71,60 @@ def test_plan_and_artifact_contracts_remain_complete():
     result = stage.validate_contracts()
     assert result["approved_item_count"] == 11
     assert result["affected_cell_count"] == 16
+
+
+def test_reconciled_validator_requires_ordered_dual_evidence_and_digest():
+    evidence = [
+        {
+            "fact_id": "i",
+            "source_id": "s1",
+            "source_type": "company_official",
+            "content_sha256": "a",
+        },
+        {
+            "fact_id": "e",
+            "source_id": "s2",
+            "source_type": "exchange_official",
+            "content_sha256": "b",
+        },
+    ]
+    fact = {
+        "source_type": "reconciled_derived",
+        "source_tier": "dual_official_reconciled",
+        "source_evidence": evidence,
+    }
+    fact["evidence_set_digest"] = stage.canonical_digest(
+        [
+            {
+                "fact_id": x["fact_id"],
+                "source_id": x["source_id"],
+                "content_sha256": x["content_sha256"],
+            }
+            for x in evidence
+        ]
+    )
+    assert stage.validate_reconciled_fact(fact)["status"] == "TRUSTED"
+    fact["source_evidence"] = list(reversed(evidence))
+    with pytest.raises(ValueError):
+        stage.validate_reconciled_fact(fact)
+
+
+@pytest.mark.parametrize(
+    "validator",
+    ["cache", "extraction", "reconciliation", "identity", "pit", "search", "artifact", "plan"],
+)
+def test_each_gate_validator_failure_is_not_trusted(validator):
+    assert (
+        stage.decide_acquisition_gate("READY_FOR_SHADOW", {validator: "NOT TRUSTED"})["decision"]
+        == "ROIC_ACQUISITION_NOT_TRUSTED"
+    )
+
+
+def test_search_identity_changes_when_spec_or_source_changes():
+    records = stage._missing_records()
+    first = records[0]["deterministic_id"]
+    records[0]["search_spec_id"] += "-changed"
+    changed = stage.canonical_digest(
+        {k: v for k, v in records[0].items() if k != "deterministic_id"}
+    )
+    assert changed != first
