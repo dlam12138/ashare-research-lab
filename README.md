@@ -7,7 +7,7 @@
 > [!IMPORTANT]
 > 本项目仅用于数据分析、统计研究和软件工程学习，不构成任何投资建议，也不提供自动交易能力。
 
-**当前阶段：Milestone 1 数据底座已完成；Milestone 2 价值评估 MVP 进行中（Stage 2I.1R2 ROIC acquisition gate consistency closeout；official fact acquisition required）**
+**当前阶段：Milestone 1 数据底座已完成；Milestone 2 价值评估 MVP 进行中（Stage 2I.2 ROIC official-fact acquisition；7 个事实缺口仍阻止 shadow）**
 
 ---
 
@@ -272,6 +272,7 @@ ruff check src/ tests/
 
 - 仅支持日线数据，不支持分钟数据
 - M2 尚未完成 ROIC
+- Stage 2I.2 已完成 Plan v3 的 11 项官方事实采集：9/16 个事实/年度单元已取得，7 个单元保留为明确缺口；结论为 `ROIC_FACT_GAPS_REMAIN`，未运行 shadow ROIC
 - 评分闭环仍未开始
 - 市场机制验证尚未开始
 - Web 界面、目标价、推荐和自动交易尚未实现
