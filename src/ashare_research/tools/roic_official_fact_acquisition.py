@@ -1312,7 +1312,11 @@ def run_formal(
     _write(inventory_path, inventory)
     after = build_readiness_report(inventory_path=inventory_path, assessment_as_of="2026-08-03")
     before = _load(READINESS_PATH)
-    missing = execute_bounded_searches(Path(official_cache_root).resolve())
+    # Formal artifacts are reproducible across A/B runs; execution still records
+    # distinct started/completed instants via the injected deterministic clock.
+    missing = execute_bounded_searches(
+        Path(official_cache_root).resolve(), clock=lambda: 1785715200.0
+    )
     result = _acquisition_result(bundle, missing)
     # Derive validator results from the produced records rather than trusting
     # literal gate inputs.  These checks are intentionally fail-closed.
