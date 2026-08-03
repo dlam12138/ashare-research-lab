@@ -65,7 +65,7 @@ DECIMAL_CONTEXT = Context(prec=28, rounding=ROUND_HALF_EVEN)
 # Versioned, machine-readable extraction contract.  Numeric literals are never
 # part of this contract; values are obtained exclusively from named captures.
 EXTRACTION_SPEC_VERSION = "3"
-GENERIC_NUMBER_PATTERN = r"\\(?[0-9][0-9,]*(?:\\.[0-9]+)?\\)?"
+GENERIC_NUMBER_PATTERN = r"\(?[0-9][0-9,]*(?:\.[0-9]+)?\)?"
 _COMMON_SPEC = {
     "version": "3",
     "source_roles": ["issuer_official", "exchange_official"],
@@ -99,7 +99,7 @@ EXTRACTION_SPECS = {
         **_COMMON_SPEC,
         "acquisition_id": "A-2024-investment-income",
         "capture_groups": ["target", "comparative"],
-        "named_capture_pattern": rf"(?P<label>.+?)\\s+(?P<note>\\d+)\\s+(?P<target>{GENERIC_NUMBER_PATTERN})\\s+(?P<comparative>{GENERIC_NUMBER_PATTERN})",  # noqa: E501
+        "named_capture_pattern": rf"(?P<label>.+?)\s+(?P<note>\d+)\s+(?P<target>{GENERIC_NUMBER_PATTERN})\s+(?P<comparative>{GENERIC_NUMBER_PATTERN})",  # noqa: E501
         "operand_names": ["target"],
         "transform_expression_id": "identity",
         "formula": "target",
@@ -108,7 +108,7 @@ EXTRACTION_SPECS = {
         **_COMMON_SPEC,
         "acquisition_id": "A-2024-fair-value",
         "capture_groups": ["target", "comparative"],
-        "named_capture_pattern": rf"(?P<label>.+?)\\s+(?P<note>\\d+)\\s+(?P<target>{GENERIC_NUMBER_PATTERN})\\s+(?P<comparative>{GENERIC_NUMBER_PATTERN})",  # noqa: E501
+        "named_capture_pattern": rf"(?P<label>.+?)\s+(?P<note>\d+)\s+(?P<target>{GENERIC_NUMBER_PATTERN})\s+(?P<comparative>{GENERIC_NUMBER_PATTERN})",  # noqa: E501
         "operand_names": ["target"],
         "transform_expression_id": "identity",
         "formula": "target",
@@ -117,7 +117,7 @@ EXTRACTION_SPECS = {
         **_COMMON_SPEC,
         "acquisition_id": "A-2024-asset-disposal",
         "capture_groups": ["target", "comparative"],
-        "named_capture_pattern": rf"(?P<label>.+?)\\s+(?P<note>\\d+)\\s+(?P<target>{GENERIC_NUMBER_PATTERN})\\s+(?P<comparative>{GENERIC_NUMBER_PATTERN})",  # noqa: E501
+        "named_capture_pattern": rf"(?P<label>.+?)\s+(?P<note>\d+)\s+(?P<target>{GENERIC_NUMBER_PATTERN})\s+(?P<comparative>{GENERIC_NUMBER_PATTERN})",  # noqa: E501
         "operand_names": ["target"],
         "transform_expression_id": "identity",
         "formula": "target",
@@ -126,7 +126,7 @@ EXTRACTION_SPECS = {
         **_COMMON_SPEC,
         "acquisition_id": "B-2023-2024-nci",
         "capture_groups": ["target", "comparative"],
-        "named_capture_pattern": rf"少数股东权益\\s+(?P<note>\\d+)\\s+(?P<target>{GENERIC_NUMBER_PATTERN})\\s+(?P<comparative>{GENERIC_NUMBER_PATTERN})",  # noqa: E501
+        "named_capture_pattern": rf"少数股东权益\s+(?P<note>\d+)\s+(?P<target>{GENERIC_NUMBER_PATTERN})\s+(?P<comparative>{GENERIC_NUMBER_PATTERN})",  # noqa: E501
         "operand_names": ["target"],
         "transform_expression_id": "identity",
         "formula": "target",
@@ -145,7 +145,7 @@ EXTRACTION_SPECS = {
         **_COMMON_SPEC,
         "acquisition_id": "C-2023-2024-restricted-cash",
         "capture_groups": ["absence_statement"],
-        "named_capture_pattern": r"无保证金账户存款作为美元借款质押",
+        "named_capture_pattern": r"(?P<absence_statement>无保证金账户存款作为美元借款质押)",
         "operand_names": [],
         "source_unit": "亿元",
         "transform_expression_id": "explicit_absence",
@@ -178,9 +178,10 @@ _SPEC_ROLE_MAP = {
 for _sid, (_role, _concept) in _SPEC_ROLE_MAP.items():
     EXTRACTION_SPECS[_sid].update(
         {
-            "extraction_spec_id": _sid,
-            "role_id": _role,
-            "concept_id": _concept,
+        "extraction_spec_id": _sid,
+        "role_id": _role,
+        "concept_id": _concept,
+        "fiscal_year": "cell_year",
             "source_report_year": "registry_metadata",
             "source_page": "registry_locator",
             "printed_page": "registry_locator",
