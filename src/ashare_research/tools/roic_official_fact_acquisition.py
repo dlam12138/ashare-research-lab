@@ -1232,7 +1232,7 @@ def run_formal(
                 "unchanged_184211_RMB_million_corroboration_no_new_economic_version"
             ),
             "restricted_cash": (
-                "unchanged_21.40_RMB_100_million_corroboration_"
+                "unchanged_prior_year_restricted_cash_corroboration_"
                 "no_new_economic_version"
             ),
             "associate_and_jv": "combined_scope_remains_ambiguous_no_version_created",
