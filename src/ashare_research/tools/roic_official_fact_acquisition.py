@@ -837,6 +837,38 @@ def _reconciled_fact(cell: ExtractedCell, inputs: list[dict[str, Any]]) -> dict[
     return fact
 
 
+def validate_reconciled_fact(fact: dict[str, Any]) -> dict[str, Any]:
+    """Validate canonical derived-source semantics and complete dual evidence."""
+    if fact.get("source_type") != "reconciled_derived" or fact.get("source_tier") != "dual_official_reconciled":
+        raise ValueError("derived fact must use reconciled-derived source semantics")
+    evidence = fact.get("source_evidence") or []
+    if len(evidence) != 2 or [e.get("source_type") for e in evidence] != ["company_official", "exchange_official"]:
+        raise ValueError("complete issuer/exchange evidence set required")
+    if fact.get("evidence_set_digest") != canonical_digest([
+        {"fact_id": e.get("fact_id"), "source_id": e.get("source_id"), "content_sha256": e.get("content_sha256")}
+        for e in evidence
+    ]):
+        raise ValueError("evidence-set digest mismatch")
+    return {"status": "TRUSTED", "evidence_count": len(evidence)}
+
+
+def validate_search_results(records: list[dict[str, Any]]) -> dict[str, Any]:
+    """Fail closed when any required object, match ledger, or PIT field is absent."""
+    if len(records) != 7:
+        raise ValueError("all seven bounded-search cells are required")
+    for record in records:
+        if record.get("search_completeness") != "complete" or not record.get("content_object_ids"):
+            raise ValueError("search is incomplete")
+        if record.get("query_completed_at", "") < record.get("query_started_at", ""):
+            raise ValueError("search clock is not monotonic")
+        if record.get("available_at", "") < record.get("query_completed_at", ""):
+            raise ValueError("available_at is earlier than completion")
+        for match in record.get("rejected_candidates", []):
+            if match.get("classification") not in {"acceptable_exact_fact", "candidate_insufficient_scope", "aggregate_only_disclosure", "tax_proxy_only", "purpose_income_linkage_missing", "irrelevant"}:
+                raise ValueError("unknown match classification")
+    return {"status": "TRUSTED", "record_count": len(records)}
+
+
 def build_fact_bundle(cells: list[ExtractedCell]) -> dict[str, Any]:
     evidence = {item["evidence_id"]: item for item in _load(SOURCE_PATH)["entries"]}
     facts, economic = [], []
@@ -1297,12 +1329,10 @@ def run_formal(
         validate_canonical_fact_ids(bundle["facts"])
     except Exception:
         identity_ok = False
-    search_ok = bool(missing) and all(
-        item.get("search_completeness") == "complete"
-        and item.get("content_object_ids")
-        and item.get("source_evidence_ids")
-        for item in missing
-    )
+    try:
+        search_ok = validate_search_results(missing)["status"] == "TRUSTED"
+    except Exception:
+        search_ok = False
     diff = _readiness_diff(
         before,
         after,
