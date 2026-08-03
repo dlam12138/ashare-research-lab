@@ -1,0 +1,10 @@
+{
+  "status": "PASS",
+  "approved_item_count": 11,
+  "affected_cell_count": 16,
+  "source_alias_count": 4,
+  "content_object_count": 2,
+  "plan_digest": "aedaebcaa5b85fd4bbfa39f77c2ac09a55c548cf2bb099cdc008271aa3340215",
+  "source_registry_sha256": "e936dfcf6a9bab32e13bcb702417beeb3c50e569755f4b00a4c96743c26cb29f",
+  "cache_registry_sha256": "8339213222fa15353f472002c7d85126d9d8c60b201c3c07a7758b5bbdda9c07"
+}

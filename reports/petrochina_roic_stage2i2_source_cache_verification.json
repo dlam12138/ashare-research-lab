@@ -1,0 +1,29 @@
+{
+  "status": "TRUSTED",
+  "external_cache": true,
+  "network_used": false,
+  "verified_object_count": 2,
+  "verified_alias_count": 4,
+  "objects": [
+    {
+      "object_key": "objects/b845502e533311280f89d59c2a92c67f94f2be17451e51e55f93a1d52abe6692.pdf",
+      "sha256": "b845502e533311280f89d59c2a92c67f94f2be17451e51e55f93a1d52abe6692",
+      "byte_size": 12437650,
+      "page_count": 293,
+      "evidence_ids": [
+        "pc-roic-2023-issuer-annual-cas",
+        "pc-roic-2023-exchange-annual-cas"
+      ]
+    },
+    {
+      "object_key": "objects/15a2de01653ceefa46fdd18a02a127f434f06db02da9efb0b62c3a12a35a9bba.pdf",
+      "sha256": "15a2de01653ceefa46fdd18a02a127f434f06db02da9efb0b62c3a12a35a9bba",
+      "byte_size": 11167845,
+      "page_count": 280,
+      "evidence_ids": [
+        "pc-roic-2024-issuer-annual-cas",
+        "pc-roic-2024-exchange-annual-cas"
+      ]
+    }
+  ]
+}
