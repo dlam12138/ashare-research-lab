@@ -1064,6 +1064,12 @@ def execute_bounded_searches(cache_root: Path) -> list[dict[str, Any]]:
                         if offset < 0:
                             break
                         excerpt = text_page[max(0, offset - 80):offset + len(term) + 80]
+                        if record["acquisition_id"] == "A-2024-operating-tax":
+                            classification, reason_code = "tax_proxy_only", "TAX_PROXY_ONLY"
+                        elif record["acquisition_id"] in {"B-2023-2024-associate", "B-2023-2024-jv"}:
+                            classification, reason_code = "aggregate_only_disclosure", "AGGREGATE_ONLY_DISCLOSURE"
+                        else:
+                            classification, reason_code = "purpose_income_linkage_missing", "PURPOSE_INCOME_LINKAGE_MISSING"
                         for obj in year_objects:
                             if obj not in search_objects:
                                 continue
@@ -1078,8 +1084,8 @@ def execute_bounded_searches(cache_root: Path) -> list[dict[str, Any]]:
                                     "span": [offset, offset + len(term)],
                                     "excerpt_text": excerpt,
                                     "excerpt_sha256": hashlib.sha256(excerpt.encode()).hexdigest(),
-                                    "classification": "candidate_but_insufficient_scope",
-                                    "reason_code": "INSUFFICIENT_SEMANTIC_SCOPE",
+                                    "classification": classification,
+                                    "reason_code": reason_code,
                                 })
                         start = offset + len(term)
         record["match_count"] = len(matches)
