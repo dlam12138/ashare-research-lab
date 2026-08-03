@@ -27,7 +27,7 @@ Plan v3 IDs/cells, shadow state, or external cache objects were modified.
 
 ## Validation
 
-Targeted Stage 2I.2R tests: 17 passed. Full pytest at implementation HEAD
+Targeted Stage 2I.2R tests: 20 passed. Full pytest at implementation HEAD
 `b7707ad`: 1028 passed, 2 warnings; current documentation-head clean clone
 at `ebf901d` reproduced 1029 passed, 2 warnings. Final test-only commits `aa47ce4`,
 `6af8a5c`, `a9cb27c`, `90c2d3d`, and `78c4c4e` preserve that result while

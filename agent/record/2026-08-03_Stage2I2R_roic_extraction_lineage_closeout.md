@@ -4,7 +4,7 @@ Date: 2026-08-03  |  Branch: `feat/m2-value-assessment-mvp`
 
 ## Baseline and final state
 
-- Verified baseline: `13952788`; final evidence HEAD: `78c4c4eaec0cd63eb17df49b35203e4270cdda24`.
+- Verified baseline: `c0d253f77479771742abad8319ef38825c7fb299`; final evidence HEAD: `78c4c4eaec0cd63eb17df49b35203e4270cdda24`.
 - Local, origin, and remote branch are equal; protected `.codex/`, `AGENTS.md`,
   `agent/goals/`, and stash entry are unchanged.
 - Historical Stage 2I.2 report paths were restored unchanged. Corrected outputs
@@ -24,7 +24,7 @@ Stage 2I.3 was started.
 - Full pytest at implementation HEAD `b7707ad`: **1028 passed, 2 warnings**;
   independent clean clone of pre-documentation HEAD `ebf901d` reproduced
   **1029 passed, 2 warnings** with Ruff and compileall/import passing.
-- Targeted Stage 2I.2R suites: **17 passed**; Ruff all checks passed; compileall/import passed.
+- Targeted Stage 2I.2R suites: **20 passed**; Ruff all checks passed; compileall/import passed.
 - Formal A/B: both 9 economic facts/16 cells, `ROIC_FACT_GAPS_REMAIN`,
   `shadow_status=NOT_RUN`; artifact count 12, mismatches 0; digest
   `ff96e7c1244712280941f077aa94f20eb958788990c636408bbc2bc1314c59f2`.
