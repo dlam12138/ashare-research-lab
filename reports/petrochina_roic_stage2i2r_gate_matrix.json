@@ -1,0 +1,13 @@
+{
+  "schema": "roic_stage2i2_plan_v3_acquisition_coverage_v1",
+  "validation_status": "PASS",
+  "plan_digest": "aedaebcaa5b85fd4bbfa39f77c2ac09a55c548cf2bb099cdc008271aa3340215",
+  "approved_item_count": 11,
+  "affected_cell_count": 16,
+  "reported_item_count": 11,
+  "reported_cell_count": 16,
+  "extra_items": [],
+  "missing_items": [],
+  "missing_cells_preserved": 7,
+  "decision": "ROIC_FACT_GAPS_REMAIN"
+}

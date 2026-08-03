@@ -1,0 +1,61 @@
+{
+  "schema": "roic_stage2i2_artifact_manifest_v1",
+  "files": [
+    {
+      "logical_path": "acquisition_result.json",
+      "sha256": "f6d2685e5baae3accbbee5e45d9fc82b5675a92de91c629ba986e70dfa799c99",
+      "byte_size": 23705
+    },
+    {
+      "logical_path": "bounded_search_register.json",
+      "sha256": "1ad0f1835533787d5a444774b199b97125f850d175178eae7e8523befb649f37",
+      "byte_size": 2198050
+    },
+    {
+      "logical_path": "contract_verification.json",
+      "sha256": "ab0beaa0e7155e9df2feb81f153ca5b1416f59b7df59b722b5e776244cdd7ab1",
+      "byte_size": 413
+    },
+    {
+      "logical_path": "isolated_canonical_inventory_v2.json",
+      "sha256": "37d7c40eeccf0d156491e293232804cc9255747ace5101067530b8742235cbdf",
+      "byte_size": 1287294
+    },
+    {
+      "logical_path": "normalized_official_fact_bundle.json",
+      "sha256": "f5a58448cd92330ba143c619c8dc29f8039e7ee91242a90b0e09f32a39504f40",
+      "byte_size": 80169
+    },
+    {
+      "logical_path": "pit_restatement_verification.json",
+      "sha256": "14529c7404c84db05b0b79705dfd8b5e53009c5f6a386684c90719e88bf95a0a",
+      "byte_size": 543
+    },
+    {
+      "logical_path": "plan_v3_acquisition_coverage.json",
+      "sha256": "7784089f0f62d75565f647445da2c4706fe55be312cd56ae9ea755fd88c8a572",
+      "byte_size": 411
+    },
+    {
+      "logical_path": "post_acquisition_readiness.json",
+      "sha256": "087a0811f6211a44e189f50e712f10f77029b5a4d74367499202a4b45a451ed6",
+      "byte_size": 834850
+    },
+    {
+      "logical_path": "post_acquisition_readiness.md",
+      "sha256": "6a55af944d70b0451b9935f50418c61a7c3c29daa8e1516621864aca4f336e55",
+      "byte_size": 17343
+    },
+    {
+      "logical_path": "readiness_before_after_diff.json",
+      "sha256": "ac21416c807a438679678016c1b1fc92dacefc3152077afb2cca4e17f5819c4f",
+      "byte_size": 7889
+    },
+    {
+      "logical_path": "source_cache_verification.json",
+      "sha256": "4ed4cb37074bd2eece5ce9c02e16cd0329d27dc46b8149f2d3bf9bdee8d75272",
+      "byte_size": 891
+    }
+  ],
+  "artifact_set_sha256": "ff96e7c1244712280941f077aa94f20eb958788990c636408bbc2bc1314c59f2"
+}
