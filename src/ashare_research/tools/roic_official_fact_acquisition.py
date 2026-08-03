@@ -76,6 +76,10 @@ EXTRACTION_SPECS = {
         "capture_groups": ["lease"],
     },
 }
+RECONCILIATION_RULE_ID = "official_dual_source_reconciliation"
+RECONCILIATION_RULE_VERSION = "2"
+EVIDENCE_ORDER_SEMANTICS_ID = "issuer_then_exchange"
+EVIDENCE_ORDER_SEMANTICS_VERSION = "1"
 
 
 def classify_search_match(*, term: str, excerpt: str, acquisition_id: str) -> tuple[str, str]:
@@ -867,9 +871,28 @@ def _reconciled_fact(cell: ExtractedCell, inputs: list[dict[str, Any]]) -> dict[
     )
     if any(inputs[0].get(key) != inputs[1].get(key) for key in comparable):
         raise ValueError("source_conflict: issuer and exchange facts disagree")
-    source_id = (
-        f"reconciled:601857.SH:company_exchange:stage2i2:{cell.concept_id}:{cell.fiscal_year}:v1"
+    ordered = sorted(
+        inputs,
+        key=lambda item: (0 if item["source_type"] == "company_official" else 1, item["source_id"]),
     )
+    if [item["source_type"] for item in ordered] != ["company_official", "exchange_official"]:
+        raise ValueError("reconciliation requires issuer then exchange evidence")
+    evidence_digest = canonical_digest(
+        [
+            {
+                "fact_id": item["fact_id"],
+                "source_id": item["source_id"],
+                "source_type": item["source_type"],
+                "content_sha256": item["content_sha256"],
+            }
+            for item in ordered
+        ]
+    )
+    source_id = (
+        f"reconciled:{cell.concept_id}:{cell.fiscal_year}:"
+        f"{RECONCILIATION_RULE_ID}:v{RECONCILIATION_RULE_VERSION}:{evidence_digest}"
+    )
+    inputs = ordered
     fact = deepcopy(inputs[0])
     fact.update(
         {
@@ -899,8 +922,8 @@ def _reconciled_fact(cell: ExtractedCell, inputs: list[dict[str, Any]]) -> dict[
             ),
             "eligible_for_metrics": True,
             "is_derived": True,
-            "derivation_definition_id": "official_dual_source_reconciliation",
-            "derivation_version": "1",
+            "derivation_definition_id": RECONCILIATION_RULE_ID,
+            "derivation_version": RECONCILIATION_RULE_VERSION,
             "input_fact_ids": ",".join(item["fact_id"] for item in inputs),
             "source_evidence": [
                 {
@@ -934,6 +957,8 @@ def _reconciled_fact(cell: ExtractedCell, inputs: list[dict[str, Any]]) -> dict[
                 "semantics",
             ],
             "reconciliation_status": "reconciled",
+            "evidence_order_semantics_id": EVIDENCE_ORDER_SEMANTICS_ID,
+            "evidence_order_semantics_version": EVIDENCE_ORDER_SEMANTICS_VERSION,
             "available_at": max(item["available_at"] for item in inputs),
             "announcement_date": max(item["announcement_date"] for item in inputs),
             "filing_date": max(item["filing_date"] for item in inputs),
@@ -1026,10 +1051,19 @@ def build_fact_bundle(cells: list[ExtractedCell]) -> dict[str, Any]:
                 "extraction_spec_id": cell.extraction_spec_id,
                 "extraction_spec_version": cell.extraction_spec_version,
                 "source_evidence_ids": list(cell.locator.get("evidence_ids", [])),
-                "content_object_ids": list(cell.locator.get("content_object_ids", [])),
+                "content_object_ids": list(
+                    cell.locator.get("content_object_ids", cell.locator.get("evidence_ids", []))
+                ),
                 "capture_group": cell.capture_group,
                 "match_count": 1,
-                "capture_span": list(cell.capture_span) if cell.capture_span else None,
+                "capture_span": None
+                if len(cell.captured_operands or {}) > 1
+                else (list(cell.capture_span) if cell.capture_span else None),
+                "operand_capture_spans": (
+                    {name: list(cell.capture_span) for name in (cell.captured_operands or {})}
+                    if cell.captured_operands
+                    else {}
+                ),
                 "captured_raw_text": cell.captured_raw_text,
                 "captured_operands": cell.captured_operands or {},
                 "operand_names": sorted((cell.captured_operands or {}).keys()),
