@@ -5,7 +5,7 @@
 - Evidence gate: **BLOCKED_WITH_EXPLICIT_GAPS**
 - Shadow: **NOT_RUN**
 - Registry SHA256: `dd3dd0bc522344b50df375a72ca220255ae5678e111d11f2a3c1cc7e45bc25f8`
-- Canonical inventory SHA256: `ee66966cb72247c2e25d8e8cc64341b72bdb37f4690034533767e2ab1ea6406a`
+- Canonical inventory SHA256: `b9ed4d8df84017671ebe66255dc78726d154fe5903a8a70a3ef66e5325261661`
 
 This is an evidence gate. It does not calculate ROIC, create a Metric Result, or modify the value profile.
 

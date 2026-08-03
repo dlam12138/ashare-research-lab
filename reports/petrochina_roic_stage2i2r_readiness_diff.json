@@ -1,0 +1,248 @@
+{
+  "schema": "roic_stage2i2_readiness_diff_v1",
+  "before_report_sha256": "0f0bf2d53202419d871bc086c23a45513d658907e4dc3a30da755069cc0adc9d",
+  "after_report_sha256": "206473ca54ee4f10a78d0385a8345d12458e91d1a789ea6d5a9349a0a6adab92",
+  "transitions": [
+    {
+      "role_id": "invested_capital.associate_investment",
+      "fiscal_year": 2023,
+      "before": "missing_official_fact",
+      "after": "missing_official_fact",
+      "after_fact_id": null
+    },
+    {
+      "role_id": "invested_capital.associate_investment",
+      "fiscal_year": 2024,
+      "before": "missing_official_fact",
+      "after": "missing_official_fact",
+      "after_fact_id": null
+    },
+    {
+      "role_id": "invested_capital.joint_venture_investment",
+      "fiscal_year": 2023,
+      "before": "missing_official_fact",
+      "after": "missing_official_fact",
+      "after_fact_id": null
+    },
+    {
+      "role_id": "invested_capital.joint_venture_investment",
+      "fiscal_year": 2024,
+      "before": "missing_official_fact",
+      "after": "missing_official_fact",
+      "after_fact_id": null
+    },
+    {
+      "role_id": "invested_capital.non_controlling_interest",
+      "fiscal_year": 2023,
+      "before": "missing_official_fact",
+      "after": "missing_official_fact",
+      "after_fact_id": null
+    },
+    {
+      "role_id": "invested_capital.non_controlling_interest",
+      "fiscal_year": 2024,
+      "before": "missing_official_fact",
+      "after": "missing_official_fact",
+      "after_fact_id": null
+    },
+    {
+      "role_id": "invested_capital.non_operating_financial_assets",
+      "fiscal_year": 2023,
+      "before": "missing_official_fact",
+      "after": "missing_official_fact",
+      "after_fact_id": null
+    },
+    {
+      "role_id": "invested_capital.non_operating_financial_assets",
+      "fiscal_year": 2024,
+      "before": "missing_official_fact",
+      "after": "missing_official_fact",
+      "after_fact_id": null
+    },
+    {
+      "role_id": "invested_capital.restricted_cash",
+      "fiscal_year": 2023,
+      "before": "missing_official_fact",
+      "after": "ready",
+      "after_fact_id": "8c2b7bfc07e7713ad60afb31984e5341d6f0dbb5cac4b1c4752dfcbbbc349566"
+    },
+    {
+      "role_id": "invested_capital.restricted_cash",
+      "fiscal_year": 2024,
+      "before": "missing_official_fact",
+      "after": "ready",
+      "after_fact_id": "cbfddefa98aba11750ba35e8c38f1cbb9d61e9787c83bd06a59633370ceb48aa"
+    },
+    {
+      "role_id": "nopat.asset_disposal_gain_loss",
+      "fiscal_year": 2024,
+      "before": "missing_official_fact",
+      "after": "missing_official_fact",
+      "after_fact_id": null
+    },
+    {
+      "role_id": "nopat.fair_value_net_change",
+      "fiscal_year": 2024,
+      "before": "missing_official_fact",
+      "after": "missing_official_fact",
+      "after_fact_id": null
+    },
+    {
+      "role_id": "nopat.finance_cost_excluding_lease_interest",
+      "fiscal_year": 2024,
+      "before": "missing_official_fact",
+      "after": "ready",
+      "after_fact_id": "fc3112ace4925bfc776955bf71813565a4f1c9add4901fd6d9a0e92a8475a34d"
+    },
+    {
+      "role_id": "nopat.investment_income",
+      "fiscal_year": 2024,
+      "before": "missing_official_fact",
+      "after": "missing_official_fact",
+      "after_fact_id": null
+    },
+    {
+      "role_id": "nopat.lease_interest_expense",
+      "fiscal_year": 2024,
+      "before": "missing_official_fact",
+      "after": "missing_official_fact",
+      "after_fact_id": null
+    },
+    {
+      "role_id": "tax.operating_tax_expense",
+      "fiscal_year": 2024,
+      "before": "missing_official_fact",
+      "after": "missing_official_fact",
+      "after_fact_id": null
+    }
+  ],
+  "remaining_plan_blockers": [
+    {
+      "role_id": "invested_capital.associate_investment",
+      "fiscal_year": 2023,
+      "before": "missing_official_fact",
+      "after": "missing_official_fact",
+      "after_fact_id": null
+    },
+    {
+      "role_id": "invested_capital.associate_investment",
+      "fiscal_year": 2024,
+      "before": "missing_official_fact",
+      "after": "missing_official_fact",
+      "after_fact_id": null
+    },
+    {
+      "role_id": "invested_capital.joint_venture_investment",
+      "fiscal_year": 2023,
+      "before": "missing_official_fact",
+      "after": "missing_official_fact",
+      "after_fact_id": null
+    },
+    {
+      "role_id": "invested_capital.joint_venture_investment",
+      "fiscal_year": 2024,
+      "before": "missing_official_fact",
+      "after": "missing_official_fact",
+      "after_fact_id": null
+    },
+    {
+      "role_id": "invested_capital.non_controlling_interest",
+      "fiscal_year": 2023,
+      "before": "missing_official_fact",
+      "after": "missing_official_fact",
+      "after_fact_id": null
+    },
+    {
+      "role_id": "invested_capital.non_controlling_interest",
+      "fiscal_year": 2024,
+      "before": "missing_official_fact",
+      "after": "missing_official_fact",
+      "after_fact_id": null
+    },
+    {
+      "role_id": "invested_capital.non_operating_financial_assets",
+      "fiscal_year": 2023,
+      "before": "missing_official_fact",
+      "after": "missing_official_fact",
+      "after_fact_id": null
+    },
+    {
+      "role_id": "invested_capital.non_operating_financial_assets",
+      "fiscal_year": 2024,
+      "before": "missing_official_fact",
+      "after": "missing_official_fact",
+      "after_fact_id": null
+    },
+    {
+      "role_id": "nopat.asset_disposal_gain_loss",
+      "fiscal_year": 2024,
+      "before": "missing_official_fact",
+      "after": "missing_official_fact",
+      "after_fact_id": null
+    },
+    {
+      "role_id": "nopat.fair_value_net_change",
+      "fiscal_year": 2024,
+      "before": "missing_official_fact",
+      "after": "missing_official_fact",
+      "after_fact_id": null
+    },
+    {
+      "role_id": "nopat.investment_income",
+      "fiscal_year": 2024,
+      "before": "missing_official_fact",
+      "after": "missing_official_fact",
+      "after_fact_id": null
+    },
+    {
+      "role_id": "nopat.lease_interest_expense",
+      "fiscal_year": 2024,
+      "before": "missing_official_fact",
+      "after": "missing_official_fact",
+      "after_fact_id": null
+    },
+    {
+      "role_id": "tax.operating_tax_expense",
+      "fiscal_year": 2024,
+      "before": "missing_official_fact",
+      "after": "missing_official_fact",
+      "after_fact_id": null
+    }
+  ],
+  "post_acquisition_evidence_gate": "BLOCKED_WITH_EXPLICIT_GAPS",
+  "stage2i2_decision": "ROIC_FACT_GAPS_REMAIN",
+  "decision_gate": {
+    "schema": "roic_decision_gate_result_v1",
+    "decision": "ROIC_FACT_GAPS_REMAIN",
+    "input_readiness_status": "BLOCKED_WITH_EXPLICIT_GAPS",
+    "validator_statuses": {
+      "cache_verification": "TRUSTED",
+      "extraction_recomputation": "TRUSTED",
+      "source_reconciliation": "TRUSTED",
+      "fact_context_identity": "TRUSTED",
+      "pit_restatement": "TRUSTED",
+      "bounded_search_execution": "TRUSTED",
+      "artifact_verification": "TRUSTED",
+      "plan_v3_coverage": "TRUSTED"
+    },
+    "blocking_gaps": [
+      "invested_capital.associate_investment:2023",
+      "invested_capital.associate_investment:2024",
+      "invested_capital.joint_venture_investment:2023",
+      "invested_capital.joint_venture_investment:2024",
+      "invested_capital.non_controlling_interest:2023",
+      "invested_capital.non_controlling_interest:2024",
+      "invested_capital.non_operating_financial_assets:2023",
+      "invested_capital.non_operating_financial_assets:2024",
+      "nopat.asset_disposal_gain_loss:2024",
+      "nopat.fair_value_net_change:2024",
+      "nopat.investment_income:2024",
+      "nopat.lease_interest_expense:2024",
+      "tax.operating_tax_expense:2024"
+    ],
+    "untrusted_reasons": [],
+    "decision_rule_id": "roic-acquisition-three-state-v1",
+    "decision_rule_version": "1"
+  },
+  "shadow_status": "NOT_RUN"
+}
