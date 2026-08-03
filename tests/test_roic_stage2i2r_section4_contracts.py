@@ -146,7 +146,7 @@ def test_committed_delivery_manifest_recomputes_hashes():
         path = root / item["logical_path"]
         assert path.is_file()
         payload = path.read_bytes()
-        if path.suffix == ".md":
+        if path.suffix in {".md", ".json"}:
             payload = path.read_text(encoding="utf-8").replace("\r\n", "\n").encode()
         assert len(payload) == item["byte_size"]
         assert hashlib.sha256(payload).hexdigest() == item["sha256"]
