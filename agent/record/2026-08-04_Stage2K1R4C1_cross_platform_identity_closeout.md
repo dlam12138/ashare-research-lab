@@ -182,7 +182,8 @@ Recorded as executed:
 - Capsule v4 / sensitivity v7 / migration report / manifest v2; economics unchanged.
 - ADR share-count corrected to `183,020,977,818` (≈ 183.021 billion ≈ 1,830.21 亿股).
 - Cross-platform identity: simulated ubuntu/windows fingerprints byte-identical.
-- Status: `completed` (CI-backed PASS pending; run `PENDING` on ubuntu + windows).
+- Status: `completed` (6 commits created locally; CI-backed PASS pending — push
+  blocked by github.com network unreachability, see Final files and Git state).
 
 ## Remaining issues
 
@@ -213,4 +214,13 @@ Pre-commit final state (recorded as executed):
 - Stash `stash@{0}` preserved; default DB hash `4a71d3c7…` unchanged; protected files
   intact; `reports/petrochina_value_profile.json` working tree == committed blob
   (LF, `074b8564…`).
-- Commits + push + CI: recorded below once executed.
+- Commits created (6, in order): `c158f50` diagnose tool; `9c00895` content digest
+  centralization + upstream contract; `e0d53ad` capsule v4 / sensitivity v7 migration;
+  `846ea9f` ADR share-count correction; `8142ce5` tests + CI compare jobs; `f5f37ff`
+  acceptance + work record + manifest v2.
+- **Push blocked by network**: `git push origin feat/m2-value-assessment-mvp` fails
+  with `Failed to connect to github.com port 443` (connection reset; github.com
+  unreachable, api.github.com reachable). Retried 3x with 5s delays; no local proxy
+  on common ports (7890/7897/1080/10809/8888/8118/1087). No HTTP(S) proxy configured.
+  CI evidence commit (acceptance `PENDING` → run number) is pending until the push
+  succeeds.
