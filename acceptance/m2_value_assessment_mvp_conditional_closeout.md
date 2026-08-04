@@ -9,7 +9,7 @@ Milestone 2: CONDITIONALLY CLOSED WITH EXPLICIT EVIDENCE GAPS
 - Goal: `agent/goals/2026-08-04_m2_stage2j_post_roic_north_star_and_closeout.md`
 - Branch: `feat/m2-value-assessment-mvp`
 - Start HEAD: `ecc150449e83804fa6b91f5a5660387946e22b80`
-- Final validated implementation HEAD: pending the scoped implementation commit
+- Final validated implementation HEAD: `8b1a58e13ed6c17217ec4c84c5c3285e37b0dc43`
 - North-Star decision: `M2_CONDITIONAL_CLOSEOUT_ALLOWED`
 - Permitted next gate: `M3_NORTH_STAR_PREFLIGHT_ALLOWED`
 - Next-stage implementation: `NOT STARTED`
@@ -115,4 +115,18 @@ gap cannot disappear solely because the milestone is conditionally closed.
 
 ## Final validation and CI
 
-Pending.
+- Stage 2J focused: `13 passed`.
+- Stage 2F protected: `22 passed`.
+- Stage 2H protected: `15 passed`.
+- Stage 2I/2I.1R/2I.1R2/2I.2/2I.2R protected: `76 passed`.
+- Identity/PIT/Metric protected group: `112 passed` after the required
+  append-only roadmap hash update; five directly affected blob-guard suites:
+  `68 passed`.
+- Full local pytest: `1056 passed, 2 warnings`; warnings are the existing
+  pandas date-format warnings in `tests/test_quality.py`.
+- Full Ruff, compileall/import, `git diff --check`, Stage 2J matrix/ledger/
+  profile/decision validation, artifact verification, secret/absolute-path and
+  DB/PDF/cache/raw-response pollution scans: passed.
+- Trusted pre-Stage2J profile payload comparison: unchanged except for the new
+  `capital_return` evidence-status node and the intended integrated ROIC status.
+- Local clean-clone and final Ubuntu/Windows CI: pending.

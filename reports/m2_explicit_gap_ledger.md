@@ -1,7 +1,9 @@
 # Canonical M2 explicit-gap ledger
 
-Contract: `m2_explicit_gap_ledger_v1`  
-As of: `2026-08-04`  
+Contract: `m2_explicit_gap_ledger_v1`
+
+As of: `2026-08-04`
+
 Status: `current`
 
 This ledger consolidates current Stage 2F, Stage 2H, and Stage 2I gaps without

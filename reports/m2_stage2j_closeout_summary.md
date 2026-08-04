@@ -35,5 +35,12 @@ scope matching. All are rejected by the strict contract.
 
 ## Validation
 
-Final local, clean-clone and Ubuntu/Windows CI evidence is pending and must be
-appended before this summary supports a final Stage 2J PASS verdict.
+- Focused Stage 2J: `13 passed`.
+- Protected Stage 2F / 2H / 2I: `22 / 15 / 76 passed`.
+- Identity/PIT/Metric protected group: `112 passed`; affected append-only
+  roadmap guards: `68 passed`.
+- Full local pytest: `1056 passed, 2` pre-existing pandas date warnings.
+- Ruff, compile/import, matrix, ledger, cross-format profile, decision,
+  artifact, diff, pollution, secret/path, default-DB, stash and source-ledger
+  guards: passed.
+- Clean clone and final Ubuntu/Windows CI: pending.

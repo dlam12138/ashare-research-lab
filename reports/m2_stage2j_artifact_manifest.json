@@ -6,9 +6,9 @@
     {"logical_path": "docs/post_roic_north_star_review.md", "sha256": "e12ad87f54f2ab3fd25338d4ce48c1d92dfbd7bd4aeb2c9aacc538046e23e5cb", "byte_size": 15534},
     {"logical_path": "docs/decisions/ADR-ROIC-001-strict-evidence-non-computability.md", "sha256": "fc84d0489e01cb1b6ea46551eedf7e526784e0ca34d433ed4929084825250ed1", "byte_size": 6156},
     {"logical_path": "reports/m2_value_assessment_completion_matrix.json", "sha256": "7fcf4576f5772476929848fdb9bc1379e10164f06a7f6a5b146e4a032cebf84f", "byte_size": 19715},
-    {"logical_path": "reports/m2_value_assessment_completion_matrix.md", "sha256": "7426b1a855785f0cbdfe1484d22bc75c6e5808cec442805ca791a56110ec7c26", "byte_size": 3203},
+    {"logical_path": "reports/m2_value_assessment_completion_matrix.md", "sha256": "3010717425f6445bedb5981029658328819e84ab5b544e61a4ace02c4a46e3de", "byte_size": 3201},
     {"logical_path": "reports/m2_explicit_gap_ledger.json", "sha256": "74ff95b18690187072850a462da5dcb90b4c9482717db7b99b7a06cf9555e0d4", "byte_size": 27464},
-    {"logical_path": "reports/m2_explicit_gap_ledger.md", "sha256": "37ca81356bcfa3cbfbb8943ef3668cc1e7f5c97cc0e53df7a589a9aa597b599f", "byte_size": 4584},
+    {"logical_path": "reports/m2_explicit_gap_ledger.md", "sha256": "1480b3dd42e9402e61af6f6cff5769f81d710434032cc20e1d7d9f25056c60f1", "byte_size": 4582},
     {"logical_path": "reports/petrochina_value_profile.json", "sha256": "074b85646995d40206cabf25e12ba82718c11aed8dbb41cfe5859533ee3759ce", "byte_size": 49887},
     {"logical_path": "reports/petrochina_value_profile_2021_2026.md", "sha256": "e76765b37b880d24f1aefaff7987998aa2bce20010602daf5095a7ef72649bbc", "byte_size": 3541},
     {"logical_path": "reports/petrochina_value_profile_one_page.md", "sha256": "196d86ff1f2ff28b09324732186af3e4e2f70e91074d0f91d01bd3c57e9956b5", "byte_size": 2616}

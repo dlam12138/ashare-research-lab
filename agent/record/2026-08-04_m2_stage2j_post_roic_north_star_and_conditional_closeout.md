@@ -121,14 +121,56 @@ PIT, or Identity contracts would need weakening.
    three latest/relevant Stage 2I records.
 2. Verified opening branch, HEAD, upstream relation, remotes, log, worktree,
    stash, protected untracked files, and the pre-existing tracked edit.
+3. Fetched origin and verified local/upstream/direct remote equality at the
+   expected opening HEAD. Recomputed the default DB, Plan v3, inventory,
+   registry, dependency-graph, value-profile, README, and Stage 2I.2R hashes.
+4. Verified opening-head GitHub Actions run `30863411552` passed Ubuntu and
+   Windows; verified the 16-entry Stage 2I.2R manifest with LF-normalized text
+   and ran the Stage 2I.2R baseline suite in the repository virtual environment.
+5. Recorded the four-option post-ROIC North-Star review and classified all
+   seven gaps without re-search, download, extraction, or new facts. Selected
+   `M2_CONDITIONAL_CLOSEOUT_ALLOWED` because no finite high-probability current
+   official batch resolves the hard blockers and all available fallbacks weaken
+   the strict method.
+6. Added the canonical 15-module matrix and 18-gap ledger (9 Stage 2F, 2 Stage
+   2H, 7 Stage 2I), ADR-ROIC-001, explicit non-numeric profile status, closeout
+   acceptance/summary/manifest, README/roadmap changes, and a fail-closed
+   validator with focused tests.
+7. Updated only the five exact append-only roadmap blob expectations after the
+   required Stage 2J roadmap addition. No test logic, coverage, or assertion was
+   weakened.
+8. Created commits `cef8d27` (North-Star review) and `8b1a58e` (conditional-
+   closeout contracts). The protected pre-existing Stage 2I.2R acceptance edit,
+   `AGENTS.md`, and `agent/goals/` were not staged.
 
 ## Validation
 
-Not yet run for Stage 2J.
+- Opening Stage 2I.2R baseline: `34 passed`; canonical 16-file manifest passed.
+- Stage 2J focused: `13 passed`.
+- Stage 2F protected: `22 passed`.
+- Stage 2H protected: `15 passed`.
+- Stage 2I protected: `76 passed`.
+- Identity/PIT/Metric protected group: `112 passed`; affected append-only
+  roadmap suites: `68 passed`.
+- Full pytest: `1056 passed, 2 warnings` in 161.61s. Both warnings are the
+  pre-existing pandas format-inference warnings in `tests/test_quality.py`.
+- Full Ruff: passed. `compileall` and repository import: passed.
+- Matrix, ledger, cross-format profile, ADR and artifact validators: passed.
+- `git diff --check`, secret/absolute-path and DB/PDF/cache/raw-response
+  pollution scans: passed.
+- Profile baseline comparison proved all pre-Stage2J content unchanged except
+  the new `capital_return` node and intended integrated ROIC status.
+- Default DB remains
+  `4a71d3c7b88c0b16ae46ffb4f9bfbd006d91e0537e559235c9b5a1f919e2fce6`;
+  four source-ledger hashes, stash, and protected untracked files are unchanged.
+- Clean-clone and final remote CI validation remain pending.
 
 ## Result
 
-In progress. No North-Star decision or M2 status change has been made.
+In progress. The North-Star decision is
+`M2_CONDITIONAL_CLOSEOUT_ALLOWED`; local implementation and full-suite gates
+pass. Conditional closeout is not yet reportable because clean-clone and final
+Ubuntu/Windows CI evidence remain pending.
 
 ## Final files and Git state
 

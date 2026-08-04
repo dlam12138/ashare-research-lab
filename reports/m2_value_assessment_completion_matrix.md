@@ -1,7 +1,9 @@
 # M2 value-assessment completion matrix
 
-Contract: `m2_module_status_v1`  
-North-Star decision: `M2_CONDITIONAL_CLOSEOUT_ALLOWED`  
+Contract: `m2_module_status_v1`
+
+North-Star decision: `M2_CONDITIONAL_CLOSEOUT_ALLOWED`
+
 Milestone 2: CONDITIONALLY CLOSED WITH EXPLICIT EVIDENCE GAPS
 
 This is a status matrix, not a numeric completion score. The machine-readable
