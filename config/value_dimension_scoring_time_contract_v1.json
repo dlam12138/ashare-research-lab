@@ -1,0 +1,62 @@
+{
+  "schema": "value_dimension_scoring_time_contract_v1",
+  "version": "1.0",
+  "frozen_date": "2026-08-04",
+  "owner": "M2 Stage 2K.1R2 score-date PIT closeout",
+  "timezone": "Asia/Shanghai",
+  "non_production": true,
+  "research_methodology_test_only": true,
+  "overall_score_prohibited": true,
+  "recommendation_prohibited": true,
+  "score_eligible": false,
+  "market_data_as_of_date": "2026-07-31",
+  "research_evidence_as_of": "2026-08-02",
+  "scorecard_formed_at": "2026-08-02",
+  "scorecard_is_formed_at_least_any_input_available_at": true,
+  "market_cutoff_and_formed_at_are_distinct": true,
+  "legacy_score_date_fields": {
+    "score_date": {
+      "legacy": true,
+      "deprecated": true,
+      "do_not_use_for_pit_validation": true,
+      "note": "retained only for backward compatibility; not the sole time semantics"
+    }
+  },
+  "component_time_policies": {
+    "market_and_valuation_observations": {
+      "trade_date_rule": "trade_date <= market_data_as_of_date",
+      "available_at_rule": "available_at <= scorecard_formed_at"
+    },
+    "financial_dividend_event_facts": {
+      "available_at_rule": "available_at <= scorecard_formed_at",
+      "note": "fiscal year, event period and method version must be explicit"
+    },
+    "risk_observations": {
+      "evaluation_as_of_date_rule": "evaluation_as_of_date <= research_evidence_as_of",
+      "conclusion_available_at_rule": "conclusion_available_at <= scorecard_formed_at",
+      "prohibited_wording": "must not describe 2026-08-02 risk conclusions as known as of 2026-07-31"
+    }
+  },
+  "prohibited_time_fallbacks": [
+    "conflate market_data_as_of_date with scorecard_formed_at",
+    "accept any input available_at > scorecard_formed_at as only a confidence finding",
+    "produce a formal shadow scorecard when any input available_at > scorecard_formed_at",
+    "accept any market trade_date > market_data_as_of_date",
+    "report risk_veto_status as a permanent clear when research evidence is absent",
+    "claim a 2026-08-02 risk conclusion is known as of 2026-07-31",
+    "hardcode scorecard_formed_at without deriving it from the maximum included input available_at"
+  ],
+  "strict_single_point_history_scoring_rule": {
+    "when": "generating a strict single-point 2026-07-31 historical scorecard",
+    "risk_observations_2026_08_02_must_be_invisible": true,
+    "risk_veto_status_must_be": "not_available_at_cutoff",
+    "clear_output_prohibited": true
+  },
+  "scorecard_formed_at_derivation": {
+    "rule": "scorecard_formed_at must equal or be later than the maximum available_at of every included input; it is derived from and verified against the included inputs, not manually hardcoded",
+    "verification": "validator checks max(component.available_at) <= scorecard_formed_at"
+  },
+  "identity_inclusion": {
+    "note": "time contract, input identity, scorecard identity and artifact digest must include market_data_as_of_date, research_evidence_as_of, scorecard_formed_at, timezone and time-contract version"
+  }
+}

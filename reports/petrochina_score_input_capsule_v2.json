@@ -1,0 +1,1010 @@
+{
+  "schema": "m2_stage2k1r2_score_input_capsule_v2",
+  "version": "2.0",
+  "symbol": "601857.SH",
+  "time_contract": {
+    "market_data_as_of_date": "2026-07-31",
+    "research_evidence_as_of": "2026-08-02",
+    "scorecard_formed_at": "2026-08-02",
+    "timezone": "Asia/Shanghai",
+    "time_contract_version": "1.0",
+    "digest": "e47b3c22717004132ade342668ce85b5b57bad226f81c5c2231e0ee41079c70d"
+  },
+  "dimensions": [
+    "enterprise_quality",
+    "valuation_attractiveness",
+    "value_realization_capacity",
+    "risk_and_evidence_integrity"
+  ],
+  "component_count": 24,
+  "components": {
+    "eq_gross_margin": {
+      "dimension_id": "enterprise_quality",
+      "upstream_ref_type": "derived_from_canonical_facts",
+      "upstream_refs": [
+        {
+          "artifact": "acceptance/fixtures/official_facts/601857.SH/2025_annual.json",
+          "concept_ids": [
+            "revenue",
+            "operating_cost"
+          ]
+        }
+      ],
+      "source_tier": "computed_from_verified_canonical_inputs",
+      "available_at": "2026-03-30",
+      "transform_id": "piecewise_absolute_contract",
+      "transform_version": "1.0",
+      "benchmark_ref": "absolute_contract",
+      "selection_method": "(revenue - operating_cost) / revenue",
+      "score_eligible": false,
+      "warnings": [],
+      "gap_ids": [],
+      "value": "0.21586828134638567",
+      "unit": "ratio",
+      "domain": "ratio_gte_0",
+      "fiscal_year": 2025,
+      "transform_inputs": {
+        "revenue": "286446900.0",
+        "operating_cost": "224612100.0"
+      },
+      "transform_output": "0.21586828134638567",
+      "score_input_id": "ded2c4e8beebff9e3478a502e18a06a7bf789e9dc7d413929affe3cde582079b"
+    },
+    "eq_operating_margin": {
+      "dimension_id": "enterprise_quality",
+      "upstream_ref_type": "derived_from_canonical_facts",
+      "upstream_refs": [
+        {
+          "artifact": "acceptance/fixtures/official_facts/601857.SH/2025_annual.json",
+          "concept_ids": [
+            "revenue",
+            "operating_profit"
+          ]
+        }
+      ],
+      "source_tier": "computed_from_verified_canonical_inputs",
+      "available_at": "2026-03-30",
+      "transform_id": "piecewise_absolute_contract",
+      "transform_version": "1.0",
+      "benchmark_ref": "absolute_contract",
+      "selection_method": "operating_profit / revenue",
+      "score_eligible": false,
+      "warnings": [],
+      "gap_ids": [],
+      "value": "0.08189266492323709",
+      "unit": "ratio",
+      "domain": "ratio",
+      "fiscal_year": 2025,
+      "transform_inputs": {
+        "revenue": "286446900.0",
+        "operating_profit": "23457900.0"
+      },
+      "transform_output": "0.08189266492323709",
+      "score_input_id": "91aa045b0c48deae5aa7e3cde07047a2288a1468d78e03a084ea20c6a0bf2ab4"
+    },
+    "eq_np_yoy": {
+      "dimension_id": "enterprise_quality",
+      "upstream_ref_type": "derived_from_canonical_facts",
+      "upstream_refs": [
+        {
+          "artifact": "acceptance/fixtures/official_facts/601857.SH/2025_annual.json",
+          "concept_ids": [
+            "net_profit_attributable_to_parent"
+          ]
+        }
+      ],
+      "source_tier": "computed_from_verified_canonical_inputs",
+      "available_at": "2026-03-30",
+      "transform_id": "piecewise_absolute_contract",
+      "transform_version": "1.0",
+      "benchmark_ref": "absolute_contract",
+      "selection_method": "np_2025 / np_2024 - 1",
+      "score_eligible": false,
+      "warnings": [],
+      "gap_ids": [],
+      "value": "-0.044778838446403846",
+      "unit": "ratio",
+      "domain": "ratio",
+      "fiscal_year": 2025,
+      "transform_inputs": {
+        "np_2025": "15730200.0",
+        "np_2024": "16467600.0"
+      },
+      "transform_output": "-0.044778838446403846",
+      "score_input_id": "22c83678578bd21f9910a17f18c9d67d540c6eebbe315c14b97040df31e0a8a6"
+    },
+    "eq_ocf_np": {
+      "dimension_id": "enterprise_quality",
+      "upstream_ref_type": "derived_from_canonical_facts",
+      "upstream_refs": [
+        {
+          "artifact": "acceptance/fixtures/official_facts/601857.SH/2025_annual.json",
+          "concept_ids": [
+            "operating_cash_flow",
+            "net_profit_attributable_to_parent"
+          ]
+        }
+      ],
+      "source_tier": "computed_from_verified_canonical_inputs",
+      "available_at": "2026-03-30",
+      "transform_id": "piecewise_absolute_contract",
+      "transform_version": "1.0",
+      "benchmark_ref": "absolute_contract",
+      "selection_method": "operating_cash_flow / net_profit_attributable_to_parent",
+      "score_eligible": false,
+      "warnings": [],
+      "gap_ids": [],
+      "value": "2.6224078524112855",
+      "unit": "ratio",
+      "domain": "ratio",
+      "fiscal_year": 2025,
+      "transform_inputs": {
+        "ocf": "41251000.0",
+        "np": "15730200.0"
+      },
+      "transform_output": "2.6224078524112855",
+      "score_input_id": "7e33b22a0db1f1d33f4c7cf0418a6d246b4317439def6e8c13fee3a99d08f637"
+    },
+    "eq_roe": {
+      "dimension_id": "enterprise_quality",
+      "upstream_ref_type": "derived_from_canonical_facts",
+      "upstream_refs": [
+        {
+          "artifact": "acceptance/fixtures/official_facts/601857.SH/supplemental/2025_roe_roa_denominators.json",
+          "concept_ids": [
+            "net_profit_attributable_to_parent",
+            "equity_attributable_to_parent"
+          ]
+        }
+      ],
+      "source_tier": "computed_from_verified_canonical_inputs",
+      "available_at": "2026-03-30",
+      "transform_id": "piecewise_absolute_contract",
+      "transform_version": "1.0",
+      "benchmark_ref": "absolute_contract",
+      "selection_method": "np_attr / avg(equity_2024, equity_2025)",
+      "score_eligible": false,
+      "warnings": [],
+      "gap_ids": [],
+      "value": "0.10143830333858682",
+      "unit": "ratio",
+      "domain": "ratio",
+      "fiscal_year": 2025,
+      "transform_inputs": {
+        "np_attr": "15730200.0",
+        "equity_2024": "151537100.0",
+        "equity_2025": "158606100.0"
+      },
+      "transform_output": "0.10143830333858682",
+      "score_input_id": "d47ef849f5a1662d4fc43682dce4ff98dff5778531938130779b315aa3be4e41"
+    },
+    "eq_roa": {
+      "dimension_id": "enterprise_quality",
+      "upstream_ref_type": "derived_from_canonical_facts",
+      "upstream_refs": [
+        {
+          "artifact": "acceptance/fixtures/official_facts/601857.SH/supplemental/2025_net_profit.json",
+          "concept_ids": [
+            "net_profit",
+            "total_assets"
+          ]
+        }
+      ],
+      "source_tier": "computed_from_verified_canonical_inputs",
+      "available_at": "2026-03-30",
+      "transform_id": "piecewise_absolute_contract",
+      "transform_version": "1.0",
+      "benchmark_ref": "absolute_contract",
+      "selection_method": "net_profit / avg(total_assets_2024, total_assets_2025)",
+      "score_eligible": false,
+      "warnings": [],
+      "gap_ids": [],
+      "value": "0.06163922606317407",
+      "unit": "ratio",
+      "domain": "ratio",
+      "fiscal_year": 2025,
+      "transform_inputs": {
+        "net_profit": "17200500.0",
+        "total_assets_2024": "275300700.0",
+        "total_assets_2025": "282801700.0"
+      },
+      "transform_output": "0.06163922606317407",
+      "score_input_id": "92782af8c0b87b0773f0ded325b3647536ba132636cc40a91a9ae0ef6b05668f"
+    },
+    "eq_asset_liability": {
+      "dimension_id": "enterprise_quality",
+      "upstream_ref_type": "derived_from_canonical_facts",
+      "upstream_refs": [
+        {
+          "artifact": "acceptance/fixtures/official_facts/601857.SH/supplemental/2025_financial_safety.json",
+          "concept_ids": [
+            "total_liabilities",
+            "total_assets"
+          ]
+        }
+      ],
+      "source_tier": "computed_from_verified_canonical_inputs",
+      "available_at": "2026-03-30",
+      "transform_id": "piecewise_absolute_contract",
+      "transform_version": "1.0",
+      "benchmark_ref": "absolute_contract",
+      "selection_method": "total_liabilities / total_assets",
+      "score_eligible": false,
+      "warnings": [],
+      "gap_ids": [],
+      "value": "0.36367143478981917",
+      "unit": "ratio",
+      "domain": "ratio",
+      "fiscal_year": 2025,
+      "transform_inputs": {
+        "total_liabilities": "102846900.0",
+        "total_assets": "282801700.0"
+      },
+      "transform_output": "0.36367143478981917",
+      "score_input_id": "202825a3bcb5adc76a5c281df3a2901712570e90ac641fdb20fc695b8ef7a24f"
+    },
+    "eq_cash_coverage": {
+      "dimension_id": "enterprise_quality",
+      "upstream_ref_type": "derived_from_canonical_facts",
+      "upstream_refs": [
+        {
+          "artifact": "acceptance/fixtures/official_facts/601857.SH/supplemental/2025_financial_safety.json",
+          "concept_ids": [
+            "cash_and_cash_equivalents",
+            "short_term_borrowings",
+            "current_portion_of_long_term_borrowings",
+            "current_portion_of_bonds_payable",
+            "current_portion_of_lease_liabilities",
+            "long_term_borrowings",
+            "bonds_payable",
+            "lease_liabilities"
+          ]
+        }
+      ],
+      "source_tier": "computed_from_verified_canonical_inputs",
+      "available_at": "2026-03-30",
+      "transform_id": "piecewise_absolute_contract",
+      "transform_version": "1.0",
+      "benchmark_ref": "absolute_contract",
+      "selection_method": "cash / gross_interest_bearing_debt",
+      "score_eligible": false,
+      "warnings": [],
+      "gap_ids": [],
+      "value": "0.5832847644645636",
+      "unit": "ratio",
+      "domain": "ratio",
+      "fiscal_year": 2025,
+      "transform_inputs": {
+        "cash": "20616200.0",
+        "gross_interest_bearing_debt": "35345000.0"
+      },
+      "transform_output": "0.5832847644645636",
+      "score_input_id": "01db0fd76e34de641ea3a70a81e5b523659c0f28e2b17588faddf5b0ebbaea90"
+    },
+    "va_pe": {
+      "dimension_id": "valuation_attractiveness",
+      "upstream_ref_type": "valuation_observation",
+      "upstream_refs": [
+        {
+          "artifact": "reports/petrochina_value_profile.json",
+          "record_id": "percentile_position.a_share_price_to_latest_annual_parent_earnings",
+          "source_evidence_ids": [
+            "9009dbb2ddaf6981e33d68fafd2cce681c0c87e591d30a1fa366d0051b38df6c"
+          ]
+        }
+      ],
+      "source_tier": "external_manifest_only",
+      "value": "12.891587101393752",
+      "unit": "ratio",
+      "domain": "ratio",
+      "trade_date": "2026-07-31",
+      "available_at": "2026-07-31",
+      "input_status": "computed",
+      "transform_id": "observed_latest_value",
+      "transform_version": "1.0",
+      "transform_inputs": {
+        "value_profile_latest_value": "12.891587101393752",
+        "trade_date": "2026-07-31"
+      },
+      "transform_output": "12.891587101393752",
+      "percentile_3y": 0.920907840440165,
+      "percentile_5y": 0.9452380952380952,
+      "benchmark_ref": "self_history_percentile",
+      "selection_method": "percentile_position.<metric>.{3y,latest} from value profile",
+      "score_eligible": false,
+      "warnings": [],
+      "gap_ids": [],
+      "observation_set": {
+        "artifact": "events/market_data_snapshot_registry.json",
+        "contract": "market_data_snapshot_registry_v2",
+        "symbol": "601857.SH",
+        "scope": "2021-01-04..2026-07-31",
+        "provider_digest": "baostock/defd0b9507c0d87cf9d12864923eb24573e4edee28d7b67b9ce319ab4d91a764.parquet",
+        "provider_sha256": "defd0b9507c0d87cf9d12864923eb24573e4edee28d7b67b9ce319ab4d91a764",
+        "row_count": 1351,
+        "reconciliation_status": "pass",
+        "excluded_observation_count": 0,
+        "exclusion_reasons": [],
+        "minimum_observations": {
+          "3y": 500,
+          "5y": 900
+        },
+        "percentile_effective_samples": {
+          "3y": 727,
+          "5y": 1050
+        },
+        "observation_set_digest": "3dcf1beef3b16023494c20827716074c4c4fd2225365107f9f5111c3df832d30"
+      },
+      "score_input_id": "5f7761e3bf278d339ebe20c2974eccb5ede4cdcba46466dc2274320a36f06828"
+    },
+    "va_pb": {
+      "dimension_id": "valuation_attractiveness",
+      "upstream_ref_type": "valuation_observation",
+      "upstream_refs": [
+        {
+          "artifact": "reports/petrochina_value_profile.json",
+          "record_id": "percentile_position.a_share_price_to_latest_year_end_parent_equity",
+          "source_evidence_ids": [
+            "45a8911a4b1626157c179dc44880da947bde9dfda937d18f8464a9381606eb90"
+          ]
+        }
+      ],
+      "source_tier": "external_manifest_only",
+      "value": "1.2785589168534124",
+      "unit": "ratio",
+      "domain": "ratio",
+      "trade_date": "2026-07-31",
+      "available_at": "2026-07-31",
+      "input_status": "computed",
+      "transform_id": "observed_latest_value",
+      "transform_version": "1.0",
+      "transform_inputs": {
+        "value_profile_latest_value": "1.2785589168534124",
+        "trade_date": "2026-07-31"
+      },
+      "transform_output": "1.2785589168534124",
+      "percentile_3y": 0.8452544704264099,
+      "percentile_5y": 0.8928571428571429,
+      "benchmark_ref": "self_history_percentile",
+      "selection_method": "percentile_position.<metric>.{3y,latest} from value profile",
+      "score_eligible": false,
+      "warnings": [],
+      "gap_ids": [],
+      "observation_set": {
+        "artifact": "events/market_data_snapshot_registry.json",
+        "contract": "market_data_snapshot_registry_v2",
+        "symbol": "601857.SH",
+        "scope": "2021-01-04..2026-07-31",
+        "provider_digest": "baostock/defd0b9507c0d87cf9d12864923eb24573e4edee28d7b67b9ce319ab4d91a764.parquet",
+        "provider_sha256": "defd0b9507c0d87cf9d12864923eb24573e4edee28d7b67b9ce319ab4d91a764",
+        "row_count": 1351,
+        "reconciliation_status": "pass",
+        "excluded_observation_count": 0,
+        "exclusion_reasons": [],
+        "minimum_observations": {
+          "3y": 500,
+          "5y": 900
+        },
+        "percentile_effective_samples": {
+          "3y": 727,
+          "5y": 1050
+        },
+        "observation_set_digest": "3dcf1beef3b16023494c20827716074c4c4fd2225365107f9f5111c3df832d30"
+      },
+      "score_input_id": "5ce52e7df3316b64c51eb2ab756a1074c453ed6b12260f6573a15b0f754d6c22"
+    },
+    "va_ps": {
+      "dimension_id": "valuation_attractiveness",
+      "upstream_ref_type": "valuation_observation",
+      "upstream_refs": [
+        {
+          "artifact": "reports/petrochina_value_profile.json",
+          "record_id": "percentile_position.a_share_price_to_latest_annual_revenue",
+          "source_evidence_ids": [
+            "460056dc565a2ee49c9906554a29816a89ef25669390ecf3c6af407e5721e0f1"
+          ]
+        }
+      ],
+      "source_tier": "external_manifest_only",
+      "value": "0.7079400874030893",
+      "unit": "ratio",
+      "domain": "ratio",
+      "trade_date": "2026-07-31",
+      "available_at": "2026-07-31",
+      "input_status": "computed",
+      "transform_id": "observed_latest_value",
+      "transform_version": "1.0",
+      "transform_inputs": {
+        "value_profile_latest_value": "0.7079400874030893",
+        "trade_date": "2026-07-31"
+      },
+      "transform_output": "0.7079400874030893",
+      "percentile_3y": 0.920907840440165,
+      "percentile_5y": 0.9452380952380952,
+      "benchmark_ref": "self_history_percentile",
+      "selection_method": "percentile_position.<metric>.{3y,latest} from value profile",
+      "score_eligible": false,
+      "warnings": [],
+      "gap_ids": [],
+      "observation_set": {
+        "artifact": "events/market_data_snapshot_registry.json",
+        "contract": "market_data_snapshot_registry_v2",
+        "symbol": "601857.SH",
+        "scope": "2021-01-04..2026-07-31",
+        "provider_digest": "baostock/defd0b9507c0d87cf9d12864923eb24573e4edee28d7b67b9ce319ab4d91a764.parquet",
+        "provider_sha256": "defd0b9507c0d87cf9d12864923eb24573e4edee28d7b67b9ce319ab4d91a764",
+        "row_count": 1351,
+        "reconciliation_status": "pass",
+        "excluded_observation_count": 0,
+        "exclusion_reasons": [],
+        "minimum_observations": {
+          "3y": 500,
+          "5y": 900
+        },
+        "percentile_effective_samples": {
+          "3y": 727,
+          "5y": 1050
+        },
+        "observation_set_digest": "3dcf1beef3b16023494c20827716074c4c4fd2225365107f9f5111c3df832d30"
+      },
+      "score_input_id": "cb80c41007ca87694c21cebd42176fe2f888545c901711eb984f06a14939fe68"
+    },
+    "va_fcf_yield": {
+      "dimension_id": "valuation_attractiveness",
+      "upstream_ref_type": "valuation_observation",
+      "upstream_refs": [
+        {
+          "artifact": "reports/petrochina_value_profile.json",
+          "record_id": "percentile_position.latest_annual_fcf_proxy_yield",
+          "source_evidence_ids": [
+            "ad3b6e2a3675ce7e8a8e16bda427597b72d28e30808281e17cd4aa549949357a",
+            "5dc4c375138e6cac5a26866d2120fc9d6bc68b69a19dabd56902ae0a6660b34f"
+          ]
+        }
+      ],
+      "source_tier": "external_manifest_only",
+      "value": "0.059037737275543345",
+      "unit": "ratio",
+      "domain": "ratio",
+      "trade_date": "2026-07-31",
+      "available_at": "2026-07-31",
+      "input_status": "computed",
+      "transform_id": "observed_latest_value",
+      "transform_version": "1.0",
+      "transform_inputs": {
+        "value_profile_latest_value": "0.059037737275543345",
+        "trade_date": "2026-07-31"
+      },
+      "transform_output": "0.059037737275543345",
+      "percentile_3y": 0.17400275103163687,
+      "percentile_5y": 0.12047619047619047,
+      "benchmark_ref": "self_history_percentile",
+      "selection_method": "percentile_position.<metric>.{3y,latest} from value profile",
+      "score_eligible": false,
+      "warnings": [],
+      "gap_ids": [],
+      "observation_set": {
+        "artifact": "events/market_data_snapshot_registry.json",
+        "contract": "market_data_snapshot_registry_v2",
+        "symbol": "601857.SH",
+        "scope": "2021-01-04..2026-07-31",
+        "provider_digest": "baostock/defd0b9507c0d87cf9d12864923eb24573e4edee28d7b67b9ce319ab4d91a764.parquet",
+        "provider_sha256": "defd0b9507c0d87cf9d12864923eb24573e4edee28d7b67b9ce319ab4d91a764",
+        "row_count": 1351,
+        "reconciliation_status": "pass",
+        "excluded_observation_count": 0,
+        "exclusion_reasons": [],
+        "minimum_observations": {
+          "3y": 500,
+          "5y": 900
+        },
+        "percentile_effective_samples": {
+          "3y": 727,
+          "5y": 1050
+        },
+        "observation_set_digest": "3dcf1beef3b16023494c20827716074c4c4fd2225365107f9f5111c3df832d30"
+      },
+      "score_input_id": "326237e1deb25157abff67352435565566215466e30fe45bff2b839af74e2967"
+    },
+    "va_dividend_yield": {
+      "dimension_id": "valuation_attractiveness",
+      "upstream_ref_type": "valuation_observation",
+      "upstream_refs": [
+        {
+          "artifact": "reports/petrochina_value_profile.json",
+          "record_id": "percentile_position.trailing_12m_announced_dividend_yield",
+          "source_evidence_ids": []
+        }
+      ],
+      "source_tier": "coverage_gap",
+      "value": null,
+      "unit": "ratio",
+      "domain": "ratio",
+      "trade_date": "2025-09-09",
+      "available_at": "2026-07-31",
+      "input_status": "coverage_gap",
+      "transform_id": "observed_latest_value",
+      "transform_version": "1.0",
+      "transform_inputs": {
+        "value_profile_latest_value": null,
+        "trade_date": "2025-09-09"
+      },
+      "transform_output": null,
+      "percentile_3y": null,
+      "percentile_5y": null,
+      "benchmark_ref": "self_history_percentile",
+      "selection_method": "percentile_position.<metric>.{3y,latest} from value profile",
+      "score_eligible": false,
+      "warnings": [
+        "coverage gap: dividend yield not computed"
+      ],
+      "gap_ids": [],
+      "observation_set": {
+        "artifact": "events/market_data_snapshot_registry.json",
+        "contract": "market_data_snapshot_registry_v2",
+        "symbol": "601857.SH",
+        "scope": "2021-01-04..2026-07-31",
+        "provider_digest": "baostock/defd0b9507c0d87cf9d12864923eb24573e4edee28d7b67b9ce319ab4d91a764.parquet",
+        "provider_sha256": "defd0b9507c0d87cf9d12864923eb24573e4edee28d7b67b9ce319ab4d91a764",
+        "row_count": 1351,
+        "reconciliation_status": "pass",
+        "excluded_observation_count": 0,
+        "exclusion_reasons": [],
+        "minimum_observations": {
+          "3y": 500,
+          "5y": 900
+        },
+        "percentile_effective_samples": {
+          "3y": 727,
+          "5y": 1050
+        },
+        "observation_set_digest": "3dcf1beef3b16023494c20827716074c4c4fd2225365107f9f5111c3df832d30"
+      },
+      "score_input_id": "d2df0e5c46b7fd233c767c898189615b883d6fee585fec3f94bf89c26ac13d89"
+    },
+    "vr_ocf_dividend_coverage": {
+      "dimension_id": "value_realization_capacity",
+      "upstream_ref_type": "dividend_event",
+      "upstream_refs": [
+        {
+          "artifact": "events/dividend_events_2021_2026_v2.json"
+        }
+      ],
+      "source_tier": "computed_from_verified_canonical_inputs",
+      "value": "4.795520500041337",
+      "unit": "ratio",
+      "domain": "ratio",
+      "fiscal_year": 2025,
+      "available_at": "2026-03-30",
+      "transform_id": "dividend_coverage",
+      "transform_version": "1.0",
+      "transform_inputs": {
+        "ocf_cny": "412510000000.0",
+        "div_total": "86019859574.45999"
+      },
+      "transform_output": "4.795520500041337",
+      "benchmark_ref": "absolute_contract",
+      "selection_method": "operating_cash_flow / sum(cash_dividend_total)",
+      "score_eligible": false,
+      "warnings": [],
+      "gap_ids": [],
+      "score_input_id": "8ffcd6cdb7058b9e8b9db97e3c94ef0c8254c49810335f0303169af1e8a5078b"
+    },
+    "vr_fcf_dividend_coverage": {
+      "dimension_id": "value_realization_capacity",
+      "upstream_ref_type": "dividend_event",
+      "upstream_refs": [
+        {
+          "artifact": "events/dividend_events_2021_2026_v2.json"
+        }
+      ],
+      "source_tier": "computed_from_verified_canonical_inputs",
+      "value": "1.391783253219192",
+      "unit": "ratio",
+      "domain": "ratio",
+      "fiscal_year": 2025,
+      "available_at": "2026-03-30",
+      "transform_id": "dividend_coverage",
+      "transform_version": "1.0",
+      "transform_inputs": {
+        "fcf_cny": "119721000000.0",
+        "div_total": "86019859574.45999"
+      },
+      "transform_output": "1.391783253219192",
+      "benchmark_ref": "absolute_contract",
+      "selection_method": "(operating_cash_flow - capex) / sum(cash_dividend_total)",
+      "score_eligible": false,
+      "warnings": [],
+      "gap_ids": [],
+      "score_input_id": "bd6bfda8272a483cbf75311392c87ec45807ab0f4435a0d9684054e191bcc243"
+    },
+    "vr_payout_ratio": {
+      "dimension_id": "value_realization_capacity",
+      "upstream_ref_type": "dividend_event",
+      "upstream_refs": [
+        {
+          "artifact": "events/dividend_events_2021_2026_v2.json"
+        }
+      ],
+      "source_tier": "computed_from_verified_canonical_inputs",
+      "value": "0.5468453012324064",
+      "unit": "ratio",
+      "domain": "ratio",
+      "fiscal_year": 2025,
+      "available_at": "2026-03-30",
+      "transform_id": "payout_ratio",
+      "transform_version": "1.0",
+      "transform_inputs": {
+        "div_total": "86019859574.45999",
+        "np_attr_cny": "157302000000.0"
+      },
+      "transform_output": "0.5468453012324064",
+      "benchmark_ref": "absolute_contract",
+      "selection_method": "sum(cash_dividend_total) / net_profit_attributable_to_parent",
+      "score_eligible": false,
+      "warnings": [],
+      "gap_ids": [],
+      "score_input_id": "221840e1c6a8d5f44837e685b6b24dccce057dd0f98ad7212701828ab20ea5f1"
+    },
+    "vr_dps": {
+      "dimension_id": "value_realization_capacity",
+      "upstream_ref_type": "dividend_event",
+      "upstream_refs": [
+        {
+          "artifact": "events/dividend_events_2021_2026_v2.json"
+        }
+      ],
+      "source_tier": "computed_from_verified_canonical_inputs",
+      "value": "0.47",
+      "unit": "CNY",
+      "domain": "cny_gte_0",
+      "fiscal_year": 2025,
+      "available_at": "2026-03-30",
+      "transform_id": "sum_dps",
+      "transform_version": "1.0",
+      "transform_inputs": {
+        "dps_sum": "0.47"
+      },
+      "transform_output": "0.47",
+      "benchmark_ref": "absolute_contract",
+      "selection_method": "sum(cash_dividend_per_share) over FY2025 events",
+      "score_eligible": false,
+      "warnings": [],
+      "gap_ids": [],
+      "score_input_id": "8b72201b4203ef00063304aae70867331fa2433a73d42ed94fc5436c50b2d8c7"
+    },
+    "vr_repurchase": {
+      "dimension_id": "value_realization_capacity",
+      "upstream_ref_type": "repurchase_search_result",
+      "upstream_refs": [
+        {
+          "artifact": "events/repurchase_event_scan_2021_2026.json"
+        }
+      ],
+      "source_tier": "bounded_search_complete",
+      "value": "no_event_found",
+      "unit": "categorical",
+      "domain": "categorical_enum",
+      "available_at": "2026-06-30",
+      "transform_id": "map_to_registered_value",
+      "transform_version": "1.0",
+      "transform_inputs": {
+        "search_status": "bounded_search_no_event_found"
+      },
+      "transform_output": "no_event_found",
+      "benchmark_ref": "binary_or_categorical_evidence",
+      "selection_method": "bounded_search_no_event_found -> no_event_found (registered value)",
+      "score_eligible": false,
+      "warnings": [],
+      "gap_ids": [],
+      "score_input_id": "d6b2c1e51565c8b8dfc535e19a0d23f109eca06684c5e9f7d126033e9319dd12"
+    },
+    "rk_veto_triggered": {
+      "dimension_id": "risk_and_evidence_integrity",
+      "upstream_ref_type": "risk_observation",
+      "upstream_refs": [
+        {
+          "artifact": "reports/petrochina_value_profile.json",
+          "record_id": "current_risk_veto_profile.observed_risk_ids"
+        }
+      ],
+      "source_tier": "committed_computed_report",
+      "value": "0",
+      "unit": "count",
+      "domain": "count_gte_0",
+      "available_at": "2026-08-02",
+      "transform_id": "len_observed_risk_ids",
+      "transform_version": "1.0",
+      "transform_inputs": {
+        "observed_risk_ids": []
+      },
+      "transform_output": "0",
+      "benchmark_ref": "binary_or_categorical_evidence",
+      "selection_method": "len(observed_risk_ids)",
+      "score_eligible": false,
+      "warnings": [],
+      "gap_ids": [],
+      "score_input_id": "c84905179bd956a46c184ac96b1665e3108f7d49314966cfdc99695d77fc5dbc"
+    },
+    "rk_missing_evidence_slots": {
+      "dimension_id": "risk_and_evidence_integrity",
+      "upstream_ref_type": "risk_slot",
+      "upstream_refs": [
+        {
+          "artifact": "reports/petrochina_value_profile.json",
+          "record_id": "current_risk_veto_profile.missing_evidence_risk_ids"
+        }
+      ],
+      "source_tier": "committed_computed_report",
+      "value": "2",
+      "unit": "count",
+      "domain": "count_gte_0",
+      "available_at": "2026-08-02",
+      "transform_id": "len_missing_evidence_risk_ids",
+      "transform_version": "1.0",
+      "transform_inputs": {
+        "missing_evidence_risk_ids": [
+          "formal_regulatory_investigation_or_major_discipline",
+          "controlling_shareholder_fund_occupation_or_related_guarantee"
+        ]
+      },
+      "transform_output": "2",
+      "benchmark_ref": "binary_or_categorical_evidence",
+      "selection_method": "len(missing_evidence_risk_ids)",
+      "score_eligible": false,
+      "warnings": [],
+      "gap_ids": [],
+      "score_input_id": "7291ae3ba0f8f495a0d1e8f6fc3c1ff9f54f89fcefee5d886d241cf0d4b3c607"
+    },
+    "rk_gap_count": {
+      "dimension_id": "risk_and_evidence_integrity",
+      "upstream_ref_type": "committed_report_record",
+      "upstream_refs": [
+        {
+          "artifact": "reports/m2_explicit_gap_ledger.json",
+          "record_id": "count_contract.current_gap_count"
+        }
+      ],
+      "source_tier": "committed_computed_report",
+      "value": "18",
+      "unit": "count",
+      "domain": "count_gte_0",
+      "available_at": null,
+      "transform_id": "current_gap_count",
+      "transform_version": "1.0",
+      "transform_inputs": {
+        "gap_count": 18
+      },
+      "transform_output": "18",
+      "benchmark_ref": "binary_or_categorical_evidence",
+      "selection_method": "current_gap_count from canonical ledger",
+      "score_eligible": false,
+      "warnings": [],
+      "gap_ids": [],
+      "score_input_id": "4834c366377d0615308d3080d2bbff87bd4f7208d50579d56fe91839def20f38"
+    },
+    "rk_pit_integrity": {
+      "dimension_id": "risk_and_evidence_integrity",
+      "upstream_ref_type": "risk_observation",
+      "upstream_refs": [
+        {
+          "artifact": "reports/petrochina_value_profile.json",
+          "record_id": "current_risk_veto_profile.search_pit_status"
+        }
+      ],
+      "source_tier": "committed_computed_report",
+      "value": "pass",
+      "unit": "categorical",
+      "domain": "categorical_enum",
+      "available_at": "2026-08-02",
+      "transform_id": "search_pit_status",
+      "transform_version": "1.0",
+      "transform_inputs": {
+        "search_pit_status": "pass"
+      },
+      "transform_output": "pass",
+      "benchmark_ref": "binary_or_categorical_evidence",
+      "selection_method": "search_pit_status",
+      "score_eligible": false,
+      "warnings": [],
+      "gap_ids": [],
+      "score_input_id": "2f11086696b9e022f4cf51cb184ceec8fb78c7fd32ff8862b5b83831a679e3ae"
+    },
+    "rk_evidence_freshness": {
+      "dimension_id": "risk_and_evidence_integrity",
+      "upstream_ref_type": "risk_observation",
+      "upstream_refs": [
+        {
+          "artifact": "reports/petrochina_value_profile.json",
+          "record_id": "current_risk_veto_profile.as_of_date"
+        }
+      ],
+      "source_tier": "committed_computed_report",
+      "value": "current",
+      "unit": "categorical",
+      "domain": "categorical_enum",
+      "available_at": "2026-08-02",
+      "transform_id": "evidence_freshness",
+      "transform_version": "1.0",
+      "transform_inputs": {
+        "as_of_date": "2026-08-02"
+      },
+      "transform_output": "current",
+      "benchmark_ref": "binary_or_categorical_evidence",
+      "selection_method": "evidence as-of within score date",
+      "score_eligible": false,
+      "warnings": [],
+      "gap_ids": [],
+      "score_input_id": "1557505dd4ab38ae0994c4c1134c940a177aa0cc131606ae21d4c401d97a69b3"
+    },
+    "eq_roic": {
+      "dimension_id": "enterprise_quality",
+      "upstream_ref_type": "gap_record",
+      "upstream_refs": [
+        {
+          "artifact": "reports/m2_explicit_gap_ledger.json"
+        }
+      ],
+      "source_tier": "coverage_gap",
+      "input_status": "not_computable_under_strict_evidence_contract",
+      "value": null,
+      "unit": null,
+      "domain": null,
+      "available_at": null,
+      "transform_id": "coverage_gap",
+      "transform_version": "1.0",
+      "transform_inputs": {},
+      "transform_output": null,
+      "benchmark_ref": "coverage_gap",
+      "selection_method": "coverage gap: M2G-ROIC-001..007 not computable",
+      "score_eligible": false,
+      "warnings": [
+        "ROIC not computable under strict evidence contract; never zero"
+      ],
+      "gap_ids": [
+        "M2G-ROIC-001",
+        "M2G-ROIC-002",
+        "M2G-ROIC-003",
+        "M2G-ROIC-004",
+        "M2G-ROIC-005",
+        "M2G-ROIC-006",
+        "M2G-ROIC-007"
+      ],
+      "score_input_id": "15ae20dfd6d30890c72843f1c794be6717565f321e3efd56dbf7af4b1df3242c"
+    }
+  },
+  "artifact_set": {
+    "acceptance/fixtures/official_facts/601857.SH/2025_annual.json": {
+      "logical_path": "acceptance/fixtures/official_facts/601857.SH/2025_annual.json",
+      "contract": "annual_bundle_schema_1.0",
+      "sha256": "1cea469542ec4293658703167e7d10cc00b7ced21c9ce6a5e13843bed6e1caab",
+      "record_ids": [],
+      "usage": [
+        "eq_gross_margin",
+        "eq_np_yoy",
+        "eq_ocf_np",
+        "eq_operating_margin"
+      ],
+      "required": true
+    },
+    "acceptance/fixtures/official_facts/601857.SH/supplemental/2025_financial_safety.json": {
+      "logical_path": "acceptance/fixtures/official_facts/601857.SH/supplemental/2025_financial_safety.json",
+      "contract": "financial_safety_official_facts_v1",
+      "sha256": "02af318e60d1162337470acbffccc83223d28796c2693f0f11d03c5c77e3e7c7",
+      "record_ids": [],
+      "usage": [
+        "eq_asset_liability",
+        "eq_cash_coverage"
+      ],
+      "required": true
+    },
+    "acceptance/fixtures/official_facts/601857.SH/supplemental/2025_net_profit.json": {
+      "logical_path": "acceptance/fixtures/official_facts/601857.SH/supplemental/2025_net_profit.json",
+      "contract": "net_profit_official_facts_v1",
+      "sha256": "274becc25a05f9957b71a9bcbee732b346c0b7d0157a1caf24106a3670c001d9",
+      "record_ids": [],
+      "usage": [
+        "eq_roa"
+      ],
+      "required": true
+    },
+    "acceptance/fixtures/official_facts/601857.SH/supplemental/2025_roe_roa_denominators.json": {
+      "logical_path": "acceptance/fixtures/official_facts/601857.SH/supplemental/2025_roe_roa_denominators.json",
+      "contract": "roe_roa_denominator_official_facts_v1",
+      "sha256": "2f91f7140c6e32067037e2be4856e23a5dc559133910ff265d6a21366a99dcad",
+      "record_ids": [],
+      "usage": [
+        "eq_roe"
+      ],
+      "required": true
+    },
+    "events/dividend_events_2021_2026_v2.json": {
+      "logical_path": "events/dividend_events_2021_2026_v2.json",
+      "contract": "dividend_event_record_v2",
+      "sha256": "937745233495833f977348ee1eaff859e15b75a7c447e6b8ae46de7b6239a835",
+      "record_ids": [],
+      "usage": [
+        "vr_dps",
+        "vr_fcf_dividend_coverage",
+        "vr_ocf_dividend_coverage",
+        "vr_payout_ratio"
+      ],
+      "required": true
+    },
+    "events/repurchase_event_scan_2021_2026.json": {
+      "logical_path": "events/repurchase_event_scan_2021_2026.json",
+      "contract": "repurchase_event_scan_v1",
+      "sha256": "2e5538afe25d2af3dfb989186bc8c4515067fd78833742d886a97c7740a5e159",
+      "record_ids": [],
+      "usage": [
+        "vr_repurchase"
+      ],
+      "required": true
+    },
+    "reports/m2_explicit_gap_ledger.json": {
+      "logical_path": "reports/m2_explicit_gap_ledger.json",
+      "contract": "unknown",
+      "sha256": "74ff95b18690187072850a462da5dcb90b4c9482717db7b99b7a06cf9555e0d4",
+      "record_ids": [
+        "count_contract.current_gap_count"
+      ],
+      "usage": [
+        "eq_roic",
+        "rk_gap_count"
+      ],
+      "required": true
+    },
+    "reports/petrochina_value_profile.json": {
+      "logical_path": "reports/petrochina_value_profile.json",
+      "contract": "petrochina_value_profile_v1",
+      "sha256": "f0f492da188d8b1b2f6961f7e3c68d1cf964d9328bddcdc9fa3955e9483d788c",
+      "record_ids": [
+        "current_risk_veto_profile.as_of_date",
+        "current_risk_veto_profile.missing_evidence_risk_ids",
+        "current_risk_veto_profile.observed_risk_ids",
+        "current_risk_veto_profile.search_pit_status",
+        "percentile_position.a_share_price_to_latest_annual_parent_earnings",
+        "percentile_position.a_share_price_to_latest_annual_revenue",
+        "percentile_position.a_share_price_to_latest_year_end_parent_equity",
+        "percentile_position.latest_annual_fcf_proxy_yield",
+        "percentile_position.trailing_12m_announced_dividend_yield"
+      ],
+      "usage": [
+        "rk_evidence_freshness",
+        "rk_missing_evidence_slots",
+        "rk_pit_integrity",
+        "rk_veto_triggered",
+        "va_dividend_yield",
+        "va_fcf_yield",
+        "va_pb",
+        "va_pe",
+        "va_ps"
+      ],
+      "required": true
+    }
+  },
+  "artifact_set_digest": "e82c4200e14690a59fcef258f495624dcecd38dc0d5d58aa126b3060e1c93251",
+  "coverage_gap_ids": [
+    "eq_roic",
+    "va_dividend_yield"
+  ],
+  "validation_requirements": {
+    "recompute_artifact_sha256": true,
+    "recompute_upstream_record": true,
+    "recompute_value_transform": true,
+    "recompute_unit_domain": true,
+    "recompute_score_input_id": true,
+    "recompute_capsule_digest": true,
+    "recompute_artifact_set_digest": true,
+    "recompute_time_contract_digest": true,
+    "pit_errors_nonempty_fails": true,
+    "lineage_errors_nonempty_fails": true,
+    "validator_fail_blocks_shadow": true
+  },
+  "non_production": true,
+  "research_methodology_test_only": true,
+  "overall_score_prohibited": true,
+  "recommendation_prohibited": true,
+  "score_eligible": false,
+  "capsule_digest": "f57e08e28efa1637f83803500828299757df0ed390edcba2f2f56a3ab6d0ba11"
+}
