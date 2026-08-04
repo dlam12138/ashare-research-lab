@@ -1,0 +1,60 @@
+{
+  "schema": "m2_stage2k1r4b_old_new_diff_v1",
+  "version": "1.0",
+  "date": "2026-08-04",
+  "stage": "2K.1R4B",
+  "old": "Stage 2K.1R4A (verify-artifacts only lists paths; sensitivity v5 has no per-scenario ledger)",
+  "new": "Stage 2K.1R4B (real artifact manifest verifier + sensitivity v6 ledger + PIT valuation readiness review)",
+  "phases": [
+    {
+      "id": "A",
+      "name": "Artifact/Sensitivity Audit Patch",
+      "changes": [
+        {
+          "id": "A1_artifact_manifest_verifier",
+          "problem": "verify-artifacts only collected artifact_logical_path values from the capsule and returned pass; it never recomputed any hash.",
+          "old": "CLI verify-artifacts built a capsule and returned {status: pass, verified: [path, ...]} from resolved_records; no file content was checked.",
+          "new": "New module ashare_research.scoring.artifact_manifest.verify_artifact_manifest() recomputes each file's SHA-256 and byte_size over LF-normalized content (normalize_lf), validates the manifest structure (10 rules), and returns ArtifactManifestVerification with missing_files/hash_mismatches/size_mismatches/duplicate_paths/invalid_paths/manifest_digest. manifest_digest = SHA-256 of canonical JSON excluding manifest_digest.",
+          "evidence": "tests/test_m2_stage2k1r4b_artifact_and_sensitivity_audit.py::test_manifest_* (pass/fail/tamper/duplicate/absolute/../ schema/CRLF, test_manifest_digest_recomputable)"
+        },
+        {
+          "id": "A2_cli_verify_artifacts_real",
+          "problem": "The CLI passed 0 even when the manifest was stale or tampered.",
+          "old": "verify-artifacts returned pass unconditionally after collecting paths.",
+          "new": "verify-artifacts now calls the real verifier. New --manifest argument (defaults to the current stage's committed manifest). Exit codes: 0 all pass; 1 any manifest check failure; 2 missing manifest / unsupported schema / internal error; never 3 for manifest. --output preserves the real failure exit code.",
+          "evidence": "tests/test_m2_stage2k1r4b_artifact_and_sensitivity_audit.py::test_cli_verify_manifest_* (pass 0 / fail 1 / output preserves failure / missing 2 / uses real verifier)"
+        },
+        {
+          "id": "A3_sensitivity_v6_ledger",
+          "problem": "Sensitivity v5 computed the summary directly from a side-channel outcome list; there was no per-scenario ledger, and confidence-threshold scenarios were not counted.",
+          "old": "sensitivity v5 had 6 logic classes but no per-scenario ledger; confidence thresholds lived only in the confidence_gate_sensitivity summary block; scenario_count excluded confidence scenarios; missing-ROIC had only synthetic_neutral and no_roic (no current_gap).",
+          "new": "sensitivity v6 adds a typed SensitivityScenario ledger (all 6 scenario classes incl. confidence_threshold and missing_roic with current_gap/synthetic_neutral/no_roic_component). scenario_id is deterministically derived from the canonical semantic payload. Each dimension's summary is recomputed entirely from the ledger (base/min/max/delta/band_flip/insufficient/confidence_block/veto/count/type_counts/stability). confidence_threshold scenarios are counted. ledger_digest and validate_sensitivity_ledger() independently recompute the summary and digest; any mismatch fails. New report petrochina_dimension_scoring_sensitivity_v6.json.",
+          "evidence": "tests/test_m2_stage2k1r4b_artifact_and_sensitivity_audit.py::test_sensitivity_* (six classes, current_gap, confidence counted, type counts match, unique ids, A/B digest, tamper fails, summary recomputable, gates independent, synthetic flags, tolerance 1.0, no overall/rank/target)"
+        }
+      ]
+    },
+    {
+      "id": "B",
+      "name": "PIT Valuation Readiness Review",
+      "changes": [
+        {
+          "id": "B1_readiness_review",
+          "problem": "Whether historical PIT PE/PB/PS is implementable was not reviewed against the actual repo data.",
+          "old": "The valuation dimension used a close-price observation set; the PE/PB/PS historical percentile gap was left to this review.",
+          "new": "docs/pit_valuation_denominator_readiness_review.md and reports/pit_valuation_denominator_readiness_matrix.json record the actual inventory: market close present (unadjusted, 2021-01-04..2026-07-31) but no total_market_cap/total_shares in the frame; financial denominators annual-only (no quarterly), so TTM is not constructible; share timeline total-ordinary (A+H) non-canonical for market cap. Route comparison (A market-cap vs B per-share) and 4 implementation approaches. Decision: PIT_DENOMINATOR_FACT_ACQUISITION_REQUIRED; route UNRESOLVED (recommendation MARKET_CAP).",
+          "evidence": "tests/test_m2_stage2k1r4b_pit_valuation_readiness.py (23 tests)"
+        }
+      ]
+    }
+  ],
+  "business_conclusion_preserved": {
+    "stage_2k": "SCORING_CONTRACT_GAPS_REMAIN",
+    "sensitivity": "NOT_STABLE",
+    "peer_benchmark": "NOT_ALLOWED",
+    "production_scoring": "NOT_ALLOWED",
+    "historical_pe_pb_ps": "NOT_IMPLEMENTED",
+    "pit_valuation_decision": "PIT_DENOMINATOR_FACT_ACQUISITION_REQUIRED",
+    "market_mechanism": "NOT_STARTED",
+    "m3": "NOT_STARTED"
+  }
+}
