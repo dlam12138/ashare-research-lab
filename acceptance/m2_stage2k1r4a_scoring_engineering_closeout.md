@@ -114,7 +114,8 @@ Preserved business conclusion (unchanged unless independently proven):
 ## Git state
 
 - Branch: `feat/m2-value-assessment-mvp`.
-- Commit pushed to `origin/feat/m2-value-assessment-mvp`; CI run PASS (ubuntu +
-  windows). No force push, no reset --hard, no git clean.
+- Commit `d506b9d` pushed to `origin/feat/m2-value-assessment-mvp`; CI run
+  `30897901437` PASS (ubuntu + windows). No force push, no reset --hard, no
+  git clean.
 - Protected files (AGENTS.md, agent/goals/, Stage 2I.2R edit, default DB, stash)
   are untouched.

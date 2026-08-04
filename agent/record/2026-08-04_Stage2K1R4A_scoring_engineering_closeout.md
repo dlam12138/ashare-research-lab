@@ -165,6 +165,8 @@ Small engineering closeout. Fix exactly five problems:
 ## Final files and Git state
 
 - Branch: `feat/m2-value-assessment-mvp`.
+- Commit `d506b9d` pushed to `origin/feat/m2-value-assessment-mvp`; CI run
+  `30897901437` PASS on ubuntu + windows.
 - New/modified files: `src/ashare_research/scoring/{capsule,validator,confidence,shadow,sensitivity}.py`,
   `src/ashare_research/tools/m2_stage2k1r3_closeout.py`, two test files,
   `tests/stage2k1r3/test_composite_tamper.py`, acceptance, work record, five
