@@ -25,9 +25,13 @@ for the "A-share price ÷ company-wide per-share fundamental" convention.
 - The product only trades A-shares, so the market numerator is the A-share price.
 - The SSE statistical definition (《证券期货业统计指标标准指引》) evaluates per-share
   metrics as `price ÷ per-share fundamental`.
-- PetroChina's EPS is computed as parent net profit ÷ ~18.302 billion total ordinary
-  shares issued. The company-wide per-share fundamental is therefore the correct
-  denominator; no A/H share-count split is required.
+- PetroChina's EPS is computed as parent net profit ÷ **183,020,977,818 total
+  ordinary shares** (≈ 183.021 billion shares ≈ 1,830.21 亿股). The company-wide
+  per-share fundamental is therefore the correct denominator; no A/H share-count
+  split is required. The share count is recorded as factual evidence from the
+  official dividend/announcement records (see `events/dividend_events_2021_2026_v2.json`
+  `share_capital_on_record_date`), **not** a hard-coded input to a valuation
+  series; the PIT share-count timeline remains a required acquisition target.
 - A company-wide per-share fundamental (EPS / BVPS / SPS) is identical regardless of
   which listing's price is used as the numerator; using the A-share price is consistent
   with the A-share-only product scope.
