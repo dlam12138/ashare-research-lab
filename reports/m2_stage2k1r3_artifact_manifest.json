@@ -1,0 +1,80 @@
+{
+  "schema": "m2_stage2k1r3_artifact_manifest_v1",
+  "version": "1.0",
+  "date": "2026-08-04",
+  "branch": "feat/m2-value-assessment-mvp",
+  "stage": "2K.1R3",
+  "note": "sha256 over LF-normalized content; byte_size is LF-normalized length",
+  "files": [
+    {
+      "path": "config/value_dimension_scoring_upstream_registry_v1.json",
+      "sha256": "ed722146a8b7c76dac3666581b0fdc494cad2511c5ccde91a5c8ecb32146da42",
+      "byte_size": 30956
+    },
+    {
+      "path": "config/value_dimension_scoring_transform_registry_v2.json",
+      "sha256": "0a61586481441c480be0a6f6da52e30f2db880cf1eba8190b28989187d4d9b1b",
+      "byte_size": 4278
+    },
+    {
+      "path": "src/ashare_research/scoring/__init__.py",
+      "sha256": "ac6bd933bc931209fdf4b8aaf7d0f9c87ab9781fae58715dcbb149c21fc076a9",
+      "byte_size": 63
+    },
+    {
+      "path": "src/ashare_research/scoring/lineage.py",
+      "sha256": "abc4316817b6d0894033a5b585ac58debbd53ed9b50a3557487ae7e001054d57",
+      "byte_size": 27019
+    },
+    {
+      "path": "src/ashare_research/scoring/transforms.py",
+      "sha256": "68fe7da2e4b43469434acf97154a43824f71d471653a50beab1b8a1775cb69d7",
+      "byte_size": 13225
+    },
+    {
+      "path": "src/ashare_research/scoring/market_observation_set.py",
+      "sha256": "8e2961660bf3097aa1ee68ae30a5ed9fa125ee1aeae7f1a858000afe38cf2918",
+      "byte_size": 7193
+    },
+    {
+      "path": "src/ashare_research/tools/m2_stage2k1r3_closeout.py",
+      "sha256": "5ea3ce29487690cf9efa952785d832d29996c113bd7c47cfe2e7152cdf4af0a9",
+      "byte_size": 35199
+    },
+    {
+      "path": "reports/petrochina_score_input_capsule_v3.json",
+      "sha256": "ff260e8056aaf5b427ce78895f8ef06427a38a5ea0e05043b37d7cd6d72b11d6",
+      "byte_size": 155386
+    },
+    {
+      "path": "reports/petrochina_dimension_evidence_confidence_v3.json",
+      "sha256": "620767107d80c83e19d7185b9ba6c01b0d9631c76890e070cfc1338a9b9ad7de",
+      "byte_size": 2266
+    },
+    {
+      "path": "reports/petrochina_dimension_scoring_shadow_v4.json",
+      "sha256": "73bec859a6f008d998205f0f52d288267b194ac3d37a53a3728f279dc1c7c878",
+      "byte_size": 9596
+    },
+    {
+      "path": "reports/petrochina_dimension_scoring_sensitivity_v4.json",
+      "sha256": "d9d8636b28d25f4d8d0f735ecca6b01a9959d97ddefff19e11cde9674da20b35",
+      "byte_size": 1899
+    },
+    {
+      "path": "reports/petrochina_valuation_observation_set_manifest_v2.json",
+      "sha256": "37dc31918d05dbbeb9903321c084c3fb114554e4afa7b17094448455e7e492f0",
+      "byte_size": 852264
+    },
+    {
+      "path": "tests/test_m2_stage2k1r3_true_upstream_capsule.py",
+      "sha256": "072fe292ae30699e7249d75a19c70b5d9ddeb11ed65424d1e26cd12f6195d47f",
+      "byte_size": 14494
+    },
+    {
+      "path": "tests/stage2k1r3/test_composite_tamper.py",
+      "sha256": "326aab042a9289a2c6d82b9b0e9d28a61eb5d9418ee769c7be218dfaa1820b76",
+      "byte_size": 5694
+    }
+  ]
+}

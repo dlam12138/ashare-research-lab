@@ -1,0 +1,81 @@
+{
+  "schema": "petrochina_dimension_evidence_confidence_v3",
+  "version": "3.0",
+  "symbol": "601857.SH",
+  "time_contract": {
+    "market_data_as_of_date": "2026-07-31",
+    "research_evidence_as_of": "2026-08-02",
+    "scorecard_formed_at": "2026-08-02",
+    "timezone": "Asia/Shanghai",
+    "time_contract_version": "1.0",
+    "digest": "e47b3c22717004132ade342668ce85b5b57bad226f81c5c2231e0ee41079c70d"
+  },
+  "capsule_digest": "fb3a2cc860c74a17ebcbf4647206c6b16eb928da8b9b1e8aea8913df0b548309",
+  "lineage_report_digest": "32a48597b22ad1adf7061342fbc316b30ce60553bd62ac61f0a4141578171336",
+  "source_tier_registry_digest": "bce9df0ed027b3a951f34ef8b637f5db19b9e92c9c1de22413bf0555a3f7ee9a",
+  "non_production": true,
+  "overall_score_prohibited": true,
+  "recommendation_prohibited": true,
+  "score_eligible": false,
+  "dimensions": {
+    "enterprise_quality": {
+      "dimension_id": "enterprise_quality",
+      "grade": "medium",
+      "reasons": [
+        "coverage_gap:eq_roic"
+      ],
+      "supporting_ids": [
+        "M2G-ROIC-001",
+        "M2G-ROIC-002",
+        "M2G-ROIC-003",
+        "M2G-ROIC-004",
+        "M2G-ROIC-005",
+        "M2G-ROIC-006",
+        "M2G-ROIC-007"
+      ]
+    },
+    "valuation_attractiveness": {
+      "dimension_id": "valuation_attractiveness",
+      "grade": "medium",
+      "reasons": [
+        "coverage_gap:va_dividend_yield"
+      ],
+      "supporting_ids": [
+        "va_dividend_yield"
+      ]
+    },
+    "value_realization_capacity": {
+      "dimension_id": "value_realization_capacity",
+      "grade": "medium",
+      "reasons": [],
+      "supporting_ids": []
+    },
+    "risk_and_evidence_integrity": {
+      "dimension_id": "risk_and_evidence_integrity",
+      "grade": "medium",
+      "reasons": [
+        "coverage_gap:rk_gap_count"
+      ],
+      "supporting_ids": [
+        "M2G-DIV-001",
+        "M2G-DIV-002",
+        "M2G-DIV-003",
+        "M2G-DIV-004",
+        "M2G-DIV-005",
+        "M2G-DIV-006",
+        "M2G-DIV-007",
+        "M2G-DIV-008",
+        "M2G-DIV-009",
+        "M2G-RISK-001",
+        "M2G-RISK-002",
+        "M2G-ROIC-001",
+        "M2G-ROIC-002",
+        "M2G-ROIC-003",
+        "M2G-ROIC-004",
+        "M2G-ROIC-005",
+        "M2G-ROIC-006",
+        "M2G-ROIC-007"
+      ]
+    }
+  }
+}
