@@ -1,6 +1,6 @@
 # Work record: M2 Stage 2K.1R scoring input lineage, confidence and sensitivity closeout
 
-Status: `in_progress`
+Status: `conditional` (local validation PASS; CI final gate pending on push authorization)
 
 ## Basic information
 
@@ -143,3 +143,23 @@ no M3.
 
 - CI (GitHub Actions) is pending on a push; the user must authorize pushing to run
   the Ubuntu/Windows clean-clone CI. Do NOT start M3 or acquire peer data.
+
+## Final files and Git state
+
+- New (committed): `src/ashare_research/tools/m2_stage2k1r_{capsule,validate,confidence,shadow,sensitivity}.py`,
+  `config/value_dimension_scoring_confidence_v1.json`,
+  `tests/test_m2_stage2k1r_scoring_input_lineage.py`,
+  `reports/petrochina_score_input_capsule_v1.json`,
+  `reports/petrochina_dimension_scoring_shadow_v2.json`,
+  `reports/petrochina_dimension_scoring_confidence_v1.json`,
+  `reports/petrochina_dimension_scoring_sensitivity_v2.json`,
+  `reports/m2_stage2k1r_artifact_manifest.json`,
+  `reports/m2_stage2k1r_old_new_diff.md`,
+  `acceptance/m2_stage2k1r_scoring_input_lineage_confidence_sensitivity_closeout.md`,
+  `docs/decisions/ADR-2026-08-04-stage2k1r-scoring-contract-gaps-remain.md`,
+  `agent/record/2026-08-04_Stage2K1R_scoring_input_lineage_confidence_sensitivity_closeout.md`.
+- Commits: `4414df5` (feat) and `27bfed6` (docs: record validation). No push, no tag, no main merge.
+- Protected files not staged/committed: the pre-existing Stage 2I.2R acceptance wording
+  edit, `AGENTS.md`, `agent/goals/`; stash `cb568efd` and default DB `4a71d3c7...` unchanged.
+- Branch: `feat/m2-value-assessment-mvp`. Working tree has only the protected
+  `m2_stage2i2r` edit (M) and protected `AGENTS.md`/`agent/goals/` (untracked).
