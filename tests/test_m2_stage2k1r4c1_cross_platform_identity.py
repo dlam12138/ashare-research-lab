@@ -442,11 +442,13 @@ def test_no_m3_started():
 
 def test_default_db_unchanged():
     from ashare_research.storage.default_db_guard import hash_optional_default_db
-    from tests.conftest import DEFAULT_DB, DEFAULT_DB_SHA256
 
     # absent on clean clones (guarded baseline); present -> must match the
-    # protected digest exactly
-    assert hash_optional_default_db(DEFAULT_DB, DEFAULT_DB_SHA256) == DEFAULT_DB_SHA256
+    # protected digest exactly. Constants inlined (tests/ is not a package, so
+    # `from tests.conftest import ...` breaks bare `pytest` on CI).
+    default_db = ROOT / "data" / "research.duckdb"
+    protected_digest = "4a71d3c7b88c0b16ae46ffb4f9bfbd006d91e0537e559235c9b5a1f919e2fce6"
+    assert hash_optional_default_db(default_db, protected_digest) == protected_digest
 
 
 def test_fact_baseline_unchanged():

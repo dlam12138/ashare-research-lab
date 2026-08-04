@@ -98,8 +98,8 @@
     {
       "path": "tests/test_m2_stage2k1r4c1_cross_platform_identity.py",
       "digest_algorithm": "sha256_lf_normalized_bytes_v1",
-      "sha256": "37c25e15b119ad03d0e712b254de2987539cc1b62dcedeb8d171f48e8a0e5518",
-      "byte_size": 19158
+      "sha256": "f013ddd6872d93112298a2c5e5b9e495be533900c99b91d90dd7e1c39b6735b1",
+      "byte_size": 19352
     },
     {
       "path": ".github/workflows/stage2g-reproducibility.yml",
