@@ -163,14 +163,20 @@ PIT, or Identity contracts would need weakening.
 - Default DB remains
   `4a71d3c7b88c0b16ae46ffb4f9bfbd006d91e0537e559235c9b5a1f919e2fce6`;
   four source-ledger hashes, stash, and protected untracked files are unchanged.
-- Clean-clone and final remote CI validation remain pending.
+- Independent clone `D:/量化分析/tmp/stage2j-clean-clone-fc3072f` at exact
+  committed HEAD `fc3072fe40fc7168efa735cfa0a2cc4724acf5e9`: clean-clone
+  preflight passed (`default_db_present=false`, `output_or_cache_present=false`,
+  `stash_present=false`, no private absolute paths or tracked secrets); Stage
+  2J `13 passed`; contracts/artifacts passed; Ruff/compileall passed; full
+  pytest `1056 passed, 2 warnings` in 186.84s.
+- Final remote CI validation remains pending.
 
 ## Result
 
 In progress. The North-Star decision is
 `M2_CONDITIONAL_CLOSEOUT_ALLOWED`; local implementation and full-suite gates
-pass. Conditional closeout is not yet reportable because clean-clone and final
-Ubuntu/Windows CI evidence remain pending.
+and clean-clone gates pass. Conditional closeout is not yet reportable because
+final Ubuntu/Windows CI evidence remains pending.
 
 ## Final files and Git state
 

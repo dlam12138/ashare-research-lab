@@ -43,4 +43,8 @@ scope matching. All are rejected by the strict contract.
 - Ruff, compile/import, matrix, ledger, cross-format profile, decision,
   artifact, diff, pollution, secret/path, default-DB, stash and source-ledger
   guards: passed.
-- Clean clone and final Ubuntu/Windows CI: pending.
+- Independent clean clone at `fc3072f`: preflight, Stage 2J `13 passed`,
+  contract/artifact validators, Ruff, compileall and full pytest `1056 passed,
+  2` pre-existing warnings all passed; the clone had no default DB,
+  output/cache, stash, private absolute path, or tracked secret.
+- Final Ubuntu/Windows CI: pending.

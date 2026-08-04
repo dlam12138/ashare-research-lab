@@ -129,4 +129,9 @@ gap cannot disappear solely because the milestone is conditionally closed.
   DB/PDF/cache/raw-response pollution scans: passed.
 - Trusted pre-Stage2J profile payload comparison: unchanged except for the new
   `capital_return` evidence-status node and the intended integrated ROIC status.
-- Local clean-clone and final Ubuntu/Windows CI: pending.
+- Independent clean clone at `fc3072fe40fc7168efa735cfa0a2cc4724acf5e9`:
+  preflight passed with no default DB, output/cache, stash, private absolute
+  path, or tracked secret; Stage 2J `13 passed`; contract and artifact
+  validators passed; Ruff and compileall passed; full pytest `1056 passed, 2`
+  pre-existing warnings.
+- Final Ubuntu/Windows CI: pending.
