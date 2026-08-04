@@ -8,8 +8,18 @@
   "non_production": true,
   "score_eligible": false,
   "decision": "PIT_DENOMINATOR_FACT_ACQUISITION_REQUIRED",
-  "route": "UNRESOLVED",
-  "route_recommendation": "MARKET_CAP",
+  "route": "A_SHARE_PRICE_PER_SHARE",
+  "route_status": "FROZEN",
+  "core_market": "SSE_A_SHARE",
+  "a_h_split_required": false,
+  "total_ordinary_share_timeline_required": true,
+  "route_superseded_by": {
+    "adr": "ADR-VALUATION-002",
+    "superseded_date": "2026-08-04",
+    "historical_route": "UNRESOLVED",
+    "historical_route_recommendation": "MARKET_CAP",
+    "note": "R4B recommended market-cap as preferred because the A/H split was missing; the A-share per-share convention (ADR-002) makes the A/H split non-blocking, so the effective route is A_SHARE_PRICE_PER_SHARE (FROZEN). The historical UNRESOLVED/MARKET_CAP judgement is preserved here, not erased."
+  },
   "coverage_status_enum": [
     "ready_trusted",
     "ready_with_explicit_limitations",

@@ -1,0 +1,80 @@
+{
+  "schema": "m2_stage2k1r4c_artifact_manifest_v1",
+  "version": "1.0",
+  "date": "2026-08-04",
+  "branch": "feat/m2-value-assessment-mvp",
+  "stage": "2K.1R4C",
+  "note": "sha256 over LF-normalized content; byte_size is LF-normalized length",
+  "files": [
+    {
+      "path": "src/ashare_research/scoring/artifact_manifest.py",
+      "sha256": "85ef8d2b920756930371453d811312de487511b9a632505d8304b8a61e75188e",
+      "byte_size": 12282
+    },
+    {
+      "path": "src/ashare_research/scoring/sensitivity.py",
+      "sha256": "c42ef1993e2536e43b8130455f9ec58262634c506522d411f1bd87cec0a95f44",
+      "byte_size": 35608
+    },
+    {
+      "path": "src/ashare_research/tools/m2_stage2k1r3_closeout.py",
+      "sha256": "db1cf76772007e391fbceae286495a493160d2aceaa4117f071fea5ea9362c3c",
+      "byte_size": 8288
+    },
+    {
+      "path": "reports/petrochina_dimension_scoring_sensitivity_v6.json",
+      "sha256": "31387ace24fc6cc5cb91d7e519ef64c9cf2102320d39895d2a33c66c36a845ec",
+      "byte_size": 100240
+    },
+    {
+      "path": "reports/pit_valuation_denominator_readiness_matrix.json",
+      "sha256": "ec9abc13eced9c728b740c51c41a68bc465e8e2af10905275aa551925c3dfea7",
+      "byte_size": 12578
+    },
+    {
+      "path": "reports/m2_stage2k1r4b_decision.json",
+      "sha256": "371ddfda6b0cc7d1fe3392c0799b8349cc9d9db7b3e168cff62a9a3845704b55",
+      "byte_size": 2524
+    },
+    {
+      "path": "reports/pit_valuation_fact_acquisition_coverage_matrix.json",
+      "sha256": "d62993a829187e85e88dd2b1389f7f04eaad30141a16ef1a9be53772c88e0b0a",
+      "byte_size": 4173
+    },
+    {
+      "path": "reports/m2_stage2k1r4c_decision.json",
+      "sha256": "e500c72f861540358acdc8b9ea8e6ef34efac0d12e7903b956c1212cc9816194",
+      "byte_size": 1650
+    },
+    {
+      "path": "docs/pit_valuation_denominator_readiness_review.md",
+      "sha256": "2b44616b6bfe85490462e6720f6bdbea9b8fa32e4444dee3f54f9d0e4305791f",
+      "byte_size": 13389
+    },
+    {
+      "path": "docs/decisions/ADR-VALUATION-002-a-share-per-share-convention.md",
+      "sha256": "e183f0a35b7cac9d8efee65f2d07d5165a899964f6375701b5d07165799a9951",
+      "byte_size": 4195
+    },
+    {
+      "path": "docs/pit_valuation_fact_acquisition_contract.md",
+      "sha256": "be2c914d148e3317f2c410a6de8be7b8d2cb5bf09dd03e437a476ad7b4412049",
+      "byte_size": 2960
+    },
+    {
+      "path": "config/pit_valuation_fact_acquisition_plan_v1.json",
+      "sha256": "5471ee1fc14ca5fa81deeaa1f44b8099752c22d23d3ab5e1801321db643bdf68",
+      "byte_size": 4099
+    },
+    {
+      "path": "tests/test_m2_stage2k1r4b_pit_valuation_readiness.py",
+      "sha256": "421da8e4fac88cd10ca4e7e3047167e523375cceee32699327eeaf689fd97e9e",
+      "byte_size": 10154
+    },
+    {
+      "path": "tests/test_m2_stage2k1r4c_a_share_per_share_convention.py",
+      "sha256": "606c0546b615931ad7a3cae44c686be87c5d2bf762c398ed133a63c75880108b",
+      "byte_size": 12770
+    }
+  ]
+}

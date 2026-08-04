@@ -37,7 +37,7 @@ EXIT_EXTERNAL_CACHE_MISSING = 3
 
 # Default manifest verified by `verify-artifacts` when --manifest is not given.
 # This is the current stage's committed artifact manifest.
-DEFAULT_MANIFEST = cap.ROOT / "reports" / "m2_stage2k1r4b_artifact_manifest.json"
+DEFAULT_MANIFEST = cap.ROOT / "reports" / "m2_stage2k1r4c_artifact_manifest.json"
 
 # subcommands that run a validation/verification gate and must exit 1 on failure
 CHECK_COMMANDS = {"validate", "verify-artifacts"}

@@ -53,6 +53,7 @@ ALLOWED_MANIFEST_SCHEMAS = frozenset(
     {
         "m2_stage2k1r4a_artifact_manifest_v1",
         "m2_stage2k1r4b_artifact_manifest_v1",
+        "m2_stage2k1r4c_artifact_manifest_v1",
     }
 )
 

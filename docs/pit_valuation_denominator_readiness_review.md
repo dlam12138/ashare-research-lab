@@ -4,6 +4,15 @@ Date: `2026-08-04`
 Symbol: `601857.SH` (PetroChina)
 Stage: M2 Stage 2K.1R4B Phase B (readiness review only — no valuation series built)
 
+> **Superseded in part by ADR-VALUATION-002 (M2 Stage 2K.1R4C).** The R4B route
+> recommendation here (`route = UNRESOLVED`, recommended `MARKET_CAP`) is **superseded**
+> by the A-share per-share valuation convention: `route = A_SHARE_PRICE_PER_SHARE`,
+> `route_status = FROZEN`. The A/H split is **not** a core-valuation blocker (the core
+> convention is "A-share price ÷ company-wide per-share fundamental", no A/H split
+> needed). The overall decision **`PIT_DENOMINATOR_FACT_ACQUISITION_REQUIRED` is
+> unchanged** — the real blocker is the absence of quarterly financial facts, not the
+> A/H split. The historical R4B judgement is preserved below, not erased.
+
 ## Scope and honesty
 
 This document reviews whether historical PIT PE/PB/PS valuations are implementable

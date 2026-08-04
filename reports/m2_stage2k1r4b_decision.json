@@ -11,18 +11,28 @@
     "EXTERNAL_DAILY_VALUATION_SOURCE_PREFLIGHT_REQUIRED",
     "PIT_VALUATION_NOT_FEASIBLE_UNDER_CURRENT_CONTRACT"
   ],
-  "route": "UNRESOLVED",
-  "route_recommendation": "MARKET_CAP",
+  "route": "A_SHARE_PRICE_PER_SHARE",
+  "route_status": "FROZEN",
+  "core_market": "SSE_A_SHARE",
+  "a_h_split_required": false,
+  "total_ordinary_share_timeline_required": true,
+  "route_superseded_by": {
+    "adr": "ADR-VALUATION-002",
+    "superseded_date": "2026-08-04",
+    "historical_route": "UNRESOLVED",
+    "historical_route_recommendation": "MARKET_CAP",
+    "note": "R4B recommended the market-cap route partly because the A/H split was missing; the A-share per-share convention (ADR-002) makes the A/H split non-blocking for the 'A-share price ÷ company-wide per-share fundamental' convention. The historical UNRESOLVED/MARKET_CAP judgement is preserved here, not erased."
+  },
   "rationale": {
     "market_data_sufficient": true,
     "denominator_facts_incomplete": true,
-    "reason": "Historical PE/PB/PS PIT valuation is not implementable from committed data: quarterly net profit (PE-TTM), quarterly revenue (PS-TTM), quarterly equity granularity (PB-MRQ), a canonical historical total_market_cap series, and a canonical A/H-split share-capital timeline are absent. The current financial facts are annual-only; the only share timeline is total-ordinary (A+H) and non-canonical for market cap."
+    "reason": "Historical PE/PB/PS PIT valuation is not implementable from committed data: quarterly net profit (PE-TTM), quarterly revenue (PS-TTM), quarterly equity granularity (PB-MRQ), a canonical total-ordinary-share timeline with effective dates and corporate actions, and a weighted-average share history are absent. The current financial facts are annual-only. Per ADR-VALUATION-002 the A/H split is NOT a core-valuation blocker; the blocker is the quarterly financial facts and the share timeline."
   },
   "blocks": {
-    "pe_ttm": ["FIN-01", "MKT-02"],
-    "pb": ["FIN-02_limited", "MKT-02"],
-    "ps_ttm": ["FIN-03", "MKT-02"],
-    "share_capital": ["FIN-04", "MKT-03"]
+    "pe_ttm": ["FIN-01_quarterly_profit"],
+    "pb": ["FIN-02_quarterly_equity"],
+    "ps_ttm": ["FIN-03_quarterly_revenue"],
+    "share_capital": ["FIN-04_share_timeline", "FIN-05_weighted_avg_shares"]
   },
   "implementation": {
     "series_builder_built": false,

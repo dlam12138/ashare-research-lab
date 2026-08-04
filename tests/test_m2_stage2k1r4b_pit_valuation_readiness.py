@@ -121,9 +121,17 @@ def test_restatement_policy_exists():
 
 def test_route_decision_clear():
     m = _matrix()
-    assert m["route"] in {"MARKET_CAP", "PER_SHARE", "UNRESOLVED"}
-    assert m["route_recommendation"] in {"MARKET_CAP", "PER_SHARE"}
-    assert m["route"] == "UNRESOLVED"  # neither numerator is currently present
+    # R4C supersedes the R4B route: A-share per-share convention (ADR-002) is frozen.
+    assert m["route"] == "A_SHARE_PRICE_PER_SHARE"
+    assert m["route_status"] == "FROZEN"
+    assert m["core_market"] == "SSE_A_SHARE"
+    assert m["a_h_split_required"] is False
+    assert m["total_ordinary_share_timeline_required"] is True
+    # the historical R4B judgement is preserved, not erased
+    sb = m["route_superseded_by"]
+    assert sb["historical_route"] == "UNRESOLVED"
+    assert sb["historical_route_recommendation"] == "MARKET_CAP"
+    assert sb["adr"] == "ADR-VALUATION-002"
 
 
 # ---------------------------------------------------------------------------

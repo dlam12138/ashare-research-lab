@@ -1,6 +1,9 @@
 # Work record: M2 Stage 2K.1R4B — Artifact/Sensitivity Audit Patch and PIT Valuation Readiness Review
 
-Status: `in_progress`
+Status: `completed`
+Closeout verdict: `PASS`
+Final head: `15c8e28`
+Final CI: `30907749043`
 
 ## Basic information
 

@@ -559,6 +559,38 @@ def _ledger_summary_gate_blocks(
     return summary
 
 
+def _confidence_grade_from_ledger(
+    scenarios: list[SensitivityScenario],
+) -> tuple[str, float]:
+    """Recover the executed confidence grade solely from the ledger. The
+    confidence-threshold scenarios carry the numeric grade as their
+    ``base_parameter_value``; the grade string is the reverse lookup of
+    ``GRADE_VALUE``. Used by the validator so it never trusts the stored
+    summary's ``confidence_gate_sensitivity`` block."""
+    conf = [s for s in scenarios if s.scenario_type == "confidence_threshold"]
+    if not conf:
+        return "low", 0.4
+    value = conf[0].base_parameter_value
+    grade = next((g for g, v in GRADE_VALUE.items() if v == value), "low")
+    return grade, value
+
+
+def recompute_dimension_summary_from_ledger(
+    dimension_id: str,
+    scenarios: list[SensitivityScenario],
+    tolerance: float,
+    confidence_grade: str,
+    confidence_grade_value: float,
+) -> dict[str, Any]:
+    """Recompute a dimension's FULL summary (base metrics, gate blocks, and
+    ``production_readiness_reason``) entirely from its ledger scenarios. This is
+    the single source of truth used by both ``build_sensitivity_v6`` and
+    ``validate_sensitivity_ledger``; any summary field that cannot be derived
+    from the ledger is a validator error."""
+    summary = _summary_from_ledger(dimension_id, scenarios, tolerance)
+    return _ledger_summary_gate_blocks(summary, scenarios, confidence_grade, confidence_grade_value)
+
+
 def build_sensitivity_v6(
     capsule: dict[str, Any], confidence: dict[str, Any] | None = None
 ) -> dict[str, Any]:
@@ -781,8 +813,9 @@ def build_sensitivity_v6(
             )
 
         tolerance = float(registry["dimensions"][dim].get("stability_tolerance", 1.0))
-        summary = _summary_from_ledger(dim, scenarios, tolerance)
-        summary = _ledger_summary_gate_blocks(summary, scenarios, grade, grade_value)
+        summary = recompute_dimension_summary_from_ledger(
+            dim, scenarios, tolerance, grade, grade_value
+        )
         dimensions[dim] = summary
         all_scenarios.extend(s.to_dict() for s in scenarios)
 
@@ -842,26 +875,18 @@ def validate_sensitivity_ledger(report: dict[str, Any]) -> dict[str, Any]:
             except TypeError as exc:  # noqa: BLE001 - malformed ledger entry
                 errors.append(f"{dim}: malformed scenario entry: {exc}")
                 continue
-        recomputed = _summary_from_ledger(dim, objs, tolerance)
+        recomputed = recompute_dimension_summary_from_ledger(
+            dim,
+            objs,
+            tolerance,
+            *_confidence_grade_from_ledger(objs),
+        )
         current = report["dimensions"][dim]
-        for key in (
-            "base_score",
-            "min_score",
-            "max_score",
-            "max_score_delta",
-            "band_flip_count",
-            "insufficient_evidence_count",
-            "confidence_block_count",
-            "veto_block_count",
-            "scenario_count",
-            "stability_tolerance",
-            "stability_status",
-        ):
-            if recomputed.get(key) != current.get(key):
+        for key, rv in recomputed.items():
+            if key == "dimension_id":
+                continue
+            if current.get(key) != rv:
                 errors.append(
-                    f"{dim}.{key}: ledger recompute {recomputed.get(key)!r} != "
-                    f"report {current.get(key)!r}"
+                    f"{dim}.{key}: ledger recompute {rv!r} != report {current.get(key)!r}"
                 )
-        if recomputed.get("scenario_type_counts") != current.get("scenario_type_counts"):
-            errors.append(f"{dim}.scenario_type_counts mismatch")
     return {"status": "pass" if not errors else "fail", "errors": errors}
