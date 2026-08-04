@@ -1,6 +1,6 @@
 # M2 value-assessment MVP conditional closeout
 
-Status: `CONDITIONAL PASS — PENDING FINAL CI EVIDENCE`
+Status: `CONDITIONAL PASS`
 
 Milestone 2: CONDITIONALLY CLOSED WITH EXPLICIT EVIDENCE GAPS
 
@@ -9,7 +9,8 @@ Milestone 2: CONDITIONALLY CLOSED WITH EXPLICIT EVIDENCE GAPS
 - Goal: `agent/goals/2026-08-04_m2_stage2j_post_roic_north_star_and_closeout.md`
 - Branch: `feat/m2-value-assessment-mvp`
 - Start HEAD: `ecc150449e83804fa6b91f5a5660387946e22b80`
-- Final validated implementation HEAD: `8b1a58e13ed6c17217ec4c84c5c3285e37b0dc43`
+- Final CI-validated Stage 2J evidence HEAD:
+  `1cb5b776a9f36a72167294fba8d83fb46c43f829`
 - North-Star decision: `M2_CONDITIONAL_CLOSEOUT_ALLOWED`
 - Permitted next gate: `M3_NORTH_STAR_PREFLIGHT_ALLOWED`
 - Next-stage implementation: `NOT STARTED`
@@ -134,4 +135,7 @@ gap cannot disappear solely because the milestone is conditionally closed.
   path, or tracked secret; Stage 2J `13 passed`; contract and artifact
   validators passed; Ruff and compileall passed; full pytest `1056 passed, 2`
   pre-existing warnings.
-- Final Ubuntu/Windows CI: pending.
+- Final CI run `30866296153` at exact head
+  `1cb5b776a9f36a72167294fba8d83fb46c43f829`: Ubuntu job `91858789432`
+  and Windows job `91858789449` both passed, including their clean-clone,
+  contract, static/import, capsule, and full-offline-suite gates.

@@ -47,4 +47,27 @@ scope matching. All are rejected by the strict contract.
   contract/artifact validators, Ruff, compileall and full pytest `1056 passed,
   2` pre-existing warnings all passed; the clone had no default DB,
   output/cache, stash, private absolute path, or tracked secret.
-- Final Ubuntu/Windows CI: pending.
+- Final CI run `30866296153` at exact head `1cb5b776`: Ubuntu job
+  `91858789432` and Windows job `91858789449` both passed.
+
+## Final Stage 2J report
+
+```text
+M2 Stage 2J: CONDITIONAL PASS
+North-Star decision: M2_CONDITIONAL_CLOSEOUT_ALLOWED
+Milestone 2 status: CONDITIONALLY CLOSED WITH EXPLICIT EVIDENCE GAPS
+M2 completion matrix: TRUSTED
+Canonical M2 gap ledger: TRUSTED
+ROIC decision: ROIC_NOT_COMPUTABLE_UNDER_STRICT_EVIDENCE_CONTRACT
+ROIC numeric value: NOT PRODUCED
+ROIC shadow: NOT RUN
+Production ROIC Metric/Result: NOT CREATED
+Scoring: DEFERRED_BY_DESIGN
+PetroChina value profile: UPDATED WITH EXPLICIT ROIC STATUS
+Stage 2F evidence gaps: PRESERVED
+Stage 2H evidence gaps: PRESERVED
+Stage 2I evidence gaps: PRESERVED
+Market mechanism: NOT STARTED
+M3 next step: NORTH-STAR PREFLIGHT ALLOWED
+Next-stage implementation: NOT STARTED
+```

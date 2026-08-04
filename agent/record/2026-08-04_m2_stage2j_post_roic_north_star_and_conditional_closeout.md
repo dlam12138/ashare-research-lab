@@ -1,6 +1,6 @@
 # Work record: M2 Stage 2J post-ROIC North-Star review and conditional closeout
 
-Status: `in_progress`
+Status: `conditional_pass`
 
 ## Basic information
 
@@ -23,9 +23,9 @@ status, and conditional-closeout packet.
 ## Verified baseline
 
 - Expected branch and full HEAD were verified exactly.
-- Local branch and `origin/feat/m2-value-assessment-mvp` initially report
-  ahead/behind `0/0`; a fresh remote fetch and remote-ref verification remain
-  required before implementation and again at closeout.
+- Local branch and `origin/feat/m2-value-assessment-mvp` initially reported
+  ahead/behind `0/0`; a fresh remote fetch and remote-ref verification confirmed
+  the expected opening head.
 - The worktree contains a pre-existing tracked edit to
   `acceptance/m2_stage2i2r_official_fact_extraction_and_lineage_closeout.md`
   changing only `PENDING SOL FINAL REVIEW` to `PENDING FINAL REVIEW`. It is
@@ -36,9 +36,9 @@ status, and conditional-closeout packet.
 - Existing stash: `stash@{0}: On feat/m2-value-assessment-mvp: protect
   pre-existing Stage 1B.4 record edit before Stage 1C`.
 - One worktree exists at `D:/量化分析`.
-- Opening default-DB hash, protected Fact/Metric Result/definition inventories,
-  Stage 2I.2R delivery digest, value-profile hashes, and final CI evidence are
-  pending independent recomputation in the baseline phase.
+- The opening default-DB hash, protected 354 Fact / 102 Metric Result / 16
+  definition baseline, Stage 2I.2R delivery digest, value-profile hashes, and
+  opening CI were independently recomputed or verified before implementation.
 
 ## Allowed scope
 
@@ -139,9 +139,13 @@ PIT, or Identity contracts would need weakening.
 7. Updated only the five exact append-only roadmap blob expectations after the
    required Stage 2J roadmap addition. No test logic, coverage, or assertion was
    weakened.
-8. Created commits `cef8d27` (North-Star review) and `8b1a58e` (conditional-
-   closeout contracts). The protected pre-existing Stage 2I.2R acceptance edit,
+8. Created commits `cef8d27` (North-Star review), `8b1a58e` (conditional-
+   closeout contracts), `fc3072f` (local evidence), and `1cb5b77` (clean-clone
+   evidence). The protected pre-existing Stage 2I.2R acceptance edit,
    `AGENTS.md`, and `agent/goals/` were not staged.
+9. Pushed without force and waited for GitHub Actions run `30866296153` at
+   exact head `1cb5b776a9f36a72167294fba8d83fb46c43f829`. Ubuntu job
+   `91858789432` and Windows job `91858789449` both passed.
 
 ## Validation
 
@@ -169,15 +173,32 @@ PIT, or Identity contracts would need weakening.
   `stash_present=false`, no private absolute paths or tracked secrets); Stage
   2J `13 passed`; contracts/artifacts passed; Ruff/compileall passed; full
   pytest `1056 passed, 2 warnings` in 186.84s.
-- Final remote CI validation remains pending.
+- Final remote CI run `30866296153`: Ubuntu `91858789432` and Windows
+  `91858789449` passed at exact head
+  `1cb5b776a9f36a72167294fba8d83fb46c43f829`.
 
 ## Result
 
-In progress. The North-Star decision is
-`M2_CONDITIONAL_CLOSEOUT_ALLOWED`; local implementation and full-suite gates
-and clean-clone gates pass. Conditional closeout is not yet reportable because
-final Ubuntu/Windows CI evidence remains pending.
+Conditional pass. The North-Star decision is
+`M2_CONDITIONAL_CLOSEOUT_ALLOWED`. Local, clean-clone, and final Ubuntu/Windows
+CI gates pass. M2 is conditionally closed with explicit evidence gaps; it is
+not fully complete, ROIC remains non-computable under the strict evidence
+contract, scoring remains deferred, and M3 implementation has not started.
 
 ## Final files and Git state
 
-Pending.
+- Base: `feat/m2-value-assessment-mvp` at
+  `ecc150449e83804fa6b91f5a5660387946e22b80`.
+- Final CI-validated Stage 2J evidence head:
+  `1cb5b776a9f36a72167294fba8d83fb46c43f829`.
+- Canonical changed files are the Stage 2J review, ADR, matrix, ledger, value-
+  profile status, acceptance/summary/manifest, validator/tests, README,
+  roadmap, and the five exact roadmap append-only hash expectations.
+- The final CI-evidence-only record commit follows this record update. It does
+  not alter the validated implementation, evidence ledgers, profile payload,
+  matrix, gap ledger, ADR, or protected baselines.
+- The protected pre-existing Stage 2I.2R acceptance edit, untracked `AGENTS.md`
+  and Goal files, default DB, source ledgers, and stash remain outside the
+  Stage 2J commits.
+- Proceeding is limited to `M3_NORTH_STAR_PREFLIGHT_ALLOWED`; no next-stage
+  implementation is authorized or started.
