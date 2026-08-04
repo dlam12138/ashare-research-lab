@@ -1,0 +1,75 @@
+{
+  "schema": "petrochina_valuation_percentile_observation_sets_v1",
+  "version": "1.0",
+  "symbol": "601857.SH",
+  "non_production": true,
+  "score_eligible": false,
+  "market_data_as_of_date": "2026-07-31",
+  "contract": "config/value_dimension_scoring_percentile_contract_v1.json",
+  "contract_version": "1.0",
+  "observation_sets": {
+    "valuation_2021_2026_common_days": {
+      "artifact": "events/market_data_snapshot_registry.json",
+      "contract": "market_data_snapshot_registry_v2",
+      "symbol": "601857.SH",
+      "scope": "2021-01-04..2026-07-31",
+      "provider_digest": "baostock/defd0b9507c0d87cf9d12864923eb24573e4edee28d7b67b9ce319ab4d91a764.parquet",
+      "provider_sha256": "defd0b9507c0d87cf9d12864923eb24573e4edee28d7b67b9ce319ab4d91a764",
+      "row_count": 1351,
+      "reconciliation_status": "pass",
+      "excluded_observation_count": 0,
+      "exclusion_reasons": [],
+      "minimum_observations": {
+        "3y": 500,
+        "5y": 900
+      },
+      "percentile_effective_samples": {
+        "3y": 727,
+        "5y": 1050
+      },
+      "observation_set_digest": "3dcf1beef3b16023494c20827716074c4c4fd2225365107f9f5111c3df832d30"
+    }
+  },
+  "metrics": {
+    "a_share_price_to_latest_annual_parent_earnings": {
+      "observation_set": "valuation_2021_2026_common_days",
+      "percentile_3y": 0.920907840440165,
+      "percentile_5y": 0.9452380952380952,
+      "status": "computed",
+      "gap": false
+    },
+    "a_share_price_to_latest_year_end_parent_equity": {
+      "observation_set": "valuation_2021_2026_common_days",
+      "percentile_3y": 0.8452544704264099,
+      "percentile_5y": 0.8928571428571429,
+      "status": "computed",
+      "gap": false
+    },
+    "a_share_price_to_latest_annual_revenue": {
+      "observation_set": "valuation_2021_2026_common_days",
+      "percentile_3y": 0.920907840440165,
+      "percentile_5y": 0.9452380952380952,
+      "status": "computed",
+      "gap": false
+    },
+    "latest_annual_fcf_proxy_yield": {
+      "observation_set": "valuation_2021_2026_common_days",
+      "percentile_3y": 0.17400275103163687,
+      "percentile_5y": 0.12047619047619047,
+      "status": "computed",
+      "gap": false
+    },
+    "trailing_12m_announced_dividend_yield": {
+      "observation_set": "valuation_2021_2026_common_days",
+      "percentile_3y": null,
+      "percentile_5y": null,
+      "status": "partial_evidence",
+      "gap": true
+    }
+  },
+  "pit_exclusion": {
+    "rule": "exclude trade_date > market_data_as_of_date",
+    "excluded_observation_count": 0,
+    "exclusion_reasons": []
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "schema": "value_dimension_scoring_percentile_contract_v1",
+  "version": "1.0",
+  "frozen_date": "2026-08-04",
+  "owner": "M2 Stage 2K.1R2 percentile observation-set lineage closeout",
+  "timezone": "Asia/Shanghai",
+  "non_production": true,
+  "research_methodology_test_only": true,
+  "score_eligible": false,
+  "purpose": "Bind every valuation percentile to a full observation-set identity: the set of market observations from which the percentile was computed, the set digest, the PIT exclusion policy, and the effective sample counts.",
+  "observation_set_source": {
+    "artifact": "events/market_data_snapshot_registry.json",
+    "contract": "market_data_snapshot_registry_v1",
+    "symbol": "601857.SH",
+    "provider": "baostock",
+    "adjustment": "none",
+    "date_range": "2021-01-04..2026-07-31",
+    "units": {"close": "CNY/share", "amount": "CNY", "volume": "share"}
+  },
+  "pit_exclusion_policy": {
+    "scope_end": "market_data_as_of_date",
+    "rule": "observations with trade_date > market_data_as_of_date are excluded from the percentile sample",
+    "excluded_observation_count": 0,
+    "exclusion_reasons": []
+  },
+  "minimum_observations": {
+    "3y": 500,
+    "5y": 900,
+    "expanding": 120
+  },
+  "percentile_definition": {
+    "metric": "percentile_position.<metric>.{3y,5y}",
+    "latest": "percentile_position.<metric>.latest.value",
+    "status": "computed only when latest value is computable and >= minimum observations",
+    "percentile_3y": "rank of latest value within the trailing 3y window (trade_date >= 2023-07-31)",
+    "percentile_5y": "rank of latest value within the trailing 5y window (trade_date >= 2021-07-31)"
+  },
+  "observation_set_digest_rule": {
+    "canonical_fields": ["artifact", "contract", "symbol", "scope", "provider_digest", "provider_sha256", "row_count", "reconciliation_status", "excluded_observation_count", "exclusion_reasons", "minimum_observations", "percentile_effective_samples"],
+    "hash": "sha256 over canonical JSON (sort_keys, no whitespace)",
+    "must_match_capsule_observation_set_digest": true
+  },
+  "prohibited_fallbacks": [
+    "do not report a percentile without its observation-set digest",
+    "do not include observations after market_data_as_of_date in the percentile sample",
+    "do not treat a coverage gap (non-computed percentile) as a zero"
+  ],
+  "identity_inclusion": {
+    "note": "observation-set identity (digest, provider, scope, sample counts) must be embedded in the capsule observation_set and in the score_input_id canonical payload"
+  }
+}
