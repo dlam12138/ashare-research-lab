@@ -1,0 +1,110 @@
+{
+  "schema": "m2_stage2k1r2_artifact_manifest_v1",
+  "version": "1.0",
+  "date": "2026-08-04",
+  "branch": "feat/m2-value-assessment-mvp",
+  "stage": "2K.1R2",
+  "note": "sha256 over LF-normalized content; byte_size is LF-normalized length",
+  "files": [
+    {
+      "path": "config/value_dimension_scoring_time_contract_v1.json",
+      "sha256": "da5197d6536aab7fb1a46c4173e1e253243c8c181f215adbb281bb0da848bba5",
+      "byte_size": 3007
+    },
+    {
+      "path": "docs/value_dimension_scoring_time_contract_v1.md",
+      "sha256": "ea8fd39c1b9737cf70b2b936bc5961345fcc7750ae110a5a5b04c61c3c7f98db",
+      "byte_size": 2735
+    },
+    {
+      "path": "config/value_dimension_scoring_percentile_contract_v1.json",
+      "sha256": "2a9fc962a08ca238e6755c0bbbf51d656ed635b9b383fce769bc69fc0bb3faa3",
+      "byte_size": 2544
+    },
+    {
+      "path": "config/value_dimension_scoring_confidence_v2.json",
+      "sha256": "22f0db109613f7cc732f17e0cd79867a33e7a414389bca488628dc75a98f13d0",
+      "byte_size": 2176
+    },
+    {
+      "path": "src/ashare_research/tools/m2_stage2k1r2_capsule.py",
+      "sha256": "c4f402d77bae06f14cbb653b124b0cd87360318637d8f080d121914a9744e24f",
+      "byte_size": 34607
+    },
+    {
+      "path": "src/ashare_research/tools/m2_stage2k1r2_validate.py",
+      "sha256": "552e71fd3f89b15d04d457a35a61faffd174884e06775291754cf7a1c23fdb6d",
+      "byte_size": 15167
+    },
+    {
+      "path": "src/ashare_research/tools/m2_stage2k1r2_upstream.py",
+      "sha256": "23c28c8ebf9397eeb0dc311813a7c7d2b9302f57f7201dced0e42fb6caa65ed6",
+      "byte_size": 7388
+    },
+    {
+      "path": "src/ashare_research/tools/m2_stage2k1r2_confidence.py",
+      "sha256": "33194a4dc9c76ef7f26e2f05b082a5a4c16f0c20971c666721fce106704e0e6d",
+      "byte_size": 4644
+    },
+    {
+      "path": "src/ashare_research/tools/m2_stage2k1r2_shadow.py",
+      "sha256": "5bcd2112a273c6be41ccf86e585dc81d4504620411ef62f2ba3eb9538567b78a",
+      "byte_size": 8105
+    },
+    {
+      "path": "src/ashare_research/tools/m2_stage2k1r2_sensitivity.py",
+      "sha256": "dfc5728a69500d290f741d35f82ec90823f9cc650d93259a6de084337eed5e12",
+      "byte_size": 10876
+    },
+    {
+      "path": "reports/petrochina_score_input_capsule_v2.json",
+      "sha256": "8ed35e0655bb144d2dd8eebe819773344f5b0902dd16805d7af603d7a2edc4a2",
+      "byte_size": 36832
+    },
+    {
+      "path": "reports/petrochina_score_input_upstream_resolution_v1.json",
+      "sha256": "b9df4f4f1c1486dc8c5a5c30cbfdbd6f90fdb5d5d72dd96b09cf233d007323ed",
+      "byte_size": 10115
+    },
+    {
+      "path": "reports/petrochina_valuation_percentile_observation_sets_v1.json",
+      "sha256": "23cd77dcb1a0bebb2ed92529955e5c90d1f8f4b12483ee7686b9d441f2167601",
+      "byte_size": 2572
+    },
+    {
+      "path": "reports/petrochina_dimension_scoring_confidence_v2.json",
+      "sha256": "d8ae8528c106647659d8f48c39aa00031412ebde6b638c84d3c1c957db0d57bc",
+      "byte_size": 7189
+    },
+    {
+      "path": "reports/petrochina_dimension_scoring_shadow_v3.json",
+      "sha256": "76f99887bc777e74f06f3d6216df7f0a808058e4dbe0f9249486692bf6338039",
+      "byte_size": 14396
+    },
+    {
+      "path": "reports/petrochina_dimension_scoring_sensitivity_v3.json",
+      "sha256": "044cf5521ad9dc0506f367a28ed950a28f42527838487c912cba56cbd983cdb5",
+      "byte_size": 4024
+    },
+    {
+      "path": "reports/m2_stage2k1r2_old_new_diff.md",
+      "sha256": "86656fba611d46c041bfbdf59f2efff0867ef93404a798ab4c8d6243d575bf4d",
+      "byte_size": 3443
+    },
+    {
+      "path": "acceptance/m2_stage2k1r2_score_date_pit_capsule_confidence_closeout.md",
+      "sha256": "af3ba4d793fa379a28e3fa47734a1a97d03e4beecf470fe21b60729921bf58e5",
+      "byte_size": 11036
+    },
+    {
+      "path": "agent/record/2026-08-04_Stage2K1R2_score_date_pit_capsule_confidence_closeout.md",
+      "sha256": "e98786fe5ce673778f753d295a71d840bba944c9fa3ff8ab3bcc4063e8c86090",
+      "byte_size": 11200
+    },
+    {
+      "path": "tests/test_m2_stage2k1r2_pit_capsule_confidence.py",
+      "sha256": "3d9a26faa08183d7301f9fa151b8eb5ca9a59183c95d9fe3e46c8abe110ae413",
+      "byte_size": 11763
+    }
+  ]
+}
