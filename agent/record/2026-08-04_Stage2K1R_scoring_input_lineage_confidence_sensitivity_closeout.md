@@ -116,27 +116,30 @@ no M3.
 ## Verification
 
 - `python -m pytest tests/test_m2_stage2k1r_scoring_input_lineage.py` → 24 passed.
-- `python -m pytest tests/` → 1102 passed (full suite; re-run after final fixes in progress).
+- `python -m pytest tests/` (full suite, with `data/` present) → **1102 passed**, 2 warnings, exit 0. Re-run confirmed after final source fixes.
 - `python -m ruff check src/ashare_research/tools/m2_stage2k1r_*.py tests/test_m2_stage2k1r_scoring_input_lineage.py` → All checks passed.
 - `python -m compileall -q src/ashare_research/tools/m2_stage2k1r_*.py` → OK.
 - Shadow/sensitivity A/B vs Stage 2K: MATCH (73.47/12.17/70.13).
 - Sensitivity deterministic across runs (diff empty).
-- Reports deterministic after source fixes (shadow/confidence/sensitivity MATCH;
-  capsule report differs only by LF/CRLF + trailing newline formatting).
+- Reports deterministic after source fixes (shadow/confidence/sensitivity MATCH; capsule report differs only by LF/CRLF + trailing newline formatting).
 - Default DB `data/research.duckdb` still matches baseline `4a71d3c7...`.
+- Protected suites (official/identity/pit/baseline): 42 passed.
+- Clean-clone portability: committed `4414df5`, cloned into a fresh checkout, `test_m2_stage2k1r_scoring_input_lineage.py` → 24 passed. The legacy `test_official_*.py` baseline tests fail in a clean clone (12 failed + 63 errors) because they need the gitignored `data/raw/*`; this failure set is **identical at the parent commit `b974de9`** (also 12 failed + 63 errors), so it is pre-existing and not introduced by this stage.
+- CI (GitHub Actions `stage2g-reproducibility.yml`, ubuntu+windows) requires a push; not executed locally without user authorization.
 
 ## Result
 
 - All 6 numbered Stage 2K.1R requirements implemented.
-- Decision: `SCORING_CONTRACT_GAPS_REMAIN` — sensitivity is NOT_STABLE under the
-  frozen 1.0 tolerance (machine-derived), so the scoring contract is not yet
+- Decision: `SCORING_CONTRACT_GAPS_REMAIN` — the frozen sensitivity is NOT_STABLE
+  under the 1.0 tolerance (machine-derived), so the scoring contract is not yet
   production-trusted; peer acquisition is not yet allowed.
 - Completed: capsule builder/validator, confidence separation, risk reassessment,
-  complete sensitivity, shadow/sensitivity A/B, acceptance, manifest, old→new diff,
-  tests. Full validation + CI final gate pending before final PASS.
+  complete sensitivity, shadow/sensitivity A/B, acceptance, artifact manifest (11
+  files), old→new diff, ADR, and 24 tests (all passing).
+- Local validation: PASS (pytest/ruff/compileall/A-B/determinism/artifact
+  verification/protected suites). CI final gate pending on user authorization to push.
 
 ## Remaining (final gate)
 
-- Confirm full pytest re-run (post-fix) passes.
-- Run portability + clean-clone + CI if providers are available.
-- Final report. Do NOT start M3 or acquire peer data.
+- CI (GitHub Actions) is pending on a push; the user must authorize pushing to run
+  the Ubuntu/Windows clean-clone CI. Do NOT start M3 or acquire peer data.
