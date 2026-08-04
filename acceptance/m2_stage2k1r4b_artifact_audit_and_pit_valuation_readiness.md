@@ -1,6 +1,6 @@
 # M2 Stage 2K.1R4B — Artifact/Sensitivity Audit Patch and PIT Valuation Readiness Review
 
-Status: `PASS` (CI-backed; no production scores, no peer acquisition, no M3)
+Status: `PASS` (CI-backed run `30907234491` on ubuntu + windows; no production scores, no peer acquisition, no M3)
 
 ## Objective
 
@@ -92,7 +92,8 @@ before the final report.)
 
 ## Git state
 
-- Branch: `feat/m2-value-assessment-mvp`.
+- Branch: `feat/m2-value-assessment-mvp`; pushed to `origin`; CI run `30907234491`
+  PASS on ubuntu + windows.
 - Protected files (AGENTS.md, agent/goals/, Stage 2I.2R edit, default DB, stash)
   untouched.
 - No force push, no reset --hard, no git clean.

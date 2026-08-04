@@ -161,17 +161,18 @@ Two strictly separated parts:
 - Phase B: PIT valuation readiness reviewed against the actual repo; decision
   `PIT_DENOMINATOR_FACT_ACQUISITION_REQUIRED`; route UNRESOLVED (recommendation
   MARKET_CAP); no valuation series built.
-- Status: `completed` (pending CI).
+- Status: `completed` (CI-backed PASS).
 
 ## Remaining issues
 
 - Historical PE/PB/PS PIT series is NOT implemented (by design this round).
-- CI (Ubuntu + Windows) for the new pushes is the final pending gate.
 - No production score, no peer acquisition, no M3.
+- CI run `30907234491` PASS on ubuntu + windows (clean-clone jobs).
 
 ## Final files and Git state
 
-- Branch: `feat/m2-value-assessment-mvp`.
+- Branch: `feat/m2-value-assessment-mvp`; pushed to `origin`; CI run `30907234491`
+  PASS on ubuntu + windows.
 - New/modified files: `src/ashare_research/scoring/artifact_manifest.py` (new),
   `src/ashare_research/scoring/sensitivity.py` (v6), `src/ashare_research/tools/m2_stage2k1r3_closeout.py`,
   two test files, review doc, matrix JSON, decision JSON, old-new diff, v6 report,
