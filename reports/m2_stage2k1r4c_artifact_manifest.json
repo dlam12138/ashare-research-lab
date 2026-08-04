@@ -73,8 +73,8 @@
     },
     {
       "path": "tests/test_m2_stage2k1r4c_a_share_per_share_convention.py",
-      "sha256": "606c0546b615931ad7a3cae44c686be87c5d2bf762c398ed133a63c75880108b",
-      "byte_size": 12770
+      "sha256": "4fdcd69e690fa9f3301dd2ebcbd9cc7b5829e6d40a680b7ca46231ae0cda43d6",
+      "byte_size": 13690
     }
   ]
 }

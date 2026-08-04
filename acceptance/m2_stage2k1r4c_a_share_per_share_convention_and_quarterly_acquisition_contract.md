@@ -20,8 +20,12 @@ contract. No quarterly collection, no valuation series, no scoring expansion.
   (incl. `coverage_gate_sensitivity`, `confidence_gate_sensitivity`,
   `production_readiness_reason`, and all base/band/count/type fields) instead of a
   hand-written partial whitelist. Tampering with any summary field fails even when the
-  digest is recomputed. The v6 report is byte-identical (digest `213cdba0…`); scenarios,
-  thresholds, and `NOT_STABLE` are unchanged.
+  digest is recomputed. The v6 report is byte-identical (digest `213cdba0…`) on the
+  generating platform; scenarios, thresholds, and `NOT_STABLE` are unchanged. (Known
+  pre-existing limitation, not changed by R4C: the capsule digest — and therefore the v6
+  `scenario_id`s/`ledger_digest` — is deterministic per platform but can differ across
+  platforms, so the committed report is not byte-reproducible on ubuntu. The R4C test is
+  platform-aware and this is recorded as a follow-up.)
 
 ## Phase B — A-share per-share valuation convention (ADR-VALUATION-002)
 

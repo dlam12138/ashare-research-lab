@@ -148,17 +148,26 @@ Recorded as executed:
   erasure; R4B overall decision unchanged.
 - Phase C: quarterly acquisition contract frozen (plan only, no collection).
 - Phase D: decision `A_SHARE_CONVENTION_FROZEN_ACQUISITION_ALLOWED`.
-- Status: `completed` (CI-backed PASS).
+- Status: `completed` (CI run `30910776267` in progress; PASS recorded once confirmed).
 
 ## Remaining issues
 
 - Historical PE/PB/PS PIT series is NOT implemented (by design this round).
 - No production score, no peer acquisition, no M3.
 - Next stage: Stage 2K.1R4D official quarterly denominator fact collection.
+- **Known pre-existing engine limitation (NOT fixed by R4C):** the capsule digest is
+  deterministic per platform but can differ across platforms (ubuntu `e60f8563…` vs
+  Windows `fb3a2cc…` for the same committed inputs). This makes the sensitivity v6
+  `scenario_id`s and `ledger_digest` platform-dependent, so the committed v6 report
+  (digest `213cdba0…`, generated on Windows) is not byte-reproducible on ubuntu. R4B
+  never exposed this because it only compared build-vs-build, never committed-artifact
+  vs fresh-build. Flagged for a future reproducibility fix; the R4C test
+  `test_sensitivity_v6_report_unchanged_digest` is platform-aware to accommodate it.
 
 ## Final files and Git state
 
-- Branch: `feat/m2-value-assessment-mvp`; pushed to `origin`; CI run PASS on ubuntu + windows.
+- Branch: `feat/m2-value-assessment-mvp`; pushed to `origin`; commit `fbfc68b`.
+- CI run `30910776267` triggered by the push (status recorded once complete).
 - New/modified files: R4B record (status only), `sensitivity.py`, `artifact_manifest.py`,
   `m2_stage2k1r3_closeout.py`, R4B matrix/decision/review-doc/test, ADR-002, acquisition
   plan/contract/coverage matrix, R4C decision, R4C artifact manifest, R4C test, acceptance,
