@@ -107,10 +107,11 @@ PROTECTED_BLOBS = {
         "1bd9a75e4c0d4d42a577c2986486a202e0abb25c",
     # docs unchanged.
     "docs/value_fact_coverage_roadmap.md":
-        # Stage 2D-E appended the 2D-D/2D-E status section (append-only;
-        # historical baseline text unchanged). Blob advanced 04d323dd... ->
-        # a9fa3da1....
-        "6ed189bf4093159aca3e326c47a4ac42e3d43011",
+        # Stage 2D-E appended the 2D-D/2D-E status section, then Stage 2J and
+        # Stage 2K appended their status sections (append-only; historical
+        # baseline text unchanged). Blob advanced 04d323dd... -> a9fa3da1...
+        # -> ... -> 0cd48fa1....
+        "0cd48fa16dcc5d431b1efce1433c9c7d89d0642a",
     "docs/value_evaluation_methodology_v1.md":
         "6938e35868b940649b4cabe0104dc070f8880886",
 }

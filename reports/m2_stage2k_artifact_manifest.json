@@ -1,0 +1,98 @@
+{
+  "schema": "m2_stage2k_artifact_manifest_v1",
+  "north_star_decision": "M2_SCORING_ADDENDUM_REOPENED",
+  "stage2k_decision": "PEER_BENCHMARK_ACQUISITION_REQUIRED",
+  "hash_contract": "SHA-256 over UTF-8 text with LF line endings; excludes itself and mutable final evidence records.",
+  "files": [
+    {
+      "logical_path": "docs/post_m2_closeout_scoring_north_star_review.md",
+      "sha256": "948c441c64e72a9b105396543817208e7247e6700f5e09b7c14eed4d3cdaa583",
+      "byte_size": 10646
+    },
+    {
+      "logical_path": "docs/value_dimension_scoring_methodology_v1.md",
+      "sha256": "b89616f83f641d4fa13d2cb03bdf4d98d8228abcdd656e1d9e99d3c79e21a2ce",
+      "byte_size": 7780
+    },
+    {
+      "logical_path": "config/value_dimension_scoring_registry_v1.json",
+      "sha256": "752b87849e1aaf06ff1852fa2166aba4c1ed24a3c32fd6826890072566a1ed20",
+      "byte_size": 35207
+    },
+    {
+      "logical_path": "config/value_dimension_scoring_policy_v1.json",
+      "sha256": "e031a28f754f6e9d1e90011453d5a21e2e032354f0281a167ea8a552e824c4dd",
+      "byte_size": 3324
+    },
+    {
+      "logical_path": "docs/value_dimension_scoring_input_contract.md",
+      "sha256": "6a48b1643ea1d90d102f3f65e6c0d20f38b186ec24819f4aa2cd29b4fd9e17d2",
+      "byte_size": 5958
+    },
+    {
+      "logical_path": "config/value_dimension_scoring_shadow_inputs_v1.json",
+      "sha256": "60d1757b5a728df7ad499f9ac6686104bc61883490973f4fe3a340f11a6885e5",
+      "byte_size": 5385
+    },
+    {
+      "logical_path": "docs/value_dimension_scoring_benchmark_feasibility.md",
+      "sha256": "ac80b9a737d2892a8e789f3db2386eeb13fea16b847223deeb0cdf9e6db71c7d",
+      "byte_size": 4811
+    },
+    {
+      "logical_path": "docs/value_dimension_scoring_peer_preflight.md",
+      "sha256": "7e8c7b490818d64d0aed9a92572f0cb33f2957f41f3f01413cf29966bf874478",
+      "byte_size": 2625
+    },
+    {
+      "logical_path": "docs/value_dimension_scoring_missingness_coverage_confidence.md",
+      "sha256": "ab49b7b8d55e3eb6218262b7dc1c64e5d57ea6afe65e532a1c40ee9fbf0b5a50",
+      "byte_size": 3202
+    },
+    {
+      "logical_path": "docs/value_dimension_scoring_weights_sensitivity.md",
+      "sha256": "9f5f07a01b2266af8894c192874d387ca21ecc99ada2335d91892deb4605f85b",
+      "byte_size": 4176
+    },
+    {
+      "logical_path": "docs/value_scoring_readiness_gates_v2.md",
+      "sha256": "4e07df4d4560b27b82ec5b3e9094c6b81b9ba4edb1fa389b66d6d5f34de35ffc",
+      "byte_size": 3612
+    },
+    {
+      "logical_path": "docs/decisions/ADR-2026-08-04-stage2k-scoring-decision.md",
+      "sha256": "11835ec09025315a30266fce2b3d621859af16b9fe8975274729a0bf8a434f08",
+      "byte_size": 2371
+    },
+    {
+      "logical_path": "reports/petrochina_dimension_scoring_shadow_v1.json",
+      "sha256": "8ec582c21d714b0d984590a91b327a4a835e3a90cbcff8d77f5fedb7bbe8244d",
+      "byte_size": 9944
+    },
+    {
+      "logical_path": "reports/petrochina_dimension_scoring_shadow_v1.md",
+      "sha256": "61371dedb3b81dc10e5d8663b217ce9c287edc87c70cd0bd68a868215b9f32cd",
+      "byte_size": 1490
+    },
+    {
+      "logical_path": "reports/petrochina_dimension_scoring_sensitivity_v1.json",
+      "sha256": "b7830531890a33153bedb10a80faada19df6e6de19e98d4c1dfd9592438b1f7f",
+      "byte_size": 21737
+    },
+    {
+      "logical_path": "src/ashare_research/tools/m2_stage2k_scoring_shadow.py",
+      "sha256": "b99dc1d4f340888b86fbb67a0328917245ff1cf8e24e975387402edf1c29e60a",
+      "byte_size": 18191
+    },
+    {
+      "logical_path": "tests/test_m2_stage2k_dimension_scoring.py",
+      "sha256": "adca1a097613088b892885245b70aa90b62e5df2f6ecc874eeae8ec9419a0df5",
+      "byte_size": 12721
+    },
+    {
+      "logical_path": "acceptance/m2_stage2k_dimension_scoring_preflight_shadow.md",
+      "sha256": "a28dbbf921882dd744cfe1059b1aa60e33ee40116a1e19a0375517e57080ebb1",
+      "byte_size": 4175
+    }
+  ]
+}

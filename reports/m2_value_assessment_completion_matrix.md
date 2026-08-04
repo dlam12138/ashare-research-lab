@@ -2,9 +2,9 @@
 
 Contract: `m2_module_status_v1`
 
-North-Star decision: `M2_CONDITIONAL_CLOSEOUT_ALLOWED`
+North-Star decision: `M2_SCORING_ADDENDUM_REOPENED`
 
-Milestone 2: CONDITIONALLY CLOSED WITH EXPLICIT EVIDENCE GAPS
+Milestone 2: CONDITIONALLY CLOSED; SCORING ADDENDUM REOPENED
 
 This is a status matrix, not a numeric completion score. The machine-readable
 authority is `reports/m2_value_assessment_completion_matrix.json`.
@@ -24,7 +24,7 @@ authority is `reports/m2_value_assessment_completion_matrix.json`.
 | Risk-veto layer | `complete_with_explicit_gaps` | 2021–2025 | Two slots remain `missing_evidence`; no veto observed within bounded evidence is not no governance risk. |
 | ROIC | `not_computable_under_strict_evidence_contract` | — | Seven exact gaps block numerator/denominator scope matching; no number, shadow, or production result exists. |
 | One-page value profile | `complete_with_explicit_gaps` | 2021–2025 | Trusted dimensions plus explicit current gap statuses; no recommendation. |
-| Scoring | `deferred_by_design` | — | `SCORING_DEFERRED_BY_DESIGN`; no engine, weights, thresholds, or ranking. |
+| Scoring | `scoring_addendum_reopened` | — | Eighteen explicit gaps remain; scoring is a non-production shadow, not a fifth overall score. |
 | Market mechanism | `not_started` | — | Only `M3_NORTH_STAR_PREFLIGHT_ALLOWED`; no M3 implementation has started. |
 
 ## Current gap links

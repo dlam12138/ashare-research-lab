@@ -83,9 +83,10 @@ PROTECTED_BLOBS = {
     # (current state + next steps A/B/C); the blob advanced from
     # 9d737e00... to 04d323dd....  The historical baseline text is unchanged.
     # Stage 2D-E appended the 2D-D/2D-E status section (append-only);
-    # blob advanced 04d323dd... -> a9fa3da1....
+    # blob advanced 04d323dd... -> a9fa3da1.... Stage 2J/2K appended their
+    # status sections; blob advanced -> 0cd48fa1....
     "docs/value_fact_coverage_roadmap.md":
-        "6ed189bf4093159aca3e326c47a4ac42e3d43011",
+        "0cd48fa16dcc5d431b1efce1433c9c7d89d0642a",
     "docs/value_scoring_readiness_gates.md":
         "abb73f82853e831b80879c9f60eb0594472c0738",
     # --- Stage 2D-A artifacts (unchanged by 2D-B) ---

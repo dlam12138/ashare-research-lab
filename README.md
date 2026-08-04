@@ -7,12 +7,13 @@
 > [!IMPORTANT]
 > 本项目仅用于数据分析、统计研究和软件工程学习，不构成任何投资建议，也不提供自动交易能力。
 
-**Milestone 2: CONDITIONALLY CLOSED WITH EXPLICIT EVIDENCE GAPS**
+**Milestone 2: CONDITIONALLY CLOSED; SCORING ADDENDUM REOPENED**
 
-Stage 2J North-Star decision: `M2_CONDITIONAL_CLOSEOUT_ALLOWED`. ROIC is
+Stage 2K North-Star decision: `M2_SCORING_ADDENDUM_REOPENED`. ROIC is
 `not_computable_under_strict_evidence_contract`; no numeric ROIC, shadow, or
-production Metric/Result exists. Scoring is `SCORING_DEFERRED_BY_DESIGN`.
-Only `M3_NORTH_STAR_PREFLIGHT_ALLOWED`; M3 implementation has not started.
+production Metric/Result exists. Scoring is a non-production shadow
+(`PEER_BENCHMARK_ACQUISITION_REQUIRED`), not a production engine, rank, or
+signal. Only `M3_NORTH_STAR_PREFLIGHT_ALLOWED`; M3 implementation has not started.
 
 ---
 
@@ -279,7 +280,7 @@ ruff check src/ tests/
 - M2 是有明确证据缺口的条件关闭，不是完全完成
 - Stage 2I.2R 已完成捕获派生、双官方证据重协调和七个缺口的执行式版本化搜索：9/16 个事实/年度单元已取得，7 个单元保留为明确缺口；结论为 `ROIC_FACT_GAPS_REMAIN`，未运行 shadow ROIC。更正产物位于 `reports/*stage2i2r*`，原 Stage 2I.2 产物保留供审计。
 - ROIC 在严格证据合同下不可计算；不存在数值、proxy、shadow 或生产 Metric/Result
-- 评分保持 `SCORING_DEFERRED_BY_DESIGN`，没有 score engine、权重、排名或阈值
+- 评分保持为**非生产 shadow**（`PEER_BENCHMARK_ACQUISITION_REQUIRED`），没有生产 score engine、权重、排名或阈值；`M2_SCORING_ADDENDUM_REOPENED`
 - 市场机制验证尚未开始
 - Web 界面、目标价、推荐和自动交易尚未实现
 - 当前 value profile 只覆盖 PetroChina（601857.SH）这一份 PIT 纵向切片
@@ -341,7 +342,7 @@ ruff check src/ tests/
 | 里程碑 | 内容 | 状态 |
 |--------|------|------|
 | Milestone 1: 免费数据底座 | 股票基础信息、交易日历、日线行情、Parquet/DuckDB 存储 | ✅ 已完成 |
-| Milestone 2: 价值评估 MVP | 企业质量、估值、现金流、安全边际、风险否决项 | 条件关闭（明确证据缺口） |
+| Milestone 2: 价值评估 MVP | 企业质量、估值、现金流、安全边际、风险否决项 | 条件关闭；评分附加项已重开（非生产 shadow） |
 | Milestone 3: 机制验证 MVP | 假设检验、条件收益、控制变量、证据分级 | 仅允许 North-Star preflight；实现未开始 |
 | Milestone 4: 通用研究器 | 可配置的假设验证框架 | 🔲 计划中 |
 | Milestone 5: 分钟级研究 | 按需分钟数据验证 | 🔲 计划中 |

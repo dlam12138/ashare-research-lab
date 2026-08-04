@@ -208,3 +208,21 @@ Milestone 2: CONDITIONALLY CLOSED WITH EXPLICIT EVIDENCE GAPS
 - 此状态不表示 M2 完全完成、ROIC 完成、没有治理风险、没有缺失事实或公司低估。
 - 唯一允许的后续门禁为 `M3_NORTH_STAR_PREFLIGHT_ALLOWED`。目标剔除市场代理、
   统计假设、油价/行业/style controls 和任何市场机制实现均未在 Stage 2J 开始。
+
+## Stage 2K 状态追加（2026-08-04，append-only）
+
+Milestone 2: CONDITIONALLY CLOSED; SCORING ADDENDUM REOPENED
+
+- North-Star decision: `M2_SCORING_ADDENDUM_REOPENED`，Stage 2K decision:
+  `PEER_BENCHMARK_ACQUISITION_REQUIRED`。Stage 2J 保持不可变的历史条件关闭。
+- 建立四个独立维度评分（`enterprise_quality`、`valuation_attractiveness`、
+  `value_realization_capacity`、`risk_and_evidence_integrity`）的版本化方法、
+  组件 registry、policy、input contract、benchmark 可行性、peer preflight、
+  missingness/coverage/confidence、weights/sensitivity、readiness gates v2。
+- 产出 PetroChina 非生产 shadow scorecard（`non_production=true`、
+  `research_methodology_test_only=true`、`overall_score_prohibited=true`、
+  `recommendation_prohibited=true`、`score_eligible=false`），不写入 canonical
+  value profile，不创建生产表。ROIC 是 enterprise-quality 的显式 coverage gap，
+  缺失不计为零；Stage 2F/2H 缺口降低 evidence confidence 而非质量分。
+- 无综合分、排名、推荐、目标价或交易信号。生产评分需先获取 peer 数据集。
+- 唯一允许的后续门禁仍为 `M3_NORTH_STAR_PREFLIGHT_ALLOWED`。

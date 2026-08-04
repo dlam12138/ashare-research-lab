@@ -1,0 +1,55 @@
+{
+  "schema": "value_dimension_scoring_shadow_inputs_v1",
+  "version": "1.0",
+  "frozen_date": "2026-08-04",
+  "symbol": "601857.SH",
+  "score_date": "2026-07-31",
+  "non_production": true,
+  "research_methodology_test_only": true,
+  "overall_score_prohibited": true,
+  "recommendation_prohibited": true,
+  "score_eligible": false,
+  "source_notes": "All values are read from committed canonical artifacts; no new facts are acquired.",
+  "components": {
+    "eq_gross_margin": {"value": 0.215868281346, "unit": "ratio", "fiscal_year": 2025, "available_at": "2026-03-30", "source": "acceptance/m2_stage2cd_petrochina_earnings_quality_metric_extension.md"},
+    "eq_operating_margin": {"value": 0.081892664923, "unit": "ratio", "fiscal_year": 2025, "available_at": "2026-03-30", "source": "acceptance/m2_stage2cd_petrochina_earnings_quality_metric_extension.md"},
+    "eq_np_yoy": {"value": -0.044778838446, "unit": "ratio", "fiscal_year": 2025, "available_at": "2026-03-30", "source": "acceptance/m2_stage2a_petrochina_minimal_transparent_metrics.md"},
+    "eq_ocf_np": {"value": 2.622407852411, "unit": "ratio", "fiscal_year": 2025, "available_at": "2026-03-30", "source": "acceptance/m2_stage2a_petrochina_minimal_transparent_metrics.md"},
+    "eq_roe": {"value": 0.101438303339, "unit": "ratio", "fiscal_year": 2025, "available_at": "2026-03-30", "source": "acceptance/m2_stage2dd_petrochina_roe_metric_extension.md"},
+    "eq_roa": {"value": 0.061639226063, "unit": "ratio", "fiscal_year": 2025, "available_at": "2026-03-30", "source": "acceptance/m2_stage2df_petrochina_roa_metric_extension.md"},
+    "eq_roic": {"value": null, "unit": null, "fiscal_year": null, "available_at": null, "status": "not_computable_under_strict_evidence_contract", "source": "reports/m2_explicit_gap_ledger.json"},
+    "eq_asset_liability": {"value": 0.363671434790, "unit": "ratio", "fiscal_year": 2025, "available_at": "2026-03-30", "source": "reports/petrochina_financial_safety_2021_2025.md"},
+    "eq_cash_coverage": {"value": 0.583284764465, "unit": "ratio", "fiscal_year": 2025, "available_at": "2026-03-30", "source": "reports/petrochina_financial_safety_2021_2025.md"},
+    "va_pe": {"value": 12.891587101393752, "percentile_3y": 0.920907840440165, "percentile_5y": 0.9452380952380952, "status": "computed", "trade_date": "2026-07-31", "source": "reports/petrochina_value_profile.json"},
+    "va_pb": {"value": 1.2785589168534124, "percentile_3y": 0.8452544704264099, "percentile_5y": 0.8928571428571429, "status": "computed", "trade_date": "2026-07-31", "source": "reports/petrochina_value_profile.json"},
+    "va_ps": {"value": 0.7079400874030893, "percentile_3y": 0.920907840440165, "percentile_5y": 0.9452380952380952, "status": "computed", "trade_date": "2026-07-31", "source": "reports/petrochina_value_profile.json"},
+    "va_fcf_yield": {"value": 0.059037737275543345, "percentile_3y": 0.17400275103163687, "percentile_5y": 0.12047619047619047, "status": "computed", "trade_date": "2026-07-31", "source": "reports/petrochina_value_profile.json"},
+    "va_dividend_yield": {"value": null, "status": "missing_input", "trade_date": "2026-07-31", "partial_value": 0.02502844141069397, "partial_trade_date": "2025-09-09", "source": "reports/petrochina_value_profile.json"},
+    "vr_ocf_dividend_coverage": {"value": 4.795520500041, "unit": "ratio", "fiscal_year": 2025, "available_at": "2026-03-30", "source": "tmp/stage2f_runs/value_assessment/601857.SH/dividend_realization_vertical_slice/2021_2025/stage2f_validation_20260801e/dividend_metric_results.json"},
+    "vr_fcf_dividend_coverage": {"value": 1.391783253219, "unit": "ratio", "fiscal_year": 2025, "available_at": "2026-03-30", "source": "tmp/stage2f_runs/value_assessment/601857.SH/dividend_realization_vertical_slice/2021_2025/stage2f_validation_20260801e/dividend_metric_results.json"},
+    "vr_payout_ratio": {"value": 0.546845301232, "unit": "ratio", "fiscal_year": 2025, "available_at": "2026-03-30", "source": "tmp/stage2f_runs/value_assessment/601857.SH/dividend_realization_vertical_slice/2021_2025/stage2f_validation_20260801e/dividend_metric_results.json"},
+    "vr_dps": {"value": 0.47000, "unit": "CNY", "fiscal_year": 2025, "available_at": "2026-03-30", "source": "tmp/stage2f_runs/value_assessment/601857.SH/dividend_realization_vertical_slice/2021_2025/stage2f_validation_20260801e/dividend_metric_results.json"},
+    "vr_repurchase": {"value": "no_event_found", "status": "bounded_scan_no_event", "source": "events/repurchase_event_scan_2021_2026.json"},
+    "rk_veto_triggered": {"value": 0, "source": "reports/petrochina_value_profile.json"},
+    "rk_missing_evidence_slots": {"value": 2, "source": "reports/petrochina_value_profile.json"},
+    "rk_gap_count": {"value": 18, "source": "reports/m2_explicit_gap_ledger.json"},
+    "rk_pit_integrity": {"value": "pass", "source": "reports/petrochina_value_profile.json"},
+    "rk_evidence_freshness": {"value": "current", "source": "reports/petrochina_value_profile.json"}
+  },
+  "risk_slots": {
+    "total": 8,
+    "triggered": 0,
+    "not_observed_within_bounded_evidence": 6,
+    "missing_evidence": 2,
+    "missing_evidence_ids": [
+      "formal_regulatory_investigation_or_major_discipline",
+      "controlling_shareholder_fund_occupation_or_related_guarantee"
+    ]
+  },
+  "gaps": {
+    "stage2f": 9,
+    "stage2h": 2,
+    "stage2i": 7,
+    "total": 18
+  }
+}

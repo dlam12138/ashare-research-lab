@@ -1,12 +1,12 @@
 {
   "schema": "m2_stage2j_artifact_manifest_v1",
-  "north_star_decision": "M2_CONDITIONAL_CLOSEOUT_ALLOWED",
+  "north_star_decision": "M2_SCORING_ADDENDUM_REOPENED",
   "hash_contract": "SHA-256 over UTF-8 text with LF line endings; the manifest excludes itself and mutable final evidence records.",
   "files": [
     {"logical_path": "docs/post_roic_north_star_review.md", "sha256": "e12ad87f54f2ab3fd25338d4ce48c1d92dfbd7bd4aeb2c9aacc538046e23e5cb", "byte_size": 15534},
     {"logical_path": "docs/decisions/ADR-ROIC-001-strict-evidence-non-computability.md", "sha256": "fc84d0489e01cb1b6ea46551eedf7e526784e0ca34d433ed4929084825250ed1", "byte_size": 6156},
-    {"logical_path": "reports/m2_value_assessment_completion_matrix.json", "sha256": "7fcf4576f5772476929848fdb9bc1379e10164f06a7f6a5b146e4a032cebf84f", "byte_size": 19715},
-    {"logical_path": "reports/m2_value_assessment_completion_matrix.md", "sha256": "3010717425f6445bedb5981029658328819e84ab5b544e61a4ace02c4a46e3de", "byte_size": 3201},
+    {"logical_path": "reports/m2_value_assessment_completion_matrix.json", "sha256": "be877cea9ebec84f13a9d06cf812bd26c6f09c7f862b7b31b063c2803ea07c5c", "byte_size": 20223},
+    {"logical_path": "reports/m2_value_assessment_completion_matrix.md", "sha256": "8e41e25edb9a30bc17595c8ff7095a218acc919755d6fae6fc789ee256f01186", "byte_size": 3224},
     {"logical_path": "reports/m2_explicit_gap_ledger.json", "sha256": "74ff95b18690187072850a462da5dcb90b4c9482717db7b99b7a06cf9555e0d4", "byte_size": 27464},
     {"logical_path": "reports/m2_explicit_gap_ledger.md", "sha256": "1480b3dd42e9402e61af6f6cff5769f81d710434032cc20e1d7d9f25056c60f1", "byte_size": 4582},
     {"logical_path": "reports/petrochina_value_profile.json", "sha256": "074b85646995d40206cabf25e12ba82718c11aed8dbb41cfe5859533ee3759ce", "byte_size": 49887},

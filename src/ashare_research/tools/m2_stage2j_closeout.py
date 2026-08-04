@@ -33,6 +33,7 @@ ALLOWED_MODULE_STATUSES = {
     "complete_with_explicit_gaps",
     "not_computable_under_strict_evidence_contract",
     "deferred_by_design",
+    "scoring_addendum_reopened",
     "not_started",
     "not_trusted",
 }
@@ -146,7 +147,7 @@ def validate_completion_matrix() -> list[str]:
     if set(ids) != REQUIRED_MODULE_IDS:
         errors.append("matrix_required_modules")
     if matrix.get("milestone_status") != (
-        "CONDITIONALLY_CLOSED_WITH_EXPLICIT_EVIDENCE_GAPS"
+        "CONDITIONALLY_CLOSED_WITH_SCORING_ADDENDUM_REOPENED"
     ):
         errors.append("matrix_milestone_status")
     if matrix.get("m3_next_step") != "M3_NORTH_STAR_PREFLIGHT_ALLOWED":
@@ -189,7 +190,7 @@ def validate_completion_matrix() -> list[str]:
         errors.append("matrix_roic_status")
     if set(by_id.get("roic", {}).get("evidence_gap_ids", [])) != ROIC_GAP_IDS:
         errors.append("matrix_roic_gaps")
-    if by_id.get("scoring", {}).get("status") != "deferred_by_design":
+    if by_id.get("scoring", {}).get("status") != "scoring_addendum_reopened":
         errors.append("matrix_scoring_status")
     if by_id.get("market_mechanism", {}).get("status") != "not_started":
         errors.append("matrix_market_status")
@@ -377,7 +378,7 @@ def verify_contracts() -> dict[str, Any]:
     return {
         "schema": "m2_stage2j_contract_verification_v1",
         "status": "pass" if not errors else "fail",
-        "north_star_decision": "M2_CONDITIONAL_CLOSEOUT_ALLOWED",
+        "north_star_decision": "M2_SCORING_ADDENDUM_REOPENED",
         "checks": {key: "pass" if not value else "fail" for key, value in checks.items()},
         "errors": errors,
     }

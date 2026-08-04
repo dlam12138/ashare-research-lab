@@ -58,10 +58,11 @@ PROTECTED_BLOBS = {
     "config/value_evaluation_methodology_v1.json":
         "9a36c28a96a690c52d46acede3ff95bfe907cb33",
     "docs/value_fact_coverage_roadmap.md":
-        # Stage 2D-E appended the 2D-D/2D-E status section (append-only;
-        # historical baseline text unchanged). Blob advanced 04d323dd... ->
-        # a9fa3da1....
-        "6ed189bf4093159aca3e326c47a4ac42e3d43011",
+        # Stage 2D-E appended the 2D-D/2D-E status section, then Stage 2J and
+        # Stage 2K appended their status sections (append-only; historical
+        # baseline text unchanged). Blob advanced 04d323dd... -> a9fa3da1...
+        # -> ... -> 0cd48fa1....
+        "0cd48fa16dcc5d431b1efce1433c9c7d89d0642a",
     "docs/value_scoring_readiness_gates.md":
         "abb73f82853e831b80879c9f60eb0594472c0738",
     "tests/test_value_evaluation_methodology.py":

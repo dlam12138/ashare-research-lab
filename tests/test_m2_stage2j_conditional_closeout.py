@@ -22,7 +22,7 @@ def test_completion_matrix_contract_passes_and_has_every_module_once():
     assert set(ids) == stage2j.REQUIRED_MODULE_IDS
     assert len(ids) == len(set(ids)) == 15
     assert set(matrix["allowed_statuses"]) == stage2j.ALLOWED_MODULE_STATUSES
-    assert matrix["north_star_decision"] == "M2_CONDITIONAL_CLOSEOUT_ALLOWED"
+    assert matrix["north_star_decision"] == "M2_SCORING_ADDENDUM_REOPENED"
     assert matrix["m3_next_step"] == "M3_NORTH_STAR_PREFLIGHT_ALLOWED"
 
 
@@ -35,7 +35,7 @@ def test_completion_matrix_keeps_roic_scoring_and_m3_fail_closed():
     )
     assert set(by_id["roic"]["evidence_gap_ids"]) == stage2j.ROIC_GAP_IDS
     assert by_id["roic"]["score_eligible"] is False
-    assert by_id["scoring"]["status"] == "deferred_by_design"
+    assert by_id["scoring"]["status"] == "scoring_addendum_reopened"
     assert by_id["market_mechanism"]["status"] == "not_started"
     assert all(module["score_eligible"] is False for module in matrix["modules"])
 
@@ -147,15 +147,18 @@ def test_north_star_review_has_four_options_seven_gaps_and_no_numeric_weighting(
 
 
 def test_closeout_wording_and_scoring_boundary_are_exact():
-    paths = (
-        "README.md",
-        "docs/value_fact_coverage_roadmap.md",
+    # Immutable Stage 2J packet artifacts keep the historical closeout wording.
+    immutable = (
         "acceptance/m2_value_assessment_mvp_conditional_closeout.md",
         "reports/m2_stage2j_closeout_summary.md",
     )
-    for path in paths:
+    for path in immutable:
         text = (ROOT / path).read_text(encoding="utf-8")
         assert "Milestone 2: CONDITIONALLY CLOSED WITH EXPLICIT EVIDENCE GAPS" in text
+    # Living docs reflect the Stage 2K scoring-addendum reopened status.
+    for path in ("README.md", "docs/value_fact_coverage_roadmap.md"):
+        text = (ROOT / path).read_text(encoding="utf-8")
+        assert "Milestone 2: CONDITIONALLY CLOSED; SCORING ADDENDUM REOPENED" in text
         assert "M3_NORTH_STAR_PREFLIGHT_ALLOWED" in text
     packet = (ROOT / "reports/m2_stage2j_closeout_summary.md").read_text(
         encoding="utf-8"
@@ -168,7 +171,7 @@ def test_closeout_wording_and_scoring_boundary_are_exact():
 def test_stage2j_manifest_recomputes_every_canonical_text_artifact():
     assert stage2j.verify_artifact_manifest() == []
     manifest = _load("reports/m2_stage2j_artifact_manifest.json")
-    assert manifest["north_star_decision"] == "M2_CONDITIONAL_CLOSEOUT_ALLOWED"
+    assert manifest["north_star_decision"] == "M2_SCORING_ADDENDUM_REOPENED"
     for item in manifest["files"]:
         path = ROOT / item["logical_path"]
         payload = path.read_text(encoding="utf-8").replace("\r\n", "\n").encode()
@@ -198,4 +201,4 @@ def test_clean_clone_contract_has_no_network_default_db_or_absolute_paths():
 def test_combined_contract_verification_passes():
     result = stage2j.verify_contracts()
     assert result["status"] == "pass", result["errors"]
-    assert result["north_star_decision"] == "M2_CONDITIONAL_CLOSEOUT_ALLOWED"
+    assert result["north_star_decision"] == "M2_SCORING_ADDENDUM_REOPENED"
