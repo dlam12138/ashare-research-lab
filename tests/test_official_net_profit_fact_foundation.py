@@ -153,7 +153,7 @@ PROTECTED_BLOBS = {
         # Stage 2D-E appended the 2D-D/2D-E status section (append-only;
         # historical baseline text unchanged). Blob advanced 04d323dd... ->
         # a9fa3da1....
-        "99a3be3ca669f82c96a1c0d2449a20ed6b0a70cf",
+        "6ed189bf4093159aca3e326c47a4ac42e3d43011",
     "docs/value_scoring_readiness_gates.md":
         "abb73f82853e831b80879c9f60eb0594472c0738",
     # --- Stage 2D-E runner (this stage) ---

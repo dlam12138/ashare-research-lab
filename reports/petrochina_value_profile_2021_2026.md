@@ -6,6 +6,28 @@ As of trade date `2026-07-31`.
 
 The profile integrates the existing earnings/cash-quality, ROE/ROA, financial-safety, dividend, and PIT valuation layers. Announced and paid dividend yields are separate. Nine exact exchange payloads remain finite evidence gaps; their affected dividend inputs are partial or missing while non-dividend valuation continues.
 
+## Capital-return evidence status
+
+- ROE: `trusted_existing_results_unchanged`; accepted Stage 2D results and methodology are preserved.
+- ROA: `trusted_existing_results_unchanged`; accepted Stage 2D results and methodology are preserved.
+- ROIC: `not_computable_under_strict_evidence_contract`.
+- Decision: `ROIC_NOT_COMPUTABLE_UNDER_STRICT_EVIDENCE_CONTRACT`.
+- Exact gaps: `M2G-ROIC-001`, `M2G-ROIC-002`, `M2G-ROIC-003`,
+  `M2G-ROIC-004`, `M2G-ROIC-005`, `M2G-ROIC-006`, and `M2G-ROIC-007`.
+- Shadow status: `not_run`.
+- Production metric created: `false`.
+- Score eligible: `false`.
+
+No numeric, estimated, proxy, or zero ROIC is reported. This is an evidence
+limitation, not a conclusion that PetroChina has poor capital returns. See
+`docs/decisions/ADR-ROIC-001-strict-evidence-non-computability.md` and
+`reports/m2_explicit_gap_ledger.json`.
+
+Consumer migration: use `capital_return.roic` as the only current ROIC status
+node. Do not interpret absence of a numeric value as zero and do not use the
+historical `integrated_layers.roic=not_evaluated` state; it is now
+`not_computable_under_strict_evidence_contract`.
+
 ## Technical integrity checks
 
 - `future_data_leakage`: `not_observed_within_bounded_evidence`

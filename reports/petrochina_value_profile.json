@@ -66,6 +66,50 @@
     "version_chain_status": "pass"
   },
   "contract": "petrochina_value_profile_v1",
+  "capital_return": {
+    "roe": {
+      "status": "trusted_existing_results_unchanged",
+      "methodology_version": "capital_return_methodology_v1",
+      "acceptance_references": [
+        "acceptance/m2_stage2dc_roe_roa_methodology_contract.md",
+        "acceptance/m2_stage2dd_petrochina_roe_metric_extension.md"
+      ],
+      "score_eligible": false
+    },
+    "roa": {
+      "status": "trusted_existing_results_unchanged",
+      "methodology_version": "capital_return_methodology_v1",
+      "acceptance_references": [
+        "acceptance/m2_stage2dc_roe_roa_methodology_contract.md",
+        "acceptance/m2_stage2df_petrochina_roa_metric_extension.md"
+      ],
+      "score_eligible": false
+    },
+    "roic": {
+      "status": "not_computable_under_strict_evidence_contract",
+      "decision_code": "ROIC_NOT_COMPUTABLE_UNDER_STRICT_EVIDENCE_CONTRACT",
+      "methodology_version": "value_evaluation_methodology_roic_v1_and_plan_v3",
+      "missing_gap_ids": [
+        "M2G-ROIC-001",
+        "M2G-ROIC-002",
+        "M2G-ROIC-003",
+        "M2G-ROIC-004",
+        "M2G-ROIC-005",
+        "M2G-ROIC-006",
+        "M2G-ROIC-007"
+      ],
+      "shadow_status": "not_run",
+      "production_metric_created": false,
+      "score_eligible": false,
+      "decision_record": "docs/decisions/ADR-ROIC-001-strict-evidence-non-computability.md",
+      "gap_ledger": "reports/m2_explicit_gap_ledger.json",
+      "limitations": [
+        "Direct operating-tax evidence is not separately disclosed for the frozen numerator scope.",
+        "Complete associate and joint-venture balances are not separately disclosed for both denominator dates.",
+        "Non-operating financial-asset deductions lack official purpose and linked-income proof."
+      ]
+    }
+  },
   "current_risk_veto_profile": {
     "as_of_date": "2026-08-02",
     "completeness_status": "complete",
@@ -927,7 +971,7 @@
     "earnings_cash_quality": "observed",
     "financial_safety": "observed",
     "roe_roa": "observed",
-    "roic": "not_evaluated"
+    "roic": "not_computable_under_strict_evidence_contract"
   },
   "latest_observations": {
     "a_share_price_to_latest_annual_parent_earnings": {

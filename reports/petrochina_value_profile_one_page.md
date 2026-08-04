@@ -2,8 +2,20 @@
 
 As of `2026-07-31`; evidence status `pass_with_explicit_gaps`; market days `1351`.
 
-Valuation is the selected next slice. The six observations are PIT-safe, unadjusted-price, evidence-aware measures. Dividend announcement and payment windows are intentionally separate. ROIC and market mechanism remain outside scope.
+The six observations are PIT-safe, unadjusted-price, evidence-aware measures. Dividend announcement and payment windows are intentionally separate. Market mechanism remains outside scope.
 Stage 2G.1 status: `pass_with_explicit_gaps`; canonical Fact input: `net_profit.duckdb` (`47a09e98a8062f72b6907bc6ec55927588e4a815517ba8b4c0b595507ada7f0e`).
+
+## Capital-return evidence status
+
+- ROE and ROA: `trusted_existing_results_unchanged`.
+- ROIC: `not_computable_under_strict_evidence_contract`.
+- Decision: `ROIC_NOT_COMPUTABLE_UNDER_STRICT_EVIDENCE_CONTRACT`.
+- Gaps: `M2G-ROIC-001` through `M2G-ROIC-007`.
+- Shadow: `not_run`; production metric created: `false`; score eligible: `false`.
+
+No numeric/proxy ROIC or performance conclusion is emitted. Consumers must use
+the JSON `capital_return.roic` status and must not interpret missing numeric
+output as zero.
 
 | Observation | Value | Status |
 |---|---:|---|

@@ -1,8 +1,11 @@
 # M2 Stage 2J post-ROIC North-Star review
 
-Date: `2026-08-04`  
-Target: PetroChina (`601857.SH`)  
-Starting commit: `ecc150449e83804fa6b91f5a5660387946e22b80`  
+Date: `2026-08-04`
+
+Target: PetroChina (`601857.SH`)
+
+Starting commit: `ecc150449e83804fa6b91f5a5660387946e22b80`
+
 Decision: `M2_CONDITIONAL_CLOSEOUT_ALLOWED`
 
 ## Decision

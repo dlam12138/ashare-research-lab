@@ -191,3 +191,20 @@ Stage 2D-C `this_stage_executes = none_of_A_B_C`。
   `TRUSTED`；repurchase evidence `DOCUMENTED`；dividend realization layer `COMPLETE`；
   valuation PIT foundation `ALLOWED`；ROIC `NOT YET`；Scoring `STILL NOT YET`；下一阶段
   选择 `NORTH-STAR REVIEW REQUIRED`。
+
+## Stage 2J 状态追加（2026-08-04，append-only）
+
+Milestone 2: CONDITIONALLY CLOSED WITH EXPLICIT EVIDENCE GAPS
+
+- North-Star decision: `M2_CONDITIONAL_CLOSEOUT_ALLOWED`。
+- canonical module contract: `m2_module_status_v1`；不存在数字完成百分比。
+- Stage 2F 的 9 个交易所分红证据缺口、Stage 2H 的 2 个风险有界搜索缺口、
+  Stage 2I 的 7 个 ROIC 事实/年度缺口全部进入单一 current ledger，原 ledger 不删除。
+- ROE/ROA 可信结果保持不变。ROIC 状态为
+  `not_computable_under_strict_evidence_contract`，决定代码为
+  `ROIC_NOT_COMPUTABLE_UNDER_STRICT_EVIDENCE_CONTRACT`；没有数值、proxy、shadow、
+  production Metric 或 Metric Result。
+- Scoring: `SCORING_DEFERRED_BY_DESIGN`。不创建 engine、权重、阈值、排名或交通灯。
+- 此状态不表示 M2 完全完成、ROIC 完成、没有治理风险、没有缺失事实或公司低估。
+- 唯一允许的后续门禁为 `M3_NORTH_STAR_PREFLIGHT_ALLOWED`。目标剔除市场代理、
+  统计假设、油价/行业/style controls 和任何市场机制实现均未在 Stage 2J 开始。
