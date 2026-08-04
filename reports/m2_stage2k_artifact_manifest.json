@@ -91,8 +91,8 @@
     },
     {
       "logical_path": "acceptance/m2_stage2k_dimension_scoring_preflight_shadow.md",
-      "sha256": "a28dbbf921882dd744cfe1059b1aa60e33ee40116a1e19a0375517e57080ebb1",
-      "byte_size": 4175
+      "sha256": "1bf73755169cf185f6e118c6856d54982a0d1e9f6916d0941678920730f63ffe",
+      "byte_size": 4172
     }
   ]
 }

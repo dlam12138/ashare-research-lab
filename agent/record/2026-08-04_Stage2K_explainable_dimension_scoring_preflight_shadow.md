@@ -169,4 +169,14 @@ All commands run with `.venv/Scripts/python.exe` on Windows.
 
 ## Final files and Git state
 
-- (filled after commit; protected files are not staged)
+- Branch: `feat/m2-value-assessment-mvp`.
+- Commit: `c8a86732fc2bc0af75578cdfff4a49aa8f43bc2a` (pushed; local == origin).
+- Final CI: `clean-clone` workflow success on `ubuntu-latest` (2m28s) and
+  `windows-latest` (5m5s); only Node 20 deprecation annotation, no failure.
+- Protected files NOT staged/committed: `AGENTS.md` (untracked), `agent/goals/`
+  (untracked), pre-existing Stage 2I.2R wording edit in
+  `acceptance/m2_stage2i2r_official_fact_extraction_and_lineage_closeout.md`
+  (unstaged). Stash remains `stash@{0}` = `cb568efd7eaa6f0fca4b3bb5a1e2200b9341985f`.
+- Default DB unchanged: `4a71d3c7b88c0b16ae46ffb4f9bfbd006d91e0537e559235c9b5a1f919e2fce6`.
+- No main merge, PR, tag, release, force push, or hard reset. M3 and Stage 2K.1
+  not started.

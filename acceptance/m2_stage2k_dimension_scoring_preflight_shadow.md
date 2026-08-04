@@ -1,6 +1,6 @@
 # M2 Stage 2K — explainable independent-dimension scoring preflight and shadow
 
-Status: `PASS` (final subject to CI completion)
+Status: `PASS` (CI-backed; commit `c8a8673`)
 
 ## Decision and Git boundary
 
