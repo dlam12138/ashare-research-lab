@@ -1,6 +1,6 @@
 # M2 Stage 2K.1R4C — A-Share Per-Share Valuation Convention and Quarterly Denominator Acquisition Contract
 
-Status: `PASS` (CI-backed; final CI run recorded after completion)
+Status: `PASS` (CI-backed run `30912836218` on ubuntu + windows)
 
 ## Objective
 
@@ -121,7 +121,7 @@ M3:                            NOT STARTED
 
 ## Git state
 
-- Branch: `feat/m2-value-assessment-mvp`; pushed to `origin`; CI run (to be recorded) PASS
+- Branch: `feat/m2-value-assessment-mvp`; pushed to `origin`; CI run `30912836218` PASS
   on ubuntu + windows.
 - Protected files (AGENTS.md, agent/goals/, Stage 2I.2R edit, default DB, stash) untouched.
 - No force push, no reset --hard, no git clean.

@@ -148,7 +148,7 @@ Recorded as executed:
   erasure; R4B overall decision unchanged.
 - Phase C: quarterly acquisition contract frozen (plan only, no collection).
 - Phase D: decision `A_SHARE_CONVENTION_FROZEN_ACQUISITION_ALLOWED`.
-- Status: `completed` (CI run `30910776267` in progress; PASS recorded once confirmed).
+- Status: `completed` (CI-backed PASS; run `30912836218` PASS on ubuntu + windows).
 
 ## Remaining issues
 
@@ -166,8 +166,9 @@ Recorded as executed:
 
 ## Final files and Git state
 
-- Branch: `feat/m2-value-assessment-mvp`; pushed to `origin`; commit `fbfc68b`.
-- CI run `30910776267` triggered by the push (status recorded once complete).
+- Branch: `feat/m2-value-assessment-mvp`; pushed to `origin`; commits `fbfc68b`,
+  `68e324e`.
+- CI run `30912836218` PASS on ubuntu + windows (clean-clone jobs).
 - New/modified files: R4B record (status only), `sensitivity.py`, `artifact_manifest.py`,
   `m2_stage2k1r3_closeout.py`, R4B matrix/decision/review-doc/test, ADR-002, acquisition
   plan/contract/coverage matrix, R4C decision, R4C artifact manifest, R4C test, acceptance,
