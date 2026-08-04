@@ -1,0 +1,317 @@
+{
+  "schema": "pit_valuation_denominator_readiness_matrix_v1",
+  "version": "1.0",
+  "date": "2026-08-04",
+  "symbol": "601857.SH",
+  "as_of_date": "2026-07-31",
+  "review_only": true,
+  "non_production": true,
+  "score_eligible": false,
+  "decision": "PIT_DENOMINATOR_FACT_ACQUISITION_REQUIRED",
+  "route": "UNRESOLVED",
+  "route_recommendation": "MARKET_CAP",
+  "coverage_status_enum": [
+    "ready_trusted",
+    "ready_with_explicit_limitations",
+    "partial",
+    "missing",
+    "not_trusted"
+  ],
+  "requirements": [
+    {
+      "requirement_id": "MKT-01",
+      "metric_id": "close",
+      "data_role": "numerator_price_market",
+      "required_fields": [
+        "close",
+        "trade_date",
+        "available_at",
+        "provider_object_identity",
+        "adjustment"
+      ],
+      "candidate_artifacts": [
+        "market_data_snapshot_registry.json",
+        "baostock/akshare daily parquet"
+      ],
+      "actual_artifact_paths": [
+        "events/market_data_snapshot_registry.json",
+        "tmp/market_cache/baostock/defd0b9507c0d87cf9d12864923eb24573e4edee28d7b67b9ce319ab4d91a764.parquet",
+        "runs/stage2g/stage2g_valuation_pit_20260801/valuation_observations.parquet"
+      ],
+      "contract_or_schema": "market_data_snapshot_registry_v2",
+      "stable_record_ids_available": true,
+      "available_at_available": true,
+      "historical_versions_available": true,
+      "earliest_supported_date": "2021-01-04",
+      "latest_supported_date": "2026-07-31",
+      "warmup_start_required": false,
+      "coverage_status": "ready_trusted",
+      "gap_ids": [],
+      "acquisition_needed": false,
+      "implementation_complexity": "low",
+      "blocks_3y": false,
+      "blocks_5y": false,
+      "notes": "Unadjusted close-price series; two reconciled providers (baostock/akshare); PIT exclusion by market_data_as_of_date. This is the current close-price observation set, not a valuation percentile."
+    },
+    {
+      "requirement_id": "MKT-02",
+      "metric_id": "total_market_cap",
+      "data_role": "numerator_market_cap_route_a",
+      "required_fields": [
+        "total_market_cap",
+        "trade_date",
+        "available_at"
+      ],
+      "candidate_artifacts": [],
+      "actual_artifact_paths": [],
+      "contract_or_schema": null,
+      "stable_record_ids_available": false,
+      "available_at_available": false,
+      "historical_versions_available": false,
+      "earliest_supported_date": null,
+      "latest_supported_date": null,
+      "warmup_start_required": false,
+      "coverage_status": "missing",
+      "gap_ids": [
+        "PITG-MKT-MCAP-001"
+      ],
+      "acquisition_needed": true,
+      "implementation_complexity": "medium",
+      "blocks_3y": true,
+      "blocks_5y": true,
+      "notes": "No historical total_market_cap series exists in the committed market frame. Route A numerator is missing; cannot be derived from close alone without a trusted share count."
+    },
+    {
+      "requirement_id": "MKT-03",
+      "metric_id": "total_shares_adjusted_shares",
+      "data_role": "numerator_per_share_route_b",
+      "required_fields": [
+        "total_shares",
+        "a_h_split",
+        "share_change_effective_date",
+        "adjustment",
+        "available_at"
+      ],
+      "candidate_artifacts": [
+        "share_capital_timeline.json"
+      ],
+      "actual_artifact_paths": [
+        "runs/stage2g/stage2g_valuation_pit_20260801/share_capital_timeline.json"
+      ],
+      "contract_or_schema": "ordinary_share_capital_timeline_v1",
+      "stable_record_ids_available": "partial",
+      "available_at_available": true,
+      "historical_versions_available": false,
+      "earliest_supported_date": "2021-09-09",
+      "latest_supported_date": "2026-07-31",
+      "warmup_start_required": false,
+      "coverage_status": "partial",
+      "gap_ids": [
+        "PITG-MKT-SHARES-001"
+      ],
+      "acquisition_needed": true,
+      "implementation_complexity": "high",
+      "blocks_3y": true,
+      "blocks_5y": true,
+      "notes": "Only total ordinary shares (183020977818, constant) present; A/H split missing (share_validation_status=missing_evidence_a_h_split); canonical_market_cap_definition=false. Not usable for per-share A-share metrics."
+    },
+    {
+      "requirement_id": "FIN-01",
+      "metric_id": "pe_ttm_net_profit",
+      "data_role": "denominator_pe_ttm",
+      "required_fields": [
+        "quarterly_cumulative_net_profit",
+        "single_quarter_net_profit",
+        "available_at",
+        "restatement_version",
+        "stable_fact_or_metric_result_id"
+      ],
+      "candidate_artifacts": [
+        "roic_canonical_fact_inventory_v2.json"
+      ],
+      "actual_artifact_paths": [
+        "config/roic_canonical_fact_inventory_v2.json"
+      ],
+      "contract_or_schema": "canonical_fact_inventory_v2",
+      "stable_record_ids_available": "partial",
+      "available_at_available": true,
+      "historical_versions_available": true,
+      "earliest_supported_date": "2021-12-31",
+      "latest_supported_date": "2025-12-31",
+      "warmup_start_required": true,
+      "coverage_status": "missing",
+      "gap_ids": [
+        "PITG-FIN-NP-TTM-001"
+      ],
+      "acquisition_needed": true,
+      "implementation_complexity": "high",
+      "blocks_3y": true,
+      "blocks_5y": true,
+      "notes": "net_profit_attributable_to_parent is annual-only (2021-2025). No quarterly cumulative or single-quarter values exist, so a TTM reconstruction is not deterministically constructible. Annual facts are insufficient for a daily-frequency TTM."
+    },
+    {
+      "requirement_id": "FIN-02",
+      "metric_id": "pb_equity",
+      "data_role": "denominator_pb",
+      "required_fields": [
+        "equity_attributable_to_parent",
+        "period_end",
+        "available_at",
+        "restatement_version",
+        "stable_fact_or_metric_result_id"
+      ],
+      "candidate_artifacts": [
+        "roic_canonical_fact_inventory_v2.json"
+      ],
+      "actual_artifact_paths": [
+        "config/roic_canonical_fact_inventory_v2.json"
+      ],
+      "contract_or_schema": "canonical_fact_inventory_v2",
+      "stable_record_ids_available": true,
+      "available_at_available": true,
+      "historical_versions_available": true,
+      "earliest_supported_date": "2020-12-31",
+      "latest_supported_date": "2025-12-31",
+      "warmup_start_required": false,
+      "coverage_status": "ready_with_explicit_limitations",
+      "gap_ids": [
+        "PITG-FIN-PB-MRQ-001"
+      ],
+      "acquisition_needed": false,
+      "implementation_complexity": "medium",
+      "blocks_3y": false,
+      "blocks_5y": false,
+      "notes": "equity_attributable_to_parent is an annual year-end instant fact with available_at and restatement versions. PB at annual step resolution is PIT-constructible; MRQ (most recent quarter) is not available. Earliest-window dates (e.g. 2021-01-04..2021-03-30) fall back to the 2020 equity fact that is only available_at 2022-03-31, creating a historical-availability gap."
+    },
+    {
+      "requirement_id": "FIN-03",
+      "metric_id": "ps_ttm_revenue",
+      "data_role": "denominator_ps_ttm",
+      "required_fields": [
+        "quarterly_cumulative_revenue",
+        "single_quarter_revenue",
+        "available_at",
+        "restatement_version",
+        "stable_fact_or_metric_result_id"
+      ],
+      "candidate_artifacts": [
+        "roic_canonical_fact_inventory_v2.json"
+      ],
+      "actual_artifact_paths": [
+        "config/roic_canonical_fact_inventory_v2.json"
+      ],
+      "contract_or_schema": "canonical_fact_inventory_v2",
+      "stable_record_ids_available": "partial",
+      "available_at_available": true,
+      "historical_versions_available": true,
+      "earliest_supported_date": "2021-12-31",
+      "latest_supported_date": "2025-12-31",
+      "warmup_start_required": true,
+      "coverage_status": "missing",
+      "gap_ids": [
+        "PITG-FIN-REV-TTM-001"
+      ],
+      "acquisition_needed": true,
+      "implementation_complexity": "high",
+      "blocks_3y": true,
+      "blocks_5y": true,
+      "notes": "revenue is annual-only (2021-2025). No quarterly values exist, so a TTM revenue reconstruction is not deterministically constructible."
+    },
+    {
+      "requirement_id": "FIN-04",
+      "metric_id": "share_capital_canonical",
+      "data_role": "denominator_share_capital_route_b",
+      "required_fields": [
+        "total_shares",
+        "a_h_split",
+        "share_change_effective_date",
+        "corporate_actions",
+        "stable_share_context_id",
+        "available_at"
+      ],
+      "candidate_artifacts": [
+        "share_capital_timeline.json"
+      ],
+      "actual_artifact_paths": [
+        "runs/stage2g/stage2g_valuation_pit_20260801/share_capital_timeline.json"
+      ],
+      "contract_or_schema": "ordinary_share_capital_timeline_v1",
+      "stable_record_ids_available": false,
+      "available_at_available": true,
+      "historical_versions_available": false,
+      "earliest_supported_date": "2021-09-09",
+      "latest_supported_date": "2026-07-31",
+      "warmup_start_required": false,
+      "coverage_status": "missing",
+      "gap_ids": [
+        "PITG-FIN-SHARE-CAPITAL-001"
+      ],
+      "acquisition_needed": true,
+      "implementation_complexity": "high",
+      "blocks_3y": true,
+      "blocks_5y": true,
+      "notes": "No canonical A-share share-capital timeline with effective dates and corporate actions exists in the fact inventory. The existing timeline is total-ordinary (A+H), constant, and non-canonical for market cap."
+    },
+    {
+      "requirement_id": "TIME-01",
+      "metric_id": "available_at",
+      "data_role": "pit_context",
+      "required_fields": [
+        "available_at_on_market_records",
+        "available_at_on_financial_records"
+      ],
+      "candidate_artifacts": [
+        "market_observation_set",
+        "canonical_fact_inventory_v2"
+      ],
+      "actual_artifact_paths": [
+        "src/ashare_research/scoring/market_observation_set.py",
+        "config/roic_canonical_fact_inventory_v2.json"
+      ],
+      "contract_or_schema": "value_dimension_scoring_time_contract_v1",
+      "stable_record_ids_available": true,
+      "available_at_available": true,
+      "historical_versions_available": true,
+      "earliest_supported_date": "2021-01-04",
+      "latest_supported_date": "2026-07-31",
+      "warmup_start_required": false,
+      "coverage_status": "ready_trusted",
+      "gap_ids": [],
+      "acquisition_needed": false,
+      "implementation_complexity": "low",
+      "blocks_3y": false,
+      "blocks_5y": false,
+      "notes": "Market records carry available_at (market_data_as_of_date); financial facts carry available_at at announcement date. PIT backward-selection and the next-trading-day effective rule are proposable as a draft contract."
+    },
+    {
+      "requirement_id": "TIME-02",
+      "metric_id": "restatement_supersession",
+      "data_role": "pit_context",
+      "required_fields": [
+        "restatement_version",
+        "supersedes_fact_id",
+        "available_at"
+      ],
+      "candidate_artifacts": [
+        "roic_canonical_fact_inventory_v2.json"
+      ],
+      "actual_artifact_paths": [
+        "config/roic_canonical_fact_inventory_v2.json"
+      ],
+      "contract_or_schema": "canonical_fact_inventory_v2",
+      "stable_record_ids_available": true,
+      "available_at_available": true,
+      "historical_versions_available": true,
+      "earliest_supported_date": "2020-12-31",
+      "latest_supported_date": "2025-12-31",
+      "warmup_start_required": false,
+      "coverage_status": "ready_trusted",
+      "gap_ids": [],
+      "acquisition_needed": false,
+      "implementation_complexity": "low",
+      "blocks_3y": false,
+      "blocks_5y": false,
+      "notes": "Financial facts carry restatement_version and supersedes_fact_id with available_at; the pre-restatement value is preserved. Restatement policy is usable for the denominator facts that exist."
+    }
+  ]
+}

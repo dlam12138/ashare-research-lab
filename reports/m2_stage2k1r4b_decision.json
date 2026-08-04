@@ -1,0 +1,44 @@
+{
+  "schema": "m2_stage2k1r4b_decision_v1",
+  "version": "1.0",
+  "date": "2026-08-04",
+  "symbol": "601857.SH",
+  "phase": "B",
+  "decision": "PIT_DENOMINATOR_FACT_ACQUISITION_REQUIRED",
+  "allowed_decisions": [
+    "PIT_VALUATION_IMPLEMENTATION_ALLOWED",
+    "PIT_DENOMINATOR_FACT_ACQUISITION_REQUIRED",
+    "EXTERNAL_DAILY_VALUATION_SOURCE_PREFLIGHT_REQUIRED",
+    "PIT_VALUATION_NOT_FEASIBLE_UNDER_CURRENT_CONTRACT"
+  ],
+  "route": "UNRESOLVED",
+  "route_recommendation": "MARKET_CAP",
+  "rationale": {
+    "market_data_sufficient": true,
+    "denominator_facts_incomplete": true,
+    "reason": "Historical PE/PB/PS PIT valuation is not implementable from committed data: quarterly net profit (PE-TTM), quarterly revenue (PS-TTM), quarterly equity granularity (PB-MRQ), a canonical historical total_market_cap series, and a canonical A/H-split share-capital timeline are absent. The current financial facts are annual-only; the only share timeline is total-ordinary (A+H) and non-canonical for market cap."
+  },
+  "blocks": {
+    "pe_ttm": ["FIN-01", "MKT-02"],
+    "pb": ["FIN-02_limited", "MKT-02"],
+    "ps_ttm": ["FIN-03", "MKT-02"],
+    "share_capital": ["FIN-04", "MKT-03"]
+  },
+  "implementation": {
+    "series_builder_built": false,
+    "downloads": false,
+    "scoring_expansion": false,
+    "peer_acquisition": false,
+    "m3_started": false
+  },
+  "non_production": true,
+  "score_eligible": false,
+  "boundaries_hold": {
+    "close_percentile_not_valuation_percentile": true,
+    "current_denominator_backfill_forbidden": true,
+    "annual_value_not_effective_before_report_end": true,
+    "negative_pe_not_cheap": true,
+    "static_shares_not_used_for_cross_period_per_share": true,
+    "external_percentile_not_trusted_without_lineage": true
+  }
+}
