@@ -80,7 +80,7 @@ def test_transform_registry_layer_separation():
 
 def test_capsule_v3_24_components_with_resolved_records():
     capsule = _capsule()
-    assert capsule["schema"] == "petrochina_score_input_capsule_v3"
+    assert capsule["schema"] == "petrochina_score_input_capsule_v4"
     assert capsule["component_count"] == 24
     for cid, comp in capsule["components"].items():
         # every component binds concrete upstream records, not just a file

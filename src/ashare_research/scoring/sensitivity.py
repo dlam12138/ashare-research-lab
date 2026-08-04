@@ -584,21 +584,25 @@ def recompute_dimension_summary_from_ledger(
 ) -> dict[str, Any]:
     """Recompute a dimension's FULL summary (base metrics, gate blocks, and
     ``production_readiness_reason``) entirely from its ledger scenarios. This is
-    the single source of truth used by both ``build_sensitivity_v6`` and
+    the single source of truth used by both ``build_sensitivity_v7`` and
     ``validate_sensitivity_ledger``; any summary field that cannot be derived
     from the ledger is a validator error."""
     summary = _summary_from_ledger(dimension_id, scenarios, tolerance)
     return _ledger_summary_gate_blocks(summary, scenarios, confidence_grade, confidence_grade_value)
 
 
-def build_sensitivity_v6(
+def build_sensitivity_v7(
     capsule: dict[str, Any], confidence: dict[str, Any] | None = None
 ) -> dict[str, Any]:
-    """Build the sensitivity v6 report with a full per-scenario ledger.
+    """Build the sensitivity v7 report with a full per-scenario ledger.
 
-    The six frozen scenario classes are unchanged from v5. The summary of every
-    scored dimension is recomputed entirely from the ledger (never from a
-    side-channel), and the confidence-threshold scenarios are included in
+    v7 is the cross-platform identity contract for the sensitivity ledger: the
+    scenario ids are derived from the cross-platform-deterministic capsule v4
+    digest (LF-normalized artifact digests), so identical fingerprint inputs on
+    ubuntu and windows produce identical scenario ids and an identical ledger
+    digest. The six frozen scenario classes are unchanged from v6. The summary
+    of every scored dimension is recomputed entirely from the ledger (never from
+    a side-channel), and the confidence-threshold scenarios are included in
     ``scenario_count``, ``scenario_type_counts``, and ``confidence_block_count``.
     ``stability_tolerance`` stays frozen at 1.0; NOT_STABLE is preserved unless
     the frozen scenario set independently proves otherwise.
@@ -820,8 +824,8 @@ def build_sensitivity_v6(
         all_scenarios.extend(s.to_dict() for s in scenarios)
 
     report = {
-        "schema": "petrochina_dimension_scoring_sensitivity_v6",
-        "version": "6.0",
+        "schema": "petrochina_dimension_scoring_sensitivity_v7",
+        "version": "7.0",
         "scenario_contract_version": SCENARIO_CONTRACT_VERSION,
         "scenarios": all_scenarios,
         "dimensions": dimensions,
@@ -860,8 +864,8 @@ def validate_sensitivity_ledger(report: dict[str, Any]) -> dict[str, Any]:
     expected_digest = ledger_digest(report)
     if report.get("ledger_digest") != expected_digest:
         errors.append("ledger_digest mismatch")
-    if report.get("schema") != "petrochina_dimension_scoring_sensitivity_v6":
-        errors.append("schema is not sensitivity_v6")
+    if report.get("schema") != "petrochina_dimension_scoring_sensitivity_v7":
+        errors.append("schema is not sensitivity_v7")
     scenarios = report.get("scenarios", [])
     for dim in cap.SCORED_DIMENSIONS:
         dim_scen = [s for s in scenarios if s.get("dimension_id") == dim]

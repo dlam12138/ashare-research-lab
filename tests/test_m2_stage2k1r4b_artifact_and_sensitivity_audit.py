@@ -41,10 +41,10 @@ def _lineage_report(capsule: dict) -> dict:
     return rep
 
 
-def _sensitivity_v6() -> dict:
+def _sensitivity_v7() -> dict:
     capsule = _capsule()
     confidence = confidence_mod.build_confidence(capsule, _lineage_report(capsule))
-    return sensitivity_mod.build_sensitivity_v6(capsule, confidence)
+    return sensitivity_mod.build_sensitivity_v7(capsule, confidence)
 
 
 def _run_cli(monkeypatch, *argv) -> int:
@@ -306,8 +306,8 @@ def test_cli_verify_manifest_uses_real_verifier(monkeypatch, tmp_path):
 # ---------------------------------------------------------------------------
 
 def test_sensitivity_v6_schema_and_contract():
-    s = _sensitivity_v6()
-    assert s["schema"] == "petrochina_dimension_scoring_sensitivity_v6"
+    s = _sensitivity_v7()
+    assert s["schema"] == "petrochina_dimension_scoring_sensitivity_v7"
     assert s["scenario_contract_version"] == "1.0"
     assert s["non_production"] is True
     assert s["overall_score_prohibited"] is True
@@ -317,7 +317,7 @@ def test_sensitivity_v6_schema_and_contract():
 
 
 def test_sensitivity_six_scenario_classes_all_present():
-    s = _sensitivity_v6()
+    s = _sensitivity_v7()
     types = {sc["scenario_type"] for sc in s["scenarios"]}
     assert types == {
         "weight_perturbation",
@@ -330,7 +330,7 @@ def test_sensitivity_six_scenario_classes_all_present():
 
 
 def test_sensitivity_current_gap_roic_scenario_exists():
-    s = _sensitivity_v6()
+    s = _sensitivity_v7()
     modes = {
         sc["scenario_parameter_value"]
         for sc in s["scenarios"]
@@ -340,7 +340,7 @@ def test_sensitivity_current_gap_roic_scenario_exists():
 
 
 def test_sensitivity_confidence_scenarios_counted():
-    s = _sensitivity_v6()
+    s = _sensitivity_v7()
     for dim in cap.SCORED_DIMENSIONS:
         d = s["dimensions"][dim]
         conf_in_ledger = sum(
@@ -363,7 +363,7 @@ def test_sensitivity_confidence_scenarios_counted():
 
 
 def test_sensitivity_scenario_type_counts_match_ledger():
-    s = _sensitivity_v6()
+    s = _sensitivity_v7()
     for dim in cap.SCORED_DIMENSIONS:
         ledger_counts = {}
         for sc in s["scenarios"]:
@@ -373,20 +373,20 @@ def test_sensitivity_scenario_type_counts_match_ledger():
 
 
 def test_sensitivity_scenario_ids_unique():
-    s = _sensitivity_v6()
+    s = _sensitivity_v7()
     ids = [sc["scenario_id"] for sc in s["scenarios"]]
     assert len(ids) == len(set(ids))
 
 
 def test_sensitivity_same_input_a_b_digest_same():
-    a = _sensitivity_v6()
-    b = _sensitivity_v6()
+    a = _sensitivity_v7()
+    b = _sensitivity_v7()
     assert a["ledger_digest"] == b["ledger_digest"]
     assert a["scenarios"] == b["scenarios"]
 
 
 def test_sensitivity_tamper_fails_validation():
-    s = _sensitivity_v6()
+    s = _sensitivity_v7()
     s2 = json.loads(json.dumps(s))
     s2["scenarios"][0]["scenario_score"] = 999.0
     v = sensitivity_mod.validate_sensitivity_ledger(s2)
@@ -395,7 +395,7 @@ def test_sensitivity_tamper_fails_validation():
 
 
 def test_sensitivity_digest_tamper_fails_validation():
-    s = _sensitivity_v6()
+    s = _sensitivity_v7()
     s2 = json.loads(json.dumps(s))
     s2["ledger_digest"] = "0" * 64
     v = sensitivity_mod.validate_sensitivity_ledger(s2)
@@ -404,13 +404,13 @@ def test_sensitivity_digest_tamper_fails_validation():
 
 
 def test_sensitivity_summary_recomputable_from_ledger():
-    s = _sensitivity_v6()
+    s = _sensitivity_v7()
     v = sensitivity_mod.validate_sensitivity_ledger(s)
     assert v["status"] == "pass", v["errors"]
 
 
 def test_sensitivity_confidence_gate_does_not_change_coverage():
-    s = _sensitivity_v6()
+    s = _sensitivity_v7()
     for dim in cap.SCORED_DIMENSIONS:
         base_cov = None
         for sc in s["scenarios"]:
@@ -422,7 +422,7 @@ def test_sensitivity_confidence_gate_does_not_change_coverage():
 
 
 def test_sensitivity_coverage_gate_does_not_change_confidence():
-    s = _sensitivity_v6()
+    s = _sensitivity_v7()
     for dim in cap.SCORED_DIMENSIONS:
         grade = s["dimensions"][dim]["confidence_gate_sensitivity"]["grade"]
         for sc in s["scenarios"]:
@@ -431,7 +431,7 @@ def test_sensitivity_coverage_gate_does_not_change_confidence():
 
 
 def test_sensitivity_synthetic_roic_flags_complete():
-    s = _sensitivity_v6()
+    s = _sensitivity_v7()
     synth = [
         sc for sc in s["scenarios"]
         if sc["scenario_type"] == "missing_roic"
@@ -446,19 +446,19 @@ def test_sensitivity_synthetic_roic_flags_complete():
 
 
 def test_sensitivity_tolerance_still_one():
-    s = _sensitivity_v6()
+    s = _sensitivity_v7()
     for dim in cap.SCORED_DIMENSIONS:
         assert s["dimensions"][dim]["stability_tolerance"] == 1.0
 
 
 def test_sensitivity_stability_not_stable_preserved():
-    s = _sensitivity_v6()
+    s = _sensitivity_v7()
     for dim in cap.SCORED_DIMENSIONS:
         assert s["dimensions"][dim]["stability_status"] == "NOT_STABLE"
 
 
 def test_sensitivity_no_overall_rank_target():
-    s = _sensitivity_v6()
+    s = _sensitivity_v7()
     assert "overall_score" not in s
     assert "recommendation" not in s
     assert "ranking" not in s
@@ -469,6 +469,6 @@ def test_sensitivity_no_overall_rank_target():
 
 def test_sensitivity_module_does_not_mutate_registry():
     registry_before = _load(cap.REGISTRY_PATH)
-    _sensitivity_v6()
+    _sensitivity_v7()
     registry_after = _load(cap.REGISTRY_PATH)
     assert registry_before == registry_after

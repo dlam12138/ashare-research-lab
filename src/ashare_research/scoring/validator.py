@@ -48,7 +48,9 @@ def validate_capsule(
     registry = _load(cap.UPSTREAM_REGISTRY)
     by_id = {c["component_id"]: c for c in registry["components"]}
 
-    if capsule.get("schema") != "petrochina_score_input_capsule_v3":
+    if capsule.get("schema") not in {
+        "petrochina_score_input_capsule_v4",
+    }:
         errors.append(f"schema mismatch: {capsule.get('schema')!r}")
     if capsule.get("symbol") != cap.SYMBOL:
         errors.append(f"symbol mismatch: {capsule.get('symbol')!r}")

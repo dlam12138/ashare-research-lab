@@ -46,6 +46,8 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
+from ashare_research.scoring import content_digest as cd
+
 _CANONICAL_SEP = (",", ":")
 
 # Explicit allow-list of manifest schema versions this verifier understands.
@@ -54,10 +56,21 @@ ALLOWED_MANIFEST_SCHEMAS = frozenset(
         "m2_stage2k1r4a_artifact_manifest_v1",
         "m2_stage2k1r4b_artifact_manifest_v1",
         "m2_stage2k1r4c_artifact_manifest_v1",
+        "m2_stage2k1r4c1_artifact_manifest_v2",
     }
 )
 
 REQUIRED_FILE_FIELDS = ("path", "sha256", "byte_size")
+
+#: v2 entry field carrying the digest algorithm (ContentDigest contract).
+V2_ALGORITHM_FIELD = "digest_algorithm"
+
+#: v2 schemas: the digest is computed with the registered ContentDigest
+#: algorithm instead of the v1 LF-normalized default.
+V2_SCHEMAS = frozenset({"m2_stage2k1r4c1_artifact_manifest_v2"})
+
+
+_KNOWN_ALGORITHMS = frozenset(cd._KNOWN_ALGORITHMS)
 
 
 def normalize_lf(data: bytes) -> bytes:
@@ -139,9 +152,10 @@ def _is_valid_relative_logical_path(path: str) -> bool:
     return not (len(path) >= 2 and path[1] == ":")
 
 
-def _classify_entry(entry: Any, index: int) -> tuple[str | None, list[str]]:
+def _classify_entry(entry: Any, index: int, *, is_v2: bool) -> tuple[str | None, list[str]]:
     """Return (path, errors) for one manifest file entry. A non-dict or missing
-    required field yields a contract error with no usable path."""
+    required field yields a contract error with no usable path. For v2 schemas
+    the ``digest_algorithm`` field is required and must be a known algorithm."""
     if not isinstance(entry, dict):
         return None, [f"files[{index}] is not an object"]
     missing = [f for f in REQUIRED_FILE_FIELDS if f not in entry]
@@ -159,6 +173,12 @@ def _classify_entry(entry: Any, index: int) -> tuple[str | None, list[str]]:
         errs.append(f"files[{index}] byte_size must be a non-negative integer")
     if not _is_valid_relative_logical_path(path):
         errs.append(f"files[{index}] path is not a valid relative logical path: {path!r}")
+    if is_v2:
+        algorithm = entry.get(V2_ALGORITHM_FIELD)
+        if not isinstance(algorithm, str) or algorithm not in _KNOWN_ALGORITHMS:
+            errs.append(
+                f"files[{index}] missing or unknown {V2_ALGORITHM_FIELD}: {algorithm!r}"
+            )
     return path, errs
 
 
@@ -216,6 +236,7 @@ def verify_artifact_manifest(
     contract_errors: list[str] = []
     if not isinstance(schema, str) or schema not in ALLOWED_MANIFEST_SCHEMAS:
         contract_errors.append(f"unsupported manifest schema: {schema!r}")
+    is_v2 = isinstance(schema, str) and schema in V2_SCHEMAS
 
     files = manifest.get("files")
     if not isinstance(files, list):
@@ -228,7 +249,7 @@ def verify_artifact_manifest(
     paths: list[str] = []
     entry_errors: list[tuple[str, list[str]]] = []
     for i, entry in enumerate(files):
-        path, errs = _classify_entry(entry, i)
+        path, errs = _classify_entry(entry, i, is_v2=is_v2)
         if path is not None:
             paths.append(path)
         if errs:
@@ -265,7 +286,7 @@ def verify_artifact_manifest(
     size_mismatches: list[str] = []
     invalid_paths: list[str] = []
     for i, entry in enumerate(files):
-        path, errs = _classify_entry(entry, i)
+        path, errs = _classify_entry(entry, i, is_v2=is_v2)
         if errs:
             errors.extend(errs)
             if path is not None:
@@ -288,10 +309,17 @@ def verify_artifact_manifest(
             missing_files.append(path)
             errors.append(f"missing file: {path}")
             continue
-        data = target.read_bytes()
-        norm = normalize_lf(data)
-        actual_hash = _sha256_bytes(norm)
-        actual_size = len(norm)
+        if is_v2:
+            digest = cd.digest_file(
+                target, algorithm=entry[V2_ALGORITHM_FIELD]
+            )
+            actual_hash = digest.sha256
+            actual_size = digest.byte_size
+        else:
+            data = target.read_bytes()
+            norm = normalize_lf(data)
+            actual_hash = _sha256_bytes(norm)
+            actual_size = len(norm)
         entry_ok = True
         if actual_hash != entry["sha256"]:
             hash_mismatches.append(path)

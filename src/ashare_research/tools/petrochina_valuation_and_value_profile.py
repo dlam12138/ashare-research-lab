@@ -161,11 +161,14 @@ def _json_default(value: Any) -> Any:
 
 def _write_json(path: Path, value: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(
-        json.dumps(value, ensure_ascii=False, sort_keys=True, indent=2, default=_json_default)
-        + "\n",
-        encoding="utf-8",
-    )
+    # explicit LF newline: Git .gitattributes forces eol=lf on JSON, and a
+    # Windows text-mode write would otherwise leave CRLF on disk (a cross-
+    # platform identity trap for raw-bytes artifact hashing).
+    with path.open("w", encoding="utf-8", newline="\n") as f:
+        f.write(
+            json.dumps(value, ensure_ascii=False, sort_keys=True, indent=2, default=_json_default)
+            + "\n"
+        )
 
 
 def _package_version(package: str) -> str:

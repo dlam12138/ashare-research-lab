@@ -122,6 +122,8 @@ def _record_dict(r: lineage.ResolvedRecord) -> dict[str, Any]:
         "artifact_logical_path": r.artifact_logical_path,
         "artifact_contract": r.artifact_contract,
         "artifact_sha256": r.artifact_sha256,
+        "artifact_digest_algorithm": r.artifact_digest_algorithm,
+        "artifact_byte_size": r.artifact_byte_size,
         "field_path": r.field_path,
         "symbol": r.symbol,
         "period": r.period,
@@ -152,7 +154,15 @@ def score_input_id_for(component_id: str, score_input: dict[str, Any]) -> str:
         "upstream_ref_type": score_input.get("upstream_ref_type"),
         "record_ids": score_input.get("operand_record_ids"),
         "record_digests": score_input.get("operand_record_digests"),
-        "artifact_sha256s": [r["artifact_sha256"] for r in score_input.get("resolved_records", [])],
+        "artifact_digests": [
+            {
+                "artifact_logical_path": r["artifact_logical_path"],
+                "algorithm": r["artifact_digest_algorithm"],
+                "sha256": r["artifact_sha256"],
+                "byte_size": r["artifact_byte_size"],
+            }
+            for r in score_input.get("resolved_records", [])
+        ],
         "transform_id": score_input.get("transform_id"),
         "transform_version": score_input.get("transform_version"),
         "output_value": score_input.get("selected_value_decimal"),
@@ -306,8 +316,8 @@ def build_capsule(
         )
 
     capsule = {
-        "schema": "petrochina_score_input_capsule_v3",
-        "version": "3.0",
+        "schema": "petrochina_score_input_capsule_v4",
+        "version": "4.0",
         "symbol": SYMBOL,
         "time_contract": tc,
         "dimensions": DIMENSIONS,

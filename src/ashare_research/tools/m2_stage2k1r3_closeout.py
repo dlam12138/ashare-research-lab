@@ -36,8 +36,8 @@ EXIT_CONTRACT_ERROR = 2
 EXIT_EXTERNAL_CACHE_MISSING = 3
 
 # Default manifest verified by `verify-artifacts` when --manifest is not given.
-# This is the current stage's committed artifact manifest.
-DEFAULT_MANIFEST = cap.ROOT / "reports" / "m2_stage2k1r4c_artifact_manifest.json"
+# This is the current stage's committed artifact manifest (stage 2K.1R4C.1, v2).
+DEFAULT_MANIFEST = cap.ROOT / "reports" / "m2_stage2k1r4c1_artifact_manifest.json"
 
 # subcommands that run a validation/verification gate and must exit 1 on failure
 CHECK_COMMANDS = {"validate", "verify-artifacts"}
@@ -164,7 +164,7 @@ def main() -> int:
             capsule = _build_capsule(cache_root, fixture_root, market_registry, mvm)
             rep = _lineage_report(cache_root, fixture_root, market_registry, mvm)
             confidence = confidence_mod.build_confidence(capsule, rep)
-            result = sensitivity_mod.build_sensitivity_v6(capsule, confidence)
+            result = sensitivity_mod.build_sensitivity_v7(capsule, confidence)
         elif args.command == "verify-artifacts":
             manifest_path = Path(args.manifest) if args.manifest else DEFAULT_MANIFEST
             if not manifest_path.is_file():

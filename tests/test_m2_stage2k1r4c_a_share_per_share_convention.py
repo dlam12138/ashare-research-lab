@@ -55,10 +55,10 @@ def _lineage_report(capsule: dict) -> dict:
     return rep
 
 
-def _sensitivity_v6() -> dict:
+def _sensitivity_v7() -> dict:
     capsule = _capsule()
     confidence = confidence_mod.build_confidence(capsule, _lineage_report(capsule))
-    return sensitivity_mod.build_sensitivity_v6(capsule, confidence)
+    return sensitivity_mod.build_sensitivity_v7(capsule, confidence)
 
 
 def _recompute_digest_and_validate(report: dict) -> dict:
@@ -94,33 +94,33 @@ def test_r4b_record_starting_state_preserved():
 # ---------------------------------------------------------------------------
 
 def test_sensitivity_full_summary_recomputable_from_ledger():
-    v = sensitivity_mod.validate_sensitivity_ledger(_sensitivity_v6())
+    v = sensitivity_mod.validate_sensitivity_ledger(_sensitivity_v7())
     assert v["status"] == "pass", v["errors"]
 
 
 def test_sensitivity_tamper_coverage_gate_fails():
-    s = _sensitivity_v6()
+    s = _sensitivity_v7()
     dim = "enterprise_quality"
     s["dimensions"][dim]["coverage_gate_sensitivity"]["passes"][0] = "fail"
     assert _recompute_digest_and_validate(s)["status"] == "fail"
 
 
 def test_sensitivity_tamper_confidence_gate_fails():
-    s = _sensitivity_v6()
+    s = _sensitivity_v7()
     dim = "enterprise_quality"
     s["dimensions"][dim]["confidence_gate_sensitivity"]["grade"] = "high"
     assert _recompute_digest_and_validate(s)["status"] == "fail"
 
 
 def test_sensitivity_tamper_production_readiness_reason_fails():
-    s = _sensitivity_v6()
+    s = _sensitivity_v7()
     dim = "enterprise_quality"
     s["dimensions"][dim]["production_readiness_reason"] = "fake"
     assert _recompute_digest_and_validate(s)["status"] == "fail"
 
 
 def test_sensitivity_tamper_scenario_and_summary_sync_fails():
-    s = _sensitivity_v6()
+    s = _sensitivity_v7()
     dim = "enterprise_quality"
     s["scenarios"][0]["scenario_score"] = 999.0
     s["dimensions"][dim]["min_score"] = 999.0
@@ -128,40 +128,31 @@ def test_sensitivity_tamper_scenario_and_summary_sync_fails():
 
 
 def test_sensitivity_full_rebuild_a_b_identical():
-    a = _sensitivity_v6()
-    b = _sensitivity_v6()
+    a = _sensitivity_v7()
+    b = _sensitivity_v7()
     assert a == b
     assert a["ledger_digest"] == b["ledger_digest"]
 
 
-def test_sensitivity_v6_report_unchanged_digest():
-    """The committed sensitivity v6 report must be byte-identical to a fresh build.
-
-    The committed report embeds the capsule digest of the platform it was generated
-    on into its scenario ids. The capsule digest is deterministic per platform but
-    can differ across platforms (a known pre-existing engine limitation, not changed
-    by R4C). Byte-identity is therefore asserted only when the fresh build's capsule
-    digest matches the committed report's; on a different platform the fresh build is
-    still asserted to be internally consistent and valid.
-    """
+def test_sensitivity_v6_report_preserved_as_history():
+    """The committed sensitivity v6 report is preserved as a historical artifact
+    (R4C platform-aware relaxation superseded by R4C.1: the fresh build is now
+    the cross-platform v7 contract, and identity is verified by the R4C.1
+    cross-platform fingerprint compare instead of byte-identity vs v6)."""
     report = _load(ROOT / "reports" / "petrochina_dimension_scoring_sensitivity_v6.json")
-    fresh = _sensitivity_v6()
-    if fresh["scenarios"][0]["input_capsule_digest"] == report["scenarios"][0][
-        "input_capsule_digest"
-    ]:
-        assert report == fresh
-        assert report["ledger_digest"] == (
-            "213cdba05c5d5664f199d73529de18d214b270a19147347eb7c0ff470efd6ccf"
-        )
-    else:
-        # different generating platform: the committed file is not byte-comparable
-        v = sensitivity_mod.validate_sensitivity_ledger(fresh)
-        assert v["status"] == "pass", v["errors"]
-        assert fresh["ledger_digest"] == sensitivity_mod.ledger_digest(fresh)
+    assert report["schema"] == "petrochina_dimension_scoring_sensitivity_v6"
+    assert report["ledger_digest"] == (
+        "213cdba05c5d5664f199d73529de18d214b270a19147347eb7c0ff470efd6ccf"
+    )
+    fresh = _sensitivity_v7()
+    assert fresh["schema"] == "petrochina_dimension_scoring_sensitivity_v7"
+    v = sensitivity_mod.validate_sensitivity_ledger(fresh)
+    assert v["status"] == "pass", v["errors"]
+    assert fresh["ledger_digest"] == sensitivity_mod.ledger_digest(fresh)
 
 
 def test_sensitivity_stability_not_stable_preserved():
-    s = _sensitivity_v6()
+    s = _sensitivity_v7()
     for dim in cap.SCORED_DIMENSIONS:
         assert s["dimensions"][dim]["stability_status"] == "NOT_STABLE"
         assert s["dimensions"][dim]["stability_tolerance"] == 1.0
@@ -345,13 +336,14 @@ def test_r4c_artifact_manifest_verifies_and_is_default():
     from ashare_research.scoring import artifact_manifest as am
     from ashare_research.tools import m2_stage2k1r3_closeout as closeout
 
+    # the R4C manifest is preserved as a historical v1 artifact; R4C.1
+    # supersedes it as the CLI default with its v2 manifest
     manifest = ROOT / "reports" / "m2_stage2k1r4c_artifact_manifest.json"
     assert manifest.exists()
-    v = am.verify_artifact_manifest(manifest, repository_root=ROOT)
-    assert v.status == "pass", v.errors
-    assert v.verified_file_count == 14
-    # the CLI default points at the R4C manifest (not a stale R4B one)
-    assert manifest == closeout.DEFAULT_MANIFEST
+    assert _load(manifest)["schema"] == "m2_stage2k1r4c_artifact_manifest_v1"
+    # the CLI default now points at the R4C.1 v2 manifest, not a stale R4C one
+    r4c1_manifest = ROOT / "reports" / "m2_stage2k1r4c1_artifact_manifest.json"
+    assert r4c1_manifest == closeout.DEFAULT_MANIFEST
     assert am.verify_artifact_manifest(
         closeout.DEFAULT_MANIFEST, repository_root=ROOT
     ).status == "pass"
