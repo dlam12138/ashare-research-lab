@@ -175,10 +175,10 @@ score.
 | Sensitivity v3 | `python -m ashare_research.tools.m2_stage2k1r2_sensitivity compute --output reports/...` | PASS (NOT_STABLE) |
 | Determinism | rebuild capsule/shadow/confidence in-memory twice | MATCH |
 | Observation-set digest | capsule vs percentile report | MATCH (`3dcf1beef...`) |
-| Tests | `python -m pytest tests/test_m2_stage2k1r2_pit_capsule_confidence.py` | see test run |
-| Full suite | `python -m pytest tests/` | see test run |
-| Ruff | `python -m ruff check src/ashare_research/tools/m2_stage2k1r2_*.py tests/test_m2_stage2k1r2_pit_capsule_confidence.py` | see test run |
-| Compile | `python -m compileall -q src/ashare_research/tools/m2_stage2k1r2_*.py` | see test run |
+| Tests | `python -m pytest tests/test_m2_stage2k1r2_pit_capsule_confidence.py` | PASS (28 passed) |
+| Full suite | `python -m pytest tests/` | PASS (1130 passed, 2 warnings) |
+| Ruff | `python -m ruff check src/ashare_research/tools/m2_stage2k1r2_*.py tests/test_m2_stage2k1r2_pit_capsule_confidence.py` | PASS (All checks passed) |
+| Compile | `python -m compileall -q src/ashare_research/tools/m2_stage2k1r2_*.py` | PASS |
 | CI | GitHub Actions `stage2g-reproducibility.yml` (ubuntu+windows) | see git run |
 
 ## Final files
