@@ -2,12 +2,15 @@
 
 Thin CLI only: parses arguments, dispatches to the scoring modules, writes the
 output, and enforces fail-closed exit codes. Business logic lives in
-``ashare_research.scoring.{capsule,validator,confidence,shadow,sensitivity}``.
+``ashare_research.scoring.{capsule,validator,confidence,shadow,sensitivity,
+artifact_manifest}``.
 
 Exit codes (fail-closed):
   0 = success (build / resolve / validate pass / verify pass)
-  1 = validate or verify-artifacts FAILED (validation errors present)
-  2 = contract / parameter / internal error (bad args, missing config, exception)
+  1 = validate or verify-artifacts FAILED (validation errors present;
+      any artifact-manifest check failure)
+  2 = contract / parameter / internal error (bad args, missing config, exception,
+      unsupported manifest schema, missing manifest)
   3 = external cache required for real mode but missing
 """
 
@@ -19,6 +22,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
+from ashare_research.scoring import artifact_manifest as am
 from ashare_research.scoring import capsule as cap
 from ashare_research.scoring import confidence as confidence_mod
 from ashare_research.scoring import market_observation_set as mos
@@ -30,6 +34,10 @@ EXIT_OK = 0
 EXIT_CHECK_FAIL = 1
 EXIT_CONTRACT_ERROR = 2
 EXIT_EXTERNAL_CACHE_MISSING = 3
+
+# Default manifest verified by `verify-artifacts` when --manifest is not given.
+# This is the current stage's committed artifact manifest.
+DEFAULT_MANIFEST = cap.ROOT / "reports" / "m2_stage2k1r4b_artifact_manifest.json"
 
 # subcommands that run a validation/verification gate and must exit 1 on failure
 CHECK_COMMANDS = {"validate", "verify-artifacts"}
@@ -66,10 +74,14 @@ def _build_args() -> tuple[Path | None, Path | None, Path | None, str, str, argp
         "build-confidence",
         "build-shadow",
         "build-sensitivity",
-        "verify-artifacts",
     ):
         p = sub.add_parser(cmd)
         add_output(p)
+    # verify-artifacts takes an explicit --manifest path (defaults to the
+    # current stage's committed artifact manifest when omitted).
+    p = sub.add_parser("verify-artifacts")
+    add_output(p)
+    p.add_argument("--manifest", default=None)
 
     args = parser.parse_args()
     cache_root = Path(args.market_cache_root) if args.market_cache_root else None
@@ -152,17 +164,21 @@ def main() -> int:
             capsule = _build_capsule(cache_root, fixture_root, market_registry, mvm)
             rep = _lineage_report(cache_root, fixture_root, market_registry, mvm)
             confidence = confidence_mod.build_confidence(capsule, rep)
-            result = sensitivity_mod.build_sensitivity(capsule, confidence)
+            result = sensitivity_mod.build_sensitivity_v6(capsule, confidence)
         elif args.command == "verify-artifacts":
-            capsule = _build_capsule(cache_root, fixture_root, market_registry, mvm)
-            verified = sorted(
-                {
-                    r["artifact_logical_path"]
-                    for c in capsule["components"].values()
-                    for r in c["resolved_records"]
-                }
-            )
-            result = {"status": "pass", "verified": verified}
+            manifest_path = Path(args.manifest) if args.manifest else DEFAULT_MANIFEST
+            if not manifest_path.is_file():
+                print(
+                    json.dumps(
+                        {"status": "error", "error_code": "manifest_not_found",
+                         "message": f"artifact manifest not found: {manifest_path}"},
+                        ensure_ascii=False,
+                    )
+                )
+                return EXIT_CONTRACT_ERROR
+            result = am.verify_artifact_manifest(
+                manifest_path, repository_root=cap.ROOT
+            ).to_dict()
     except Exception as exc:  # noqa: BLE001
         print(json.dumps({"status": "error", "error_code": "internal_error", "message": str(exc)}))
         return EXIT_CONTRACT_ERROR
