@@ -18,6 +18,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
+from ashare_research.scoring import content_digest as cd
+
 ROOT = Path(__file__).resolve().parents[3]
 
 _CANONICAL_SEP = (",", ":")
@@ -53,6 +55,8 @@ class ResolvedRecord:
     artifact_logical_path: str
     artifact_contract: str
     artifact_sha256: str
+    artifact_digest_algorithm: str
+    artifact_byte_size: int
     record_id: str
     record_digest: str
     record_identity_type: str
@@ -72,14 +76,60 @@ def _sha256_bytes(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
-def _sha256(path: Path) -> str:
-    return _sha256_bytes(path.read_bytes())
-
-
 def _canonical(payload: Any) -> bytes:
     return json.dumps(
         payload, sort_keys=True, ensure_ascii=False, separators=_CANONICAL_SEP
     ).encode("utf-8")
+
+
+# ---------------------------------------------------------------------------
+# artifact content digest contract (per artifact logical path)
+# ---------------------------------------------------------------------------
+
+_UPSTREAM_REGISTRY_PATH = ROOT / "config" / "value_dimension_scoring_upstream_registry_v1.json"
+
+_DIGEST_CONTRACT_ENTRIES: dict[str, dict[str, Any]] | None = None
+
+
+def _digest_contract_entries() -> dict[str, dict[str, Any]]:
+    """Load the frozen ``artifact_digest_contract.entries`` map from the upstream
+    registry (cached). Fail-closed: a missing or malformed contract raises
+    :class:`LineageError` so no artifact is ever hashed without a registered
+    algorithm."""
+    global _DIGEST_CONTRACT_ENTRIES
+    if _DIGEST_CONTRACT_ENTRIES is None:
+        doc = _load(_UPSTREAM_REGISTRY_PATH)
+        contract = doc.get("artifact_digest_contract")
+        entries = contract.get("entries") if isinstance(contract, dict) else None
+        if not isinstance(entries, dict):
+            raise LineageError(
+                "upstream registry missing artifact_digest_contract.entries"
+            )
+        _DIGEST_CONTRACT_ENTRIES = entries
+    return _DIGEST_CONTRACT_ENTRIES
+
+
+def artifact_digest_for_path(
+    path: Path, logical_path: str
+) -> tuple[str, str, int]:
+    """Return ``(algorithm, sha256, byte_size)`` for ``path`` using the digest
+    algorithm registered for ``logical_path`` in the upstream registry.
+
+    Fail-closed: an unregistered path or a missing algorithm raises
+    :class:`LineageError`; the algorithm is never guessed.
+    """
+    entry = _digest_contract_entries().get(logical_path)
+    if not isinstance(entry, dict):
+        raise LineageError(
+            f"no artifact_digest_contract entry for {logical_path}"
+        )
+    algorithm = entry.get("algorithm")
+    if not isinstance(algorithm, str):
+        raise LineageError(
+            f"artifact_digest_contract entry missing algorithm: {logical_path}"
+        )
+    digest = cd.digest_file(path, algorithm=algorithm)
+    return digest.algorithm, digest.sha256, digest.byte_size
 
 
 def _contract_of(path: Path) -> str:
@@ -188,25 +238,27 @@ def canonical_fact_bundle_resolver(
     records: list[ResolvedRecord] = []
     # Cache each source's facts and artifact metadata so each fact is resolved
     # from the first source that actually contains it.
-    loaded: list[tuple[dict[str, Any], str, dict[str, Any], str | None, str]] = []
+    loaded: list[tuple[dict[str, Any], str, str, int, dict[str, Any], str | None, str]] = []
     for src in sources:
         path = repository_root / src["path"]
         if not path.is_file():
             raise LineageError(f"missing upstream artifact: {src['path']}")
         doc = _load(path)
-        artifact_sha = _sha256(path)
+        algorithm, artifact_sha, digest_size = artifact_digest_for_path(
+            path, src["path"]
+        )
         contract = spec.get("artifact_contract", _contract_of(path))
         bundle_fy = src.get("fiscal_year") or doc.get("fiscal_year")
         available_at = src.get("available_at")
         if available_at is None and bundle_fy in _ANNUAL_AVAILABLE_AT:
             available_at = _ANNUAL_AVAILABLE_AT[bundle_fy]
-        loaded.append((src, artifact_sha, doc, available_at, contract))
+        loaded.append((src, artifact_sha, algorithm, digest_size, doc, available_at, contract))
 
     for item in facts_spec:
         concept = item.get("concept_id")
         fy = item.get("fiscal_year")
         resolved = False
-        for src, artifact_sha, doc, available_at, contract in loaded:
+        for src, artifact_sha, algorithm, digest_size, doc, available_at, contract in loaded:
             bundle_fy = src.get("fiscal_year") or doc.get("fiscal_year")
             eff_fy = fy or bundle_fy
             facts = _facts_recursive(doc)
@@ -234,6 +286,8 @@ def canonical_fact_bundle_resolver(
                     artifact_logical_path=src["path"],
                     artifact_contract=contract,
                     artifact_sha256=artifact_sha,
+                    artifact_digest_algorithm=algorithm,
+                    artifact_byte_size=digest_size,
                     record_id=record_id,
                     record_digest=record_id,
                     record_identity_type="adapter_record_digest",
@@ -277,7 +331,9 @@ def dividend_event_resolver(
     resolver_version = spec.get("resolver_version", "1.0")
     path = repository_root / spec["artifact_logical_path"]
     doc = _load(path)
-    artifact_sha = _sha256(path)
+    algorithm, artifact_sha, digest_size = artifact_digest_for_path(
+        path, spec["artifact_logical_path"]
+    )
     contract = spec.get("artifact_contract", doc.get("contract"))
     symbol = spec.get("expected_symbol", "601857.SH")
     period = spec.get("expected_period")
@@ -311,6 +367,8 @@ def dividend_event_resolver(
             "artifact_logical_path": spec["artifact_logical_path"],
             "artifact_contract": contract,
             "artifact_sha256": artifact_sha,
+            "artifact_digest_algorithm": algorithm,
+            "artifact_byte_size": digest_size,
             "record_id": event_id,
             "record_digest": _sha256_bytes(_canonical(content)),
             "record_identity_type": "event_id",
@@ -356,7 +414,9 @@ def risk_profile_resolver(
     resolver_version = spec.get("resolver_version", "1.0")
     path = repository_root / spec["artifact_logical_path"]
     doc = _load(path)
-    artifact_sha = _sha256(path)
+    algorithm, artifact_sha, digest_size = artifact_digest_for_path(
+        path, spec["artifact_logical_path"]
+    )
     contract = spec.get("artifact_contract", doc.get("contract"))
     symbol = spec.get("expected_symbol", "601857.SH")
     rp = doc["current_risk_veto_profile"]
@@ -382,6 +442,8 @@ def risk_profile_resolver(
                     artifact_logical_path=spec["artifact_logical_path"],
                     artifact_contract=contract,
                     artifact_sha256=artifact_sha,
+                    artifact_digest_algorithm=algorithm,
+                    artifact_byte_size=digest_size,
                     record_id=slot_id,
                     record_digest=_sha256_bytes(_canonical(content)),
                     record_identity_type="risk_slot_id",
@@ -416,6 +478,8 @@ def risk_profile_resolver(
                     artifact_logical_path=spec["artifact_logical_path"],
                     artifact_contract=contract,
                     artifact_sha256=artifact_sha,
+                    artifact_digest_algorithm=algorithm,
+                    artifact_byte_size=digest_size,
                     record_id=obs_id,
                     record_digest=_sha256_bytes(_canonical(content)),
                     record_identity_type="observation_id",
@@ -453,7 +517,9 @@ def gap_ledger_resolver(
     resolver_version = spec.get("resolver_version", "1.0")
     path = repository_root / spec["artifact_logical_path"]
     doc = _load(path)
-    artifact_sha = _sha256(path)
+    algorithm, artifact_sha, digest_size = artifact_digest_for_path(
+        path, spec["artifact_logical_path"]
+    )
     contract = spec.get("artifact_contract", doc.get("contract"))
     symbol = spec.get("expected_symbol", "601857.SH")
     selector = spec.get("selector", {})
@@ -482,6 +548,8 @@ def gap_ledger_resolver(
                     artifact_logical_path=spec["artifact_logical_path"],
                     artifact_contract=contract,
                     artifact_sha256=artifact_sha,
+                    artifact_digest_algorithm=algorithm,
+                    artifact_byte_size=digest_size,
                     record_id=gid,
                     record_digest=_sha256_bytes(_canonical(content)),
                     record_identity_type="gap_id",
@@ -517,7 +585,9 @@ def repurchase_search_resolver(
     resolver_version = spec.get("resolver_version", "1.0")
     path = repository_root / spec["artifact_logical_path"]
     doc = _load(path)
-    artifact_sha = _sha256(path)
+    algorithm, artifact_sha, digest_size = artifact_digest_for_path(
+        path, spec["artifact_logical_path"]
+    )
     contract = spec.get("artifact_contract", doc.get("contract"))
     symbol = spec.get("expected_symbol", "601857.SH")
     status = doc.get("status")
@@ -537,6 +607,8 @@ def repurchase_search_resolver(
         artifact_logical_path=spec["artifact_logical_path"],
         artifact_contract=contract,
         artifact_sha256=artifact_sha,
+        artifact_digest_algorithm=algorithm,
+        artifact_byte_size=digest_size,
         record_id=register_id,
         record_digest=_sha256_bytes(_canonical(content)),
         record_identity_type="search_register_id",
@@ -571,7 +643,9 @@ def market_manifest_resolver(
     resolver_version = spec.get("resolver_version", "1.0")
     path = repository_root / spec["artifact_logical_path"]
     doc = _load(path)
-    artifact_sha = _sha256(path)
+    algorithm, artifact_sha, digest_size = artifact_digest_for_path(
+        path, spec["artifact_logical_path"]
+    )
     contract = spec.get("artifact_contract", doc.get("contract"))
     symbol = spec.get("expected_symbol", "601857.SH")
     selector = spec.get("selector", {})
@@ -593,6 +667,8 @@ def market_manifest_resolver(
         artifact_logical_path=spec["artifact_logical_path"],
         artifact_contract=contract,
         artifact_sha256=artifact_sha,
+        artifact_digest_algorithm=algorithm,
+        artifact_byte_size=digest_size,
         record_id=f"percentile:{metric_key}",
         record_digest=_sha256_bytes(_canonical(content)),
         record_identity_type="adapter_record_digest",

@@ -5,6 +5,61 @@
   "owner": "M2 Stage 2K.1R3 true upstream record binding closeout",
   "timezone": "Asia/Shanghai",
   "non_production": true,
+  "artifact_digest_contract": {
+    "schema": "artifact_content_digest_v1",
+    "version": "1.0",
+    "default_algorithm": "sha256_lf_normalized_bytes_v1",
+    "entries": {
+      "acceptance/fixtures/official_facts/601857.SH/2024_annual.json": {
+        "algorithm": "sha256_lf_normalized_bytes_v1",
+        "media_class": "text"
+      },
+      "acceptance/fixtures/official_facts/601857.SH/2025_annual.json": {
+        "algorithm": "sha256_lf_normalized_bytes_v1",
+        "media_class": "text"
+      },
+      "acceptance/fixtures/official_facts/601857.SH/supplemental/2024_roe_roa_denominators.json": {
+        "algorithm": "sha256_lf_normalized_bytes_v1",
+        "media_class": "text"
+      },
+      "acceptance/fixtures/official_facts/601857.SH/supplemental/2025_capex_cash.json": {
+        "algorithm": "sha256_lf_normalized_bytes_v1",
+        "media_class": "text"
+      },
+      "acceptance/fixtures/official_facts/601857.SH/supplemental/2025_earnings_quality.json": {
+        "algorithm": "sha256_lf_normalized_bytes_v1",
+        "media_class": "text"
+      },
+      "acceptance/fixtures/official_facts/601857.SH/supplemental/2025_financial_safety.json": {
+        "algorithm": "sha256_lf_normalized_bytes_v1",
+        "media_class": "text"
+      },
+      "acceptance/fixtures/official_facts/601857.SH/supplemental/2025_net_profit.json": {
+        "algorithm": "sha256_lf_normalized_bytes_v1",
+        "media_class": "text"
+      },
+      "acceptance/fixtures/official_facts/601857.SH/supplemental/2025_roe_roa_denominators.json": {
+        "algorithm": "sha256_lf_normalized_bytes_v1",
+        "media_class": "text"
+      },
+      "events/dividend_events_2021_2026_v2.json": {
+        "algorithm": "sha256_lf_normalized_bytes_v1",
+        "media_class": "text"
+      },
+      "events/repurchase_event_scan_2021_2026.json": {
+        "algorithm": "sha256_lf_normalized_bytes_v1",
+        "media_class": "text"
+      },
+      "reports/m2_explicit_gap_ledger.json": {
+        "algorithm": "sha256_lf_normalized_bytes_v1",
+        "media_class": "text"
+      },
+      "reports/petrochina_value_profile.json": {
+        "algorithm": "sha256_lf_normalized_bytes_v1",
+        "media_class": "text"
+      }
+    }
+  },
   "score_eligible": false,
   "source_tier_bindings": {
     "canonical_fact_bundle_resolver": {
