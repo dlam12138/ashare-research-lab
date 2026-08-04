@@ -93,13 +93,13 @@
     },
     {
       "path": "acceptance/m2_stage2k1r2_score_date_pit_capsule_confidence_closeout.md",
-      "sha256": "1ce45d15eaa811a76c128a5cae6f82b6c99e0dd153218691394bc8da94ae0f8c",
-      "byte_size": 11062
+      "sha256": "2cedfb40db77d7a143256c225d63abc80202dad6981328bd16d0260641b10458",
+      "byte_size": 11097
     },
     {
       "path": "agent/record/2026-08-04_Stage2K1R2_score_date_pit_capsule_confidence_closeout.md",
-      "sha256": "e98786fe5ce673778f753d295a71d840bba944c9fa3ff8ab3bcc4063e8c86090",
-      "byte_size": 11200
+      "sha256": "65bf2fce74f02e945c4b0657bb9baa3ce1ac13a22ce8122079a08e0461a06aa3",
+      "byte_size": 12235
     },
     {
       "path": "tests/test_m2_stage2k1r2_pit_capsule_confidence.py",

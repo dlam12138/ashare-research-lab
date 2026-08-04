@@ -1,6 +1,6 @@
 # Work record: M2 Stage 2K.1R2 — score-date PIT, capsule validation, percentile lineage and confidence-gate closeout
 
-Status: `in_progress`
+Status: `completed` — PASS (CI-backed; no production scores, no peer acquisition)
 
 ## Basic information
 
@@ -153,7 +153,10 @@ confidence/sensitivity, acceptance, tests, validation gates, final report.
 - `python -m ruff check src/ashare_research/tools/m2_stage2k1r2_*.py tests/test_m2_stage2k1r2_pit_capsule_confidence.py` → All checks passed.
 - `python -m compileall -q src/ashare_research/tools/m2_stage2k1r2_*.py` → OK.
 - `git diff --check` → clean.
-- Full suite `python -m pytest tests/` → (see final run).
+- Full suite `python -m pytest tests/` → **1130 passed, 2 warnings** (exit 0).
+- CI (GitHub Actions `stage2g-reproducibility.yml`, ubuntu+windows): run
+  `30881433360` → **both matrix runners success** (ubuntu 2m22s, windows 4m17s).
+  Only non-blocking Node.js deprecation annotations.
 
 ## Result
 
@@ -164,10 +167,15 @@ confidence/sensitivity, acceptance, tests, validation gates, final report.
 - Fail-closed validator confirmed by tamper test.
 - Confidence-gate and coverage-gate separated; NOT_STABLE preserved with no
   threshold relaxation.
+- Validation: **PASS** — focused 28 tests, full suite 1130 passed, ruff clean,
+  compileall OK, determinism MATCH, observation-set digest MATCH, and
+  Ubuntu/Windows CI all success. Final gate satisfied.
+- Pushed `feat/m2-value-assessment-mvp` to origin (`f00f85a..243d222`, 6 commits)
+  to trigger CI; CI passed. No main merge, no tag, no force push, no release.
 
 ## Final files and Git state
 
-- New (untracked): `src/ashare_research/tools/m2_stage2k1r2_{capsule,validate,upstream,confidence,shadow,sensitivity}.py`,
+- New (committed): `src/ashare_research/tools/m2_stage2k1r2_{capsule,validate,upstream,confidence,shadow,sensitivity}.py`,
   `config/value_dimension_scoring_time_contract_v1.json`,
   `config/value_dimension_scoring_percentile_contract_v1.json`,
   `config/value_dimension_scoring_confidence_v2.json`,
@@ -182,6 +190,11 @@ confidence/sensitivity, acceptance, tests, validation gates, final report.
   `reports/m2_stage2k1r2_artifact_manifest.json`,
   `acceptance/m2_stage2k1r2_score_date_pit_capsule_confidence_closeout.md`,
   `tests/test_m2_stage2k1r2_pit_capsule_confidence.py`.
-- Branch `feat/m2-value-assessment-mvp`; HEAD `f00f85a` (no new commit yet).
+- Commits: `d764caf` (time contract + capsule + upstream), `db70641` (validator +
+  percentile lineage), `556e12b` (confidence + sensitivity + shadow), `d743934`
+  (acceptance docs), `f948105` (tests), `243d222` (final validation results).
+  HEAD `243d222`; pushed to origin (`f00f85a..243d222`).
+- Branch `feat/m2-value-assessment-mvp`. Working tree has only the protected
+  `m2_stage2i2r` edit (M) and protected `AGENTS.md`/`agent/goals/` (untracked).
 - Protected files (AGENTS.md, agent/goals/, pre-existing Stage 2I.2R edit, stash,
   default DB) untouched. No `codex/` created.

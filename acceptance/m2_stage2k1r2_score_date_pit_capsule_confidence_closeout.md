@@ -179,7 +179,7 @@ score.
 | Full suite | `python -m pytest tests/` | PASS (1130 passed, 2 warnings) |
 | Ruff | `python -m ruff check src/ashare_research/tools/m2_stage2k1r2_*.py tests/test_m2_stage2k1r2_pit_capsule_confidence.py` | PASS (All checks passed) |
 | Compile | `python -m compileall -q src/ashare_research/tools/m2_stage2k1r2_*.py` | PASS |
-| CI | GitHub Actions `stage2g-reproducibility.yml` (ubuntu+windows) | see git run |
+| CI | GitHub Actions `stage2g-reproducibility.yml` (ubuntu+windows) | PASS (run `30881433360`, both runners success) |
 
 ## Final files
 
