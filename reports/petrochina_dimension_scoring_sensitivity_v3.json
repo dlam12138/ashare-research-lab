@@ -1,0 +1,153 @@
+{
+  "schema": "petrochina_dimension_scoring_sensitivity_v3",
+  "version": "3.0",
+  "non_production": true,
+  "research_methodology_test_only": true,
+  "overall_score_prohibited": true,
+  "recommendation_prohibited": true,
+  "score_eligible": false,
+  "thresholds_frozen_before_rerun": true,
+  "synthetic_values_are_not_company_facts": true,
+  "gates_separated": {
+    "coverage_gate": "perturbs minimum_coverage_gate; decides whether a dimension is scored",
+    "confidence_gate": "evaluates executed confidence v2 grade; never mutates coverage gate"
+  },
+  "confidence_contract": "value_dimension_scoring_confidence_v2",
+  "dimensions": {
+    "enterprise_quality": {
+      "dimension_id": "enterprise_quality",
+      "base_score": 73.4738,
+      "base_band": "B",
+      "min_score": 68.0525,
+      "max_score": 77.5911,
+      "max_score_delta": 9.5386,
+      "band_flip_count": 0,
+      "insufficient_evidence_count": 1,
+      "veto_block_count": 0,
+      "scenario_count": 35,
+      "stability_status": "NOT_STABLE",
+      "stability_tolerance": 1.0,
+      "production_readiness_reason": "dimension band or coverage changes under a frozen scenario",
+      "coverage_gate_sensitivity": {
+        "thresholds": [
+          0.4,
+          0.6,
+          0.8,
+          0.95
+        ],
+        "passes": [
+          "pass",
+          "pass",
+          "pass",
+          "fail"
+        ],
+        "gate_never_mutated_by_confidence": true
+      },
+      "confidence_gate_sensitivity": {
+        "grade": "medium",
+        "grade_value": 0.7,
+        "thresholds": [
+          0.6,
+          0.7,
+          0.8
+        ],
+        "passes": [
+          "pass",
+          "pass",
+          "fail"
+        ],
+        "coverage_gate_not_mutated": true
+      }
+    },
+    "valuation_attractiveness": {
+      "dimension_id": "valuation_attractiveness",
+      "base_score": 12.1733,
+      "base_band": "E",
+      "min_score": 10.431,
+      "max_score": 13.5947,
+      "max_score_delta": 3.1637,
+      "band_flip_count": 0,
+      "insufficient_evidence_count": 1,
+      "veto_block_count": 0,
+      "scenario_count": 21,
+      "stability_status": "NOT_STABLE",
+      "stability_tolerance": 1.0,
+      "production_readiness_reason": "dimension band or coverage changes under a frozen scenario",
+      "coverage_gate_sensitivity": {
+        "thresholds": [
+          0.4,
+          0.6,
+          0.8,
+          0.95
+        ],
+        "passes": [
+          "pass",
+          "pass",
+          "pass",
+          "fail"
+        ],
+        "gate_never_mutated_by_confidence": true
+      },
+      "confidence_gate_sensitivity": {
+        "grade": "medium",
+        "grade_value": 0.7,
+        "thresholds": [
+          0.6,
+          0.7,
+          0.8
+        ],
+        "passes": [
+          "pass",
+          "pass",
+          "fail"
+        ],
+        "coverage_gate_not_mutated": true
+      }
+    },
+    "value_realization_capacity": {
+      "dimension_id": "value_realization_capacity",
+      "base_score": 70.1253,
+      "base_band": "B",
+      "min_score": 65.9066,
+      "max_score": 75.1566,
+      "max_score_delta": 9.25,
+      "band_flip_count": 0,
+      "insufficient_evidence_count": 0,
+      "veto_block_count": 0,
+      "scenario_count": 21,
+      "stability_status": "NOT_STABLE",
+      "stability_tolerance": 1.0,
+      "production_readiness_reason": "dimension band or coverage changes under a frozen scenario",
+      "coverage_gate_sensitivity": {
+        "thresholds": [
+          0.4,
+          0.6,
+          0.8,
+          0.95
+        ],
+        "passes": [
+          "pass",
+          "pass",
+          "pass",
+          "pass"
+        ],
+        "gate_never_mutated_by_confidence": true
+      },
+      "confidence_gate_sensitivity": {
+        "grade": "medium",
+        "grade_value": 0.7,
+        "thresholds": [
+          0.6,
+          0.7,
+          0.8
+        ],
+        "passes": [
+          "pass",
+          "pass",
+          "fail"
+        ],
+        "coverage_gate_not_mutated": true
+      }
+    }
+  }
+}
