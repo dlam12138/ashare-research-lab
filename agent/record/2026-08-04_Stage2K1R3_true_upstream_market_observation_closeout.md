@@ -160,6 +160,9 @@ Engineering contract PASS must not automatically change these.
   medium with coverage gaps (eq_roic, va_dividend_yield, rk_gap_count);
   shadow EQ 73.67/B, VA 12.17/E, VRC 21.76/D; sensitivity all `NOT_STABLE`
   (EQ delta 9.1, VA 3.2, VRC 29.0).
+- CI clean clone (run `30891126248`) → **PASS ubuntu + windows**; `ruff check
+  src/ tests/` all pass; `pytest -q` → **1150 passed, 2 skipped** (the 2
+  skipped are the real-cache tests, absent in a clean clone).
 
 ## Result
 
@@ -172,9 +175,10 @@ Engineering contract PASS must not automatically change these.
 
 - Branch: `feat/m2-value-assessment-mvp`.
 - `git diff --check` clean (verified).
+- Commit `777b8fb` pushed; CI run `30891126248` PASS (ubuntu + windows).
 - New/modified files: scoring package, closeout CLI, two config registries,
   acceptance, reports (capsule v3 / confidence v3 / shadow v4 / sensitivity v4 /
   observation-set manifest / artifact manifest / old-new diff), two test files.
 - Protected files untouched: AGENTS.md, agent/goals/, Stage 2I.2R edit, default
   DB, stash.
-- Commit(s) created (see `git log`); no force push, no reset --hard, no git clean.
+- No force push, no reset --hard, no git clean.

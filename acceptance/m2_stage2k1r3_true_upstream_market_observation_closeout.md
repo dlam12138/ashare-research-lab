@@ -79,7 +79,7 @@ business conclusion. No peer acquisition, no production scoring, no M3.
 
 ## Validation
 
-- `pytest tests/ -q` → **1130 passed** (full suite; includes the new 22 2K.1R3 tests).
+- `pytest tests/ -q` → **1152 passed** (full suite; includes the 22 new 2K.1R3 tests).
 - `pytest tests/test_m2_stage2k1r3_true_upstream_capsule.py -q` → **22 passed**.
 - `python tests/stage2k1r3/test_composite_tamper.py` → **ALL PASS** (baseline passes;
   tamper of transform_inputs+value+source_tier+score_input_id+removed component+
@@ -88,6 +88,11 @@ business conclusion. No peer acquisition, no production scoring, no M3.
 - `git diff --check` → clean (see Git state).
 - Real-mode pipeline: `build-capsule --market-cache-root --market-registry` →
   validate `pass`; real observation set `real_market_verified: true`.
+- **CI (clean clone, run `30891126248`)** → **PASS on ubuntu + windows**:
+  `ruff check src/ tests/` → "All checks passed!"; `pytest -q` → **1150 passed,
+  2 skipped** (the 2 skipped are the real-cache observation-set tests, which
+  gracefully skip because the real baostock parquet is git-ignored and absent
+  in a clean clone).
 
 ## Judgement
 
@@ -115,6 +120,8 @@ Preserved business conclusion (unchanged unless independently proven):
 ## Git state
 
 - Branch: `feat/m2-value-assessment-mvp`.
-- Commits pushed (see `git log`); no force push, no reset --hard, no git clean.
+- Commit `777b8fb` pushed to `origin/feat/m2-value-assessment-mvp`; CI run
+  `30891126248` PASS (ubuntu + windows). No force push, no reset --hard, no
+  git clean.
 - Protected files (AGENTS.md, agent/goals/, Stage 2I.2R edit, default DB,
   stash) are untouched.
