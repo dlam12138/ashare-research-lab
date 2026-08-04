@@ -2,6 +2,16 @@
 
 Status: `PASS` (CI-backed; no production scores, no peer acquisition)
 
+## CI evidence
+
+- GitHub Actions `stage2g-reproducibility.yml` run
+  [30878513390](https://github.com/dlam12138/ashare-research-lab/actions/runs/30878513390),
+  head `d3668a0`.
+- `clean-clone (ubuntu-latest)` → **success**; `clean-clone (windows-latest)` → **success**.
+- Every step (offline preflight, static/import gates, contract gates, capsule
+  A/B builds and runs, full offline test suite) completed with **success** on both
+  matrix runners.
+
 ## Decision and Git boundary
 
 - Goal: `agent/goals/2026-08-04_m2_stage2k1r_scoring_input_lineage_confidence_sensitivity_closeout.md`
@@ -122,8 +132,14 @@ conclusion. This is the concrete basis for decision `SCORING_CONTRACT_GAPS_REMAI
 
 Full validation (targeted tests, protected Stage 2F/2H/2I suites, Identity/PIT,
 full pytest, Ruff, compileall, A/B, artifact verification, portability, clean
-clone, Ubuntu/Windows CI) is recorded in the work record after execution. The
-Stage 2K.1R PASS is not reportable until every required final gate passes.
+clone, Ubuntu/Windows CI) is recorded in the work record. Levels:
+
+- Local (`data/` present): full pytest **1102 passed**; ruff all checks;
+  compileall OK; shadow/sensitivity A/B matches Stage 2K; default DB unchanged.
+- Clean clone (properly installed package, as CI does): full pytest **1102 passed**.
+- CI (ubuntu + windows): **all steps success** (run 30878513390).
+
+The Stage 2K.1R PASS is CI-backed and reportable.
 
 ## Non-goals
 

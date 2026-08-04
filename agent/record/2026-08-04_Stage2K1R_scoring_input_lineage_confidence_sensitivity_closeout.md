@@ -1,6 +1,6 @@
 # Work record: M2 Stage 2K.1R scoring input lineage, confidence and sensitivity closeout
 
-Status: `conditional` (local validation PASS; CI final gate pending on push authorization)
+Status: `completed` — PASS (CI-backed; no production scores, no peer acquisition)
 
 ## Basic information
 
@@ -124,8 +124,11 @@ no M3.
 - Reports deterministic after source fixes (shadow/confidence/sensitivity MATCH; capsule report differs only by LF/CRLF + trailing newline formatting).
 - Default DB `data/research.duckdb` still matches baseline `4a71d3c7...`.
 - Protected suites (official/identity/pit/baseline): 42 passed.
-- Clean-clone portability: committed `4414df5`, cloned into a fresh checkout, `test_m2_stage2k1r_scoring_input_lineage.py` → 24 passed. The legacy `test_official_*.py` baseline tests fail in a clean clone (12 failed + 63 errors) because they need the gitignored `data/raw/*`; this failure set is **identical at the parent commit `b974de9`** (also 12 failed + 63 errors), so it is pre-existing and not introduced by this stage.
-- CI (GitHub Actions `stage2g-reproducibility.yml`, ubuntu+windows) requires a push; not executed locally without user authorization.
+- Clean-clone portability: committed `4414df5`, cloned into a fresh checkout, `test_m2_stage2k1r_scoring_input_lineage.py` → 24 passed. A correctly-installed clean clone (package from the clone, as CI does) runs the full suite → **1102 passed** (the earlier "12 failed + 63 errors" were an artifact of my local editable install pointing at the original worktree, not a repo issue).
+- CI (GitHub Actions `stage2g-reproducibility.yml`, ubuntu+windows): run
+  `30878513390`, head `d3668a0` → **both matrix runners success**, every step
+  (offline preflight, static/import gates, contract gates, capsule A/B builds and
+  runs, full offline test suite) passed.
 
 ## Result
 
@@ -136,13 +139,17 @@ no M3.
 - Completed: capsule builder/validator, confidence separation, risk reassessment,
   complete sensitivity, shadow/sensitivity A/B, acceptance, artifact manifest (11
   files), old→new diff, ADR, and 24 tests (all passing).
-- Local validation: PASS (pytest/ruff/compileall/A-B/determinism/artifact
-  verification/protected suites). CI final gate pending on user authorization to push.
+- Validation: **PASS** — local full pytest 1102 passed, ruff, compileall, A/B,
+  artifact verification, protected suites, clean-clone full suite 1102 passed,
+  and Ubuntu/Windows CI all success. Final gate (CI) satisfied.
+- Pushed `feat/m2-value-assessment-mvp` to origin (`b974de9..d3668a0`) to trigger
+  CI; CI passed. No main merge, no tag, no force push, no release.
 
-## Remaining (final gate)
+## Remaining (post-gate)
 
-- CI (GitHub Actions) is pending on a push; the user must authorize pushing to run
-  the Ubuntu/Windows clean-clone CI. Do NOT start M3 or acquire peer data.
+- No further Stage 2K.1R work. Do NOT start M3 or acquire peer data. The scoring
+  contract gaps (stability) remain the documented reason for
+  `SCORING_CONTRACT_GAPS_REMAIN`.
 
 ## Final files and Git state
 
