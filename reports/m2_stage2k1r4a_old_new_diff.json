@@ -1,0 +1,53 @@
+{
+  "schema": "m2_stage2k1r4a_old_new_diff_v1",
+  "version": "1.0",
+  "date": "2026-08-04",
+  "stage": "2K.1R4A",
+  "old": "Stage 2K.1R3 (m2_stage2k1r3_closeout.py thick CLI)",
+  "new": "Stage 2K.1R4A (scoring module decomposition + guard closeout)",
+  "changes": [
+    {
+      "id": "1_module_split",
+      "problem": "m2_stage2k1r3_closeout.py mixed capsule/validator/confidence/shadow/sensitivity business logic into a thick CLI.",
+      "old": "All business logic (build_capsule, validate_capsule, capsule_digest, score_input_id_for, build_confidence, build_shadow, build_sensitivity, _make_score_input, _resolve_records) defined in m2_stage2k1r3_closeout.py.",
+      "new": "Business logic moved to ashare_research.scoring.{capsule,validator,confidence,shadow,sensitivity}; m2_stage2k1r3_closeout.py is a thin CLI (~170 lines) that only parses args, dispatches, writes output, and enforces exit codes.",
+      "evidence": "tests/test_m2_stage2k1r4a_engineering_closeout.py::test_business_logic_moved_out_of_cli, test_cli_is_thin_orchestrator"
+    },
+    {
+      "id": "2_cli_fail_closed_exit_codes",
+      "problem": "validate or verify-artifacts failure could still return exit 0.",
+      "old": "CLI main() returned 0 unconditionally; command failures never propagated a non-zero exit code.",
+      "new": "Exit codes: 0 success (build/resolve/validate pass/verify pass); 1 validate or verify-artifacts FAILED; 2 contract/parameter/internal error; 3 external cache required but missing.",
+      "evidence": "tests/test_m2_stage2k1r4a_engineering_closeout.py::test_cli_* (exit 0/1/2/3)"
+    },
+    {
+      "id": "3_capsule_audit_snapshot_consistency",
+      "problem": "The validator recomputed from upstream but did not require the capsule's resolved_records audit snapshot to match upstream.",
+      "old": "validate_capsule recomputed value/source_tier/score_input_id from upstream but ignored the capsule's resolved_records snapshot; a tampered snapshot with a correct score_input_id passed.",
+      "new": "validate_capsule now compares the capsule's resolved_records snapshot against the authoritative recomputed record set and reports capsule_snapshot_mismatch on any difference. Reports authoritative_recomputation_status, audit_snapshot_status, snapshot_errors, snapshot_warning_count.",
+      "evidence": "tests/test_m2_stage2k1r4a_engineering_closeout.py::test_validator_* (audit snapshot); old R3 test test_validator_ignores_capsule_record_snapshot replaced by test_validator_rejects_audit_snapshot_mismatch"
+    },
+    {
+      "id": "4_risk_status_semantics",
+      "problem": "Risk status output 'clear' when there was no trigger but still missing evidence.",
+      "old": "_risk_status returned 'clear' when veto_n == 0 even when missing_evidence_slots > 0.",
+      "new": "Finite enum (no 'clear'): blocked_by_risk_veto, no_trigger_observed_with_missing_evidence, no_trigger_observed_within_bounded_evidence, not_trusted. complete_absence_claim always False. PetroChina: no_trigger_observed_with_missing_evidence.",
+      "evidence": "tests/test_m2_stage2k1r4a_engineering_closeout.py::test_risk_status_*"
+    },
+    {
+      "id": "5_sensitivity_scenario_restoration",
+      "problem": "Sensitivity v4 lost the coverage/confidence/transform/missing-ROIC scenarios present in v3.",
+      "old": "sensitivity v4 only ran weight perturbation and leave-one-component-out (2 scenario classes).",
+      "new": "sensitivity v5 restores all 6 scenario classes from the v3 baseline: weight perturbation, leave-one-component-out, coverage-threshold perturbation, frozen transform alternatives, confidence-threshold perturbation (evaluated, never mutates coverage gate), missing-ROIC scenarios. Coverage and confidence gates remain independent.",
+      "evidence": "tests/test_m2_stage2k1r4a_engineering_closeout.py::test_sensitivity_restores_all_six_scenario_classes"
+    }
+  ],
+  "business_conclusion_preserved": {
+    "stage_2k": "SCORING_CONTRACT_GAPS_REMAIN",
+    "sensitivity": "NOT_STABLE",
+    "peer_benchmark": "NOT_ALLOWED",
+    "production_scoring": "NOT_ALLOWED",
+    "m3": "NOT_STARTED",
+    "next_stage_max": "PIT_VALUATION_READINESS_REVIEW_ALLOWED"
+  }
+}

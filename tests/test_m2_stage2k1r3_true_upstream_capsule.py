@@ -14,8 +14,12 @@ from pathlib import Path
 
 import pytest
 
+from ashare_research.scoring import capsule as cap
+from ashare_research.scoring import confidence as confidence_mod
 from ashare_research.scoring import market_observation_set as mos
-from ashare_research.tools import m2_stage2k1r3_closeout as closeout
+from ashare_research.scoring import sensitivity as sensitivity_mod
+from ashare_research.scoring import shadow as shadow_mod
+from ashare_research.scoring import validator as validator_mod
 
 ROOT = Path(__file__).resolve().parents[1]
 CONFIG = ROOT / "config"
@@ -28,7 +32,7 @@ def _load(path: Path) -> dict:
 
 
 def _capsule() -> dict:
-    return closeout.build_capsule()
+    return cap.build_capsule()
 
 
 # ---------------------------------------------------------------------------
@@ -143,8 +147,10 @@ def test_dividend_coverage_sums_across_events():
 
 def test_validator_passes():
     capsule = _capsule()
-    result = closeout.validate_capsule(capsule)
+    result = validator_mod.validate_capsule(capsule)
     assert result["status"] == "pass", result["errors"]
+    assert result["authoritative_recomputation_status"] == "pass"
+    assert result["audit_snapshot_status"] == "pass"
 
 
 def test_validator_detects_self_reported_inputs():
@@ -154,8 +160,8 @@ def test_validator_detects_self_reported_inputs():
     comp["transform_inputs"] = {"revenue": "999999", "operating_cost": "1"}
     comp["selected_value_decimal"] = "0.999999"
     comp["score_input_id"] = "0" * 64
-    tampered["capsule_digest"] = closeout.capsule_digest(tampered)
-    result = closeout.validate_capsule(tampered)
+    tampered["capsule_digest"] = cap.capsule_digest(tampered)
+    result = validator_mod.validate_capsule(tampered)
     assert result["status"] == "fail"
     assert any("upstream_recomputed_value_mismatch" in e for e in result["errors"])
     assert any("score_input_id_mismatch" in e for e in result["errors"])
@@ -165,8 +171,8 @@ def test_validator_detects_self_reported_source_tier():
     capsule = _capsule()
     tampered = json.loads(json.dumps(capsule))
     tampered["components"]["eq_roe"]["resolved_source_tier"] = "coverage_gap"
-    tampered["capsule_digest"] = closeout.capsule_digest(tampered)
-    result = closeout.validate_capsule(tampered)
+    tampered["capsule_digest"] = cap.capsule_digest(tampered)
+    result = validator_mod.validate_capsule(tampered)
     assert result["status"] == "fail"
     assert any("source_tier_mismatch" in e for e in result["errors"])
 
@@ -176,8 +182,8 @@ def test_validator_rejects_missing_component():
     tampered = json.loads(json.dumps(capsule))
     del tampered["components"]["eq_roic"]
     tampered["component_count"] = len(tampered["components"])
-    tampered["capsule_digest"] = closeout.capsule_digest(tampered)
-    result = closeout.validate_capsule(tampered)
+    tampered["capsule_digest"] = cap.capsule_digest(tampered)
+    result = validator_mod.validate_capsule(tampered)
     assert result["status"] == "fail"
     assert any("missing from capsule" in e for e in result["errors"])
 
@@ -186,22 +192,26 @@ def test_validator_rejects_capsule_digest_tamper():
     capsule = _capsule()
     tampered = json.loads(json.dumps(capsule))
     tampered["capsule_digest"] = "0" * 64
-    result = closeout.validate_capsule(tampered)
+    result = validator_mod.validate_capsule(tampered)
     assert result["status"] == "fail"
     assert any("capsule_digest_mismatch" in e for e in result["errors"])
 
 
-def test_validator_ignores_capsule_record_snapshot():
-    # the validator recomputes records from upstream; a capsule snapshot with a
-    # wrong raw_value/record_digest but a correct score_input_id still passes
+def test_validator_rejects_audit_snapshot_mismatch():
+    # Stage 2K.1R4A problem #3: the validator must require the capsule's
+    # resolved_records audit snapshot to match the authoritative recomputation.
+    # A tampered snapshot (wrong raw_value/record_digest) now fails closed even
+    # when the score_input_id is left correct.
     capsule = _capsule()
     tampered = json.loads(json.dumps(capsule))
     rec = tampered["components"]["eq_gross_margin"]["resolved_records"][0]
     rec["raw_value"] = "999999"
     rec["record_digest"] = "0" * 64
-    tampered["capsule_digest"] = closeout.capsule_digest(tampered)
-    result = closeout.validate_capsule(tampered)
-    assert result["status"] == "pass"
+    tampered["capsule_digest"] = cap.capsule_digest(tampered)
+    result = validator_mod.validate_capsule(tampered)
+    assert result["status"] == "fail"
+    assert result["audit_snapshot_status"] == "fail"
+    assert any("capsule_snapshot_mismatch" in e for e in result["snapshot_errors"])
 
 
 def test_pt_no_evidence_after_scorecard_formed():
@@ -270,7 +280,7 @@ def test_real_observation_set_from_external_cache(real_cache_env):
 
 
 def test_real_capsule_uses_cache_recomputed_price_percentiles(real_cache_env):
-    capsule = closeout.build_capsule(
+    capsule = cap.build_capsule(
         market_cache_root=real_cache_env["cache_root"],
         market_validation_mode="external_verified_cache",
         market_registry=real_cache_env["registry"],
@@ -285,7 +295,7 @@ def test_real_capsule_uses_cache_recomputed_price_percentiles(real_cache_env):
         obs = capsule["components"][metric]["observation_set"]
         assert obs["percentile_3y"] is None
     # real-mode capsule still validates
-    result = closeout.validate_capsule(
+    result = validator_mod.validate_capsule(
         capsule,
         market_cache_root=real_cache_env["cache_root"],
         market_registry=real_cache_env["registry"],
@@ -299,9 +309,9 @@ def test_real_capsule_uses_cache_recomputed_price_percentiles(real_cache_env):
 
 def test_confidence_grades_by_derived_source_tier():
     capsule = _capsule()
-    lineage_report = closeout.validate_capsule(capsule)
-    lineage_report["report_digest"] = closeout._sha256_bytes(closeout._canonical(lineage_report))
-    confidence = closeout.build_confidence(capsule, lineage_report)
+    lineage_report = validator_mod.validate_capsule(capsule)
+    lineage_report["report_digest"] = cap._sha256_bytes(cap._canonical(lineage_report))
+    confidence = confidence_mod.build_confidence(capsule, lineage_report)
     assert confidence["schema"] == "petrochina_dimension_evidence_confidence_v3"
     assert confidence["dimensions"]["enterprise_quality"]["grade"] == "medium"
     # valuation has a coverage gap (va_dividend_yield has no manifest percentile)
@@ -311,25 +321,45 @@ def test_confidence_grades_by_derived_source_tier():
 
 def test_shadow_runs_with_no_overall_score():
     capsule = _capsule()
-    lineage_report = closeout.validate_capsule(capsule)
-    lineage_report["report_digest"] = closeout._sha256_bytes(closeout._canonical(lineage_report))
-    confidence = closeout.build_confidence(capsule, lineage_report)
-    shadow = closeout.build_shadow(capsule, confidence)
-    assert shadow["schema"] == "petrochina_dimension_scoring_shadow_v4"
+    lineage_report = validator_mod.validate_capsule(capsule)
+    lineage_report["report_digest"] = cap._sha256_bytes(cap._canonical(lineage_report))
+    confidence = confidence_mod.build_confidence(capsule, lineage_report)
+    shadow = shadow_mod.build_shadow(capsule, confidence)
+    assert shadow["schema"] == "petrochina_dimension_scoring_shadow_v5"
     assert shadow["status"] == "pass"
     assert shadow["overall_score_prohibited"] is True
     assert shadow["recommendation_prohibited"] is True
     assert shadow["score_eligible"] is False
     # risk dimension is status outputs, never a merged numeric score
     assert shadow["dimensions"]["risk_and_evidence_integrity"]["no_merged_numeric_score"] is True
+    # R4A problem #4: risk status never emits "clear"; it reports the honest
+    # no-trigger-with-missing-evidence state.
+    risk_status = shadow["dimensions"]["risk_and_evidence_integrity"]["risk_veto_status"]
+    assert risk_status["status"] == "no_trigger_observed_with_missing_evidence"
+    assert risk_status["complete_absence_claim"] is False
 
 
 def test_sensitivity_not_stable_and_no_production():
     capsule = _capsule()
-    sensitivity = closeout.build_sensitivity(capsule)
-    assert sensitivity["schema"] == "petrochina_dimension_scoring_sensitivity_v4"
+    lineage_report = validator_mod.validate_capsule(capsule)
+    lineage_report["report_digest"] = cap._sha256_bytes(cap._canonical(lineage_report))
+    confidence = confidence_mod.build_confidence(capsule, lineage_report)
+    sensitivity = sensitivity_mod.build_sensitivity(capsule, confidence)
+    assert sensitivity["schema"] == "petrochina_dimension_scoring_sensitivity_v5"
     assert sensitivity["overall_score_prohibited"] is True
     assert sensitivity["score_eligible"] is False
     # honest conclusion: NOT_STABLE across each scored dimension
     for dim in ("enterprise_quality", "valuation_attractiveness", "value_realization_capacity"):
         assert sensitivity["dimensions"][dim]["stability_status"] == "NOT_STABLE"
+    # R4A problem #5: full sensitivity scenario classes restored from v3
+    for dim in ("enterprise_quality", "valuation_attractiveness", "value_realization_capacity"):
+        d = sensitivity["dimensions"][dim]
+        assert len(d["coverage_gate_sensitivity"]["thresholds"]) == 4
+        assert len(d["confidence_gate_sensitivity"]["thresholds"]) == 3
+        assert d["coverage_gate_sensitivity"]["gate_never_mutated_by_confidence"] is True
+        assert d["confidence_gate_sensitivity"]["coverage_gate_not_mutated"] is True
+    # enterprise_quality includes the missing-ROIC scenarios (>= 2 extra)
+    eq = sensitivity["dimensions"]["enterprise_quality"]
+    n_comp = len(cap._load(cap.REGISTRY_PATH)["dimensions"]["enterprise_quality"]["components"])
+    assert eq["scenario_count"] >= 2 * n_comp + n_comp + 4 + 2 + 2
+    assert sensitivity["confidence_contract"] == "value_dimension_scoring_confidence_v3"

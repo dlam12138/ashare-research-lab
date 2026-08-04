@@ -1,0 +1,11 @@
+{
+  "status": "pass",
+  "error_count": 0,
+  "warning_count": 0,
+  "errors": [],
+  "warnings": [],
+  "authoritative_recomputation_status": "pass",
+  "audit_snapshot_status": "pass",
+  "snapshot_errors": [],
+  "snapshot_warning_count": 0
+}

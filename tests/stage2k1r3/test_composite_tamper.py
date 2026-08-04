@@ -1,8 +1,10 @@
-"""M2 Stage 2K.1R3 composite tamper test.
+"""M2 Stage 2K.1R3/R4A composite tamper test.
 
 Proves the validator recomputes from upstream and rejects any capsule that
 self-reports inputs, source tiers, values, record digests, score_input_ids, or
-the capsule digest. Upstream artifacts are left untouched.
+the capsule digest. Since Stage 2K.1R4A, the capsule's resolved_records audit
+snapshot must also match the authoritative recomputation
+(capsule_snapshot_mismatch). Upstream artifacts are left untouched.
 """
 
 import json
@@ -11,7 +13,8 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / "src"))
 
-from ashare_research.tools import m2_stage2k1r3_closeout as closeout  # noqa: E402
+from ashare_research.scoring import capsule as cap  # noqa: E402
+from ashare_research.scoring import validator as v  # noqa: E402
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -34,8 +37,8 @@ def main() -> int:
             fails.append(name)
 
     # sanest to build/validate against the real committed artifacts
-    capsule = closeout.build_capsule()
-    base = closeout.validate_capsule(capsule)
+    capsule = cap.build_capsule()
+    base = v.validate_capsule(capsule)
     check("baseline validate passes", base["status"] == "pass", f"errors={base['errors']}")
 
     # --- tamper 1: transform_inputs + output value + score_input_id ---
@@ -45,8 +48,8 @@ def main() -> int:
     comp["selected_value_decimal"] = "0.999999"
     comp["score_input_id"] = "0" * 64
     comp["resolved_source_tier"] = "canonical_fact_verified"
-    tampered["capsule_digest"] = closeout.capsule_digest(tampered)
-    r = closeout.validate_capsule(tampered)
+    tampered["capsule_digest"] = cap.capsule_digest(tampered)
+    r = v.validate_capsule(tampered)
     check(
         "tamper inputs/value/id rejected",
         r["status"] == "fail",
@@ -61,26 +64,35 @@ def main() -> int:
         any("score_input_id_mismatch" in e for e in r["errors"]),
     )
 
-    # --- tamper 2: capsule resolved_records snapshot is NOT trusted ---
-    # The validator recomputes records from upstream, so a capsule that carries a
-    # wrong resolved_records snapshot (wrong raw_value / record_digest) but a
-    # correct score_input_id still validates: the capsule snapshot is ignored.
+    # --- tamper 2: capsule resolved_records snapshot mismatch is rejected ---
+    # Stage 2K.1R4A (problem #3): the validator must require the capsule's
+    # resolved_records audit snapshot to match the authoritative recomputation.
+    # A tampered snapshot (wrong raw_value / record_digest) fails closed with
+    # capsule_snapshot_mismatch even when the score_input_id is left correct.
     tampered2 = json.loads(json.dumps(capsule))
     rec = tampered2["components"]["eq_gross_margin"]["resolved_records"][0]
     rec["raw_value"] = "999999"
     rec["record_digest"] = "0" * 64
-    tampered2["capsule_digest"] = closeout.capsule_digest(tampered2)
-    r2 = closeout.validate_capsule(tampered2)
+    tampered2["capsule_digest"] = cap.capsule_digest(tampered2)
+    r2 = v.validate_capsule(tampered2)
     check(
-        "validator ignores capsule resolved_records snapshot (recomputes from upstream)",
-        r2["status"] == "pass",
-        "errors=" + "; ".join(r2["errors"][:4]),
+        "tampered resolved_records snapshot rejected (audit snapshot mismatch)",
+        r2["status"] == "fail",
+        "errors=" + "; ".join(r2["snapshot_errors"][:4]),
     )
-    # ...but if the capsule also claims a wrong score_input_id, it must fail.
+    check(
+        "capsule_snapshot_mismatch detected",
+        any("capsule_snapshot_mismatch" in e for e in r2["snapshot_errors"]),
+    )
+    check(
+        "audit_snapshot_status=fail",
+        r2["audit_snapshot_status"] == "fail",
+    )
+    # ...and if the capsule also claims a wrong score_input_id, it must fail.
     tampered2b = json.loads(json.dumps(tampered2))
     tampered2b["components"]["eq_gross_margin"]["score_input_id"] = "0" * 64
-    tampered2b["capsule_digest"] = closeout.capsule_digest(tampered2b)
-    r2b = closeout.validate_capsule(tampered2b)
+    tampered2b["capsule_digest"] = cap.capsule_digest(tampered2b)
+    r2b = v.validate_capsule(tampered2b)
     check(
         "wrong score_input_id rejected even with tampered snapshot",
         r2b["status"] == "fail",
@@ -90,8 +102,8 @@ def main() -> int:
     # --- tamper 3: source tier claim without touching upstream ---
     tampered3 = json.loads(json.dumps(capsule))
     tampered3["components"]["eq_roe"]["resolved_source_tier"] = "coverage_gap"
-    tampered3["capsule_digest"] = closeout.capsule_digest(tampered3)
-    r3 = closeout.validate_capsule(tampered3)
+    tampered3["capsule_digest"] = cap.capsule_digest(tampered3)
+    r3 = v.validate_capsule(tampered3)
     check(
         "tamper source tier rejected",
         r3["status"] == "fail",
@@ -105,7 +117,7 @@ def main() -> int:
     # --- tamper 4: capsule digest only ---
     tampered4 = json.loads(json.dumps(capsule))
     tampered4["capsule_digest"] = "0" * 64
-    r4 = closeout.validate_capsule(tampered4)
+    r4 = v.validate_capsule(tampered4)
     check(
         "tamper capsule digest rejected",
         r4["status"] == "fail",
@@ -120,8 +132,8 @@ def main() -> int:
     tampered5 = json.loads(json.dumps(capsule))
     del tampered5["components"]["eq_roic"]
     tampered5["component_count"] = len(tampered5["components"])
-    tampered5["capsule_digest"] = closeout.capsule_digest(tampered5)
-    r5 = closeout.validate_capsule(tampered5)
+    tampered5["capsule_digest"] = cap.capsule_digest(tampered5)
+    r5 = v.validate_capsule(tampered5)
     check(
         "removed component rejected",
         r5["status"] == "fail",
@@ -132,8 +144,8 @@ def main() -> int:
     tampered6 = json.loads(json.dumps(capsule))
     tampered6["components"]["rk_gap_count"]["selected_value_decimal"] = "0"
     tampered6["components"]["rk_gap_count"]["resolved_records"] = []
-    tampered6["capsule_digest"] = closeout.capsule_digest(tampered6)
-    r6 = closeout.validate_capsule(tampered6)
+    tampered6["capsule_digest"] = cap.capsule_digest(tampered6)
+    r6 = v.validate_capsule(tampered6)
     check(
         "tamper gap count rejected",
         r6["status"] == "fail",
