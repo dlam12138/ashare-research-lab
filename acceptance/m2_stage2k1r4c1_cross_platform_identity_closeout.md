@@ -1,7 +1,10 @@
 # M2 Stage 2K.1R4C.1 — Cross-Platform Identity Unification and ADR Share-Count Correction
 
-Status: `PASS` (CI-backed run `30973420125` on ubuntu + windows,
-`identity-compare` → `identical: true`, fingerprint digest `8186848b…`)
+Status: `CONDITIONAL PASS`
+(R4C.1 identity implementation `LIKELY CORRECT`; cross-platform CI runner
+provenance `NOT YET PROVEN` — awaiting the new paired-matrix CI run. The prior
+run `30973420125` used the cartesian 4-job matrix and a flat v1 fingerprint with
+no provenance, so it could not prove which runner produced which parse.)
 
 ## Objective
 
@@ -115,16 +118,53 @@ Migration report verified: `economic_value_changed=false`,
 score-input ids changed (identity structure), 87/87 scenarios kept, no
 scenario dropped.
 
-## Phase 7 — cross-platform CI compare
+## Phase 7 — cross-platform CI compare (v1, superseded)
 
-The workflow now builds `identity-fingerprint-ubuntu.json` /
-`identity-fingerprint-windows.json` (schema `scoring_identity_fingerprint_v1`,
-no absolute paths, no run time, sorted by component_id, canonical JSON) on each
-clean-clone job and uploads them as artifacts. A new `identity-compare` job
-downloads both and requires identical artifact digest algorithms, artifact
-SHA-256s, artifact byte sizes, record ids, record digests, score-input ids,
-capsule digest, time-contract digest, registry digest, scenario ids, and
-sensitivity ledger digest. Any difference fails with the first mismatch path.
+The first attempt built a flat `scoring_identity_fingerprint_v1` on each
+clean-clone job (cartesian `os × short` matrix → 4 jobs) and uploaded
+`identity-fingerprint-ubuntu/windows` (no commit binding). A new
+`identity-compare` job required identical artifact digest algorithms, artifact
+SHA-256s, byte sizes, record ids, record digests, score-input ids, capsule
+digest, time-contract digest, registry digest, scenario ids, and sensitivity
+ledger digest (run `30973420125` PASS, fingerprint digest `8186848b…`).
+
+**Limitation (root of the CONDITIONAL PASS):** the flat v1 fingerprint cannot
+prove *which runner* produced which parse — the matrix was a cartesian product
+(2 OS × 2 names = 4 jobs), artifact names carried no commit SHA, and provenance
+(runner OS / matrix platform) was not part of the fingerprint. The
+`identity-compare` outcome therefore proves identity equality but not
+cross-platform runner provenance.
+
+## Phase 8 — CI matrix + fingerprint provenance fix (minimal)
+
+A small, complete governance fix (no scoring code, capsule, digest algorithms,
+or ADR changed):
+
+1. **Paired matrix include** — `strategy.matrix.include` with exactly two
+   entries (`ubuntu-latest/ubuntu`, `windows-latest/windows`); the cartesian
+   `os × short` form is removed, so exactly 2 `clean-clone` jobs run.
+2. **Unique, commit-bound artifact names** —
+   `identity-fingerprint-<platform>-<commit-sha>`; the `identity-compare` job
+   downloads exactly these names.
+3. **Envelope v2 with independent provenance** — schema
+   `scoring_identity_fingerprint_envelope_v2`:
+   `provenance {runner_os, matrix_platform, github_sha}` + cross-platform
+   `identity` (artifact digests, record ids, score-input ids, capsule digest,
+   time contract, registry digest, scenario ids, sensitivity ledger digest) +
+   `identity_digest` (canonical SHA-256 of `identity` alone). Provenance is
+   strictly outside `identity`, so the two full JSON files differ only in
+   provenance.
+4. **Hard-gated compare** — the `compare` subcommand first gates on provenance
+   (left = ubuntu/`Linux`, right = windows/`Windows`, same `github_sha`), then
+   verifies the stored `identity_digest` binds to its own identity payload, then
+   deep-compares `identity` and reports the FIRST mismatch path. Any gate
+   failure exits non-zero. The compare job also hard-counts exactly two
+   fingerprint artifacts.
+5. **Tests** — 12 new tests cover the paired matrix, artifact-name uniqueness +
+   SHA binding, provenance isolation, both-ubuntu / both-windows compare
+   failures, inconsistent runner/platform, differing/missing SHA, distinct
+   provenance with identical identity → pass, and per-field identity mismatch →
+   first mismatch path (identity_digest computed dynamically).
 
 ## Requirements status
 
@@ -144,12 +184,20 @@ sensitivity ledger digest. Any difference fails with the first mismatch path.
 | 12 | Sensitivity NOT_STABLE preserved | DONE | `test_sensitivity_v7_not_stable_preserved` |
 | 13 | Migration economics unchanged | DONE | `test_migration_report_economics_unchanged` |
 | 14 | v3/v6 preserved as history | DONE | `test_v3_v6_preserved_as_history` |
-| 15 | Fingerprint schema + compare first mismatch | DONE | `test_fingerprint_schema_and_determinism`, `test_fingerprint_compare_reports_first_mismatch` |
+| 15 | Fingerprint envelope v2 + compare first mismatch | DONE | `test_envelope_schema_and_identity_determinism`, `test_identity_field_tamper_reports_first_mismatch` |
 | 16 | ADR share count corrected | DONE | `test_adr_share_count_corrected`, `test_adr_share_count_old_wrong_values_banned` |
 | 17 | No quarterly facts / no series / no shadow / no weights | DONE | `test_no_quarterly_facts_collected`, `test_no_historical_series_generated`, `test_valuation_shadow_not_modified`, `test_scoring_weights_thresholds_unchanged` |
 | 18 | No peer acquisition / no M3 | DONE | `test_no_peer_acquisition_started`, `test_no_m3_started` |
 | 19 | Default DB + fact baseline unchanged | DONE | `test_default_db_unchanged`, `test_fact_baseline_unchanged` |
 | 20 | R4C.1 manifest v2 verifies and is default | DONE | `test_r4c1_artifact_manifest_v2_verifies_and_is_default` |
+| 21 | Paired matrix has exactly two include entries | DONE | `test_ci_matrix_has_only_two_paired_include_entries` |
+| 22 | Artifact names unique and bound to commit SHA | DONE | `test_ci_artifact_names_unique_and_sha_bound` |
+| 23 | Compare job hard gate + SHA-bound paths | DONE | `test_ci_compare_job_has_hard_gate_and_sha_bound_paths` |
+| 24 | Provenance does not pollute identity payload | DONE | `test_provenance_does_not_pollute_identity` |
+| 25 | Different provenance + identical identity → PASS | DONE | `test_different_provenance_identical_identity_passes` |
+| 26 | Both-ubuntu / both-windows / disguise compare failures | DONE | `test_both_provenances_ubuntu_fails`, `test_both_provenances_windows_fails`, `test_ubuntu_cannot_disguise_as_windows`, `test_inconsistent_runner_platform_fails` |
+| 27 | SHA mismatch / missing SHA fails | DONE | `test_different_github_sha_fails`, `test_missing_github_sha_fails` |
+| 28 | identity_digest computed dynamically (not the old v1 digest) | DONE | `test_compare_success_identity_digest_is_dynamic` |
 
 ## Validation
 
@@ -158,10 +206,20 @@ Covered in the work record's verification section (full suite + static checks + 
 ## Final project state
 
 ```text
+M2 Stage 2K.1R4C.1:                    CONDITIONAL PASS
+Cross-platform implementation:         LIKELY CORRECT
+Cross-platform CI runner provenance:   NOT YET PROVEN (awaiting paired-matrix run)
+Quarterly denominator acquisition:     NOT STARTED
+R4D:                                   BLOCKED BY CI MATRIX PROVENANCE ONLY
+```
+
+(Intermediate verdict until the paired-matrix + envelope-v2 CI run proves that
+the ubuntu runner produced the left envelope and the windows runner the right
+one for the same commit with identical identity payloads.)
+
+```text
 ADR share-count factual accuracy:   TRUSTED (183,020,977,818 total ordinary shares)
 Artifact digest contracts:          TRUSTED (content_digest_v1, per-path)
-Cross-platform identities:          IDENTICAL (ubuntu == windows fingerprint;
-                                   fingerprint digest 8186848b2505e29c92cd0732fa6f67427b11b555d2ba58589ba2b061aae7679f)
 Economic values:                    UNCHANGED
 Sensitivity:                        NOT_STABLE (unchanged)
 PIT quarterly denominators:         ACQUISITION REQUIRED
@@ -173,8 +231,8 @@ M3:                                 NOT STARTED
 
 ## Git state
 
-- Branch: `feat/m2-value-assessment-mvp`; pushed to `origin`; CI run `30973420125`
-  PASS on ubuntu + windows (jobs: `clean-clone` ubuntu/windows × 2 each + `identity-compare`,
-  all success).
+- Branch: `feat/m2-value-assessment-mvp`; pushed to `origin`; the paired-matrix
+  + envelope-v2 fix is committed locally and awaiting push + CI (replaces the
+  cartesian 4-job matrix of run `30973420125`).
 - Protected files (AGENTS.md, agent/goals/, Stage 2I.2R edit, default DB, stash) untouched.
 - No force push, no reset --hard, no git clean.
