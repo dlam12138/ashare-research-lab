@@ -16,7 +16,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "5ce2000c1ecab1745d80ee0a0e9886b444e072f0d8813d07f2f388702fa3ffc2"
+   ],
    "gap_ids": []
   },
   {
@@ -34,7 +36,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "509199223d6ecc1791f13a6f73b6d3929dccd0df34431f43adc97f9d3cf2933a"
+   ],
    "gap_ids": []
   },
   {
@@ -52,7 +56,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "b83a65483f61b802b74ff34561fa8f547f755c62936487963e0f1a8bfdd117cf"
+   ],
    "gap_ids": []
   },
   {
@@ -70,7 +76,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "974c8a454dc7208e2e823cc676e79d07dafd91ad60d7e93924dc6a2fb93d7a1e"
+   ],
    "gap_ids": []
   },
   {
@@ -86,9 +94,11 @@
    "instant_or_duration": "instant",
    "required": "required",
    "expected_direct_disclosure": true,
-   "allowed_derived_fallback": false,
+   "allowed_derived_fallback": true,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "0eea8bf17f23afa631ae824510f8d88ea11de9d6055eb478cc00f47f0103d3e1"
+   ],
    "gap_ids": []
   },
   {
@@ -105,9 +115,9 @@
    "required": "required",
    "expected_direct_disclosure": false,
    "allowed_derived_fallback": true,
-   "acquisition_status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "acquisition_status": "acquired_reconciled_derived",
    "fact_ids": [
-    ""
+    "47ce8b0ba4f280dc0991c09b189ebc31af1f55fed204b1bd4e5f1b5b8d66b78b"
    ],
    "gap_ids": []
   },
@@ -126,7 +136,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "81b6486b5b62bda7d1e7d8ce8bec74d99d3a99bc6a9f92745f8445c350e73eb7"
+   ],
    "gap_ids": []
   },
   {
@@ -144,7 +156,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "16cc655cde45d141ee609c120f4af4c26ca80b183255f8f087e010f839bac35e"
+   ],
    "gap_ids": []
   },
   {
@@ -162,7 +176,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "277274bf2684fe3585a7afa1ac0c46ae5900ceb91b480828c7f5b84c243d7ef9"
+   ],
    "gap_ids": []
   },
   {
@@ -180,7 +196,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "527069b04e2136fcabef6c5a2d59c8f4345cb72ee1937bd3e9abcd3cef154e8e"
+   ],
    "gap_ids": []
   },
   {
@@ -196,9 +214,11 @@
    "instant_or_duration": "instant",
    "required": "required",
    "expected_direct_disclosure": true,
-   "allowed_derived_fallback": false,
+   "allowed_derived_fallback": true,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "267c5c11fcbea1b62b03d680eac7abc589b488648977503cdd99803f2ad39d84"
+   ],
    "gap_ids": []
   },
   {
@@ -215,9 +235,9 @@
    "required": "required",
    "expected_direct_disclosure": false,
    "allowed_derived_fallback": true,
-   "acquisition_status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "acquisition_status": "acquired_reconciled_derived",
    "fact_ids": [
-    ""
+    "0ddeec07afdefb2d9db999c64aaf1eec18cd641cacb58b07bbbf079892a2905e"
    ],
    "gap_ids": []
   },
@@ -236,7 +256,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "65f8f61d00a5c0b54cc2f3168d02d0668566906213c7815eb2b7ae3c6acc0d1c"
+   ],
    "gap_ids": []
   },
   {
@@ -254,7 +276,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "fe85664e80726d2e55b8c39a9bc09605f65574d20f450c9128bbb1ef42b90974"
+   ],
    "gap_ids": []
   },
   {
@@ -272,7 +296,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "b37cac8bf7568e152cb04ef3edc5ecce48fa98963f6574fd785349b6b6a8139b"
+   ],
    "gap_ids": []
   },
   {
@@ -290,7 +316,29 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "cddaff87693b8cd1f8bd24619a8a54006398f43120ebdbf151e16828f7be4d80"
+   ],
+   "gap_ids": []
+  },
+  {
+   "cell_id": "R4D-SSE-2020-Q1:total_ordinary_shares_at_period_end",
+   "report_id": "R4D-SSE-2020-Q1",
+   "role_id": "total_ordinary_shares_at_period_end",
+   "concept_id": "total_ordinary_shares_at_period_end",
+   "fiscal_year": 2020,
+   "report_type": "q1",
+   "period_type": "instant",
+   "period_start": "2020-01-01",
+   "period_end": "2020-03-31",
+   "instant_or_duration": "instant",
+   "required": "required",
+   "expected_direct_disclosure": false,
+   "allowed_derived_fallback": true,
+   "acquisition_status": "acquired_reconciled_derived",
+   "fact_ids": [
+    "bb88911c249a6aec8c0ef6898b83514d4cea552c8a6b7c2c6ac9d01691843339"
+   ],
    "gap_ids": []
   },
   {
@@ -307,9 +355,9 @@
    "required": "required",
    "expected_direct_disclosure": false,
    "allowed_derived_fallback": true,
-   "acquisition_status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "acquisition_status": "acquired_reconciled_derived",
    "fact_ids": [
-    ""
+    "73d3213ba50a485dfc7bf38d3f0eeee599beef0d1450b0d740737fc9e9ef929f"
    ],
    "gap_ids": []
   },
@@ -328,7 +376,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "53dacb028f282b3dd2adbc29ecf816257efe09f55a6332f6b6588d27903dddd8"
+   ],
    "gap_ids": []
   },
   {
@@ -346,7 +396,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "c4f2698de2ca5e18565328922e5c7d4b2a66b645809f639eb70dcf8244ba0a05"
+   ],
    "gap_ids": []
   },
   {
@@ -364,7 +416,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "ffa8db91c2f5354bf0bbb1abf12de4840706c99b781c7645bb5847bbb48cd53a"
+   ],
    "gap_ids": []
   },
   {
@@ -382,7 +436,29 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "5dbcd8eaf01f6f5c06dca14f9a7727336dbe914b6be79f4860e1ad7eb482c842"
+   ],
+   "gap_ids": []
+  },
+  {
+   "cell_id": "R4D-SSE-2020-Q3:total_ordinary_shares_at_period_end",
+   "report_id": "R4D-SSE-2020-Q3",
+   "role_id": "total_ordinary_shares_at_period_end",
+   "concept_id": "total_ordinary_shares_at_period_end",
+   "fiscal_year": 2020,
+   "report_type": "q3",
+   "period_type": "instant",
+   "period_start": "2020-01-01",
+   "period_end": "2020-09-30",
+   "instant_or_duration": "instant",
+   "required": "required",
+   "expected_direct_disclosure": false,
+   "allowed_derived_fallback": true,
+   "acquisition_status": "acquired_reconciled_derived",
+   "fact_ids": [
+    "9c33fe7fd09d214f642f84c77235d65b343c13e5a3e5d52ea2a8f186824aebb4"
+   ],
    "gap_ids": []
   },
   {
@@ -399,9 +475,9 @@
    "required": "required",
    "expected_direct_disclosure": false,
    "allowed_derived_fallback": true,
-   "acquisition_status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "acquisition_status": "acquired_reconciled_derived",
    "fact_ids": [
-    ""
+    "dd537042a46217898d53dbd7bec87a87c5e506e793a8cf774734652bf56260cd"
    ],
    "gap_ids": []
   },
@@ -420,7 +496,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "eb1a6271b4a359bda90f7bc6439ee61ff0597990457d348abd5ae451040a527e"
+   ],
    "gap_ids": []
   },
   {
@@ -438,7 +516,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "027de9ede52314d1c13ab2836afb57b2d517fbdaaaa7c46e48e5de5a1d7d7ab2"
+   ],
    "gap_ids": []
   },
   {
@@ -456,7 +536,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "7204099afd5fdb133831e9a97c086c89ed8e6af462e28abc6422801ce4c8e06c"
+   ],
    "gap_ids": []
   },
   {
@@ -474,7 +556,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "aacb1922addfd3da707d16e5510991014e85bbd2f6b3192e93e2d34ef3657ba9"
+   ],
    "gap_ids": []
   },
   {
@@ -490,9 +574,11 @@
    "instant_or_duration": "instant",
    "required": "required",
    "expected_direct_disclosure": true,
-   "allowed_derived_fallback": false,
+   "allowed_derived_fallback": true,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "34024f03ba66ac3001b99100733c3faf1190c04025fe0064140855692b5007c0"
+   ],
    "gap_ids": []
   },
   {
@@ -509,9 +595,9 @@
    "required": "required",
    "expected_direct_disclosure": false,
    "allowed_derived_fallback": true,
-   "acquisition_status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "acquisition_status": "acquired_reconciled_derived",
    "fact_ids": [
-    ""
+    "a2c7dda82eb0f5c3b53fe2b2eabc87d8e0b3453d3fc49a8538ff45f9ae5b33f9"
    ],
    "gap_ids": []
   },
@@ -530,7 +616,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "13fde8161656b89a80e6f211b02abdf1713c77daaa4d04341c34420f94207b84"
+   ],
    "gap_ids": []
   },
   {
@@ -548,7 +636,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "20087edcca60dfd64e421d4f674b2c37d359eeba5c151584146fbf5263d18902"
+   ],
    "gap_ids": []
   },
   {
@@ -566,7 +656,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "2033943e1e942e29b5115e2b78291407f00c4daeedc0815e2b8d6819e4a63d1d"
+   ],
    "gap_ids": []
   },
   {
@@ -584,7 +676,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "312fe33c401d7345ff8171e14b8e4d02b3a1db6dbe02ad49b4262f10df016ac9"
+   ],
    "gap_ids": []
   },
   {
@@ -600,9 +694,11 @@
    "instant_or_duration": "instant",
    "required": "required",
    "expected_direct_disclosure": true,
-   "allowed_derived_fallback": false,
+   "allowed_derived_fallback": true,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "2d4b556f477f72840e8519d62eb8fb29425e840d09ba8869a29960ce187feb55"
+   ],
    "gap_ids": []
   },
   {
@@ -619,9 +715,9 @@
    "required": "required",
    "expected_direct_disclosure": false,
    "allowed_derived_fallback": true,
-   "acquisition_status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "acquisition_status": "acquired_reconciled_derived",
    "fact_ids": [
-    ""
+    "5e9c9d021a0f372e166629fce8ee502061fea80e0e7c4ec9fd9d358dc734de85"
    ],
    "gap_ids": []
   },
@@ -640,7 +736,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "df0f50cd04273f81dac23e7c3e84de42d13a27fa988d133e2da347f8fa162fc8"
+   ],
    "gap_ids": []
   },
   {
@@ -658,7 +756,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "216016a3f605c427fc8fc28bc3c47141549a35686889e72e5eaad5a80fe0d652"
+   ],
    "gap_ids": []
   },
   {
@@ -676,7 +776,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "102ff8cc8e2578e9d96f1c7e77922f577261f01b8d10075949f777f4ac449881"
+   ],
    "gap_ids": []
   },
   {
@@ -694,7 +796,29 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "f374041b84c9df6111dba2867f2fe34327e4599ad4e8b544442ac85c3240542c"
+   ],
+   "gap_ids": []
+  },
+  {
+   "cell_id": "R4D-SSE-2021-Q1:total_ordinary_shares_at_period_end",
+   "report_id": "R4D-SSE-2021-Q1",
+   "role_id": "total_ordinary_shares_at_period_end",
+   "concept_id": "total_ordinary_shares_at_period_end",
+   "fiscal_year": 2021,
+   "report_type": "q1",
+   "period_type": "instant",
+   "period_start": "2021-01-01",
+   "period_end": "2021-03-31",
+   "instant_or_duration": "instant",
+   "required": "required",
+   "expected_direct_disclosure": false,
+   "allowed_derived_fallback": true,
+   "acquisition_status": "acquired_reconciled_derived",
+   "fact_ids": [
+    "8c54182c71379f8584cb44e16da8b7bea486e13ef6fcec7592ecad058f77993e"
+   ],
    "gap_ids": []
   },
   {
@@ -711,9 +835,9 @@
    "required": "required",
    "expected_direct_disclosure": false,
    "allowed_derived_fallback": true,
-   "acquisition_status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "acquisition_status": "acquired_reconciled_derived",
    "fact_ids": [
-    ""
+    "c7156624146549729f0b4c9d0de487c939384dadb23c774100123a2248a9a261"
    ],
    "gap_ids": []
   },
@@ -732,7 +856,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "65dec25525a61bac7bab03b70b128ad89fe69d597d0235b8febfae7ca45f0d49"
+   ],
    "gap_ids": []
   },
   {
@@ -750,7 +876,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "dc02095f6299269279d22a601dd0261019a69d28fa703254f3fead4e33346a4b"
+   ],
    "gap_ids": []
   },
   {
@@ -768,7 +896,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "300945373e6480414a17270c843b4eab096e3e8164f03999e83cce9c2ae2999d"
+   ],
    "gap_ids": []
   },
   {
@@ -786,7 +916,29 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "dcae0abbdb11eb558a0c42ddd1ed1e843dc948b10cbe11b42bd65a5e383b00bc"
+   ],
+   "gap_ids": []
+  },
+  {
+   "cell_id": "R4D-SSE-2021-Q3:total_ordinary_shares_at_period_end",
+   "report_id": "R4D-SSE-2021-Q3",
+   "role_id": "total_ordinary_shares_at_period_end",
+   "concept_id": "total_ordinary_shares_at_period_end",
+   "fiscal_year": 2021,
+   "report_type": "q3",
+   "period_type": "instant",
+   "period_start": "2021-01-01",
+   "period_end": "2021-09-30",
+   "instant_or_duration": "instant",
+   "required": "required",
+   "expected_direct_disclosure": false,
+   "allowed_derived_fallback": true,
+   "acquisition_status": "acquired_reconciled_derived",
+   "fact_ids": [
+    "91e81daac464b23f3a1b6dd16f3ad4785c6ac3e254d51a0ba4d4a7026574887c"
+   ],
    "gap_ids": []
   },
   {
@@ -803,9 +955,9 @@
    "required": "required",
    "expected_direct_disclosure": false,
    "allowed_derived_fallback": true,
-   "acquisition_status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "acquisition_status": "acquired_reconciled_derived",
    "fact_ids": [
-    ""
+    "98a7d94631bb188cab48662d00daf3cb4c8ce0342a054aedf96d20b9c1d3876b"
    ],
    "gap_ids": []
   },
@@ -824,7 +976,10 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "1f1cc75d460a9efc57b0e48b02aec9e27107babae8723e0622d64908e6fdd9f0",
+    "0e086ca894c661c8ad719d8bbe814ce6af17d9fb3d6bd6171a20566a90793874"
+   ],
    "gap_ids": []
   },
   {
@@ -842,7 +997,10 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "951fc8085b4a7391739090dc184bf5df62d46fed5ca12ae08b349d8c653892d2",
+    "6498989f87925c3da4981e4c6a7a48a93040d040196b6f2e852c9737d003fe4b"
+   ],
    "gap_ids": []
   },
   {
@@ -860,7 +1018,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "dedc229cb470fed54889288a9d12c05106f70cb9f61d9918e0dcc425a21b004a"
+   ],
    "gap_ids": []
   },
   {
@@ -878,7 +1038,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "900428738b1fe0f419b95026f863315f1aada8488e98c6463b3a4940e68e8d05"
+   ],
    "gap_ids": []
   },
   {
@@ -894,9 +1056,11 @@
    "instant_or_duration": "instant",
    "required": "required",
    "expected_direct_disclosure": true,
-   "allowed_derived_fallback": false,
+   "allowed_derived_fallback": true,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "2274aae072f593925fc74751645365c0570d2843f58eaac695bec8a8d6134caa"
+   ],
    "gap_ids": []
   },
   {
@@ -913,9 +1077,9 @@
    "required": "required",
    "expected_direct_disclosure": false,
    "allowed_derived_fallback": true,
-   "acquisition_status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "acquisition_status": "acquired_reconciled_derived",
    "fact_ids": [
-    ""
+    "308f65daef9e2e7ca4f274695a0453f9cd5df4cb27458b7ae0daeaa69fdd6713"
    ],
    "gap_ids": []
   },
@@ -934,7 +1098,10 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "467050b93db6edc6bc40f9596557fd8946c1b1c988158a3bb5fd7509e28abc0e",
+    "a2e565d27399d5fa100c699ae47bd75a5ce87eccd1cfc5d020ff8fb7914b1d8c"
+   ],
    "gap_ids": []
   },
   {
@@ -952,7 +1119,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "ad473f2b3f08e9f3314847334e927260dfa62fb9088059ca30f3743e3af3c3f9"
+   ],
    "gap_ids": []
   },
   {
@@ -970,7 +1139,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "788bf1b488ba83f321ab2009f66b5f4fbe467272d5ff1f10924364e52cb1ae99"
+   ],
    "gap_ids": []
   },
   {
@@ -988,7 +1159,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "cc0c4a850d67ba6c7f421b00519005bb9723d791408ad7fd28c9f5cd96bc82b8"
+   ],
    "gap_ids": []
   },
   {
@@ -1004,9 +1177,11 @@
    "instant_or_duration": "instant",
    "required": "required",
    "expected_direct_disclosure": true,
-   "allowed_derived_fallback": false,
+   "allowed_derived_fallback": true,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "7c9a56e2180b306a65be7902ea0edd552834eb911149c00ded6abdffd27e0a2a"
+   ],
    "gap_ids": []
   },
   {
@@ -1023,9 +1198,9 @@
    "required": "required",
    "expected_direct_disclosure": false,
    "allowed_derived_fallback": true,
-   "acquisition_status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "acquisition_status": "acquired_reconciled_derived",
    "fact_ids": [
-    ""
+    "2d10be7e57256630939a719784c8759000b7c3c7d25cf349824958c17d8d1b81"
    ],
    "gap_ids": []
   },
@@ -1044,7 +1219,10 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "2608838fc8bb4b9f3d1772c9edcfa1ffe7c030c0bd5c326b672815593aee55f5",
+    "896a2f045d34941d1a9db5f33047480033f5bea6eee8ba632d22a306af6ac613"
+   ],
    "gap_ids": []
   },
   {
@@ -1062,7 +1240,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "0aa4b328e7f7d050eeedacdfdf1a070572ab10678181649e5966ab21f18db0c5"
+   ],
    "gap_ids": []
   },
   {
@@ -1080,7 +1260,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "ed74b6afa3ecba3ab1f89607b714ece0fed9631783b105728524b2105d62d66f"
+   ],
    "gap_ids": []
   },
   {
@@ -1098,7 +1280,29 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "92343a653516638780761bd266f497f27b0bf74629d1dc82ab8e1ecd41a68778"
+   ],
+   "gap_ids": []
+  },
+  {
+   "cell_id": "R4D-SSE-2022-Q1:total_ordinary_shares_at_period_end",
+   "report_id": "R4D-SSE-2022-Q1",
+   "role_id": "total_ordinary_shares_at_period_end",
+   "concept_id": "total_ordinary_shares_at_period_end",
+   "fiscal_year": 2022,
+   "report_type": "q1",
+   "period_type": "instant",
+   "period_start": "2022-01-01",
+   "period_end": "2022-03-31",
+   "instant_or_duration": "instant",
+   "required": "required",
+   "expected_direct_disclosure": false,
+   "allowed_derived_fallback": true,
+   "acquisition_status": "acquired_reconciled_derived",
+   "fact_ids": [
+    "4c5a2f5c179c99bad9be32f317dc2c16255038dd8c0e2f4b7930ed27cdeb6630"
+   ],
    "gap_ids": []
   },
   {
@@ -1115,9 +1319,9 @@
    "required": "required",
    "expected_direct_disclosure": false,
    "allowed_derived_fallback": true,
-   "acquisition_status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "acquisition_status": "acquired_reconciled_derived",
    "fact_ids": [
-    ""
+    "8d359ca8080f587fa345bd366e8c60f515667b7fa306e07fe0e02ecc762f2f0b"
    ],
    "gap_ids": []
   },
@@ -1136,7 +1340,10 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "ce5725837f0952f584f9b3192f6137a55f83f33d1f4d615333c68647288d8d8e",
+    "c533deb4c844acab1e21f3113f5943049b622c1c50982ad9684e841e709f8fbe"
+   ],
    "gap_ids": []
   },
   {
@@ -1154,7 +1361,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "ccdf5f3ba528066fc76c8904f3578d6d9640aee22c94809e87c8ba1e60883bcf"
+   ],
    "gap_ids": []
   },
   {
@@ -1172,7 +1381,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "b20590a14bdfdb95dcc1aec4d59807632d51b5308f6e503b0a33e2783e1a2b37"
+   ],
    "gap_ids": []
   },
   {
@@ -1190,7 +1401,29 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "e924135dfea7e879926fd507816a003baf98e79fdc4a4e3db49b74e478abf213"
+   ],
+   "gap_ids": []
+  },
+  {
+   "cell_id": "R4D-SSE-2022-Q3:total_ordinary_shares_at_period_end",
+   "report_id": "R4D-SSE-2022-Q3",
+   "role_id": "total_ordinary_shares_at_period_end",
+   "concept_id": "total_ordinary_shares_at_period_end",
+   "fiscal_year": 2022,
+   "report_type": "q3",
+   "period_type": "instant",
+   "period_start": "2022-01-01",
+   "period_end": "2022-09-30",
+   "instant_or_duration": "instant",
+   "required": "required",
+   "expected_direct_disclosure": false,
+   "allowed_derived_fallback": true,
+   "acquisition_status": "acquired_reconciled_derived",
+   "fact_ids": [
+    "9436287ca92027c11001f8d47b408af474506b341f536e7f100f09c2c4890553"
+   ],
    "gap_ids": []
   },
   {
@@ -1207,9 +1440,9 @@
    "required": "required",
    "expected_direct_disclosure": false,
    "allowed_derived_fallback": true,
-   "acquisition_status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "acquisition_status": "acquired_reconciled_derived",
    "fact_ids": [
-    ""
+    "801f784d60b35237b6f6f8309b4fc35ab8d25fc896fe3b94f4ea3cb513911ba5"
    ],
    "gap_ids": []
   },
@@ -1228,7 +1461,10 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "c954daede8684386a0709dd4d7a27a3a7997dfd71c4e9c36037da2a4ab575995",
+    "c1b5a6869b209bcf1af660d7564047fe4a583aa47283d19a8c49de5ff30f0a5c"
+   ],
    "gap_ids": []
   },
   {
@@ -1246,7 +1482,10 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "af3bf3e17caddcc46e3f2cbda27b88d327b4afa99d0a57d30280ba81616ca975",
+    "3d1c68604bfe8ce6f984e2ec2d9559d8b0b88dca6f7084c5cd9492c04cfa9138"
+   ],
    "gap_ids": []
   },
   {
@@ -1264,7 +1503,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "5d0120786f5c73274098a5f719651514476208d5bd683f4851667d84decea5ea"
+   ],
    "gap_ids": []
   },
   {
@@ -1282,7 +1523,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "d2021010b08ce8bd2c0bf5405e1d8d42071945762d4f890dad1b0af40a9b6ff7"
+   ],
    "gap_ids": []
   },
   {
@@ -1298,9 +1541,11 @@
    "instant_or_duration": "instant",
    "required": "required",
    "expected_direct_disclosure": true,
-   "allowed_derived_fallback": false,
+   "allowed_derived_fallback": true,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "95f49a8187021e68e8ba2c429ae54350f551abf0f5f4680282c1db735c805d60"
+   ],
    "gap_ids": []
   },
   {
@@ -1317,9 +1562,9 @@
    "required": "required",
    "expected_direct_disclosure": false,
    "allowed_derived_fallback": true,
-   "acquisition_status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "acquisition_status": "acquired_reconciled_derived",
    "fact_ids": [
-    ""
+    "1c3216d94500d747a7181b8f525129cd8f6e2ba037ace69b1759167c80eebe7d"
    ],
    "gap_ids": []
   },
@@ -1338,7 +1583,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "8d7cd0147c3fc665f9f4de70d91a63852583a9a48f0d401915c504cf6ebde138"
+   ],
    "gap_ids": []
   },
   {
@@ -1356,7 +1603,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "8e969154e9c8220542c7448a30311b9631ae79936e5546281ea7dafa59a547b9"
+   ],
    "gap_ids": []
   },
   {
@@ -1374,7 +1623,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "4201944f6ede52c2f1a89664f32c770e7111e4501ff34b3e083c618456576c02"
+   ],
    "gap_ids": []
   },
   {
@@ -1392,7 +1643,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "14737e118bfcebb3075c8583c1f6ff57c4783c7b64e32e562dd20b334498d509"
+   ],
    "gap_ids": []
   },
   {
@@ -1408,9 +1661,11 @@
    "instant_or_duration": "instant",
    "required": "required",
    "expected_direct_disclosure": true,
-   "allowed_derived_fallback": false,
+   "allowed_derived_fallback": true,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "2db988b184b5f845cbda91af9913e6c113348c558657fde7a7756cc2243e643c"
+   ],
    "gap_ids": []
   },
   {
@@ -1427,9 +1682,9 @@
    "required": "required",
    "expected_direct_disclosure": false,
    "allowed_derived_fallback": true,
-   "acquisition_status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "acquisition_status": "acquired_reconciled_derived",
    "fact_ids": [
-    ""
+    "644d268544b0df351ed00f97a8418dcb77348bd5f56cb5983ecb7edc917044a7"
    ],
    "gap_ids": []
   },
@@ -1448,7 +1703,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "e03d2e80e2e600e3682afd29eecf51f480a455fda0d4f953f5cce52818ca9726"
+   ],
    "gap_ids": []
   },
   {
@@ -1466,7 +1723,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "ee8e22faae5c2da57ef71583154bfe8288bc9267fabceddfcc8dc89327a7354d"
+   ],
    "gap_ids": []
   },
   {
@@ -1484,7 +1743,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "6e07931cf462f077ce8e138fd2ae0a721185c7e68514bb0c7c98b828d20e140c"
+   ],
    "gap_ids": []
   },
   {
@@ -1502,7 +1763,29 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "5b40f71ce8a883a4ebbd372a2108f2abcebc5bccbfbb03ad01d1c8b1a4e023d5"
+   ],
+   "gap_ids": []
+  },
+  {
+   "cell_id": "R4D-SSE-2023-Q1:total_ordinary_shares_at_period_end",
+   "report_id": "R4D-SSE-2023-Q1",
+   "role_id": "total_ordinary_shares_at_period_end",
+   "concept_id": "total_ordinary_shares_at_period_end",
+   "fiscal_year": 2023,
+   "report_type": "q1",
+   "period_type": "instant",
+   "period_start": "2023-01-01",
+   "period_end": "2023-03-31",
+   "instant_or_duration": "instant",
+   "required": "required",
+   "expected_direct_disclosure": false,
+   "allowed_derived_fallback": true,
+   "acquisition_status": "acquired_reconciled_derived",
+   "fact_ids": [
+    "c16da54b5b9ba41800f5badfb116c064938f8b2bf2326502a5baf5f0e3678d6a"
+   ],
    "gap_ids": []
   },
   {
@@ -1519,9 +1802,9 @@
    "required": "required",
    "expected_direct_disclosure": false,
    "allowed_derived_fallback": true,
-   "acquisition_status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "acquisition_status": "acquired_reconciled_derived",
    "fact_ids": [
-    ""
+    "6ae09c3d6c13cb24761798a6b86fbb117d95e5b6d79410738a99c646744f7d9d"
    ],
    "gap_ids": []
   },
@@ -1540,7 +1823,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "5efe4fcb0df80d2ad46c630ee3835e6234b8f7cd6daf424ab5eba7281cb5adbf"
+   ],
    "gap_ids": []
   },
   {
@@ -1558,7 +1843,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "6a3219ce3fc875afcc9347671ba93a01564a98cb4847aa81261bf04fa17b9ffe"
+   ],
    "gap_ids": []
   },
   {
@@ -1576,7 +1863,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "47e18dfcafc92ceec32bcbc46e53e5d28a32dcbaf39708c8ac2ff770c3b74ed2"
+   ],
    "gap_ids": []
   },
   {
@@ -1594,7 +1883,29 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "d44eee0ea812c6fdcd29dd9b825d3bfeaa9d45fa0fffb861cd5f6cd3d1913b89"
+   ],
+   "gap_ids": []
+  },
+  {
+   "cell_id": "R4D-SSE-2023-Q3:total_ordinary_shares_at_period_end",
+   "report_id": "R4D-SSE-2023-Q3",
+   "role_id": "total_ordinary_shares_at_period_end",
+   "concept_id": "total_ordinary_shares_at_period_end",
+   "fiscal_year": 2023,
+   "report_type": "q3",
+   "period_type": "instant",
+   "period_start": "2023-01-01",
+   "period_end": "2023-09-30",
+   "instant_or_duration": "instant",
+   "required": "required",
+   "expected_direct_disclosure": false,
+   "allowed_derived_fallback": true,
+   "acquisition_status": "acquired_reconciled_derived",
+   "fact_ids": [
+    "4a787732e1433f5e4ef4f412a1c514c950b31244477d5db6b672cf1b0b9d3e13"
+   ],
    "gap_ids": []
   },
   {
@@ -1611,9 +1922,9 @@
    "required": "required",
    "expected_direct_disclosure": false,
    "allowed_derived_fallback": true,
-   "acquisition_status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "acquisition_status": "acquired_reconciled_derived",
    "fact_ids": [
-    ""
+    "be21be223544764ae09af2796d6f4f54af73bd998cdaabfa7807e8ff4fdd53e0"
    ],
    "gap_ids": []
   },
@@ -1632,7 +1943,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "ea454577cf53f36214712ce87f0a5c993acdeab3fd08bbe2813ec2605f33d3d9"
+   ],
    "gap_ids": []
   },
   {
@@ -1650,7 +1963,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "4fa6c3ad7f8aeb42e00b240a750685fe9154a0d843d3f405ffb2d6acd726914d"
+   ],
    "gap_ids": []
   },
   {
@@ -1668,7 +1983,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "b4c277e606f9cf0e409f381c5529a4eaa7458d1b124c998fbe0e760702340b68"
+   ],
    "gap_ids": []
   },
   {
@@ -1686,7 +2003,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "65f12c7a7fa56d99931fdebf06509bc8ac107812e9273de6dd2c9a6cbe2725eb"
+   ],
    "gap_ids": []
   },
   {
@@ -1702,9 +2021,11 @@
    "instant_or_duration": "instant",
    "required": "required",
    "expected_direct_disclosure": true,
-   "allowed_derived_fallback": false,
+   "allowed_derived_fallback": true,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "11103c9f9e3f9b97073f61f02a9198afcac84afa970f916839c993b10e41a04f"
+   ],
    "gap_ids": []
   },
   {
@@ -1721,9 +2042,9 @@
    "required": "required",
    "expected_direct_disclosure": false,
    "allowed_derived_fallback": true,
-   "acquisition_status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "acquisition_status": "acquired_reconciled_derived",
    "fact_ids": [
-    ""
+    "c9b996c1ad9931a9948d560de8ac895c9608a05b606afb5f1acaed430ded4198"
    ],
    "gap_ids": []
   },
@@ -1742,7 +2063,10 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "c0194c0663af23c649f1c73ea460e216fb2fb5d6895a32b397fb178fe49b5f51",
+    "36f1e5c595412f28ee8668534cfb712f849a079dd3bf46df7d17a52439a33a78"
+   ],
    "gap_ids": []
   },
   {
@@ -1760,7 +2084,10 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "6776601941b262065de5c6fb44d25e92ac85276d7d232ad688c9903e3ad8b8eb",
+    "fdd3701474f5ff927b1e1d4251ea03192428e72d3432b2327f3442f149c9e127"
+   ],
    "gap_ids": []
   },
   {
@@ -1778,7 +2105,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "aa780949b677efa0739f01e117e21bbb0f86c02b6d9e85c57bfea8aecf118071"
+   ],
    "gap_ids": []
   },
   {
@@ -1796,7 +2125,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "e3b355621f53fb2aa83b04d1b317a86bec10908b039a92ec83e504087dc9730f"
+   ],
    "gap_ids": []
   },
   {
@@ -1812,9 +2143,11 @@
    "instant_or_duration": "instant",
    "required": "required",
    "expected_direct_disclosure": true,
-   "allowed_derived_fallback": false,
+   "allowed_derived_fallback": true,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "cb8fb76cb3dc4dd850cf5f09d7b90137dd8e129c71e9a2b9b849680a1a33e15b"
+   ],
    "gap_ids": []
   },
   {
@@ -1831,9 +2164,9 @@
    "required": "required",
    "expected_direct_disclosure": false,
    "allowed_derived_fallback": true,
-   "acquisition_status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "acquisition_status": "acquired_reconciled_derived",
    "fact_ids": [
-    ""
+    "150eb2c1a55ce8bafdb0c1d658e183279ebf0c166679b8efb89b276c9544ff6f"
    ],
    "gap_ids": []
   },
@@ -1852,7 +2185,10 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "c49f537445ac38d8effbc868162863a777ba6de2865cf1eb7cdca37d4ed49d0b",
+    "1676c4edd23a2c1f5a37e4d5a2333f4710f6935fe4b56b41ded145b9eb0f0c68"
+   ],
    "gap_ids": []
   },
   {
@@ -1870,7 +2206,10 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "c93e3ecece4fc9df0e806171dcc21e0b85a7418347f11ec2bbfe915782a8fb18",
+    "392341588879d7e26168116471ce360edf4515b5617a09ae3709912c3774d70a"
+   ],
    "gap_ids": []
   },
   {
@@ -1888,7 +2227,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "9c821285185dce152d820ca6249d1a83a871e7fe69a1cc0be50f25785dd98103"
+   ],
    "gap_ids": []
   },
   {
@@ -1906,7 +2247,29 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "db5449d5a3763e7048afac4cd21818e8b46587a69e80bb777d695a461da0b176"
+   ],
+   "gap_ids": []
+  },
+  {
+   "cell_id": "R4D-SSE-2024-Q1:total_ordinary_shares_at_period_end",
+   "report_id": "R4D-SSE-2024-Q1",
+   "role_id": "total_ordinary_shares_at_period_end",
+   "concept_id": "total_ordinary_shares_at_period_end",
+   "fiscal_year": 2024,
+   "report_type": "q1",
+   "period_type": "instant",
+   "period_start": "2024-01-01",
+   "period_end": "2024-03-31",
+   "instant_or_duration": "instant",
+   "required": "required",
+   "expected_direct_disclosure": false,
+   "allowed_derived_fallback": true,
+   "acquisition_status": "acquired_reconciled_derived",
+   "fact_ids": [
+    "bc34e47d2adb7b657a94f67a8a9cdd22b46129a1ab43b2fc7ff3744fb5b42996"
+   ],
    "gap_ids": []
   },
   {
@@ -1923,9 +2286,9 @@
    "required": "required",
    "expected_direct_disclosure": false,
    "allowed_derived_fallback": true,
-   "acquisition_status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "acquisition_status": "acquired_reconciled_derived",
    "fact_ids": [
-    ""
+    "67b9875a01e4a2f7ba2737d9c88c664ea5e3eecf8e8c147f5136b00b43941aa6"
    ],
    "gap_ids": []
   },
@@ -1944,7 +2307,10 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "efd795d1a3c29449d3186b5c2d29650f049587511c8b69d18c34477bf0a9b4bf",
+    "13093008013ff30cf54577782b2cdb4f5c7f7f8fbe8f7978aab218d46e6fd871"
+   ],
    "gap_ids": []
   },
   {
@@ -1962,7 +2328,10 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "3aca7bbe7f2b4e6449f6fd7586e342afe7210a9c919f94b885e807989e2a28f5",
+    "bbee0c2ed6405500ddc5783a83677b270b10eab5c86d74eb8a4ada13c5b73e76"
+   ],
    "gap_ids": []
   },
   {
@@ -1980,7 +2349,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "5658b64f2a3eee647c82aad68a7887a9635f17df55653d980e3012eee17e9a93"
+   ],
    "gap_ids": []
   },
   {
@@ -1998,7 +2369,29 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "1f8fdd64dce0b8cf78191e7bc5ca7f3d4e219ea9e007ee70d2de8fd08670e300"
+   ],
+   "gap_ids": []
+  },
+  {
+   "cell_id": "R4D-SSE-2024-Q3:total_ordinary_shares_at_period_end",
+   "report_id": "R4D-SSE-2024-Q3",
+   "role_id": "total_ordinary_shares_at_period_end",
+   "concept_id": "total_ordinary_shares_at_period_end",
+   "fiscal_year": 2024,
+   "report_type": "q3",
+   "period_type": "instant",
+   "period_start": "2024-01-01",
+   "period_end": "2024-09-30",
+   "instant_or_duration": "instant",
+   "required": "required",
+   "expected_direct_disclosure": false,
+   "allowed_derived_fallback": true,
+   "acquisition_status": "acquired_reconciled_derived",
+   "fact_ids": [
+    "bb7f8ee40905481209a6cb47a52719b4370e11fc0c58e770ee41b732df34aee2"
+   ],
    "gap_ids": []
   },
   {
@@ -2015,9 +2408,9 @@
    "required": "required",
    "expected_direct_disclosure": false,
    "allowed_derived_fallback": true,
-   "acquisition_status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "acquisition_status": "acquired_reconciled_derived",
    "fact_ids": [
-    ""
+    "83c25b83de64f23b289643525ec21355ebc7f8d2617d8530f7e5eff6fec05c8f"
    ],
    "gap_ids": []
   },
@@ -2036,7 +2429,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "dea845ccad75d66b363fa67618f3f735c2dd756d43028e075859f5b94cf2b5a8"
+   ],
    "gap_ids": []
   },
   {
@@ -2054,7 +2449,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "eb7a6d0286eea95bc075757114d0a82c9f725f28c5c59193227ded66959fce9b"
+   ],
    "gap_ids": []
   },
   {
@@ -2072,7 +2469,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "00cb0c64831e9611889aa8a461cfa3e6f0be53efacca1ef5bd89e80c7db8262b"
+   ],
    "gap_ids": []
   },
   {
@@ -2090,7 +2489,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "84111bbedebc275468c0fd8c68d0cf018d55357ff2e9ad351655548dfc3e78fd"
+   ],
    "gap_ids": []
   },
   {
@@ -2106,9 +2507,11 @@
    "instant_or_duration": "instant",
    "required": "required",
    "expected_direct_disclosure": true,
-   "allowed_derived_fallback": false,
+   "allowed_derived_fallback": true,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "78cf4db8ca9b6f654b00055a339a5b8126f6ffd56bed485dd79ae9b8346cca9c"
+   ],
    "gap_ids": []
   },
   {
@@ -2125,9 +2528,9 @@
    "required": "required",
    "expected_direct_disclosure": false,
    "allowed_derived_fallback": true,
-   "acquisition_status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "acquisition_status": "acquired_reconciled_derived",
    "fact_ids": [
-    ""
+    "ee02c1bd273b9ecb717c305beab9dbc50ece468a0677c1d165806b7a82ffd527"
    ],
    "gap_ids": []
   },
@@ -2146,7 +2549,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "58d202d8b011b403f2b7ea46477c67f41eaac7ef5c51d3b1a57df9130a8759de"
+   ],
    "gap_ids": []
   },
   {
@@ -2164,7 +2569,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "dbdd314f910a87f01aedc8771cc6d4e159f1ec45effd41bcae062afc59c083cc"
+   ],
    "gap_ids": []
   },
   {
@@ -2182,7 +2589,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "1a2ce5682ea7f71c22f2fa78b4013cce9759d433f789581c91ae9b04ddea2eb5"
+   ],
    "gap_ids": []
   },
   {
@@ -2200,7 +2609,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "0b92db0be1813aec678e8fbfe2b451c90c9ce40b2b391c4741fb7ac4d7c5343d"
+   ],
    "gap_ids": []
   },
   {
@@ -2216,9 +2627,11 @@
    "instant_or_duration": "instant",
    "required": "required",
    "expected_direct_disclosure": true,
-   "allowed_derived_fallback": false,
+   "allowed_derived_fallback": true,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "5f4fc8b4243edcf9660e0592f0a34eb763ed8d793c39c8e0750de5125a1942b0"
+   ],
    "gap_ids": []
   },
   {
@@ -2235,9 +2648,9 @@
    "required": "required",
    "expected_direct_disclosure": false,
    "allowed_derived_fallback": true,
-   "acquisition_status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "acquisition_status": "acquired_reconciled_derived",
    "fact_ids": [
-    ""
+    "471353118299934100f3609699ebd2c7b05e269015b9aa2133a27e401f47262d"
    ],
    "gap_ids": []
   },
@@ -2256,7 +2669,10 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "2f3c2d6ee370a62a629a7bd6f52475344815c54ba7d4a205c151710d96ee091e",
+    "275657b7729e858e2a1c00ffae5c84283004e60cd7cf49899316cd2cda221a4c"
+   ],
    "gap_ids": []
   },
   {
@@ -2274,7 +2690,10 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "79c8a790cc93ab7a6859a6e383ae796a20e3bbfe514bc0df3c1f39f530c17757",
+    "26db6fb3e9cc6e98e14677b2847abf14c8ae398c55608ec8cb1e85481cbf02dc"
+   ],
    "gap_ids": []
   },
   {
@@ -2292,7 +2711,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "da9cefb7efd6ebf939bffa082583d068f3174a8697d427ce5bbeae1f9acce8ba"
+   ],
    "gap_ids": []
   },
   {
@@ -2310,7 +2731,29 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "a40a07bfcd4b166ba3b0d807ccfdbba5e22b1c11279715c98d553a4b0c8e1b5a"
+   ],
+   "gap_ids": []
+  },
+  {
+   "cell_id": "R4D-SSE-2025-Q1:total_ordinary_shares_at_period_end",
+   "report_id": "R4D-SSE-2025-Q1",
+   "role_id": "total_ordinary_shares_at_period_end",
+   "concept_id": "total_ordinary_shares_at_period_end",
+   "fiscal_year": 2025,
+   "report_type": "q1",
+   "period_type": "instant",
+   "period_start": "2025-01-01",
+   "period_end": "2025-03-31",
+   "instant_or_duration": "instant",
+   "required": "required",
+   "expected_direct_disclosure": false,
+   "allowed_derived_fallback": true,
+   "acquisition_status": "acquired_reconciled_derived",
+   "fact_ids": [
+    "21bdc697181e0fa6d98358e6be2bdb826025356c2be01900d0ed33a3da9ead03"
+   ],
    "gap_ids": []
   },
   {
@@ -2327,9 +2770,9 @@
    "required": "required",
    "expected_direct_disclosure": false,
    "allowed_derived_fallback": true,
-   "acquisition_status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "acquisition_status": "acquired_reconciled_derived",
    "fact_ids": [
-    ""
+    "5988d27130cf236bc90c2e80a5c38254358e0658974a51ce81b2195c47d7339b"
    ],
    "gap_ids": []
   },
@@ -2348,7 +2791,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "09c8c12c6c2ce17159f784706fbc8c511f36ed3ce4aa5bf1ae11decbae1fef09"
+   ],
    "gap_ids": []
   },
   {
@@ -2366,7 +2811,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "a3ddcf9cb8b45531d0960415f440b937bff74e47ecd4fe6defc10a5ee4e51671"
+   ],
    "gap_ids": []
   },
   {
@@ -2384,7 +2831,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "e1d7bf26ce8500f0d9116caa367622c286269e328c732a3907f13ce24923e0f2"
+   ],
    "gap_ids": []
   },
   {
@@ -2402,7 +2851,29 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "2a281c1035fa9fa72d0b54615712ea7279fef409bcfed5ff0d5d23824ac18a3c"
+   ],
+   "gap_ids": []
+  },
+  {
+   "cell_id": "R4D-SSE-2025-Q3:total_ordinary_shares_at_period_end",
+   "report_id": "R4D-SSE-2025-Q3",
+   "role_id": "total_ordinary_shares_at_period_end",
+   "concept_id": "total_ordinary_shares_at_period_end",
+   "fiscal_year": 2025,
+   "report_type": "q3",
+   "period_type": "instant",
+   "period_start": "2025-01-01",
+   "period_end": "2025-09-30",
+   "instant_or_duration": "instant",
+   "required": "required",
+   "expected_direct_disclosure": false,
+   "allowed_derived_fallback": true,
+   "acquisition_status": "acquired_reconciled_derived",
+   "fact_ids": [
+    "14762d4f68bd6af14cb39863d78cce804343c8f43f3d053d520ab90ee768d34a"
+   ],
    "gap_ids": []
   },
   {
@@ -2419,9 +2890,9 @@
    "required": "required",
    "expected_direct_disclosure": false,
    "allowed_derived_fallback": true,
-   "acquisition_status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "acquisition_status": "acquired_reconciled_derived",
    "fact_ids": [
-    ""
+    "3295c97bebd45cc8c59b43f22e90f093c6bc9686f96d7894f51d840131cf89ac"
    ],
    "gap_ids": []
   },
@@ -2440,7 +2911,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "2b03ac88fdffb65b11fd04eaa786bdc20a24460f26adc626952cf8595872c161"
+   ],
    "gap_ids": []
   },
   {
@@ -2458,7 +2931,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "eea34bc6e409453b8767ae5c05d47b8d78b2133cbc7f4d5cfc8f43b1b42ecb0c"
+   ],
    "gap_ids": []
   },
   {
@@ -2476,7 +2951,9 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "9d483639eacd7a4961655203c0fb72292df4ba1fa78769de59194e5ba3845389"
+   ],
    "gap_ids": []
   },
   {
@@ -2494,7 +2971,29 @@
    "expected_direct_disclosure": true,
    "allowed_derived_fallback": false,
    "acquisition_status": "acquired_reported_verified",
-   "fact_ids": [],
+   "fact_ids": [
+    "93cc44f4a098eb51aba97742f49492b1f33fc7bf5c635415bf0fe8d876de17f8"
+   ],
+   "gap_ids": []
+  },
+  {
+   "cell_id": "R4D-SSE-2026-Q1:total_ordinary_shares_at_period_end",
+   "report_id": "R4D-SSE-2026-Q1",
+   "role_id": "total_ordinary_shares_at_period_end",
+   "concept_id": "total_ordinary_shares_at_period_end",
+   "fiscal_year": 2026,
+   "report_type": "q1",
+   "period_type": "instant",
+   "period_start": "2026-01-01",
+   "period_end": "2026-03-31",
+   "instant_or_duration": "instant",
+   "required": "required",
+   "expected_direct_disclosure": false,
+   "allowed_derived_fallback": true,
+   "acquisition_status": "acquired_reconciled_derived",
+   "fact_ids": [
+    "4ea90cb2990731ba3c4b44d602973a260f3888b2ac1e4bfd95805c4460e6e25d"
+   ],
    "gap_ids": []
   },
   {
@@ -2511,12 +3010,12 @@
    "required": "required",
    "expected_direct_disclosure": false,
    "allowed_derived_fallback": true,
-   "acquisition_status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "acquisition_status": "acquired_reconciled_derived",
    "fact_ids": [
-    ""
+    "968a08800aed3136d9947044b2d8836a5508bc0d038940d69461cf57f87ecc57"
    ],
    "gap_ids": []
   }
  ],
- "cell_count": 137
+ "cell_count": 150
 }

@@ -1,0 +1,218 @@
+{
+ "schema": "pit_valuation_share_continuity_register_v1",
+ "symbol": "601857.SH",
+ "date": "2026-08-05",
+ "search_window": {
+  "start": "2020-01-01",
+  "end": "2026-08-02"
+ },
+ "source": {
+  "type": "sse_announcement_query_api",
+  "label": "sse query API archive 601857 2020-2026 (553 announcements)",
+  "announcement_count": 553
+ },
+ "precise_base_evidence": [
+  {
+   "period_end": "2020-06-30",
+   "value": 183020977818.0,
+   "source_id": "r4d:R4D-SSE-2020-H1"
+  },
+  {
+   "period_end": "2020-12-31",
+   "value": 183020977818.0,
+   "source_id": "r4d:R4D-SSE-2020-AR"
+  },
+  {
+   "period_end": "2021-06-30",
+   "value": 183020977818.0,
+   "source_id": "r4d:R4D-SSE-2021-H1"
+  },
+  {
+   "period_end": "2021-12-31",
+   "value": 183020977818.0,
+   "source_id": "r4d:R4D-SSE-2021-AR"
+  },
+  {
+   "period_end": "2022-06-30",
+   "value": 183020977818.0,
+   "source_id": "r4d:R4D-SSE-2022-H1"
+  },
+  {
+   "period_end": "2022-12-31",
+   "value": 183020977818.0,
+   "source_id": "r4d:R4D-SSE-2022-AR"
+  },
+  {
+   "period_end": "2023-06-30",
+   "value": 183020977818.0,
+   "source_id": "r4d:R4D-SSE-2023-H1"
+  },
+  {
+   "period_end": "2023-12-31",
+   "value": 183020977818.0,
+   "source_id": "r4d:R4D-SSE-2023-AR"
+  },
+  {
+   "period_end": "2024-06-30",
+   "value": 183020977818.0,
+   "source_id": "r4d:R4D-SSE-2024-H1"
+  },
+  {
+   "period_end": "2024-12-31",
+   "value": 183020977818.0,
+   "source_id": "r4d:R4D-SSE-2024-AR"
+  },
+  {
+   "period_end": "2025-06-30",
+   "value": 183020977818.0,
+   "source_id": "r4d:R4D-SSE-2025-H1"
+  },
+  {
+   "period_end": "2025-12-31",
+   "value": 183020977818.0,
+   "source_id": "r4d:R4D-SSE-2025-AR"
+  }
+ ],
+ "precise_base_value_set": [
+  "183020977818.0"
+ ],
+ "corporate_action_candidates": [
+  {
+   "date": "2026-06-22",
+   "title": "中国石油天然气股份有限公司2025年年度A股权益分派实施公告",
+   "share_change": false
+  },
+  {
+   "date": "2026-03-30",
+   "title": "中国石油天然气股份有限公司2025年末期A股利润分配方案的公告",
+   "share_change": false
+  },
+  {
+   "date": "2025-09-09",
+   "title": "中国石油天然气股份有限公司2025年半年度A股分红派息实施公告",
+   "share_change": false
+  },
+  {
+   "date": "2025-08-27",
+   "title": "中国石油天然气股份有限公司2025年半年度A股利润分配方案的公告",
+   "share_change": false
+  },
+  {
+   "date": "2025-06-17",
+   "title": "中国石油天然气股份有限公司 2024年年度权益分派实施公告",
+   "share_change": false
+  },
+  {
+   "date": "2025-03-31",
+   "title": "中国石油天然气股份有限公司2024年末期A股利润分配方案的公告",
+   "share_change": false
+  },
+  {
+   "date": "2024-09-10",
+   "title": "中国石油天然气股份有限公司2024年半年度权益分派实施公告",
+   "share_change": false
+  },
+  {
+   "date": "2024-08-27",
+   "title": "中国石油天然气股份有限公司2024年半年度A股利润分配方案的公告",
+   "share_change": false
+  },
+  {
+   "date": "2024-06-18",
+   "title": "中国石油天然气股份有限公司2023年年度权益分派实施公告",
+   "share_change": false
+  },
+  {
+   "date": "2024-03-26",
+   "title": "中国石油天然气股份有限公司2023年年度末期A股利润分配方案的公告",
+   "share_change": false
+  },
+  {
+   "date": "2023-09-12",
+   "title": "中国石油天然气股份有限公司2023年半年度权益分派实施公告",
+   "share_change": false
+  },
+  {
+   "date": "2023-08-31",
+   "title": "中国石油天然气股份有限公司2023年半年度A股利润分配方案的公告",
+   "share_change": false
+  },
+  {
+   "date": "2023-08-11",
+   "title": "中国石油天然气股份有限公司关于拟进行中期利润分配的提示性公告",
+   "share_change": false
+  },
+  {
+   "date": "2023-06-20",
+   "title": "中国石油天然气股份有限公司2022年年度权益分派实施公告",
+   "share_change": false
+  },
+  {
+   "date": "2023-03-30",
+   "title": "中国石油天然气股份有限公司独立非执行董事关于股东大会给予董事会回购股份一般性授权的独立意见",
+   "share_change": false
+  },
+  {
+   "date": "2023-03-30",
+   "title": "中国石油天然气股份有限公司2022年年度末期A股利润分配方案的公告",
+   "share_change": false
+  },
+  {
+   "date": "2023-03-30",
+   "title": "中国石油天然气股份有限公司独立非执行董事关于公司2022年度利润分配方案的独立意见",
+   "share_change": false
+  },
+  {
+   "date": "2022-09-09",
+   "title": "中国石油天然气股份有限公司2022年半年度A股分红派息实施公告",
+   "share_change": false
+  },
+  {
+   "date": "2022-06-18",
+   "title": "中国石油天然气股份有限公司2021年年度末期A股分红派息实施公告",
+   "share_change": false
+  },
+  {
+   "date": "2022-04-01",
+   "title": "中国石油天然气股份有限公司独立非执行董事关于公司2021年度利润分配方案的独立意见",
+   "share_change": false
+  },
+  {
+   "date": "2021-09-09",
+   "title": "中国石油天然气股份有限公司2021年半年度A股分红派息实施公告",
+   "share_change": false
+  },
+  {
+   "date": "2021-06-21",
+   "title": "中国石油天然气股份有限公司2020年年度末期A股分红派息实施公告",
+   "share_change": false
+  },
+  {
+   "date": "2020-09-14",
+   "title": "中国石油2020年半年度A股分红派息实施公告",
+   "share_change": false
+  },
+  {
+   "date": "2020-06-20",
+   "title": "中国石油2019年年度末期A股分红派息实施公告",
+   "share_change": false
+  }
+ ],
+ "share_changing_actions_found": [],
+ "share_changing_action_count": 0,
+ "share_count_constant": true,
+ "constant_value": 183020977818,
+ "known_total_shares": 183020977818,
+ "trust": "trusted",
+ "conclusions": {
+  "rationale": [
+   "all precise dividend-base share counts over 2020 H1..2025 AR are equal to 183,020,977,818",
+   "the bounded SSE corporate-action search found no share-changing action (no 转增/送股/增发/配股/回购注销/股权激励/可转债/增资)"
+  ],
+  "residual_risks": [
+   "search is bounded by SSE archive completeness (2020-01-01..2026-08-02)",
+   "non-SSE share-change mechanisms are not searched",
+   "183,020,977,818 is the A+H total ordinary share count"
+  ]
+ }
+}

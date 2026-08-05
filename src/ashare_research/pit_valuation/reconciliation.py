@@ -257,6 +257,9 @@ def detect_restatements(
     cells: list[Any],
     facts: list[dict[str, Any]],
     evidence_by_id: dict[str, dict[str, Any]],
+    *,
+    market_calendar: dict[str, Any] | None = None,
+    object_sha_by_evidence: dict[str, str] | None = None,
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     """Detect restated comparatives and build the restated fact versions.
 
@@ -264,6 +267,14 @@ def detect_restatements(
     the prior-year same report type restates the prior-year fact when the two
     values differ.  The restated version becomes visible only from its own
     announcement date; the original remains visible until then.
+
+    Unlike R4D v1, the restated fact is rebuilt from the later filing's
+    comparative column, not a shallow copy of the original's source metadata:
+    every source field (document, URL, label, page, object/excerpt hashes)
+    and every PIT field (announcement date, available_at, filing_date and
+    ``effective_from``) is recomputed from the later filing.  This requires
+    the verified market calendar to recompute ``effective_from`` and the
+    cache registry to attach the later object's content digest.
 
     Returns ``(restated_facts, lineage_records)``.
     """
@@ -328,24 +339,14 @@ def detect_restatements(
             # canonical unit using the cell's deterministic multiplier.
             multiplier = Decimal(str(cell.conversion_multiplier or "1"))
             restated_value = restated_value * multiplier
-            restated = dict(original)
-            restated["fact_version"] = original.get("fact_version", 1) + 1
-            restated["restatement_version"] = "restated_1"
-            restated["supersedes_fact_id"] = original["fact_id"]
-            restated["value"] = float(str(restated_value))
-            restated["normalized_value"] = float(str(restated_value))
-            restated["raw_value"] = float(str(restated_value))
-            restated["available_at"] = entry["announcement_date"]
-            restated["announcement_date"] = entry["announcement_date"]
-            restated["source_id"] = f"r4d:{entry['evidence_id']}"
-            restated["source_document"] = entry.get("proof_url", "")
-            restated["verification_note"] = (
-                "restated from comparative column; supersedes "
-                + original["fact_id"]
+            restated = _build_restated_from_comparative(
+                original,
+                cell=cell,
+                entry=entry,
+                restated_value=restated_value,
+                market_calendar=market_calendar,
+                object_sha_by_evidence=object_sha_by_evidence,
             )
-            from ashare_research.facts.identity import build_fact_id
-
-            restated["fact_id"] = build_fact_id(restated)
             restated_facts.append(restated)
             chain = build_version_lineage(
                 concept_id=cell.role_id,
@@ -376,3 +377,68 @@ def detect_restatements(
             )
             lineage.append(chain)
     return restated_facts, lineage
+
+
+def _build_restated_from_comparative(
+    original: dict[str, Any],
+    *,
+    cell: Any,
+    entry: dict[str, Any],
+    restated_value: Any,
+    market_calendar: dict[str, Any] | None,
+    object_sha_by_evidence: dict[str, str] | None,
+) -> dict[str, Any]:
+    """Rebuild a restated fact entirely from the later filing's metadata.
+
+    The economic identity (concept, context, symbol, unit, period_end) is
+    inherited from the original because it describes the same period; every
+    source and PIT field is recomputed from the later filing that printed the
+    ``(追溯后)`` comparative.  ``effective_from`` is recomputed from the
+    restatement announcement date.
+    """
+    from ashare_research.facts.identity import build_fact_id
+    from ashare_research.pit_valuation.fact_builder import effective_from_derivation
+
+    announcement_date = entry.get("announcement_date", original.get("announcement_date", ""))
+    obj_sha = (
+        object_sha_by_evidence.get(entry["evidence_id"], "")
+        if object_sha_by_evidence
+        else ""
+    )
+    restated = dict(original)
+    restated["fact_version"] = original.get("fact_version", 1) + 1
+    restated["restatement_version"] = "restated_1"
+    restated["supersedes_fact_id"] = original["fact_id"]
+    restated["value"] = float(str(restated_value))
+    restated["normalized_value"] = float(str(restated_value))
+    restated["raw_value"] = float(str(restated_value))
+    # Source fields rebuilt from the later filing, not the original.
+    restated["source_provider"] = entry.get("source_role", original.get("source_provider", ""))
+    restated["source_tier"] = (
+        "exchange_official"
+        if entry.get("source_role") == "exchange_official"
+        else "company_official"
+    )
+    restated["source_document"] = entry.get("proof_url", "")
+    restated["source_url"] = entry.get("proof_url", "")
+    restated["source_label"] = entry.get("report_title", "")
+    restated["source_page"] = str(cell.page_index + 1)
+    restated["source_id"] = f"r4d:{entry['evidence_id']}"
+    restated["source_hash"] = obj_sha or cell.excerpt_hash
+    restated["source_object_sha256"] = obj_sha
+    restated["excerpt_hash"] = cell.excerpt_hash
+    # PIT fields recomputed from the restatement announcement date.
+    restated["filing_date"] = announcement_date
+    restated["announcement_date"] = announcement_date
+    restated["available_at"] = announcement_date
+    if market_calendar is not None and announcement_date:
+        restated["effective_from"] = (
+            effective_from_derivation(announcement_date, market_calendar)[
+                "selected_next_trading_day"
+            ]
+        )
+    restated["verification_note"] = (
+        "restated from comparative column; supersedes " + original["fact_id"]
+    )
+    restated["fact_id"] = build_fact_id(restated)
+    return restated

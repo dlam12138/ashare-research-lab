@@ -69,6 +69,49 @@ def build_context(
     }
 
 
+def build_context_v2(
+    *,
+    fiscal_year: int,
+    report_type: str,
+    period_type: str,
+    instant: bool,
+    filing_date: str,
+    source_document: str,
+) -> dict[str, Any]:
+    """Construct a FactContext-compatible dict with period-aware instant context.
+
+    Context v2 fixes the instant-fact defect where every quarter of a year
+    shared the same ``context_id`` (``SYMBOL|FY|instant|SCOPE``): the equity at
+    2023-03-31, 2023-06-30, 2023-09-30 and 2023-12-31 all collapsed onto one
+    context.  For an instant fact the as-of point is the report period end, so
+    the period-end date is encoded into the ``context_id``, restoring the
+    ``(concept_id, symbol, context_id)`` uniqueness contract.  A duration fact
+    already carries its period type.  The context stays stable across
+    restatements (``restatement_version`` is never encoded here).
+    """
+    actual_period_end = f"{fiscal_year}-{PERIOD_END_BY_REPORT[report_type]}"
+    if instant:
+        context_id = (
+            f"{SYMBOL}|{fiscal_year}|instant|{ACCOUNTING_SCOPE}|{actual_period_end}"
+        )
+    else:
+        context_id = f"{SYMBOL}|{fiscal_year}|{period_type}|{ACCOUNTING_SCOPE}"
+    return {
+        "context_id": context_id,
+        "symbol": SYMBOL,
+        "fiscal_year": fiscal_year,
+        "period_type": period_type,
+        "period_start": f"{fiscal_year}-01-01",
+        "period_end": actual_period_end,
+        "instant_or_duration": "instant" if instant else "duration",
+        "consolidation_scope": ACCOUNTING_SCOPE,
+        "accounting_standard": ACCOUNTING_STANDARD,
+        "restatement_version": "original",
+        "source_document": source_document,
+        "filing_date": filing_date,
+    }
+
+
 def load_market_calendar(market_cache_root: Path | str) -> dict[str, Any]:
     """Load the verified trading-day calendar from the market cache.
 
@@ -122,10 +165,11 @@ def build_reported_fact(
     role: dict[str, Any],
     *,
     market_calendar: dict[str, Any],
+    object_sha: str = "",
 ) -> dict[str, Any]:
     """Build a canonical ReportedFact from an extracted cell."""
     announcement_date = evidence["announcement_date"]
-    context = build_context(
+    context = build_context_v2(
         fiscal_year=cell.fiscal_year,
         report_type=cell.report_type,
         period_type=PERIOD_TYPE_BY_REPORT[cell.report_type]
@@ -161,7 +205,11 @@ def build_reported_fact(
         else "company_official",
         "source_id": f"r4d:{evidence['evidence_id']}",
         "source_url": evidence["proof_url"],
-        "source_hash": cell.excerpt_hash,
+        # source_hash is the official PDF content-object digest (verified in
+        # the external cache); excerpt_hash is the captured-fragment digest.
+        "source_hash": object_sha or cell.excerpt_hash,
+        "source_object_sha256": object_sha,
+        "excerpt_hash": cell.excerpt_hash,
         "filing_date": announcement_date,
         "period_end": context["period_end"],
         "restatement_version": "original",
@@ -172,7 +220,10 @@ def build_reported_fact(
         "normalized_value": canonical_fact_value(cell.normalized_value),
         "normalization_rule": f"{cell.sign_rule};{cell.conversion_multiplier}x",
         "verification_status": "verified",
-        "verification_note": f"cell={cell.extraction_spec_id} excerpt={cell.excerpt_hash}",
+        "verification_note": (
+            f"cell={cell.extraction_spec_id} excerpt={cell.excerpt_hash}"
+            f" object={object_sha}"
+        ),
         "eligible_for_metrics": True,
         "created_at": "",
         "effective_from": derivation["selected_next_trading_day"],
@@ -187,10 +238,11 @@ def build_share_capital_fact(
     role: dict[str, Any],
     *,
     market_calendar: dict[str, Any],
+    object_sha: str = "",
 ) -> dict[str, Any]:
     """Build a canonical ReportedFact for the precise period-end share count."""
     announcement_date = evidence["announcement_date"]
-    context = build_context(
+    context = build_context_v2(
         fiscal_year=cell.fiscal_year,
         report_type=cell.report_type,
         period_type="instant",
@@ -224,7 +276,9 @@ def build_share_capital_fact(
         else "company_official",
         "source_id": f"r4d:{evidence['evidence_id']}",
         "source_url": evidence["proof_url"],
-        "source_hash": cell.excerpt_hash,
+        "source_hash": object_sha or cell.excerpt_hash,
+        "source_object_sha256": object_sha,
+        "excerpt_hash": cell.excerpt_hash,
         "filing_date": announcement_date,
         "period_end": context["period_end"],
         "restatement_version": "original",
@@ -235,7 +289,10 @@ def build_share_capital_fact(
         "normalized_value": canonical_fact_value(cell.normalized_value),
         "normalization_rule": "identity",
         "verification_status": "verified",
-        "verification_note": f"cell={cell.extraction_spec_id} excerpt={cell.excerpt_hash}",
+        "verification_note": (
+            f"cell={cell.extraction_spec_id} excerpt={cell.excerpt_hash}"
+            f" object={object_sha}"
+        ),
         "eligible_for_metrics": True,
         "created_at": "",
         "effective_from": derivation["selected_next_trading_day"],
@@ -295,3 +352,61 @@ def load_role(role_id: str) -> dict[str, Any]:
         if role["role_id"] == role_id:
             return role
     raise KeyError(f"unknown role {role_id}")
+
+
+def migrate_fact_to_context_v2(old_fact: dict[str, Any]) -> tuple[str, str]:
+    """Return the (context_id, fact_id) a fact would have under Context v2.
+
+    Only instant facts change: their old context ``SYMBOL|FY|instant|SCOPE``
+    gains the period-end date.  Duration facts keep their context and therefore
+    their fact_id.  This drives the old->new fact-id migration report.
+    """
+    old_ctx = old_fact.get("context_id", "")
+    if old_ctx.endswith("|instant|consolidated"):
+        period_end = old_fact.get("period_end", "")
+        new_ctx = f"{old_ctx}|{period_end}"
+    else:
+        new_ctx = old_ctx
+    new = dict(old_fact)
+    new["context_id"] = new_ctx
+    return new_ctx, build_fact_id(new)
+
+
+def build_fact_id_migration_report(
+    old_facts: list[dict[str, Any]],
+) -> dict[str, Any]:
+    """Build the old->new fact-id migration report driven by Context v2.
+
+    Compares the prior (R4D v1) reported bundle against the Context v2
+    identity.  Instant facts that previously shared ``SYMBOL|FY|instant|SCOPE``
+    now carry a period-end-qualified context, so their fact_id changes; every
+    changed fact is listed with its old/new context_id and fact_id.
+    """
+    entries = []
+    for f in sorted(
+        old_facts,
+        key=lambda x: (x.get("concept_id", ""), x.get("source_id", ""), x.get("context_id", "")),
+    ):
+        new_ctx, new_fid = migrate_fact_to_context_v2(f)
+        entries.append(
+            {
+                "concept_id": f.get("concept_id", ""),
+                "source_id": f.get("source_id", ""),
+                "old_context_id": f.get("context_id", ""),
+                "new_context_id": new_ctx,
+                "old_fact_id": f.get("fact_id", ""),
+                "new_fact_id": new_fid,
+                "changed": (f.get("fact_id", "") != new_fid),
+            }
+        )
+    changed = [e for e in entries if e["changed"]]
+    return {
+        "schema": "pit_denominator_fact_id_migration_v1",
+        "rule": (
+            "Context v2: instant facts gain the report period-end in the "
+            "context_id; duration facts are unchanged"
+        ),
+        "entries": entries,
+        "entry_count": len(entries),
+        "changed_count": len(changed),
+    }

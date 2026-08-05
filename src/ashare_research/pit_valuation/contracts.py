@@ -27,6 +27,9 @@ SOURCE_EVIDENCE_PATH = ROOT / "config" / "pit_valuation_official_source_evidence
 CACHE_REGISTRY_PATH = ROOT / "config" / "pit_valuation_official_cache_registry_v1.json"
 ROLE_REGISTRY_PATH = ROOT / "config" / "pit_valuation_quarterly_fact_role_registry_v1.json"
 EXTRACTION_SPECS_PATH = ROOT / "config" / "pit_valuation_quarterly_extraction_specs_v1.json"
+SHARE_CONTINUITY_REGISTER_PATH = (
+    ROOT / "config" / "pit_valuation_share_continuity_register_v1.json"
+)
 
 SYMBOL = "601857.SH"
 VALUATION_MARKET = "SSE_A_SHARE"
@@ -123,6 +126,10 @@ def load_role_registry() -> dict[str, Any]:
 
 def load_extraction_specs() -> dict[str, Any]:
     return load_json(EXTRACTION_SPECS_PATH)
+
+
+def load_share_continuity_register() -> dict[str, Any]:
+    return load_json(SHARE_CONTINUITY_REGISTER_PATH)
 
 
 def evidence_by_id() -> dict[str, dict[str, Any]]:
@@ -270,6 +277,26 @@ def validate_extraction_specs(specs: dict[str, Any]) -> None:
             raise ValueError(f"spec {spec.get('extraction_spec_id')!r} must forbid OCR/LLM")
 
 
+def validate_share_continuity_register(register: dict[str, Any]) -> None:
+    """Validate the frozen share-continuity register."""
+    if register.get("schema") != "pit_valuation_share_continuity_register_v1":
+        raise ValueError("unsupported share continuity register schema")
+    if register.get("symbol") != SYMBOL:
+        raise ValueError("share continuity register symbol mismatch")
+    if register.get("trust") not in ("trusted", "not_trusted"):
+        raise ValueError("share continuity register has invalid trust")
+    if register.get("share_count_constant") is not True:
+        raise ValueError("share continuity register must record a constant conclusion")
+    if not register.get("search_window", {}).get("start"):
+        raise ValueError("share continuity register missing search window start")
+    if not register.get("precise_base_evidence"):
+        raise ValueError("share continuity register has no precise base evidence")
+    if register.get("constant_value") is None:
+        raise ValueError("share continuity register missing constant_value")
+    if not isinstance(register.get("share_changing_actions_found"), list):
+        raise ValueError("share continuity register missing share-changing actions list")
+
+
 def validate_all_contracts() -> dict[str, Any]:
     """Validate every R4D contract and return a digest of each."""
     plan = load_plan()
@@ -282,12 +309,15 @@ def validate_all_contracts() -> dict[str, Any]:
     validate_role_registry(roles)
     specs = load_extraction_specs()
     validate_extraction_specs(specs)
+    continuity = load_share_continuity_register()
+    validate_share_continuity_register(continuity)
     return {
         "plan_digest": canonical_digest(plan),
         "source_evidence_digest": canonical_digest(evidence),
         "cache_registry_digest": canonical_digest(cache),
         "role_registry_digest": canonical_digest(roles),
         "extraction_specs_digest": canonical_digest(specs),
+        "share_continuity_register_digest": canonical_digest(continuity),
     }
 
 

@@ -1,4 +1,4 @@
-"""M2 Stage 2K.1R4D — thin CLI for official quarterly denominator acquisition.
+"""M2 Stage 2K.1R4D.1 — thin CLI for official quarterly denominator acquisition.
 
 This CLI only: parses arguments, calls the pit_valuation package modules,
 writes report artifacts, and returns an exit code.  No extraction regex, fact
@@ -22,6 +22,7 @@ from pathlib import Path
 from ashare_research.pit_valuation import contracts, readiness, source_cache
 from ashare_research.pit_valuation.contracts import (
     CACHE_REGISTRY_PATH,
+    PERIOD_TYPE_BY_REPORT,
     load_extraction_specs,
     load_role_registry,
     load_source_evidence,
@@ -64,6 +65,91 @@ def _cmd_acquire(args: argparse.Namespace) -> int:
     return 0 if result.get("all_objects_ok", False) else 2
 
 
+def _concept_to_role(concept_id: str, roles: dict) -> str:
+    for r in roles["roles"]:
+        if r["concept_id"] == concept_id:
+            return r["role_id"]
+    return concept_id
+
+
+def _fact_cell_key(fact: dict, roles: dict) -> str | None:
+    """Grid cell key (evidence_id:role_id) for a fact.
+
+    Derived facts carry ``r4d:<evidence_id>`` source_id; restated facts are
+    mapped to their superseded original's cell by the caller.
+    """
+    source_id = fact.get("source_id", "")
+    if not source_id.startswith("r4d:"):
+        return None
+    eid = source_id.split(":", 1)[1]
+    role_id = _concept_to_role(fact.get("concept_id", ""), roles)
+    return f"{eid}:{role_id}"
+
+
+def _build_derived_fact(
+    d: dict,
+    role: dict,
+    ev_by_id: dict,
+    calendar: dict,
+) -> dict:
+    """Build a reconciled_derived fact from a constancy derivation record."""
+    from ashare_research.facts.identity import build_fact_id
+    from ashare_research.pit_valuation.fact_builder import next_trading_day
+
+    eid = d["evidence_id"]
+    entry = ev_by_id.get(eid, {})
+    fy = d["fiscal_year"]
+    rt = d["report_type"]
+    period_end = d["period_end"]
+    is_instant = role["instant_or_duration"] == "instant"
+    if is_instant:
+        context_id = f"601857.SH|{fy}|instant|consolidated|{period_end}"
+    else:
+        context_id = f"601857.SH|{fy}|{PERIOD_TYPE_BY_REPORT[rt]}|consolidated"
+    announcement_date = entry.get("announcement_date", "")
+    effective_from = ""
+    if announcement_date and calendar.get("trade_dates"):
+        try:
+            effective_from = next_trading_day(announcement_date, calendar["trade_dates"])
+        except ValueError:
+            effective_from = ""
+    fact: dict = {
+        "fact_id": "",
+        "fact_version": 1,
+        "concept_id": role["concept_id"],
+        "concept_version": role["concept_version"],
+        "symbol": "601857.SH",
+        "value": float(d["value"]),
+        "unit": role["canonical_unit"],
+        "context_id": context_id,
+        "is_derived": True,
+        "derivation_definition_id": d.get(
+            "derivation_definition_id", "r4d1-share-continuity-constancy-v1"
+        ),
+        "derivation_version": d.get("derivation_version", "1"),
+        "input_fact_ids": "",
+        "source_tier": "reconciled_derived",
+        "source_id": f"r4d:{eid}",
+        "source_document": entry.get("proof_url", ""),
+        "source_hash": "",
+        "source_object_sha256": "",
+        "excerpt_hash": "",
+        "filing_date": announcement_date,
+        "period_end": period_end,
+        "restatement_version": "original",
+        "announcement_date": announcement_date,
+        "available_at": announcement_date,
+        "effective_from": effective_from,
+        "normalization_rule": "share-continuity-constancy",
+        "verification_status": "verified",
+        "verification_note": d.get("note", ""),
+        "eligible_for_metrics": True,
+        "created_at": "",
+    }
+    fact["fact_id"] = build_fact_id(fact)
+    return fact
+
+
 def _cmd_formal(args: argparse.Namespace) -> int:
     """Offline formal verification, extraction, facts, readiness."""
     if args.official_cache_root is None or args.market_cache_root is None:
@@ -75,17 +161,24 @@ def _cmd_formal(args: argparse.Namespace) -> int:
         print("official cache verification failed", file=sys.stderr)
         return 2
 
-    # Extract facts from the verified cache.
     from ashare_research.pit_valuation.extraction import (
+        _page_texts,
         extract_filing,
         extract_share_capital,
     )
     from ashare_research.pit_valuation.fact_builder import (
+        build_fact_id_migration_report,
         build_reported_fact,
         build_share_capital_fact,
         load_market_calendar,
         load_role,
         write_isolated_bundles,
+    )
+    from ashare_research.pit_valuation.reconciliation import detect_restatements
+    from ashare_research.pit_valuation.share_continuity import (
+        constancy_derivation_available,
+        derive_period_end_shares_from_constancy,
+        derive_weighted_average_shares_from_constancy,
     )
 
     evidence = load_source_evidence()
@@ -97,12 +190,13 @@ def _cmd_formal(args: argparse.Namespace) -> int:
     registry = contracts.load_cache_registry()
 
     obj_by_evidence: dict[str, Path] = {}
+    object_sha_by_evidence: dict[str, str] = {}
     for obj in registry["objects"]:
         for eid in obj["evidence_ids"]:
             obj_by_evidence[eid] = cache_root / obj["object_key"]
+            object_sha_by_evidence[eid] = obj["sha256"]
 
     reported: list[dict] = []
-    cells_meta: list[dict] = []
     all_cells: list = []
     # Economic facts are built once per filing from the exchange_official
     # object.  A byte-identical issuer alias shares the same content object
@@ -114,33 +208,21 @@ def _cmd_formal(args: argparse.Namespace) -> int:
         eid = entry["evidence_id"]
         pdf = obj_by_evidence.get(eid)
         if pdf is None or not pdf.is_file():
-            cells_meta.append({"evidence_id": eid, "status": "missing_official_filing"})
             continue
         filing_specs = [s for s in specs["specs"] if s["report_type"] == entry["report_type"]]
-        # Extract page texts once per filing and reuse for every cell, so a
-        # large annual report is never parsed twice.
-        from ashare_research.pit_valuation.extraction import _page_texts
-
+        # Extract page texts once per filing and reuse for every cell.
         pages = _page_texts(pdf)
         cells = extract_filing(pdf, entry, filing_specs, page_texts=pages)
         all_cells.extend(cells)
+        obj_sha = object_sha_by_evidence.get(eid, "")
         for cell in cells:
             role = load_role(cell.role_id)
             if cell.status != "acquired_reported_verified":
-                cells_meta.append(
-                    {"evidence_id": eid, "role_id": cell.role_id, "status": cell.status}
-                )
                 continue
-            fact = build_reported_fact(cell, entry, role, market_calendar=calendar)
-            reported.append(fact)
-            cells_meta.append(
-                {
-                    "evidence_id": eid,
-                    "role_id": cell.role_id,
-                    "status": cell.status,
-                    "fact_id": fact["fact_id"],
-                    "value": fact["value"],
-                }
+            reported.append(
+                build_reported_fact(
+                    cell, entry, role, market_calendar=calendar, object_sha=obj_sha
+                )
             )
         # Precise period-end share count (half-year and annual only).
         if entry["report_type"] in ("half_year", "annual"):
@@ -150,122 +232,47 @@ def _cmd_formal(args: argparse.Namespace) -> int:
             )
             scell = extract_share_capital(pdf, entry, share_spec, page_texts=pages)
             if scell.status == "acquired_reported_verified":
-                fact = build_share_capital_fact(scell, entry, share_role, market_calendar=calendar)
-                reported.append(fact)
-                cells_meta.append(
-                    {
-                        "evidence_id": eid,
-                        "role_id": "total_ordinary_shares_at_period_end",
-                        "status": scell.status,
-                        "fact_id": fact["fact_id"],
-                        "value": fact["value"],
-                    }
-                )
-            else:
-                cells_meta.append(
-                    {
-                        "evidence_id": eid,
-                        "role_id": "total_ordinary_shares_at_period_end",
-                        "status": scell.status,
-                    }
+                reported.append(
+                    build_share_capital_fact(
+                        scell, entry, share_role, market_calendar=calendar, object_sha=obj_sha
+                    )
                 )
 
     # Restatement / supersession lineage from comparative columns.
-    from ashare_research.pit_valuation.reconciliation import detect_restatements
-
-    ev_by_id = {e["evidence_id"]: e for e in evidence["entries"]}
-    restated_facts, lineage_records = detect_restatements(all_cells, reported, ev_by_id)
+    restated_facts, lineage_records = detect_restatements(
+        all_cells,
+        reported,
+        ev_by_id,
+        market_calendar=calendar,
+        object_sha_by_evidence=object_sha_by_evidence,
+    )
     reported.extend(restated_facts)
 
-    # Weighted-average-share derivation (reconciled bundle).
-    from decimal import Decimal
-
-    from ashare_research.pit_valuation.reconciliation import (
-        derive_weighted_average_shares,
-    )
-
+    # Share-continuity constancy derivation (reconciled bundle).
+    register = contracts.load_share_continuity_register()
+    constancy = constancy_derivation_available(register)
+    exchange = [
+        e for e in evidence["entries"] if e["source_role"] == "exchange_official"
+    ]
     reconciled: list[dict] = []
-    shares_meta: list[dict] = []
-    fact_by_key: dict[str, dict] = {}
-    for f in reported:
-        fact_by_key[f"{f['source_id']}:{f['concept_id']}"] = f
-    for entry in evidence["entries"]:
-        if entry["source_role"] != "exchange_official":
-            continue
-        eid = entry["evidence_id"]
-        profit = next(
-            (
-                f
-                for f in reported
-                if f["source_id"] == f"r4d:{eid}"
-                and f["concept_id"] == "net_profit_attributable_to_parent"
-            ),
-            None,
-        )
-        eps = next(
-            (
-                f
-                for f in reported
-                if f["source_id"] == f"r4d:{eid}" and f["concept_id"] == "basic_eps"
-            ),
-            None,
-        )
-        if profit is None or eps is None:
-            shares_meta.append(
-                {
-                    "evidence_id": eid,
-                    "status": "missing_operands",
-                    "note": "profit or EPS not acquired",
-                }
+    if constancy:
+        for d in derive_period_end_shares_from_constancy(register, exchange):
+            role = next(
+                r for r in roles["roles"]
+                if r["role_id"] == "total_ordinary_shares_at_period_end"
             )
-            continue
-        der = derive_weighted_average_shares(
-            profit_yuan=Decimal(str(profit["value"])),
-            eps=Decimal(str(eps["value"])),
-        )
-        if der.status == "exact_derivation":
-            role = load_role("weighted_average_total_ordinary_shares")
-            from ashare_research.pit_valuation.contracts import PERIOD_TYPE_BY_REPORT
-
-            period_type = PERIOD_TYPE_BY_REPORT[entry["report_type"]]
-            fact = {
-                "fact_id": "",
-                "fact_version": 1,
-                "concept_id": role["concept_id"],
-                "concept_version": role["concept_version"],
-                "symbol": "601857.SH",
-                "value": float(str(der.derived_value)),
-                "unit": role["canonical_unit"],
-                "context_id": f"601857.SH|{entry['fiscal_year']}|{period_type}|consolidated",
-                "is_derived": True,
-                "derivation_definition_id": "r4d-weighted-average-shares-v1",
-                "derivation_version": "1",
-                "input_fact_ids": f"{profit['fact_id']},{eps['fact_id']}",
-                "source_tier": "reconciled_derived",
-                "source_id": f"r4d:derived:{eid}",
-                "source_hash": "",
-                "available_at": entry["announcement_date"],
-                "restatement_version": "original",
-                "eligible_for_metrics": True,
-                "normalization_rule": "profit/eps",
-            }
-            from ashare_research.facts.identity import build_fact_id
-
-            fact["fact_id"] = build_fact_id(fact)
-            reconciled.append(fact)
-            shares_meta.append(
-                {"evidence_id": eid, "status": "exact_derivation", "fact_id": fact["fact_id"]}
+            reconciled.append(_build_derived_fact(d, role, ev_by_id, calendar))
+        for d in derive_weighted_average_shares_from_constancy(register, exchange):
+            role = next(
+                r for r in roles["roles"]
+                if r["role_id"] == "weighted_average_total_ordinary_shares"
             )
-        else:
-            shares_meta.append(
-                {
-                    "evidence_id": eid,
-                    "status": der.status,
-                    "note": der.notes,
-                    "implied_low": str(der.implied_low) if der.implied_low else None,
-                    "implied_high": str(der.implied_high) if der.implied_high else None,
-                }
-            )
+            reconciled.append(_build_derived_fact(d, role, ev_by_id, calendar))
+    else:
+        # Weighted-average share count is not derivable: the report never
+        # discloses it and the constancy evidence is not trusted.  The cells
+        # stay explicit gaps (recorded below).
+        pass
 
     write_isolated_bundles(
         Path(args.output_root).resolve(),
@@ -274,24 +281,55 @@ def _cmd_formal(args: argparse.Namespace) -> int:
         evidence=evidence,
     )
 
-    # Coverage matrix + gap ledger + readiness.
+    # Coverage matrix + gap ledger + fact/gap binding + readiness.
     grid = readiness.build_expected_grid(evidence, roles)
     cells_by_key: dict[str, dict] = {}
-    for m in cells_meta:
-        if "role_id" in m:
-            cell_id = f"{m['evidence_id']}:{m['role_id']}"
-            cells_by_key[cell_id] = m
-    for m in shares_meta:
-        cell_id = f"{m['evidence_id']}:weighted_average_total_ordinary_shares"
-        if m["status"] == "exact_derivation":
-            status = "acquired_reconciled_derived"
-        elif m["status"] == "ambiguous_due_to_eps_rounding":
-            status = "weighted_average_share_ambiguous_due_to_eps_rounding"
+    direct_cell: dict[str, str] = {}
+    for f in reported:
+        if f.get("restatement_version") == "restated_1":
+            continue
+        key = _fact_cell_key(f, roles)
+        if key is not None:
+            direct_cell[f["fact_id"]] = key
+    for f in reported:
+        if f.get("restatement_version") == "restated_1":
+            key = direct_cell.get(f.get("supersedes_fact_id", ""))
+            if key is None:
+                continue
         else:
-            status = "not_separately_disclosed"
-        cells_by_key[cell_id] = {"status": status, "fact_ids": [m.get("fact_id", "")]}
-    grid = readiness.apply_extraction_statuses(grid, cells_by_key=cells_by_key)
+            key = _fact_cell_key(f, roles)
+            if key is None:
+                continue
+        meta = cells_by_key.setdefault(
+            key, {"status": "acquired_reported_verified", "fact_ids": [], "gap_ids": []}
+        )
+        meta["fact_ids"].append(f["fact_id"])
+    for f in reconciled:
+        key = _fact_cell_key(f, roles)
+        if key is None:
+            continue
+        meta = cells_by_key.setdefault(
+            key, {"status": "acquired_reconciled_derived", "fact_ids": [], "gap_ids": []}
+        )
+        meta["status"] = "acquired_reconciled_derived"
+        meta["fact_ids"].append(f["fact_id"])
+
+    status_overrides: dict[str, str] = {}
+    for cell in grid:
+        if (
+            cell["role_id"] == "weighted_average_total_ordinary_shares"
+            and cell["cell_id"] not in cells_by_key
+        ):
+            status_overrides[cell["cell_id"]] = (
+                "weighted_average_share_ambiguous_due_to_eps_rounding"
+            )
+    grid = readiness.apply_extraction_statuses(
+        grid, cells_by_key=cells_by_key, status_overrides=status_overrides
+    )
     gaps = readiness.gap_ledger_from_grid(grid)
+    binding = readiness.validate_coverage_fact_gap_binding(
+        grid, gaps, reported + reconciled
+    )
     read = readiness.build_readiness(evidence, roles, grid, gaps)
     gate = readiness.decide_from_readiness(
         read,
@@ -325,6 +363,19 @@ def _cmd_formal(args: argparse.Namespace) -> int:
         "chain_count": len(lineage_records),
         "restated_fact_count": len(restated_facts),
     })
+    readiness.write_report(out / "petrochina_pit_denominator_share_continuity_v1.json", register)
+
+    # Context-v2 fact-id migration (old R4D v1 reported bundle -> Context v2).
+    old_bundle = REPORTS / "petrochina_pit_denominator_reported_fact_bundle_v1.json"
+    if old_bundle.exists():
+        old_facts = json.load(old_bundle.open(encoding="utf-8"))["facts"]
+        migration = build_fact_id_migration_report(old_facts)
+        readiness.write_report(
+            out / "petrochina_pit_denominator_fact_id_migration_v1.json", migration
+        )
+    readiness.write_report(
+        out / "petrochina_pit_denominator_coverage_binding_validation_v1.json", binding
+    )
     print(
         json.dumps(
             {
@@ -332,6 +383,8 @@ def _cmd_formal(args: argparse.Namespace) -> int:
                 "reported": len(reported),
                 "reconciled": len(reconciled),
                 "gaps": len(gaps),
+                "constancy": constancy,
+                "binding_ok": binding["ok"],
             },
             indent=1,
         )

@@ -56,9 +56,16 @@ def build_expected_grid(evidence: dict[str, Any], roles: dict[str, Any]) -> list
     for entry in sorted(filings, key=lambda e: (e["fiscal_year"], e["report_type"])):
         for role_id in all_roles:
             report_type = entry["report_type"]
-            if role_id == PERIOD_END_SHARE_ROLE and report_type not in INTERIM_ANNUAL_TYPES:
-                continue
             role = next(r for r in roles["roles"] if r["role_id"] == role_id)
+            if role_id == PERIOD_END_SHARE_ROLE:
+                # The precise period-end share count is directly disclosed in
+                # half-year/annual filings; for Q1/Q3 it may only be derived
+                # from the frozen share-continuity constant (never guessed).
+                # The Q1/Q3 cells are always part of the grid; whether they are
+                # acquired depends on the register trust, not on the grid shape.
+                expected_direct = report_type in INTERIM_ANNUAL_TYPES
+            else:
+                expected_direct = role["direct_or_derived"] == "reported"
             period_type = (
                 "instant"
                 if role["instant_or_duration"] == "instant"
@@ -80,8 +87,11 @@ def build_expected_grid(evidence: dict[str, Any], roles: dict[str, Any]) -> list
                     if role_id in METRIC_ROLES["PE_TTM"] + METRIC_ROLES["PB_MRQ"]
                     + METRIC_ROLES["PS_TTM"]
                     else "optional",
-                    "expected_direct_disclosure": role["direct_or_derived"] == "reported",
-                    "allowed_derived_fallback": role_id == "weighted_average_total_ordinary_shares",
+                    "expected_direct_disclosure": expected_direct,
+                    "allowed_derived_fallback": (
+                        role_id == "weighted_average_total_ordinary_shares"
+                        or role_id == PERIOD_END_SHARE_ROLE
+                    ),
                     "acquisition_status": "missing_official_filing",
                     "fact_ids": [],
                     "gap_ids": [],
@@ -109,11 +119,90 @@ def apply_extraction_statuses(
         status = detail.get("status", "missing_official_filing")
         cell["acquisition_status"] = status
         cell["fact_ids"] = detail.get("fact_ids", [])
+        cell["gap_ids"] = detail.get("gap_ids", [])
     return grid
 
 
+def validate_coverage_fact_gap_binding(
+    grid: list[dict[str, Any]],
+    gaps: list[dict[str, Any]],
+    facts: list[dict[str, Any]],
+    *,
+    require_acquired_fact_ids: bool = True,
+) -> dict[str, Any]:
+    """Bidirectional integrity check between grid, gap ledger and fact bundles.
+
+    - every acquired cell must reference a real ``fact_id`` present in the
+      bundles;
+    - every non-acquired (gap) cell must reference a real ``gap_id`` present
+      in the ledger;
+    - every ledger gap must bind back to a grid cell carrying its ``gap_id``;
+    - every bundle fact must be referenced by exactly one grid cell.
+
+    Returns ``{ok, errors, ...}``.  Any violation fails the binding closed.
+    """
+    errors: list[str] = []
+    bundle_fact_ids = {f["fact_id"] for f in facts}
+    ledger_by_gap = {g["gap_id"]: g for g in gaps}
+    grid_by_cell = {c["cell_id"]: c for c in grid}
+    acquired_statuses = {
+        "acquired_reported_verified",
+        "acquired_dual_official_reconciled",
+        "acquired_reconciled_derived",
+    }
+
+    referenced_fact_ids: set[str] = set()
+    for cell in grid:
+        cell_id = cell["cell_id"]
+        status = cell["acquisition_status"]
+        fact_ids = cell.get("fact_ids") or []
+        gap_ids = cell.get("gap_ids") or []
+        if status in acquired_statuses:
+            if require_acquired_fact_ids and not fact_ids:
+                errors.append(f"acquired cell {cell_id} has no fact_id")
+            for fid in fact_ids:
+                referenced_fact_ids.add(fid)
+                if fid not in bundle_fact_ids:
+                    errors.append(f"cell {cell_id} references unknown fact {fid}")
+        else:
+            if not gap_ids:
+                errors.append(f"non-acquired cell {cell_id} has no gap_id")
+            for gid in gap_ids:
+                if gid not in ledger_by_gap:
+                    errors.append(f"cell {cell_id} references unknown gap {gid}")
+                elif ledger_by_gap[gid]["cell_id"] != cell_id:
+                    errors.append(f"gap {gid} cell binding mismatch")
+
+    for gap in gaps:
+        cell = grid_by_cell.get(gap["cell_id"])
+        if cell is None:
+            errors.append(
+                f"ledger gap {gap['gap_id']} references missing cell {gap['cell_id']}"
+            )
+        elif gap["gap_id"] not in (cell.get("gap_ids") or []):
+            errors.append(f"grid cell {gap['cell_id']} does not bind gap {gap['gap_id']}")
+
+    for fid in bundle_fact_ids:
+        refs = [c for c in grid if fid in (c.get("fact_ids") or [])]
+        if len(refs) != 1:
+            errors.append(f"fact {fid} referenced by {len(refs)} grid cells (expected 1)")
+
+    return {
+        "ok": not errors,
+        "errors": errors,
+        "grid_cells": len(grid),
+        "gap_ledger_entries": len(gaps),
+        "bundle_facts": len(facts),
+        "referenced_fact_count": len(referenced_fact_ids),
+    }
+
+
 def gap_ledger_from_grid(grid: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    """Recompute the gap ledger from the grid (never hand-written)."""
+    """Recompute the gap ledger from the grid (never hand-written).
+
+    Also binds each gap back to its grid cell by writing the ``gap_id`` onto
+    the cell, so cell -> gap and gap -> cell are both traceable.
+    """
     gaps: list[dict[str, Any]] = []
     for cell in grid:
         status = cell["acquisition_status"]
@@ -132,9 +221,11 @@ def gap_ledger_from_grid(grid: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 "share count (report directly discloses no weighted-average "
                 "share count)"
             )
+        gap_id = f"R4D-{cell['report_id']}-{cell['role_id']}"
+        cell["gap_ids"] = [gap_id]
         gaps.append(
             {
-                "gap_id": f"R4D-{cell['report_id']}-{cell['role_id']}",
+                "gap_id": gap_id,
                 "cell_id": cell["cell_id"],
                 "report_id": cell["report_id"],
                 "role_id": cell["role_id"],

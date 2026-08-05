@@ -63,11 +63,24 @@ def test_expected_grid_generated_from_register():
     evidence = _synthetic_evidence()
     grid = _grid(evidence)
     assert grid
-    # 5 filings x 4 always-reported roles + share roles only on half_year/AR.
+    # 5 filings x 4 always-reported roles + share roles on every filing.
     ids = {(g["report_id"], g["role_id"]) for g in grid}
     assert ("R4D-SSE-2024-Q1", "revenue") in ids
-    assert ("R4D-SSE-2024-Q1", "total_ordinary_shares_at_period_end") not in ids
-    assert ("R4D-SSE-2024-ANNUAL", "total_ordinary_shares_at_period_end") in ids
+    # R4D.1: Q1/Q3 period-end share cells are part of the grid, but they are
+    # derived-eligible (the precise count is not directly disclosed in Q1/Q3).
+    q1_share = next(
+        g for g in grid
+        if g["report_id"] == "R4D-SSE-2024-Q1"
+        and g["role_id"] == "total_ordinary_shares_at_period_end"
+    )
+    assert q1_share["expected_direct_disclosure"] is False
+    assert q1_share["allowed_derived_fallback"] is True
+    ar_share = next(
+        g for g in grid
+        if g["report_id"] == "R4D-SSE-2024-ANNUAL"
+        and g["role_id"] == "total_ordinary_shares_at_period_end"
+    )
+    assert ar_share["expected_direct_disclosure"] is True
 
 
 def test_each_expected_cell_has_unique_valid_status():
