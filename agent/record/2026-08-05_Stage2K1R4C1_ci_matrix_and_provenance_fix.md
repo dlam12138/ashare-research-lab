@@ -130,7 +130,37 @@ Recorded as executed:
 - CLI e2e: ubuntu-vs-windows → `identical: true` (gate ok); ubuntu-vs-ubuntu →
   gate `provenance_right`, exit 1; exit codes 0/1 correct.
 - Manifest v2 verify: pass.
-- Full suite (bare pytest, CI-like): result recorded below once complete.
+- Full suite (bare pytest, CI-like): **1327 passed, 2 warnings** (151.34s).
+
+## Result
+
+- CI run `30974967062` **PASS** — exactly 3 jobs as specified:
+  `clean-clone (ubuntu-latest, ubuntu)`, `clean-clone (windows-latest, windows)`,
+  `identity-compare`; 2 unique sha-bound artifacts.
+- Provenance-gated compare: `identical: true`, `gate: ok`; left provenance
+  `Linux`/`ubuntu` and right provenance `Windows`/`windows`, both bound to the
+  same commit `f5a6ab552e3dc72da936bad8abd0a47b97a106ae`; identity digest
+  `1843da77159fbc55b9dd66185caab8c4af8d29560584b872c66e503808ec5665`.
+- **Cross-platform runner provenance: TRUSTED**; **ubuntu/windows identity
+  payloads: IDENTICAL**; acceptance updated from CONDITIONAL PASS to PASS;
+  `R4D_OFFICIAL_QUARTERLY_FACT_ACQUISITION_ALLOWED`.
+- No scoring code, capsule, digest algorithms, or ADR changed; economic values,
+  NOT_STABLE, and all business state unchanged.
+
+## Remaining issues
+
+- Quarterly denominator acquisition (R4D) is now ALLOWED but NOT started (next
+  stage, outside this fix's scope).
+- Historical PE/PB/PS series NOT implemented (by design).
+- No production score, no peer acquisition, no M3.
+
+## Final files and Git state
+
+- Commits: `9f391b3` (paired matrix + envelope v2 provenance fix),
+  `f5a6ab5` (acceptance CONDITIONAL PASS + work record), then the CI-evidence
+  commit below (recorded as executed).
+- Branch `feat/m2-value-assessment-mvp`; pushed to origin; protected files
+  (AGENTS.md, agent/goals/, Stage 2I.2R edit, default DB, stash) untouched.
 
 ## Decision records
 

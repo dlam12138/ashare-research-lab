@@ -1,10 +1,11 @@
 # M2 Stage 2K.1R4C.1 — Cross-Platform Identity Unification and ADR Share-Count Correction
 
-Status: `CONDITIONAL PASS`
-(R4C.1 identity implementation `LIKELY CORRECT`; cross-platform CI runner
-provenance `NOT YET PROVEN` — awaiting the new paired-matrix CI run. The prior
-run `30973420125` used the cartesian 4-job matrix and a flat v1 fingerprint with
-no provenance, so it could not prove which runner produced which parse.)
+Status: `PASS` (CI-backed run `30974967062` on ubuntu + windows — exactly 3 jobs:
+`clean-clone (ubuntu-latest, ubuntu)`, `clean-clone (windows-latest, windows)`,
+`identity-compare` — with provenance-gated compare `identical: true`, `gate: ok`,
+identity digest `1843da77159fbc55b9dd66185caab8c4af8d29560584b872c66e503808ec5665`;
+left provenance `Linux`/`ubuntu`, right provenance `Windows`/`windows`, both bound
+to the same commit `f5a6ab552e3dc72da936bad8abd0a47b97a106ae`.)
 
 ## Objective
 
@@ -206,16 +207,14 @@ Covered in the work record's verification section (full suite + static checks + 
 ## Final project state
 
 ```text
-M2 Stage 2K.1R4C.1:                    CONDITIONAL PASS
-Cross-platform implementation:         LIKELY CORRECT
-Cross-platform CI runner provenance:   NOT YET PROVEN (awaiting paired-matrix run)
-Quarterly denominator acquisition:     NOT STARTED
-R4D:                                   BLOCKED BY CI MATRIX PROVENANCE ONLY
+M2 Stage 2K.1R4C.1:                    PASS (provenance-gated CI)
+Cross-platform runner provenance:      TRUSTED (ubuntu/Linux left, windows/Windows
+                                       right, same commit, gated compare gate: ok)
+Ubuntu/Windows identity payloads:      IDENTICAL (identity_digest
+                                       1843da77159fbc55b9dd66185caab8c4af8d29560584b872c66e503808ec5665)
+R4D:                                   R4D_OFFICIAL_QUARTERLY_FACT_ACQUISITION_ALLOWED
+Quarterly denominator acquisition:     NOT STARTED (next stage)
 ```
-
-(Intermediate verdict until the paired-matrix + envelope-v2 CI run proves that
-the ubuntu runner produced the left envelope and the windows runner the right
-one for the same commit with identical identity payloads.)
 
 ```text
 ADR share-count factual accuracy:   TRUSTED (183,020,977,818 total ordinary shares)
@@ -231,8 +230,8 @@ M3:                                 NOT STARTED
 
 ## Git state
 
-- Branch: `feat/m2-value-assessment-mvp`; pushed to `origin`; the paired-matrix
-  + envelope-v2 fix is committed locally and awaiting push + CI (replaces the
-  cartesian 4-job matrix of run `30973420125`).
+- Branch: `feat/m2-value-assessment-mvp`; pushed to `origin`; final CI run
+  `30974967062` PASS — 3 jobs (2 clean-clone + identity-compare), 2 unique
+  sha-bound artifacts; provenance-gated compare `identical: true`.
 - Protected files (AGENTS.md, agent/goals/, Stage 2I.2R edit, default DB, stash) untouched.
 - No force push, no reset --hard, no git clean.
