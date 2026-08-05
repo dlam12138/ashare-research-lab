@@ -1,0 +1,281 @@
+{
+ "schema": "pit_denominator_gap_ledger_v1",
+ "gaps": [
+  {
+   "gap_id": "R4D-R4D-SSE-2020-AR-weighted_average_total_ordinary_shares",
+   "cell_id": "R4D-SSE-2020-AR:weighted_average_total_ordinary_shares",
+   "report_id": "R4D-SSE-2020-AR",
+   "role_id": "weighted_average_total_ordinary_shares",
+   "fiscal_year": 2020,
+   "report_type": "annual",
+   "period_end": "2020-12-31",
+   "status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "description": "basic EPS is rounded to 2-3 decimals; parent net profit / basic EPS cannot uniquely determine the weighted-average share count (report directly discloses no weighted-average share count)"
+  },
+  {
+   "gap_id": "R4D-R4D-SSE-2020-H1-weighted_average_total_ordinary_shares",
+   "cell_id": "R4D-SSE-2020-H1:weighted_average_total_ordinary_shares",
+   "report_id": "R4D-SSE-2020-H1",
+   "role_id": "weighted_average_total_ordinary_shares",
+   "fiscal_year": 2020,
+   "report_type": "half_year",
+   "period_end": "2020-06-30",
+   "status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "description": "basic EPS is rounded to 2-3 decimals; parent net profit / basic EPS cannot uniquely determine the weighted-average share count (report directly discloses no weighted-average share count)"
+  },
+  {
+   "gap_id": "R4D-R4D-SSE-2020-Q1-weighted_average_total_ordinary_shares",
+   "cell_id": "R4D-SSE-2020-Q1:weighted_average_total_ordinary_shares",
+   "report_id": "R4D-SSE-2020-Q1",
+   "role_id": "weighted_average_total_ordinary_shares",
+   "fiscal_year": 2020,
+   "report_type": "q1",
+   "period_end": "2020-03-31",
+   "status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "description": "basic EPS is rounded to 2-3 decimals; parent net profit / basic EPS cannot uniquely determine the weighted-average share count (report directly discloses no weighted-average share count)"
+  },
+  {
+   "gap_id": "R4D-R4D-SSE-2020-Q3-weighted_average_total_ordinary_shares",
+   "cell_id": "R4D-SSE-2020-Q3:weighted_average_total_ordinary_shares",
+   "report_id": "R4D-SSE-2020-Q3",
+   "role_id": "weighted_average_total_ordinary_shares",
+   "fiscal_year": 2020,
+   "report_type": "q3",
+   "period_end": "2020-09-30",
+   "status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "description": "basic EPS is rounded to 2-3 decimals; parent net profit / basic EPS cannot uniquely determine the weighted-average share count (report directly discloses no weighted-average share count)"
+  },
+  {
+   "gap_id": "R4D-R4D-SSE-2021-AR-weighted_average_total_ordinary_shares",
+   "cell_id": "R4D-SSE-2021-AR:weighted_average_total_ordinary_shares",
+   "report_id": "R4D-SSE-2021-AR",
+   "role_id": "weighted_average_total_ordinary_shares",
+   "fiscal_year": 2021,
+   "report_type": "annual",
+   "period_end": "2021-12-31",
+   "status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "description": "basic EPS is rounded to 2-3 decimals; parent net profit / basic EPS cannot uniquely determine the weighted-average share count (report directly discloses no weighted-average share count)"
+  },
+  {
+   "gap_id": "R4D-R4D-SSE-2021-H1-weighted_average_total_ordinary_shares",
+   "cell_id": "R4D-SSE-2021-H1:weighted_average_total_ordinary_shares",
+   "report_id": "R4D-SSE-2021-H1",
+   "role_id": "weighted_average_total_ordinary_shares",
+   "fiscal_year": 2021,
+   "report_type": "half_year",
+   "period_end": "2021-06-30",
+   "status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "description": "basic EPS is rounded to 2-3 decimals; parent net profit / basic EPS cannot uniquely determine the weighted-average share count (report directly discloses no weighted-average share count)"
+  },
+  {
+   "gap_id": "R4D-R4D-SSE-2021-Q1-weighted_average_total_ordinary_shares",
+   "cell_id": "R4D-SSE-2021-Q1:weighted_average_total_ordinary_shares",
+   "report_id": "R4D-SSE-2021-Q1",
+   "role_id": "weighted_average_total_ordinary_shares",
+   "fiscal_year": 2021,
+   "report_type": "q1",
+   "period_end": "2021-03-31",
+   "status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "description": "basic EPS is rounded to 2-3 decimals; parent net profit / basic EPS cannot uniquely determine the weighted-average share count (report directly discloses no weighted-average share count)"
+  },
+  {
+   "gap_id": "R4D-R4D-SSE-2021-Q3-weighted_average_total_ordinary_shares",
+   "cell_id": "R4D-SSE-2021-Q3:weighted_average_total_ordinary_shares",
+   "report_id": "R4D-SSE-2021-Q3",
+   "role_id": "weighted_average_total_ordinary_shares",
+   "fiscal_year": 2021,
+   "report_type": "q3",
+   "period_end": "2021-09-30",
+   "status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "description": "basic EPS is rounded to 2-3 decimals; parent net profit / basic EPS cannot uniquely determine the weighted-average share count (report directly discloses no weighted-average share count)"
+  },
+  {
+   "gap_id": "R4D-R4D-SSE-2022-AR-weighted_average_total_ordinary_shares",
+   "cell_id": "R4D-SSE-2022-AR:weighted_average_total_ordinary_shares",
+   "report_id": "R4D-SSE-2022-AR",
+   "role_id": "weighted_average_total_ordinary_shares",
+   "fiscal_year": 2022,
+   "report_type": "annual",
+   "period_end": "2022-12-31",
+   "status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "description": "basic EPS is rounded to 2-3 decimals; parent net profit / basic EPS cannot uniquely determine the weighted-average share count (report directly discloses no weighted-average share count)"
+  },
+  {
+   "gap_id": "R4D-R4D-SSE-2022-H1-weighted_average_total_ordinary_shares",
+   "cell_id": "R4D-SSE-2022-H1:weighted_average_total_ordinary_shares",
+   "report_id": "R4D-SSE-2022-H1",
+   "role_id": "weighted_average_total_ordinary_shares",
+   "fiscal_year": 2022,
+   "report_type": "half_year",
+   "period_end": "2022-06-30",
+   "status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "description": "basic EPS is rounded to 2-3 decimals; parent net profit / basic EPS cannot uniquely determine the weighted-average share count (report directly discloses no weighted-average share count)"
+  },
+  {
+   "gap_id": "R4D-R4D-SSE-2022-Q1-weighted_average_total_ordinary_shares",
+   "cell_id": "R4D-SSE-2022-Q1:weighted_average_total_ordinary_shares",
+   "report_id": "R4D-SSE-2022-Q1",
+   "role_id": "weighted_average_total_ordinary_shares",
+   "fiscal_year": 2022,
+   "report_type": "q1",
+   "period_end": "2022-03-31",
+   "status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "description": "basic EPS is rounded to 2-3 decimals; parent net profit / basic EPS cannot uniquely determine the weighted-average share count (report directly discloses no weighted-average share count)"
+  },
+  {
+   "gap_id": "R4D-R4D-SSE-2022-Q3-weighted_average_total_ordinary_shares",
+   "cell_id": "R4D-SSE-2022-Q3:weighted_average_total_ordinary_shares",
+   "report_id": "R4D-SSE-2022-Q3",
+   "role_id": "weighted_average_total_ordinary_shares",
+   "fiscal_year": 2022,
+   "report_type": "q3",
+   "period_end": "2022-09-30",
+   "status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "description": "basic EPS is rounded to 2-3 decimals; parent net profit / basic EPS cannot uniquely determine the weighted-average share count (report directly discloses no weighted-average share count)"
+  },
+  {
+   "gap_id": "R4D-R4D-SSE-2023-AR-weighted_average_total_ordinary_shares",
+   "cell_id": "R4D-SSE-2023-AR:weighted_average_total_ordinary_shares",
+   "report_id": "R4D-SSE-2023-AR",
+   "role_id": "weighted_average_total_ordinary_shares",
+   "fiscal_year": 2023,
+   "report_type": "annual",
+   "period_end": "2023-12-31",
+   "status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "description": "basic EPS is rounded to 2-3 decimals; parent net profit / basic EPS cannot uniquely determine the weighted-average share count (report directly discloses no weighted-average share count)"
+  },
+  {
+   "gap_id": "R4D-R4D-SSE-2023-H1-weighted_average_total_ordinary_shares",
+   "cell_id": "R4D-SSE-2023-H1:weighted_average_total_ordinary_shares",
+   "report_id": "R4D-SSE-2023-H1",
+   "role_id": "weighted_average_total_ordinary_shares",
+   "fiscal_year": 2023,
+   "report_type": "half_year",
+   "period_end": "2023-06-30",
+   "status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "description": "basic EPS is rounded to 2-3 decimals; parent net profit / basic EPS cannot uniquely determine the weighted-average share count (report directly discloses no weighted-average share count)"
+  },
+  {
+   "gap_id": "R4D-R4D-SSE-2023-Q1-weighted_average_total_ordinary_shares",
+   "cell_id": "R4D-SSE-2023-Q1:weighted_average_total_ordinary_shares",
+   "report_id": "R4D-SSE-2023-Q1",
+   "role_id": "weighted_average_total_ordinary_shares",
+   "fiscal_year": 2023,
+   "report_type": "q1",
+   "period_end": "2023-03-31",
+   "status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "description": "basic EPS is rounded to 2-3 decimals; parent net profit / basic EPS cannot uniquely determine the weighted-average share count (report directly discloses no weighted-average share count)"
+  },
+  {
+   "gap_id": "R4D-R4D-SSE-2023-Q3-weighted_average_total_ordinary_shares",
+   "cell_id": "R4D-SSE-2023-Q3:weighted_average_total_ordinary_shares",
+   "report_id": "R4D-SSE-2023-Q3",
+   "role_id": "weighted_average_total_ordinary_shares",
+   "fiscal_year": 2023,
+   "report_type": "q3",
+   "period_end": "2023-09-30",
+   "status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "description": "basic EPS is rounded to 2-3 decimals; parent net profit / basic EPS cannot uniquely determine the weighted-average share count (report directly discloses no weighted-average share count)"
+  },
+  {
+   "gap_id": "R4D-R4D-SSE-2024-AR-weighted_average_total_ordinary_shares",
+   "cell_id": "R4D-SSE-2024-AR:weighted_average_total_ordinary_shares",
+   "report_id": "R4D-SSE-2024-AR",
+   "role_id": "weighted_average_total_ordinary_shares",
+   "fiscal_year": 2024,
+   "report_type": "annual",
+   "period_end": "2024-12-31",
+   "status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "description": "basic EPS is rounded to 2-3 decimals; parent net profit / basic EPS cannot uniquely determine the weighted-average share count (report directly discloses no weighted-average share count)"
+  },
+  {
+   "gap_id": "R4D-R4D-SSE-2024-H1-weighted_average_total_ordinary_shares",
+   "cell_id": "R4D-SSE-2024-H1:weighted_average_total_ordinary_shares",
+   "report_id": "R4D-SSE-2024-H1",
+   "role_id": "weighted_average_total_ordinary_shares",
+   "fiscal_year": 2024,
+   "report_type": "half_year",
+   "period_end": "2024-06-30",
+   "status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "description": "basic EPS is rounded to 2-3 decimals; parent net profit / basic EPS cannot uniquely determine the weighted-average share count (report directly discloses no weighted-average share count)"
+  },
+  {
+   "gap_id": "R4D-R4D-SSE-2024-Q1-weighted_average_total_ordinary_shares",
+   "cell_id": "R4D-SSE-2024-Q1:weighted_average_total_ordinary_shares",
+   "report_id": "R4D-SSE-2024-Q1",
+   "role_id": "weighted_average_total_ordinary_shares",
+   "fiscal_year": 2024,
+   "report_type": "q1",
+   "period_end": "2024-03-31",
+   "status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "description": "basic EPS is rounded to 2-3 decimals; parent net profit / basic EPS cannot uniquely determine the weighted-average share count (report directly discloses no weighted-average share count)"
+  },
+  {
+   "gap_id": "R4D-R4D-SSE-2024-Q3-weighted_average_total_ordinary_shares",
+   "cell_id": "R4D-SSE-2024-Q3:weighted_average_total_ordinary_shares",
+   "report_id": "R4D-SSE-2024-Q3",
+   "role_id": "weighted_average_total_ordinary_shares",
+   "fiscal_year": 2024,
+   "report_type": "q3",
+   "period_end": "2024-09-30",
+   "status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "description": "basic EPS is rounded to 2-3 decimals; parent net profit / basic EPS cannot uniquely determine the weighted-average share count (report directly discloses no weighted-average share count)"
+  },
+  {
+   "gap_id": "R4D-R4D-SSE-2025-AR-weighted_average_total_ordinary_shares",
+   "cell_id": "R4D-SSE-2025-AR:weighted_average_total_ordinary_shares",
+   "report_id": "R4D-SSE-2025-AR",
+   "role_id": "weighted_average_total_ordinary_shares",
+   "fiscal_year": 2025,
+   "report_type": "annual",
+   "period_end": "2025-12-31",
+   "status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "description": "basic EPS is rounded to 2-3 decimals; parent net profit / basic EPS cannot uniquely determine the weighted-average share count (report directly discloses no weighted-average share count)"
+  },
+  {
+   "gap_id": "R4D-R4D-SSE-2025-H1-weighted_average_total_ordinary_shares",
+   "cell_id": "R4D-SSE-2025-H1:weighted_average_total_ordinary_shares",
+   "report_id": "R4D-SSE-2025-H1",
+   "role_id": "weighted_average_total_ordinary_shares",
+   "fiscal_year": 2025,
+   "report_type": "half_year",
+   "period_end": "2025-06-30",
+   "status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "description": "basic EPS is rounded to 2-3 decimals; parent net profit / basic EPS cannot uniquely determine the weighted-average share count (report directly discloses no weighted-average share count)"
+  },
+  {
+   "gap_id": "R4D-R4D-SSE-2025-Q1-weighted_average_total_ordinary_shares",
+   "cell_id": "R4D-SSE-2025-Q1:weighted_average_total_ordinary_shares",
+   "report_id": "R4D-SSE-2025-Q1",
+   "role_id": "weighted_average_total_ordinary_shares",
+   "fiscal_year": 2025,
+   "report_type": "q1",
+   "period_end": "2025-03-31",
+   "status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "description": "basic EPS is rounded to 2-3 decimals; parent net profit / basic EPS cannot uniquely determine the weighted-average share count (report directly discloses no weighted-average share count)"
+  },
+  {
+   "gap_id": "R4D-R4D-SSE-2025-Q3-weighted_average_total_ordinary_shares",
+   "cell_id": "R4D-SSE-2025-Q3:weighted_average_total_ordinary_shares",
+   "report_id": "R4D-SSE-2025-Q3",
+   "role_id": "weighted_average_total_ordinary_shares",
+   "fiscal_year": 2025,
+   "report_type": "q3",
+   "period_end": "2025-09-30",
+   "status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "description": "basic EPS is rounded to 2-3 decimals; parent net profit / basic EPS cannot uniquely determine the weighted-average share count (report directly discloses no weighted-average share count)"
+  },
+  {
+   "gap_id": "R4D-R4D-SSE-2026-Q1-weighted_average_total_ordinary_shares",
+   "cell_id": "R4D-SSE-2026-Q1:weighted_average_total_ordinary_shares",
+   "report_id": "R4D-SSE-2026-Q1",
+   "role_id": "weighted_average_total_ordinary_shares",
+   "fiscal_year": 2026,
+   "report_type": "q1",
+   "period_end": "2026-03-31",
+   "status": "weighted_average_share_ambiguous_due_to_eps_rounding",
+   "description": "basic EPS is rounded to 2-3 decimals; parent net profit / basic EPS cannot uniquely determine the weighted-average share count (report directly discloses no weighted-average share count)"
+  }
+ ],
+ "gap_count": 25
+}

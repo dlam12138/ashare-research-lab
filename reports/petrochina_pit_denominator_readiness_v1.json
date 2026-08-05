@@ -1,0 +1,106 @@
+{
+ "schema": "pit_denominator_readiness_v1",
+ "decision": "PIT_DENOMINATOR_FACT_GAPS_REMAIN",
+ "readiness": {
+  "symbol": "601857.SH",
+  "metrics": {
+   "PE_TTM": {
+    "metric_id": "PE_TTM",
+    "roles": {
+     "net_profit_attributable_to_parent": {
+      "direct_fact_coverage": 25,
+      "derived_fact_coverage": 0,
+      "missing_cells": [],
+      "conflict_cells": [],
+      "earliest_pit_ready_date": "2020-03-31",
+      "latest_pit_ready_date": "2026-03-31",
+      "3y_ready": true,
+      "5y_ready": true
+     },
+     "weighted_average_total_ordinary_shares": {
+      "direct_fact_coverage": 0,
+      "derived_fact_coverage": 0,
+      "missing_cells": [],
+      "conflict_cells": [],
+      "earliest_pit_ready_date": "",
+      "latest_pit_ready_date": "",
+      "3y_ready": false,
+      "5y_ready": false
+     }
+    },
+    "3y_ready": false,
+    "5y_ready": false,
+    "blockers": [
+     "weighted_average_total_ordinary_shares"
+    ],
+    "prohibited_fallback": "no third-party or commercial per-share fallback is allowed"
+   },
+   "PB_MRQ": {
+    "metric_id": "PB_MRQ",
+    "roles": {
+     "equity_attributable_to_parent": {
+      "direct_fact_coverage": 25,
+      "derived_fact_coverage": 0,
+      "missing_cells": [],
+      "conflict_cells": [],
+      "earliest_pit_ready_date": "2020-03-31",
+      "latest_pit_ready_date": "2026-03-31",
+      "3y_ready": true,
+      "5y_ready": true
+     },
+     "total_ordinary_shares_at_period_end": {
+      "direct_fact_coverage": 12,
+      "derived_fact_coverage": 0,
+      "missing_cells": [],
+      "conflict_cells": [],
+      "earliest_pit_ready_date": "2020-06-30",
+      "latest_pit_ready_date": "2025-12-31",
+      "3y_ready": true,
+      "5y_ready": true
+     }
+    },
+    "3y_ready": true,
+    "5y_ready": true,
+    "blockers": [],
+    "prohibited_fallback": "no third-party or commercial per-share fallback is allowed"
+   },
+   "PS_TTM": {
+    "metric_id": "PS_TTM",
+    "roles": {
+     "revenue": {
+      "direct_fact_coverage": 25,
+      "derived_fact_coverage": 0,
+      "missing_cells": [],
+      "conflict_cells": [],
+      "earliest_pit_ready_date": "2020-03-31",
+      "latest_pit_ready_date": "2026-03-31",
+      "3y_ready": true,
+      "5y_ready": true
+     },
+     "total_ordinary_shares_at_period_end": {
+      "direct_fact_coverage": 12,
+      "derived_fact_coverage": 0,
+      "missing_cells": [],
+      "conflict_cells": [],
+      "earliest_pit_ready_date": "2020-06-30",
+      "latest_pit_ready_date": "2025-12-31",
+      "3y_ready": true,
+      "5y_ready": true
+     }
+    },
+    "3y_ready": true,
+    "5y_ready": true,
+    "blockers": [],
+    "prohibited_fallback": "no third-party or commercial per-share fallback is allowed"
+   }
+  },
+  "explicit_gaps": 25,
+  "source_conflicts": 0,
+  "default_db": "UNCHANGED",
+  "production_metric_results": "NOT_CREATED",
+  "historical_pe_pb_ps": "NOT_IMPLEMENTED",
+  "valuation_percentile": "NOT_IMPLEMENTED",
+  "peer_acquisition": "NOT_ALLOWED",
+  "m3_started": false
+ }
+}
