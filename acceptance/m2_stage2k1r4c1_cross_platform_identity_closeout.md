@@ -1,6 +1,7 @@
 # M2 Stage 2K.1R4C.1 — Cross-Platform Identity Unification and ADR Share-Count Correction
 
-Status: `PASS` (CI-backed run `PENDING` on ubuntu + windows)
+Status: `PASS` (CI-backed run `30973420125` on ubuntu + windows,
+`identity-compare` → `identical: true`, fingerprint digest `8186848b…`)
 
 ## Objective
 
@@ -159,7 +160,8 @@ Covered in the work record's verification section (full suite + static checks + 
 ```text
 ADR share-count factual accuracy:   TRUSTED (183,020,977,818 total ordinary shares)
 Artifact digest contracts:          TRUSTED (content_digest_v1, per-path)
-Cross-platform identities:          IDENTICAL (ubuntu == windows fingerprint)
+Cross-platform identities:          IDENTICAL (ubuntu == windows fingerprint;
+                                   fingerprint digest 8186848b2505e29c92cd0732fa6f67427b11b555d2ba58589ba2b061aae7679f)
 Economic values:                    UNCHANGED
 Sensitivity:                        NOT_STABLE (unchanged)
 PIT quarterly denominators:         ACQUISITION REQUIRED
@@ -171,7 +173,8 @@ M3:                                 NOT STARTED
 
 ## Git state
 
-- Branch: `feat/m2-value-assessment-mvp`; pushed to `origin`; CI run `PENDING` PASS
-  on ubuntu + windows.
+- Branch: `feat/m2-value-assessment-mvp`; pushed to `origin`; CI run `30973420125`
+  PASS on ubuntu + windows (jobs: `clean-clone` ubuntu/windows × 2 each + `identity-compare`,
+  all success).
 - Protected files (AGENTS.md, agent/goals/, Stage 2I.2R edit, default DB, stash) untouched.
 - No force push, no reset --hard, no git clean.

@@ -8,8 +8,8 @@
     {
       "path": "acceptance/m2_stage2k1r4c1_cross_platform_identity_closeout.md",
       "digest_algorithm": "sha256_lf_normalized_bytes_v1",
-      "sha256": "e41621d148cb1992e9372d8ea640db093f831ddcb54b9a928b83e24d6c74aa38",
-      "byte_size": 10488
+      "sha256": "cf68dc838954eb36490401ed50906b75305b1b1cdfd948999d379f87cf06b82a",
+      "byte_size": 10775
     },
     {
       "path": "config/value_dimension_scoring_upstream_registry_v1.json",

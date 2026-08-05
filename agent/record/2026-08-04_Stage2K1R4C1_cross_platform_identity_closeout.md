@@ -182,8 +182,10 @@ Recorded as executed:
 - Capsule v4 / sensitivity v7 / migration report / manifest v2; economics unchanged.
 - ADR share-count corrected to `183,020,977,818` (≈ 183.021 billion ≈ 1,830.21 亿股).
 - Cross-platform identity: simulated ubuntu/windows fingerprints byte-identical.
-- Status: `completed` (6 commits created locally; CI-backed PASS pending — push
-  blocked by github.com network unreachability, see Final files and Git state).
+- Status: `completed` — CI-backed PASS: run `30973420125` on ubuntu + windows,
+  all jobs success incl. `identity-compare` (`identical: true`, fingerprint
+  digest `8186848b2505e29c92cd0732fa6f67427b11b555d2ba58589ba2b061aae7679f`).
+  Decision `R4D_OFFICIAL_QUARTERLY_FACT_ACQUISITION_ALLOWED` is now permitted.
 
 ## Remaining issues
 
@@ -214,13 +216,16 @@ Pre-commit final state (recorded as executed):
 - Stash `stash@{0}` preserved; default DB hash `4a71d3c7…` unchanged; protected files
   intact; `reports/petrochina_value_profile.json` working tree == committed blob
   (LF, `074b8564…`).
-- Commits created (6, in order): `c158f50` diagnose tool; `9c00895` content digest
+- Commits created (7, in order): `c158f50` diagnose tool; `9c00895` content digest
   centralization + upstream contract; `e0d53ad` capsule v4 / sensitivity v7 migration;
   `846ea9f` ADR share-count correction; `8142ce5` tests + CI compare jobs; `f5f37ff`
-  acceptance + work record + manifest v2.
-- **Push blocked by network**: `git push origin feat/m2-value-assessment-mvp` fails
-  with `Failed to connect to github.com port 443` (connection reset; github.com
-  unreachable, api.github.com reachable). Retried 3x with 5s delays; no local proxy
-  on common ports (7890/7897/1080/10809/8888/8118/1087). No HTTP(S) proxy configured.
-  CI evidence commit (acceptance `PENDING` → run number) is pending until the push
-  succeeds.
+  acceptance + work record + manifest v2; `ac78777` inline DEFAULT_DB constants
+  (CI bare-pytest fix) + regenerated manifest.
+- Push: succeeded (user pushed after two github.com outages). Final CI run
+  `30973420125` PASS on ubuntu + windows (all `clean-clone` jobs + `identity-compare`,
+  `identical: true`, fingerprint digest `8186848b2505e29c92cd0732fa6f67427b11b555d2ba58589ba2b061aae7679f`).
+- CI failure resolved: `test_default_db_unchanged` imported `tests.conftest`, which
+  only works under `python -m pytest` (CWD on sys.path) and broke bare `pytest` on
+  CI (`ModuleNotFoundError: No module named 'tests'`). Fixed by inlining the
+  default-DB path + protected digest; verified locally with bare `pytest`
+  (1315 passed).
