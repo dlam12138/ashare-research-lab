@@ -1,6 +1,6 @@
 # 工作记录：M2 Stage 2K.1R4D.1 — Denominator Fact Context, Restatement Metadata and Share-Continuity Closeout
 
-Status: `in_progress`
+Status: `completed` (decision `PIT_DENOMINATOR_FACTS_READY_FOR_SERIES_PREFLIGHT`)
 
 ## 基本信息
 
@@ -180,4 +180,7 @@ Status: `in_progress`
 
 ## 最终 Git 状态
 
-（待提交）
+- 分支 `feat/m2-value-assessment-mvp`；提交 `4d28d11`（R4D.1 closeout），在 `a399a17` 上。
+- 未推送（等待用户授权，遵循"未经明确要求不得推送"）。
+- 受保护项 untouched：`acceptance/m2_stage2i2r_*` 编辑、`AGENTS.md`、`agent/goals/`、
+  默认 DB、`stash@{0}`。
