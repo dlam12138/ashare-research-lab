@@ -31,6 +31,8 @@ jobs:
           python -m compileall -q src
       - name: Contract gate
         run: python -m ashare_research.tools.stage2g_reproducibility verify-contracts
+      - name: Stage 2K.1R4D quarterly denominator contract gate
+        run: python -m ashare_research.tools.m2_stage2k1r4d_acquire_denominators verify-contracts
       - name: Stage 2H.1 risk-veto PIT/lineage contract gate
         run: python -m ashare_research.tools.petrochina_risk_veto_vertical_slice verify-contracts
       - name: Build isolated test capsule A

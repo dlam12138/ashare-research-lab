@@ -104,8 +104,8 @@
     {
       "path": ".github/workflows/stage2g-reproducibility.yml",
       "digest_algorithm": "sha256_lf_normalized_bytes_v1",
-      "sha256": "f751a5a6d95433b65d2fdb0afe0ee4a02b6a061f173470972785dacc1d7d7ab1",
-      "byte_size": 5139
+      "sha256": "c4a26713bc217502dd6dec22c480b68cc168bb05851a6599a5ae27a73da5c0b7",
+      "byte_size": 5301
     }
   ]
 }
