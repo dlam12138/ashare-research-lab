@@ -1,0 +1,80 @@
+{
+  "schema": "pit_valuation_quarterly_fact_execution_plan_v1",
+  "version": "1.0",
+  "date": "2026-08-05",
+  "stage": "M2 Stage 2K.1R4D",
+  "symbol": "601857.SH",
+  "valuation_market": "SSE_A_SHARE",
+  "price_convention": "A_SHARE_PRICE_PER_SHARE",
+  "accounting_scope": "consolidated",
+  "accounting_standard": "CAS",
+  "research_evidence_as_of": "2026-08-02",
+  "scorecard_formed_at": "2026-08-02",
+  "effective_rule_id": "announcement-date-to-next-trading-day-v1",
+  "inherits": {
+    "acquisition_plan": "config/pit_valuation_fact_acquisition_plan_v1.json",
+    "acquisition_contract": "docs/pit_valuation_fact_acquisition_contract.md",
+    "convention_adr": "docs/decisions/ADR-VALUATION-002-a-share-per-share-convention.md"
+  },
+  "report_scope": {
+    "start": "2020 Q1",
+    "report_types": ["q1", "half_year", "q3", "annual"],
+    "last_period": "2026 Q1",
+    "last_period_determined_by": "SSE official announcement query (2026-08-05); 2026 Q1 announced 2026-04-30, the last report announced on or before frozen cutoff 2026-08-02",
+    "cutoff_rule": "reports announced after the frozen evidence cutoff are excluded regardless of the execution date"
+  },
+  "target_direct_facts": [
+    "net_profit_attributable_to_parent",
+    "revenue",
+    "equity_attributable_to_parent",
+    "basic_earnings_per_share",
+    "total_ordinary_shares_at_period_end",
+    "weighted_average_total_ordinary_shares"
+  ],
+  "cumulative_scope": {
+    "q1": "cumulative Q1 (quarter_ytd)",
+    "half_year": "cumulative H1 (half_year_ytd)",
+    "q3": "cumulative 9M (three_quarter_ytd)",
+    "annual": "full year (annual)"
+  },
+  "single_quarter_rule": "single-quarter values are only ReportedFact when the filing independently prints them; difference-implied single-quarter values are DerivedFact for a later stage",
+  "implementation": {
+    "daily_pe_pb_ps": false,
+    "ttm_series": false,
+    "ttm_metric_results": false,
+    "mrq_metric_results": false,
+    "single_quarter_metric_results": false,
+    "historical_valuation_percentile": false,
+    "valuation_attractiveness_shadow": false,
+    "scoring_weights": false,
+    "scoring_thresholds": false,
+    "stability_conclusions": false,
+    "peer_acquisition": false,
+    "production_scores": false,
+    "canonical_value_profile": false,
+    "m3_started": false,
+    "default_db_writes": false
+  },
+  "source_rules": {
+    "allowed": ["exchange_official", "issuer_official"],
+    "forbidden": [
+      "commercial_terminal_direct_transcription",
+      "third_party_daily_pe_pb_ps",
+      "third_party_mirror_pdf",
+      "llm_inference",
+      "current_share_count_backfill_to_all_history",
+      "annual_value_effective_before_report_end",
+      "h_share_price",
+      "h_share_fx"
+    ],
+    "acquire_retries": 3,
+    "formal_fully_offline": true,
+    "external_cache_location": "explicit external root passed via --official-cache-root; never inside the repository"
+  },
+  "pit_contract": {
+    "available_at_rule": "official announcement date (date-only)",
+    "effective_from_rule": "next trading day after the announcement date, from the verified market calendar",
+    "restatement_rule": "original fact visible until the restatement available_at; restated version after; never backfill",
+    "cutoff_rule": "announcement_date <= 2026-08-02"
+  }
+}
