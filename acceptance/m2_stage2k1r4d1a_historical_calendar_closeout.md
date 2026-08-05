@@ -133,7 +133,11 @@ Executed 2026-08-05 (Windows local):
 
 ## Git state
 
-- Branch `feat/m2-value-assessment-mvp`. This accepts the calendar fix and
-  evidence; the work record and acceptance doc are committed with it.
-- Push planned: 4 commits (4d28d11, 9057494, calendar fix, acceptance/CI
-  evidence) + final dual-platform CI.
+- Branch `feat/m2-value-assessment-mvp`. The calendar fix is committed
+  (`4b34fea`) and pushed with the R4D.1 commits (`4d28d11`, `9057494`).
+- Final dual-platform CI (`Stage 2G reproducibility`, run 30999204443,
+  headSha `4b34fea`): **success** — `clean-clone (windows-latest)`,
+  `clean-clone (ubuntu-latest)` and `identity-compare` all passed. The CI job
+  runs the R4D quarterly denominator contract gate, the full offline test
+  suite, and the cross-platform identity fingerprint gate.
+- This acceptance doc and the work record are committed with the CI evidence.

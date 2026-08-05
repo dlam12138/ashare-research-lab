@@ -166,6 +166,11 @@ Status: `in_progress`
 
 ## 最终 Git 状态
 
-- 分支 `feat/m2-value-assessment-mvp`；开始提交 `9057494`（R4D.1 closeout）。
-- 待提交：calendar fix + 报告/测试/工作记录；推送 4 commit（4d28d11、9057494、
-  calendar fix、acceptance/CI evidence）+ 双平台 CI。
+- 分支 `feat/m2-value-assessment-mvp`；推送 4 个提交：`4d28d11`（R4D.1 closeout）、
+  `9057494`（R4D.1 工作记录完成）、`4b34fea`（calendar fix）、以及本 acceptance/CI
+  evidence 提交。
+- 推送：`a399a17..4b34fea` 已推送 origin；第 4 个 evidence 提交随后推送。
+- 最终双平台 CI（`Stage 2G reproducibility`，run 30999204443，headSha `4b34fea`）：**success**，
+  windows + ubuntu clean-clone 与 identity-compare 全部通过。
+- 受保护项 untouched：`acceptance/m2_stage2i2r_*` 编辑、`AGENTS.md`、`agent/goals/`、
+  默认 DB、`stash@{0}`。
