@@ -1,6 +1,6 @@
 # Work record: M2 Stage 2K.1R4D — Official Quarterly Valuation Denominator Fact Acquisition
 
-Status: `in_progress`
+Status: `completed` (decision `PIT_DENOMINATOR_FACT_GAPS_REMAIN`)
 
 ## Basic information
 
@@ -211,6 +211,10 @@ Recorded as executed (ongoing):
 - Q1/Q3 period-end share counts not precisely disclosed in Q1/Q3 filings
   (rounded 股本 only); precise count in AR/H1 dividend statements.
 - CI evidence pending the push (GitHub Actions run).
+- CI run `30993569110` (push `8441c1f`, 2026-08-05): **SUCCESS** — ubuntu and
+  windows clean-clone jobs and the identity-compare job all pass; the R4D
+  contract gate and the full offline suite (67 R4D tests) ran on both
+  platforms with synthetic fixtures only (no real PDF downloads).
 
 ## Next steps
 
@@ -254,4 +258,8 @@ edit, default DB, stash@{0}.
 
 ## Final Git state
 
-(pending commit and push)
+- Branch `feat/m2-value-assessment-mvp`; 6 R4D commits on top of `d5433b3`
+  (`98e800d` … `8441c1f`), pushed to origin (user authorized).
+- Protected local items untouched: `AGENTS.md`, `agent/goals/`,
+  `acceptance/m2_stage2i2r_*` working-copy edit, default DB, `stash@{0}`.
+- CI run `30993569110` SUCCESS (evidence commit follows).

@@ -117,8 +117,11 @@ Executed on 2026-08-05 (Windows local):
   pollution in committed artifacts.
 - Clean-clone preflight: expected to fail in an uncommitted working directory
   (local data/DB/stash present); CI runs it on a clean clone.
-- CI: the workflow now runs the R4D contract gate on both platforms; the R4D
-  tests run under the full offline suite. CI evidence pending the push.
+- CI run `30993569110` (2026-08-05, push `8441c1f`): **SUCCESS** — 
+  `clean-clone (ubuntu-latest, ubuntu)` pass, `clean-clone (windows-latest,
+  windows)` pass, `identity-compare` pass. The R4D contract gate and the full
+  offline test suite (including the 67 R4D tests) ran on both platforms with
+  no real PDF downloads (synthetic fixtures only).
 
 ## Result
 

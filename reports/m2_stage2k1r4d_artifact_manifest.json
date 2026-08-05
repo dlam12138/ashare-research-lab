@@ -144,14 +144,14 @@
     {
       "path": "acceptance/m2_stage2k1r4d_official_quarterly_denominator_acquisition.md",
       "exists": true,
-      "sha256": "c07acc56ea5463db5817e48991f0755903dc4eb486c79f3bc1789de0d43df094",
-      "byte_size": 7546
+      "sha256": "bc05fb1a62265fe6ebec14322e467d058cd588599ce27967db207a087842c961",
+      "byte_size": 8546
     },
     {
       "path": "agent/record/2026-08-05_Stage2K1R4D_official_quarterly_denominator_acquisition.md",
       "exists": true,
-      "sha256": "04c162d016caa310b886647d677bf65889c93b80c6a94ec781381cabbc931d2b",
-      "byte_size": 9952
+      "sha256": "f65bac6636961aa28771f7506abb85af51f51b8587dcc708191a03eec56b8074",
+      "byte_size": 14342
     },
     {
       "path": ".github/workflows/stage2g-reproducibility.yml",
