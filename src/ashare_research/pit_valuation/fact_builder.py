@@ -19,10 +19,13 @@ from ashare_research.facts.identity import build_fact_id, validate_canonical_fac
 from ashare_research.pit_valuation.contracts import (
     ACCOUNTING_SCOPE,
     ACCOUNTING_STANDARD,
+    CALENDAR_COVERAGE_END,
+    CALENDAR_COVERAGE_START,
     EFFECTIVE_RULE_ID,
     PERIOD_END_BY_REPORT,
     PERIOD_TYPE_BY_REPORT,
     SYMBOL,
+    CalendarCoverageGapError,
     load_role_registry,
 )
 from ashare_research.pit_valuation.extraction import ExtractedCell
@@ -112,11 +115,25 @@ def build_context_v2(
     }
 
 
-def load_market_calendar(market_cache_root: Path | str) -> dict[str, Any]:
+def load_market_calendar(
+    market_cache_root: Path | str,
+    *,
+    required_start: str = CALENDAR_COVERAGE_START,
+    required_end: str = CALENDAR_COVERAGE_END,
+) -> dict[str, Any]:
     """Load the verified trading-day calendar from the market cache.
 
     Only trade dates are used: the market cache is never used for financial
     values.  Returns the sorted trade-date list plus calendar provenance.
+
+    ``required_start`` is the earliest announcement date the calendar must be
+    able to resolve (the earliest in-scope filing), and ``required_end`` the
+    evidence cutoff.  A calendar whose first/last trading day does not cover a
+    required boundary fails closed with :class:`CalendarCoverageGapError`
+    rather than silently mapping an announcement to the first/last available
+    trading day.  The 2020-01-01 contract boundary is a statutory holiday, so
+    the caller passes the earliest actual announcement (2020 Q1, ~2020-04-30)
+    as the start constraint.
     """
     import pandas as pd
 
@@ -124,13 +141,28 @@ def load_market_calendar(market_cache_root: Path | str) -> dict[str, Any]:
     parquet_files = sorted(root.rglob("*.parquet"))
     if not parquet_files:
         raise FileNotFoundError("no verified market parquet found in market cache root")
-    matches = [p for p in parquet_files if p.name.startswith("defd0b9507c0d87c")]
+    # The extended historical calendar (2020 Q1 .. evidence cutoff).  The
+    # content-addressed object is named by its sha256; the prefix pins the
+    # extended snapshot so an older short-range calendar is never selected.
+    prefix = "77021dceda8aae05c7bc2329e6efb65711ccea232bb289e880cd16b99151b92d"
+    matches = [p for p in parquet_files if p.name.startswith(prefix)]
     path = matches[0] if matches else parquet_files[0]
     sha = hashlib.sha256(path.read_bytes()).hexdigest()
     df = pd.read_parquet(path)
     trade_dates = sorted(
         str(d) for d in df.loc[df["is_trading"], "trade_date"].astype(str).tolist()
     )
+    if trade_dates:
+        if required_start and trade_dates[0] > required_start:
+            raise CalendarCoverageGapError(
+                f"calendar first trading day {trade_dates[0]} is after required "
+                f"start {required_start}; historical market calendar coverage gap"
+            )
+        if required_end and trade_dates[-1] < required_end:
+            raise CalendarCoverageGapError(
+                f"calendar last trading day {trade_dates[-1]} is before required "
+                f"end {required_end}; historical market calendar coverage gap"
+            )
     return {
         "calendar_object_id": path.name,
         "calendar_sha256": sha,
@@ -139,12 +171,30 @@ def load_market_calendar(market_cache_root: Path | str) -> dict[str, Any]:
 
 
 def next_trading_day(announcement_date: str, trade_dates: list[str]) -> str:
-    """Next trading day strictly after the announcement date."""
+    """Next trading day strictly after the announcement date.
+
+    Fail-closed: when the calendar's first trading day is later than the
+    announcement date the calendar does not cover the announcement period, so a
+    :class:`CalendarCoverageGapError` is raised instead of silently returning
+    the first trading day.  The same applies when no trading day follows the
+    announcement (announcement after the calendar's last trading day).
+    """
     d = date.fromisoformat(announcement_date)
+    if not trade_dates:
+        raise CalendarCoverageGapError("verified market calendar is empty")
+    first = date.fromisoformat(trade_dates[0])
+    if first > d:
+        raise CalendarCoverageGapError(
+            f"calendar first trading day {trade_dates[0]} is after "
+            f"announcement {announcement_date}; historical market calendar "
+            "coverage gap"
+        )
     for candidate in trade_dates:
         if date.fromisoformat(candidate) > d:
             return candidate
-    raise ValueError(f"no trading day after {announcement_date} in the verified calendar")
+    raise CalendarCoverageGapError(
+        f"no trading day after {announcement_date} in the verified calendar"
+    )
 
 
 def effective_from_derivation(announcement_date: str, calendar: dict[str, Any]) -> dict[str, Any]:
@@ -179,7 +229,9 @@ def build_reported_fact(
         filing_date=announcement_date,
         source_document=evidence["proof_url"],
     )
-    derivation = effective_from_derivation(announcement_date, market_calendar)
+    effective_from, pit_time_contract_gap, pit_derivation = _pit_time_from_calendar(
+        announcement_date, market_calendar
+    )
     fact: dict[str, Any] = {
         "fact_id": "",
         "fact_version": 1,
@@ -226,10 +278,35 @@ def build_reported_fact(
         ),
         "eligible_for_metrics": True,
         "created_at": "",
-        "effective_from": derivation["selected_next_trading_day"],
+        "effective_from": effective_from,
+        "pit_time_contract_gap": pit_time_contract_gap,
+        # PIT time-contract provenance: the effective-from derivation record
+        # and the verified calendar object it was resolved against.  These are
+        # not identity fields, so the fact_id is unchanged by a calendar fix.
+        "effective_from_derivation": pit_derivation,
+        "calendar_object_id": market_calendar.get("calendar_object_id", ""),
+        "calendar_sha256": market_calendar.get("calendar_sha256", ""),
     }
     fact["fact_id"] = build_fact_id(fact)
     return fact
+
+
+def _pit_time_from_calendar(
+    announcement_date: str, market_calendar: dict[str, Any]
+) -> tuple[str, str, dict[str, Any]]:
+    """Compute effective_from, capturing a calendar coverage gap fail-closed.
+
+    Returns ``(effective_from, pit_time_contract_gap, derivation)``.  On a
+    calendar coverage gap ``effective_from`` is the empty string, the gap
+    marker is ``calendar_coverage_gap`` and ``derivation`` is the empty dict;
+    the announcement date (available_at) is never lost and never silently
+    replaced by the nearest calendar boundary.
+    """
+    try:
+        derivation = effective_from_derivation(announcement_date, market_calendar)
+        return derivation["selected_next_trading_day"], "", derivation
+    except CalendarCoverageGapError:
+        return "", "calendar_coverage_gap", {}
 
 
 def build_share_capital_fact(
@@ -250,7 +327,9 @@ def build_share_capital_fact(
         filing_date=announcement_date,
         source_document=evidence["proof_url"],
     )
-    derivation = effective_from_derivation(announcement_date, market_calendar)
+    effective_from, pit_time_contract_gap, pit_derivation = _pit_time_from_calendar(
+        announcement_date, market_calendar
+    )
     fact: dict[str, Any] = {
         "fact_id": "",
         "fact_version": 1,
@@ -295,7 +374,11 @@ def build_share_capital_fact(
         ),
         "eligible_for_metrics": True,
         "created_at": "",
-        "effective_from": derivation["selected_next_trading_day"],
+        "effective_from": effective_from,
+        "pit_time_contract_gap": pit_time_contract_gap,
+        "effective_from_derivation": pit_derivation,
+        "calendar_object_id": market_calendar.get("calendar_object_id", ""),
+        "calendar_sha256": market_calendar.get("calendar_sha256", ""),
     }
     fact["fact_id"] = build_fact_id(fact)
     return fact

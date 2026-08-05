@@ -93,6 +93,8 @@
    }
   },
   "explicit_gaps": 0,
+  "economic_fact_gaps": 0,
+  "pit_time_contract_gaps": 0,
   "source_conflicts": 0,
   "default_db": "UNCHANGED",
   "production_metric_results": "NOT_CREATED",

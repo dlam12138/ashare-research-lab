@@ -221,6 +221,12 @@ def gap_ledger_from_grid(grid: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 "share count (report directly discloses no weighted-average "
                 "share count)"
             )
+        elif status == "calendar_coverage_gap":
+            description = (
+                "the verified market calendar does not cover the announcement "
+                "date; effective_from is unresolved (fail-closed, never "
+                "backfilled to the nearest calendar boundary)"
+            )
         gap_id = f"R4D-{cell['report_id']}-{cell['role_id']}"
         cell["gap_ids"] = [gap_id]
         gaps.append(
@@ -233,6 +239,14 @@ def gap_ledger_from_grid(grid: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 "report_type": cell["report_type"],
                 "period_end": cell["period_end"],
                 "status": status,
+                # A calendar-coverage gap is a PIT time-contract failure, not an
+                # economic-fact acquisition failure.  The two are classified
+                # separately so the gate fails closed on the time contract.
+                "gap_class": (
+                    "pit_time_contract"
+                    if status == "calendar_coverage_gap"
+                    else "economic_fact"
+                ),
                 "description": description,
             }
         )
@@ -325,12 +339,20 @@ def build_readiness(
     }
     explicit_gaps = len(gaps)
     source_conflicts = sum(1 for g in gaps if g["status"] == "source_conflict")
+    economic_fact_gaps = sum(
+        1 for g in gaps if g.get("gap_class") == "economic_fact"
+    )
+    pit_time_contract_gaps = sum(
+        1 for g in gaps if g.get("gap_class") == "pit_time_contract"
+    )
 
     # The gate is fail-closed.  The caller supplies the engineering-trust flags.
     return {
         "symbol": SYMBOL,
         "metrics": metrics,
         "explicit_gaps": explicit_gaps,
+        "economic_fact_gaps": economic_fact_gaps,
+        "pit_time_contract_gaps": pit_time_contract_gaps,
         "source_conflicts": source_conflicts,
         "default_db": "UNCHANGED",
         "production_metric_results": "NOT_CREATED",
@@ -349,9 +371,19 @@ def decide_from_readiness(
     identity_trusted: bool,
     pit_trusted: bool,
 ) -> str:
-    """Three-state gate driven by the readiness report."""
+    """Three-state gate driven by the readiness report.
+
+    A PIT time-contract gap (``calendar_coverage_gap``) fails the gate closed:
+    whenever ``pit_time_contract_gaps > 0`` the PIT time-contract layer is not
+    trusted, so the gate returns NOT_TRUSTED regardless of the other flags.
+    Economic-fact gaps alone keep the gate in GAPS_REMAIN-friendly territory.
+    """
     gaps = readiness["explicit_gaps"]
     conflicts = readiness["source_conflicts"]
+    # A calendar-coverage gap means effective_from is unresolved for at least
+    # one fact; the PIT time contract is broken, so the layer is not trusted.
+    if readiness["pit_time_contract_gaps"] > 0:
+        pit_trusted = False
     warmup_ready = any(
         readiness["metrics"][m]["3y_ready"] or readiness["metrics"][m]["5y_ready"]
         for m in ("PE_TTM", "PB_MRQ", "PS_TTM")

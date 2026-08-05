@@ -94,6 +94,7 @@ def _build_derived_fact(
 ) -> dict:
     """Build a reconciled_derived fact from a constancy derivation record."""
     from ashare_research.facts.identity import build_fact_id
+    from ashare_research.pit_valuation.contracts import CalendarCoverageGapError
     from ashare_research.pit_valuation.fact_builder import next_trading_day
 
     eid = d["evidence_id"]
@@ -108,11 +109,24 @@ def _build_derived_fact(
         context_id = f"601857.SH|{fy}|{PERIOD_TYPE_BY_REPORT[rt]}|consolidated"
     announcement_date = entry.get("announcement_date", "")
     effective_from = ""
+    pit_time_contract_gap = ""
+    pit_derivation: dict = {}
     if announcement_date and calendar.get("trade_dates"):
         try:
             effective_from = next_trading_day(announcement_date, calendar["trade_dates"])
-        except ValueError:
+            pit_derivation = {
+                "rule_id": "announcement-date-to-next-trading-day-v1",
+                "calendar_object_id": calendar.get("calendar_object_id", ""),
+                "calendar_sha256": calendar.get("calendar_sha256", ""),
+                "input_announcement_date": announcement_date,
+                "selected_next_trading_day": effective_from,
+            }
+        except CalendarCoverageGapError:
+            # Fail-closed: the calendar does not cover the announcement, so the
+            # PIT time contract is unresolved.  Never backfill to the nearest
+            # calendar boundary.
             effective_from = ""
+            pit_time_contract_gap = "calendar_coverage_gap"
     fact: dict = {
         "fact_id": "",
         "fact_version": 1,
@@ -140,6 +154,10 @@ def _build_derived_fact(
         "announcement_date": announcement_date,
         "available_at": announcement_date,
         "effective_from": effective_from,
+        "pit_time_contract_gap": pit_time_contract_gap,
+        "effective_from_derivation": pit_derivation,
+        "calendar_object_id": calendar.get("calendar_object_id", ""),
+        "calendar_sha256": calendar.get("calendar_sha256", ""),
         "normalization_rule": "share-continuity-constancy",
         "verification_status": "verified",
         "verification_note": d.get("note", ""),
@@ -184,7 +202,19 @@ def _cmd_formal(args: argparse.Namespace) -> int:
     evidence = load_source_evidence()
     specs = load_extraction_specs()
     roles = load_role_registry()
-    calendar = load_market_calendar(args.market_cache_root)
+    # The calendar must resolve every in-scope announcement to a real next
+    # trading day; the earliest announcement is the binding start constraint
+    # (2020 Q1 reports announced ~2020-04-30; the 2020-01-01 boundary itself is
+    # a statutory holiday and is not a trading day).
+    exchange_entries = [
+        e for e in evidence["entries"] if e["source_role"] == "exchange_official"
+    ]
+    earliest_announcement = min(
+        e["announcement_date"] for e in exchange_entries
+    )
+    calendar = load_market_calendar(
+        args.market_cache_root, required_start=earliest_announcement
+    )
     ev_by_id = {e["evidence_id"]: e for e in evidence["entries"]}
     cache_root = Path(args.official_cache_root).resolve()
     registry = contracts.load_cache_registry()
@@ -247,6 +277,22 @@ def _cmd_formal(args: argparse.Namespace) -> int:
         object_sha_by_evidence=object_sha_by_evidence,
     )
     reported.extend(restated_facts)
+
+    # Fail-closed on the PIT time contract: a fact whose effective_from is
+    # unresolved (calendar coverage gap) is not PIT-ready and must not enter
+    # the reported bundle.  Its grid cell becomes an explicit
+    # pit_time_contract gap — the announcement is never backfilled to the
+    # nearest calendar boundary.
+    pit_gapped_keys: set[str] = set()
+    bundled: list[dict] = []
+    for f in reported:
+        if f.get("pit_time_contract_gap"):
+            key = _fact_cell_key(f, roles)
+            if key:
+                pit_gapped_keys.add(key)
+        else:
+            bundled.append(f)
+    reported = bundled
 
     # Share-continuity constancy derivation (reconciled bundle).
     register = contracts.load_share_continuity_register()
@@ -316,7 +362,10 @@ def _cmd_formal(args: argparse.Namespace) -> int:
 
     status_overrides: dict[str, str] = {}
     for cell in grid:
-        if (
+        if cell["cell_id"] in pit_gapped_keys:
+            # Unresolved PIT time contract (calendar coverage gap), fail-closed.
+            status_overrides[cell["cell_id"]] = "calendar_coverage_gap"
+        elif (
             cell["role_id"] == "weighted_average_total_ordinary_shares"
             and cell["cell_id"] not in cells_by_key
         ):

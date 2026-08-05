@@ -399,11 +399,14 @@ def test_synthetic_formal_pipeline_gate(tmp_path):
     # The synthetic fixture has 4 acquired cells.
     assert len(cells) == 4
 
-    # Build facts with a synthetic calendar.
+    # Build facts with a synthetic calendar.  The calendar must include a
+    # trading day on/before the announcement (2024-04-30) to cover it; under
+    # the R4D.1a fail-closed contract a calendar whose first trading day is
+    # after the announcement would be a coverage gap, never a backfill.
     calendar = {
         "calendar_object_id": "synthetic.parquet",
         "calendar_sha256": "0" * 64,
-        "trade_dates": ["2024-05-06"],
+        "trade_dates": ["2024-04-26", "2024-05-06"],
     }
     roles = load_role_registry()
     facts = []

@@ -41,6 +41,29 @@ ACCOUNTING_STANDARD = "CAS"
 RESEARCH_EVIDENCE_AS_OF = "2026-08-02"
 SCORECARD_FORMED_AT = "2026-08-02"
 
+# Required verified-calendar coverage for every in-scope filing announcement.
+# The calendar must be fetched from the start of 2020 (the earliest in-scope
+# quarter) through the evidence cutoff, so that every announcement maps to a
+# real next trading day.  The first trading day of 2020 is 2020-01-02 (the 1st
+# is a statutory holiday); the data range still begins at 2020-01-01.
+CALENDAR_COVERAGE_START = "2020-01-01"
+CALENDAR_COVERAGE_END = RESEARCH_EVIDENCE_AS_OF
+
+
+class CalendarCoverageGapError(ValueError):
+    """Raised when the verified market calendar does not cover a required date.
+
+    Fail-closed: an announcement earlier than the calendar's first trading day
+    (or later than its last trading day) is never silently mapped to the
+    nearest calendar boundary.  It is recorded as an explicit
+    ``calendar_coverage_gap`` instead.
+    """
+
+
+# Gap classification: economic facts vs PIT time-contract coverage.
+GAP_CLASS_ECONOMIC_FACT = "economic_fact"
+GAP_CLASS_PIT_TIME_CONTRACT = "pit_time_contract"
+
 # Frozen conservative PIT rule: date-only announcement -> effective next trading day.
 EFFECTIVE_RULE_ID = "announcement-date-to-next-trading-day-v1"
 
@@ -58,6 +81,7 @@ CELL_STATUSES = (
     "missing_official_filing",
     "blocked_source_access",
     "unavailable_before_cutoff",
+    "calendar_coverage_gap",
     "not_applicable",
 )
 
