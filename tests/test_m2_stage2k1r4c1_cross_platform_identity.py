@@ -320,50 +320,231 @@ def test_v3_v6_preserved_as_history():
 
 
 # ---------------------------------------------------------------------------
-# 6. fingerprint + compare
+# 6. fingerprint envelope v2: provenance + identity + compare
 # ---------------------------------------------------------------------------
 
-def test_fingerprint_schema_and_determinism():
+def _envelope(runner_os: str, matrix_platform: str, github_sha: str | None = "deadbeef"):
+    """Build an envelope with explicit provenance (tests are platform-agnostic)."""
     from ashare_research.tools.m2_stage2k1r4c1_identity_diagnose import (
-        build_fingerprint,
-        compare_fingerprints,
-        fingerprint_digest,
+        ENVELOPE_SCHEMA,
+        build_identity,
+        identity_digest,
     )
 
-    fp = build_fingerprint()
-    assert fp["schema"] == "scoring_identity_fingerprint_v1"
-    assert fp["capsule_schema"] == "petrochina_score_input_capsule_v4"
-    assert fp["sensitivity_schema"] == "petrochina_dimension_scoring_sensitivity_v7"
-    assert list(fp["components"].keys()) == sorted(fp["components"].keys())
-    # no run time / absolute paths: the fingerprint is content-derived only
-    text = json.dumps(fp, ensure_ascii=False)
+    env = {
+        "schema": ENVELOPE_SCHEMA,
+        "version": "2.0",
+        "provenance": {
+            "runner_os": runner_os,
+            "matrix_platform": matrix_platform,
+            "github_sha": github_sha,
+        },
+        "identity": build_identity(),
+    }
+    env["identity_digest"] = identity_digest(env)
+    return env
+
+
+def test_envelope_schema_and_identity_determinism():
+    from ashare_research.tools.m2_stage2k1r4c1_identity_diagnose import (
+        ENVELOPE_SCHEMA,
+        build_envelope,
+        identity_digest,
+    )
+
+    env = build_envelope(matrix_platform="windows", github_sha="deadbeef")
+    assert env["schema"] == ENVELOPE_SCHEMA
+    identity = env["identity"]
+    assert identity["capsule_schema"] == "petrochina_score_input_capsule_v4"
+    assert identity["sensitivity_schema"] == "petrochina_dimension_scoring_sensitivity_v7"
+    assert list(identity["components"].keys()) == sorted(identity["components"].keys())
+    # no run time / absolute paths: identity is content-derived only
+    text = json.dumps(env, ensure_ascii=False)
     assert "2026-08-04T" not in text
     assert "C:/" not in text and "D:/" not in text and "\\Users" not in text
     assert "tmp/" not in text and "\\Temp" not in text
-    # canonical JSON is stable
-    assert fingerprint_digest(fp) == fingerprint_digest(build_fingerprint())
-    # self-compare identical
-    assert compare_fingerprints(fp, fp)["identical"] is True
+    # identity_digest is canonical and stable across platforms
+    ubuntu = build_envelope(matrix_platform="ubuntu", github_sha="deadbeef")
+    assert identity_digest(env) == identity_digest(ubuntu)
 
 
-def test_fingerprint_compare_reports_first_mismatch():
+def test_provenance_does_not_pollute_identity():
+    env = _envelope("Linux", "ubuntu", "sha")
+    assert set(env["identity"]) == {
+        "symbol", "capsule_schema", "capsule_digest", "time_contract_digest",
+        "registry_digest", "sensitivity_schema", "sensitivity_ledger_digest",
+        "components", "scenario_ids",
+    }
+    assert {"runner_os", "matrix_platform", "github_sha"} <= set(env["provenance"])
+    assert "runner_os" not in env["identity"] and "matrix_platform" not in env["identity"]
+
+
+def test_different_provenance_identical_identity_passes():
+    from ashare_research.tools.m2_stage2k1r4c1_identity_diagnose import compare_envelopes
+
+    a = _envelope("Linux", "ubuntu")
+    b = _envelope("Windows", "windows")
+    r = compare_envelopes(a, b)
+    assert r["identical"] is True
+    assert r["gate"] == "ok"
+    assert r["provenance_left"]["matrix_platform"] == "ubuntu"
+    assert r["provenance_right"]["matrix_platform"] == "windows"
+
+
+def test_compare_success_identity_digest_is_dynamic():
     from ashare_research.tools.m2_stage2k1r4c1_identity_diagnose import (
-        build_fingerprint,
-        compare_fingerprints,
+        compare_envelopes,
+        identity_digest,
     )
 
-    fp = build_fingerprint()
-    tampered = json.loads(json.dumps(fp))
-    tampered["capsule_digest"] = "0" * 64
-    r = compare_fingerprints(fp, tampered)
-    assert r["identical"] is False
-    assert r["first_mismatch_path"] == "fingerprint.capsule_digest"
+    a = _envelope("Linux", "ubuntu")
+    b = _envelope("Windows", "windows")
+    r = compare_envelopes(a, b)
+    assert r["identity_digest"] == identity_digest(a) == identity_digest(b)
+    # NOT the old v1 flat-schema digest: the envelope identity_digest is a new value
+    assert r["identity_digest"] != (
+        "8186848b2505e29c92cd0732fa6f67427b11b555d2ba58589ba2b061aae7679f"
+    )
 
-    tampered2 = json.loads(json.dumps(fp))
-    tampered2["components"]["va_pe"]["records"][0]["sha256"] = "0" * 64
-    r2 = compare_fingerprints(fp, tampered2)
+
+def test_both_provenances_ubuntu_fails():
+    from ashare_research.tools.m2_stage2k1r4c1_identity_diagnose import compare_envelopes
+
+    a = _envelope("Linux", "ubuntu")
+    r = compare_envelopes(a, a)
+    assert r["identical"] is False
+    assert r["gate"] == "provenance_right"
+
+
+def test_both_provenances_windows_fails():
+    from ashare_research.tools.m2_stage2k1r4c1_identity_diagnose import compare_envelopes
+
+    b = _envelope("Windows", "windows")
+    r = compare_envelopes(b, b)
+    assert r["identical"] is False
+    assert r["gate"] == "provenance_left"
+
+
+def test_ubuntu_cannot_disguise_as_windows():
+    # an ubuntu-built envelope can never be the windows side, and vice versa:
+    # a single platform cannot satisfy both provenance gates simultaneously.
+    from ashare_research.tools.m2_stage2k1r4c1_identity_diagnose import compare_envelopes
+
+    ubuntu = _envelope("Linux", "ubuntu")
+    assert compare_envelopes(ubuntu, ubuntu)["gate"] == "provenance_right"
+    windows = _envelope("Windows", "windows")
+    assert compare_envelopes(windows, windows)["gate"] == "provenance_left"
+
+
+def test_inconsistent_runner_platform_fails():
+    # runner_os Windows but claims matrix_platform ubuntu -> cannot be the left side
+    from ashare_research.tools.m2_stage2k1r4c1_identity_diagnose import compare_envelopes
+
+    a = _envelope("Windows", "ubuntu")
+    b = _envelope("Windows", "windows")
+    r = compare_envelopes(a, b)
+    assert r["identical"] is False
+    assert r["gate"] == "provenance_left"
+
+
+def test_different_github_sha_fails():
+    from ashare_research.tools.m2_stage2k1r4c1_identity_diagnose import compare_envelopes
+
+    a = _envelope("Linux", "ubuntu", github_sha="sha-aaaa")
+    b = _envelope("Windows", "windows", github_sha="sha-bbbb")
+    r = compare_envelopes(a, b)
+    assert r["identical"] is False
+    assert r["gate"] == "github_sha"
+
+
+def test_missing_github_sha_fails():
+    from ashare_research.tools.m2_stage2k1r4c1_identity_diagnose import compare_envelopes
+
+    a = _envelope("Linux", "ubuntu", github_sha=None)
+    b = _envelope("Windows", "windows", github_sha="sha")
+    r = compare_envelopes(a, b)
+    assert r["identical"] is False
+    assert r["gate"] == "github_sha"
+
+
+def test_identity_field_tamper_reports_first_mismatch():
+    from ashare_research.tools.m2_stage2k1r4c1_identity_diagnose import (
+        compare_envelopes,
+        identity_digest,
+    )
+
+    a = _envelope("Linux", "ubuntu")
+    b = _envelope("Windows", "windows")
+    b["identity"]["capsule_digest"] = "0" * 64
+    b["identity_digest"] = identity_digest(b)
+    r = compare_envelopes(a, b)
+    assert r["identical"] is False
+    assert r["gate"] == "identity"
+    assert r["first_mismatch_path"] == "identity.capsule_digest"
+
+    b2 = _envelope("Windows", "windows")
+    b2["identity"]["components"]["va_pe"]["records"][0]["sha256"] = "0" * 64
+    b2["identity_digest"] = identity_digest(b2)
+    r2 = compare_envelopes(a, b2)
     assert r2["identical"] is False
-    assert r2["first_mismatch_path"] == "fingerprint.components.va_pe.records[0].sha256"
+    assert r2["first_mismatch_path"] == "identity.components.va_pe.records[0].sha256"
+
+
+# ---------------------------------------------------------------------------
+# 6b. workflow matrix + artifact naming (cross-platform CI provenance)
+# ---------------------------------------------------------------------------
+
+def _workflow() -> dict:
+    import yaml
+
+    return yaml.safe_load(
+        (ROOT / ".github" / "workflows" / "stage2g-reproducibility.yml").read_text(
+            encoding="utf-8"
+        )
+    )
+
+
+def test_ci_matrix_has_only_two_paired_include_entries():
+    wf = _workflow()
+    matrix = wf["jobs"]["clean-clone"]["strategy"]["matrix"]
+    assert matrix["include"] == [
+        {"os": "ubuntu-latest", "platform": "ubuntu"},
+        {"os": "windows-latest", "platform": "windows"},
+    ]
+    # no cartesian list form (which produced 4 jobs)
+    assert "os" not in matrix and "short" not in matrix
+
+
+def test_ci_artifact_names_unique_and_sha_bound():
+    wf = _workflow()
+    clean = wf["jobs"]["clean-clone"]["steps"]
+    upload = [s for s in clean if s.get("uses", "").startswith("actions/upload-artifact")]
+    assert len(upload) == 1
+    name = upload[0]["with"]["name"]
+    assert name == "identity-fingerprint-${{ matrix.platform }}-${{ github.sha }}"
+
+    compare = wf["jobs"]["identity-compare"]["steps"]
+    downloads = [s for s in compare if s.get("uses", "").startswith("actions/download-artifact")]
+    names = [s["with"]["name"] for s in downloads]
+    assert names == [
+        "identity-fingerprint-ubuntu-${{ github.sha }}",
+        "identity-fingerprint-windows-${{ github.sha }}",
+    ]
+    # the ubuntu artifact name must differ from the windows artifact name
+    assert names[0] != names[1]
+    # both names are bound to the commit sha
+    assert "github.sha" in names[0] and "github.sha" in names[1]
+
+
+def test_ci_compare_job_has_hard_gate_and_sha_bound_paths():
+    wf = _workflow()
+    compare = wf["jobs"]["identity-compare"]["steps"]
+    step_names = [s.get("name", "") for s in compare]
+    assert "Hard gate - exactly two fingerprint artifacts" in step_names
+    compare_step = next(s for s in compare if "Compare cross-platform" in s.get("name", ""))
+    cmd = compare_step["run"]
+    assert "identity-fingerprint-ubuntu-${{ github.sha }}.json" in cmd
+    assert "identity-fingerprint-windows-${{ github.sha }}.json" in cmd
 
 
 # ---------------------------------------------------------------------------

@@ -8,8 +8,8 @@
     {
       "path": "acceptance/m2_stage2k1r4c1_cross_platform_identity_closeout.md",
       "digest_algorithm": "sha256_lf_normalized_bytes_v1",
-      "sha256": "cf68dc838954eb36490401ed50906b75305b1b1cdfd948999d379f87cf06b82a",
-      "byte_size": 10775
+      "sha256": "4793ae01afa6f68e78c768b824e87170471d6427112ae0dfe57e1e5916341fca",
+      "byte_size": 14582
     },
     {
       "path": "config/value_dimension_scoring_upstream_registry_v1.json",
@@ -86,8 +86,8 @@
     {
       "path": "src/ashare_research/tools/m2_stage2k1r4c1_identity_diagnose.py",
       "digest_algorithm": "sha256_lf_normalized_bytes_v1",
-      "sha256": "d412af0284600c4afeec578ba752be9fa61ec0df4e382af77f1dd8ee49a154aa",
-      "byte_size": 7346
+      "sha256": "526d5e97001f5a81380480dc8f1f546f4b33e9233c45c3d6fa4480a619362525",
+      "byte_size": 13526
     },
     {
       "path": "src/ashare_research/tools/petrochina_valuation_and_value_profile.py",
@@ -98,14 +98,14 @@
     {
       "path": "tests/test_m2_stage2k1r4c1_cross_platform_identity.py",
       "digest_algorithm": "sha256_lf_normalized_bytes_v1",
-      "sha256": "f013ddd6872d93112298a2c5e5b9e495be533900c99b91d90dd7e1c39b6735b1",
-      "byte_size": 19352
+      "sha256": "4246ddf911ce0d3a556e53dbf636d3debe51ccd32bf47dce6166baf490e3a24b",
+      "byte_size": 26285
     },
     {
       "path": ".github/workflows/stage2g-reproducibility.yml",
       "digest_algorithm": "sha256_lf_normalized_bytes_v1",
-      "sha256": "1e12f7a561d6fcff9fea91f159cc314fe9a748fa83d2da3e00435a838fcfc7d2",
-      "byte_size": 4556
+      "sha256": "f751a5a6d95433b65d2fdb0afe0ee4a02b6a061f173470972785dacc1d7d7ab1",
+      "byte_size": 5139
     }
   ]
 }
