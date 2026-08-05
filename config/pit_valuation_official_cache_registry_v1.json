@@ -1,0 +1,318 @@
+{
+  "schema": "pit_valuation_official_cache_registry_v1",
+  "data_class": "official_document",
+  "symbol": "601857.SH",
+  "cache_root_policy": "explicit_external_only",
+  "objects": [
+    {
+      "object_key": "objects/b9ca8a89c7364f116df8291db5a6a720bc93cebf297e40b3dca704183aa07696.pdf",
+      "sha256": "b9ca8a89c7364f116df8291db5a6a720bc93cebf297e40b3dca704183aa07696",
+      "byte_size": 954366,
+      "page_count": 27,
+      "media_type": "application/pdf",
+      "evidence_ids": [
+        "R4D-SSE-2020-Q1"
+      ],
+      "reporting_period": "2020-Q1",
+      "registry_version": "1"
+    },
+    {
+      "object_key": "objects/776fd4a1a01f24a2e87ca903d6be8aceb0ed253ecb3844df3d1ff832d00811c9.pdf",
+      "sha256": "776fd4a1a01f24a2e87ca903d6be8aceb0ed253ecb3844df3d1ff832d00811c9",
+      "byte_size": 1063318,
+      "page_count": 174,
+      "media_type": "application/pdf",
+      "evidence_ids": [
+        "R4D-SSE-2020-H1"
+      ],
+      "reporting_period": "2020-H1",
+      "registry_version": "1"
+    },
+    {
+      "object_key": "objects/485ef270818631e93f3564b7b2937b94e8bea9cd80240aa2ba6643e306263fa8.pdf",
+      "sha256": "485ef270818631e93f3564b7b2937b94e8bea9cd80240aa2ba6643e306263fa8",
+      "byte_size": 376257,
+      "page_count": 28,
+      "media_type": "application/pdf",
+      "evidence_ids": [
+        "R4D-SSE-2020-Q3"
+      ],
+      "reporting_period": "2020-Q3",
+      "registry_version": "1"
+    },
+    {
+      "object_key": "objects/7aac267c1db1fd0ef0b51f02b587ad679a2501ebde874937cf57efd6628cd56b.pdf",
+      "sha256": "7aac267c1db1fd0ef0b51f02b587ad679a2501ebde874937cf57efd6628cd56b",
+      "byte_size": 2383273,
+      "page_count": 301,
+      "media_type": "application/pdf",
+      "evidence_ids": [
+        "R4D-SSE-2020-AR"
+      ],
+      "reporting_period": "2020-AR",
+      "registry_version": "1"
+    },
+    {
+      "object_key": "objects/9359edbda77029ab5a1ffb767557430bd041c2c1b0af0ecfac5df6f2a7cd735d.pdf",
+      "sha256": "9359edbda77029ab5a1ffb767557430bd041c2c1b0af0ecfac5df6f2a7cd735d",
+      "byte_size": 1230766,
+      "page_count": 30,
+      "media_type": "application/pdf",
+      "evidence_ids": [
+        "R4D-SSE-2021-Q1"
+      ],
+      "reporting_period": "2021-Q1",
+      "registry_version": "1"
+    },
+    {
+      "object_key": "objects/79ee809c14aa7322f6e4698bf6b50eef0f1e13f36ec8dfce5b8be06bdf9f5a94.pdf",
+      "sha256": "79ee809c14aa7322f6e4698bf6b50eef0f1e13f36ec8dfce5b8be06bdf9f5a94",
+      "byte_size": 1171541,
+      "page_count": 181,
+      "media_type": "application/pdf",
+      "evidence_ids": [
+        "R4D-SSE-2021-H1"
+      ],
+      "reporting_period": "2021-H1",
+      "registry_version": "1"
+    },
+    {
+      "object_key": "objects/bf58a410d1c6d0006958834e61f782f1672e112594a641a83c17d203fffaad82.pdf",
+      "sha256": "bf58a410d1c6d0006958834e61f782f1672e112594a641a83c17d203fffaad82",
+      "byte_size": 893463,
+      "page_count": 26,
+      "media_type": "application/pdf",
+      "evidence_ids": [
+        "R4D-SSE-2021-Q3"
+      ],
+      "reporting_period": "2021-Q3",
+      "registry_version": "1"
+    },
+    {
+      "object_key": "objects/939de04e6502dc61be1a1fd3b12a4b9faaa0eb52e3996134810581391a93841f.pdf",
+      "sha256": "939de04e6502dc61be1a1fd3b12a4b9faaa0eb52e3996134810581391a93841f",
+      "byte_size": 5115948,
+      "page_count": 282,
+      "media_type": "application/pdf",
+      "evidence_ids": [
+        "R4D-SSE-2021-AR"
+      ],
+      "reporting_period": "2021-AR",
+      "registry_version": "1"
+    },
+    {
+      "object_key": "objects/84b86238767393616ed9eaac58a5f557ad8c45bb9458ed7088182c84deee0424.pdf",
+      "sha256": "84b86238767393616ed9eaac58a5f557ad8c45bb9458ed7088182c84deee0424",
+      "byte_size": 1054090,
+      "page_count": 20,
+      "media_type": "application/pdf",
+      "evidence_ids": [
+        "R4D-SSE-2022-Q1"
+      ],
+      "reporting_period": "2022-Q1",
+      "registry_version": "1"
+    },
+    {
+      "object_key": "objects/3af5b3aa9921cd8963871bd572153da5c9ec0e84be7aed33f75486f0ac051b3c.pdf",
+      "sha256": "3af5b3aa9921cd8963871bd572153da5c9ec0e84be7aed33f75486f0ac051b3c",
+      "byte_size": 3607317,
+      "page_count": 166,
+      "media_type": "application/pdf",
+      "evidence_ids": [
+        "R4D-SSE-2022-H1"
+      ],
+      "reporting_period": "2022-H1",
+      "registry_version": "1"
+    },
+    {
+      "object_key": "objects/5e0799dce26c3b6e7cf720b1123404f06b2a06c2b8a55c5bbdcdf689e71cf7e7.pdf",
+      "sha256": "5e0799dce26c3b6e7cf720b1123404f06b2a06c2b8a55c5bbdcdf689e71cf7e7",
+      "byte_size": 1127520,
+      "page_count": 27,
+      "media_type": "application/pdf",
+      "evidence_ids": [
+        "R4D-SSE-2022-Q3"
+      ],
+      "reporting_period": "2022-Q3",
+      "registry_version": "1"
+    },
+    {
+      "object_key": "objects/da64c67d9e575c3cfcfbd892ce5e8c19d4cf8ca07d51c47df01be2fa4587d861.pdf",
+      "sha256": "da64c67d9e575c3cfcfbd892ce5e8c19d4cf8ca07d51c47df01be2fa4587d861",
+      "byte_size": 12257199,
+      "page_count": 285,
+      "media_type": "application/pdf",
+      "evidence_ids": [
+        "R4D-SSE-2022-AR"
+      ],
+      "reporting_period": "2022-AR",
+      "registry_version": "1"
+    },
+    {
+      "object_key": "objects/8ff3c3c0ba7276ba3b7575d8667cdcb07e1c5b49c7327baa902fce7a9ad1c8d4.pdf",
+      "sha256": "8ff3c3c0ba7276ba3b7575d8667cdcb07e1c5b49c7327baa902fce7a9ad1c8d4",
+      "byte_size": 1065112,
+      "page_count": 21,
+      "media_type": "application/pdf",
+      "evidence_ids": [
+        "R4D-SSE-2023-Q1"
+      ],
+      "reporting_period": "2023-Q1",
+      "registry_version": "1"
+    },
+    {
+      "object_key": "objects/3980bffd6f40d4150683cd27921e3da5ba8378d1a83aa6a742c8803eb1d272b2.pdf",
+      "sha256": "3980bffd6f40d4150683cd27921e3da5ba8378d1a83aa6a742c8803eb1d272b2",
+      "byte_size": 3366028,
+      "page_count": 175,
+      "media_type": "application/pdf",
+      "evidence_ids": [
+        "R4D-SSE-2023-H1"
+      ],
+      "reporting_period": "2023-H1",
+      "registry_version": "1"
+    },
+    {
+      "object_key": "objects/c88dd6b63c9bd7f7fcbf7c4ef81001f605e5e72055765f8da3e0f1a74e7e4623.pdf",
+      "sha256": "c88dd6b63c9bd7f7fcbf7c4ef81001f605e5e72055765f8da3e0f1a74e7e4623",
+      "byte_size": 998631,
+      "page_count": 25,
+      "media_type": "application/pdf",
+      "evidence_ids": [
+        "R4D-SSE-2023-Q3"
+      ],
+      "reporting_period": "2023-Q3",
+      "registry_version": "1"
+    },
+    {
+      "object_key": "objects/b845502e533311280f89d59c2a92c67f94f2be17451e51e55f93a1d52abe6692.pdf",
+      "sha256": "b845502e533311280f89d59c2a92c67f94f2be17451e51e55f93a1d52abe6692",
+      "byte_size": 12437650,
+      "page_count": 293,
+      "media_type": "application/pdf",
+      "evidence_ids": [
+        "R4D-SSE-2023-AR",
+        "R4D-ISS-2023-AR"
+      ],
+      "reporting_period": "2023-AR",
+      "registry_version": "1"
+    },
+    {
+      "object_key": "objects/6dd80ad3eeea1f535785c28c7f74b406b64467393cab6c05df013d64a6beb689.pdf",
+      "sha256": "6dd80ad3eeea1f535785c28c7f74b406b64467393cab6c05df013d64a6beb689",
+      "byte_size": 1061639,
+      "page_count": 21,
+      "media_type": "application/pdf",
+      "evidence_ids": [
+        "R4D-SSE-2024-Q1"
+      ],
+      "reporting_period": "2024-Q1",
+      "registry_version": "1"
+    },
+    {
+      "object_key": "objects/8ffdaade63929e123b6507ef4ed55132c5cbab6b9f078a08e768803510b2808c.pdf",
+      "sha256": "8ffdaade63929e123b6507ef4ed55132c5cbab6b9f078a08e768803510b2808c",
+      "byte_size": 7885143,
+      "page_count": 175,
+      "media_type": "application/pdf",
+      "evidence_ids": [
+        "R4D-SSE-2024-H1"
+      ],
+      "reporting_period": "2024-H1",
+      "registry_version": "1"
+    },
+    {
+      "object_key": "objects/c5a431196cfbf305085a80381f6ec55409f24fbef2d75dbf6f2683731f39177a.pdf",
+      "sha256": "c5a431196cfbf305085a80381f6ec55409f24fbef2d75dbf6f2683731f39177a",
+      "byte_size": 990402,
+      "page_count": 24,
+      "media_type": "application/pdf",
+      "evidence_ids": [
+        "R4D-SSE-2024-Q3"
+      ],
+      "reporting_period": "2024-Q3",
+      "registry_version": "1"
+    },
+    {
+      "object_key": "objects/15a2de01653ceefa46fdd18a02a127f434f06db02da9efb0b62c3a12a35a9bba.pdf",
+      "sha256": "15a2de01653ceefa46fdd18a02a127f434f06db02da9efb0b62c3a12a35a9bba",
+      "byte_size": 11167845,
+      "page_count": 280,
+      "media_type": "application/pdf",
+      "evidence_ids": [
+        "R4D-SSE-2024-AR",
+        "R4D-ISS-2024-AR"
+      ],
+      "reporting_period": "2024-AR",
+      "registry_version": "1"
+    },
+    {
+      "object_key": "objects/379229609156d03aa38387e67f2f0555697dbd3af1821212a58965d8b889cb30.pdf",
+      "sha256": "379229609156d03aa38387e67f2f0555697dbd3af1821212a58965d8b889cb30",
+      "byte_size": 284016,
+      "page_count": 22,
+      "media_type": "application/pdf",
+      "evidence_ids": [
+        "R4D-SSE-2025-Q1"
+      ],
+      "reporting_period": "2025-Q1",
+      "registry_version": "1"
+    },
+    {
+      "object_key": "objects/9694d76a8e6dfa990f9a3767113c9821435ce39f14d0a67f53e98a1644c4916c.pdf",
+      "sha256": "9694d76a8e6dfa990f9a3767113c9821435ce39f14d0a67f53e98a1644c4916c",
+      "byte_size": 8918115,
+      "page_count": 165,
+      "media_type": "application/pdf",
+      "evidence_ids": [
+        "R4D-SSE-2025-H1"
+      ],
+      "reporting_period": "2025-H1",
+      "registry_version": "1"
+    },
+    {
+      "object_key": "objects/8a276cf99d5e974a8df94686e0048daf3a243f80b002f065ea9cc9ff399f5fb4.pdf",
+      "sha256": "8a276cf99d5e974a8df94686e0048daf3a243f80b002f065ea9cc9ff399f5fb4",
+      "byte_size": 285973,
+      "page_count": 25,
+      "media_type": "application/pdf",
+      "evidence_ids": [
+        "R4D-SSE-2025-Q3"
+      ],
+      "reporting_period": "2025-Q3",
+      "registry_version": "1"
+    },
+    {
+      "object_key": "objects/840b15aa4dc38745a6b86a3656063e6a73081ce87407acb0ca93554f4e836e65.pdf",
+      "sha256": "840b15aa4dc38745a6b86a3656063e6a73081ce87407acb0ca93554f4e836e65",
+      "byte_size": 9416509,
+      "page_count": 273,
+      "media_type": "application/pdf",
+      "evidence_ids": [
+        "R4D-SSE-2025-AR"
+      ],
+      "reporting_period": "2025-AR",
+      "registry_version": "1"
+    },
+    {
+      "object_key": "objects/b8296b0d66a5422947cd415127ea930bf0b17886d59ec9321e1e2588a8bb871b.pdf",
+      "sha256": "b8296b0d66a5422947cd415127ea930bf0b17886d59ec9321e1e2588a8bb871b",
+      "byte_size": 290034,
+      "page_count": 22,
+      "media_type": "application/pdf",
+      "evidence_ids": [
+        "R4D-SSE-2026-Q1"
+      ],
+      "reporting_period": "2026-Q1",
+      "registry_version": "1"
+    }
+  ],
+  "forbidden_fallbacks": [
+    "Downloads",
+    "browser_cache",
+    "repository_tmp",
+    "test_capsule",
+    "third_party_mirror"
+  ],
+  "formal_network_access": false
+}
