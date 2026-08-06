@@ -145,7 +145,13 @@ Historical percentile eligibility: BLOCKED
 - `git diff --check`：通过。
 - 受保护项检查：`AGENTS.md`、`agent/goals/`、`acceptance/m2_stage2i2r_*` 既有 1 行编辑、
   `stash@{0}`、默认 DB 全部未改动。
-- 无提交/推送（未经授权）。
+- 提交：两笔（`feat: add versioned dual-source market reacquisition` = `d641899`；
+  `docs: record R4E.2 conditional closeout` = `8586193`），已推送 origin。未 force push / reset / merge。
+- CI Stage 2G reproducibility（run `31095863441`，head `8586193`）：**success**。
+  - clean-clone (ubuntu) `92597606233` success；
+  - clean-clone (windows) `92597606313` success；
+  - identity-compare `92598869716` success（Ubuntu/Windows 身份指纹一致）。
+  CI 全量 pytest（含 31 项 R4E.2 合同测试、R4E.1 保护、R4C1 manifest verifier）通过；CI 不进行真实网络采集。
 
 ## 结果
 
@@ -186,7 +192,8 @@ Historical percentile eligibility: BLOCKED
 ## 最终 Git 状态
 
 - 当前分支：`feat/m2-value-assessment-mvp`。
-- 当前提交：`9e69409`（未创建新提交）。
-- 未提交修改：是（上述新增/修改文件）。
-- 是否创建提交或 Tag：否（未经授权不提交）。
-- 是否推送：否。
+- 当前提交：`8586193`（docs closeout）；前序实现提交 `d641899`。
+- 未提交修改：受保护项仍在工作区（`AGENTS.md`、`agent/goals/`、`acceptance/m2_stage2i2r_*` 既有 1 行编辑），未 stage/未提交。
+- 是否创建提交或 Tag：已创建两笔提交；未创建 Tag。
+- 是否推送：已普通推送 `9e69409..8586193`（origin/feat/m2-value-assessment-mvp，0 ahead / 0 behind）。
+- 未执行：force push、reset --hard、git clean、merge main、创建 PR、tag/release、删除 stash。

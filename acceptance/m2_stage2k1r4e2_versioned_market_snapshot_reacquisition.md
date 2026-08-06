@@ -174,6 +174,24 @@ does not fabricate a dual-source pass.
 - `git diff --check`: pass.
 - `git status` / protected files checked: `AGENTS.md`, `agent/goals/`,
   `acceptance/m2_stage2i2r_*` edit, `stash@{0}`, default DB all untouched.
+- Commits: `d641899` (implementation) + `8586193` (conditinal closeout docs),
+  pushed as `9e69409..8586193` (no force push / reset / merge / PR / tag).
+- CI Stage 2G reproducibility (`31095863441`, head `8586193`): **success** —
+  clean-clone Ubuntu `92597606233`, clean-clone Windows `92597606313`,
+  identity-compare `92598869716` (Ubuntu/Windows identity identical). CI ran the
+  full pytest (incl. 31 R4E.2 contract tests, R4E.1 protection, R4C1 manifest
+  verifier) and performed no real network acquisition.
+
+## 7. CI evidence
+
+- Implementation commit: `d641899` (`feat: add versioned dual-source market reacquisition`).
+- Evidence commit: `8586193` (`docs: record R4E.2 conditional closeout`).
+- CI run ID: `31095863441` — Ubuntu success (`92597606233`),
+  Windows success (`92597606313`), identity-compare success (`92598869716`).
+- Full pytest count: 1540 passed, 2 warnings.
+- Manifest verification: R4C1 manifest `status: pass`; R4E.2 schema registered
+  in ALLOWED + V2_SCHEMAS (no real R4E.2 manifest committed — no real candidate v2).
+- Final decision: `PIT_VALUATION_SERIES_GAPS_REMAIN`.
 
 ## 7. Next steps
 
