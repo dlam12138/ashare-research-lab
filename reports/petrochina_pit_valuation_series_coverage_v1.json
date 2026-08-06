@@ -1,0 +1,71 @@
+{
+ "symbol": "601857.SH",
+ "market_rows": 1351,
+ "market_trade_dates": 1351,
+ "3y_required_start": "2023-07-31",
+ "5y_required_start": "2021-08-02",
+ "per_metric": {
+  "PE_A_TTM": {
+   "total_observations": 1351,
+   "computed_observations": 1296,
+   "status_counts": {
+    "missing_ttm_input": 55,
+    "computed": 1296
+   },
+   "first_computed_trade_date": "2021-03-29",
+   "last_computed_trade_date": "2026-07-31",
+   "3y_required_start": "2023-07-31",
+   "5y_required_start": "2021-08-02",
+   "3y_effective_sample_count": 728,
+   "5y_effective_sample_count": 1211,
+   "minimum_required": {
+    "3y": 500,
+    "5y": 900
+   },
+   "3y_ready": true,
+   "5y_ready": true
+  },
+  "PB_A_MRQ": {
+   "total_observations": 1351,
+   "computed_observations": 1351,
+   "status_counts": {
+    "computed": 1351
+   },
+   "first_computed_trade_date": "2021-01-04",
+   "last_computed_trade_date": "2026-07-31",
+   "3y_required_start": "2023-07-31",
+   "5y_required_start": "2021-08-02",
+   "3y_effective_sample_count": 728,
+   "5y_effective_sample_count": 1211,
+   "minimum_required": {
+    "3y": 500,
+    "5y": 900
+   },
+   "3y_ready": true,
+   "5y_ready": true
+  },
+  "PS_A_TTM": {
+   "total_observations": 1351,
+   "computed_observations": 1296,
+   "status_counts": {
+    "missing_ttm_input": 55,
+    "computed": 1296
+   },
+   "first_computed_trade_date": "2021-03-29",
+   "last_computed_trade_date": "2026-07-31",
+   "3y_required_start": "2023-07-31",
+   "5y_required_start": "2021-08-02",
+   "3y_effective_sample_count": 728,
+   "5y_effective_sample_count": 1211,
+   "minimum_required": {
+    "3y": 500,
+    "5y": 900
+   },
+   "3y_ready": true,
+   "5y_ready": true
+  }
+ },
+ "state_transition_count": 72,
+ "restatement_transition_count": 29,
+ "missing_date_count": 0
+}

@@ -1,0 +1,157 @@
+{
+  "schema": "pit_valuation_series_formula_registry_v1",
+  "version": "1.0",
+  "frozen_date": "2026-08-06",
+  "owner": "M2 Stage 2K.1R4E",
+  "symbol": "601857.SH",
+  "valuation_market": "SSE_A_SHARE",
+  "price_convention": "A_SHARE_PRICE_PER_SHARE",
+  "currency": "CNY",
+  "decimal": {
+    "precision": 28,
+    "rounding": "ROUND_HALF_EVEN",
+    "parse_rule": "Decimal(str(source_value)); Decimal(binary_float) prohibited",
+    "intermediate_no_early_quantize": true,
+    "output_canonical_string": true
+  },
+  "formulas": [
+    {
+      "metric_id": "PE_A_TTM",
+      "formula_id": "pe-a-ttm-v1",
+      "version": 1,
+      "numerator_role": "A_share_close",
+      "numerator_instant_or_duration": "instant",
+      "numerator_unit": "CNY/share",
+      "numerator_scope": "SSE_A_SHARE_unadjusted_close",
+      "denominator_roles": [
+        {
+          "role": "PIT_TTM_basic_EPS",
+          "instant_or_duration": "duration",
+          "unit": "CNY/share",
+          "definition": "PIT_TTM_parent_net_profit / PIT_TTM_weighted_average_total_ordinary_shares"
+        }
+      ],
+      "required_input_fact_roles": [
+        "net_profit_attributable_to_parent",
+        "weighted_average_total_ordinary_shares"
+      ],
+      "ttm_construction": "annual: annual(Y); Q1/H1/Q3: annual(Y-1) + cumulative(Y,P) - cumulative(Y-1,P)",
+      "share_basis": "TTM_weighted_average_total_ordinary_shares",
+      "share_basis_rule": "constant weighted-average shares when share-continuity proof trusted and count constant over the whole TTM duration",
+      "share_continuity_proof_required": "r4d1-share-continuity-constancy-v1",
+      "instant_or_duration": "duration",
+      "unit": "dimensionless",
+      "valid_domain_rule": "PIT_TTM_parent_net_profit > 0; ratio null and status=nonpositive_earnings when <= 0",
+      "rounding_contract": "ROUND_HALF_EVEN; no premature quantize of intermediate values",
+      "prohibited_fallbacks": [
+        "latest annual earnings proxy for TTM",
+        "close-percentile as valuation percentile",
+        "negative PE retained or treated as extremely-low valuation",
+        "third-party PE",
+        "current share count backfill for weighted-average"
+      ]
+    },
+    {
+      "metric_id": "PB_A_MRQ",
+      "formula_id": "pb-a-mrq-v1",
+      "version": 1,
+      "numerator_role": "A_share_close",
+      "numerator_instant_or_duration": "instant",
+      "numerator_unit": "CNY/share",
+      "numerator_scope": "SSE_A_SHARE_unadjusted_close",
+      "denominator_roles": [
+        {
+          "role": "PIT_parent_BVPS",
+          "instant_or_duration": "instant",
+          "unit": "CNY/share",
+          "definition": "latest_visible_parent_equity / matching_period_end_total_ordinary_shares"
+        }
+      ],
+      "required_input_fact_roles": [
+        "equity_attributable_to_parent",
+        "total_ordinary_shares_at_period_end"
+      ],
+      "mrq_construction": "latest visible parent equity at trade date",
+      "share_basis": "matching_period_end_total_ordinary_shares",
+      "share_basis_rule": "equity and period-end shares must share the same period_end and the same PIT-visible reporting context; never independently pick latest equity and latest arbitrary shares",
+      "share_continuity_proof_required": "r4d1-share-continuity-constancy-v1",
+      "instant_or_duration": "instant",
+      "unit": "dimensionless",
+      "valid_domain_rule": "equity > 0 and shares > 0; ratio null with explicit status otherwise",
+      "rounding_contract": "ROUND_HALF_EVEN; no premature quantize of intermediate values",
+      "prohibited_fallbacks": [
+        "latest year-end equity proxy for MRQ",
+        "unmatched equity/share period-end context",
+        "third-party PB",
+        "current share count backfill for period-end shares"
+      ]
+    },
+    {
+      "metric_id": "PS_A_TTM",
+      "formula_id": "ps-a-ttm-v1",
+      "version": 1,
+      "numerator_role": "A_share_close",
+      "numerator_instant_or_duration": "instant",
+      "numerator_unit": "CNY/share",
+      "numerator_scope": "SSE_A_SHARE_unadjusted_close",
+      "denominator_roles": [
+        {
+          "role": "PIT_TTM_sales_per_share",
+          "instant_or_duration": "duration",
+          "unit": "CNY/share",
+          "definition": "PIT_TTM_revenue / total_ordinary_shares_effective_on_trade_date"
+        }
+      ],
+      "required_input_fact_roles": [
+        "revenue",
+        "total_ordinary_shares_at_period_end"
+      ],
+      "ttm_construction": "annual: annual(Y); Q1/H1/Q3: annual(Y-1) + cumulative(Y,P) - cumulative(Y-1,P)",
+      "share_basis": "total_ordinary_shares_effective_on_trade_date",
+      "share_basis_rule": "shares effective on the trade date; share_effective_from <= trade_date; forward/nearest prohibited",
+      "share_continuity_proof_required": "r4d1-share-continuity-constancy-v1",
+      "instant_or_duration": "duration",
+      "unit": "dimensionless",
+      "valid_domain_rule": "revenue > 0 and shares > 0; ratio null with explicit status otherwise",
+      "rounding_contract": "ROUND_HALF_EVEN; no premature quantize of intermediate values",
+      "prohibited_fallbacks": [
+        "latest annual revenue proxy for TTM",
+        "close-percentile as valuation percentile",
+        "third-party PS",
+        "current share count backfill"
+      ]
+    }
+  ],
+  "status_enum": [
+    "computed",
+    "missing_market_close",
+    "missing_financial_state",
+    "missing_ttm_input",
+    "unmatched_equity_share_context",
+    "unsupported_variable_share_count",
+    "nonpositive_weighted_average_shares",
+    "nonpositive_period_end_shares",
+    "nonpositive_equity",
+    "nonpositive_revenue",
+    "nonpositive_earnings",
+    "zero_denominator",
+    "nonfinite_result",
+    "outside_required_window",
+    "not_available_at_cutoff",
+    "BLOCKED_EXTERNAL_MARKET_CACHE_UNAVAILABLE"
+  ],
+  "time_contract": {
+    "price_join": "exact trade_date match",
+    "financial_join": "latest financial state with effective_from <= trade_date; backward only",
+    "forward_or_nearest_prohibited": true,
+    "3y_window": "trade_date >= 2023-07-31",
+    "5y_window": "trade_date >= 2021-07-31",
+    "minimum_samples": {"3y": 500, "5y": 900},
+    "cutoff_not_trade_day": "use first real trade day >= cutoff; never fabricate a date"
+  },
+  "identity_contract": {
+    "observation_id_hashing": "sha256 over canonical JSON payload",
+    "canonical_json": "sort_keys, ensure_ascii=False, separators=(',',':'), utf-8",
+    "excluded_from_identity": ["absolute paths", "run timestamps", "cwd", "json indentation", "platform newlines", "float repr platform differences"]
+  }
+}

@@ -1,0 +1,24 @@
+{
+ "per_metric": {
+  "PE_A_TTM": {
+   "row_count": 1351,
+   "mismatch_count": 0,
+   "identical": true,
+   "mismatches": []
+  },
+  "PB_A_MRQ": {
+   "row_count": 1351,
+   "mismatch_count": 0,
+   "identical": true,
+   "mismatches": []
+  },
+  "PS_A_TTM": {
+   "row_count": 1351,
+   "mismatch_count": 0,
+   "identical": true,
+   "mismatches": []
+  }
+ },
+ "all_identical": true,
+ "trusted": true
+}

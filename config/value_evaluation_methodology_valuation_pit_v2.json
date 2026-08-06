@@ -1,0 +1,59 @@
+{
+  "contract": "value_evaluation_methodology_valuation_pit_v2",
+  "version": 2,
+  "supersedes": "value_evaluation_methodology_valuation_pit_v1",
+  "supersession_reason": [
+    "v1 used latest annual earnings/revenue and latest year-end equity",
+    "v2 uses PE-A-TTM, PB-A-MRQ, PS-A-TTM",
+    "close-price percentile is not a PE/PB/PS percentile",
+    "the old v1 artifact is retained for historical audit and is no longer the current valuation-series contract"
+  ],
+  "frozen_date": "2026-08-06",
+  "owner": "M2 Stage 2K.1R4E",
+  "symbol": "601857.SH",
+  "date_range": {"start": "2021-01-01", "end": "2026-07-31", "end_rule": "min_latest_common_trade_date"},
+  "price_field": "close",
+  "price_adjustment": "none",
+  "price_scope": "A_SHARE_UNADJUSTED_CLOSE",
+  "currency": "CNY",
+  "valuation_market": "SSE_A_SHARE",
+  "share_basis": "company_wide_total_ordinary_shares_183020977818_constant",
+  "decimal": {"precision": 28, "rounding": "ROUND_HALF_EVEN", "parse_rule": "Decimal(str(value))", "intermediate_no_premature_quantize": true},
+  "formula_registry": "config/pit_valuation_series_formula_registry_v1.json",
+  "series_contract": "docs/pit_valuation_series_contract.md",
+  "observations": [
+    "a_share_price_to_ttm_parent_earnings__PE_A_TTM",
+    "a_share_price_to_mrq_parent_equity__PB_A_MRQ",
+    "a_share_price_to_ttm_revenue__PS_A_TTM"
+  ],
+  "production_eligible": false,
+  "score_eligible": false,
+  "percentile_computed": false,
+  "temporal_join": {
+    "price_join": "exact trade_date match",
+    "financial_join": "latest financial state with effective_from <= trade_date; backward only; forward/nearest prohibited"
+  },
+  "dual_oracle": {
+    "primary": "pure_python_ordered_backward_sweep",
+    "secondary": "duckdb_asof_join_in_memory_only",
+    "must_match_row_by_row": true
+  },
+  "forbidden_output_fields": ["score", "weight", "rating", "target_price", "buy", "sell", "probability", "upside", "downside", "valuation_percentile_3y", "valuation_percentile_5y"],
+  "mature_design_references": [
+    "DuckDB ASOF JOIN: backward temporal match, at most one right row per left row",
+    "pandas merge_asof: ordered-key, grouped, backward semantics only; forward/nearest prohibited; no new pandas dependency",
+    "XBRL instant/duration: equity/period-end shares are instant; profit/revenue/weighted-average shares are duration"
+  ],
+  "not_copied": [
+    "generic data warehouse",
+    "automatic nearest matching",
+    "external website PE/PB/PS",
+    "third-party valuation percentiles",
+    "new database framework"
+  ],
+  "shares": {
+    "constant_total_ordinary_shares": 183020977818,
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "variable_share_count_behavior": "unsupported_variable_share_count; never fall back to period-end or current shares"
+  }
+}
