@@ -1,6 +1,17 @@
 # 工作记录：M2 Stage 2K.1R4D.1a — Historical Calendar and Remote Evidence Closeout
 
-Status: `in_progress`
+Status: `completed`
+Closeout verdict: `PASS`
+Final implementation commit: `4b34fea`
+Final evidence commit: `878727e`
+Final CI: `30999204443`
+
+> Reviewer note (2026-08-06): the R4D.1a calendar coverage fix itself is trusted,
+> but the calendar object-selection contract was not (the loader could fall back
+> to the first parquet).  That gap is closed by the R4D.1b closeout
+> (``load_market_calendar`` now reads the single pinned content-addressed object
+> via ``config/pit_valuation_market_calendar_registry_v1.json`` and fails closed
+> on any integrity mismatch).
 
 ## 基本信息
 

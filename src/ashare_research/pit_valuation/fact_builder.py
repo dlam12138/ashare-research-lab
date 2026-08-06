@@ -26,6 +26,7 @@ from ashare_research.pit_valuation.contracts import (
     PERIOD_TYPE_BY_REPORT,
     SYMBOL,
     CalendarCoverageGapError,
+    load_market_calendar_registry,
     load_role_registry,
 )
 from ashare_research.pit_valuation.extraction import ExtractedCell
@@ -120,11 +121,23 @@ def load_market_calendar(
     *,
     required_start: str = CALENDAR_COVERAGE_START,
     required_end: str = CALENDAR_COVERAGE_END,
+    registry: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     """Load the verified trading-day calendar from the market cache.
 
     Only trade dates are used: the market cache is never used for financial
     values.  Returns the sorted trade-date list plus calendar provenance.
+
+    The calendar object is pinned by the committed market-calendar registry: the
+    loader reads the single exact content-addressed object and never scans the
+    cache directory or falls back to another parquet when the pinned object is
+    absent or corrupt.  After reading it verifies the content sha256 equals the
+    registration, the object key stems from that sha256, and the structural facts
+    (row count, first/last trading day, trade-date uniqueness/monotonicity, no
+    null dates, ``is_trading`` present) all match.  Any mismatch fails closed with
+    :class:`CalendarCoverageGapError` rather than substituting a different file,
+    so a clean formal run can never silently switch to an older short-range
+    calendar.
 
     ``required_start`` is the earliest announcement date the calendar must be
     able to resolve (the earliest in-scope filing), and ``required_end`` the
@@ -137,35 +150,75 @@ def load_market_calendar(
     """
     import pandas as pd
 
+    if registry is None:
+        registry = load_market_calendar_registry()
+    expected_sha = registry["object_sha256"]
+    object_key = registry["object_key"]
+    if Path(object_key).stem != expected_sha:
+        raise CalendarCoverageGapError(
+            f"market calendar registry object_key {object_key!r} is not named by "
+            f"its sha256 {expected_sha[:12]}..."
+        )
     root = Path(market_cache_root).resolve()
-    parquet_files = sorted(root.rglob("*.parquet"))
-    if not parquet_files:
-        raise FileNotFoundError("no verified market parquet found in market cache root")
-    # The extended historical calendar (2020 Q1 .. evidence cutoff).  The
-    # content-addressed object is named by its sha256; the prefix pins the
-    # extended snapshot so an older short-range calendar is never selected.
-    prefix = "77021dceda8aae05c7bc2329e6efb65711ccea232bb289e880cd16b99151b92d"
-    matches = [p for p in parquet_files if p.name.startswith(prefix)]
-    path = matches[0] if matches else parquet_files[0]
-    sha = hashlib.sha256(path.read_bytes()).hexdigest()
+    path = root / object_key
+    if not path.is_file():
+        raise CalendarCoverageGapError(
+            f"required market calendar object missing: {expected_sha} ({object_key})"
+        )
+    # Content address: the object's sha256 must equal the registration and its
+    # filename must stem from that sha256.  No other parquet may be substituted.
+    computed_sha = hashlib.sha256(path.read_bytes()).hexdigest()
+    if computed_sha != expected_sha:
+        raise CalendarCoverageGapError(
+            f"market calendar content sha256 {computed_sha[:12]}... does not match "
+            f"registered object sha256 {expected_sha[:12]}..."
+        )
     df = pd.read_parquet(path)
+    # Structural verification against the registry.
+    if len(df) != registry["row_count"]:
+        raise CalendarCoverageGapError(
+            f"market calendar row_count {len(df)} != registered "
+            f"{registry['row_count']}"
+        )
+    if "is_trading" not in df.columns:
+        raise CalendarCoverageGapError("market calendar is missing the is_trading column")
+    if "trade_date" not in df.columns:
+        raise CalendarCoverageGapError("market calendar is missing the trade_date column")
+    if df["trade_date"].isna().any():
+        raise CalendarCoverageGapError("market calendar has null trade_date values")
+    if not df["trade_date"].is_unique:
+        raise CalendarCoverageGapError("market calendar has duplicate trade_date values")
+    if not df["trade_date"].is_monotonic_increasing:
+        raise CalendarCoverageGapError("market calendar trade_date is not strictly increasing")
     trade_dates = sorted(
         str(d) for d in df.loc[df["is_trading"], "trade_date"].astype(str).tolist()
     )
-    if trade_dates:
-        if required_start and trade_dates[0] > required_start:
-            raise CalendarCoverageGapError(
-                f"calendar first trading day {trade_dates[0]} is after required "
-                f"start {required_start}; historical market calendar coverage gap"
-            )
-        if required_end and trade_dates[-1] < required_end:
-            raise CalendarCoverageGapError(
-                f"calendar last trading day {trade_dates[-1]} is before required "
-                f"end {required_end}; historical market calendar coverage gap"
-            )
+    if not trade_dates:
+        raise CalendarCoverageGapError("verified market calendar is empty")
+    if trade_dates[0] != registry["first_trading_day"]:
+        raise CalendarCoverageGapError(
+            f"market calendar first trading day {trade_dates[0]} != registered "
+            f"{registry['first_trading_day']}"
+        )
+    if trade_dates[-1] != registry["last_trading_day"]:
+        raise CalendarCoverageGapError(
+            f"market calendar last trading day {trade_dates[-1]} != registered "
+            f"{registry['last_trading_day']}"
+        )
+    # Required coverage boundaries (the caller's contract constraints).
+    if required_start and trade_dates[0] > required_start:
+        raise CalendarCoverageGapError(
+            f"calendar first trading day {trade_dates[0]} is after required "
+            f"start {required_start}; historical market calendar coverage gap"
+        )
+    if required_end and trade_dates[-1] < required_end:
+        raise CalendarCoverageGapError(
+            f"calendar last trading day {trade_dates[-1]} is before required "
+            f"end {required_end}; historical market calendar coverage gap"
+        )
     return {
         "calendar_object_id": path.name,
-        "calendar_sha256": sha,
+        "calendar_sha256": computed_sha,
         "trade_dates": trade_dates,
     }
 

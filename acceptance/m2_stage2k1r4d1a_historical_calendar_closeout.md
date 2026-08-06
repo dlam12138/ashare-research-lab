@@ -1,9 +1,11 @@
 # M2 Stage 2K.1R4D.1a — Historical Market Calendar and PIT Time Contract Closeout
 
-Status: `CONDITIONAL PASS — calendar coverage extended through 2026-08-02; 2020 facts
-resolved to real next trading days; no backfill; final gate
-PIT_DENOMINATOR_FACTS_READY_FOR_SERIES_PREFLIGHT confirmed after push + reviewer
-file review`.
+Status: `PASS — the calendar coverage extension and 2020 effective_from fix are
+confirmed; the calendar object-selection contract gap (fail-open fallback) noted
+by the reviewer is closed by the R4D.1b closeout
+(acceptance/m2_stage2k1r4d1b_calendar_object_pinning_closeout.md). Final gate
+PIT_DENOMINATOR_FACTS_READY_FOR_SERIES_PREFLIGHT is confirmed after the formal
+pipeline re-run and the dual-platform CI on the R4D.1b commit`.
 
 ## Scope
 

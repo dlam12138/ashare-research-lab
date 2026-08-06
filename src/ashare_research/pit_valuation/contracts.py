@@ -30,6 +30,9 @@ EXTRACTION_SPECS_PATH = ROOT / "config" / "pit_valuation_quarterly_extraction_sp
 SHARE_CONTINUITY_REGISTER_PATH = (
     ROOT / "config" / "pit_valuation_share_continuity_register_v1.json"
 )
+MARKET_CALENDAR_REGISTRY_PATH = (
+    ROOT / "config" / "pit_valuation_market_calendar_registry_v1.json"
+)
 
 SYMBOL = "601857.SH"
 VALUATION_MARKET = "SSE_A_SHARE"
@@ -154,6 +157,10 @@ def load_extraction_specs() -> dict[str, Any]:
 
 def load_share_continuity_register() -> dict[str, Any]:
     return load_json(SHARE_CONTINUITY_REGISTER_PATH)
+
+
+def load_market_calendar_registry() -> dict[str, Any]:
+    return load_json(MARKET_CALENDAR_REGISTRY_PATH)
 
 
 def evidence_by_id() -> dict[str, dict[str, Any]]:
@@ -321,6 +328,35 @@ def validate_share_continuity_register(register: dict[str, Any]) -> None:
         raise ValueError("share continuity register missing share-changing actions list")
 
 
+def validate_market_calendar_registry(registry: dict[str, Any]) -> None:
+    """Validate the frozen verified-market-calendar registry.
+
+    The registry pins the single content-addressed calendar object the loader
+    may read.  The loader must never scan the cache directory or fall back to
+    another parquet, so the registry records the exact object key, its sha256,
+    and the structural facts (row count, first/last trading day, evidence
+    cutoff) the loader verifies after reading.
+    """
+    if registry.get("schema") != "pit_valuation_market_calendar_registry_v1":
+        raise ValueError("unsupported market calendar registry schema")
+    if registry.get("symbol") != SYMBOL:
+        raise ValueError("market calendar registry symbol mismatch")
+    sha = registry.get("object_sha256", "")
+    if len(sha) != 64:
+        raise ValueError("market calendar registry missing object_sha256")
+    registry_resolver = registry.get("resolver_contract")
+    if registry_resolver != "explicit_content_addressed_object_no_scan_no_fallback":
+        raise ValueError("market calendar registry must forbid scanning/fallback")
+    object_key = registry.get("object_key", "")
+    if Path(object_key).stem != sha:
+        raise ValueError("market calendar registry object_key must be named by its sha256")
+    if not isinstance(registry.get("row_count"), int) or registry.get("row_count") <= 0:
+        raise ValueError("market calendar registry missing positive row_count")
+    for field in ("first_trading_day", "last_trading_day", "evidence_cutoff"):
+        if registry.get(field) in (None, ""):
+            raise ValueError(f"market calendar registry missing {field!r}")
+
+
 def validate_all_contracts() -> dict[str, Any]:
     """Validate every R4D contract and return a digest of each."""
     plan = load_plan()
@@ -335,6 +371,8 @@ def validate_all_contracts() -> dict[str, Any]:
     validate_extraction_specs(specs)
     continuity = load_share_continuity_register()
     validate_share_continuity_register(continuity)
+    market_calendar = load_market_calendar_registry()
+    validate_market_calendar_registry(market_calendar)
     return {
         "plan_digest": canonical_digest(plan),
         "source_evidence_digest": canonical_digest(evidence),
@@ -342,6 +380,7 @@ def validate_all_contracts() -> dict[str, Any]:
         "role_registry_digest": canonical_digest(roles),
         "extraction_specs_digest": canonical_digest(specs),
         "share_continuity_register_digest": canonical_digest(continuity),
+        "market_calendar_registry_digest": canonical_digest(market_calendar),
     }
 
 
