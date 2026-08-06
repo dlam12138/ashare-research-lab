@@ -1,0 +1,13 @@
+{
+ "schema": "m2_stage2k1r4e1_artifact_manifest_v2",
+ "version": "2.0",
+ "files": [
+  {
+   "path": "reports/m2_stage2k1r4e1_decision.json",
+   "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+   "sha256": "4df89bfbaae8ae71e9571d5e60cf56c671e37242b98be2cac43a067e9eec3dd3",
+   "byte_size": 477
+  }
+ ],
+ "manifest_digest": "8aeaad33cffadb4e2f07afda5bd095121706a0e2cd36d650f04a4014d9ddb03b"
+}
