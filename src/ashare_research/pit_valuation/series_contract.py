@@ -159,6 +159,21 @@ def load_share_continuity_register() -> dict[str, Any]:
     return load_json(SHARE_CONTINUITY_REGISTER_PATH)
 
 
+# Frozen market double-source reconciliation tolerance (from the versioned
+# formula-registry contract; never scattered as a hard-coded literal).
+def load_market_reconciliation_contract() -> dict[str, Any]:
+    return load_formula_registry().get("market_reconciliation_contract", {})
+
+
+def close_tolerance_decimal() -> Decimal:
+    """The frozen close tolerance in CNY/share as a canonical Decimal."""
+    contract = load_market_reconciliation_contract()
+    raw = contract.get("close_tolerance", "")
+    if not raw:
+        raise ValueError("market_reconciliation_contract missing close_tolerance")
+    return parse_decimal(raw)
+
+
 def validate_formula_registry(registry: dict[str, Any]) -> None:
     if registry.get("schema") != "pit_valuation_series_formula_registry_v1":
         raise ValueError("unsupported formula registry schema")

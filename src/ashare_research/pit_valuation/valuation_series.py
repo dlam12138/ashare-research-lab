@@ -173,7 +173,7 @@ def _compute_observation(
         "market_close_digest": close_digest,
         "primary_market_object_sha256": market_meta["primary_object_sha256"],
         "secondary_market_object_sha256": market_meta["secondary_object_sha256"],
-        "market_reconciliation_digest": market_meta["reconciliation_contract_digest"],
+        "market_reconciliation_digest": market_meta["market_reconciliation_digest"],
         "market_reconciliation_status": market_meta["reconciliation_status"],
         "financial_state_id": state.get("financial_state_id", "") if state else "",
         "financial_state_effective_from": state.get("effective_from", "") if state else "",

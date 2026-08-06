@@ -1,0 +1,12 @@
+{
+ "schema": "m2_stage2k1r4e1_decision",
+ "version": "2.0",
+ "symbol": "601857.SH",
+ "decision": "PIT_VALUATION_SERIES_GAPS_REMAIN",
+ "market_reconciliation_status": "BLOCKED_EXTERNAL_MARKET_CACHE_UNAVAILABLE",
+ "akshare_object_recovery": "NOT_FOUND",
+ "gap_detail": "pinned akshare market object absent: akshare/203ddfd7ce14502c61da11dca49df54f62737d28778a1d4b175c1d635c7ce61c.parquet",
+ "percentile_computed": false,
+ "score_eligible": false,
+ "production_eligible": false
+}

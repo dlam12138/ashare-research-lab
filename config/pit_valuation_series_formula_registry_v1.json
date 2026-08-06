@@ -149,6 +149,18 @@
     "minimum_samples": {"3y": 500, "5y": 900},
     "cutoff_not_trade_day": "use first real trade day >= cutoff; never fabricate a date"
   },
+  "market_reconciliation_contract": {
+    "schema": "pit_valuation_market_double_source_reconciliation_v1",
+    "version": "1",
+    "algorithm": "Decimal(str(close)) per source; float(close) prohibited; Decimal(binary_float) prohibited; daily exact trade_date alignment",
+    "close_tolerance": "0.01",
+    "close_tolerance_unit": "CNY/share",
+    "providers": ["baostock", "akshare"],
+    "required_columns": ["symbol", "trade_date", "close", "is_trading"],
+    "symbol": "601857.SH",
+    "adjustment": "none",
+    "fail_closed_status": "PIT_VALUATION_SERIES_NOT_TRUSTED"
+  },
   "identity_contract": {
     "observation_id_hashing": "sha256 over canonical JSON payload",
     "canonical_json": "sort_keys, ensure_ascii=False, separators=(',',':'), utf-8",

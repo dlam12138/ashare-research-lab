@@ -220,8 +220,27 @@ def load_fixture_market(fixture_root: Any) -> tuple[list[dict], list[dict]]:
         "secondary_verified": True,
         "reconciliation_status": "pass",
         "reconciliation_contract_digest": "synthetic-reconciliation",
+        "market_reconciliation_digest": "synthetic-market-reconciliation-v1",
         "market_rows": len(rows),
         "first_trade_date": rows[0]["trade_date"],
         "last_trade_date": rows[-1]["trade_date"],
     }
     return rows, meta
+
+
+def load_fixture_dual_market(
+    fixture_root: Any, *, secondary_offset: float = 0.0
+) -> tuple[list[dict], list[dict], dict]:
+    """Return (primary_rows, secondary_rows, meta) for a reconcilable dual source.
+
+    The secondary series is identical to the primary by default (offset 0 → all
+    close differences are zero, within the frozen 0.01 tolerance).  A fractional
+    ``secondary_offset`` (0..0.01) exercises the within-tolerance path; values
+    > 0.01 exercise the over-tolerance fail-closed path.
+    """
+    rows, meta = load_fixture_market(fixture_root)
+    secondary_rows = [
+        {"trade_date": r["trade_date"], "close": round(r["close"] + secondary_offset, 2)}
+        for r in rows
+    ]
+    return rows, secondary_rows, meta
