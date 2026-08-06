@@ -407,7 +407,11 @@ def _cmd_formal(args: argparse.Namespace) -> int:
         return decision_to_exit_code(DECISION_NOT_TRUSTED)
 
     reported, reconciled = _load_bundles(args)
-    registry = series_contract.load_market_snapshot_registry()
+    registry = (
+        json.loads(Path(args.market_registry).read_text(encoding="utf-8"))
+        if getattr(args, "market_registry", None)
+        else series_contract.load_market_snapshot_registry()
+    )
     cache_root = Path(args.market_cache_root)
     output_root = Path(args.output_root)
 
@@ -683,6 +687,8 @@ def build_parser() -> argparse.ArgumentParser:
 
     formal = sub.add_parser("formal", help="build candidate series from real external cache")
     formal.add_argument("--market-cache-root", required=True)
+    formal.add_argument("--market-registry", default=None,
+                        help="explicit market snapshot registry (e.g. registry v3)")
     formal.add_argument("--output-root", default=str(REPORTS))
     formal.add_argument("--reported-bundle", default=None)
     formal.add_argument("--reconciled-bundle", default=None)

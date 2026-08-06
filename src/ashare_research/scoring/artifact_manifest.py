@@ -58,6 +58,7 @@ ALLOWED_MANIFEST_SCHEMAS = frozenset(
         "m2_stage2k1r4c_artifact_manifest_v1",
         "m2_stage2k1r4c1_artifact_manifest_v2",
         "m2_stage2k1r4e1_artifact_manifest_v2",
+        "m2_stage2k1r4e2_artifact_manifest",
     }
 )
 
@@ -69,7 +70,11 @@ V2_ALGORITHM_FIELD = "digest_algorithm"
 #: v2 schemas: the digest is computed with the registered ContentDigest
 #: algorithm instead of the v1 LF-normalized default.
 V2_SCHEMAS = frozenset(
-    {"m2_stage2k1r4c1_artifact_manifest_v2", "m2_stage2k1r4e1_artifact_manifest_v2"}
+    {
+        "m2_stage2k1r4c1_artifact_manifest_v2",
+        "m2_stage2k1r4e1_artifact_manifest_v2",
+        "m2_stage2k1r4e2_artifact_manifest",
+    }
 )
 
 

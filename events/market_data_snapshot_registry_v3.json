@@ -1,0 +1,82 @@
+{
+ "contract": "market_data_snapshot_registry_v3",
+ "schema_version": "3.0",
+ "supersedes_registry": "events/market_data_snapshot_registry.json",
+ "supersession_reason": "pinned_secondary_object_unrecoverable_versioned_reacquisition",
+ "data_class": "external_real_data_cache",
+ "acquisition_batch_id": "c4c3239a7a781910259a6f98ab2e86762c600843a32f8c0ab46463995bda0792",
+ "symbol": "601857.SH",
+ "date_range": {
+  "requested_start": "2021-01-01",
+  "requested_end": "2026-07-31",
+  "actual_start": "2021-01-04",
+  "actual_end": "2026-07-31"
+ },
+ "adjustment": "none",
+ "currency": "CNY",
+ "close_unit": "CNY/share",
+ "frequency": "daily",
+ "providers": [
+  {
+   "provider": "baostock",
+   "provider_version": "0.9.3",
+   "sha256": "c6771aa57b0210ee558a91c7bdb87cc346ce910a395eda057cb9d7224475ab67",
+   "object_key": "baostock/c6771aa57b0210ee558a91c7bdb87cc346ce910a395eda057cb9d7224475ab67.parquet",
+   "ab_stability": "ACQUISITION_STABLE",
+   "table_digest": "ba4f83185b9644e157e4439aaea26d8692db7043f6d3ce06dc502549d60dc96c",
+   "schema_digest": "8c9ab6c789f6ac7cf047471b405830620df76ad1ae7288e2a5f6b79b3e336879",
+   "attempt": 1,
+   "row_count": 1351,
+   "first_trade_date": "2021-01-04",
+   "last_trade_date": "2026-07-31",
+   "function": "bs.query_history_k_data_plus",
+   "params": {
+    "function": "bs.query_history_k_data_plus",
+    "code": "sh.601857",
+    "frequency": "d",
+    "start_date": "2021-01-01",
+    "end_date": "2026-07-31",
+    "adjustflag": "3"
+   },
+   "adjustment": "none"
+  }
+ ],
+ "provider_gaps": [
+  {
+   "provider": "akshare",
+   "acquisition_status": "provider_gap",
+   "error_type": "MarketAcquisitionError",
+   "message": "akshare acquisition failed after 3 attempts: ProxyError: HTTPSConnectionPool(host='push2his.eastmoney.com', port=443): Max retries exceeded with url: /api/qt/stock/kline/get?fields1=f1%2Cf2%2Cf3%2Cf4%2Cf5%2Cf6&fields2=f51%2Cf52%2Cf53%2Cf54%2Cf55%2Cf56%2Cf57%2Cf58%2Cf59%2Cf60%2Cf61%2Cf116&ut=7eea3edcaed734bea9cbfc24409ed989&klt=101&fqt=0&secid=1.601857&beg=20210101&end=20260731 (Caused by ProxyError('Unable to connect to proxy', RemoteDisconnected('Remote end closed connection without response')))"
+  }
+ ],
+ "ab_stability": "ACQUISITION_INCOMPLETE",
+ "acquisition_warnings": [],
+ "canonical_writer_contract": {
+  "columns": [
+   "symbol",
+   "trade_date",
+   "open",
+   "high",
+   "low",
+   "close",
+   "volume",
+   "amount",
+   "is_trading",
+   "adjustment",
+   "provider",
+   "provider_version"
+  ],
+  "trade_date_sort": "strictly_ascending",
+  "duplicate_trade_date_allowed": false,
+  "numeric_encoding": "canonical_decimal_string",
+  "volume_encoding": "normalized_integer_shares",
+  "float_repr_for_identity_allowed": false,
+  "dataframe_index_saved": false,
+  "absolute_path_saved": false,
+  "wall_clock_in_batch_identity": false,
+  "parquet_engine": "pyarrow",
+  "parquet_index": false
+ },
+ "evidence_class": "external_real_data_cache",
+ "reconciliation_status": "pending_real_reconciliation"
+}
