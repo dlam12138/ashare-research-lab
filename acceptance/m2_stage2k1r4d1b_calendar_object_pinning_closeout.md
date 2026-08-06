@@ -1,9 +1,22 @@
 # M2 Stage 2K.1R4D.1b — Calendar Object Pinning Closeout
 
-Status: `PASS — calendar object selection is now content-addressed and
-fail-closed; the R4D.1a conditional is resolved. Final gate
-PIT_DENOMINATOR_FACTS_READY_FOR_SERIES_PREFLIGHT is confirmed after the formal
-pipeline re-run and the dual-platform CI on the pushed commit.`
+Status: `PASS`
+
+## Verdict
+
+```text
+M2 Stage 2K.1R4D.1b: PASS
+Calendar registry: TRUSTED
+Explicit content-addressed selection: TRUSTED
+No-scan/no-fallback contract: TRUSTED
+Object SHA verification: TRUSTED
+Calendar structural validation: TRUSTED
+2020 PIT dates: UNCHANGED_AND_TRUSTED
+R4D.1a status: PASS
+Formal real-cache rerun: NOT_RUN_EXTERNAL_OFFICIAL_CACHE_UNAVAILABLE
+PIT denominator gate: PIT_DENOMINATOR_FACTS_READY_FOR_SERIES_PREFLIGHT
+Next-stage implementation: NOT STARTED
+```
 
 ## Scope
 
@@ -91,15 +104,31 @@ Executed 2026-08-06 (Windows local):
 
 - New R4D.1b tests: **12 passed**.
 - Related R4D tests (R4D.1a, fact identity, context/restatement/share
-  continuity, restatement-and-readiness, true-upstream capsule): **83 passed**.
+  continuity, restatement-and-readiness, true-upstream capsule): **95 passed**.
 - Full offline test suite: **1433 passed, 2 warnings** (1421 R4D.1a baseline
   + 12 new R4D.1b tests).
 - `ruff check src/ tests/`: All checks passed.
-- `python -m compileall -q src`: pass.
+- `python -m compileall -q src tests`: pass.
 - `git diff --check`: pass.
-- `verify-contracts`: pass, includes `market_calendar_registry_digest`.
+- `verify-contracts` (stage2g + R4D): pass, includes
+  `market_calendar_registry_digest = 17f4480c…`.
 - Real calendar loader check: reads `77021dce….parquet`, matches sha, 1597
-  trading days, 2020-04-30 -> 2020-05-06.
+  trading days, 2020-04-30 -> 2020-05-06; missing object with older parquet
+  present fails; tampered content fails.
+- Default DB `data/research.duckdb` SHA-256 unchanged (`4a71d3c7…`); stash and
+  protected items untouched.
+
+## CI (dual-platform)
+
+Run `31066461569` on commit `4223aee` (Stage 2G reproducibility):
+
+- clean-clone (ubuntu-latest, ubuntu): **success** — full offline suite
+  **1430 passed, 3 skipped, 3 warnings** (0 failed; the 3 skips are
+  clean-clone network/local-snapshot tests, consistent with the local 1433
+  total); R4D contract gate outputs
+  `market_calendar_registry_digest = 17f4480c…`.
+- clean-clone (windows-latest, windows): **success**.
+- identity-compare: **success** (cross-platform identity payloads identical).
 
 ## Conditional / pending
 
@@ -116,6 +145,10 @@ Executed 2026-08-06 (Windows local):
 
 ## Git state
 
-- Branch `feat/m2-value-assessment-mvp`, start HEAD `878727e`.
+- Branch `feat/m2-value-assessment-mvp`.
+- Implementation commit `4223aee` ("fix: pin PIT market calendar content
+  object", pushed `878727e..4223aee`) — CI run `31066461569` succeeded on all
+  three jobs.
+- Docs close-out commit (this acceptance + work record CI evidence) follows.
 - Protected user changes (`acceptance/m2_stage2i2r_*.md`, `AGENTS.md`,
-  `agent/goals/`) left untouched. Not pushed (push only on explicit request).
+  `agent/goals/`) left untouched and not staged.

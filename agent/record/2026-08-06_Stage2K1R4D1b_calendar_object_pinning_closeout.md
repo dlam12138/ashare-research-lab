@@ -1,8 +1,12 @@
 # 工作记录：M2 Stage 2K.1R4D.1b — Calendar Object Pinning Closeout
 
-Status: `conditional_pass` — 实现与离线验证完成（1433 passed、ruff、compileall、
-verify-contracts、真实对象 loader 实测）；正式管线端到端重跑与双平台 CI 待官方缓存/
-推送授权后执行，gate 升级须在两者完成后正式声明。
+Status: `completed`
+Closeout verdict: `PASS`
+Implementation commit: `4223aee`
+CI run: `31066461569`
+CI Ubuntu: `success`
+CI Windows: `success`
+Identity compare: `success`
 
 ## 基本信息
 
@@ -183,7 +187,13 @@ M2 Stage 2K.1R4D.1a: CONDITIONAL PASS
   不临时换用第三方/其他 PDF；R4D.1b 只改日历加载器，事实包确定性不变（已通过
   committed bundle 核对确认：reported 127 / reconciled 38 / 150 cells / 0 gaps，
   effective_from 与 fact_id 均不变）。不声称正式 PDF 提取被重新执行。
-- 双平台 CI：**未执行**（需推送授权；推送到 origin 后由 Stage 2G reproducibility 自动运行）。
+- 双平台 CI（Stage 2G reproducibility，run 31066461569，headSha `4223aee`）：**success**。
+  - clean-clone (ubuntu-latest)：success（2m24s），含 Full offline test suite
+    **1430 passed, 3 skipped, 3 warnings**（0 failed；3 skip 为 clean-clone 无本地
+    快照的网络/integration 测试，与本地 1433 总数一致）。
+  - clean-clone (windows-latest)：success（4m47s）。
+  - identity-compare：success（28s，跨平台 identity payload 一致）。
+  - R4D contract gate（含 `market_calendar_registry_digest=17f4480c…`）：pass。
 
 ## 结果
 
@@ -191,8 +201,10 @@ M2 Stage 2K.1R4D.1a: CONDITIONAL PASS
 - 已提交 registry 钉住真实对象；`validate_all_contracts` 现含日历 registry 校验。
 - 12 项 loader 测试覆盖 reviewer 要求的全部选择行为。
 - R4D.1a 工作记录状态修正为 `completed / PASS`。
-- **条件通过**：正式管线端到端重跑与双平台 CI 待官方缓存/推送授权后执行；gate 升级
-  须在这些完成后正式声明。
+- 双平台 CI（run 31066461569）Ubuntu/Windows/identity-compare 全部 success。
+- gate 可正式升级为 **PIT_DENOMINATOR_FACTS_READY_FOR_SERIES_PREFLIGHT**。
+- 正式管线端到端重跑：**NOT_RUN_EXTERNAL_OFFICIAL_CACHE_UNAVAILABLE**（官方缓存缺失，
+  不阻断 R4D.1b loader 微修复；不声称正式 PDF 提取被重新执行）。
 
 ## 遗留问题
 
@@ -227,6 +239,8 @@ M2 Stage 2K.1R4D.1a: CONDITIONAL PASS
 ## 最终 Git 状态
 
 - 分支 `feat/m2-value-assessment-mvp`；开始 HEAD `878727e`。
-- 未提交修改：R4D.1b 源码/测试/registry/文档改动（待用户审阅）。
-- 受保护项保持不变（用户未提交修改不纳入本次提交范畴）。
-- 未推送（未经明确要求不推送）。
+- 第一笔提交 `4223aee`（fix: pin PIT market calendar content object）已推送 origin
+  （`878727e..4223aee`），双平台 CI 成功。
+- 第二笔提交（本工作记录 + acceptance 的 CI 证据收尾）将随后推送。
+- 受保护项未纳入提交（`acceptance/m2_stage2i2r_*`、`AGENTS.md`、`agent/goals/`、
+  默认 DB、`stash@{0}` 均未 stage/改动）。
