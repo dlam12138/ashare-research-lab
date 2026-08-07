@@ -1,0 +1,139 @@
+{
+ "schema": "m2_stage2k1r4e4_artifact_manifest_v2",
+ "version": "2.0",
+ "files": [
+  {
+   "path": "acceptance/m2_stage2k1r4e4_selected_secondary_provider_integration.md",
+   "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+   "sha256": "05af84933b3d5ace1788d2c6709a8ab5a8c4507910b666daaeee4290001d0178",
+   "byte_size": 11525
+  },
+  {
+   "path": "config/pit_valuation_secondary_provider_preflight_v1.json",
+   "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+   "sha256": "9dbb369d46ed2edb81adab6a98ce772cbd30b0e04c5f25fa887b58710381b0f3",
+   "byte_size": 5308
+  },
+  {
+   "path": "docs/selected_secondary_provider_integration_contract.md",
+   "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+   "sha256": "557441dac5307c4bbd00bede0297d613406ee6b4f24946b4cb98d56c3f1c76c0",
+   "byte_size": 4145
+  },
+  {
+   "path": "events/market_data_snapshot_registry_v4.json",
+   "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+   "sha256": "0d74d52343ddc74cacef9ec28c69106988e71584ef7e96906c600c70cea5d908",
+   "byte_size": 3013
+  },
+  {
+   "path": "reports/m2_stage2k1r4e4_decision.json",
+   "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+   "sha256": "d2a021cb9bbb71a939ca953c1b23df0bd733fadb24f6e945b4bf1ed1169bc5cd",
+   "byte_size": 1395
+  },
+  {
+   "path": "reports/petrochina_market_close_mismatch_ledger_v2.json",
+   "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+   "sha256": "60eddadd9dcc13c2b8deb78865229498a6e13283c2fef0a3e3662c2faaf08ee9",
+   "byte_size": 141
+  },
+  {
+   "path": "reports/petrochina_market_close_reconciliation_v2.json",
+   "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+   "sha256": "baf3d245971536515b1df5434e533324865edd709390a3b1713b451ff09d8539",
+   "byte_size": 1734
+  },
+  {
+   "path": "reports/petrochina_pit_financial_state_timeline_v2.json",
+   "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+   "sha256": "5be0f7353449e7ac8fe5ff64510c30c73fa0adad046f787965b6ec4f8b1880b5",
+   "byte_size": 112147
+  },
+  {
+   "path": "reports/petrochina_pit_valuation_series_audit_samples_v2.json",
+   "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+   "sha256": "e0cd32762a2d72a91d988dc070743d32dd8a22fd2751b00d48e1372fc9c34dbb",
+   "byte_size": 53744
+  },
+  {
+   "path": "reports/petrochina_pit_valuation_series_candidate_v2.json",
+   "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+   "sha256": "5d5f389755b8e4eeba22210694e193e4d2c488ea55ec3ca20b4f359200c0e5fd",
+   "byte_size": 6966097
+  },
+  {
+   "path": "reports/petrochina_pit_valuation_series_coverage_v2.json",
+   "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+   "sha256": "3e813c26ba74bea1b42b0b20c6ebf3fd7554eb85701fe6caf3f95e4ab30672ca",
+   "byte_size": 1756
+  },
+  {
+   "path": "reports/petrochina_pit_valuation_series_dual_oracle_validation_v2.json",
+   "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+   "sha256": "b3de2eb8871b67c98706c7e91942261f7e6668cab2f83193164eae5aa65113f6",
+   "byte_size": 392
+  },
+  {
+   "path": "reports/petrochina_pit_valuation_series_identity_migration_v2.json",
+   "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+   "sha256": "8cdf12fb1cb6153e861782276a55942eeef9ad0e3c872710d5d83f07df7554dd",
+   "byte_size": 1818889
+  },
+  {
+   "path": "reports/petrochina_tencent_snapshot_promotion_receipt_v1.json",
+   "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+   "sha256": "c7b27eca609344a6ec44722efee7a4e115f193b42ab5eaf5757827b5a71a175f",
+   "byte_size": 1289
+  },
+  {
+   "path": "src/ashare_research/pit_valuation/market_reconciliation.py",
+   "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+   "sha256": "02ee50c1879adbc540b1ff14b4e2521785107ea3e1dee6915aa7005f8ff39536",
+   "byte_size": 34237
+  },
+  {
+   "path": "src/ashare_research/pit_valuation/provider_roles.py",
+   "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+   "sha256": "f0627f326c7246f6a9a9bb3471cf4e306abe311e4224d9cc1320511289573e18",
+   "byte_size": 5621
+  },
+  {
+   "path": "src/ashare_research/pit_valuation/secondary_provider_preflight.py",
+   "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+   "sha256": "839485b43ea3120bc5425dabfc2282c8c1ef57a9e70925840b8aea4fe37135ce",
+   "byte_size": 31032
+  },
+  {
+   "path": "src/ashare_research/scoring/artifact_manifest.py",
+   "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+   "sha256": "7b88d515752948372dd1107963881b00c5ed6ac8c989f1256abbe1903baf1528",
+   "byte_size": 13853
+  },
+  {
+   "path": "src/ashare_research/tools/m2_stage2k1r4e4_secondary_provider_integration.py",
+   "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+   "sha256": "384b71aa8ed233cd982ae7d1f9b9378e779d22b9699c9a8fec7753ea24c9cd19",
+   "byte_size": 28077
+  },
+  {
+   "path": "src/ashare_research/tools/m2_stage2k1r4e_series_preflight.py",
+   "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+   "sha256": "1cb8569c55011c64ad6a01772c46d4fb1369d9e1e048bce5116744421ef01fd4",
+   "byte_size": 48169
+  },
+  {
+   "path": "tests/test_m2_stage2k1r4e3_secondary_provider_preflight.py",
+   "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+   "sha256": "5f3599292e69cfdd4e3d2b71c85ee3cc80628d5df9621c661059b9d91809a457",
+   "byte_size": 29074
+  },
+  {
+   "path": "tests/test_m2_stage2k1r4e4_selected_provider_integration.py",
+   "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+   "sha256": "8f5e8bafe91f6dc5e70d89f0323561440f1c9f6ca49a7106ff6c77c7fc6837b7",
+   "byte_size": 34289
+  }
+ ],
+ "manifest_digest": "53deb07da93054fddb5e314760c3c0803001afc6256060d17171597b78154c64"
+}
