@@ -1,0 +1,155 @@
+{
+ "schema": "petrochina_valuation_scoring_migration_plan_v1",
+ "version": "1.0",
+ "symbol": "601857.SH",
+ "as_of_trade_date": "2026-07-31",
+ "review_stage": "M2_STAGE_2K1R4F",
+ "purpose": "freeze the scope, contract, and boundary of the next-stage valuation_attractiveness v2 scoring migration and non-production shadow refresh",
+ "current_registry": {
+  "artifact": "config/value_dimension_scoring_registry_v1.json",
+  "schema": "value_dimension_scoring_registry_v1",
+  "status": "IMMUTABLE_HISTORY"
+ },
+ "target_registry": {
+  "artifact": "config/value_dimension_scoring_registry_v2.json",
+  "schema": "value_dimension_scoring_registry_v2",
+  "status": "TO_BE_CREATED_IN_R4F1",
+  "supersedes": "value_dimension_scoring_registry_v1",
+  "supersession_reason": "trusted_pit_ttm_mrq_dual_window_percentile_migration"
+ },
+ "current_policy": {
+  "artifact": "config/value_dimension_scoring_policy_v1.json",
+  "schema": "value_dimension_scoring_policy_v1",
+  "status": "IMMUTABLE_HISTORY"
+ },
+ "target_policy": {
+  "artifact": "config/value_dimension_scoring_policy_v2.json",
+  "schema": "value_dimension_scoring_policy_v2",
+  "status": "TO_BE_CREATED_IN_R4F1",
+  "supersedes": "value_dimension_scoring_policy_v1",
+  "supersession_reason": "trusted_pit_ttm_mrq_dual_window_percentile_migration"
+ },
+ "affected_components": [
+  "va_pe",
+  "va_pb",
+  "va_ps"
+ ],
+ "unchanged_components": [
+  "va_fcf_yield",
+  "va_dividend_yield"
+ ],
+ "semantic_migrations": [
+  {
+   "component_id": "va_pe",
+   "old_metric_role": "a_share_price_to_latest_annual_parent_earnings",
+   "new_metric_role": "PE_A_TTM",
+   "old_benchmark": "self_history_percentile (legacy, 3y-only)",
+   "new_benchmark": "R4E.5 dual-window midrank percentile",
+   "numeric_shadow": "BLOCKED_PENDING_CYCLE_CONTEXT_GUARD"
+  },
+  {
+   "component_id": "va_pb",
+   "old_metric_role": "a_share_price_to_latest_year_end_parent_equity",
+   "new_metric_role": "PB_A_MRQ",
+   "old_benchmark": "self_history_percentile (legacy, 3y-only)",
+   "new_benchmark": "R4E.5 dual-window midrank percentile",
+   "numeric_shadow": "ALLOWED_AFTER_V2_MIGRATION"
+  },
+  {
+   "component_id": "va_ps",
+   "old_metric_role": "a_share_price_to_latest_annual_revenue",
+   "new_metric_role": "PS_A_TTM",
+   "old_benchmark": "self_history_percentile (legacy, 3y-only)",
+   "new_benchmark": "R4E.5 dual-window midrank percentile",
+   "numeric_shadow": "ALLOWED_AFTER_V2_MIGRATION"
+  }
+ ],
+ "window_contract": {
+  "contract": "self_history_dual_window_percentile_v1",
+  "required_windows": [
+   "3y",
+   "5y"
+  ],
+  "window_weights": {
+   "3y": "0.5",
+   "5y": "0.5"
+  },
+  "expanding_percentile": "NOT_REQUIRED",
+  "future_extension_status": "DEFERRED"
+ },
+ "dual_window_aggregation": {
+  "method": "EQUAL_WEIGHT_3Y_5Y_DECIMAL_MEAN",
+  "formula": "dual_window_percentile = (percentile_3y + percentile_5y) / 2",
+  "numeric_type": "Decimal only, never float identity",
+  "identity_binds": [
+   "R4E.5 profile digest",
+   "3y percentile_record_id",
+   "5y percentile_record_id",
+   "3y rank numerator/denominator",
+   "5y rank numerator/denominator",
+   "aggregation_contract_version"
+  ]
+ },
+ "cycle_guard_requirement": {
+  "pe_numeric_scoring": "NOT_AUTHORIZED",
+  "cycle_context_requirement": "required_for_numeric_scoring",
+  "cycle_context_status": "not_yet_formalized",
+  "component_shadow_status": "coverage_gap_cycle_context_required",
+  "note": "PE percentile is TRUSTED_DESCRIPTIVE_EVIDENCE until a formal cycle-context contract exists"
+ },
+ "old_shadow_status": {
+  "artifact": "reports/petrochina_dimension_scoring_shadow_v5.json",
+  "status": "VALID_HISTORICAL_NON_PRODUCTION_RESULT",
+  "valuation_percentile_inputs": "SUPERSEDED_FOR_FUTURE_SHADOWS",
+  "note": "legally produced under v1 contract; not an error; a trusted newer upstream now exists"
+ },
+ "component_topology_and_weights_retained": {
+  "valuation_attractiveness": {
+   "multiple_position": "0.60",
+   "yield_position": "0.40"
+  },
+  "component_weights": {
+   "va_pe": "0.20",
+   "va_pb": "0.20",
+   "va_ps": "0.20",
+   "va_fcf_yield": "0.20",
+   "va_dividend_yield": "0.20"
+  },
+  "note": "PE's registered 0.20 weight must NOT be deleted, redistributed, or silently renormalized before the coverage rule"
+ },
+ "accepted_contract_versions_next_state": [
+  "petrochina_pit_valuation_series_candidate_v1 (candidate v2 schema)",
+  "pit_valuation_historical_percentile_v1 / 1.0 (percentile contract schema)",
+  "petrochina_pit_valuation_percentile_record_v1 (percentile record schema)",
+  "self_history_dual_window_percentile_v1 (next-state aggregation contract)"
+ ],
+ "expected_next_artifacts": [
+  "config/value_dimension_scoring_registry_v2.json",
+  "config/value_dimension_scoring_policy_v2.json",
+  "reports/petrochina_dimension_scoring_shadow_v6.json (non-production refresh)",
+  "reports/petrochina_dimension_scoring_sensitivity_v8.json (full re-run, mandatory)",
+  "R4F1 decision and acceptance artifacts"
+ ],
+ "re_run_requirements": [
+  "full sensitivity re-run after shadow refresh is mandatory",
+  "ready gates retained; readiness claims only after evidence"
+ ],
+ "current_sensitivity_status": {
+  "valuation_attractiveness": {
+   "stability_status": "NOT_STABLE",
+   "max_score_delta": "3.1637",
+   "stability_tolerance": "1.0"
+  }
+ },
+ "explicitly_not_authorized": [
+  "production_scoring",
+  "overall_score",
+  "rank",
+  "recommendation",
+  "buy/sell call",
+  "target_price",
+  "peer_percentile",
+  "M3"
+ ],
+ "next_stage": "M2_STAGE_2K1R4F1_VALUATION_SCORING_CONTRACT_V2_MIGRATION_AND_SHADOW_REFRESH"
+}

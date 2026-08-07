@@ -1,0 +1,66 @@
+{
+ "schema": "m2_stage2k1r4f_decision_v1",
+ "version": "1.0",
+ "symbol": "601857.SH",
+ "as_of_trade_date": "2026-07-31",
+ "stage": "M2_STAGE_2K1R4F",
+ "decision": "VALUATION_SCORING_CONTRACT_MIGRATION_REQUIRED",
+ "confidence": "PASS",
+ "selected_window_contract": "DUAL_WINDOW_SINGLE_COMPONENT",
+ "selected_aggregation": "EQUAL_WEIGHT_3Y_5Y_DECIMAL_MEAN",
+ "aggregation_contract_version": "self_history_dual_window_percentile_v1",
+ "window_weights": {
+  "3y": "0.5",
+  "5y": "0.5"
+ },
+ "expanding_percentile": "DEFERRED_NOT_REQUIRED",
+ "semantic_migrations": [
+  {
+   "component_id": "va_pe",
+   "old_role": "a_share_price_to_latest_annual_parent_earnings",
+   "old_semantic": "ANNUAL",
+   "new_role": "PE_A_TTM",
+   "new_semantic": "TTM"
+  },
+  {
+   "component_id": "va_pb",
+   "old_role": "a_share_price_to_latest_year_end_parent_equity",
+   "old_semantic": "YEAR_END",
+   "new_role": "PB_A_MRQ",
+   "new_semantic": "MRQ"
+  },
+  {
+   "component_id": "va_ps",
+   "old_role": "a_share_price_to_latest_annual_revenue",
+   "old_semantic": "ANNUAL",
+   "new_role": "PS_A_TTM",
+   "new_semantic": "TTM"
+  }
+ ],
+ "pe_numeric_scoring": "BLOCKED_PENDING_CYCLE_CONTEXT_GUARD",
+ "pe_numeric_scoring_authorized": false,
+ "pe_blocked_reason": "cycle_context_contract_required",
+ "pe_missing_not_zero": true,
+ "pe_component_not_deleted": true,
+ "pe_weight_not_reassigned": true,
+ "registered_weight_topology_unchanged": true,
+ "pe_percentile_status": "TRUSTED_DESCRIPTIVE_EVIDENCE",
+ "cycle_context_requirement": "required_for_numeric_scoring",
+ "cycle_context_status": "not_yet_formalized",
+ "pb_numeric_shadow": "ALLOWED_AFTER_V2_MIGRATION",
+ "ps_numeric_shadow": "ALLOWED_AFTER_V2_MIGRATION",
+ "shadow_refresh": "ALLOWED_AFTER_V2_MIGRATION",
+ "production_scoring": "NOT_AUTHORIZED",
+ "overall_score": "PROHIBITED",
+ "peer_acquisition": "NOT_AUTHORIZED_IN_THIS_STAGE",
+ "M3": "NOT_STARTED",
+ "registry_v1_status": "IMMUTABLE_HISTORY",
+ "policy_v1_status": "IMMUTABLE_HISTORY",
+ "old_shadow_v5_status": "VALID_HISTORICAL_NON_PRODUCTION_RESULT",
+ "old_shadow_valuation_inputs": "SUPERSEDED_FOR_FUTURE_SHADOWS",
+ "decision_independent_of_actual_percentile_values": true,
+ "option_choice_rationale": "method attributes only (North Star, prior frozen policy, double-counting avoidance, explainability, PIT exactness, determinism, existing topology, minimal free parameters); no actual percentile value drove the choice",
+ "method_selection_governance": "HARD_RULE_NO_PERCENTILE_PEEKING",
+ "next_stage": "M2_STAGE_2K1R4F1_VALUATION_SCORING_CONTRACT_V2_MIGRATION_AND_SHADOW_REFRESH",
+ "next_stage_boundary": "non-production only: create registry v2 / policy v2, refresh non-production shadow, re-run full sensitivity; PE numeric scoring still blocked pending cycle-context contract; production scoring, overall score, rank, recommendation, target price, peer percentile, M3 all remain NOT AUTHORIZED"
+}

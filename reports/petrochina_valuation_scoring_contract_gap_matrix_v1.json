@@ -1,0 +1,104 @@
+{
+ "schema": "petrochina_valuation_scoring_contract_gap_matrix_v1",
+ "version": "1.0",
+ "symbol": "601857.SH",
+ "as_of_trade_date": "2026-07-31",
+ "review_stage": "M2_STAGE_2K1R4F",
+ "purpose": "compare CURRENT_SCORING_CONTRACT (registry v1 / policy v1 / shadow v5) against the TRUSTED R4E.5 percentile contract to scope the next-stage v2 valuation scoring migration",
+ "current_contract_reference": {
+  "registry": "config/value_dimension_scoring_registry_v1.json",
+  "registry_schema": "value_dimension_scoring_registry_v1",
+  "policy": "config/value_dimension_scoring_policy_v1.json",
+  "policy_schema": "value_dimension_scoring_policy_v1",
+  "shadow": "reports/petrochina_dimension_scoring_shadow_v5.json",
+  "sensitivity": "reports/petrochina_dimension_scoring_sensitivity_v7.json",
+  "valuation_accepted_contract_versions": [
+   "value_evaluation_methodology_valuation_pit_v1"
+  ]
+ },
+ "trusted_r4e5_contract_reference": {
+  "decision": "reports/m2_stage2k1r4e5_decision.json",
+  "decision_value": "PIT_VALUATION_PERCENTILE_PROFILE_TRUSTED_NORTH_STAR_REVIEW_REQUIRED",
+  "percentile_contract": "config/pit_valuation_percentile_contract_v1.json",
+  "percentile_contract_schema": "pit_valuation_historical_percentile_v1",
+  "percentile_profile": "reports/petrochina_pit_valuation_percentile_profile_v1.json",
+  "percentile_profile_schema": "petrochina_pit_valuation_percentile_profile_v1",
+  "percentile_record_schema": "petrochina_pit_valuation_percentile_record_v1",
+  "candidate_schema": "petrochina_pit_valuation_series_candidate_v1",
+  "rank_method": "MIDRANK_EMPIRICAL_PERCENTILE",
+  "record_count": 6,
+  "oracle_identical": true,
+  "all_windows_ready": true,
+  "non_production": true,
+  "score_eligible": false
+ },
+ "gaps": [
+  {
+   "gap_id": "va_pe_semantic",
+   "component_id": "va_pe",
+   "old_metric_role": "a_share_price_to_latest_annual_parent_earnings",
+   "old_benchmark": "self_history_percentile (legacy)",
+   "trusted_metric_role": "PE_A_TTM",
+   "trusted_benchmark": "R4E.5 dual-window midrank percentile",
+   "status": "SEMANTIC_MIGRATION_REQUIRED",
+   "note": "annual parent earnings -> trailing-twelve-month earnings; the trusted R4E.5 percentile is PE_A_TTM"
+  },
+  {
+   "gap_id": "va_pb_semantic",
+   "component_id": "va_pb",
+   "old_metric_role": "a_share_price_to_latest_year_end_parent_equity",
+   "old_benchmark": "self_history_percentile (legacy)",
+   "trusted_metric_role": "PB_A_MRQ",
+   "trusted_benchmark": "R4E.5 dual-window midrank percentile",
+   "status": "SEMANTIC_MIGRATION_REQUIRED",
+   "note": "latest year-end parent equity -> most-recent-quarter parent equity (MRQ); the trusted R4E.5 percentile is PB_A_MRQ"
+  },
+  {
+   "gap_id": "va_ps_semantic",
+   "component_id": "va_ps",
+   "old_metric_role": "a_share_price_to_latest_annual_revenue",
+   "old_benchmark": "self_history_percentile (legacy)",
+   "trusted_metric_role": "PS_A_TTM",
+   "trusted_benchmark": "R4E.5 dual-window midrank percentile",
+   "status": "SEMANTIC_MIGRATION_REQUIRED",
+   "note": "latest annual revenue -> trailing-twelve-month revenue; the trusted R4E.5 percentile is PS_A_TTM"
+  },
+  {
+   "gap_id": "history_windows",
+   "scope": "all va percentile components",
+   "old_engine_behavior": "percentile_3y only",
+   "old_policy_claim": "3y/5y/expanding PIT percentiles",
+   "trusted_contract": "3y + 5y (frozen, effective-first mapped to actual trade days, minimum sample gates 500 / 900)",
+   "status": "WINDOW_CONTRACT_MIGRATION_REQUIRED",
+   "note": "the old engine consumed only a 3y self-history percentile; the trusted R4E.5 contract freezes exactly 3y and 5y; expanding is deferred, not silently recomputed"
+  },
+  {
+   "gap_id": "percentile_methodology",
+   "scope": "all va percentile components",
+   "old_engine": "legacy self-history percentile (opaque, 3y-only)",
+   "trusted_method": "MIDRANK_EMPIRICAL_PERCENTILE; Decimal-only; strict <= midrank <= weak; exact rational rank_numerator/rank_denominator; independent DuckDB dual oracle; PIT-exact future-leakage gate",
+   "status": "METHOD_IDENTITY_MIGRATION_REQUIRED",
+   "note": "valuation percentiles must move to the trusted R4E.5 method identity; the old legacy self-history percentile is not interchangeable"
+  },
+  {
+   "gap_id": "pe_cycle_handling",
+   "component_id": "va_pe",
+   "old_behavior": "numeric lower_better transform (lower percentile -> higher score) + textual cycle warning only",
+   "north_star_requirement": "low PE at a possible cycle peak must not automatically receive a high valuation score",
+   "status": "NUMERIC_CYCLE_GUARD_GAP",
+   "note": "the numeric transform has no cycle-context gate; a formal cycle-context contract is required before PE numeric scoring is authorized"
+  },
+  {
+   "gap_id": "production_state",
+   "scope": "valuation_attractiveness",
+   "current_sensitivity": "NOT_STABLE (max_score_delta 3.1637, stability_tolerance 1.0)",
+   "production_readiness": "NOT AUTHORIZED",
+   "status": "PRODUCTION_BLOCK_RETAINS",
+   "note": "sensitivity NOT_STABLE plus one-issuer calibration and missing peer calibration keep production scoring blocked despite a trusted percentile upstream"
+  }
+ ],
+ "review_notes": [
+  "This matrix is a contract reconciliation; it does not compute any score and does not use actual percentile values to choose a method.",
+  "The current v1 registry/policy/shadow are validated as historically valid and immutable; the trusted R4E.5 percentile is the new upstream for future valuation inputs."
+ ]
+}
