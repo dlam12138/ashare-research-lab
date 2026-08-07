@@ -1,0 +1,45 @@
+{
+ "schema": "petrochina_market_close_reconciliation_v2",
+ "symbol": "601857.SH",
+ "adjustment": "none",
+ "reconciliation_contract_version": "pit_valuation_market_double_source_reconciliation_v2",
+ "primary_provider": {
+  "provider_id": "baostock_primary",
+  "provider_role": "primary",
+  "transport_library": "baostock",
+  "underlying_provider": "baostock",
+  "object_sha256": "c6771aa57b0210ee558a91c7bdb87cc346ce910a395eda057cb9d7224475ab67",
+  "object_key": "baostock/c6771aa57b0210ee558a91c7bdb87cc346ce910a395eda057cb9d7224475ab67.parquet",
+  "row_count": 1351,
+  "date_range": [
+   "2021-01-04",
+   "2026-07-31"
+  ]
+ },
+ "secondary_provider": {
+  "provider_id": "tencent_via_akshare",
+  "provider_role": "secondary",
+  "transport_library": "akshare",
+  "underlying_provider": "tencent",
+  "endpoint_identity": "web.ifzq.gtimg.cn",
+  "object_sha256": "d760923aae952d9ba400d792d4155b4c6dfa3b728210de64001aa6024c8f7dd7",
+  "table_digest": "e6cbee888949b13c0ee47a6193d58026ad6da72a332ffd66948ee4bc4b908cda",
+  "object_key": "r4e4/tencent_via_akshare/d760923aae952d9ba400d792d4155b4c6dfa3b728210de64001aa6024c8f7dd7.parquet",
+  "row_count": 1351,
+  "date_range": [
+   "2021-01-04",
+   "2026-07-31"
+  ]
+ },
+ "common_trade_days": 1351,
+ "tolerance": "0.01",
+ "max_abs_difference": "0",
+ "nonzero_difference_count": 0,
+ "differences_over_tolerance_count": 0,
+ "primary_only_dates": [],
+ "secondary_only_dates": [],
+ "daily_comparison_digest": "32a638fc10cf2a6f7ac9a20480f41991a4b78e9bb827a4fcc828c6ca327260d4",
+ "mismatch_ledger_digest": "bf98584cb5b79048ddeda485633c738017e54de61595cf3cd4c125f4e04f9788",
+ "reconciliation_status": "pass",
+ "reconciliation_digest": "4fb3382b25e5889e91e1dc27b46e1ae6c080e4dc5ef23b4e47c65063603d5acc"
+}

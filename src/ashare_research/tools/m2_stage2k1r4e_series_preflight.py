@@ -39,6 +39,7 @@ from typing import Any
 
 from ashare_research.pit_valuation import (
     financial_state,
+    provider_roles,
     series_contract,
     series_validation,
     valuation_series,
@@ -46,6 +47,7 @@ from ashare_research.pit_valuation import (
 from ashare_research.pit_valuation import (
     market_reconciliation as mkt,
 )
+from ashare_research.pit_valuation.series_contract import parse_decimal
 from ashare_research.scoring import artifact_manifest
 from ashare_research.scoring import content_digest as cd
 
@@ -58,6 +60,32 @@ DECISION_NOT_TRUSTED = "PIT_VALUATION_SERIES_NOT_TRUSTED"
 
 MANIFEST_V2_SCHEMA = "m2_stage2k1r4e1_artifact_manifest_v2"
 MANIFEST_PATH = "m2_stage2k1r4e1_artifact_manifest.json"
+
+# R4E.4 (registry v4) artifact names.
+R4E4_MANIFEST_SCHEMA = "m2_stage2k1r4e4_artifact_manifest_v2"
+R4E4_MANIFEST_PATH = "m2_stage2k1r4e4_artifact_manifest.json"
+R4E4_DECISION_PATH = "m2_stage2k1r4e4_decision.json"
+R4E4_IDENTITY_MIGRATION = "petrochina_pit_valuation_series_identity_migration_v2.json"
+R4E4_RECONCILIATION_V2 = "petrochina_market_close_reconciliation_v2.json"
+R4E4_LEDGER_V2 = "petrochina_market_close_mismatch_ledger_v2.json"
+R4E4_REGISTRY_V4 = "events/market_data_snapshot_registry_v4.json"
+R4E4_RECEIPT = "reports/petrochina_tencent_snapshot_promotion_receipt_v1.json"
+
+# R4E.4 release definition files (acceptance / config / docs / code / tests)
+# bound into the manifest so the release is auditable end to end.
+R4E4_DEFINITION_FILES = [
+    "acceptance/m2_stage2k1r4e4_selected_secondary_provider_integration.md",
+    "config/pit_valuation_secondary_provider_preflight_v1.json",
+    "docs/selected_secondary_provider_integration_contract.md",
+    "src/ashare_research/pit_valuation/provider_roles.py",
+    "src/ashare_research/pit_valuation/market_reconciliation.py",
+    "src/ashare_research/pit_valuation/secondary_provider_preflight.py",
+    "src/ashare_research/tools/m2_stage2k1r4e_series_preflight.py",
+    "src/ashare_research/tools/m2_stage2k1r4e4_secondary_provider_integration.py",
+    "src/ashare_research/scoring/artifact_manifest.py",
+    "tests/test_m2_stage2k1r4e4_selected_provider_integration.py",
+    "tests/test_m2_stage2k1r4e3_secondary_provider_preflight.py",
+]
 
 REPORT_FILES = {
     "timeline": "petrochina_pit_financial_state_timeline_v2.json",
@@ -154,6 +182,44 @@ def _reconciliation_meta(
     }
 
 
+def _reconciliation_meta_v2(
+    primary: dict[str, Any],
+    secondary: dict[str, Any],
+    reconciliation: dict[str, Any],
+    ledger_digest: str,
+) -> dict[str, Any]:
+    """v2 market_meta: binds the provider-role identity and the v2 digest."""
+    digest = mkt.build_reconciliation_digest_v2(
+        primary, secondary, reconciliation, ledger_digest=ledger_digest
+    )
+    return {
+        "primary_provider": primary.get("provider_id", primary.get("provider")),
+        "primary_provider_role": primary.get("provider_role", "primary"),
+        "primary_transport_library": primary.get("transport_library", ""),
+        "primary_underlying_provider": primary.get("underlying_provider", ""),
+        "primary_object_sha256": primary["object_sha256"],
+        "primary_object_key": primary["object_key"],
+        "primary_row_count": primary["row_count"],
+        "secondary_provider": secondary.get("provider_id", secondary.get("provider")),
+        "secondary_provider_role": secondary.get("provider_role", "secondary"),
+        "secondary_transport_library": secondary.get("transport_library", ""),
+        "secondary_underlying_provider": secondary.get("underlying_provider", ""),
+        "secondary_endpoint_identity": secondary.get("endpoint_identity", ""),
+        "secondary_object_sha256": secondary["object_sha256"],
+        "secondary_object_key": secondary["object_key"],
+        "secondary_row_count": secondary["row_count"],
+        "secondary_present": True,
+        "secondary_verified": True,
+        "reconciliation_status": mkt.STATUS_PASS,
+        "market_reconciliation_digest": digest,
+        "reconciliation_contract_version": mkt.RECONCILIATION_CONTRACT_VERSION_V2,
+        "market_rows": primary["row_count"],
+        "first_trade_date": primary["first_trade_date"],
+        "last_trade_date": primary["last_trade_date"],
+        "reconciliation": reconciliation,
+    }
+
+
 def _validate_against_registry(registry: dict[str, Any], reconciliation: dict[str, Any]) -> None:
     """The real result must match the committed registry claims or fail closed."""
     if reconciliation["common_trade_days"] != registry.get("common_trade_days"):
@@ -179,14 +245,22 @@ def _run_market_gate(
     cache_root: Path,
     registry: dict[str, Any],
 ) -> tuple[str, dict[str, Any] | None, dict[str, Any] | None, str]:
-    """Load + validate both objects and reconcile. Returns (decision, primary, secondary, error).
+    """Load + validate both objects by **role** and reconcile.
 
-    Raises nothing itself; returns a decision plus a structured-error payload on
-    the gap / not-trusted paths.
+    Providers are resolved by ``provider_role`` (registry v4 role schema) or via
+    the legacy adapter (provider name -> role).  The formal release path never
+    hard-codes a second-source name.  Returns (decision, primary, secondary,
+    error).  Raises nothing itself; returns a decision plus a structured-error
+    payload on the gap / not-trusted paths.
     """
     # primary must always be present and valid — its absence is a hard failure.
     try:
-        primary = mkt.load_and_validate_market_object(registry, cache_root, "baostock")
+        primary_entry, secondary_entry = provider_roles.resolve_registry_providers(registry)
+        primary = mkt.load_and_validate_market_object_entry(
+            registry, cache_root, primary_entry
+        )
+    except provider_roles.ProviderRoleError as exc:
+        return DECISION_NOT_TRUSTED, None, None, str(exc)
     except mkt.MarketObjectInvalidError as exc:
         return DECISION_NOT_TRUSTED, None, None, str(exc)
     except FileNotFoundError as exc:
@@ -194,9 +268,13 @@ def _run_market_gate(
 
     # secondary: absent -> GAPS_REMAIN (engineered contract still trusted).
     try:
-        secondary = mkt.load_and_validate_market_object(registry, cache_root, "akshare")
+        secondary = mkt.load_and_validate_market_object_entry(
+            registry, cache_root, secondary_entry
+        )
     except mkt.MarketObjectMissingError as exc:
         return DECISION_GAPS, primary, None, str(exc)
+    except provider_roles.ProviderRoleError as exc:
+        return DECISION_NOT_TRUSTED, primary, None, str(exc)
     except mkt.MarketObjectInvalidError as exc:
         return DECISION_NOT_TRUSTED, primary, None, str(exc)
     except FileNotFoundError as exc:
@@ -354,6 +432,139 @@ def _write_identity_migration(
     _write_json(output_root / REPORT_FILES["identity"], report)
 
 
+def _decimal_eq(a: Any, b: Any) -> bool:
+    """Decimal-normalized equality: ``6.0`` == ``6`` (float repr vs Decimal str)."""
+    if a is None and b is None:
+        return True
+    if a is None or b is None:
+        return False
+    try:
+        return parse_decimal(str(a)) == parse_decimal(str(b))
+    except Exception:  # noqa: BLE001 - non-numeric -> fall back to string equality
+        return a == b
+
+
+def _build_identity_migration_v2(
+    old_series: dict[str, Any],
+    new_series: dict[str, Any],
+) -> dict[str, Any]:
+    """Compare the published R4E candidate v1 vs the R4E.4 formal candidate v2.
+
+    Per-observation comparison of ratio, status, financial state and market
+    close; identity changes are allowed, unexplained economic changes are not.
+    Decimal values are compared with Decimal normalization (``6.0`` == ``6``).
+    """
+    old_by_key = {(o["metric_id"], o["trade_date"]): o for o in old_series["observations"]}
+    new_by_key = {(o["metric_id"], o["trade_date"]): o for o in new_series["observations"]}
+    keys = sorted(set(old_by_key) | set(new_by_key))
+
+    ratio_changed: list[dict[str, Any]] = []
+    status_changed: list[dict[str, Any]] = []
+    financial_state_changed: list[dict[str, Any]] = []
+    market_close_changed: list[dict[str, Any]] = []
+    id_changed_count = 0
+    unmatched_count = 0
+    observation_rows: list[dict[str, Any]] = []
+
+    for key in keys:
+        o = old_by_key.get(key)
+        n = new_by_key.get(key)
+        if o is None or n is None:
+            unmatched_count += 1
+            observation_rows.append(
+                {
+                    "metric_id": key[0],
+                    "trade_date": key[1],
+                    "missing_side": "old" if o is None else "new",
+                }
+            )
+            continue
+        id_changed = o.get("observation_id") != n.get("observation_id")
+        if id_changed:
+            id_changed_count += 1
+        ratio_unchanged = _decimal_eq(o.get("ratio_decimal"), n.get("ratio_decimal"))
+        status_unchanged = o.get("status") == n.get("status")
+        fs_unchanged = o.get("financial_state_id") == n.get("financial_state_id")
+        mc_unchanged = _decimal_eq(
+            o.get("market_close_decimal"), n.get("market_close_decimal")
+        )
+        observation_rows.append(
+            {
+                "metric_id": key[0],
+                "trade_date": key[1],
+                "old_observation_id": o.get("observation_id"),
+                "new_observation_id": n.get("observation_id"),
+                "id_changed": id_changed,
+                "ratio_unchanged": ratio_unchanged,
+                "status_unchanged": status_unchanged,
+                "financial_state_unchanged": fs_unchanged,
+                "market_close_unchanged": mc_unchanged,
+            }
+        )
+        if not ratio_unchanged:
+            ratio_changed.append(
+                {
+                    "metric_id": key[0],
+                    "trade_date": key[1],
+                    "old": o.get("ratio_decimal"),
+                    "new": n.get("ratio_decimal"),
+                }
+            )
+        if not status_unchanged:
+            status_changed.append(
+                {
+                    "metric_id": key[0],
+                    "trade_date": key[1],
+                    "old": o.get("status"),
+                    "new": n.get("status"),
+                }
+            )
+        if not fs_unchanged:
+            financial_state_changed.append(
+                {
+                    "metric_id": key[0],
+                    "trade_date": key[1],
+                    "old": o.get("financial_state_id", "")[:16],
+                    "new": n.get("financial_state_id", "")[:16],
+                }
+            )
+        if not mc_unchanged:
+            market_close_changed.append(
+                {
+                    "metric_id": key[0],
+                    "trade_date": key[1],
+                    "old": o.get("market_close_decimal"),
+                    "new": n.get("market_close_decimal"),
+                }
+            )
+
+    return {
+        "schema": "petrochina_pit_valuation_series_identity_migration_v2",
+        "symbol": series_contract.SYMBOL,
+        "observation_count": len(keys),
+        "unmatched_count": unmatched_count,
+        "observation_id_changed_count": id_changed_count,
+        "ratio_changed_count": len(ratio_changed),
+        "status_changed_count": len(status_changed),
+        "financial_state_changed_count": len(financial_state_changed),
+        "market_close_changed_count": len(market_close_changed),
+        "ratio_changes": ratio_changed,
+        "status_changes": status_changed,
+        "financial_state_changes": financial_state_changed,
+        "market_close_changes": market_close_changed,
+        "observations": observation_rows,
+    }
+
+
+def _economic_migration_trusted(migration: dict[str, Any]) -> bool:
+    """Economic values (ratio/status/market close) must be unchanged to trust."""
+    return (
+        migration["ratio_changed_count"] == 0
+        and migration["status_changed_count"] == 0
+        and migration["market_close_changed_count"] == 0
+    )
+
+
 # ── manifest v2 ────────────────────────────────────────────────────────────
 
 
@@ -363,9 +574,21 @@ def _relative_logical(repo_root: Path, path: Path) -> str:
 
 def _write_manifest_v2(output_root: Path, written_files: list[Path]) -> None:
     """Write the verifiable v2 manifest for the text artifacts just produced."""
+    _write_manifest_v2_schema(
+        output_root, written_files, schema=MANIFEST_V2_SCHEMA, manifest_name=MANIFEST_PATH
+    )
+
+
+def _write_manifest_v2_schema(
+    output_root: Path,
+    written_files: list[Path],
+    *,
+    schema: str,
+    manifest_name: str,
+) -> None:
     files: list[dict[str, Any]] = []
     for path in sorted(written_files, key=lambda p: _relative_logical(ROOT, p)):
-        if path.resolve() == (output_root / MANIFEST_PATH).resolve():
+        if path.resolve() == (output_root / manifest_name).resolve():
             continue  # manifest never lists itself
         digest = cd.digest_file(path, algorithm="sha256_lf_normalized_bytes_v1")
         files.append(
@@ -377,12 +600,12 @@ def _write_manifest_v2(output_root: Path, written_files: list[Path]) -> None:
             }
         )
     manifest = {
-        "schema": MANIFEST_V2_SCHEMA,
+        "schema": schema,
         "version": "2.0",
         "files": files,
     }
     manifest["manifest_digest"] = artifact_manifest.manifest_digest(manifest)
-    _write_json(output_root / MANIFEST_PATH, manifest)
+    _write_json(output_root / manifest_name, manifest)
 
 
 def _verify_manifest_v2(output_root: Path) -> dict[str, Any]:
@@ -414,6 +637,13 @@ def _cmd_formal(args: argparse.Namespace) -> int:
     )
     cache_root = Path(args.market_cache_root)
     output_root = Path(args.output_root)
+
+    # R4E.4: a v4 registry runs the role-based formal path (v2 reconciliation
+    # contract, v2 identity migration, R4E.4 decision/manifest).
+    if registry.get("contract") == "market_data_snapshot_registry_v4":
+        return _cmd_formal_r4e4(
+            args, registry, cache_root, output_root, reported, reconciled
+        )
 
     decision, primary, secondary, err = _run_market_gate(cache_root, registry)
 
@@ -531,6 +761,212 @@ def _cmd_formal(args: argparse.Namespace) -> int:
         DECISION_ALLOWED, status="ok", failed_contract="", message="release gate passed"
     ), indent=1))
     print(f"reconciliation_digest: {market_meta['market_reconciliation_digest']}")
+    return decision_to_exit_code(DECISION_ALLOWED)
+
+
+def _r4e4_fail(
+    decision: str,
+    output_root: Path,
+    failed_contract: str,
+    error_type: str,
+    message: str,
+) -> int:
+    """Write the R4E.4 decision + manifest for a fail path and return the code."""
+    decision_payload = {
+        "schema": "m2_stage2k1r4e4_decision",
+        "version": "2.0",
+        "symbol": series_contract.SYMBOL,
+        "decision": decision,
+        "failed_contract": failed_contract,
+        "error_type": error_type,
+        "message": message,
+        "percentile_computed": False,
+        "score_eligible": False,
+        "production_eligible": False,
+    }
+    _write_json(output_root / R4E4_DECISION_PATH, decision_payload)
+    _write_manifest_v2_schema(
+        output_root,
+        [output_root / R4E4_DECISION_PATH],
+        schema=R4E4_MANIFEST_SCHEMA,
+        manifest_name=R4E4_MANIFEST_PATH,
+    )
+    print(json.dumps(_structured(
+        decision, status="error", failed_contract=failed_contract,
+        error_type=error_type, message=message,
+    ), indent=1))
+    return decision_to_exit_code(decision)
+
+
+def _cmd_formal_r4e4(
+    args: argparse.Namespace,
+    registry: dict[str, Any],
+    cache_root: Path,
+    output_root: Path,
+    reported: list[dict],
+    reconciled: list[dict],
+) -> int:
+    """R4E.4 formal path: role-based providers, v2 reconciliation, candidate v2."""
+    # 1. role-based object validation (fail-closed, never hard-coded names).
+    try:
+        primary_entry, secondary_entry = provider_roles.resolve_registry_providers(registry)
+        primary = mkt.load_and_validate_market_object_entry(
+            registry, cache_root, primary_entry
+        )
+        secondary = mkt.load_and_validate_market_object_entry(
+            registry, cache_root, secondary_entry
+        )
+    except provider_roles.ProviderRoleError as exc:
+        return _r4e4_fail(
+            DECISION_NOT_TRUSTED, output_root, "provider_roles",
+            "ProviderRoleError", str(exc),
+        )
+    except mkt.MarketObjectMissingError as exc:
+        return _r4e4_fail(
+            DECISION_GAPS, output_root, "market_object:secondary",
+            "MarketObjectMissingError", str(exc),
+        )
+    except mkt.MarketObjectInvalidError as exc:
+        return _r4e4_fail(
+            DECISION_NOT_TRUSTED, output_root, "market_object",
+            "MarketObjectInvalidError", str(exc),
+        )
+    except FileNotFoundError as exc:
+        return _r4e4_fail(
+            DECISION_GAPS, output_root, "market_object",
+            "FileNotFoundError", str(exc),
+        )
+
+    # 2. real formal v2 reconciliation (recomputed, never reused from R4E.3).
+    try:
+        reconciliation = mkt.reconcile_market_close_series_v2(primary, secondary)
+        ledger = mkt.build_mismatch_ledger_v2(reconciliation)
+        ledger_digest = mkt.build_mismatch_ledger_digest(ledger)
+        v2_report = mkt.build_reconciliation_report_v2(
+            primary, secondary, reconciliation, ledger_digest=ledger_digest
+        )
+        v2_validation = mkt.validate_reconciliation_report_v2(v2_report)
+        if not v2_validation["valid"]:
+            raise mkt.MarketReconciliationError(
+                f"v2 reconciliation report invalid: {v2_validation['errors']}"
+            )
+    except (mkt.MarketReconciliationError, ValueError) as exc:
+        return _r4e4_fail(
+            DECISION_NOT_TRUSTED, output_root, "formal_reconciliation",
+            "MarketReconciliationError", str(exc),
+        )
+
+    # 3. market_meta binds the v2 digest into every observation.
+    market_meta = _reconciliation_meta_v2(primary, secondary, reconciliation, ledger_digest)
+
+    # 4. candidate series + coverage + dual oracle + audit.
+    result = _build_series(
+        output_root=output_root,
+        reported=reported,
+        reconciled=reconciled,
+        market_rows=primary["rows"],
+        market_meta=market_meta,
+    )
+    decision = _decide_from_result(result)
+    if decision != DECISION_ALLOWED:
+        return _r4e4_fail(
+            decision, output_root, "series_validation", "ReleaseGate",
+            "series validators/coverage gate failed",
+        )
+
+    # 5. economic migration v2: R4E candidate v1 vs the formal candidate v2.
+    old_candidate_path = ROOT / "reports" / "petrochina_pit_valuation_series_candidate_v1.json"
+    if not old_candidate_path.is_file():
+        return _r4e4_fail(
+            DECISION_NOT_TRUSTED, output_root, "economic_migration",
+            "V1CandidateMissing", "published candidate v1 not found",
+        )
+    old_candidate = json.loads(old_candidate_path.read_text(encoding="utf-8"))
+    migration = _build_identity_migration_v2(old_candidate, result["series"])
+    _write_json(output_root / R4E4_IDENTITY_MIGRATION, migration)
+    if not _economic_migration_trusted(migration):
+        return _r4e4_fail(
+            DECISION_NOT_TRUSTED, output_root, "economic_migration",
+            "EconomicValueChanged",
+            "ratio/status/market close changed; see identity migration v2 reason ledger",
+        )
+
+    # 6. write the v2 reconciliation + ledger (deterministic, same as reconcile mode).
+    _write_json(output_root / R4E4_RECONCILIATION_V2, v2_report)
+    _write_json(output_root / R4E4_LEDGER_V2, ledger)
+
+    # 7. decision payload.
+    decision_payload = {
+        "schema": "m2_stage2k1r4e4_decision",
+        "version": "2.0",
+        "symbol": series_contract.SYMBOL,
+        "decision": DECISION_ALLOWED,
+        "contracts_trusted": True,
+        "financial_state_timeline_trusted": True,
+        "dual_oracle_identical": result["dual"]["all_identical"],
+        "identity_consistent": result["verification"]["identity_consistent"],
+        "ratio_consistent": result["verification"]["ratio_consistent"],
+        "provider_role_abstraction": "TRUSTED",
+        "registry_v4": "TRUSTED",
+        "market_reconciliation_status": mkt.STATUS_PASS,
+        "market_reconciliation_digest": market_meta["market_reconciliation_digest"],
+        "reconciliation_contract_version": mkt.RECONCILIATION_CONTRACT_VERSION_V2,
+        "common_trade_days": reconciliation["common_trade_days"],
+        "max_abs_close_difference": reconciliation["max_abs_difference"],
+        "differences_over_tolerance_count": reconciliation[
+            "differences_over_tolerance_count"
+        ],
+        "primary_provider_id": market_meta["primary_provider"],
+        "secondary_provider_id": market_meta["secondary_provider"],
+        "secondary_transport_library": market_meta["secondary_transport_library"],
+        "secondary_underlying_provider": market_meta["secondary_underlying_provider"],
+        "observation_count": result["series"]["observation_count"],
+        "economic_migration": {
+            "ratio_changed_count": migration["ratio_changed_count"],
+            "status_changed_count": migration["status_changed_count"],
+            "financial_state_changed_count": migration["financial_state_changed_count"],
+            "market_close_changed_count": migration["market_close_changed_count"],
+        },
+        "coverage": {
+            metric: {
+                "3y_ready": result["coverage"]["per_metric"][metric]["3y_ready"],
+                "5y_ready": result["coverage"]["per_metric"][metric]["5y_ready"],
+            }
+            for metric in ("PE_A_TTM", "PB_A_MRQ", "PS_A_TTM")
+        },
+        "percentile_computed": False,
+        "score_eligible": False,
+        "production_eligible": False,
+    }
+    _write_json(output_root / R4E4_DECISION_PATH, decision_payload)
+
+    # 8. R4E.4 manifest (registry v4 + receipt + reconciliation + candidate set
+    #    + the acceptance/config/docs/code/tests that define this release).
+    written = [
+        output_root / REPORT_FILES[name]
+        for name in ("timeline", "candidate", "coverage", "audit", "dual")
+    ]
+    written += [
+        output_root / R4E4_IDENTITY_MIGRATION,
+        output_root / R4E4_DECISION_PATH,
+        output_root / R4E4_RECONCILIATION_V2,
+        output_root / R4E4_LEDGER_V2,
+        ROOT / R4E4_REGISTRY_V4,
+        ROOT / R4E4_RECEIPT,
+    ]
+    written += [ROOT / rel for rel in R4E4_DEFINITION_FILES]
+    _write_manifest_v2_schema(
+        output_root,
+        written,
+        schema=R4E4_MANIFEST_SCHEMA,
+        manifest_name=R4E4_MANIFEST_PATH,
+    )
+
+    print(json.dumps(_structured(
+        DECISION_ALLOWED, status="ok", failed_contract="",
+        message="R4E.4 formal release gate passed",
+    ), indent=1))
+    print(f"formal_reconciliation_digest: {market_meta['market_reconciliation_digest']}")
     return decision_to_exit_code(DECISION_ALLOWED)
 
 

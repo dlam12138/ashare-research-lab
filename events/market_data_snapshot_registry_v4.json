@@ -1,0 +1,72 @@
+{
+ "contract": "market_data_snapshot_registry_v4",
+ "schema_version": "4.0",
+ "supersedes_registry": "events/market_data_snapshot_registry_v3.json",
+ "supersession_reason": "selected_alternative_secondary_provider_formally_integrated",
+ "data_class": "external_real_data_cache",
+ "symbol": "601857.SH",
+ "adjustment": "none",
+ "currency": "CNY",
+ "close_unit": "CNY/share",
+ "frequency": "daily",
+ "date_range": {
+  "requested_start": "2021-01-01",
+  "requested_end": "2026-07-31",
+  "actual_start": "2021-01-04",
+  "actual_end": "2026-07-31"
+ },
+ "required_trade_days": 1351,
+ "providers": [
+  {
+   "provider_id": "baostock_primary",
+   "provider_role": "primary",
+   "transport_library": "baostock",
+   "underlying_provider": "baostock",
+   "provider_version": "0.9.3",
+   "object_key": "baostock/c6771aa57b0210ee558a91c7bdb87cc346ce910a395eda057cb9d7224475ab67.parquet",
+   "sha256": "c6771aa57b0210ee558a91c7bdb87cc346ce910a395eda057cb9d7224475ab67",
+   "table_digest": "ba4f83185b9644e157e4439aaea26d8692db7043f6d3ce06dc502549d60dc96c",
+   "ab_stability": "ACQUISITION_STABLE",
+   "row_count": 1351,
+   "first_trade_date": "2021-01-04",
+   "last_trade_date": "2026-07-31",
+   "adjustment": "none"
+  },
+  {
+   "provider_id": "tencent_via_akshare",
+   "provider_role": "secondary",
+   "transport_library": "akshare",
+   "underlying_provider": "tencent",
+   "provider_version": "1.18.79",
+   "endpoint_identity": "web.ifzq.gtimg.cn",
+   "object_key": "r4e4/tencent_via_akshare/d760923aae952d9ba400d792d4155b4c6dfa3b728210de64001aa6024c8f7dd7.parquet",
+   "sha256": "d760923aae952d9ba400d792d4155b4c6dfa3b728210de64001aa6024c8f7dd7",
+   "table_digest": "e6cbee888949b13c0ee47a6193d58026ad6da72a332ffd66948ee4bc4b908cda",
+   "ab_stability": "ACQUISITION_STABLE",
+   "row_count": 1351,
+   "first_trade_date": "2021-01-04",
+   "last_trade_date": "2026-07-31",
+   "adjustment": "none"
+  }
+ ],
+ "ab_stability": "ACQUISITION_STABLE",
+ "integration_status": "COMPLETE",
+ "reconciliation_status": "pass",
+ "r4e3_decision_digest": "d20d7c6a63a58620f8f60cb2e4ba14c3b412eff35c7576aff896d4f1d4f7ad37",
+ "r4e3_comparison_digest": "21a1ad83f3f6de6e6260c3db210793bf5ba7290946b4398e3d69636df7dc0013",
+ "r4e3_mismatch_ledger_digest": "d1dba16ca46cdd059e745e88b95298bbf2192eca929c51e004893f37f8928b8c",
+ "reconciliation_contract_version": "pit_valuation_market_double_source_reconciliation_v2",
+ "evidence_class": "external_real_data_cache",
+ "reconciliation": {
+  "contract_version": "pit_valuation_market_double_source_reconciliation_v2",
+  "common_trade_days": 1351,
+  "primary_only_dates": [],
+  "secondary_only_dates": [],
+  "max_abs_difference": "0",
+  "nonzero_difference_count": 0,
+  "differences_over_tolerance_count": 0,
+  "daily_comparison_digest": "32a638fc10cf2a6f7ac9a20480f41991a4b78e9bb827a4fcc828c6ca327260d4",
+  "mismatch_ledger_digest": "bf98584cb5b79048ddeda485633c738017e54de61595cf3cd4c125f4e04f9788",
+  "formal_reconciliation_digest": "4fb3382b25e5889e91e1dc27b46e1ae6c080e4dc5ef23b4e47c65063603d5acc"
+ }
+}

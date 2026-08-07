@@ -34,6 +34,7 @@ from decimal import Decimal
 from pathlib import Path
 from typing import Any
 
+from ashare_research.pit_valuation import provider_roles
 from ashare_research.pit_valuation.series_contract import (
     SYMBOL,
     canonical_digest,
@@ -42,6 +43,10 @@ from ashare_research.pit_valuation.series_contract import (
 )
 
 RECONCILIATION_CONTRACT_VERSION = "pit_valuation_market_double_source_reconciliation_v1"
+# v2 contract: binds the provider-role identity (provider_id / role / transport /
+# underlying / endpoint / table digest) plus the daily comparison digest.  The
+# v1 digest remains the historical contract and is never recomputed as v2.
+RECONCILIATION_CONTRACT_VERSION_V2 = "pit_valuation_market_double_source_reconciliation_v2"
 
 # Statuses surfaced to the CLI / decision layer.
 STATUS_PASS = "pass"
@@ -95,20 +100,42 @@ def load_and_validate_market_object(
     cache_root: Path,
     provider: str,
 ) -> dict[str, Any]:
-    """Load and independently validate one provider market object.
+    """Load and independently validate one provider market object by legacy name.
 
-    Returns a dict with the parsed trading rows (each ``{"trade_date": str,
-    "close": Decimal}``) and the per-object validation metadata.  Raises
-    :class:`MarketObjectMissingError` when the pinned object is absent and
-    :class:`MarketObjectInvalidError` on any validation failure.
+    A thin wrapper over :func:`load_and_validate_market_object_entry` that
+    resolves the entry by the legacy ``provider`` name (kept for the v1/v2/v3
+    registries and the R4E.1 contract tests).  The formal R4E.4 path resolves
+    entries by role and calls the entry loader directly — it never hard-codes a
+    second-source name.
     """
     entry = _registry_provider(registry, provider)
+    return load_and_validate_market_object_entry(registry, cache_root, entry)
+
+
+def load_and_validate_market_object_entry(
+    registry: dict[str, Any],
+    cache_root: Path,
+    entry: dict[str, Any],
+) -> dict[str, Any]:
+    """Load and independently validate one provider market object from its entry.
+
+    Supports both the v4 role-schema entries (``provider_id`` / ``provider_role``
+    / ``transport_library`` / ``underlying_provider``) and the legacy v2/v3
+    entries (``provider`` name).  Returns a dict with the parsed trading rows
+    (each ``{"trade_date": str, "close": Decimal}``), the per-object validation
+    metadata, and the role identity.  Raises :class:`MarketObjectMissingError`
+    when the pinned object is absent and :class:`MarketObjectInvalidError` on any
+    validation failure.
+    """
+    provider = provider_roles.entry_provider_id(entry, registry=registry)
+    role = provider_roles.entry_role(entry, registry=registry)
     object_key = entry.get("object_key", "")
     expected_sha = entry.get("sha256", "")
     expected_row_count = entry.get("row_count")
     expected_adjustment = entry.get("adjustment", "")
-    expected_start = entry.get("date_range", {}).get("start", "")
-    expected_end = entry.get("date_range", {}).get("end", "")
+    entry_range = entry.get("date_range", {}) or {}
+    expected_start = entry_range.get("start") or entry.get("first_trade_date", "")
+    expected_end = entry_range.get("end") or entry.get("last_trade_date", "")
 
     if not object_key:
         raise MarketObjectInvalidError(f"{provider} missing object_key in registry")
@@ -210,6 +237,12 @@ def load_and_validate_market_object(
 
     return {
         "provider": provider,
+        "provider_id": provider_roles.entry_provider_id(entry, registry=registry),
+        "provider_role": role,
+        "transport_library": entry.get("transport_library", ""),
+        "underlying_provider": entry.get("underlying_provider", ""),
+        "endpoint_identity": entry.get("endpoint_identity", ""),
+        "table_digest": entry.get("table_digest", ""),
         "object_key": object_key,
         "object_sha256": expected_sha,
         "actual_sha256": actual_sha,
@@ -228,24 +261,17 @@ def _by_date(rows: list[dict[str, Any]]) -> dict[str, Decimal]:
     return {r["trade_date"]: r["close"] for r in rows}
 
 
-def reconcile_market_close_series(
+def _reconcile_core(
     primary: dict[str, Any],
     secondary: dict[str, Any],
     *,
-    tolerance: Decimal | None = None,
+    tolerance: Decimal,
 ) -> dict[str, Any]:
-    """Align two validated objects by exact ``trade_date`` and compare daily.
+    """Shared daily Decimal comparison; role-neutral ``primary_close``/``secondary_close``.
 
-    Recomputes primary/secondary trade-day sets, the common set, both-only
-    date sets, duplicate dates, per-day canocial Decimal closes, the absolute
-    difference, ``max_abs_difference``, ``nonzero_difference_count`` and
-    ``differences_over_tolerance_count``.  Raises :class:`MarketReconciliationError`
-    on any date-set / schema conflict or an over-tolerance close.
+    Raises :class:`MarketReconciliationError` on any date-set / schema conflict or
+    an over-tolerance close.  The economic result is provider-name independent.
     """
-    if tolerance is None:
-        tolerance = close_tolerance_decimal()
-    tolerance = parse_decimal(str(tolerance))
-
     primary_rows = primary["rows"]
     secondary_rows = secondary["rows"]
     primary_dates = [r["trade_date"] for r in primary_rows]
@@ -279,8 +305,8 @@ def reconcile_market_close_series(
         daily.append(
             {
                 "trade_date": d,
-                "baostock_close": str(pc),
-                "akshare_close": str(sc),
+                "primary_close": str(pc),
+                "secondary_close": str(sc),
                 "abs_difference": str(diff),
             }
         )
@@ -308,6 +334,69 @@ def reconcile_market_close_series(
         "differences_over_tolerance_count": over,
         "tolerance": str(tolerance),
     }
+
+
+def reconcile_market_close_series(
+    primary: dict[str, Any],
+    secondary: dict[str, Any],
+    *,
+    tolerance: Decimal | None = None,
+) -> dict[str, Any]:
+    """Align two validated objects by exact ``trade_date`` and compare daily (v1).
+
+    v1 contract: preserves the historical output exactly (daily rows carry the
+    legacy ``baostock_close`` / ``akshare_close`` labels).  Raises
+    :class:`MarketReconciliationError` on any date-set / schema conflict or an
+    over-tolerance close.
+    """
+    if tolerance is None:
+        tolerance = close_tolerance_decimal()
+    tol = parse_decimal(str(tolerance))
+
+    core = _reconcile_core(primary, secondary, tolerance=tol)
+    daily = []
+    for r in core["daily_comparison"]:
+        daily.append(
+            {
+                "trade_date": r["trade_date"],
+                "baostock_close": r["primary_close"],
+                "akshare_close": r["secondary_close"],
+                "abs_difference": r["abs_difference"],
+            }
+        )
+    return {
+        "primary_trade_days": core["primary_trade_days"],
+        "secondary_trade_days": core["secondary_trade_days"],
+        "common_trade_days": core["common_trade_days"],
+        "primary_only_dates": core["primary_only_dates"],
+        "secondary_only_dates": core["secondary_only_dates"],
+        "duplicate_dates": [],
+        "daily_comparison": daily,
+        "max_abs_difference": core["max_abs_difference"],
+        "nonzero_difference_count": core["nonzero_difference_count"],
+        "differences_over_tolerance_count": core["differences_over_tolerance_count"],
+        "tolerance": str(tol),
+    }
+
+
+def reconcile_market_close_series_v2(
+    primary: dict[str, Any],
+    secondary: dict[str, Any],
+    *,
+    tolerance: Decimal | None = None,
+) -> dict[str, Any]:
+    """v2: role-neutral daily labels plus a daily-comparison digest.
+
+    The economic comparison is identical to v1; only the identity contract is
+    upgraded (role-neutral labels + ``daily_comparison_digest`` bound into the
+    v2 reconciliation digest).
+    """
+    if tolerance is None:
+        tolerance = close_tolerance_decimal()
+    tol = parse_decimal(str(tolerance))
+    core = _reconcile_core(primary, secondary, tolerance=tol)
+    core["daily_comparison_digest"] = canonical_digest(core["daily_comparison"])
+    return core
 
 
 def build_mismatch_ledger(
@@ -483,6 +572,220 @@ def validate_reconciliation_report(report: dict[str, Any]) -> dict[str, Any]:
                 "common_trade_days": report.get("common_trade_days"),
                 "primary_only_dates": report.get("primary_only_dates", []),
                 "secondary_only_dates": report.get("secondary_only_dates", []),
+            },
+            tolerance=report.get("tolerance"),
+            ledger_digest=report.get("mismatch_ledger_digest", ""),
+        )
+        if recomputed != report.get("reconciliation_digest"):
+            errors.append("reconciliation_digest mismatch")
+    except Exception as exc:  # noqa: BLE001
+        errors.append(f"reconciliation_digest not recomputable: {exc}")
+    return {"valid": not errors, "errors": errors}
+
+
+# ── v2 role-bound reconciliation contract ──────────────────────────────────
+
+
+def build_mismatch_ledger_v2(
+    reconciliation: dict[str, Any],
+    *,
+    tolerance: Decimal | None = None,
+) -> dict[str, Any]:
+    """v2 mismatch ledger with role-neutral close labels."""
+    if tolerance is None:
+        tolerance = close_tolerance_decimal()
+    tol = parse_decimal(str(tolerance))
+    entries: list[dict[str, Any]] = []
+    for row in reconciliation.get("daily_comparison", []):
+        if Decimal(row["abs_difference"]) > tol:
+            entries.append(
+                {
+                    "trade_date": row["trade_date"],
+                    "primary_close": row["primary_close"],
+                    "secondary_close": row["secondary_close"],
+                    "abs_difference": row["abs_difference"],
+                    "tolerance": str(tol),
+                    "severity": "over_tolerance",
+                }
+            )
+    return {
+        "schema": "petrochina_market_close_mismatch_ledger_v2",
+        "symbol": SYMBOL,
+        "tolerance": str(tol),
+        "entry_count": len(entries),
+        "entries": entries,
+    }
+
+
+def build_reconciliation_digest_v2(
+    primary: dict[str, Any],
+    secondary: dict[str, Any],
+    reconciliation: dict[str, Any],
+    *,
+    tolerance: Decimal | None = None,
+    ledger_digest: str = "",
+) -> str:
+    """v2 deterministic digest binding the provider-role identity and daily proof.
+
+    Binds, per the frozen v2 contract: contract version, symbol, adjustment,
+    primary role identity (provider_id / role / underlying_provider / object SHA
+    / row count), secondary role identity (provider_id / role / transport_library
+    / underlying_provider / endpoint_identity / object SHA / table_digest / row
+    count), date range, tolerance, the date-set digest, the daily close comparison
+    digest, the daily comparison summary and the mismatch-ledger digest.
+    """
+    if tolerance is None:
+        tolerance = close_tolerance_decimal()
+    tol = parse_decimal(str(tolerance))
+    date_set_summary = {
+        "primary_trade_days": reconciliation["primary_trade_days"],
+        "secondary_trade_days": reconciliation["secondary_trade_days"],
+        "common_trade_days": reconciliation["common_trade_days"],
+        "primary_only_dates": reconciliation["primary_only_dates"],
+        "secondary_only_dates": reconciliation["secondary_only_dates"],
+    }
+    daily_summary = {
+        "max_abs_difference": reconciliation["max_abs_difference"],
+        "nonzero_difference_count": reconciliation["nonzero_difference_count"],
+        "differences_over_tolerance_count": reconciliation["differences_over_tolerance_count"],
+    }
+    payload = {
+        "contract_version": RECONCILIATION_CONTRACT_VERSION_V2,
+        "symbol": SYMBOL,
+        "adjustment": "none",
+        "primary": {
+            "provider_id": primary.get("provider_id", primary.get("provider")),
+            "provider_role": primary.get("provider_role", "primary"),
+            "underlying_provider": primary.get("underlying_provider", ""),
+            "object_sha256": primary["object_sha256"],
+            "row_count": primary["row_count"],
+        },
+        "secondary": {
+            "provider_id": secondary.get("provider_id", secondary.get("provider")),
+            "provider_role": secondary.get("provider_role", "secondary"),
+            "transport_library": secondary.get("transport_library", ""),
+            "underlying_provider": secondary.get("underlying_provider", ""),
+            "endpoint_identity": secondary.get("endpoint_identity", ""),
+            "object_sha256": secondary["object_sha256"],
+            "table_digest": secondary.get("table_digest", ""),
+            "row_count": secondary["row_count"],
+        },
+        "date_range": [primary["first_trade_date"], primary["last_trade_date"]],
+        "tolerance": str(tol),
+        "date_set_digest": canonical_digest(date_set_summary),
+        "daily_close_comparison_digest": reconciliation.get(
+            "daily_comparison_digest", ""
+        ),
+        "daily_close_comparison_summary": daily_summary,
+        "mismatch_ledger_digest": ledger_digest,
+    }
+    return canonical_digest(payload)
+
+
+def build_reconciliation_report_v2(
+    primary: dict[str, Any],
+    secondary: dict[str, Any],
+    reconciliation: dict[str, Any],
+    *,
+    tolerance: Decimal | None = None,
+    ledger_digest: str = "",
+) -> dict[str, Any]:
+    """Assemble the committed v2 double-source reconciliation report."""
+    if tolerance is None:
+        tolerance = close_tolerance_decimal()
+    tol = parse_decimal(str(tolerance))
+    digest = build_reconciliation_digest_v2(
+        primary, secondary, reconciliation, tolerance=tol, ledger_digest=ledger_digest
+    )
+    return {
+        "schema": "petrochina_market_close_reconciliation_v2",
+        "symbol": SYMBOL,
+        "adjustment": "none",
+        "reconciliation_contract_version": RECONCILIATION_CONTRACT_VERSION_V2,
+        "primary_provider": {
+            "provider_id": primary.get("provider_id", primary.get("provider")),
+            "provider_role": primary.get("provider_role", "primary"),
+            "transport_library": primary.get("transport_library", ""),
+            "underlying_provider": primary.get("underlying_provider", ""),
+            "object_sha256": primary["object_sha256"],
+            "object_key": primary["object_key"],
+            "row_count": primary["row_count"],
+            "date_range": [primary["first_trade_date"], primary["last_trade_date"]],
+        },
+        "secondary_provider": {
+            "provider_id": secondary.get("provider_id", secondary.get("provider")),
+            "provider_role": secondary.get("provider_role", "secondary"),
+            "transport_library": secondary.get("transport_library", ""),
+            "underlying_provider": secondary.get("underlying_provider", ""),
+            "endpoint_identity": secondary.get("endpoint_identity", ""),
+            "object_sha256": secondary["object_sha256"],
+            "table_digest": secondary.get("table_digest", ""),
+            "object_key": secondary["object_key"],
+            "row_count": secondary["row_count"],
+            "date_range": [secondary["first_trade_date"], secondary["last_trade_date"]],
+        },
+        "common_trade_days": reconciliation["common_trade_days"],
+        "tolerance": str(tol),
+        "max_abs_difference": reconciliation["max_abs_difference"],
+        "nonzero_difference_count": reconciliation["nonzero_difference_count"],
+        "differences_over_tolerance_count": reconciliation["differences_over_tolerance_count"],
+        "primary_only_dates": reconciliation["primary_only_dates"],
+        "secondary_only_dates": reconciliation["secondary_only_dates"],
+        "daily_comparison_digest": reconciliation.get("daily_comparison_digest", ""),
+        "mismatch_ledger_digest": ledger_digest,
+        "reconciliation_status": STATUS_PASS,
+        "reconciliation_digest": digest,
+    }
+
+
+def validate_reconciliation_report_v2(report: dict[str, Any]) -> dict[str, Any]:
+    """Validate a committed v2 reconciliation report against the contract."""
+    errors: list[str] = []
+    if report.get("schema") != "petrochina_market_close_reconciliation_v2":
+        errors.append("schema mismatch")
+    if report.get("symbol") != SYMBOL:
+        errors.append("symbol mismatch")
+    if report.get("adjustment") != "none":
+        errors.append("adjustment mismatch")
+    if report.get("reconciliation_status") != STATUS_PASS:
+        errors.append("reconciliation_status not pass")
+    try:
+        primary = report.get("primary_provider", {})
+        secondary = report.get("secondary_provider", {})
+        recomputed = build_reconciliation_digest_v2(
+            {
+                "provider_id": primary.get("provider_id"),
+                "provider_role": primary.get("provider_role"),
+                "underlying_provider": primary.get("underlying_provider"),
+                "object_sha256": primary.get("object_sha256"),
+                "row_count": primary.get("row_count"),
+                "first_trade_date": primary.get("date_range", [None, None])[0],
+                "last_trade_date": primary.get("date_range", [None, None])[1],
+            },
+            {
+                "provider_id": secondary.get("provider_id"),
+                "provider_role": secondary.get("provider_role"),
+                "transport_library": secondary.get("transport_library"),
+                "underlying_provider": secondary.get("underlying_provider"),
+                "endpoint_identity": secondary.get("endpoint_identity"),
+                "object_sha256": secondary.get("object_sha256"),
+                "table_digest": secondary.get("table_digest"),
+                "row_count": secondary.get("row_count"),
+                "first_trade_date": secondary.get("date_range", [None, None])[0],
+                "last_trade_date": secondary.get("date_range", [None, None])[1],
+            },
+            {
+                "max_abs_difference": report.get("max_abs_difference"),
+                "nonzero_difference_count": report.get("nonzero_difference_count"),
+                "differences_over_tolerance_count": report.get(
+                    "differences_over_tolerance_count"
+                ),
+                "primary_trade_days": report.get("common_trade_days"),
+                "secondary_trade_days": report.get("common_trade_days"),
+                "common_trade_days": report.get("common_trade_days"),
+                "primary_only_dates": report.get("primary_only_dates", []),
+                "secondary_only_dates": report.get("secondary_only_dates", []),
+                "daily_comparison_digest": report.get("daily_comparison_digest", ""),
             },
             tolerance=report.get("tolerance"),
             ledger_digest=report.get("mismatch_ledger_digest", ""),

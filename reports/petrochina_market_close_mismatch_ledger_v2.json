@@ -1,0 +1,7 @@
+{
+ "schema": "petrochina_market_close_mismatch_ledger_v2",
+ "symbol": "601857.SH",
+ "tolerance": "0.01",
+ "entry_count": 0,
+ "entries": []
+}
