@@ -1,0 +1,36 @@
+{
+  "schema": "m2_stage2k1r4f2_decision",
+  "version": "1.0",
+  "stage": "2K.1R4F.2",
+  "decision": "PE_CYCLE_CONTEXT_NORMALIZED_EARNINGS_PROTOTYPE_ALLOWED",
+  "verdict": "PASS",
+  "r4f1_upstream": "TRUSTED",
+  "pe_numeric_scoring_authorized": false,
+  "pe_status": "coverage_gap_cycle_context_required",
+  "valuation_dimension_status": "insufficient_evidence_cycle_context",
+  "production_scoring": "NOT_AUTHORIZED",
+  "overall_score": "PROHIBITED",
+  "gates": {
+    "r4f1_upstream_trusted": true,
+    "pit_pass": true,
+    "restatement_pass": true,
+    "share_scope_pass": true,
+    "reproducible": true,
+    "method_review_complete": true,
+    "no_score_computed": true,
+    "consecutive_annual_roe_ge_5": true,
+    "average_roe_available": true,
+    "current_bvps_trusted": true,
+    "normalized_eps_roe_available": true
+  },
+  "failed_gates": [],
+  "evidence": {
+    "consecutive_annual_roe_observations": 5,
+    "full_cycle_proven": false,
+    "average_roe_decimal": "0.1029179088085938346085963897",
+    "current_bvps": "8.876206538550294436827638346",
+    "normalized_eps_roe": "0.9135206151007635380066173292"
+  },
+  "next_stage": "NORMALIZED_EARNINGS_PROTOTYPE NOT_STARTED",
+  "no_score_computed": true
+}

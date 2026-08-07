@@ -1,0 +1,64 @@
+{
+  "schema": "petrochina_pe_normalized_earnings_method_matrix_v1",
+  "symbol": "601857.SH",
+  "as_of": "2026-07-31",
+  "selection_rationale": {
+    "1_authoritative_methodology_support": "CFA market-based valuation (A/B), Damodaran scale-distortion note",
+    "2_pit_feasibility": "visible committed facts only",
+    "3_existing_trusted_fact_coverage": "annual NP/equity/revenue/shares 2020-2025 + MRQ 2026-03-31",
+    "4_scale_robustness": "relative (ROE/margin) preferred over absolute EPS",
+    "5_deterministic_reproducibility": "Decimal(str) only; no float identity",
+    "6_minimal_new_subjective_parameters": "no analyst/consensus/forecast inputs",
+    "7_no_peer_dependency": "sector option deferred",
+    "8_no_commodity_price_forecast": "commodity option deferred",
+    "9_compatible_share_equity_scope": "company-wide ordinary shares (r4d1)",
+    "10_future_issuer_extensibility": "concept-based fact model",
+    "not_used_in_selection": [
+      "current_pe_percentile",
+      "which_method_raises_or_lowers_pe_score"
+    ]
+  },
+  "options": [
+    {
+      "option_id": "CURRENT_PE_WITH_BINARY_PEAK_FLAG",
+      "conclusion": "REJECT",
+      "eligibility": "REJECTED",
+      "reason": "threshold arbitrary; single-period YoY cannot define a cycle; structural growth easily misread as peak; not a mainstream normalized-earnings method"
+    },
+    {
+      "option_id": "HISTORICAL_AVERAGE_EPS_FULL_CYCLE",
+      "conclusion": "CONDITIONAL",
+      "eligibility": "BLOCKED_FULL_CYCLE_NOT_PROVEN",
+      "reason": "CFA-recognized normalized-EPS method; eligible only when full_cycle_coverage_status=PROVEN; a plain 5y average must not be presented as a full-cycle average"
+    },
+    {
+      "option_id": "AVERAGE_ROE_X_CURRENT_BVPS",
+      "conclusion": "PRIMARY_PROTOTYPE_CANDIDATE",
+      "eligibility": "ELIGIBLE_FOR_PROTOTYPE",
+      "reason": "CFA-recognized; relative normalization reduces scale distortion as equity base grows; determinism from committed facts; eligibility decided by the actual ROE chain, not prewritten as pass"
+    },
+    {
+      "option_id": "NORMALIZED_MARGIN_X_CURRENT_REVENUE",
+      "conclusion": "DIAGNOSTIC_ONLY",
+      "eligibility": "DIAGNOSTIC_READY",
+      "reason": "margin normalization handles scale but segment mix / tax / leverage / cost structure can shift; used only for cross-check, never as the primary numeric PE denominator"
+    },
+    {
+      "option_id": "NORMALIZED_COMMODITY_PRICE_MODEL",
+      "conclusion": "DEFER_REJECT_AS_PRIMARY",
+      "eligibility": "DEFERRED_NOT_PRIMARY",
+      "reason": "requires choosing a 'normal' oil price; injects the analyst's commodity view into valuation; needs a new commodity-to-earnings model; no trusted deterministic mapping in-repo; out of scope"
+    },
+    {
+      "option_id": "SECTOR_AVERAGE_NORMALIZATION",
+      "conclusion": "DEFER",
+      "eligibility": "DEFERRED_NOT_AUTHORIZED",
+      "reason": "peer acquisition not authorized in this stage"
+    }
+  ],
+  "decision_basis": {
+    "annual_np_observation_years": 7,
+    "consecutive_annual_roe_observations": 5,
+    "full_cycle_proven": false
+  }
+}
