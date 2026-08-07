@@ -253,8 +253,11 @@ Status: completed
 - PE numeric scoring：**BLOCKED_UNCHANGED**；valuation dimension 无数值分；
   production NOT_AUTHORIZED；overall PROHIBITED；registry/policy/shadow
   inputs v2 未改。
-- 未完成/未开始：NORMALIZED_EARNINGS_PROTOTYPE 未开始（需另行授权）；
-  未提交、未推送。
+- 未完成/未开始：NORMALIZED_EARNINGS_PROTOTYPE 未开始（需另行授权）。
+- 提交/推送：R4F.2 以 2 个提交落在 base `3a0437a` 之上并已推送至
+  `origin/feat/m2-value-assessment-mvp`（`3a0437a..1f8e490`）；remote CI
+  run `31184282923` 对 tip commit `1f8e490` 全绿（Ubuntu/Windows
+  clean-clone + identity-compare）。
 - 与本任务对比：无偏离；全部边界保持（无 score、无阈值、无 future
   leak、无网络、无 DB 写入）。
 - 可用性：method/evidence preflight 产物已生成，非评分、可复现。
@@ -271,30 +274,19 @@ Status: completed
   manifest、未注册新 schema。
 - 本轮不建 artifact manifest（method/evidence preflight，不修改正式
   scoring runtime identity；R4F1 manifest 仍 verify pass）。
-- remote CI 尚未运行；待用户授权提交/推送后由 CI 复核。
-
-## 遗留问题
-
-- 2020 ROE 因缺少 2019-12-31 opening equity 不可重建（不视为零）。
-- full_cycle_coverage_status=NOT_PROVEN：当前 2020–2025 窗口无独立证据
-  证明覆盖完整 earnings cycle；如后续获得更早年度事实，可重新评估。
-- R4B/R4C 历史 manifest stale：KNOWN_HISTORICAL_MANIFEST_DEBT，
-  NON_BLOCKING_FOR_R4F2，留到 final M2 milestone-wide integrity closeout。
-  全量 sweep（18 份）：6 PASS；12 FAIL 全部前置既有（R4A/R4B/R4C 内容
-  stale + 9 份 legacy schema，见 acceptance 2a 节）；R4F2 未触碰任何
-  manifest、未注册新 schema。
-- 本轮不建 artifact manifest（method/evidence preflight，不修改正式
-  scoring runtime identity；R4F1 manifest 仍 verify pass）。
-- remote CI 尚未运行；待用户授权提交/推送后由 CI 复核。
+- remote CI 已复核并通过：run `31184282923`（Ubuntu/Windows clean-clone +
+  identity-compare 全绿，tip commit `1f8e490`；full pytest 1744 passed /
+  2 warnings，R4F2 35、R4F1 19、R4F 22 passed；旧 scoring contract
+  零变化）。
 
 ## 下一步建议
 
-- 本阶段只冻结 prototype evidence contract 与 method 选择。
+- 本阶段已完成并推送，remote CI 对 tip commit 全绿（run `31184282923`）。
 - 下一独立阶段 `NORMALIZED_EARNINGS_PROTOTYPE`（需另行授权）：验证 PIT
   historical reconstruction、normalized-earnings identity、normalized-PE
   定义、current vs historical 行为、deterministic A/B、sensitivity、
   peak-low-PE inversion 是否真正消除。METHOD READY != SCORING READY。
-- 未经明确授权：不提交；不推送；不开始 prototype；不修改 PE scoring。
+- 禁止开始 R4F.3；不得修改 PE scoring。
 
 ## 最终文件变更
 
@@ -316,11 +308,13 @@ Status: completed
 
 ## 最终 Git 状态
 
-- 当前分支：`feat/m2-value-assessment-mvp`；HEAD `3a0437a`（R4F.1 closeout）。
-- 工作区包含 R4F.2 全部新增文件（见上），均**未提交、未 stage、未推送**
-  （遵循用户"完成本地验证后停止，未经明确授权不提交不推送"指令）。
-- 未 force push、未 reset、未 git clean、未 merge、未 PR、未 tag。
+- 当前分支：`feat/m2-value-assessment-mvp`；本地与 origin 均位于 `1f8e490`
+  （R4F.2 closeout tip），其上 CI run `31184282923` 全绿。
+- R4F.2 以 2 个提交落于 base `3a0437a` 之上并**已推送**至
+  `origin/feat/m2-value-assessment-mvp`（`3a0437a..1f8e490`）：
+  1. `2e75dc7` feat: add PE normalized earnings method preflight
+  2. `1f8e490` docs: record R4F.2 local closeout
+- 未 force push、未 reset、未 git clean、未 merge、未 PR、未 tag、未 release。
 - 既有未跟踪/修改项（`AGENTS.md`、`agent/goals/`、
   `acceptance/m2_stage2i2r_official_fact_extraction_and_lineage_closeout.md`）
-  为会话开始前既有状态，未改动。
-- R4F.2 提交待用户明确授权。
+  为会话开始前既有状态，未纳入 R4F.2 提交，未改动。

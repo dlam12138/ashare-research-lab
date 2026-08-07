@@ -6,7 +6,9 @@ Status: completed
 
 Decision: `PE_CYCLE_CONTEXT_NORMALIZED_EARNINGS_PROTOTYPE_ALLOWED`
 
-Remote CI: **PENDING** (local validation complete; not yet committed/pushed at closeout time)
+Remote CI: **PASS** — run `31184282923` (Stage 2G reproducibility:
+Ubuntu clean-clone, Windows clean-clone, identity-compare all success),
+tip commit `1f8e490`
 
 PE numeric scoring: **BLOCKED_UNCHANGED**
 
@@ -46,7 +48,7 @@ Overall score:                                         PROHIBITED
 Historical manifest debt:                              KNOWN_NON_BLOCKING_R4B_R4C
 Decision:                                              PE_CYCLE_CONTEXT_NORMALIZED_EARNINGS_PROTOTYPE_ALLOWED
 Next-stage implementation:                             NOT STARTED
-Remote CI:                                              PENDING
+Remote CI:                                              PASS (run 31184282923, 2026-08-07)
 ```
 
 ## 1. What was frozen
@@ -126,6 +128,11 @@ any new verifier schema.  The debt statement
 - Scoring files exact-diff check: registry v2 / policy v2 / shadow v6
   untouched.
 - Default DB SHA unchanged; stash preserved; protected files untouched.
+- Remote CI (Stage 2G reproducibility, run `31184282923`): Ubuntu
+  clean-clone, Windows clean-clone, identity-compare — all **success**.
+  Full pytest 1744 passed / 2 warnings; R4F2 35 passed; R4F1 19 passed;
+  R4F 22 passed; deterministic method decision verified; old scoring
+  contracts zero-change.
 
 ## 5. Next stage (NOT STARTED)
 
