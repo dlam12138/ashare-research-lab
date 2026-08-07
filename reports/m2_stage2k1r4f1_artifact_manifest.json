@@ -1,0 +1,85 @@
+{
+  "schema": "m2_stage2k1r4f1_artifact_manifest_v2",
+  "version": "2.0",
+  "files": [
+    {
+      "path": "acceptance/m2_stage2k1r4f1_valuation_scoring_v2_migration.md",
+      "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+      "sha256": "0b5de2d606e0783a3a2a5280f65d97e24f67ff7beb81ca631569a46794b25551",
+      "byte_size": 5984
+    },
+    {
+      "path": "agent/record/2026-08-07_Stage2K1R4F1_valuation_scoring_v2_migration.md",
+      "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+      "sha256": "a578b587ab8e86fe50f30e5a7fb1d1dd6dff4e1f883d83ae2bc862a0de3db8e7",
+      "byte_size": 17260
+    },
+    {
+      "path": "config/value_dimension_scoring_registry_v2.json",
+      "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+      "sha256": "9e43b1a296b6acd85b7b12ef2ee6b3f645b1252978e4a60fdb287d1ca279317d",
+      "byte_size": 39245
+    },
+    {
+      "path": "config/value_dimension_scoring_policy_v2.json",
+      "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+      "sha256": "4c35a5363ba352433f807079dfc2af8bf7ddbf35f6f36d168f6dd06cbc89a3c8",
+      "byte_size": 4441
+    },
+    {
+      "path": "config/value_dimension_scoring_shadow_inputs_v2.json",
+      "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+      "sha256": "63cf68add74b1518b277a2f2e3814fe5014eba47ea24a074f568e140ccc4dec2",
+      "byte_size": 7574
+    },
+    {
+      "path": "docs/valuation_scoring_contract_v2_migration.md",
+      "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+      "sha256": "ed7b67273e6ee99ec75d71fdf3f51843ee0dcea1829db4a610a665da497f07e5",
+      "byte_size": 5890
+    },
+    {
+      "path": "reports/m2_stage2k1r4f1_decision.json",
+      "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+      "sha256": "2a04d48d328fa27bad4788e92202c9e0f7a82121a41c5034d460fd5e53367def",
+      "byte_size": 3056
+    },
+    {
+      "path": "reports/petrochina_score_input_capsule_v5.json",
+      "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+      "sha256": "ea6f50a41c98a428d02fded48787917ad68e24c334c3d9ab4b66dbb49a00418c",
+      "byte_size": 168141
+    },
+    {
+      "path": "reports/petrochina_dimension_scoring_shadow_v6.json",
+      "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+      "sha256": "a3c14ad9c4b5900ab8492b9f0e79608683fa66363d43e0c1c268f025356068fc",
+      "byte_size": 9815
+    },
+    {
+      "path": "reports/petrochina_dimension_scoring_shadow_v5_to_v6_diff.json",
+      "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+      "sha256": "ab7ac9cc49c4c594d3f018f39b9ac35673748326c51e66efb8ffe99bae97aaf6",
+      "byte_size": 2850
+    },
+    {
+      "path": "reports/petrochina_dimension_scoring_sensitivity_v8.json",
+      "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+      "sha256": "d6c1750456cada19ca53fa18eff25c17bde692946c26d9651f36eeeb6e43e559",
+      "byte_size": 19544
+    },
+    {
+      "path": "src/ashare_research/tools/m2_stage2k_scoring_shadow.py",
+      "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+      "sha256": "cdf37223181e35d34eb2fce1d9dc460ffd37b4ba807f8d94b40e319c7f018264",
+      "byte_size": 23031
+    },
+    {
+      "path": "tests/test_m2_stage2k1r4f1_valuation_scoring_v2_migration.py",
+      "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+      "sha256": "0cd9a5bb6657570b08e5ef70480a38f4ba36c6133f394ca15ac09b8b3b886fce",
+      "byte_size": 12973
+    }
+  ],
+  "manifest_digest": "e9e9cd11882db6a548b3eda0cb0283f09d13145ed4759f06cfb413bd9cf4443b"
+}
