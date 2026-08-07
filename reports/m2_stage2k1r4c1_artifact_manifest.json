@@ -44,8 +44,8 @@
     {
       "path": "src/ashare_research/scoring/artifact_manifest.py",
       "digest_algorithm": "sha256_lf_normalized_bytes_v1",
-      "sha256": "7b88d515752948372dd1107963881b00c5ed6ac8c989f1256abbe1903baf1528",
-      "byte_size": 13853
+      "sha256": "b840b71700ffd5425f78d639b6215ca374b11f68cb55728cd8c0aff93d8dbd4c",
+      "byte_size": 13949
     },
     {
       "path": "src/ashare_research/scoring/capsule.py",

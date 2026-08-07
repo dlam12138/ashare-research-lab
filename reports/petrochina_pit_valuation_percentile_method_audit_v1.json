@@ -1,0 +1,72 @@
+{
+ "schema": "petrochina_pit_valuation_percentile_method_audit_v1",
+ "version": "1.0",
+ "symbol": "601857.SH",
+ "as_of_trade_date": "2026-07-31",
+ "rank_method": "MIDRANK_EMPIRICAL_PERCENTILE",
+ "oracle_identical_all": true,
+ "future_leakage_all_pass": true,
+ "minimum_sample_all_met": true,
+ "checks": [
+  {
+   "metric_id": "PE_A_TTM",
+   "window_id": "3y",
+   "oracle_identical": true,
+   "future_leakage": "pass",
+   "minimum_sample_met": true,
+   "tie_handling": "midrank",
+   "invalid_status_excluded": true,
+   "boundary": "2023-07-31 <= t <= 2026-07-31"
+  },
+  {
+   "metric_id": "PE_A_TTM",
+   "window_id": "5y",
+   "oracle_identical": true,
+   "future_leakage": "pass",
+   "minimum_sample_met": true,
+   "tie_handling": "midrank",
+   "invalid_status_excluded": true,
+   "boundary": "2021-08-02 <= t <= 2026-07-31"
+  },
+  {
+   "metric_id": "PB_A_MRQ",
+   "window_id": "3y",
+   "oracle_identical": true,
+   "future_leakage": "pass",
+   "minimum_sample_met": true,
+   "tie_handling": "midrank",
+   "invalid_status_excluded": true,
+   "boundary": "2023-07-31 <= t <= 2026-07-31"
+  },
+  {
+   "metric_id": "PB_A_MRQ",
+   "window_id": "5y",
+   "oracle_identical": true,
+   "future_leakage": "pass",
+   "minimum_sample_met": true,
+   "tie_handling": "midrank",
+   "invalid_status_excluded": true,
+   "boundary": "2021-08-02 <= t <= 2026-07-31"
+  },
+  {
+   "metric_id": "PS_A_TTM",
+   "window_id": "3y",
+   "oracle_identical": true,
+   "future_leakage": "pass",
+   "minimum_sample_met": true,
+   "tie_handling": "midrank",
+   "invalid_status_excluded": true,
+   "boundary": "2023-07-31 <= t <= 2026-07-31"
+  },
+  {
+   "metric_id": "PS_A_TTM",
+   "window_id": "5y",
+   "oracle_identical": true,
+   "future_leakage": "pass",
+   "minimum_sample_met": true,
+   "tie_handling": "midrank",
+   "invalid_status_excluded": true,
+   "boundary": "2021-08-02 <= t <= 2026-07-31"
+  }
+ ]
+}
