@@ -1,0 +1,101 @@
+{
+  "schema": "petrochina_dimension_scoring_shadow_v5_to_v6_diff_v1",
+  "version": "1.0",
+  "symbol": "601857.SH",
+  "migration_stage": "M2_STAGE_2K1R4F1",
+  "from_shadow": "petrochina_dimension_scoring_shadow_v5",
+  "to_shadow": "petrochina_dimension_scoring_shadow_v6",
+  "registry_migration": "value_dimension_scoring_registry_v1 -> v2",
+  "policy_migration": "value_dimension_scoring_policy_v1 -> v2",
+  "dual_window_contract": "self_history_dual_window_percentile_v1",
+  "non_production": true,
+  "overall_score_prohibited": true,
+  "pe_numeric_score_produced_in_v6": false,
+  "dimensions_changed": [
+    "valuation_attractiveness"
+  ],
+  "dimensions_preserved": [
+    {
+      "dimension_id": "enterprise_quality",
+      "score": 73.6694,
+      "status": "ordinal_shadow"
+    },
+    {
+      "dimension_id": "value_realization_capacity",
+      "score": 21.7562,
+      "status": "ordinal_shadow"
+    }
+  ],
+  "changes": [
+    {
+      "dimension_id": "valuation_attractiveness",
+      "v5": {
+        "score": 12.1733,
+        "band": "E",
+        "status": "ordinal_shadow",
+        "coverage_ratio": 0.8,
+        "missing_component_ids": [
+          "va_dividend_yield"
+        ],
+        "blocked_component_ids": null
+      },
+      "v6": {
+        "score": null,
+        "band": null,
+        "status": "insufficient_evidence_cycle_context",
+        "coverage_ratio": 0.6,
+        "missing_component_ids": [
+          "va_pe",
+          "va_dividend_yield"
+        ],
+        "blocked_component_ids": [
+          "va_pe"
+        ]
+      },
+      "change_reason": "valuation_attractiveness contract v2 migration: va_pe/va_pb/va_ps re-bound to dual-window Decimal percentiles; va_pe blocked by cycle-context gap"
+    }
+  ],
+  "valuation_component_changes": [
+    {
+      "component_id": "va_pe",
+      "v5_status": "computed_shadow",
+      "v5_score": 7.9092,
+      "v6_status": "coverage_gap_cycle_context_required",
+      "v6_score": null,
+      "changed": true
+    },
+    {
+      "component_id": "va_pb",
+      "v5_status": "computed_shadow",
+      "v5_score": 15.4746,
+      "v6_status": "computed_shadow",
+      "v6_score": 12.0417,
+      "changed": true
+    },
+    {
+      "component_id": "va_ps",
+      "v5_status": "computed_shadow",
+      "v5_score": 7.9092,
+      "v6_status": "computed_shadow",
+      "v6_score": 6.4332,
+      "changed": true
+    },
+    {
+      "component_id": "va_fcf_yield",
+      "v5_status": "computed_shadow",
+      "v5_score": 17.4003,
+      "v6_status": "computed_shadow",
+      "v6_score": 17.4003,
+      "changed": false
+    },
+    {
+      "component_id": "va_dividend_yield",
+      "v5_status": "coverage_gap",
+      "v5_score": null,
+      "v6_status": "coverage_gap",
+      "v6_score": null,
+      "changed": false
+    }
+  ],
+  "digest": "6997333945009a4649a029eda36cf7191e80e229e4343528b134b5a0043c8065"
+}
