@@ -5,14 +5,14 @@
     {
       "path": "acceptance/m2_stage2k1r4f1_valuation_scoring_v2_migration.md",
       "digest_algorithm": "sha256_lf_normalized_bytes_v1",
-      "sha256": "0b5de2d606e0783a3a2a5280f65d97e24f67ff7beb81ca631569a46794b25551",
-      "byte_size": 5984
+      "sha256": "54249210279e27f1a570212b93cbaf94d36588e16b1aa06e9cd78c74097b9f4a",
+      "byte_size": 6377
     },
     {
       "path": "agent/record/2026-08-07_Stage2K1R4F1_valuation_scoring_v2_migration.md",
       "digest_algorithm": "sha256_lf_normalized_bytes_v1",
-      "sha256": "a578b587ab8e86fe50f30e5a7fb1d1dd6dff4e1f883d83ae2bc862a0de3db8e7",
-      "byte_size": 17260
+      "sha256": "b151d979a2a8fec086b04af98b452dfc8e51a4468d55d27950d8b88f0273c3ae",
+      "byte_size": 17838
     },
     {
       "path": "config/value_dimension_scoring_registry_v2.json",
@@ -81,5 +81,5 @@
       "byte_size": 12973
     }
   ],
-  "manifest_digest": "e9e9cd11882db6a548b3eda0cb0283f09d13145ed4759f06cfb413bd9cf4443b"
+  "manifest_digest": "c58114f5ee981e5dfb9f9f22c4efaa4aa6a3545c4f7854a560218987b0018eec"
 }

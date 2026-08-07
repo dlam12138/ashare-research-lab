@@ -3,7 +3,9 @@
 ## Verdict: PASS — LOCAL CANDIDATE
 
 M2 Stage 2K.1R4F.1: **PASS — LOCAL CANDIDATE**
-Remote CI: **PENDING** (local validation complete; not yet committed/pushed at closeout time)
+Remote CI: **PASS** — run `31177835006` (Stage 2G reproducibility:
+Windows clean-clone, Ubuntu clean-clone, identity-compare all success), tip
+commit `0f2fcf9`
 decision: `VALUATION_SCORING_V2_MIGRATION_COMPLETE_CYCLE_CONTEXT_GAP_REMAINS`
 
 This stage migrates the `valuation_attractiveness` scoring contract to v2 and
@@ -32,7 +34,8 @@ Overall score:          PROHIBITED
 Peer percentile:        NOT_AUTHORIZED_IN_THIS_STAGE
 M3:                     NOT_STARTED
 PE cycle-context method:NOT STARTED
-Git:                    NOT COMMITTED / NOT PUSHED (per instruction)
+Git:                    COMMITTED / PUSHED (f198d3e, c5261bf, 0f2fcf9 on d02bab9)
+Remote CI:              PASS (run 31177835006, 2026-08-07)
 ```
 
 ## 1. Migration baseline
@@ -119,5 +122,9 @@ overwritten, or the engine v1 golden path changes.
 - R4F.1 static/regression tests: see below.
 - Full offline pytest, ruff, `git diff --check`, artifact-manifest verifier,
   secret-path scan, clean-clone check: see validation section of the work record.
+- Remote CI (Stage 2G reproducibility, run `31177835006`): Windows clean-clone,
+  Ubuntu clean-clone, identity-compare — all **success**. Full pytest 1709
+  passed / 2 warnings; manifest verifiers R4F1 (13) / R4C1 (17) / R4E4 (22) /
+  R4E5 (15) pass.
 - Protected files (`AGENTS.md`, `agent/goals/`, `acceptance/m2_stage2i2r_*`,
   stash, default DB, registry v4, R4E.5 artifacts, R4F decision) untouched.

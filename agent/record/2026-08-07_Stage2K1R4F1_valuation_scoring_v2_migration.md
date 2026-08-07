@@ -215,23 +215,28 @@ Status: completed
   PE 仍 `coverage_gap_cycle_context_required`（blocked != 0）；
   PB/PS 仅有组件分；production NOT_AUTHORIZED；overall PROHIBITED；
   next_stage=PE_CYCLE_CONTEXT_METHOD_DESIGN（NOT_STARTED）。
-- 未完成/未开始：PE cycle-context 方法未设计；本阶段未提交、未推送。
+- 未完成/未开始：PE cycle-context 方法未设计；PE 数值评分保持阻塞。
+- 提交/推送：R4F.1 以 3 个提交（feat migrate / feat refresh / docs closeout）
+  落在 base `d02bab9` 之上并已推送至 `origin/feat/m2-value-assessment-mvp`
+  （`d02bab9..0f2fcf9`）。remote CI（Stage 2G reproducibility）对该 tip
+  commit 全绿：run `31177835006`，Windows clean-clone / Ubuntu clean-clone /
+  identity-compare 全部 **success**。
 - 与本任务对比：无偏离；非生产、不可重归一化、PE 不设数值分等边界保持。
 - 可用性：非生产研究 artifact 已生成；无生产行为变更。
 
 ## 遗留问题
 
-- PE cycle-context 形式化契约尚未设计，PE 数值评分保持阻塞。
+- PE cycle-context 形式化契约尚未设计，PE 数值评分保持阻塞（下一独立阶段）。
 - shadow v6 已刷新并重跑完整 sensitivity v8；若后续 v3 迁移需再次全量重跑。
-- remote CI（GitHub Actions clean-clone）尚未运行；本阶段本地验证已全绿，
-  待用户授权提交/推送后由 CI 复核。
+- remote CI 已复核并通过：run `31177835006`（Windows/Ubuntu clean-clone +
+  identity-compare 全绿）。R4B/R4C manifest 的既有 stale（sensitivity.py /
+  r3_closeout.py 等，前置既有、非 R4F1 引入）不阻塞 CI；若未来某阶段确改
+  这些文件，应一并重算对应 manifest 条目。
 
 ## 下一步建议
 
-- 本次最终验证已全部通过（见验证节）。按用户最后指令"完成本地验证后停止。
-  未经明确授权：不提交；不推送；不开始 PE cycle-context stage"，本阶段停止。
-- 若用户后续授权提交/推送，则创建 R4F.1 提交并推送，由 remote CI 复核。
-- 后续独立阶段：PE cycle-context 方法设计（需另行授权）。
+- 本阶段已完成并推送，remote CI 对 tip commit 全绿（run `31177835006`）。
+- 后续独立阶段：PE cycle-context 方法设计（需另行授权，禁止在本阶段开始）。
 
 ## 最终文件变更
 
@@ -272,11 +277,14 @@ acceptance/m2_stage2i2r_official_fact_extraction_and_lineage_closeout.md
 
 ## 最终 Git 状态
 
-- 当前分支：`feat/m2-value-assessment-mvp`；HEAD `d02bab9`（R4F 最终 tip）。
-- 工作区包含 R4F.1 全部新增/修改文件（见上），均**未提交、未 stage、未推送**
-  （遵循用户"完成本地验证后停止，未经明确授权不提交不推送"指令）。
-- 未 force push、未 reset、未 tag、未 merge、未 PR。
+- 当前分支：`feat/m2-value-assessment-mvp`；本地与 origin 均位于 `0f2fcf9`
+  （R4F.1 closeout tip），其上 CI run `31177835006` 全绿。
+- R4F.1 以 3 个提交落于 base `d02bab9` 之上并**已推送**至
+  `origin/feat/m2-value-assessment-mvp`（`d02bab9..0f2fcf9`）：
+  1. `f198d3e` feat: migrate valuation scoring contract to v2
+  2. `c5261bf` feat: refresh non-production valuation scoring shadow
+  3. `0f2fcf9` docs: record R4F.1 local closeout
+- 未 force push、未 reset、未 git clean、未 merge、未 PR、未 tag、未 release。
 - 既有未跟踪/修改项（`AGENTS.md`、`agent/goals/`、
   `acceptance/m2_stage2i2r_official_fact_extraction_and_lineage_closeout.md`）
-  为会话开始前既有状态，未改动。
-- R4F.1 提交待用户明确授权。
+  为会话开始前既有状态，未纳入 R4F.1 提交，未改动。
