@@ -274,7 +274,7 @@ def test_doc_reports_decision_and_boundary():
     assert "choose a method because of PetroChina's current percentile" in txt
 
 
-def test_acceptance_declares_review_only_and_not_committed():
+def test_acceptance_declares_review_only():
     txt = ACCEPTANCE_PATH.read_text(encoding="utf-8")
     assert "Scoring implementation: NOT STARTED" in txt
     assert "Registry v2:            NOT CREATED" in txt
@@ -282,4 +282,7 @@ def test_acceptance_declares_review_only_and_not_committed():
     assert "Shadow refresh:         NOT RUN" in txt
     assert "Sensitivity re-run:     NOT RUN" in txt
     assert "Artifact manifest:      NOT REQUIRED (review-only stage)" in txt
-    assert "NOT COMMITTED / NOT PUSHED" in txt
+    # After the CI closeout the acceptance records the actual git state.
+    assert "COMMITTED + PUSHED" in txt
+    assert "Remote CI: **GREEN**" in txt
+    assert "PASS — LOCAL CANDIDATE" in txt
