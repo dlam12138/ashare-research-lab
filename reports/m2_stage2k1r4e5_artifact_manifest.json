@@ -5,14 +5,14 @@
   {
    "path": "acceptance/m2_stage2k1r4e5_historical_valuation_percentile.md",
    "digest_algorithm": "sha256_lf_normalized_bytes_v1",
-   "sha256": "044624706b8a375df00f6faedca2f56a5be3c3f5a85288a13bb42f8896fcada0",
-   "byte_size": 9269
+   "sha256": "77cbd06663aa646d9b648245cf7de71a1f1fdcf3c78683a226cbbb900a6ff8cf",
+   "byte_size": 10024
   },
   {
    "path": "agent/record/2026-08-07_Stage2K1R4E5_historical_valuation_percentile.md",
    "digest_algorithm": "sha256_lf_normalized_bytes_v1",
-   "sha256": "24a886ca5a07c1f8e863218ddb1cf1ec19a344f9ad004e7e29e08422a6604853",
-   "byte_size": 13777
+   "sha256": "01583781f1430ccbc0d6e4f9d7346bb7d16c99b2c2aee2185dfcb7c2ce2bf0bc",
+   "byte_size": 14091
   },
   {
    "path": "config/pit_valuation_percentile_contract_v1.json",
@@ -93,5 +93,5 @@
    "byte_size": 16105
   }
  ],
- "manifest_digest": "2232f64f866282aafabd86ab09f38785d9c9618e2885c0e7f8124ea2fc0102c3"
+ "manifest_digest": "de562207dc186789e2c069a53e8de17f8fa28cb18846cf57fa084ee66afd6b07"
 }

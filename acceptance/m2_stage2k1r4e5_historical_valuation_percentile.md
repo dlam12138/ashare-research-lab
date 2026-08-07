@@ -1,9 +1,9 @@
 # M2 Stage 2K.1R4E.5 — Historical Valuation Percentile Preflight & Non-Production Percentile Profile
 
-## Verdict: PASS — LOCAL CANDIDATE
+## Verdict: PASS — CI CONFIRMED
 
-M2 Stage 2K.1R4E.5: **PASS — LOCAL CANDIDATE**
-Remote CI: **PENDING**
+M2 Stage 2K.1R4E.5: **PASS — CI CONFIRMED**
+Remote CI: **GREEN** (run `31151600368` on push `6a088e7`)
 decision: `PIT_VALUATION_PERCENTILE_PROFILE_TRUSTED_NORTH_STAR_REVIEW_REQUIRED`
 
 The frozen `MIDRANK_EMPIRICAL_PERCENTILE` method contract was released
@@ -26,7 +26,7 @@ nothing is committed and nothing is pushed.
 ## 0. Final report card
 
 ```
-M2 Stage 2K.1R4E.5:                                          PASS — LOCAL CANDIDATE
+M2 Stage 2K.1R4E.5:                                          PASS — CI CONFIRMED
 Method contract frozen:                                      config + docs
 Rank method:                                                  MIDRANK_EMPIRICAL_PERCENTILE
 As-of trade date:                                             2026-07-31
@@ -43,10 +43,14 @@ Minimum-sample gates (3y>=500 / 5y>=900):                    all READY
 PE cycle interpretation guard:                               present (cycle_warning_required=true)
 Production boundary:                                          non_production=true, score_eligible=false
 Decision:   PIT_VALUATION_PERCENTILE_PROFILE_TRUSTED_NORTH_STAR_REVIEW_REQUIRED
-Scoring integration:                                          NOT STARTED (requires North-Star review)
-Default DB:                                                   UNCHANGED
 Scoring integration:                                          NOT AUTHORIZED / NOT STARTED
-Git:                                                          COMMITTED + PUSHED (LOCAL CANDIDATE); CI PENDING
+Default DB:                                                   UNCHANGED
+Remote CI (run 31151600368):                                  GREEN
+  Ubuntu clean-clone:                                         PASS (1665 passed, 3 skipped)
+  Windows clean-clone:                                        PASS (1665 passed, 3 skipped)
+  identity-compare:                                           PASS
+  full pytest / R4E.5 tests / R4E.5 manifest / R4C1 manifest: PASS
+Git:                                                          COMMITTED + PUSHED (1563a32, 6a088e7, closeout)
 ```
 
 ## 1. 6 percentile observations (non-production)
@@ -142,9 +146,18 @@ the decision, and the acceptance doc.
 - Full offline pytest: **1668 passed, 2 pre-existing warnings**.
 - `ruff check` on all changed files: All checks passed.
 - `git diff --check`: pass.
-- Manifest verifier: R4E.5 manifest `status: pass`.
+- Manifest verifier: R4E.5 manifest `status: pass`; R4C1 manifest `status: pass`.
 - Protected files (`AGENTS.md`, `agent/goals/`, `acceptance/m2_stage2i2r_*`,
   stash, default DB, registry v4, R4E.4 decision) untouched.
+
+### Remote CI (run `31151600368` on push `6a088e7`)
+
+- Ubuntu clean-clone: **PASS** (1665 passed, 3 skipped, 3 warnings).
+- Windows clean-clone: **PASS** (1665 passed, 3 skipped, 2 warnings).
+- identity-compare: **PASS** (exactly two cross-platform fingerprint artifacts,
+  provenance-gated comparison).
+- Full pytest / R4E.5 tests / R4E.5 manifest verifier / R4C1 manifest verifier:
+  all green through the full CI suite.
 
 ## 10. Deliverables
 
@@ -170,5 +183,5 @@ the decision, and the acceptance doc.
 Scoring integration requires an independent North-Star review of the
 non-production percentile profile before any scoring change; entry to scoring
 is **not** authorised by this stage (`Scoring integration: NOT AUTHORIZED`,
-`Next-stage implementation: NOT STARTED`). R4E.5 is committed and pushed as a
-**LOCAL CANDIDATE**; remote CI is pending.
+`Next-stage implementation: NOT STARTED`). R4E.5 is committed, pushed, and
+**CI-confirmed** (run `31151600368`).

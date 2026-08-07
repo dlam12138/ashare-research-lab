@@ -1,8 +1,8 @@
 # 工作记录：M2 Stage 2K.1R4E.5 — Historical Valuation Percentile Preflight and Non-Production Percentile Profile
 
 Status: completed
-Closeout verdict: PASS — LOCAL CANDIDATE
-Remote CI: PENDING
+Closeout verdict: PASS — CI CONFIRMED
+Remote CI: GREEN (run 31151600368 on push 6a088e7)
 Decision:
 PIT_VALUATION_PERCENTILE_PROFILE_TRUSTED_NORTH_STAR_REVIEW_REQUIRED
 Scoring integration: NOT AUTHORIZED
@@ -196,7 +196,8 @@ observations。冻结 percentile 方法合同、构建 3y/5y eligible samples、
   PB/5y=90.957886、PS/3y=91.964286、PS/5y=95.169282。
 - 未完成：无（本阶段范围内全部完成）。
 - 条件通过：无（全绿）。
-- 已按指令停止：**未提交、未推送、未进入 scoring、未启动下一阶段**。
+- 已提交并推送（2 笔：feat + docs closeout），CI 全绿（run 31151600368）；
+  **未进入 scoring、未启动下一阶段**。
 
 ## 遗留问题
 
@@ -232,7 +233,9 @@ observations。冻结 percentile 方法合同、构建 3y/5y eligible samples、
 ## 最终 Git 状态
 
 - 当前分支：`feat/m2-value-assessment-mvp`
-- HEAD：`4e4caeb`
-- 存在未提交修改：是（R4E.5 全部交付物为未跟踪/已修改状态）。
-- 已创建提交或 Tag：**否**（按指令未提交）。
-- 是否执行推送：**否**（按指令未推送）。
+- 提交：`1563a32`（feat: add trusted historical valuation percentile profile）、
+  `6a088e7`（docs: record R4E.5 local closeout）、本 CI-evidence 提交。
+- 已推送：是（普通 push 至 origin，fast-forward，无 force/reset/merge/PR/tag）。
+- 远程 CI：GREEN（run `31151600368`，push `6a088e7`）。
+- 存在未提交修改：仅用户保护文件（`AGENTS.md`、`agent/goals/`、
+  `acceptance/m2_stage2i2r_*`），未 stage、未提交。
