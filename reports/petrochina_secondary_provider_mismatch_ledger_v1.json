@@ -1,0 +1,23 @@
+{
+ "schema": "petrochina_secondary_provider_mismatch_ledger_v1",
+ "symbol": "601857.SH",
+ "tolerance": "0.01",
+ "candidates": [
+  {
+   "candidate_id": "tencent_via_akshare",
+   "tolerance": "0.01",
+   "entry_count": 0,
+   "mismatch_ledger_digest": "d1dba16ca46cdd059e745e88b95298bbf2192eca929c51e004893f37f8928b8c",
+   "primary_only_dates": [],
+   "candidate_only_dates": []
+  },
+  {
+   "candidate_id": "sina_via_akshare",
+   "tolerance": "0.01",
+   "entry_count": 0,
+   "mismatch_ledger_digest": "d1dba16ca46cdd059e745e88b95298bbf2192eca929c51e004893f37f8928b8c",
+   "primary_only_dates": [],
+   "candidate_only_dates": []
+  }
+ ]
+}
