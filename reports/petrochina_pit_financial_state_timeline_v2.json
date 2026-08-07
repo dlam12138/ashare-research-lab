@@ -1,0 +1,2800 @@
+{
+ "schema": "petrochina_pit_financial_state_timeline_v2",
+ "version": "2.0",
+ "symbol": "601857.SH",
+ "summary": {
+  "PE_A_TTM": {
+   "state_count": 25,
+   "computed_count": 22,
+   "missing_ttm_input_count": 3,
+   "first_effective_from": "2020-05-06",
+   "last_effective_from": "2026-05-06"
+  },
+  "PB_A_MRQ": {
+   "state_count": 25,
+   "computed_count": 25,
+   "missing_ttm_input_count": 0,
+   "first_effective_from": "2020-05-06",
+   "last_effective_from": "2026-05-06"
+  },
+  "PS_A_TTM": {
+   "state_count": 25,
+   "computed_count": 22,
+   "missing_ttm_input_count": 3,
+   "first_effective_from": "2020-05-06",
+   "last_effective_from": "2026-05-06"
+  }
+ },
+ "timelines": {
+  "PE_A_TTM": [
+   {
+    "financial_state_id": "5a04284f959bf7501b88a294b3b7cdf805d4224718e336df602d77c04dafdab9",
+    "metric_id": "PE_A_TTM",
+    "state_type": "ttm",
+    "concept": "parent_net_profit",
+    "fiscal_year": 2020,
+    "report_type": "q1",
+    "period_end": "2020-03-31",
+    "effective_from": "2020-05-06",
+    "value_decimal": null,
+    "status": "missing_ttm_input",
+    "formula_id": "pe-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "65f8f61d00a5c0b54cc2f3168d02d0668566906213c7815eb2b7ae3c6acc0d1c"
+    ],
+    "current_cumulative_fact_id": "65f8f61d00a5c0b54cc2f3168d02d0668566906213c7815eb2b7ae3c6acc0d1c",
+    "prior_year_same_period_fact_id": "",
+    "prior_annual_fact_id": "",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "input_available_at": {
+     "current_cumulative": "2020-04-30",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "input_effective_from": {
+     "current_cumulative": "2020-05-06",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "available_at_max": "2020-04-30",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "5a04284f959bf7501b88a294b3b7cdf805d4224718e336df602d77c04dafdab9"
+   },
+   {
+    "financial_state_id": "a11f22881a779374fe76e74a1df2574dcb74664a9b4c7d4e647e9d04e83869bd",
+    "metric_id": "PE_A_TTM",
+    "state_type": "ttm",
+    "concept": "parent_net_profit",
+    "fiscal_year": 2020,
+    "report_type": "half_year",
+    "period_end": "2020-06-30",
+    "effective_from": "2020-08-31",
+    "value_decimal": null,
+    "status": "missing_ttm_input",
+    "formula_id": "pe-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "81b6486b5b62bda7d1e7d8ce8bec74d99d3a99bc6a9f92745f8445c350e73eb7"
+    ],
+    "current_cumulative_fact_id": "81b6486b5b62bda7d1e7d8ce8bec74d99d3a99bc6a9f92745f8445c350e73eb7",
+    "prior_year_same_period_fact_id": "",
+    "prior_annual_fact_id": "",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "input_available_at": {
+     "current_cumulative": "2020-08-28",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "input_effective_from": {
+     "current_cumulative": "2020-08-31",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "available_at_max": "2020-08-28",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "a11f22881a779374fe76e74a1df2574dcb74664a9b4c7d4e647e9d04e83869bd"
+   },
+   {
+    "financial_state_id": "5672be9ac6a363373cfe3cd346d8be1af32a3bb29a9ffe11dc11d74d2c8d103c",
+    "metric_id": "PE_A_TTM",
+    "state_type": "ttm",
+    "concept": "parent_net_profit",
+    "fiscal_year": 2020,
+    "report_type": "q3",
+    "period_end": "2020-09-30",
+    "effective_from": "2020-11-02",
+    "value_decimal": null,
+    "status": "missing_ttm_input",
+    "formula_id": "pe-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "53dacb028f282b3dd2adbc29ecf816257efe09f55a6332f6b6588d27903dddd8"
+    ],
+    "current_cumulative_fact_id": "53dacb028f282b3dd2adbc29ecf816257efe09f55a6332f6b6588d27903dddd8",
+    "prior_year_same_period_fact_id": "",
+    "prior_annual_fact_id": "",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "input_available_at": {
+     "current_cumulative": "2020-10-30",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "input_effective_from": {
+     "current_cumulative": "2020-11-02",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "available_at_max": "2020-10-30",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "5672be9ac6a363373cfe3cd346d8be1af32a3bb29a9ffe11dc11d74d2c8d103c"
+   },
+   {
+    "financial_state_id": "fcb2430f9ff52a1ebe97dfa4455e2915fdd53d377c1b60e9035168224551afc7",
+    "metric_id": "PE_A_TTM",
+    "state_type": "ttm",
+    "concept": "parent_net_profit",
+    "fiscal_year": 2020,
+    "report_type": "annual",
+    "period_end": "2020-12-31",
+    "effective_from": "2021-03-29",
+    "value_decimal": "19002000000.0",
+    "status": "computed",
+    "formula_id": "pe-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "5ce2000c1ecab1745d80ee0a0e9886b444e072f0d8813d07f2f388702fa3ffc2"
+    ],
+    "current_cumulative_fact_id": "5ce2000c1ecab1745d80ee0a0e9886b444e072f0d8813d07f2f388702fa3ffc2",
+    "prior_year_same_period_fact_id": "",
+    "prior_annual_fact_id": "",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "input_available_at": {
+     "current_cumulative": "2021-03-26",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "input_effective_from": {
+     "current_cumulative": "2021-03-29",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "available_at_max": "2021-03-26",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "fcb2430f9ff52a1ebe97dfa4455e2915fdd53d377c1b60e9035168224551afc7"
+   },
+   {
+    "financial_state_id": "b88f2facc25e5409272efcac0a41abbcc63a68713206e4ea4a81a1c18f142a1d",
+    "metric_id": "PE_A_TTM",
+    "state_type": "ttm",
+    "concept": "parent_net_profit",
+    "fiscal_year": 2021,
+    "report_type": "q1",
+    "period_end": "2021-03-31",
+    "effective_from": "2021-05-06",
+    "value_decimal": "62955000000.0",
+    "status": "computed",
+    "formula_id": "pe-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "5ce2000c1ecab1745d80ee0a0e9886b444e072f0d8813d07f2f388702fa3ffc2",
+     "65f8f61d00a5c0b54cc2f3168d02d0668566906213c7815eb2b7ae3c6acc0d1c",
+     "df0f50cd04273f81dac23e7c3e84de42d13a27fa988d133e2da347f8fa162fc8"
+    ],
+    "current_cumulative_fact_id": "df0f50cd04273f81dac23e7c3e84de42d13a27fa988d133e2da347f8fa162fc8",
+    "prior_year_same_period_fact_id": "65f8f61d00a5c0b54cc2f3168d02d0668566906213c7815eb2b7ae3c6acc0d1c",
+    "prior_annual_fact_id": "5ce2000c1ecab1745d80ee0a0e9886b444e072f0d8813d07f2f388702fa3ffc2",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "original",
+     "prior_annual": "original"
+    },
+    "input_available_at": {
+     "current_cumulative": "2021-04-30",
+     "prior_year_same_period": "2020-04-30",
+     "prior_annual": "2021-03-26"
+    },
+    "input_effective_from": {
+     "current_cumulative": "2021-05-06",
+     "prior_year_same_period": "2020-05-06",
+     "prior_annual": "2021-03-29"
+    },
+    "available_at_max": "2021-04-30",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "b88f2facc25e5409272efcac0a41abbcc63a68713206e4ea4a81a1c18f142a1d"
+   },
+   {
+    "financial_state_id": "3afe419f165dda5d1a565612ad34dd7b98db4c273b8ad8fa8cdcfb09994cc66b",
+    "metric_id": "PE_A_TTM",
+    "state_type": "ttm",
+    "concept": "parent_net_profit",
+    "fiscal_year": 2021,
+    "report_type": "half_year",
+    "period_end": "2021-06-30",
+    "effective_from": "2021-08-30",
+    "value_decimal": "102024000000.0",
+    "status": "computed",
+    "formula_id": "pe-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "13fde8161656b89a80e6f211b02abdf1713c77daaa4d04341c34420f94207b84",
+     "5ce2000c1ecab1745d80ee0a0e9886b444e072f0d8813d07f2f388702fa3ffc2",
+     "81b6486b5b62bda7d1e7d8ce8bec74d99d3a99bc6a9f92745f8445c350e73eb7"
+    ],
+    "current_cumulative_fact_id": "13fde8161656b89a80e6f211b02abdf1713c77daaa4d04341c34420f94207b84",
+    "prior_year_same_period_fact_id": "81b6486b5b62bda7d1e7d8ce8bec74d99d3a99bc6a9f92745f8445c350e73eb7",
+    "prior_annual_fact_id": "5ce2000c1ecab1745d80ee0a0e9886b444e072f0d8813d07f2f388702fa3ffc2",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "original",
+     "prior_annual": "original"
+    },
+    "input_available_at": {
+     "current_cumulative": "2021-08-27",
+     "prior_year_same_period": "2020-08-28",
+     "prior_annual": "2021-03-26"
+    },
+    "input_effective_from": {
+     "current_cumulative": "2021-08-30",
+     "prior_year_same_period": "2020-08-31",
+     "prior_annual": "2021-03-29"
+    },
+    "available_at_max": "2021-08-27",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "3afe419f165dda5d1a565612ad34dd7b98db4c273b8ad8fa8cdcfb09994cc66b"
+   },
+   {
+    "financial_state_id": "aad8818eff1cc355d65ab4cb751b9ab2f2d560581001c8da615abb6d8e01be69",
+    "metric_id": "PE_A_TTM",
+    "state_type": "ttm",
+    "concept": "parent_net_profit",
+    "fiscal_year": 2021,
+    "report_type": "q3",
+    "period_end": "2021-09-30",
+    "effective_from": "2021-11-01",
+    "value_decimal": "84060000000.0",
+    "status": "computed",
+    "formula_id": "pe-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "53dacb028f282b3dd2adbc29ecf816257efe09f55a6332f6b6588d27903dddd8",
+     "5ce2000c1ecab1745d80ee0a0e9886b444e072f0d8813d07f2f388702fa3ffc2",
+     "65dec25525a61bac7bab03b70b128ad89fe69d597d0235b8febfae7ca45f0d49"
+    ],
+    "current_cumulative_fact_id": "65dec25525a61bac7bab03b70b128ad89fe69d597d0235b8febfae7ca45f0d49",
+    "prior_year_same_period_fact_id": "53dacb028f282b3dd2adbc29ecf816257efe09f55a6332f6b6588d27903dddd8",
+    "prior_annual_fact_id": "5ce2000c1ecab1745d80ee0a0e9886b444e072f0d8813d07f2f388702fa3ffc2",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "original",
+     "prior_annual": "original"
+    },
+    "input_available_at": {
+     "current_cumulative": "2021-10-29",
+     "prior_year_same_period": "2020-10-30",
+     "prior_annual": "2021-03-26"
+    },
+    "input_effective_from": {
+     "current_cumulative": "2021-11-01",
+     "prior_year_same_period": "2020-11-02",
+     "prior_annual": "2021-03-29"
+    },
+    "available_at_max": "2021-10-29",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "aad8818eff1cc355d65ab4cb751b9ab2f2d560581001c8da615abb6d8e01be69"
+   },
+   {
+    "financial_state_id": "a5bd3ad6f8a900346f7e71ed3dc783e6acf89bc59a4edcdfc4e954ddc940add7",
+    "metric_id": "PE_A_TTM",
+    "state_type": "ttm",
+    "concept": "parent_net_profit",
+    "fiscal_year": 2021,
+    "report_type": "annual",
+    "period_end": "2021-12-31",
+    "effective_from": "2022-04-06",
+    "value_decimal": "92161000000.0",
+    "status": "computed",
+    "formula_id": "pe-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "eb1a6271b4a359bda90f7bc6439ee61ff0597990457d348abd5ae451040a527e"
+    ],
+    "current_cumulative_fact_id": "eb1a6271b4a359bda90f7bc6439ee61ff0597990457d348abd5ae451040a527e",
+    "prior_year_same_period_fact_id": "",
+    "prior_annual_fact_id": "",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "input_available_at": {
+     "current_cumulative": "2022-04-01",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "input_effective_from": {
+     "current_cumulative": "2022-04-06",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "available_at_max": "2022-04-01",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "a5bd3ad6f8a900346f7e71ed3dc783e6acf89bc59a4edcdfc4e954ddc940add7"
+   },
+   {
+    "financial_state_id": "d0fd1c1b339819fbaa8c5dea859785fa0c9c133ab38aba5123d3878fe8cc868c",
+    "metric_id": "PE_A_TTM",
+    "state_type": "ttm",
+    "concept": "parent_net_profit",
+    "fiscal_year": 2022,
+    "report_type": "q1",
+    "period_end": "2022-03-31",
+    "effective_from": "2022-05-05",
+    "value_decimal": "103501000000.0",
+    "status": "computed",
+    "formula_id": "pe-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "2608838fc8bb4b9f3d1772c9edcfa1ffe7c030c0bd5c326b672815593aee55f5",
+     "df0f50cd04273f81dac23e7c3e84de42d13a27fa988d133e2da347f8fa162fc8",
+     "eb1a6271b4a359bda90f7bc6439ee61ff0597990457d348abd5ae451040a527e"
+    ],
+    "current_cumulative_fact_id": "2608838fc8bb4b9f3d1772c9edcfa1ffe7c030c0bd5c326b672815593aee55f5",
+    "prior_year_same_period_fact_id": "df0f50cd04273f81dac23e7c3e84de42d13a27fa988d133e2da347f8fa162fc8",
+    "prior_annual_fact_id": "eb1a6271b4a359bda90f7bc6439ee61ff0597990457d348abd5ae451040a527e",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "original",
+     "prior_annual": "original"
+    },
+    "input_available_at": {
+     "current_cumulative": "2022-04-30",
+     "prior_year_same_period": "2021-04-30",
+     "prior_annual": "2022-04-01"
+    },
+    "input_effective_from": {
+     "current_cumulative": "2022-05-05",
+     "prior_year_same_period": "2021-05-06",
+     "prior_annual": "2022-04-06"
+    },
+    "available_at_max": "2022-04-30",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "d0fd1c1b339819fbaa8c5dea859785fa0c9c133ab38aba5123d3878fe8cc868c"
+   },
+   {
+    "financial_state_id": "f549da00158879b8ebe5311dceb1d52e35fb2bb159b18a64040073ba9bf8bd00",
+    "metric_id": "PE_A_TTM",
+    "state_type": "ttm",
+    "concept": "parent_net_profit",
+    "fiscal_year": 2022,
+    "report_type": "half_year",
+    "period_end": "2022-06-30",
+    "effective_from": "2022-08-29",
+    "value_decimal": "121513000000.0",
+    "status": "computed",
+    "formula_id": "pe-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "13fde8161656b89a80e6f211b02abdf1713c77daaa4d04341c34420f94207b84",
+     "467050b93db6edc6bc40f9596557fd8946c1b1c988158a3bb5fd7509e28abc0e",
+     "eb1a6271b4a359bda90f7bc6439ee61ff0597990457d348abd5ae451040a527e"
+    ],
+    "current_cumulative_fact_id": "467050b93db6edc6bc40f9596557fd8946c1b1c988158a3bb5fd7509e28abc0e",
+    "prior_year_same_period_fact_id": "13fde8161656b89a80e6f211b02abdf1713c77daaa4d04341c34420f94207b84",
+    "prior_annual_fact_id": "eb1a6271b4a359bda90f7bc6439ee61ff0597990457d348abd5ae451040a527e",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "original",
+     "prior_annual": "original"
+    },
+    "input_available_at": {
+     "current_cumulative": "2022-08-26",
+     "prior_year_same_period": "2021-08-27",
+     "prior_annual": "2022-04-01"
+    },
+    "input_effective_from": {
+     "current_cumulative": "2022-08-29",
+     "prior_year_same_period": "2021-08-30",
+     "prior_annual": "2022-04-06"
+    },
+    "available_at_max": "2022-08-26",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "f549da00158879b8ebe5311dceb1d52e35fb2bb159b18a64040073ba9bf8bd00"
+   },
+   {
+    "financial_state_id": "156b41d9dcec678b25f90b2e524de3272c8361171b9ae310819ba185861a2a40",
+    "metric_id": "PE_A_TTM",
+    "state_type": "ttm",
+    "concept": "parent_net_profit",
+    "fiscal_year": 2022,
+    "report_type": "q3",
+    "period_end": "2022-09-30",
+    "effective_from": "2022-10-31",
+    "value_decimal": "137305000000.0",
+    "status": "computed",
+    "formula_id": "pe-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "65dec25525a61bac7bab03b70b128ad89fe69d597d0235b8febfae7ca45f0d49",
+     "ce5725837f0952f584f9b3192f6137a55f83f33d1f4d615333c68647288d8d8e",
+     "eb1a6271b4a359bda90f7bc6439ee61ff0597990457d348abd5ae451040a527e"
+    ],
+    "current_cumulative_fact_id": "ce5725837f0952f584f9b3192f6137a55f83f33d1f4d615333c68647288d8d8e",
+    "prior_year_same_period_fact_id": "65dec25525a61bac7bab03b70b128ad89fe69d597d0235b8febfae7ca45f0d49",
+    "prior_annual_fact_id": "eb1a6271b4a359bda90f7bc6439ee61ff0597990457d348abd5ae451040a527e",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "original",
+     "prior_annual": "original"
+    },
+    "input_available_at": {
+     "current_cumulative": "2022-10-28",
+     "prior_year_same_period": "2021-10-29",
+     "prior_annual": "2022-04-01"
+    },
+    "input_effective_from": {
+     "current_cumulative": "2022-10-31",
+     "prior_year_same_period": "2021-11-01",
+     "prior_annual": "2022-04-06"
+    },
+    "available_at_max": "2022-10-28",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "156b41d9dcec678b25f90b2e524de3272c8361171b9ae310819ba185861a2a40"
+   },
+   {
+    "financial_state_id": "0feaa7e195502e5cea1dff91d47c4031bec7bbcb3f312e110fbd59aea4405375",
+    "metric_id": "PE_A_TTM",
+    "state_type": "ttm",
+    "concept": "parent_net_profit",
+    "fiscal_year": 2022,
+    "report_type": "annual",
+    "period_end": "2022-12-31",
+    "effective_from": "2023-03-31",
+    "value_decimal": "149375000000.0",
+    "status": "computed",
+    "formula_id": "pe-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "1f1cc75d460a9efc57b0e48b02aec9e27107babae8723e0622d64908e6fdd9f0"
+    ],
+    "current_cumulative_fact_id": "1f1cc75d460a9efc57b0e48b02aec9e27107babae8723e0622d64908e6fdd9f0",
+    "prior_year_same_period_fact_id": "",
+    "prior_annual_fact_id": "",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "input_available_at": {
+     "current_cumulative": "2023-03-30",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "input_effective_from": {
+     "current_cumulative": "2023-03-31",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "available_at_max": "2023-03-30",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "0feaa7e195502e5cea1dff91d47c4031bec7bbcb3f312e110fbd59aea4405375"
+   },
+   {
+    "financial_state_id": "e982384f59fb8bd2af2e3de993dfaacdd17891f60712643fc78fefff341ace44",
+    "metric_id": "PE_A_TTM",
+    "state_type": "ttm",
+    "concept": "parent_net_profit",
+    "fiscal_year": 2023,
+    "report_type": "q1",
+    "period_end": "2023-03-31",
+    "effective_from": "2023-05-04",
+    "value_decimal": "154107000000.0",
+    "status": "computed",
+    "formula_id": "pe-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "1f1cc75d460a9efc57b0e48b02aec9e27107babae8723e0622d64908e6fdd9f0",
+     "896a2f045d34941d1a9db5f33047480033f5bea6eee8ba632d22a306af6ac613",
+     "e03d2e80e2e600e3682afd29eecf51f480a455fda0d4f953f5cce52818ca9726"
+    ],
+    "current_cumulative_fact_id": "e03d2e80e2e600e3682afd29eecf51f480a455fda0d4f953f5cce52818ca9726",
+    "prior_year_same_period_fact_id": "896a2f045d34941d1a9db5f33047480033f5bea6eee8ba632d22a306af6ac613",
+    "prior_annual_fact_id": "1f1cc75d460a9efc57b0e48b02aec9e27107babae8723e0622d64908e6fdd9f0",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "restated_1",
+     "prior_annual": "original"
+    },
+    "input_available_at": {
+     "current_cumulative": "2023-04-29",
+     "prior_year_same_period": "2023-04-29",
+     "prior_annual": "2023-03-30"
+    },
+    "input_effective_from": {
+     "current_cumulative": "2023-05-04",
+     "prior_year_same_period": "2023-05-04",
+     "prior_annual": "2023-03-31"
+    },
+    "available_at_max": "2023-04-29",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "e982384f59fb8bd2af2e3de993dfaacdd17891f60712643fc78fefff341ace44"
+   },
+   {
+    "financial_state_id": "74864df2a5af5cf0b10f9cb60271d79080dcda1c692239192fa88c53389bd7fc",
+    "metric_id": "PE_A_TTM",
+    "state_type": "ttm",
+    "concept": "parent_net_profit",
+    "fiscal_year": 2023,
+    "report_type": "half_year",
+    "period_end": "2023-06-30",
+    "effective_from": "2023-09-01",
+    "value_decimal": "153027000000.0",
+    "status": "computed",
+    "formula_id": "pe-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "1f1cc75d460a9efc57b0e48b02aec9e27107babae8723e0622d64908e6fdd9f0",
+     "8d7cd0147c3fc665f9f4de70d91a63852583a9a48f0d401915c504cf6ebde138",
+     "a2e565d27399d5fa100c699ae47bd75a5ce87eccd1cfc5d020ff8fb7914b1d8c"
+    ],
+    "current_cumulative_fact_id": "8d7cd0147c3fc665f9f4de70d91a63852583a9a48f0d401915c504cf6ebde138",
+    "prior_year_same_period_fact_id": "a2e565d27399d5fa100c699ae47bd75a5ce87eccd1cfc5d020ff8fb7914b1d8c",
+    "prior_annual_fact_id": "1f1cc75d460a9efc57b0e48b02aec9e27107babae8723e0622d64908e6fdd9f0",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "restated_1",
+     "prior_annual": "original"
+    },
+    "input_available_at": {
+     "current_cumulative": "2023-08-31",
+     "prior_year_same_period": "2023-08-31",
+     "prior_annual": "2023-03-30"
+    },
+    "input_effective_from": {
+     "current_cumulative": "2023-09-01",
+     "prior_year_same_period": "2023-09-01",
+     "prior_annual": "2023-03-31"
+    },
+    "available_at_max": "2023-08-31",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "74864df2a5af5cf0b10f9cb60271d79080dcda1c692239192fa88c53389bd7fc"
+   },
+   {
+    "financial_state_id": "d0c83151724ac04414f137f4e8bde33789ba7fd0b4ab26180c77898781a6f90a",
+    "metric_id": "PE_A_TTM",
+    "state_type": "ttm",
+    "concept": "parent_net_profit",
+    "fiscal_year": 2023,
+    "report_type": "q3",
+    "period_end": "2023-09-30",
+    "effective_from": "2023-11-01",
+    "value_decimal": "161100000000.0",
+    "status": "computed",
+    "formula_id": "pe-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "1f1cc75d460a9efc57b0e48b02aec9e27107babae8723e0622d64908e6fdd9f0",
+     "5efe4fcb0df80d2ad46c630ee3835e6234b8f7cd6daf424ab5eba7281cb5adbf",
+     "c533deb4c844acab1e21f3113f5943049b622c1c50982ad9684e841e709f8fbe"
+    ],
+    "current_cumulative_fact_id": "5efe4fcb0df80d2ad46c630ee3835e6234b8f7cd6daf424ab5eba7281cb5adbf",
+    "prior_year_same_period_fact_id": "c533deb4c844acab1e21f3113f5943049b622c1c50982ad9684e841e709f8fbe",
+    "prior_annual_fact_id": "1f1cc75d460a9efc57b0e48b02aec9e27107babae8723e0622d64908e6fdd9f0",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "restated_1",
+     "prior_annual": "original"
+    },
+    "input_available_at": {
+     "current_cumulative": "2023-10-31",
+     "prior_year_same_period": "2023-10-31",
+     "prior_annual": "2023-03-30"
+    },
+    "input_effective_from": {
+     "current_cumulative": "2023-11-01",
+     "prior_year_same_period": "2023-11-01",
+     "prior_annual": "2023-03-31"
+    },
+    "available_at_max": "2023-10-31",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "d0c83151724ac04414f137f4e8bde33789ba7fd0b4ab26180c77898781a6f90a"
+   },
+   {
+    "financial_state_id": "9d094ec66c3c9d8fae4e6505281b91672c62d315393a07ee62d8bbcb224f5975",
+    "metric_id": "PE_A_TTM",
+    "state_type": "ttm",
+    "concept": "parent_net_profit",
+    "fiscal_year": 2023,
+    "report_type": "annual",
+    "period_end": "2023-12-31",
+    "effective_from": "2024-03-27",
+    "value_decimal": "161144000000.0",
+    "status": "computed",
+    "formula_id": "pe-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "c954daede8684386a0709dd4d7a27a3a7997dfd71c4e9c36037da2a4ab575995"
+    ],
+    "current_cumulative_fact_id": "c954daede8684386a0709dd4d7a27a3a7997dfd71c4e9c36037da2a4ab575995",
+    "prior_year_same_period_fact_id": "",
+    "prior_annual_fact_id": "",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "input_available_at": {
+     "current_cumulative": "2024-03-26",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "input_effective_from": {
+     "current_cumulative": "2024-03-27",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "available_at_max": "2024-03-26",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "9d094ec66c3c9d8fae4e6505281b91672c62d315393a07ee62d8bbcb224f5975"
+   },
+   {
+    "financial_state_id": "bdcc4225f4e701dc738a59266eb63be804f58f84c02a31358df5c28d6dbbb51e",
+    "metric_id": "PE_A_TTM",
+    "state_type": "ttm",
+    "concept": "parent_net_profit",
+    "fiscal_year": 2024,
+    "report_type": "q1",
+    "period_end": "2024-03-31",
+    "effective_from": "2024-05-06",
+    "value_decimal": "163195000000.0",
+    "status": "computed",
+    "formula_id": "pe-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "c49f537445ac38d8effbc868162863a777ba6de2865cf1eb7cdca37d4ed49d0b",
+     "c954daede8684386a0709dd4d7a27a3a7997dfd71c4e9c36037da2a4ab575995",
+     "e03d2e80e2e600e3682afd29eecf51f480a455fda0d4f953f5cce52818ca9726"
+    ],
+    "current_cumulative_fact_id": "c49f537445ac38d8effbc868162863a777ba6de2865cf1eb7cdca37d4ed49d0b",
+    "prior_year_same_period_fact_id": "e03d2e80e2e600e3682afd29eecf51f480a455fda0d4f953f5cce52818ca9726",
+    "prior_annual_fact_id": "c954daede8684386a0709dd4d7a27a3a7997dfd71c4e9c36037da2a4ab575995",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "original",
+     "prior_annual": "original"
+    },
+    "input_available_at": {
+     "current_cumulative": "2024-04-30",
+     "prior_year_same_period": "2023-04-29",
+     "prior_annual": "2024-03-26"
+    },
+    "input_effective_from": {
+     "current_cumulative": "2024-05-06",
+     "prior_year_same_period": "2023-05-04",
+     "prior_annual": "2024-03-27"
+    },
+    "available_at_max": "2024-04-30",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "bdcc4225f4e701dc738a59266eb63be804f58f84c02a31358df5c28d6dbbb51e"
+   },
+   {
+    "financial_state_id": "c5d42db3382370b300b2d21002772189f0bee844781530012dbbffed8fa2653c",
+    "metric_id": "PE_A_TTM",
+    "state_type": "ttm",
+    "concept": "parent_net_profit",
+    "fiscal_year": 2024,
+    "report_type": "half_year",
+    "period_end": "2024-06-30",
+    "effective_from": "2024-08-28",
+    "value_decimal": "164475000000.0",
+    "status": "computed",
+    "formula_id": "pe-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "8d7cd0147c3fc665f9f4de70d91a63852583a9a48f0d401915c504cf6ebde138",
+     "c0194c0663af23c649f1c73ea460e216fb2fb5d6895a32b397fb178fe49b5f51",
+     "c954daede8684386a0709dd4d7a27a3a7997dfd71c4e9c36037da2a4ab575995"
+    ],
+    "current_cumulative_fact_id": "c0194c0663af23c649f1c73ea460e216fb2fb5d6895a32b397fb178fe49b5f51",
+    "prior_year_same_period_fact_id": "8d7cd0147c3fc665f9f4de70d91a63852583a9a48f0d401915c504cf6ebde138",
+    "prior_annual_fact_id": "c954daede8684386a0709dd4d7a27a3a7997dfd71c4e9c36037da2a4ab575995",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "original",
+     "prior_annual": "original"
+    },
+    "input_available_at": {
+     "current_cumulative": "2024-08-27",
+     "prior_year_same_period": "2023-08-31",
+     "prior_annual": "2024-03-26"
+    },
+    "input_effective_from": {
+     "current_cumulative": "2024-08-28",
+     "prior_year_same_period": "2023-09-01",
+     "prior_annual": "2024-03-27"
+    },
+    "available_at_max": "2024-08-27",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "c5d42db3382370b300b2d21002772189f0bee844781530012dbbffed8fa2653c"
+   },
+   {
+    "financial_state_id": "b366854bf180b45ba43e41bd2f5931f286c4c0a0d93e3fa1ee88bbdfe387f63e",
+    "metric_id": "PE_A_TTM",
+    "state_type": "ttm",
+    "concept": "parent_net_profit",
+    "fiscal_year": 2024,
+    "report_type": "q3",
+    "period_end": "2024-09-30",
+    "effective_from": "2024-10-31",
+    "value_decimal": "162011000000.0",
+    "status": "computed",
+    "formula_id": "pe-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "5efe4fcb0df80d2ad46c630ee3835e6234b8f7cd6daf424ab5eba7281cb5adbf",
+     "c954daede8684386a0709dd4d7a27a3a7997dfd71c4e9c36037da2a4ab575995",
+     "efd795d1a3c29449d3186b5c2d29650f049587511c8b69d18c34477bf0a9b4bf"
+    ],
+    "current_cumulative_fact_id": "efd795d1a3c29449d3186b5c2d29650f049587511c8b69d18c34477bf0a9b4bf",
+    "prior_year_same_period_fact_id": "5efe4fcb0df80d2ad46c630ee3835e6234b8f7cd6daf424ab5eba7281cb5adbf",
+    "prior_annual_fact_id": "c954daede8684386a0709dd4d7a27a3a7997dfd71c4e9c36037da2a4ab575995",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "original",
+     "prior_annual": "original"
+    },
+    "input_available_at": {
+     "current_cumulative": "2024-10-30",
+     "prior_year_same_period": "2023-10-31",
+     "prior_annual": "2024-03-26"
+    },
+    "input_effective_from": {
+     "current_cumulative": "2024-10-31",
+     "prior_year_same_period": "2023-11-01",
+     "prior_annual": "2024-03-27"
+    },
+    "available_at_max": "2024-10-30",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "b366854bf180b45ba43e41bd2f5931f286c4c0a0d93e3fa1ee88bbdfe387f63e"
+   },
+   {
+    "financial_state_id": "e2738b2bcb663c3151d0e549ae8570884178b329a59d7ddc4e8a6a4b0808e1d0",
+    "metric_id": "PE_A_TTM",
+    "state_type": "ttm",
+    "concept": "parent_net_profit",
+    "fiscal_year": 2024,
+    "report_type": "annual",
+    "period_end": "2024-12-31",
+    "effective_from": "2025-04-01",
+    "value_decimal": "164676000000.0",
+    "status": "computed",
+    "formula_id": "pe-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "ea454577cf53f36214712ce87f0a5c993acdeab3fd08bbe2813ec2605f33d3d9"
+    ],
+    "current_cumulative_fact_id": "ea454577cf53f36214712ce87f0a5c993acdeab3fd08bbe2813ec2605f33d3d9",
+    "prior_year_same_period_fact_id": "",
+    "prior_annual_fact_id": "",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "input_available_at": {
+     "current_cumulative": "2025-03-31",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "input_effective_from": {
+     "current_cumulative": "2025-04-01",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "available_at_max": "2025-03-31",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "e2738b2bcb663c3151d0e549ae8570884178b329a59d7ddc4e8a6a4b0808e1d0"
+   },
+   {
+    "financial_state_id": "c88e17df9cfd879e11d2c993e0e9f5860d64a4e7e581299c4df2d4b47bafceb1",
+    "metric_id": "PE_A_TTM",
+    "state_type": "ttm",
+    "concept": "parent_net_profit",
+    "fiscal_year": 2025,
+    "report_type": "q1",
+    "period_end": "2025-03-31",
+    "effective_from": "2025-05-06",
+    "value_decimal": "165717000000.0",
+    "status": "computed",
+    "formula_id": "pe-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "1676c4edd23a2c1f5a37e4d5a2333f4710f6935fe4b56b41ded145b9eb0f0c68",
+     "2f3c2d6ee370a62a629a7bd6f52475344815c54ba7d4a205c151710d96ee091e",
+     "ea454577cf53f36214712ce87f0a5c993acdeab3fd08bbe2813ec2605f33d3d9"
+    ],
+    "current_cumulative_fact_id": "2f3c2d6ee370a62a629a7bd6f52475344815c54ba7d4a205c151710d96ee091e",
+    "prior_year_same_period_fact_id": "1676c4edd23a2c1f5a37e4d5a2333f4710f6935fe4b56b41ded145b9eb0f0c68",
+    "prior_annual_fact_id": "ea454577cf53f36214712ce87f0a5c993acdeab3fd08bbe2813ec2605f33d3d9",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "restated_1",
+     "prior_annual": "original"
+    },
+    "input_available_at": {
+     "current_cumulative": "2025-04-30",
+     "prior_year_same_period": "2025-04-30",
+     "prior_annual": "2025-03-31"
+    },
+    "input_effective_from": {
+     "current_cumulative": "2025-05-06",
+     "prior_year_same_period": "2025-05-06",
+     "prior_annual": "2025-04-01"
+    },
+    "available_at_max": "2025-04-30",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "c88e17df9cfd879e11d2c993e0e9f5860d64a4e7e581299c4df2d4b47bafceb1"
+   },
+   {
+    "financial_state_id": "b752fe135b5522d646a0b63da623ef473f3eb57f67fd747f25ff6280a0bf5a65",
+    "metric_id": "PE_A_TTM",
+    "state_type": "ttm",
+    "concept": "parent_net_profit",
+    "fiscal_year": 2025,
+    "report_type": "half_year",
+    "period_end": "2025-06-30",
+    "effective_from": "2025-08-28",
+    "value_decimal": "159867000000.0",
+    "status": "computed",
+    "formula_id": "pe-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "36f1e5c595412f28ee8668534cfb712f849a079dd3bf46df7d17a52439a33a78",
+     "58d202d8b011b403f2b7ea46477c67f41eaac7ef5c51d3b1a57df9130a8759de",
+     "ea454577cf53f36214712ce87f0a5c993acdeab3fd08bbe2813ec2605f33d3d9"
+    ],
+    "current_cumulative_fact_id": "58d202d8b011b403f2b7ea46477c67f41eaac7ef5c51d3b1a57df9130a8759de",
+    "prior_year_same_period_fact_id": "36f1e5c595412f28ee8668534cfb712f849a079dd3bf46df7d17a52439a33a78",
+    "prior_annual_fact_id": "ea454577cf53f36214712ce87f0a5c993acdeab3fd08bbe2813ec2605f33d3d9",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "restated_1",
+     "prior_annual": "original"
+    },
+    "input_available_at": {
+     "current_cumulative": "2025-08-27",
+     "prior_year_same_period": "2025-08-27",
+     "prior_annual": "2025-03-31"
+    },
+    "input_effective_from": {
+     "current_cumulative": "2025-08-28",
+     "prior_year_same_period": "2025-08-28",
+     "prior_annual": "2025-04-01"
+    },
+    "available_at_max": "2025-08-27",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "b752fe135b5522d646a0b63da623ef473f3eb57f67fd747f25ff6280a0bf5a65"
+   },
+   {
+    "financial_state_id": "41402da8040e2ab6175a11b0af674a0fd7cb959e1ede751bd54499a4f96815af",
+    "metric_id": "PE_A_TTM",
+    "state_type": "ttm",
+    "concept": "parent_net_profit",
+    "fiscal_year": 2025,
+    "report_type": "q3",
+    "period_end": "2025-09-30",
+    "effective_from": "2025-11-03",
+    "value_decimal": "158171000000.0",
+    "status": "computed",
+    "formula_id": "pe-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "09c8c12c6c2ce17159f784706fbc8c511f36ed3ce4aa5bf1ae11decbae1fef09",
+     "13093008013ff30cf54577782b2cdb4f5c7f7f8fbe8f7978aab218d46e6fd871",
+     "ea454577cf53f36214712ce87f0a5c993acdeab3fd08bbe2813ec2605f33d3d9"
+    ],
+    "current_cumulative_fact_id": "09c8c12c6c2ce17159f784706fbc8c511f36ed3ce4aa5bf1ae11decbae1fef09",
+    "prior_year_same_period_fact_id": "13093008013ff30cf54577782b2cdb4f5c7f7f8fbe8f7978aab218d46e6fd871",
+    "prior_annual_fact_id": "ea454577cf53f36214712ce87f0a5c993acdeab3fd08bbe2813ec2605f33d3d9",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "restated_1",
+     "prior_annual": "original"
+    },
+    "input_available_at": {
+     "current_cumulative": "2025-10-31",
+     "prior_year_same_period": "2025-10-31",
+     "prior_annual": "2025-03-31"
+    },
+    "input_effective_from": {
+     "current_cumulative": "2025-11-03",
+     "prior_year_same_period": "2025-11-03",
+     "prior_annual": "2025-04-01"
+    },
+    "available_at_max": "2025-10-31",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "41402da8040e2ab6175a11b0af674a0fd7cb959e1ede751bd54499a4f96815af"
+   },
+   {
+    "financial_state_id": "20a45af68d5aaa234e772225d99e78ac938c7d0285ea4d14d49f1415b076741f",
+    "metric_id": "PE_A_TTM",
+    "state_type": "ttm",
+    "concept": "parent_net_profit",
+    "fiscal_year": 2025,
+    "report_type": "annual",
+    "period_end": "2025-12-31",
+    "effective_from": "2026-03-31",
+    "value_decimal": "157302000000.0",
+    "status": "computed",
+    "formula_id": "pe-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "dea845ccad75d66b363fa67618f3f735c2dd756d43028e075859f5b94cf2b5a8"
+    ],
+    "current_cumulative_fact_id": "dea845ccad75d66b363fa67618f3f735c2dd756d43028e075859f5b94cf2b5a8",
+    "prior_year_same_period_fact_id": "",
+    "prior_annual_fact_id": "",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "input_available_at": {
+     "current_cumulative": "2026-03-30",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "input_effective_from": {
+     "current_cumulative": "2026-03-31",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "available_at_max": "2026-03-30",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "20a45af68d5aaa234e772225d99e78ac938c7d0285ea4d14d49f1415b076741f"
+   },
+   {
+    "financial_state_id": "6820afee20e785c3496478bd1d90dabd9bb9d49b7cbac7754fec2754b6f4c652",
+    "metric_id": "PE_A_TTM",
+    "state_type": "ttm",
+    "concept": "parent_net_profit",
+    "fiscal_year": 2026,
+    "report_type": "q1",
+    "period_end": "2026-03-31",
+    "effective_from": "2026-05-06",
+    "value_decimal": "158184000000.0",
+    "status": "computed",
+    "formula_id": "pe-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "275657b7729e858e2a1c00ffae5c84283004e60cd7cf49899316cd2cda221a4c",
+     "2b03ac88fdffb65b11fd04eaa786bdc20a24460f26adc626952cf8595872c161",
+     "dea845ccad75d66b363fa67618f3f735c2dd756d43028e075859f5b94cf2b5a8"
+    ],
+    "current_cumulative_fact_id": "2b03ac88fdffb65b11fd04eaa786bdc20a24460f26adc626952cf8595872c161",
+    "prior_year_same_period_fact_id": "275657b7729e858e2a1c00ffae5c84283004e60cd7cf49899316cd2cda221a4c",
+    "prior_annual_fact_id": "dea845ccad75d66b363fa67618f3f735c2dd756d43028e075859f5b94cf2b5a8",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "restated_1",
+     "prior_annual": "original"
+    },
+    "input_available_at": {
+     "current_cumulative": "2026-04-30",
+     "prior_year_same_period": "2026-04-30",
+     "prior_annual": "2026-03-30"
+    },
+    "input_effective_from": {
+     "current_cumulative": "2026-05-06",
+     "prior_year_same_period": "2026-05-06",
+     "prior_annual": "2026-03-31"
+    },
+    "available_at_max": "2026-04-30",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "6820afee20e785c3496478bd1d90dabd9bb9d49b7cbac7754fec2754b6f4c652"
+   }
+  ],
+  "PB_A_MRQ": [
+   {
+    "financial_state_id": "28bb6aa6e7ce03128a80e2c3bd8bcad1a58b0b725f5d32d689866b9a523589cb",
+    "metric_id": "PB_A_MRQ",
+    "state_type": "mrq",
+    "concept": "parent_equity",
+    "fiscal_year": 2020,
+    "report_type": "q1",
+    "period_end": "2020-03-31",
+    "effective_from": "2020-05-06",
+    "value_decimal": "1212484000000.0",
+    "status": "computed",
+    "formula_id": "pb-a-mrq-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "b37cac8bf7568e152cb04ef3edc5ecce48fa98963f6574fd785349b6b6a8139b",
+     "bb88911c249a6aec8c0ef6898b83514d4cea552c8a6b7c2c6ac9d01691843339"
+    ],
+    "equity_fact_id": "b37cac8bf7568e152cb04ef3edc5ecce48fa98963f6574fd785349b6b6a8139b",
+    "equity_available_at": "2020-04-30",
+    "equity_effective_from": "2020-05-06",
+    "period_end_shares_fact_id": "bb88911c249a6aec8c0ef6898b83514d4cea552c8a6b7c2c6ac9d01691843339",
+    "period_end_shares_available_at": "2020-04-30",
+    "period_end_shares_effective_from": "2020-05-06",
+    "restatement_version": "original",
+    "available_at": "2020-04-30",
+    "available_at_max": "2020-04-30",
+    "period_end_shares_decimal": "183020977818.0",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "28bb6aa6e7ce03128a80e2c3bd8bcad1a58b0b725f5d32d689866b9a523589cb"
+   },
+   {
+    "financial_state_id": "8e69c5d2f68442037b7ae0c4c5e97139dfec9dc915ae480328ab9a7ed91de4f6",
+    "metric_id": "PB_A_MRQ",
+    "state_type": "mrq",
+    "concept": "parent_equity",
+    "fiscal_year": 2020,
+    "report_type": "half_year",
+    "period_end": "2020-06-30",
+    "effective_from": "2020-08-31",
+    "value_decimal": "1189016000000.0",
+    "status": "computed",
+    "formula_id": "pb-a-mrq-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "267c5c11fcbea1b62b03d680eac7abc589b488648977503cdd99803f2ad39d84",
+     "277274bf2684fe3585a7afa1ac0c46ae5900ceb91b480828c7f5b84c243d7ef9"
+    ],
+    "equity_fact_id": "277274bf2684fe3585a7afa1ac0c46ae5900ceb91b480828c7f5b84c243d7ef9",
+    "equity_available_at": "2020-08-28",
+    "equity_effective_from": "2020-08-31",
+    "period_end_shares_fact_id": "267c5c11fcbea1b62b03d680eac7abc589b488648977503cdd99803f2ad39d84",
+    "period_end_shares_available_at": "2020-08-28",
+    "period_end_shares_effective_from": "2020-08-31",
+    "restatement_version": "original",
+    "available_at": "2020-08-28",
+    "available_at_max": "2020-08-28",
+    "period_end_shares_decimal": "183020977818.0",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "8e69c5d2f68442037b7ae0c4c5e97139dfec9dc915ae480328ab9a7ed91de4f6"
+   },
+   {
+    "financial_state_id": "75c3cfb641d2e34964fa4d5e198d4e9c6409b2f7074c6520b1d61a052c52bd73",
+    "metric_id": "PB_A_MRQ",
+    "state_type": "mrq",
+    "concept": "parent_equity",
+    "fiscal_year": 2020,
+    "report_type": "q3",
+    "period_end": "2020-09-30",
+    "effective_from": "2020-11-02",
+    "value_decimal": "1210550000000.0",
+    "status": "computed",
+    "formula_id": "pb-a-mrq-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "9c33fe7fd09d214f642f84c77235d65b343c13e5a3e5d52ea2a8f186824aebb4",
+     "ffa8db91c2f5354bf0bbb1abf12de4840706c99b781c7645bb5847bbb48cd53a"
+    ],
+    "equity_fact_id": "ffa8db91c2f5354bf0bbb1abf12de4840706c99b781c7645bb5847bbb48cd53a",
+    "equity_available_at": "2020-10-30",
+    "equity_effective_from": "2020-11-02",
+    "period_end_shares_fact_id": "9c33fe7fd09d214f642f84c77235d65b343c13e5a3e5d52ea2a8f186824aebb4",
+    "period_end_shares_available_at": "2020-10-30",
+    "period_end_shares_effective_from": "2020-11-02",
+    "restatement_version": "original",
+    "available_at": "2020-10-30",
+    "available_at_max": "2020-10-30",
+    "period_end_shares_decimal": "183020977818.0",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "75c3cfb641d2e34964fa4d5e198d4e9c6409b2f7074c6520b1d61a052c52bd73"
+   },
+   {
+    "financial_state_id": "db1eb9fbd9a7c04483f190ec1c5e21032bd6b7012f59187c417030b9f0c93ace",
+    "metric_id": "PB_A_MRQ",
+    "state_type": "mrq",
+    "concept": "parent_equity",
+    "fiscal_year": 2020,
+    "report_type": "annual",
+    "period_end": "2020-12-31",
+    "effective_from": "2021-03-29",
+    "value_decimal": "1215421000000.0",
+    "status": "computed",
+    "formula_id": "pb-a-mrq-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "0eea8bf17f23afa631ae824510f8d88ea11de9d6055eb478cc00f47f0103d3e1",
+     "b83a65483f61b802b74ff34561fa8f547f755c62936487963e0f1a8bfdd117cf"
+    ],
+    "equity_fact_id": "b83a65483f61b802b74ff34561fa8f547f755c62936487963e0f1a8bfdd117cf",
+    "equity_available_at": "2021-03-26",
+    "equity_effective_from": "2021-03-29",
+    "period_end_shares_fact_id": "0eea8bf17f23afa631ae824510f8d88ea11de9d6055eb478cc00f47f0103d3e1",
+    "period_end_shares_available_at": "2021-03-26",
+    "period_end_shares_effective_from": "2021-03-29",
+    "restatement_version": "original",
+    "available_at": "2021-03-26",
+    "available_at_max": "2021-03-26",
+    "period_end_shares_decimal": "183020977818.0",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "db1eb9fbd9a7c04483f190ec1c5e21032bd6b7012f59187c417030b9f0c93ace"
+   },
+   {
+    "financial_state_id": "75d27db0d9c3edc767beacb24b865b23238dc72d110334061768d5ff322cd96b",
+    "metric_id": "PB_A_MRQ",
+    "state_type": "mrq",
+    "concept": "parent_equity",
+    "fiscal_year": 2021,
+    "report_type": "q1",
+    "period_end": "2021-03-31",
+    "effective_from": "2021-05-06",
+    "value_decimal": "1242029000000.0",
+    "status": "computed",
+    "formula_id": "pb-a-mrq-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "102ff8cc8e2578e9d96f1c7e77922f577261f01b8d10075949f777f4ac449881",
+     "8c54182c71379f8584cb44e16da8b7bea486e13ef6fcec7592ecad058f77993e"
+    ],
+    "equity_fact_id": "102ff8cc8e2578e9d96f1c7e77922f577261f01b8d10075949f777f4ac449881",
+    "equity_available_at": "2021-04-30",
+    "equity_effective_from": "2021-05-06",
+    "period_end_shares_fact_id": "8c54182c71379f8584cb44e16da8b7bea486e13ef6fcec7592ecad058f77993e",
+    "period_end_shares_available_at": "2021-04-30",
+    "period_end_shares_effective_from": "2021-05-06",
+    "restatement_version": "original",
+    "available_at": "2021-04-30",
+    "available_at_max": "2021-04-30",
+    "period_end_shares_decimal": "183020977818.0",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "75d27db0d9c3edc767beacb24b865b23238dc72d110334061768d5ff322cd96b"
+   },
+   {
+    "financial_state_id": "0311fe9817435969af0e36f363641f7cc58883c1c639cbd6df66358a942a4032",
+    "metric_id": "PB_A_MRQ",
+    "state_type": "mrq",
+    "concept": "parent_equity",
+    "fiscal_year": 2021,
+    "report_type": "half_year",
+    "period_end": "2021-06-30",
+    "effective_from": "2021-08-30",
+    "value_decimal": "1251727000000.0",
+    "status": "computed",
+    "formula_id": "pb-a-mrq-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "2033943e1e942e29b5115e2b78291407f00c4daeedc0815e2b8d6819e4a63d1d",
+     "2d4b556f477f72840e8519d62eb8fb29425e840d09ba8869a29960ce187feb55"
+    ],
+    "equity_fact_id": "2033943e1e942e29b5115e2b78291407f00c4daeedc0815e2b8d6819e4a63d1d",
+    "equity_available_at": "2021-08-27",
+    "equity_effective_from": "2021-08-30",
+    "period_end_shares_fact_id": "2d4b556f477f72840e8519d62eb8fb29425e840d09ba8869a29960ce187feb55",
+    "period_end_shares_available_at": "2021-08-27",
+    "period_end_shares_effective_from": "2021-08-30",
+    "restatement_version": "original",
+    "available_at": "2021-08-27",
+    "available_at_max": "2021-08-27",
+    "period_end_shares_decimal": "183020977818.0",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "0311fe9817435969af0e36f363641f7cc58883c1c639cbd6df66358a942a4032"
+   },
+   {
+    "financial_state_id": "0588225b911787bbe1c5701cc59894031a787d30724aaa499c197e0e49d01524",
+    "metric_id": "PB_A_MRQ",
+    "state_type": "mrq",
+    "concept": "parent_equity",
+    "fiscal_year": 2021,
+    "report_type": "q3",
+    "period_end": "2021-09-30",
+    "effective_from": "2021-11-01",
+    "value_decimal": "1245881000000.0",
+    "status": "computed",
+    "formula_id": "pb-a-mrq-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "300945373e6480414a17270c843b4eab096e3e8164f03999e83cce9c2ae2999d",
+     "91e81daac464b23f3a1b6dd16f3ad4785c6ac3e254d51a0ba4d4a7026574887c"
+    ],
+    "equity_fact_id": "300945373e6480414a17270c843b4eab096e3e8164f03999e83cce9c2ae2999d",
+    "equity_available_at": "2021-10-29",
+    "equity_effective_from": "2021-11-01",
+    "period_end_shares_fact_id": "91e81daac464b23f3a1b6dd16f3ad4785c6ac3e254d51a0ba4d4a7026574887c",
+    "period_end_shares_available_at": "2021-10-29",
+    "period_end_shares_effective_from": "2021-11-01",
+    "restatement_version": "original",
+    "available_at": "2021-10-29",
+    "available_at_max": "2021-10-29",
+    "period_end_shares_decimal": "183020977818.0",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "0588225b911787bbe1c5701cc59894031a787d30724aaa499c197e0e49d01524"
+   },
+   {
+    "financial_state_id": "ad1a6a2a542ef5b33d6b302e6ee8fa8dd0af1bf371e33fd82640b001da9971b4",
+    "metric_id": "PB_A_MRQ",
+    "state_type": "mrq",
+    "concept": "parent_equity",
+    "fiscal_year": 2021,
+    "report_type": "annual",
+    "period_end": "2021-12-31",
+    "effective_from": "2022-04-06",
+    "value_decimal": "1263815000000.0",
+    "status": "computed",
+    "formula_id": "pb-a-mrq-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "34024f03ba66ac3001b99100733c3faf1190c04025fe0064140855692b5007c0",
+     "7204099afd5fdb133831e9a97c086c89ed8e6af462e28abc6422801ce4c8e06c"
+    ],
+    "equity_fact_id": "7204099afd5fdb133831e9a97c086c89ed8e6af462e28abc6422801ce4c8e06c",
+    "equity_available_at": "2022-04-01",
+    "equity_effective_from": "2022-04-06",
+    "period_end_shares_fact_id": "34024f03ba66ac3001b99100733c3faf1190c04025fe0064140855692b5007c0",
+    "period_end_shares_available_at": "2022-04-01",
+    "period_end_shares_effective_from": "2022-04-06",
+    "restatement_version": "original",
+    "available_at": "2022-04-01",
+    "available_at_max": "2022-04-01",
+    "period_end_shares_decimal": "183020977818.0",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "ad1a6a2a542ef5b33d6b302e6ee8fa8dd0af1bf371e33fd82640b001da9971b4"
+   },
+   {
+    "financial_state_id": "fb6598116b9397dc3c84acd79378dbb6f07b72a3931fb40757b5e826a9579b2e",
+    "metric_id": "PB_A_MRQ",
+    "state_type": "mrq",
+    "concept": "parent_equity",
+    "fiscal_year": 2022,
+    "report_type": "q1",
+    "period_end": "2022-03-31",
+    "effective_from": "2022-05-05",
+    "value_decimal": "1304053000000.0",
+    "status": "computed",
+    "formula_id": "pb-a-mrq-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "4c5a2f5c179c99bad9be32f317dc2c16255038dd8c0e2f4b7930ed27cdeb6630",
+     "ed74b6afa3ecba3ab1f89607b714ece0fed9631783b105728524b2105d62d66f"
+    ],
+    "equity_fact_id": "ed74b6afa3ecba3ab1f89607b714ece0fed9631783b105728524b2105d62d66f",
+    "equity_available_at": "2022-04-30",
+    "equity_effective_from": "2022-05-05",
+    "period_end_shares_fact_id": "4c5a2f5c179c99bad9be32f317dc2c16255038dd8c0e2f4b7930ed27cdeb6630",
+    "period_end_shares_available_at": "2022-04-30",
+    "period_end_shares_effective_from": "2022-05-05",
+    "restatement_version": "original",
+    "available_at": "2022-04-30",
+    "available_at_max": "2022-04-30",
+    "period_end_shares_decimal": "183020977818.0",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "fb6598116b9397dc3c84acd79378dbb6f07b72a3931fb40757b5e826a9579b2e"
+   },
+   {
+    "financial_state_id": "d04c6d3e9b3499eb71404a8170281e9b6c720cca43315e727ed2a55d3bb359ff",
+    "metric_id": "PB_A_MRQ",
+    "state_type": "mrq",
+    "concept": "parent_equity",
+    "fiscal_year": 2022,
+    "report_type": "half_year",
+    "period_end": "2022-06-30",
+    "effective_from": "2022-08-29",
+    "value_decimal": "1334868000000.0",
+    "status": "computed",
+    "formula_id": "pb-a-mrq-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "788bf1b488ba83f321ab2009f66b5f4fbe467272d5ff1f10924364e52cb1ae99",
+     "7c9a56e2180b306a65be7902ea0edd552834eb911149c00ded6abdffd27e0a2a"
+    ],
+    "equity_fact_id": "788bf1b488ba83f321ab2009f66b5f4fbe467272d5ff1f10924364e52cb1ae99",
+    "equity_available_at": "2022-08-26",
+    "equity_effective_from": "2022-08-29",
+    "period_end_shares_fact_id": "7c9a56e2180b306a65be7902ea0edd552834eb911149c00ded6abdffd27e0a2a",
+    "period_end_shares_available_at": "2022-08-26",
+    "period_end_shares_effective_from": "2022-08-29",
+    "restatement_version": "original",
+    "available_at": "2022-08-26",
+    "available_at_max": "2022-08-26",
+    "period_end_shares_decimal": "183020977818.0",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "d04c6d3e9b3499eb71404a8170281e9b6c720cca43315e727ed2a55d3bb359ff"
+   },
+   {
+    "financial_state_id": "16ea67305b5d431e01311e5f9213dbd40d1078cc94e64b15eee75b0c43227415",
+    "metric_id": "PB_A_MRQ",
+    "state_type": "mrq",
+    "concept": "parent_equity",
+    "fiscal_year": 2022,
+    "report_type": "q3",
+    "period_end": "2022-09-30",
+    "effective_from": "2022-10-31",
+    "value_decimal": "1343209000000.0",
+    "status": "computed",
+    "formula_id": "pb-a-mrq-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "9436287ca92027c11001f8d47b408af474506b341f536e7f100f09c2c4890553",
+     "b20590a14bdfdb95dcc1aec4d59807632d51b5308f6e503b0a33e2783e1a2b37"
+    ],
+    "equity_fact_id": "b20590a14bdfdb95dcc1aec4d59807632d51b5308f6e503b0a33e2783e1a2b37",
+    "equity_available_at": "2022-10-28",
+    "equity_effective_from": "2022-10-31",
+    "period_end_shares_fact_id": "9436287ca92027c11001f8d47b408af474506b341f536e7f100f09c2c4890553",
+    "period_end_shares_available_at": "2022-10-28",
+    "period_end_shares_effective_from": "2022-10-31",
+    "restatement_version": "original",
+    "available_at": "2022-10-28",
+    "available_at_max": "2022-10-28",
+    "period_end_shares_decimal": "183020977818.0",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "16ea67305b5d431e01311e5f9213dbd40d1078cc94e64b15eee75b0c43227415"
+   },
+   {
+    "financial_state_id": "bb45ae03841c497b3781ccaf299f3010b87d6314e5d991ad566491042071924b",
+    "metric_id": "PB_A_MRQ",
+    "state_type": "mrq",
+    "concept": "parent_equity",
+    "fiscal_year": 2022,
+    "report_type": "annual",
+    "period_end": "2022-12-31",
+    "effective_from": "2023-03-31",
+    "value_decimal": "1369576000000.0",
+    "status": "computed",
+    "formula_id": "pb-a-mrq-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "2274aae072f593925fc74751645365c0570d2843f58eaac695bec8a8d6134caa",
+     "dedc229cb470fed54889288a9d12c05106f70cb9f61d9918e0dcc425a21b004a"
+    ],
+    "equity_fact_id": "dedc229cb470fed54889288a9d12c05106f70cb9f61d9918e0dcc425a21b004a",
+    "equity_available_at": "2023-03-30",
+    "equity_effective_from": "2023-03-31",
+    "period_end_shares_fact_id": "2274aae072f593925fc74751645365c0570d2843f58eaac695bec8a8d6134caa",
+    "period_end_shares_available_at": "2023-03-30",
+    "period_end_shares_effective_from": "2023-03-31",
+    "restatement_version": "original",
+    "available_at": "2023-03-30",
+    "available_at_max": "2023-03-30",
+    "period_end_shares_decimal": "183020977818.0",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "bb45ae03841c497b3781ccaf299f3010b87d6314e5d991ad566491042071924b"
+   },
+   {
+    "financial_state_id": "5775e3f69b8e636a7265eb1ffdcc608f68b898946b2733b0b93d91d323ccf3c2",
+    "metric_id": "PB_A_MRQ",
+    "state_type": "mrq",
+    "concept": "parent_equity",
+    "fiscal_year": 2023,
+    "report_type": "q1",
+    "period_end": "2023-03-31",
+    "effective_from": "2023-05-04",
+    "value_decimal": "1408762000000.0",
+    "status": "computed",
+    "formula_id": "pb-a-mrq-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "6e07931cf462f077ce8e138fd2ae0a721185c7e68514bb0c7c98b828d20e140c",
+     "c16da54b5b9ba41800f5badfb116c064938f8b2bf2326502a5baf5f0e3678d6a"
+    ],
+    "equity_fact_id": "6e07931cf462f077ce8e138fd2ae0a721185c7e68514bb0c7c98b828d20e140c",
+    "equity_available_at": "2023-04-29",
+    "equity_effective_from": "2023-05-04",
+    "period_end_shares_fact_id": "c16da54b5b9ba41800f5badfb116c064938f8b2bf2326502a5baf5f0e3678d6a",
+    "period_end_shares_available_at": "2023-04-29",
+    "period_end_shares_effective_from": "2023-05-04",
+    "restatement_version": "original",
+    "available_at": "2023-04-29",
+    "available_at_max": "2023-04-29",
+    "period_end_shares_decimal": "183020977818.0",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "5775e3f69b8e636a7265eb1ffdcc608f68b898946b2733b0b93d91d323ccf3c2"
+   },
+   {
+    "financial_state_id": "6c9c228bc30ddfd0f1229fead281d59b593e3cccded1af2f73e2616c3ccd77c6",
+    "metric_id": "PB_A_MRQ",
+    "state_type": "mrq",
+    "concept": "parent_equity",
+    "fiscal_year": 2023,
+    "report_type": "half_year",
+    "period_end": "2023-06-30",
+    "effective_from": "2023-09-01",
+    "value_decimal": "1413191000000.0",
+    "status": "computed",
+    "formula_id": "pb-a-mrq-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "2db988b184b5f845cbda91af9913e6c113348c558657fde7a7756cc2243e643c",
+     "4201944f6ede52c2f1a89664f32c770e7111e4501ff34b3e083c618456576c02"
+    ],
+    "equity_fact_id": "4201944f6ede52c2f1a89664f32c770e7111e4501ff34b3e083c618456576c02",
+    "equity_available_at": "2023-08-31",
+    "equity_effective_from": "2023-09-01",
+    "period_end_shares_fact_id": "2db988b184b5f845cbda91af9913e6c113348c558657fde7a7756cc2243e643c",
+    "period_end_shares_available_at": "2023-08-31",
+    "period_end_shares_effective_from": "2023-09-01",
+    "restatement_version": "original",
+    "available_at": "2023-08-31",
+    "available_at_max": "2023-08-31",
+    "period_end_shares_decimal": "183020977818.0",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "6c9c228bc30ddfd0f1229fead281d59b593e3cccded1af2f73e2616c3ccd77c6"
+   },
+   {
+    "financial_state_id": "ea6947a150116cadb887bbf1f41dad2dd3187536a8ce4dc1ac2c8ca268f0439b",
+    "metric_id": "PB_A_MRQ",
+    "state_type": "mrq",
+    "concept": "parent_equity",
+    "fiscal_year": 2023,
+    "report_type": "q3",
+    "period_end": "2023-09-30",
+    "effective_from": "2023-11-01",
+    "value_decimal": "1418839000000.0",
+    "status": "computed",
+    "formula_id": "pb-a-mrq-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "47e18dfcafc92ceec32bcbc46e53e5d28a32dcbaf39708c8ac2ff770c3b74ed2",
+     "4a787732e1433f5e4ef4f412a1c514c950b31244477d5db6b672cf1b0b9d3e13"
+    ],
+    "equity_fact_id": "47e18dfcafc92ceec32bcbc46e53e5d28a32dcbaf39708c8ac2ff770c3b74ed2",
+    "equity_available_at": "2023-10-31",
+    "equity_effective_from": "2023-11-01",
+    "period_end_shares_fact_id": "4a787732e1433f5e4ef4f412a1c514c950b31244477d5db6b672cf1b0b9d3e13",
+    "period_end_shares_available_at": "2023-10-31",
+    "period_end_shares_effective_from": "2023-11-01",
+    "restatement_version": "original",
+    "available_at": "2023-10-31",
+    "available_at_max": "2023-10-31",
+    "period_end_shares_decimal": "183020977818.0",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "ea6947a150116cadb887bbf1f41dad2dd3187536a8ce4dc1ac2c8ca268f0439b"
+   },
+   {
+    "financial_state_id": "7f4cbc840e3839473e0c016f6ccb65794ab42924ec472f5e49176efe25c162cf",
+    "metric_id": "PB_A_MRQ",
+    "state_type": "mrq",
+    "concept": "parent_equity",
+    "fiscal_year": 2023,
+    "report_type": "annual",
+    "period_end": "2023-12-31",
+    "effective_from": "2024-03-27",
+    "value_decimal": "1446410000000.0",
+    "status": "computed",
+    "formula_id": "pb-a-mrq-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "5d0120786f5c73274098a5f719651514476208d5bd683f4851667d84decea5ea",
+     "95f49a8187021e68e8ba2c429ae54350f551abf0f5f4680282c1db735c805d60"
+    ],
+    "equity_fact_id": "5d0120786f5c73274098a5f719651514476208d5bd683f4851667d84decea5ea",
+    "equity_available_at": "2024-03-26",
+    "equity_effective_from": "2024-03-27",
+    "period_end_shares_fact_id": "95f49a8187021e68e8ba2c429ae54350f551abf0f5f4680282c1db735c805d60",
+    "period_end_shares_available_at": "2024-03-26",
+    "period_end_shares_effective_from": "2024-03-27",
+    "restatement_version": "original",
+    "available_at": "2024-03-26",
+    "available_at_max": "2024-03-26",
+    "period_end_shares_decimal": "183020977818.0",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "7f4cbc840e3839473e0c016f6ccb65794ab42924ec472f5e49176efe25c162cf"
+   },
+   {
+    "financial_state_id": "b9c05cca75247bac1bafbfa1d6f9e0dc9f54b1535ff32e82178fe1ed72f3990b",
+    "metric_id": "PB_A_MRQ",
+    "state_type": "mrq",
+    "concept": "parent_equity",
+    "fiscal_year": 2024,
+    "report_type": "q1",
+    "period_end": "2024-03-31",
+    "effective_from": "2024-05-06",
+    "value_decimal": "1491375000000.0",
+    "status": "computed",
+    "formula_id": "pb-a-mrq-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "9c821285185dce152d820ca6249d1a83a871e7fe69a1cc0be50f25785dd98103",
+     "bc34e47d2adb7b657a94f67a8a9cdd22b46129a1ab43b2fc7ff3744fb5b42996"
+    ],
+    "equity_fact_id": "9c821285185dce152d820ca6249d1a83a871e7fe69a1cc0be50f25785dd98103",
+    "equity_available_at": "2024-04-30",
+    "equity_effective_from": "2024-05-06",
+    "period_end_shares_fact_id": "bc34e47d2adb7b657a94f67a8a9cdd22b46129a1ab43b2fc7ff3744fb5b42996",
+    "period_end_shares_available_at": "2024-04-30",
+    "period_end_shares_effective_from": "2024-05-06",
+    "restatement_version": "original",
+    "available_at": "2024-04-30",
+    "available_at_max": "2024-04-30",
+    "period_end_shares_decimal": "183020977818.0",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "b9c05cca75247bac1bafbfa1d6f9e0dc9f54b1535ff32e82178fe1ed72f3990b"
+   },
+   {
+    "financial_state_id": "a67e178455de38145d36c3d3027204f237d26a704cabfd1672283b49966064f5",
+    "metric_id": "PB_A_MRQ",
+    "state_type": "mrq",
+    "concept": "parent_equity",
+    "fiscal_year": 2024,
+    "report_type": "half_year",
+    "period_end": "2024-06-30",
+    "effective_from": "2024-08-28",
+    "value_decimal": "1489904000000.0",
+    "status": "computed",
+    "formula_id": "pb-a-mrq-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "aa780949b677efa0739f01e117e21bbb0f86c02b6d9e85c57bfea8aecf118071",
+     "cb8fb76cb3dc4dd850cf5f09d7b90137dd8e129c71e9a2b9b849680a1a33e15b"
+    ],
+    "equity_fact_id": "aa780949b677efa0739f01e117e21bbb0f86c02b6d9e85c57bfea8aecf118071",
+    "equity_available_at": "2024-08-27",
+    "equity_effective_from": "2024-08-28",
+    "period_end_shares_fact_id": "cb8fb76cb3dc4dd850cf5f09d7b90137dd8e129c71e9a2b9b849680a1a33e15b",
+    "period_end_shares_available_at": "2024-08-27",
+    "period_end_shares_effective_from": "2024-08-28",
+    "restatement_version": "original",
+    "available_at": "2024-08-27",
+    "available_at_max": "2024-08-27",
+    "period_end_shares_decimal": "183020977818.0",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "a67e178455de38145d36c3d3027204f237d26a704cabfd1672283b49966064f5"
+   },
+   {
+    "financial_state_id": "87edee6bad66e8c32dfeea99dfa6a4d2e30d0a5d2ebff26c66b0ff561a850f29",
+    "metric_id": "PB_A_MRQ",
+    "state_type": "mrq",
+    "concept": "parent_equity",
+    "fiscal_year": 2024,
+    "report_type": "q3",
+    "period_end": "2024-09-30",
+    "effective_from": "2024-10-31",
+    "value_decimal": "1490006000000.0",
+    "status": "computed",
+    "formula_id": "pb-a-mrq-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "5658b64f2a3eee647c82aad68a7887a9635f17df55653d980e3012eee17e9a93",
+     "bb7f8ee40905481209a6cb47a52719b4370e11fc0c58e770ee41b732df34aee2"
+    ],
+    "equity_fact_id": "5658b64f2a3eee647c82aad68a7887a9635f17df55653d980e3012eee17e9a93",
+    "equity_available_at": "2024-10-30",
+    "equity_effective_from": "2024-10-31",
+    "period_end_shares_fact_id": "bb7f8ee40905481209a6cb47a52719b4370e11fc0c58e770ee41b732df34aee2",
+    "period_end_shares_available_at": "2024-10-30",
+    "period_end_shares_effective_from": "2024-10-31",
+    "restatement_version": "original",
+    "available_at": "2024-10-30",
+    "available_at_max": "2024-10-30",
+    "period_end_shares_decimal": "183020977818.0",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "87edee6bad66e8c32dfeea99dfa6a4d2e30d0a5d2ebff26c66b0ff561a850f29"
+   },
+   {
+    "financial_state_id": "470f0d33a3f00e6a9d5ecd64860bfff1cd7e53d60513b3007bc67ec76f7a5276",
+    "metric_id": "PB_A_MRQ",
+    "state_type": "mrq",
+    "concept": "parent_equity",
+    "fiscal_year": 2024,
+    "report_type": "annual",
+    "period_end": "2024-12-31",
+    "effective_from": "2025-04-01",
+    "value_decimal": "1515371000000.0",
+    "status": "computed",
+    "formula_id": "pb-a-mrq-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "11103c9f9e3f9b97073f61f02a9198afcac84afa970f916839c993b10e41a04f",
+     "b4c277e606f9cf0e409f381c5529a4eaa7458d1b124c998fbe0e760702340b68"
+    ],
+    "equity_fact_id": "b4c277e606f9cf0e409f381c5529a4eaa7458d1b124c998fbe0e760702340b68",
+    "equity_available_at": "2025-03-31",
+    "equity_effective_from": "2025-04-01",
+    "period_end_shares_fact_id": "11103c9f9e3f9b97073f61f02a9198afcac84afa970f916839c993b10e41a04f",
+    "period_end_shares_available_at": "2025-03-31",
+    "period_end_shares_effective_from": "2025-04-01",
+    "restatement_version": "original",
+    "available_at": "2025-03-31",
+    "available_at_max": "2025-03-31",
+    "period_end_shares_decimal": "183020977818.0",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "470f0d33a3f00e6a9d5ecd64860bfff1cd7e53d60513b3007bc67ec76f7a5276"
+   },
+   {
+    "financial_state_id": "e4673ab52e5e91d2098464e2fbfe570fa64bfcac74641e8a28f13c2320d28d3d",
+    "metric_id": "PB_A_MRQ",
+    "state_type": "mrq",
+    "concept": "parent_equity",
+    "fiscal_year": 2025,
+    "report_type": "q1",
+    "period_end": "2025-03-31",
+    "effective_from": "2025-05-06",
+    "value_decimal": "1564643000000.0",
+    "status": "computed",
+    "formula_id": "pb-a-mrq-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "21bdc697181e0fa6d98358e6be2bdb826025356c2be01900d0ed33a3da9ead03",
+     "da9cefb7efd6ebf939bffa082583d068f3174a8697d427ce5bbeae1f9acce8ba"
+    ],
+    "equity_fact_id": "da9cefb7efd6ebf939bffa082583d068f3174a8697d427ce5bbeae1f9acce8ba",
+    "equity_available_at": "2025-04-30",
+    "equity_effective_from": "2025-05-06",
+    "period_end_shares_fact_id": "21bdc697181e0fa6d98358e6be2bdb826025356c2be01900d0ed33a3da9ead03",
+    "period_end_shares_available_at": "2025-04-30",
+    "period_end_shares_effective_from": "2025-05-06",
+    "restatement_version": "original",
+    "available_at": "2025-04-30",
+    "available_at_max": "2025-04-30",
+    "period_end_shares_decimal": "183020977818.0",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "e4673ab52e5e91d2098464e2fbfe570fa64bfcac74641e8a28f13c2320d28d3d"
+   },
+   {
+    "financial_state_id": "423e711a56687cb250503fc126ac574ff6144388adf054c56721ae2df123004d",
+    "metric_id": "PB_A_MRQ",
+    "state_type": "mrq",
+    "concept": "parent_equity",
+    "fiscal_year": 2025,
+    "report_type": "half_year",
+    "period_end": "2025-06-30",
+    "effective_from": "2025-08-28",
+    "value_decimal": "1555893000000.0",
+    "status": "computed",
+    "formula_id": "pb-a-mrq-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "1a2ce5682ea7f71c22f2fa78b4013cce9759d433f789581c91ae9b04ddea2eb5",
+     "5f4fc8b4243edcf9660e0592f0a34eb763ed8d793c39c8e0750de5125a1942b0"
+    ],
+    "equity_fact_id": "1a2ce5682ea7f71c22f2fa78b4013cce9759d433f789581c91ae9b04ddea2eb5",
+    "equity_available_at": "2025-08-27",
+    "equity_effective_from": "2025-08-28",
+    "period_end_shares_fact_id": "5f4fc8b4243edcf9660e0592f0a34eb763ed8d793c39c8e0750de5125a1942b0",
+    "period_end_shares_available_at": "2025-08-27",
+    "period_end_shares_effective_from": "2025-08-28",
+    "restatement_version": "original",
+    "available_at": "2025-08-27",
+    "available_at_max": "2025-08-27",
+    "period_end_shares_decimal": "183020977818.0",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "423e711a56687cb250503fc126ac574ff6144388adf054c56721ae2df123004d"
+   },
+   {
+    "financial_state_id": "4d5ad2859956548db16705c5a71d6ec730becea450bceb724bfbe9b1eaf42220",
+    "metric_id": "PB_A_MRQ",
+    "state_type": "mrq",
+    "concept": "parent_equity",
+    "fiscal_year": 2025,
+    "report_type": "q3",
+    "period_end": "2025-09-30",
+    "effective_from": "2025-11-03",
+    "value_decimal": "1558477000000.0",
+    "status": "computed",
+    "formula_id": "pb-a-mrq-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "14762d4f68bd6af14cb39863d78cce804343c8f43f3d053d520ab90ee768d34a",
+     "e1d7bf26ce8500f0d9116caa367622c286269e328c732a3907f13ce24923e0f2"
+    ],
+    "equity_fact_id": "e1d7bf26ce8500f0d9116caa367622c286269e328c732a3907f13ce24923e0f2",
+    "equity_available_at": "2025-10-31",
+    "equity_effective_from": "2025-11-03",
+    "period_end_shares_fact_id": "14762d4f68bd6af14cb39863d78cce804343c8f43f3d053d520ab90ee768d34a",
+    "period_end_shares_available_at": "2025-10-31",
+    "period_end_shares_effective_from": "2025-11-03",
+    "restatement_version": "original",
+    "available_at": "2025-10-31",
+    "available_at_max": "2025-10-31",
+    "period_end_shares_decimal": "183020977818.0",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "4d5ad2859956548db16705c5a71d6ec730becea450bceb724bfbe9b1eaf42220"
+   },
+   {
+    "financial_state_id": "92844e133b95ebeabb8f073b43828eea259a252e48830cb0588c1c3f38ba0fea",
+    "metric_id": "PB_A_MRQ",
+    "state_type": "mrq",
+    "concept": "parent_equity",
+    "fiscal_year": 2025,
+    "report_type": "annual",
+    "period_end": "2025-12-31",
+    "effective_from": "2026-03-31",
+    "value_decimal": "1586061000000.0",
+    "status": "computed",
+    "formula_id": "pb-a-mrq-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "00cb0c64831e9611889aa8a461cfa3e6f0be53efacca1ef5bd89e80c7db8262b",
+     "78cf4db8ca9b6f654b00055a339a5b8126f6ffd56bed485dd79ae9b8346cca9c"
+    ],
+    "equity_fact_id": "00cb0c64831e9611889aa8a461cfa3e6f0be53efacca1ef5bd89e80c7db8262b",
+    "equity_available_at": "2026-03-30",
+    "equity_effective_from": "2026-03-31",
+    "period_end_shares_fact_id": "78cf4db8ca9b6f654b00055a339a5b8126f6ffd56bed485dd79ae9b8346cca9c",
+    "period_end_shares_available_at": "2026-03-30",
+    "period_end_shares_effective_from": "2026-03-31",
+    "restatement_version": "original",
+    "available_at": "2026-03-30",
+    "available_at_max": "2026-03-30",
+    "period_end_shares_decimal": "183020977818.0",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "92844e133b95ebeabb8f073b43828eea259a252e48830cb0588c1c3f38ba0fea"
+   },
+   {
+    "financial_state_id": "36afcb8d8993171010594048a5d3679d452708fca3d951458b47f4ef7a651038",
+    "metric_id": "PB_A_MRQ",
+    "state_type": "mrq",
+    "concept": "parent_equity",
+    "fiscal_year": 2026,
+    "report_type": "q1",
+    "period_end": "2026-03-31",
+    "effective_from": "2026-05-06",
+    "value_decimal": "1624532000000.0",
+    "status": "computed",
+    "formula_id": "pb-a-mrq-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "4ea90cb2990731ba3c4b44d602973a260f3888b2ac1e4bfd95805c4460e6e25d",
+     "9d483639eacd7a4961655203c0fb72292df4ba1fa78769de59194e5ba3845389"
+    ],
+    "equity_fact_id": "9d483639eacd7a4961655203c0fb72292df4ba1fa78769de59194e5ba3845389",
+    "equity_available_at": "2026-04-30",
+    "equity_effective_from": "2026-05-06",
+    "period_end_shares_fact_id": "4ea90cb2990731ba3c4b44d602973a260f3888b2ac1e4bfd95805c4460e6e25d",
+    "period_end_shares_available_at": "2026-04-30",
+    "period_end_shares_effective_from": "2026-05-06",
+    "restatement_version": "original",
+    "available_at": "2026-04-30",
+    "available_at_max": "2026-04-30",
+    "period_end_shares_decimal": "183020977818.0",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "36afcb8d8993171010594048a5d3679d452708fca3d951458b47f4ef7a651038"
+   }
+  ],
+  "PS_A_TTM": [
+   {
+    "financial_state_id": "d8b33503664c7b57a6587edf598b6092b4146730bf3cde74eedfc50678850a94",
+    "metric_id": "PS_A_TTM",
+    "state_type": "ttm",
+    "concept": "revenue",
+    "fiscal_year": 2020,
+    "report_type": "q1",
+    "period_end": "2020-03-31",
+    "effective_from": "2020-05-06",
+    "value_decimal": null,
+    "status": "missing_ttm_input",
+    "formula_id": "ps-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "fe85664e80726d2e55b8c39a9bc09605f65574d20f450c9128bbb1ef42b90974"
+    ],
+    "current_cumulative_fact_id": "fe85664e80726d2e55b8c39a9bc09605f65574d20f450c9128bbb1ef42b90974",
+    "prior_year_same_period_fact_id": "",
+    "prior_annual_fact_id": "",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "input_available_at": {
+     "current_cumulative": "2020-04-30",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "input_effective_from": {
+     "current_cumulative": "2020-05-06",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "available_at_max": "2020-04-30",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "d8b33503664c7b57a6587edf598b6092b4146730bf3cde74eedfc50678850a94"
+   },
+   {
+    "financial_state_id": "0d911d2644a84e565f52f9b67f4579aa09fc7e6899684f33cd148ee95208b412",
+    "metric_id": "PS_A_TTM",
+    "state_type": "ttm",
+    "concept": "revenue",
+    "fiscal_year": 2020,
+    "report_type": "half_year",
+    "period_end": "2020-06-30",
+    "effective_from": "2020-08-31",
+    "value_decimal": null,
+    "status": "missing_ttm_input",
+    "formula_id": "ps-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "16cc655cde45d141ee609c120f4af4c26ca80b183255f8f087e010f839bac35e"
+    ],
+    "current_cumulative_fact_id": "16cc655cde45d141ee609c120f4af4c26ca80b183255f8f087e010f839bac35e",
+    "prior_year_same_period_fact_id": "",
+    "prior_annual_fact_id": "",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "input_available_at": {
+     "current_cumulative": "2020-08-28",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "input_effective_from": {
+     "current_cumulative": "2020-08-31",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "available_at_max": "2020-08-28",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "0d911d2644a84e565f52f9b67f4579aa09fc7e6899684f33cd148ee95208b412"
+   },
+   {
+    "financial_state_id": "de06ed645f9345e18428e46250e386ffbe6a430fc31e73b6c3c6e1a014ca55f5",
+    "metric_id": "PS_A_TTM",
+    "state_type": "ttm",
+    "concept": "revenue",
+    "fiscal_year": 2020,
+    "report_type": "q3",
+    "period_end": "2020-09-30",
+    "effective_from": "2020-11-02",
+    "value_decimal": null,
+    "status": "missing_ttm_input",
+    "formula_id": "ps-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "c4f2698de2ca5e18565328922e5c7d4b2a66b645809f639eb70dcf8244ba0a05"
+    ],
+    "current_cumulative_fact_id": "c4f2698de2ca5e18565328922e5c7d4b2a66b645809f639eb70dcf8244ba0a05",
+    "prior_year_same_period_fact_id": "",
+    "prior_annual_fact_id": "",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "input_available_at": {
+     "current_cumulative": "2020-10-30",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "input_effective_from": {
+     "current_cumulative": "2020-11-02",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "available_at_max": "2020-10-30",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "de06ed645f9345e18428e46250e386ffbe6a430fc31e73b6c3c6e1a014ca55f5"
+   },
+   {
+    "financial_state_id": "880e2d501b8ae23ca7fde322837e672608818d6cc8c487df9ada155e9e7a69d2",
+    "metric_id": "PS_A_TTM",
+    "state_type": "ttm",
+    "concept": "revenue",
+    "fiscal_year": 2020,
+    "report_type": "annual",
+    "period_end": "2020-12-31",
+    "effective_from": "2021-03-29",
+    "value_decimal": "1933836000000.0",
+    "status": "computed",
+    "formula_id": "ps-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "509199223d6ecc1791f13a6f73b6d3929dccd0df34431f43adc97f9d3cf2933a"
+    ],
+    "current_cumulative_fact_id": "509199223d6ecc1791f13a6f73b6d3929dccd0df34431f43adc97f9d3cf2933a",
+    "prior_year_same_period_fact_id": "",
+    "prior_annual_fact_id": "",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "input_available_at": {
+     "current_cumulative": "2021-03-26",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "input_effective_from": {
+     "current_cumulative": "2021-03-29",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "available_at_max": "2021-03-26",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "880e2d501b8ae23ca7fde322837e672608818d6cc8c487df9ada155e9e7a69d2"
+   },
+   {
+    "financial_state_id": "a3d40496994a2512e430309b666375dc1b271f3868381ed42c1cc0d9f58a4be7",
+    "metric_id": "PS_A_TTM",
+    "state_type": "ttm",
+    "concept": "revenue",
+    "fiscal_year": 2021,
+    "report_type": "q1",
+    "period_end": "2021-03-31",
+    "effective_from": "2021-05-06",
+    "value_decimal": "1976661000000.0",
+    "status": "computed",
+    "formula_id": "ps-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "216016a3f605c427fc8fc28bc3c47141549a35686889e72e5eaad5a80fe0d652",
+     "509199223d6ecc1791f13a6f73b6d3929dccd0df34431f43adc97f9d3cf2933a",
+     "fe85664e80726d2e55b8c39a9bc09605f65574d20f450c9128bbb1ef42b90974"
+    ],
+    "current_cumulative_fact_id": "216016a3f605c427fc8fc28bc3c47141549a35686889e72e5eaad5a80fe0d652",
+    "prior_year_same_period_fact_id": "fe85664e80726d2e55b8c39a9bc09605f65574d20f450c9128bbb1ef42b90974",
+    "prior_annual_fact_id": "509199223d6ecc1791f13a6f73b6d3929dccd0df34431f43adc97f9d3cf2933a",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "original",
+     "prior_annual": "original"
+    },
+    "input_available_at": {
+     "current_cumulative": "2021-04-30",
+     "prior_year_same_period": "2020-04-30",
+     "prior_annual": "2021-03-26"
+    },
+    "input_effective_from": {
+     "current_cumulative": "2021-05-06",
+     "prior_year_same_period": "2020-05-06",
+     "prior_annual": "2021-03-29"
+    },
+    "available_at_max": "2021-04-30",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "a3d40496994a2512e430309b666375dc1b271f3868381ed42c1cc0d9f58a4be7"
+   },
+   {
+    "financial_state_id": "1ec19f1c7ce6b52a7e32ce00af1762864eaaac7c52cff015de4fc31fca095310",
+    "metric_id": "PS_A_TTM",
+    "state_type": "ttm",
+    "concept": "revenue",
+    "fiscal_year": 2021,
+    "report_type": "half_year",
+    "period_end": "2021-06-30",
+    "effective_from": "2021-08-30",
+    "value_decimal": "2201372000000.0",
+    "status": "computed",
+    "formula_id": "ps-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "16cc655cde45d141ee609c120f4af4c26ca80b183255f8f087e010f839bac35e",
+     "20087edcca60dfd64e421d4f674b2c37d359eeba5c151584146fbf5263d18902",
+     "509199223d6ecc1791f13a6f73b6d3929dccd0df34431f43adc97f9d3cf2933a"
+    ],
+    "current_cumulative_fact_id": "20087edcca60dfd64e421d4f674b2c37d359eeba5c151584146fbf5263d18902",
+    "prior_year_same_period_fact_id": "16cc655cde45d141ee609c120f4af4c26ca80b183255f8f087e010f839bac35e",
+    "prior_annual_fact_id": "509199223d6ecc1791f13a6f73b6d3929dccd0df34431f43adc97f9d3cf2933a",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "original",
+     "prior_annual": "original"
+    },
+    "input_available_at": {
+     "current_cumulative": "2021-08-27",
+     "prior_year_same_period": "2020-08-28",
+     "prior_annual": "2021-03-26"
+    },
+    "input_effective_from": {
+     "current_cumulative": "2021-08-30",
+     "prior_year_same_period": "2020-08-31",
+     "prior_annual": "2021-03-29"
+    },
+    "available_at_max": "2021-08-27",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "1ec19f1c7ce6b52a7e32ce00af1762864eaaac7c52cff015de4fc31fca095310"
+   },
+   {
+    "financial_state_id": "5ecd2b4c8afd30d89fa41728d9d458679aeca9d53dec12a42806737963063f67",
+    "metric_id": "PS_A_TTM",
+    "state_type": "ttm",
+    "concept": "revenue",
+    "fiscal_year": 2021,
+    "report_type": "q3",
+    "period_end": "2021-09-30",
+    "effective_from": "2021-11-01",
+    "value_decimal": "2388007000000.0",
+    "status": "computed",
+    "formula_id": "ps-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "509199223d6ecc1791f13a6f73b6d3929dccd0df34431f43adc97f9d3cf2933a",
+     "c4f2698de2ca5e18565328922e5c7d4b2a66b645809f639eb70dcf8244ba0a05",
+     "dc02095f6299269279d22a601dd0261019a69d28fa703254f3fead4e33346a4b"
+    ],
+    "current_cumulative_fact_id": "dc02095f6299269279d22a601dd0261019a69d28fa703254f3fead4e33346a4b",
+    "prior_year_same_period_fact_id": "c4f2698de2ca5e18565328922e5c7d4b2a66b645809f639eb70dcf8244ba0a05",
+    "prior_annual_fact_id": "509199223d6ecc1791f13a6f73b6d3929dccd0df34431f43adc97f9d3cf2933a",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "original",
+     "prior_annual": "original"
+    },
+    "input_available_at": {
+     "current_cumulative": "2021-10-29",
+     "prior_year_same_period": "2020-10-30",
+     "prior_annual": "2021-03-26"
+    },
+    "input_effective_from": {
+     "current_cumulative": "2021-11-01",
+     "prior_year_same_period": "2020-11-02",
+     "prior_annual": "2021-03-29"
+    },
+    "available_at_max": "2021-10-29",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "5ecd2b4c8afd30d89fa41728d9d458679aeca9d53dec12a42806737963063f67"
+   },
+   {
+    "financial_state_id": "e6067de4eedbcf133a633f1f733185f18a569c7c3259bf149de49b4ec98eaa87",
+    "metric_id": "PS_A_TTM",
+    "state_type": "ttm",
+    "concept": "revenue",
+    "fiscal_year": 2021,
+    "report_type": "annual",
+    "period_end": "2021-12-31",
+    "effective_from": "2022-04-06",
+    "value_decimal": "2614349000000.0",
+    "status": "computed",
+    "formula_id": "ps-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "027de9ede52314d1c13ab2836afb57b2d517fbdaaaa7c46e48e5de5a1d7d7ab2"
+    ],
+    "current_cumulative_fact_id": "027de9ede52314d1c13ab2836afb57b2d517fbdaaaa7c46e48e5de5a1d7d7ab2",
+    "prior_year_same_period_fact_id": "",
+    "prior_annual_fact_id": "",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "input_available_at": {
+     "current_cumulative": "2022-04-01",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "input_effective_from": {
+     "current_cumulative": "2022-04-06",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "available_at_max": "2022-04-01",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "e6067de4eedbcf133a633f1f733185f18a569c7c3259bf149de49b4ec98eaa87"
+   },
+   {
+    "financial_state_id": "17767e1f09a93968f0bb2ff08c9013e6657fdc004aa04e63fd3588da01343230",
+    "metric_id": "PS_A_TTM",
+    "state_type": "ttm",
+    "concept": "revenue",
+    "fiscal_year": 2022,
+    "report_type": "q1",
+    "period_end": "2022-03-31",
+    "effective_from": "2022-05-05",
+    "value_decimal": "2841794000000.0",
+    "status": "computed",
+    "formula_id": "ps-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "027de9ede52314d1c13ab2836afb57b2d517fbdaaaa7c46e48e5de5a1d7d7ab2",
+     "0aa4b328e7f7d050eeedacdfdf1a070572ab10678181649e5966ab21f18db0c5",
+     "216016a3f605c427fc8fc28bc3c47141549a35686889e72e5eaad5a80fe0d652"
+    ],
+    "current_cumulative_fact_id": "0aa4b328e7f7d050eeedacdfdf1a070572ab10678181649e5966ab21f18db0c5",
+    "prior_year_same_period_fact_id": "216016a3f605c427fc8fc28bc3c47141549a35686889e72e5eaad5a80fe0d652",
+    "prior_annual_fact_id": "027de9ede52314d1c13ab2836afb57b2d517fbdaaaa7c46e48e5de5a1d7d7ab2",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "original",
+     "prior_annual": "original"
+    },
+    "input_available_at": {
+     "current_cumulative": "2022-04-30",
+     "prior_year_same_period": "2021-04-30",
+     "prior_annual": "2022-04-01"
+    },
+    "input_effective_from": {
+     "current_cumulative": "2022-05-05",
+     "prior_year_same_period": "2021-05-06",
+     "prior_annual": "2022-04-06"
+    },
+    "available_at_max": "2022-04-30",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "17767e1f09a93968f0bb2ff08c9013e6657fdc004aa04e63fd3588da01343230"
+   },
+   {
+    "financial_state_id": "238bbcf04757cd5835ab0c4e8888f1d41c71a6f81310bb8ae59f8b0e65c08275",
+    "metric_id": "PS_A_TTM",
+    "state_type": "ttm",
+    "concept": "revenue",
+    "fiscal_year": 2022,
+    "report_type": "half_year",
+    "period_end": "2022-06-30",
+    "effective_from": "2022-08-29",
+    "value_decimal": "3032389000000.0",
+    "status": "computed",
+    "formula_id": "ps-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "027de9ede52314d1c13ab2836afb57b2d517fbdaaaa7c46e48e5de5a1d7d7ab2",
+     "20087edcca60dfd64e421d4f674b2c37d359eeba5c151584146fbf5263d18902",
+     "ad473f2b3f08e9f3314847334e927260dfa62fb9088059ca30f3743e3af3c3f9"
+    ],
+    "current_cumulative_fact_id": "ad473f2b3f08e9f3314847334e927260dfa62fb9088059ca30f3743e3af3c3f9",
+    "prior_year_same_period_fact_id": "20087edcca60dfd64e421d4f674b2c37d359eeba5c151584146fbf5263d18902",
+    "prior_annual_fact_id": "027de9ede52314d1c13ab2836afb57b2d517fbdaaaa7c46e48e5de5a1d7d7ab2",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "original",
+     "prior_annual": "original"
+    },
+    "input_available_at": {
+     "current_cumulative": "2022-08-26",
+     "prior_year_same_period": "2021-08-27",
+     "prior_annual": "2022-04-01"
+    },
+    "input_effective_from": {
+     "current_cumulative": "2022-08-29",
+     "prior_year_same_period": "2021-08-30",
+     "prior_annual": "2022-04-06"
+    },
+    "available_at_max": "2022-08-26",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "238bbcf04757cd5835ab0c4e8888f1d41c71a6f81310bb8ae59f8b0e65c08275"
+   },
+   {
+    "financial_state_id": "a6b5942b474a5796a92a5290a264d3dbaa6740bd318db43d0e320af8b40d2d56",
+    "metric_id": "PS_A_TTM",
+    "state_type": "ttm",
+    "concept": "revenue",
+    "fiscal_year": 2022,
+    "report_type": "q3",
+    "period_end": "2022-09-30",
+    "effective_from": "2022-10-31",
+    "value_decimal": "3189409000000.0",
+    "status": "computed",
+    "formula_id": "ps-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "027de9ede52314d1c13ab2836afb57b2d517fbdaaaa7c46e48e5de5a1d7d7ab2",
+     "ccdf5f3ba528066fc76c8904f3578d6d9640aee22c94809e87c8ba1e60883bcf",
+     "dc02095f6299269279d22a601dd0261019a69d28fa703254f3fead4e33346a4b"
+    ],
+    "current_cumulative_fact_id": "ccdf5f3ba528066fc76c8904f3578d6d9640aee22c94809e87c8ba1e60883bcf",
+    "prior_year_same_period_fact_id": "dc02095f6299269279d22a601dd0261019a69d28fa703254f3fead4e33346a4b",
+    "prior_annual_fact_id": "027de9ede52314d1c13ab2836afb57b2d517fbdaaaa7c46e48e5de5a1d7d7ab2",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "original",
+     "prior_annual": "original"
+    },
+    "input_available_at": {
+     "current_cumulative": "2022-10-28",
+     "prior_year_same_period": "2021-10-29",
+     "prior_annual": "2022-04-01"
+    },
+    "input_effective_from": {
+     "current_cumulative": "2022-10-31",
+     "prior_year_same_period": "2021-11-01",
+     "prior_annual": "2022-04-06"
+    },
+    "available_at_max": "2022-10-28",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "a6b5942b474a5796a92a5290a264d3dbaa6740bd318db43d0e320af8b40d2d56"
+   },
+   {
+    "financial_state_id": "cc859fad0b31477343fcc7b63c3a84e8272622469590e020346e53498293a2ff",
+    "metric_id": "PS_A_TTM",
+    "state_type": "ttm",
+    "concept": "revenue",
+    "fiscal_year": 2022,
+    "report_type": "annual",
+    "period_end": "2022-12-31",
+    "effective_from": "2023-03-31",
+    "value_decimal": "3239167000000.0",
+    "status": "computed",
+    "formula_id": "ps-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "951fc8085b4a7391739090dc184bf5df62d46fed5ca12ae08b349d8c653892d2"
+    ],
+    "current_cumulative_fact_id": "951fc8085b4a7391739090dc184bf5df62d46fed5ca12ae08b349d8c653892d2",
+    "prior_year_same_period_fact_id": "",
+    "prior_annual_fact_id": "",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "input_available_at": {
+     "current_cumulative": "2023-03-30",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "input_effective_from": {
+     "current_cumulative": "2023-03-31",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "available_at_max": "2023-03-30",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "cc859fad0b31477343fcc7b63c3a84e8272622469590e020346e53498293a2ff"
+   },
+   {
+    "financial_state_id": "5eb6e447bf4176d2f5ad9f675b894675c0ba05fe84eb1561f15f6fe5cc4f1ca7",
+    "metric_id": "PS_A_TTM",
+    "state_type": "ttm",
+    "concept": "revenue",
+    "fiscal_year": 2023,
+    "report_type": "q1",
+    "period_end": "2023-03-31",
+    "effective_from": "2023-05-04",
+    "value_decimal": "3192270000000.0",
+    "status": "computed",
+    "formula_id": "ps-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "0aa4b328e7f7d050eeedacdfdf1a070572ab10678181649e5966ab21f18db0c5",
+     "951fc8085b4a7391739090dc184bf5df62d46fed5ca12ae08b349d8c653892d2",
+     "ee8e22faae5c2da57ef71583154bfe8288bc9267fabceddfcc8dc89327a7354d"
+    ],
+    "current_cumulative_fact_id": "ee8e22faae5c2da57ef71583154bfe8288bc9267fabceddfcc8dc89327a7354d",
+    "prior_year_same_period_fact_id": "0aa4b328e7f7d050eeedacdfdf1a070572ab10678181649e5966ab21f18db0c5",
+    "prior_annual_fact_id": "951fc8085b4a7391739090dc184bf5df62d46fed5ca12ae08b349d8c653892d2",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "original",
+     "prior_annual": "original"
+    },
+    "input_available_at": {
+     "current_cumulative": "2023-04-29",
+     "prior_year_same_period": "2022-04-30",
+     "prior_annual": "2023-03-30"
+    },
+    "input_effective_from": {
+     "current_cumulative": "2023-05-04",
+     "prior_year_same_period": "2022-05-05",
+     "prior_annual": "2023-03-31"
+    },
+    "available_at_max": "2023-04-29",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "5eb6e447bf4176d2f5ad9f675b894675c0ba05fe84eb1561f15f6fe5cc4f1ca7"
+   },
+   {
+    "financial_state_id": "cc30d1b5e9cf792d0c70c0b8a415c9218495c478836b848a13c5af5726d81f88",
+    "metric_id": "PS_A_TTM",
+    "state_type": "ttm",
+    "concept": "revenue",
+    "fiscal_year": 2023,
+    "report_type": "half_year",
+    "period_end": "2023-06-30",
+    "effective_from": "2023-09-01",
+    "value_decimal": "3104417000000.0",
+    "status": "computed",
+    "formula_id": "ps-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "8e969154e9c8220542c7448a30311b9631ae79936e5546281ea7dafa59a547b9",
+     "951fc8085b4a7391739090dc184bf5df62d46fed5ca12ae08b349d8c653892d2",
+     "ad473f2b3f08e9f3314847334e927260dfa62fb9088059ca30f3743e3af3c3f9"
+    ],
+    "current_cumulative_fact_id": "8e969154e9c8220542c7448a30311b9631ae79936e5546281ea7dafa59a547b9",
+    "prior_year_same_period_fact_id": "ad473f2b3f08e9f3314847334e927260dfa62fb9088059ca30f3743e3af3c3f9",
+    "prior_annual_fact_id": "951fc8085b4a7391739090dc184bf5df62d46fed5ca12ae08b349d8c653892d2",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "original",
+     "prior_annual": "original"
+    },
+    "input_available_at": {
+     "current_cumulative": "2023-08-31",
+     "prior_year_same_period": "2022-08-26",
+     "prior_annual": "2023-03-30"
+    },
+    "input_effective_from": {
+     "current_cumulative": "2023-09-01",
+     "prior_year_same_period": "2022-08-29",
+     "prior_annual": "2023-03-31"
+    },
+    "available_at_max": "2023-08-31",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "cc30d1b5e9cf792d0c70c0b8a415c9218495c478836b848a13c5af5726d81f88"
+   },
+   {
+    "financial_state_id": "68d0a378970479d641acb06290c7a103f1daa37e8694f7eebda169b523c5c282",
+    "metric_id": "PS_A_TTM",
+    "state_type": "ttm",
+    "concept": "revenue",
+    "fiscal_year": 2023,
+    "report_type": "q3",
+    "period_end": "2023-09-30",
+    "effective_from": "2023-11-01",
+    "value_decimal": "3065901000000.0",
+    "status": "computed",
+    "formula_id": "ps-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "6a3219ce3fc875afcc9347671ba93a01564a98cb4847aa81261bf04fa17b9ffe",
+     "951fc8085b4a7391739090dc184bf5df62d46fed5ca12ae08b349d8c653892d2",
+     "ccdf5f3ba528066fc76c8904f3578d6d9640aee22c94809e87c8ba1e60883bcf"
+    ],
+    "current_cumulative_fact_id": "6a3219ce3fc875afcc9347671ba93a01564a98cb4847aa81261bf04fa17b9ffe",
+    "prior_year_same_period_fact_id": "ccdf5f3ba528066fc76c8904f3578d6d9640aee22c94809e87c8ba1e60883bcf",
+    "prior_annual_fact_id": "951fc8085b4a7391739090dc184bf5df62d46fed5ca12ae08b349d8c653892d2",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "original",
+     "prior_annual": "original"
+    },
+    "input_available_at": {
+     "current_cumulative": "2023-10-31",
+     "prior_year_same_period": "2022-10-28",
+     "prior_annual": "2023-03-30"
+    },
+    "input_effective_from": {
+     "current_cumulative": "2023-11-01",
+     "prior_year_same_period": "2022-10-31",
+     "prior_annual": "2023-03-31"
+    },
+    "available_at_max": "2023-10-31",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "68d0a378970479d641acb06290c7a103f1daa37e8694f7eebda169b523c5c282"
+   },
+   {
+    "financial_state_id": "70262704c862e7db8e7c3e6ea5f92d88024479bcc97a6427c58ce0c897095d19",
+    "metric_id": "PS_A_TTM",
+    "state_type": "ttm",
+    "concept": "revenue",
+    "fiscal_year": 2023,
+    "report_type": "annual",
+    "period_end": "2023-12-31",
+    "effective_from": "2024-03-27",
+    "value_decimal": "3011012000000.0",
+    "status": "computed",
+    "formula_id": "ps-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "af3bf3e17caddcc46e3f2cbda27b88d327b4afa99d0a57d30280ba81616ca975"
+    ],
+    "current_cumulative_fact_id": "af3bf3e17caddcc46e3f2cbda27b88d327b4afa99d0a57d30280ba81616ca975",
+    "prior_year_same_period_fact_id": "",
+    "prior_annual_fact_id": "",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "input_available_at": {
+     "current_cumulative": "2024-03-26",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "input_effective_from": {
+     "current_cumulative": "2024-03-27",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "available_at_max": "2024-03-26",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "70262704c862e7db8e7c3e6ea5f92d88024479bcc97a6427c58ce0c897095d19"
+   },
+   {
+    "financial_state_id": "784c0a8b15226608dde81f8875dde1e918c7ac1d9d271f848095e270474152db",
+    "metric_id": "PS_A_TTM",
+    "state_type": "ttm",
+    "concept": "revenue",
+    "fiscal_year": 2024,
+    "report_type": "q1",
+    "period_end": "2024-03-31",
+    "effective_from": "2024-05-06",
+    "value_decimal": "3090725000000.0",
+    "status": "computed",
+    "formula_id": "ps-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "af3bf3e17caddcc46e3f2cbda27b88d327b4afa99d0a57d30280ba81616ca975",
+     "c93e3ecece4fc9df0e806171dcc21e0b85a7418347f11ec2bbfe915782a8fb18",
+     "ee8e22faae5c2da57ef71583154bfe8288bc9267fabceddfcc8dc89327a7354d"
+    ],
+    "current_cumulative_fact_id": "c93e3ecece4fc9df0e806171dcc21e0b85a7418347f11ec2bbfe915782a8fb18",
+    "prior_year_same_period_fact_id": "ee8e22faae5c2da57ef71583154bfe8288bc9267fabceddfcc8dc89327a7354d",
+    "prior_annual_fact_id": "af3bf3e17caddcc46e3f2cbda27b88d327b4afa99d0a57d30280ba81616ca975",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "original",
+     "prior_annual": "original"
+    },
+    "input_available_at": {
+     "current_cumulative": "2024-04-30",
+     "prior_year_same_period": "2023-04-29",
+     "prior_annual": "2024-03-26"
+    },
+    "input_effective_from": {
+     "current_cumulative": "2024-05-06",
+     "prior_year_same_period": "2023-05-04",
+     "prior_annual": "2024-03-27"
+    },
+    "available_at_max": "2024-04-30",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "784c0a8b15226608dde81f8875dde1e918c7ac1d9d271f848095e270474152db"
+   },
+   {
+    "financial_state_id": "eb322ac9caa347cce983529ca296809e97a3aef555af608b4d211b5fb8f33388",
+    "metric_id": "PS_A_TTM",
+    "state_type": "ttm",
+    "concept": "revenue",
+    "fiscal_year": 2024,
+    "report_type": "half_year",
+    "period_end": "2024-06-30",
+    "effective_from": "2024-08-28",
+    "value_decimal": "3085010000000.0",
+    "status": "computed",
+    "formula_id": "ps-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "6776601941b262065de5c6fb44d25e92ac85276d7d232ad688c9903e3ad8b8eb",
+     "8e969154e9c8220542c7448a30311b9631ae79936e5546281ea7dafa59a547b9",
+     "af3bf3e17caddcc46e3f2cbda27b88d327b4afa99d0a57d30280ba81616ca975"
+    ],
+    "current_cumulative_fact_id": "6776601941b262065de5c6fb44d25e92ac85276d7d232ad688c9903e3ad8b8eb",
+    "prior_year_same_period_fact_id": "8e969154e9c8220542c7448a30311b9631ae79936e5546281ea7dafa59a547b9",
+    "prior_annual_fact_id": "af3bf3e17caddcc46e3f2cbda27b88d327b4afa99d0a57d30280ba81616ca975",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "original",
+     "prior_annual": "original"
+    },
+    "input_available_at": {
+     "current_cumulative": "2024-08-27",
+     "prior_year_same_period": "2023-08-31",
+     "prior_annual": "2024-03-26"
+    },
+    "input_effective_from": {
+     "current_cumulative": "2024-08-28",
+     "prior_year_same_period": "2023-09-01",
+     "prior_annual": "2024-03-27"
+    },
+    "available_at_max": "2024-08-27",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "eb322ac9caa347cce983529ca296809e97a3aef555af608b4d211b5fb8f33388"
+   },
+   {
+    "financial_state_id": "54e68861d37668d7af8eb43cb72c751392d2b7b2d09fa5035a523e3b5f3a7112",
+    "metric_id": "PS_A_TTM",
+    "state_type": "ttm",
+    "concept": "revenue",
+    "fiscal_year": 2024,
+    "report_type": "q3",
+    "period_end": "2024-09-30",
+    "effective_from": "2024-10-31",
+    "value_decimal": "2985156000000.0",
+    "status": "computed",
+    "formula_id": "ps-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "3aca7bbe7f2b4e6449f6fd7586e342afe7210a9c919f94b885e807989e2a28f5",
+     "6a3219ce3fc875afcc9347671ba93a01564a98cb4847aa81261bf04fa17b9ffe",
+     "af3bf3e17caddcc46e3f2cbda27b88d327b4afa99d0a57d30280ba81616ca975"
+    ],
+    "current_cumulative_fact_id": "3aca7bbe7f2b4e6449f6fd7586e342afe7210a9c919f94b885e807989e2a28f5",
+    "prior_year_same_period_fact_id": "6a3219ce3fc875afcc9347671ba93a01564a98cb4847aa81261bf04fa17b9ffe",
+    "prior_annual_fact_id": "af3bf3e17caddcc46e3f2cbda27b88d327b4afa99d0a57d30280ba81616ca975",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "original",
+     "prior_annual": "original"
+    },
+    "input_available_at": {
+     "current_cumulative": "2024-10-30",
+     "prior_year_same_period": "2023-10-31",
+     "prior_annual": "2024-03-26"
+    },
+    "input_effective_from": {
+     "current_cumulative": "2024-10-31",
+     "prior_year_same_period": "2023-11-01",
+     "prior_annual": "2024-03-27"
+    },
+    "available_at_max": "2024-10-30",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "54e68861d37668d7af8eb43cb72c751392d2b7b2d09fa5035a523e3b5f3a7112"
+   },
+   {
+    "financial_state_id": "228c1c19ed551fc3192cfe5ca45642ad693810b926afcc3f7d547875f7eaecbf",
+    "metric_id": "PS_A_TTM",
+    "state_type": "ttm",
+    "concept": "revenue",
+    "fiscal_year": 2024,
+    "report_type": "annual",
+    "period_end": "2024-12-31",
+    "effective_from": "2025-04-01",
+    "value_decimal": "2937981000000.0",
+    "status": "computed",
+    "formula_id": "ps-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "4fa6c3ad7f8aeb42e00b240a750685fe9154a0d843d3f405ffb2d6acd726914d"
+    ],
+    "current_cumulative_fact_id": "4fa6c3ad7f8aeb42e00b240a750685fe9154a0d843d3f405ffb2d6acd726914d",
+    "prior_year_same_period_fact_id": "",
+    "prior_annual_fact_id": "",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "input_available_at": {
+     "current_cumulative": "2025-03-31",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "input_effective_from": {
+     "current_cumulative": "2025-04-01",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "available_at_max": "2025-03-31",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "228c1c19ed551fc3192cfe5ca45642ad693810b926afcc3f7d547875f7eaecbf"
+   },
+   {
+    "financial_state_id": "4635bb4cccadaec49ad43824aad7306ef494214a09c9e5e25e8fc5ae974c9e2c",
+    "metric_id": "PS_A_TTM",
+    "state_type": "ttm",
+    "concept": "revenue",
+    "fiscal_year": 2025,
+    "report_type": "q1",
+    "period_end": "2025-03-31",
+    "effective_from": "2025-05-06",
+    "value_decimal": "2878288000000.0",
+    "status": "computed",
+    "formula_id": "ps-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "392341588879d7e26168116471ce360edf4515b5617a09ae3709912c3774d70a",
+     "4fa6c3ad7f8aeb42e00b240a750685fe9154a0d843d3f405ffb2d6acd726914d",
+     "79c8a790cc93ab7a6859a6e383ae796a20e3bbfe514bc0df3c1f39f530c17757"
+    ],
+    "current_cumulative_fact_id": "79c8a790cc93ab7a6859a6e383ae796a20e3bbfe514bc0df3c1f39f530c17757",
+    "prior_year_same_period_fact_id": "392341588879d7e26168116471ce360edf4515b5617a09ae3709912c3774d70a",
+    "prior_annual_fact_id": "4fa6c3ad7f8aeb42e00b240a750685fe9154a0d843d3f405ffb2d6acd726914d",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "restated_1",
+     "prior_annual": "original"
+    },
+    "input_available_at": {
+     "current_cumulative": "2025-04-30",
+     "prior_year_same_period": "2025-04-30",
+     "prior_annual": "2025-03-31"
+    },
+    "input_effective_from": {
+     "current_cumulative": "2025-05-06",
+     "prior_year_same_period": "2025-05-06",
+     "prior_annual": "2025-04-01"
+    },
+    "available_at_max": "2025-04-30",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "4635bb4cccadaec49ad43824aad7306ef494214a09c9e5e25e8fc5ae974c9e2c"
+   },
+   {
+    "financial_state_id": "af9165687087c9985af312fbf65c371c3f58d961f7dcade25dbb5f60cf423931",
+    "metric_id": "PS_A_TTM",
+    "state_type": "ttm",
+    "concept": "revenue",
+    "fiscal_year": 2025,
+    "report_type": "half_year",
+    "period_end": "2025-06-30",
+    "effective_from": "2025-08-28",
+    "value_decimal": "2833107000000.0",
+    "status": "computed",
+    "formula_id": "ps-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "4fa6c3ad7f8aeb42e00b240a750685fe9154a0d843d3f405ffb2d6acd726914d",
+     "dbdd314f910a87f01aedc8771cc6d4e159f1ec45effd41bcae062afc59c083cc",
+     "fdd3701474f5ff927b1e1d4251ea03192428e72d3432b2327f3442f149c9e127"
+    ],
+    "current_cumulative_fact_id": "dbdd314f910a87f01aedc8771cc6d4e159f1ec45effd41bcae062afc59c083cc",
+    "prior_year_same_period_fact_id": "fdd3701474f5ff927b1e1d4251ea03192428e72d3432b2327f3442f149c9e127",
+    "prior_annual_fact_id": "4fa6c3ad7f8aeb42e00b240a750685fe9154a0d843d3f405ffb2d6acd726914d",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "restated_1",
+     "prior_annual": "original"
+    },
+    "input_available_at": {
+     "current_cumulative": "2025-08-27",
+     "prior_year_same_period": "2025-08-27",
+     "prior_annual": "2025-03-31"
+    },
+    "input_effective_from": {
+     "current_cumulative": "2025-08-28",
+     "prior_year_same_period": "2025-08-28",
+     "prior_annual": "2025-04-01"
+    },
+    "available_at_max": "2025-08-27",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "af9165687087c9985af312fbf65c371c3f58d961f7dcade25dbb5f60cf423931"
+   },
+   {
+    "financial_state_id": "0976a2d724c652a46a1dd70a1956fe1e51be141958e9da88189257bf329c0fd1",
+    "metric_id": "PS_A_TTM",
+    "state_type": "ttm",
+    "concept": "revenue",
+    "fiscal_year": 2025,
+    "report_type": "q3",
+    "period_end": "2025-09-30",
+    "effective_from": "2025-11-03",
+    "value_decimal": "2849543000000.0",
+    "status": "computed",
+    "formula_id": "ps-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "4fa6c3ad7f8aeb42e00b240a750685fe9154a0d843d3f405ffb2d6acd726914d",
+     "a3ddcf9cb8b45531d0960415f440b937bff74e47ecd4fe6defc10a5ee4e51671",
+     "bbee0c2ed6405500ddc5783a83677b270b10eab5c86d74eb8a4ada13c5b73e76"
+    ],
+    "current_cumulative_fact_id": "a3ddcf9cb8b45531d0960415f440b937bff74e47ecd4fe6defc10a5ee4e51671",
+    "prior_year_same_period_fact_id": "bbee0c2ed6405500ddc5783a83677b270b10eab5c86d74eb8a4ada13c5b73e76",
+    "prior_annual_fact_id": "4fa6c3ad7f8aeb42e00b240a750685fe9154a0d843d3f405ffb2d6acd726914d",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "restated_1",
+     "prior_annual": "original"
+    },
+    "input_available_at": {
+     "current_cumulative": "2025-10-31",
+     "prior_year_same_period": "2025-10-31",
+     "prior_annual": "2025-03-31"
+    },
+    "input_effective_from": {
+     "current_cumulative": "2025-11-03",
+     "prior_year_same_period": "2025-11-03",
+     "prior_annual": "2025-04-01"
+    },
+    "available_at_max": "2025-10-31",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "0976a2d724c652a46a1dd70a1956fe1e51be141958e9da88189257bf329c0fd1"
+   },
+   {
+    "financial_state_id": "d82b403d63b57dbe4dc77262005732755fd4d2f8a8bd1349c6b21b1e43115a54",
+    "metric_id": "PS_A_TTM",
+    "state_type": "ttm",
+    "concept": "revenue",
+    "fiscal_year": 2025,
+    "report_type": "annual",
+    "period_end": "2025-12-31",
+    "effective_from": "2026-03-31",
+    "value_decimal": "2864469000000.0",
+    "status": "computed",
+    "formula_id": "ps-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "eb7a6d0286eea95bc075757114d0a82c9f725f28c5c59193227ded66959fce9b"
+    ],
+    "current_cumulative_fact_id": "eb7a6d0286eea95bc075757114d0a82c9f725f28c5c59193227ded66959fce9b",
+    "prior_year_same_period_fact_id": "",
+    "prior_annual_fact_id": "",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "input_available_at": {
+     "current_cumulative": "2026-03-30",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "input_effective_from": {
+     "current_cumulative": "2026-03-31",
+     "prior_year_same_period": "",
+     "prior_annual": ""
+    },
+    "available_at_max": "2026-03-30",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "d82b403d63b57dbe4dc77262005732755fd4d2f8a8bd1349c6b21b1e43115a54"
+   },
+   {
+    "financial_state_id": "901767a7ef7fa9f40c9520a5a2d784be6b23c73da1bb690f7fb1aeff64aeddf8",
+    "metric_id": "PS_A_TTM",
+    "state_type": "ttm",
+    "concept": "revenue",
+    "fiscal_year": 2026,
+    "report_type": "q1",
+    "period_end": "2026-03-31",
+    "effective_from": "2026-05-06",
+    "value_decimal": "2847796000000.0",
+    "status": "computed",
+    "formula_id": "ps-a-ttm-v1",
+    "formula_version": 1,
+    "input_fact_ids": [
+     "26db6fb3e9cc6e98e14677b2847abf14c8ae398c55608ec8cb1e85481cbf02dc",
+     "eb7a6d0286eea95bc075757114d0a82c9f725f28c5c59193227ded66959fce9b",
+     "eea34bc6e409453b8767ae5c05d47b8d78b2133cbc7f4d5cfc8f43b1b42ecb0c"
+    ],
+    "current_cumulative_fact_id": "eea34bc6e409453b8767ae5c05d47b8d78b2133cbc7f4d5cfc8f43b1b42ecb0c",
+    "prior_year_same_period_fact_id": "26db6fb3e9cc6e98e14677b2847abf14c8ae398c55608ec8cb1e85481cbf02dc",
+    "prior_annual_fact_id": "eb7a6d0286eea95bc075757114d0a82c9f725f28c5c59193227ded66959fce9b",
+    "restatement_versions": {
+     "current_cumulative": "original",
+     "prior_year_same_period": "restated_1",
+     "prior_annual": "original"
+    },
+    "input_available_at": {
+     "current_cumulative": "2026-04-30",
+     "prior_year_same_period": "2026-04-30",
+     "prior_annual": "2026-03-30"
+    },
+    "input_effective_from": {
+     "current_cumulative": "2026-05-06",
+     "prior_year_same_period": "2026-05-06",
+     "prior_annual": "2026-03-31"
+    },
+    "available_at_max": "2026-04-30",
+    "share_basis_decimal": "183020977818",
+    "share_continuity_proof_id": "r4d1-share-continuity-constancy-v1",
+    "state_digest": "901767a7ef7fa9f40c9520a5a2d784be6b23c73da1bb690f7fb1aeff64aeddf8"
+   }
+  ]
+ }
+}
