@@ -176,13 +176,16 @@ Status: completed
   （91.964286/93.270025/84.958791/90.957886/95.169282 为 evidence-only，
   仅出现在 north-star doc §22）。
 
-### Remote CI（run `31155321795`，push `834e6b6`）
+### Remote CI（最终 tip——run `31156862547`，push `e3d9d48`）
 
 - Ubuntu clean-clone：**PASS**（1687 passed, 3 skipped, 3 warnings）。
 - Windows clean-clone：**PASS**（1687 passed, 3 skipped, 2 warnings）。
 - identity-compare：**PASS**（`identical: true`, gate `ok`, digest
   `1843da77…`）。
 - 全量 pytest（含 R4F 静态决策测试与 R4E.5 受保护测试）双平台全绿。
+- 注：首次 closeout（run `31155321795`，push `834e6b6`）因静态测试仍断言
+  acceptance 中 `NOT COMMITTED / NOT PUSHED` 占位而 RED 一次；已修正该 stale
+  断言（改为校验实际 closeout 标记，测试数保持 22），最终 tip 全绿。
 
 ## 结果
 
@@ -224,8 +227,10 @@ Status: completed
 ## 最终 Git 状态
 
 - 当前分支：`feat/m2-value-assessment-mvp`。
-- 最终 tip：`834e6b6`（closeout）；先前提交 `2ab3106`（freeze decision）、
-  `834e6b6`（record closeout）。已推送 `017b656..834e6b6`。
+- 最终 tip：`e3d9d48`（test-fix，CI run `31156862547` 全绿）；先前提交
+  `2ab3106`（freeze decision）、`834e6b6`（record closeout）、
+  `be65ea5`（CI closeout，首次因 stale 断言 RED，见验证）、`e3d9d48`（fix）。
+  已推送 `017b656..e3d9d48`。
 - 工作区仅剩受保护未跟踪项：`AGENTS.md`、`agent/goals/`、既有修改
   `acceptance/m2_stage2i2r_official_fact_extraction_and_lineage_closeout.md`
   （未动、未 stage）。

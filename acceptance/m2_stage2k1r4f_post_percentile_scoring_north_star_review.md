@@ -3,7 +3,7 @@
 ## Verdict: PASS — LOCAL CANDIDATE
 
 M2 Stage 2K.1R4F: **PASS — LOCAL CANDIDATE**
-Remote CI: **GREEN** (run `31155321795` on push `834e6b6`)
+Remote CI: **GREEN** (run `31156862547` on final tip `e3d9d48`)
 decision: `VALUATION_SCORING_CONTRACT_MIGRATION_REQUIRED`
 
 This stage reconciles the `valuation_attractiveness` scoring contract against
@@ -12,7 +12,7 @@ boundary of the next-stage v2 valuation scoring migration. It is a
 **review / decision** stage: it does **not** modify any scoring registry,
 policy, engine, shadow, or sensitivity, and it does **not** compute a score.
 
-## 0b. Remote CI (run `31155321795` on push `834e6b6`)
+## 0b. Remote CI (run `31156862547` on final tip `e3d9d48`)
 
 - Ubuntu clean-clone: **PASS** (1687 passed, 3 skipped, 3 warnings).
 - Windows clean-clone: **PASS** (1687 passed, 3 skipped, 2 warnings).
@@ -153,4 +153,4 @@ R4F1 (`M2_STAGE_2K1R4F1_VALUATION_SCORING_CONTRACT_V2_MIGRATION_AND_SHADOW_REFRE
 is required to actually migrate: create registry v2 / policy v2, refresh the
 non-production shadow, and re-run the full sensitivity. Entry to R4F1 is **not**
 authorised by this stage and requires explicit user instruction. R4F is
-review-only, committed and pushed, and CI-confirmed (run `31155321795`).
+review-only, committed and pushed, and CI-confirmed (run `31156862547`).
