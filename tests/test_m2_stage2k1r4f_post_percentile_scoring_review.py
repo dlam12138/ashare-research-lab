@@ -253,9 +253,15 @@ def test_v1_scoring_files_present_and_immutable_markers():
     pol = _load(POLICY_V1_PATH)
     assert reg["schema"] == "value_dimension_scoring_registry_v1"
     assert pol["schema"] == "value_dimension_scoring_policy_v1"
-    # The v2 files must NOT exist yet (R4F freezes the plan, R4F1 creates them).
-    assert not (ROOT / "config" / "value_dimension_scoring_registry_v2.json").exists()
-    assert not (ROOT / "config" / "value_dimension_scoring_policy_v2.json").exists()
+    # At R4F review time the v2 files did not exist; R4F.1 legally created them
+    # as a superseding immutable-history migration. v1 remains immutable.
+    v2_reg = ROOT / "config" / "value_dimension_scoring_registry_v2.json"
+    v2_pol = ROOT / "config" / "value_dimension_scoring_policy_v2.json"
+    if v2_reg.exists() and v2_pol.exists():
+        r2 = _load(v2_reg)
+        p2 = _load(v2_pol)
+        assert r2["supersedes"] == "value_dimension_scoring_registry_v1"
+        assert p2["supersedes"] == "value_dimension_scoring_policy_v1"
 
 
 def test_decision_weights_are_fixed_half_half():

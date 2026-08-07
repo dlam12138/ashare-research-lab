@@ -15,6 +15,7 @@ import argparse
 import copy
 import json
 import math
+from decimal import Decimal
 from pathlib import Path
 from typing import Any
 
@@ -25,6 +26,16 @@ REPORTS = ROOT / "reports"
 REGISTRY_PATH = CONFIG / "value_dimension_scoring_registry_v1.json"
 POLICY_PATH = CONFIG / "value_dimension_scoring_policy_v1.json"
 INPUTS_PATH = CONFIG / "value_dimension_scoring_shadow_inputs_v1.json"
+
+# v2 contract artifacts (R4F.1). Not used by the v1 default path.
+REGISTRY_PATH_V2 = CONFIG / "value_dimension_scoring_registry_v2.json"
+POLICY_PATH_V2 = CONFIG / "value_dimension_scoring_policy_v2.json"
+INPUTS_PATH_V2 = CONFIG / "value_dimension_scoring_shadow_inputs_v2.json"
+
+# Frozen v2 cycle-context hard-gap status. When a registered component carries
+# this status the valuation_attractiveness dimension must NOT produce a numeric
+# score and must NOT renormalize the remaining weights.
+CYCLE_CONTEXT_GAP_STATUS = "coverage_gap_cycle_context_required"
 
 DIMENSIONS = [
     "enterprise_quality",
@@ -128,6 +139,21 @@ def _component_score(
     value = raw.get("value")
     status = raw.get("status", "present")
 
+    # R4F.1 cycle-context hard gap: a registered component carrying the frozen
+    # cycle-context status is blocked from producing a numeric score. Blocked
+    # is NOT score=0 and the component is NOT removed; it stays eligible for
+    # weight accounting and coverage, and the valuation dimension must not
+    # renormalize the remaining weights.
+    if status == CYCLE_CONTEXT_GAP_STATUS:
+        return {
+            "score": None,
+            "status": CYCLE_CONTEXT_GAP_STATUS,
+            "eligible": True,
+            "covered": False,
+            "source": raw.get("source", ""),
+            "note": "cycle-context contract required; numeric score not authorized (blocked)",
+        }
+
     # Coverage gap: present in registry but not computable (ROIC / dividend yield).
     if value is None or status == "not_computable_under_strict_evidence_contract":
         return {
@@ -168,6 +194,49 @@ def _component_score(
             "covered": True,
             "source": raw.get("source", ""),
             "note": f"self-history percentile 3y={pct:.4f}",
+        }
+
+    if benchmark == "self_history_dual_window_percentile":
+        # v2 contract: the input already binds the canonical Decimal
+        # dual-window percentile (0..100) computed as (p3y + p5y) / 2 with
+        # Decimal arithmetic. The engine never recomputes it from binary floats.
+        # A hard-gap component (va_pe) carries the cycle-context status and is
+        # handled before this branch, so this branch only scores PB/PS/FCF.
+        dual = raw.get("dual_window_percentile_decimal")
+        if dual is None:
+            return {
+                "score": None,
+                "status": "coverage_gap",
+                "eligible": True,
+                "covered": False,
+                "source": raw.get("source", ""),
+                "note": "no dual-window percentile; not eligible",
+            }
+        try:
+            dual_dec = Decimal(dual)
+        except (ValueError, TypeError):
+            dual_dec = None
+        if dual_dec is None or not (0 <= dual_dec <= 100):
+            return {
+                "score": None,
+                "status": "not_trusted",
+                "eligible": True,
+                "covered": False,
+                "source": raw.get("source", ""),
+                "note": "invalid dual-window percentile; not trusted",
+            }
+        # lower_better: score = 100 - dual (Decimal, then quantized for display).
+        score_dec = (
+            Decimal("100") - dual_dec if direction == "lower_better" else dual_dec
+        )
+        score = float(score_dec.quantize(Decimal("0.0001")))
+        return {
+            "score": round(score, 4),
+            "status": "computed_shadow",
+            "eligible": True,
+            "covered": True,
+            "source": raw.get("source", ""),
+            "note": f"dual-window percentile={dual}",
         }
 
     if benchmark == "binary_or_categorical_evidence":
@@ -285,6 +354,31 @@ def compute_dimension(
 
     coverage_ratio = covered_weight / eligible_weight if eligible_weight else 0.0
     missing_ids = [cid for cid, res in component_results.items() if not res["covered"]]
+
+    # R4F.1 hard-gap policy: components carrying a non-renormalizable gap status
+    # (frozen cycle-context contract) block the valuation dimension from
+    # producing a numeric score. No dimension-level renormalization is allowed:
+    # covered_weight / coverage_ratio / missing / blocked are still reported for
+    # evidence, but the remaining weights are NOT rescaled to fill the gap.
+    non_renorm = set(policy.get("non_renormalizable_gap_statuses", []))
+    blocked_ids = [
+        cid
+        for cid, res in component_results.items()
+        if res["status"] in non_renorm
+    ]
+    if blocked_ids:
+        return {
+            "dimension_id": dimension_id,
+            "score": None,
+            "band": None,
+            "status": "insufficient_evidence_cycle_context",
+            "eligible_weight": round(eligible_weight, 4),
+            "covered_weight": round(covered_weight, 4),
+            "coverage_ratio": round(coverage_ratio, 4),
+            "missing_component_ids": missing_ids,
+            "blocked_component_ids": blocked_ids,
+            "components": component_results,
+        }
 
     # Veto gate: any triggered risk veto blocks the dimension.
     veto_triggered = int(raw.get("rk_veto_triggered", {}).get("value", 0))
@@ -459,14 +553,21 @@ def run_sensitivity(
     return {"schema": "petrochina_dimension_scoring_sensitivity_v1", **results}
 
 
-def validate_and_emit() -> dict[str, Any]:
-    registry = _load(REGISTRY_PATH)
-    policy = _load(POLICY_PATH)
-    inputs = _load(INPUTS_PATH)
+def validate_and_emit(
+    registry_path: Path = REGISTRY_PATH,
+    policy_path: Path = POLICY_PATH,
+    inputs_path: Path = INPUTS_PATH,
+) -> dict[str, Any]:
+    registry = _load(registry_path)
+    policy = _load(policy_path)
+    inputs = _load(inputs_path)
     errors = _validate_contracts(registry, policy, inputs)
     shadow = compute_shadow(registry, policy, inputs)
     sensitivity = run_sensitivity(registry, policy, inputs)
     return {
+        "registry_path": str(registry_path),
+        "policy_path": str(policy_path),
+        "inputs_path": str(inputs_path),
         "contract_errors": errors,
         "shadow": shadow,
         "sensitivity": sensitivity,
@@ -477,9 +578,17 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("command", choices=("compute", "validate"))
     parser.add_argument("--output", default="")
+    # R4F.1: allow v2 contract selection. Defaults preserve the v1 golden path.
+    parser.add_argument("--registry", default=str(REGISTRY_PATH))
+    parser.add_argument("--policy", default=str(POLICY_PATH))
+    parser.add_argument("--inputs", default=str(INPUTS_PATH))
     args = parser.parse_args()
 
-    result = validate_and_emit()
+    result = validate_and_emit(
+        registry_path=Path(args.registry),
+        policy_path=Path(args.policy),
+        inputs_path=Path(args.inputs),
+    )
     if args.command == "compute" and args.output:
         out = Path(args.output)
         out.parent.mkdir(parents=True, exist_ok=True)

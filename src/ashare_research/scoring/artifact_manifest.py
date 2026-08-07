@@ -62,6 +62,7 @@ ALLOWED_MANIFEST_SCHEMAS = frozenset(
         "m2_stage2k1r4e3_artifact_manifest",
         "m2_stage2k1r4e4_artifact_manifest_v2",
         "m2_stage2k1r4e5_artifact_manifest_v2",
+        "m2_stage2k1r4f1_artifact_manifest_v2",
     }
 )
 
@@ -80,6 +81,7 @@ V2_SCHEMAS = frozenset(
         "m2_stage2k1r4e3_artifact_manifest",
         "m2_stage2k1r4e4_artifact_manifest_v2",
         "m2_stage2k1r4e5_artifact_manifest_v2",
+        "m2_stage2k1r4f1_artifact_manifest_v2",
     }
 )
 

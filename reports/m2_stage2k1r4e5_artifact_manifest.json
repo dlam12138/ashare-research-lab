@@ -77,8 +77,8 @@
   {
    "path": "src/ashare_research/scoring/artifact_manifest.py",
    "digest_algorithm": "sha256_lf_normalized_bytes_v1",
-   "sha256": "b840b71700ffd5425f78d639b6215ca374b11f68cb55728cd8c0aff93d8dbd4c",
-   "byte_size": 13949
+   "sha256": "97bfdd2308a2656d55db99014669cc01b08762c91accd58bd93ca4bd54edc809",
+   "byte_size": 14045
   },
   {
    "path": "src/ashare_research/tools/m2_stage2k1r4e5_historical_percentile.py",
@@ -93,5 +93,5 @@
    "byte_size": 16105
   }
  ],
- "manifest_digest": "de562207dc186789e2c069a53e8de17f8fa28cb18846cf57fa084ee66afd6b07"
+ "manifest_digest": "c05f9a0e278b30ccf626b0720a1e91aeb3927ae6ebac696a72a4a7264e009cc3"
 }

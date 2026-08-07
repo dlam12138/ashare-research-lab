@@ -8,8 +8,8 @@
   "files": [
     {
       "path": "src/ashare_research/scoring/artifact_manifest.py",
-      "sha256": "85ef8d2b920756930371453d811312de487511b9a632505d8304b8a61e75188e",
-      "byte_size": 12282
+      "sha256": "97bfdd2308a2656d55db99014669cc01b08762c91accd58bd93ca4bd54edc809",
+      "byte_size": 14045
     },
     {
       "path": "src/ashare_research/scoring/sensitivity.py",

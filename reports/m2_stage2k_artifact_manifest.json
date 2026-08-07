@@ -81,8 +81,8 @@
     },
     {
       "logical_path": "src/ashare_research/tools/m2_stage2k_scoring_shadow.py",
-      "sha256": "b99dc1d4f340888b86fbb67a0328917245ff1cf8e24e975387402edf1c29e60a",
-      "byte_size": 18191
+      "sha256": "cdf37223181e35d34eb2fce1d9dc460ffd37b4ba807f8d94b40e319c7f018264",
+      "byte_size": 23031
     },
     {
       "logical_path": "tests/test_m2_stage2k_dimension_scoring.py",

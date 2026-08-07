@@ -1,0 +1,117 @@
+{
+  "schema": "value_dimension_scoring_policy_v2",
+  "version": "2.0",
+  "owner": "M2 Stage 2K scoring addendum",
+  "non_production": true,
+  "research_methodology_test_only": true,
+  "overall_score_prohibited": true,
+  "recommendation_prohibited": true,
+  "score_eligible": false,
+  "default_coverage_gate": 0.6,
+  "default_stability_tolerance": 1.0,
+  "band_map": {
+    "A": [
+      80,
+      100
+    ],
+    "B": [
+      60,
+      80
+    ],
+    "C": [
+      40,
+      60
+    ],
+    "D": [
+      20,
+      40
+    ],
+    "E": [
+      0,
+      20
+    ]
+  },
+  "dimension_statuses": [
+    "computed_shadow",
+    "ordinal_shadow",
+    "insufficient_evidence",
+    "blocked_by_risk_veto",
+    "not_applicable",
+    "not_trusted",
+    "insufficient_evidence_cycle_context"
+  ],
+  "missingness_rules": {
+    "missing_never_zero": true,
+    "missing_never_silently_dropped": true,
+    "missing_component_ids_reported": true,
+    "reascription": "renormalization_allowed_only_under_policy"
+  },
+  "coverage_rule": {
+    "eligible_weight": "sum of weights of all registered components",
+    "covered_weight": "sum of weights of components with valid inputs",
+    "coverage_ratio": "covered_weight / eligible_weight",
+    "below_gate_action": "return insufficient_evidence; no numeric score",
+    "renormalization_policy": "allowed only when coverage_ratio >= default_coverage_gate; original and effective weights both reported",
+    "minimum_gate": 0.6,
+    "roic_rule": "ROIC absence reduces enterprise_quality coverage; never zero; never silently reweighted away",
+    "valuation_cycle_context_rule": "coverage == 0.6 with a cycle-context block must NOT output a numeric score; no renormalization fills the gap"
+  },
+  "confidence_rule": {
+    "evidence_confidence": "separate from score",
+    "stage2f_gap_effect": "9 dividend exchange-payload gaps  reduce evidence confidence by an explicit rule; they do not lower the business-quality score",
+    "stage2h_gap_effect": "2 missing_evidence risk slots reduce evidence confidence; they are not a negative conclusion",
+    "roic_gap_effect": "7 ROIC gaps reduce enterprise_quality coverage and evidence confidence; never a zero or poor-capital-return claim",
+    "confidence_not_quality": "evidence confidence must never be described as business quality"
+  },
+  "risk_veto_rule": {
+    "non_compensatory": true,
+    "triggered_veto_action": "risk_and_evidence_integrity -> blocked_by_risk_veto; veto surfaced beside every dimension",
+    "missing_evidence_not_no_risk": true,
+    "no_high_score_erases_veto": true
+  },
+  "cycle_rule": {
+    "cyclical_interpretation": "oil/gas cyclical; low PE at a possible cycle peak must not automatically receive a high valuation score",
+    "history_window": "5-year window for quality; 3y/5y dual-window PIT percentiles for valuation (aggregation_contract_version self_history_dual_window_percentile_v1)"
+  },
+  "weight_modes": {
+    "equal": "equal subdimension weights",
+    "theory_informed": "registered weights in the registry",
+    "evidence_card": "no aggregation; each component shown as evidence"
+  },
+  "no_cross_dimension_weights": true,
+  "no_overall_score": true,
+  "sensitivity_plan": [
+    "weight_plus_minus_25_percent",
+    "leave_one_component_out",
+    "alternative_transform",
+    "coverage_threshold_perturbation",
+    "one_grade_band_stability",
+    "missing_roic_scenario",
+    "unresolved_dividend_evidence_scenario",
+    "unresolved_risk_evidence_scenario"
+  ],
+  "prohibited_outputs": [
+    "overall_score",
+    "rank",
+    "recommendation",
+    "target_price",
+    "upside_probability",
+    "portfolio_weight",
+    "buy_sell_signal"
+  ],
+  "supersedes": "value_dimension_scoring_policy_v1",
+  "supersession_reason": "trusted_pit_ttm_mrq_dual_window_percentile_migration",
+  "migration_stage": "M2_STAGE_2K1R4F1",
+  "non_renormalizable_gap_statuses": [
+    "coverage_gap_cycle_context_required"
+  ],
+  "hard_gap_policy": {
+    "status": "insufficient_evidence_cycle_context",
+    "action": "any registered component carrying a non_renormalizable_gap_status blocks the valuation_attractiveness numeric score and band; eligible_weight/covered_weight/coverage_ratio/missing/blocked are still reported; NO dimension-level renormalization",
+    "blocked_equals_zero": false,
+    "covered_equals_zero": false,
+    "pe_component_not_deleted": true,
+    "pe_weight_not_reassigned": true,
+    "registered_weight_topology_unchanged": true
+  }
+}
