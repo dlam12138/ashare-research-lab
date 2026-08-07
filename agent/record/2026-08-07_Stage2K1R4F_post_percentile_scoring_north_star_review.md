@@ -170,6 +170,19 @@ Status: completed
 - JSON 解析校验：所有 R4F JSON artifact 可正常 `json.load`。
 - 受保护项（`AGENTS.md`、`agent/goals/`、`acceptance/m2_stage2i2r_*`、
   stash、默认 DB、registry v4、R4E.4/R4E.5 artifacts、scoring 文件）未动。
+- v1 registry/policy `git diff` 为空（不可变）；registry v2 / policy v2 /
+  shadow v6 / sensitivity v8 均不存在。
+- option matrix 与 decision 中不含实际 percentile 数值
+  （91.964286/93.270025/84.958791/90.957886/95.169282 为 evidence-only，
+  仅出现在 north-star doc §22）。
+
+### Remote CI（run `31155321795`，push `834e6b6`）
+
+- Ubuntu clean-clone：**PASS**（1687 passed, 3 skipped, 3 warnings）。
+- Windows clean-clone：**PASS**（1687 passed, 3 skipped, 2 warnings）。
+- identity-compare：**PASS**（`identical: true`, gate `ok`, digest
+  `1843da77…`）。
+- 全量 pytest（含 R4F 静态决策测试与 R4E.5 受保护测试）双平台全绿。
 
 ## 结果
 
@@ -210,8 +223,11 @@ Status: completed
 
 ## 最终 Git 状态
 
-- 当前分支：`feat/m2-value-assessment-mvp`；HEAD `017b656`（未变）。
-- 未提交修改：上述 R4F 新增文件均未跟踪（`??`）；另有既有受保护修改
-  `acceptance/m2_stage2i2r_official_fact_extraction_and_lineage_closeout.md`、
-  `AGENTS.md`、`agent/goals/`（未动）。
-- 未创建提交、未打 Tag、未推送（按指令：未经明确授权不提交不推送）。
+- 当前分支：`feat/m2-value-assessment-mvp`。
+- 最终 tip：`834e6b6`（closeout）；先前提交 `2ab3106`（freeze decision）、
+  `834e6b6`（record closeout）。已推送 `017b656..834e6b6`。
+- 工作区仅剩受保护未跟踪项：`AGENTS.md`、`agent/goals/`、既有修改
+  `acceptance/m2_stage2i2r_official_fact_extraction_and_lineage_closeout.md`
+  （未动、未 stage）。
+- 已创建提交并推送；未 force push、未 reset、未 tag、未 merge、未 PR。
+- R4F.1 未开始。
