@@ -2,7 +2,17 @@
 
 Status: completed
 Closeout verdict: PASS — LOCAL CANDIDATE
-Remote CI: PENDING
+Remote CI: GREEN
+Implementation commits:
+- be7bbdb feat: integrate selected secondary market provider
+- 9365b2f feat: release formal PIT valuation candidate v2
+- b574024 docs: record R4E.4 local closeout
+CI run: 31148153204 (push b574024)
+- Ubuntu clean-clone: PASS (1636 passed, 3 skipped, 3 warnings)
+- Windows clean-clone: PASS (1636 passed, 3 skipped, 2 warnings)
+- identity-compare: PASS
+- R4E.4 manifest verifier: PASS
+- R4C1 manifest verifier: PASS
 Decision:
 PIT_VALUATION_SERIES_CANDIDATE_TRUSTED_PERCENTILE_PREFLIGHT_ALLOWED
 Historical percentiles: NOT COMPUTED

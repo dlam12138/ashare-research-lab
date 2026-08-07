@@ -5,8 +5,8 @@
   {
    "path": "acceptance/m2_stage2k1r4e4_selected_secondary_provider_integration.md",
    "digest_algorithm": "sha256_lf_normalized_bytes_v1",
-   "sha256": "05af84933b3d5ace1788d2c6709a8ab5a8c4507910b666daaeee4290001d0178",
-   "byte_size": 11525
+   "sha256": "eb0efc3d799e6b38a8501c8dea83a76c635863ef5418ed61a0a929dda344ee2b",
+   "byte_size": 12489
   },
   {
    "path": "config/pit_valuation_secondary_provider_preflight_v1.json",
@@ -135,5 +135,5 @@
    "byte_size": 34289
   }
  ],
- "manifest_digest": "53deb07da93054fddb5e314760c3c0803001afc6256060d17171597b78154c64"
+ "manifest_digest": "cdda0083d83c6f4529a50690b089ac8be9f72b8c04142f22d2fc113545177a6e"
 }

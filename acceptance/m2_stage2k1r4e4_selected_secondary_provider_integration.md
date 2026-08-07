@@ -1,9 +1,9 @@
 # M2 Stage 2K.1R4E.4 — Selected Secondary Provider Integration & Registry v4 Release
 
-## Verdict: PASS — LOCAL CANDIDATE
+## Verdict: PASS
 
-M2 Stage 2K.1R4E.4: **PASS — LOCAL CANDIDATE**
-Remote CI: **PENDING**
+M2 Stage 2K.1R4E.4: **PASS**
+Remote CI: **GREEN** (run `31148153204` on push `b574024`)
 decision: `PIT_VALUATION_SERIES_CANDIDATE_TRUSTED_PERCENTILE_PREFLIGHT_ALLOWED`
 
 The R4E.3-selected secondary provider `tencent_via_akshare` (underlying Tencent,
@@ -18,12 +18,13 @@ PIT PE/PB/PS candidate v2 was published (4053 observations, ALLOWED). The
 economic identity migration from candidate v1 → v2 left ratio/status/market-close
 **unchanged** (0/0/0) with only the expected lineage-identity bindings changed.
 No percentile, no scoring, no peer, no production Metric Result, no default-DB
-write, no M3. Local validation is complete; **nothing was committed or pushed**.
+write, no M3. Local validation complete and pushed; remote CI green (run
+`31148153204`).
 
 ## 0. Final report card
 
 ```
-M2 Stage 2K.1R4E.4:                                     PASS
+M2 Stage 2K.1R4E.4:                                     PASS (CI-backed)
 Provider-role abstraction:                              TRUSTED
 Registry v4 (immutable):                                COMPLETE / pass
 R4E.3 object promotion (byte-identical):                d760923a… ✓
@@ -43,7 +44,13 @@ Valuation scoring:                                      UNCHANGED_NON_PRODUCTION
 Default DB:                                             UNCHANGED
 Peer acquisition:                                       NOT ALLOWED
 M3:                                                     NOT STARTED
-Git:                                                    NOT COMMITTED / NOT PUSHED
+Remote CI (run 31148153204):                            GREEN
+  Ubuntu clean-clone:                                   PASS (1636 passed)
+  Windows clean-clone:                                  PASS (1636 passed)
+  identity-compare:                                     PASS
+  R4E.4 manifest verifier:                              PASS
+  R4C1 manifest verifier:                               PASS
+Git:                                                    COMMITTED + PUSHED (be7bbdb, 9365b2f, b574024)
 ```
 
 ## 1. Scope
@@ -191,6 +198,16 @@ acceptance doc, config, docs, code and tests that define this release.
   stash, default DB) untouched.
 - Pollution/secret scan: no absolute path, no proxy, no token in new code/config.
 
+### Remote CI (run `31148153204` on push `b574024`)
+
+- Ubuntu clean-clone: **PASS** (1636 passed, 3 skipped, 3 warnings).
+- Windows clean-clone: **PASS** (1636 passed, 3 skipped, 2 warnings).
+- identity-compare: **PASS** (exactly two cross-platform fingerprint artifacts,
+  provenance-gated comparison).
+- R4E.4 manifest verifier: **PASS** · R4C1 manifest verifier: **PASS**.
+- R4E.4 decision contract, provider-role uniqueness, 4053-observation contract,
+  dual oracle and percentile prohibition all green through the full CI suite.
+
 ## 14. Deliverables
 
 - `events/market_data_snapshot_registry_v4.json`
@@ -219,6 +236,5 @@ acceptance doc, config, docs, code and tests that define this release.
 ## 15. Next steps
 
 Historical PIT percentile preflight (the authorised next stage): compute the PIT
-PE/PB/PS historical percentiles, then the valuation scoring preflight. Local
-validation is complete; commit/push and percentile entry await explicit
-authorisation.
+PE/PB/PS historical percentiles, then the valuation scoring preflight. R4E.4 is
+committed and pushed (CI green); percentile entry awaits explicit authorisation.
