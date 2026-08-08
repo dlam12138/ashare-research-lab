@@ -104,6 +104,56 @@ def observations() -> list[dict]:
     return _observations()
 
 
+# ── synthetic content-addressed calendar (offline; mirrors R4D.1b) ──
+
+TRADE_DATES = [
+    "2017-01-03", "2017-01-04", "2017-01-05", "2017-01-06",
+    "2018-03-22", "2018-03-23", "2018-03-26",
+    "2019-03-21", "2019-03-22", "2019-03-25",
+    "2020-03-26", "2020-03-27", "2020-03-30",
+    "2021-03-26", "2021-03-29",
+    "2026-07-31", "2026-08-05",
+]
+
+
+def _load_synthetic_calendar() -> dict:
+    """Load the R4F3A calendar semantics from a committed, deterministic
+    synthetic content-addressed object (clean-clone safe; the real baostock
+    parquet is gitignored and never required by tests)."""
+    import hashlib
+
+    import pandas as pd
+
+    d = Path(__file__).resolve().parents[1] / "tmp"
+    d.mkdir(exist_ok=True)
+    df = pd.DataFrame(
+        {
+            "symbol": "601857.SH",
+            "trade_date": pd.to_datetime(TRADE_DATES),
+            "is_trading": [True] * len(TRADE_DATES),
+        }
+    )
+    tmp = d / "r4f3a_synthetic_calendar.parquet"
+    df.to_parquet(tmp)
+    sha = hashlib.sha256(tmp.read_bytes()).hexdigest()
+    obj = d / f"{sha}.parquet"
+    if not obj.is_file():
+        tmp.rename(obj)
+    reg = {
+        "schema": "pit_valuation_market_calendar_registry_v1",
+        "provider": "baostock",
+        "symbol": "601857.SH",
+        "object_sha256": sha,
+        "object_key": f"{sha}.parquet",
+        "row_count": len(TRADE_DATES),
+        "first_trading_day": TRADE_DATES[0],
+        "last_trading_day": TRADE_DATES[-1],
+        "evidence_cutoff": "2026-08-02",
+        "resolver_contract": "explicit_content_addressed_object_no_scan_no_fallback",
+    }
+    return load_market_calendar(d, registry=reg)
+
+
 # ─────────────── Upstream gate ───────────────
 
 
@@ -184,29 +234,51 @@ def test_calendar_overlap_reconciliation_pass():
 
 
 def test_new_calendar_same_announcement_resolves():
-    reg = _load_json(R4F3A_REGISTRY)
-    cal = load_market_calendar(ROOT / "tmp" / "market_cache" / "baostock", registry=reg)
+    cal = _load_synthetic_calendar()
     assert next_trading_day("2018-03-22", cal["trade_dates"]) == "2018-03-23"
     assert next_trading_day("2019-03-21", cal["trade_dates"]) == "2019-03-22"
     assert next_trading_day("2020-03-26", cal["trade_dates"]) == "2020-03-27"
 
 
 def test_next_trading_day_strictly_after_announcement():
-    reg = _load_json(R4F3A_REGISTRY)
-    cal = load_market_calendar(ROOT / "tmp" / "market_cache" / "baostock", registry=reg)
+    cal = _load_synthetic_calendar()
     for ann in ("2018-03-22", "2019-03-21", "2020-03-26", "2021-03-26"):
         eff = next_trading_day(ann, cal["trade_dates"])
         assert eff > ann
 
 
-def test_old_calendar_insufficient_fails_closed():
-    v1 = _load_json(CALENDAR_V1_REGISTRY)
+def test_old_calendar_insufficient_fails_closed(tmp_path: Path):
+    # calendar v1 (2020-01-02 start) cannot resolve a 2018 announcement:
+    # load with required_start=2018-03-22 must fail closed.
+    import hashlib
+
+    import pandas as pd
+
+    v1_trades = [d for d in TRADE_DATES if d >= "2020-01-02"]
+    df = pd.DataFrame(
+        {
+            "symbol": "601857.SH",
+            "trade_date": pd.to_datetime(v1_trades),
+            "is_trading": [True] * len(v1_trades),
+        }
+    )
+    tmp_path.mkdir(exist_ok=True)
+    t = tmp_path / "t.parquet"
+    df.to_parquet(t)
+    sha = hashlib.sha256(t.read_bytes()).hexdigest()
+    t.rename(tmp_path / f"{sha}.parquet")
+    reg = dict(_load_json(CALENDAR_V1_REGISTRY))
+    reg.update(
+        {
+            "object_sha256": sha,
+            "object_key": f"{sha}.parquet",
+            "row_count": len(v1_trades),
+            "first_trading_day": v1_trades[0],
+            "last_trading_day": v1_trades[-1],
+        }
+    )
     with pytest.raises(CalendarCoverageGapError):
-        load_market_calendar(
-            ROOT / "tmp" / "market_cache" / "baostock",
-            registry=v1,
-            required_start="2018-03-22",
-        )
+        load_market_calendar(tmp_path, registry=reg, required_start="2018-03-22")
 
 
 def test_missing_calendar_object_fails_closed(tmp_path: Path):
@@ -216,10 +288,30 @@ def test_missing_calendar_object_fails_closed(tmp_path: Path):
 
 
 def test_wrong_calendar_sha_fails_closed(tmp_path: Path):
-    reg = dict(_load_json(R4F3A_REGISTRY))
-    reg["object_sha256"] = "0" * 64
+    # a parquet named by the pinned sha whose content does NOT hash to it
+    import hashlib
+
+    import pandas as pd
+
+    df = pd.DataFrame(
+        {
+            "symbol": "601857.SH",
+            "trade_date": pd.to_datetime(TRADE_DATES),
+            "is_trading": [True] * len(TRADE_DATES),
+        }
+    )
+    tmp_path.mkdir(exist_ok=True)
+    t = tmp_path / "t.parquet"
+    df.to_parquet(t)
+    content_sha = hashlib.sha256(t.read_bytes()).hexdigest()
+    # write the object under the pinned-sha filename but with different content
+    pinned = "0" * 64
+    obj = tmp_path / f"{pinned}.parquet"
+    t.rename(obj)
+    assert content_sha != pinned  # content does not match its own name
+    reg = _load_json(R4F3A_REGISTRY)
     with pytest.raises(CalendarCoverageGapError):
-        load_market_calendar(ROOT / "tmp" / "market_cache" / "baostock", registry=reg)
+        load_market_calendar(tmp_path, registry=reg)
 
 
 # ─────────────── Source / cache ───────────────
