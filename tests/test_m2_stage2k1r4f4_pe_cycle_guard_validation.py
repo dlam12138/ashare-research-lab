@@ -57,7 +57,6 @@ R4F3A_DECISION = ROOT / "reports" / "m2_stage2k1r4f3a_decision.json"
 R4F3_PROTOTYPE = ROOT / "reports" / "petrochina_pe_normalized_earnings_prototype_v1.json"
 R4E5_PROFILE = ROOT / "reports" / "petrochina_pit_valuation_percentile_profile_v1.json"
 CONTRACT = ROOT / "config" / "pe_3y_cycle_guard_validation_contract_v1.json"
-SYNTHETIC_LATER = ROOT / "tmp" / "r4f4_synthetic_later_restatement.json"
 
 
 def _load_json(path: Path) -> dict:
@@ -441,8 +440,34 @@ def test_price_only_day_no_transition(series):
 
 
 def test_later_restatement_does_not_alter_history(facts, observations):
+    """A synthetic later restatement (effective 2025-06-02) must leave
+    every earlier historical row byte-identical.  The synthetic facts are
+    built inline so the test is clean-clone safe (no gitignored fixtures)."""
     base = build_3y_series(facts, observations)
-    later = _load_json(SYNTHETIC_LATER).get("facts", [])
+    later = [
+        {
+            "concept_id": "equity_attributable_to_parent",
+            "period_end": "2018-12-31",
+            "value": 1214067000000.0,
+            "unit": "CNY",
+            "fact_id": "r4f4-synthetic-later-restate-0",
+            "available_at": "2025-06-01",
+            "effective_from": "2025-06-02",
+            "supersedes_fact_id": "any-original",
+            "restatement_version": "restated_1",
+        },
+        {
+            "concept_id": "equity_attributable_to_parent",
+            "period_end": "2017-12-31",
+            "value": 1192862000000.0,
+            "unit": "CNY",
+            "fact_id": "r4f4-synthetic-later-restate-1",
+            "available_at": "2025-06-01",
+            "effective_from": "2025-06-02",
+            "supersedes_fact_id": "any-original",
+            "restatement_version": "restated_1",
+        },
+    ]
     perturbed = build_3y_series(facts + later, observations)
     for r1, r2 in zip(base["rows"], perturbed["rows"], strict=False):
         if r2["trade_date"] < "2025-06-02":
