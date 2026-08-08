@@ -1,0 +1,51 @@
+{
+ "schema": "petrochina_pe_5y_backfill_identification_justification_v1",
+ "remaining_logical_gaps": 4,
+ "remaining_logical_facts": [
+  {
+   "period_end": "2015-12-31",
+   "concept": "parent_equity"
+  },
+  {
+   "period_end": "2016-12-31",
+   "concept": "parent_equity"
+  },
+  {
+   "period_end": "2016-12-31",
+   "concept": "parent_net_profit"
+  },
+  {
+   "period_end": "2017-12-31",
+   "concept": "parent_net_profit"
+  }
+ ],
+ "prior_status": "DEFERRED_PENDING_IDENTIFICATION_REVIEW",
+ "status": "ACQUISITION_JUSTIFIED_FOR_INDEPENDENT_VALIDATION",
+ "primary_justification": "RECOVER_LEFT_CENSORED_EPISODE_ONSET_IF_PRESENT_WITHIN_5Y_WINDOW",
+ "primary_justification_short": "RECOVER_LEFT_CENSORED_EPISODE_ONSET",
+ "secondary_justification": "EXPAND_OPPORTUNITY_FOR_ADDITIONAL_INDEPENDENT_EPISODES",
+ "secondary_justification_short": "EXPAND_INDEPENDENT_EPISODE_HISTORY",
+ "three_year_candidate_regime_count": 1,
+ "three_year_valid_onset_anchored_episode_count": 0,
+ "three_year_left_censored_episode_count": 1,
+ "backfill_guarantees": {
+  "true_onset_recovery": false,
+  "at_least_two_independent_episodes": false,
+  "executable_validation": false,
+  "favorable_outcome": false
+ },
+ "permitted_post_backfill_results": [
+  "TRUE_ONSET_RECOVERED_AND_ADDITIONAL_EPISODES",
+  "TRUE_ONSET_RECOVERED_BUT_ONLY_ONE_EPISODE",
+  "REGIME_STILL_LEFT_CENSORED_AT_5Y_START",
+  "NO_ADDITIONAL_EPISODES"
+ ],
+ "frozen_history_limit": "5Y",
+ "automatic_extension_beyond_5y": "PROHIBITED",
+ "stop_expansion_result_if_valid_episodes_lt_2": "INDEPENDENT_VALIDATION_NOT_TESTABLE_WITH_FROZEN_5Y_HISTORY",
+ "stop_expansion_action": "STOP_FOR_NORTH_STAR_REVIEW",
+ "longer_history_requires": "NEW_NORTH_STAR_METHOD_VALUE_REVIEW",
+ "acquisition_performed": false,
+ "percentile_rationale_used": false,
+ "next_stage_only": "R4F.4A1_REMAINING_5Y_ANNUAL_FACT_BACKFILL_FOR_INDEPENDENT_CYCLE_VALIDATION"
+}
