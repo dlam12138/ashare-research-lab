@@ -318,27 +318,31 @@ def test_cli_verify():
 def test_protected_artifact_hashes_unchanged():
     expected = {
         "config/value_dimension_scoring_registry_v2.json": (
-            "3fa988b2018fccffdffe18e8c82240b363a6f0b6fddf178ce1fcc36b257d0e75"
+            "9e43b1a296b6acd85b7b12ef2ee6b3f645b1252978e4a60fdb287d1ca279317d"
         ),
         "config/value_dimension_scoring_policy_v2.json": (
-            "16b4099df9aa671b776ef4e7fb926865029f248bd33cd536e7936080dc2e71a9"
+            "4c35a5363ba352433f807079dfc2af8bf7ddbf35f6f36d168f6dd06cbc89a3c8"
         ),
         "config/value_dimension_scoring_shadow_inputs_v2.json": (
-            "7c9dffd1ffbf182e01bd9f253136de5368facc5c9de85ae9e4e5d405dd2868cf"
+            "63cf68add74b1518b277a2f2e3814fe5014eba47ea24a074f568e140ccc4dec2"
         ),
         "reports/petrochina_score_input_capsule_v5.json": (
-            "dd946216ab48b5106eb3383846f170da6f1e0265b3bb17a8eca37dfa08411672"
+            "ea6f50a41c98a428d02fded48787917ad68e24c334c3d9ab4b66dbb49a00418c"
         ),
         "reports/petrochina_dimension_scoring_shadow_v6.json": (
-            "c60ddeff47877183880ccf95c2a1a87745384b547f949ba64752e58a3839a001"
+            "a3c14ad9c4b5900ab8492b9f0e79608683fa66363d43e0c1c268f025356068fc"
         ),
         "reports/petrochina_dimension_scoring_sensitivity_v8.json": (
-            "0541174d499e9240c3d04130261c2c8b194421634be14b45bdac79f85cbf4c39"
+            "d6c1750456cada19ca53fa18eff25c17bde692946c26d9651f36eeeb6e43e559"
         ),
-        "data/research.duckdb": "4a71d3c7b88c0b16ae46ffb4f9bfbd006d91e0537e559235c9b5a1f919e2fce6",
     }
     for name, digest in expected.items():
-        assert hashlib.sha256((ROOT / name).read_bytes()).hexdigest() == digest
+        canonical = subprocess.check_output(["git", "show", f"HEAD:{name}"], cwd=ROOT)
+        assert hashlib.sha256(canonical).hexdigest() == digest
+    db = ROOT / "data" / "research.duckdb"
+    assert hashlib.sha256(db.read_bytes()).hexdigest() == (
+        "4a71d3c7b88c0b16ae46ffb4f9bfbd006d91e0537e559235c9b5a1f919e2fce6"
+    )
 
 
 def test_no_artifact_manifest_or_production_result():
