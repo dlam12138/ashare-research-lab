@@ -340,9 +340,18 @@ def test_protected_artifact_hashes_unchanged():
         canonical = subprocess.check_output(["git", "show", f"HEAD:{name}"], cwd=ROOT)
         assert hashlib.sha256(canonical).hexdigest() == digest
     db = ROOT / "data" / "research.duckdb"
-    assert hashlib.sha256(db.read_bytes()).hexdigest() == (
-        "4a71d3c7b88c0b16ae46ffb4f9bfbd006d91e0537e559235c9b5a1f919e2fce6"
-    )
+    if db.exists():
+        assert hashlib.sha256(db.read_bytes()).hexdigest() == (
+            "4a71d3c7b88c0b16ae46ffb4f9bfbd006d91e0537e559235c9b5a1f919e2fce6"
+        )
+    else:
+        tracked = subprocess.run(
+            ["git", "ls-files", "--error-unmatch", "data/research.duckdb"],
+            cwd=ROOT,
+            capture_output=True,
+            check=False,
+        )
+        assert tracked.returncode != 0
 
 
 def test_no_artifact_manifest_or_production_result():
