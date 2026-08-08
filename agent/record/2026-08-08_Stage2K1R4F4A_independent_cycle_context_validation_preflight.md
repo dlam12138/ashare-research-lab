@@ -10,7 +10,7 @@ Closeout correction: 5Y backfill is justified primarily to recover the left-cens
 
 Decision: `PE_INDEPENDENT_CYCLE_VALIDATION_PROTOCOL_FROZEN_5Y_BACKFILL_REQUIRED` (stage verdict PASS). The repository governance final verdict is recorded after final independent validation.
 
-Closeout status before the implementation push: `PASS — LOCAL CANDIDATE`; remote CI `PENDING`. R4F.4A1 remains `NOT STARTED`.
+Closeout status: `PASS — CI CONFIRMED`; remote CI `CONFIRMED`. R4F.4A1 remains `NOT STARTED`.
 
 ## Validation evidence
 
@@ -22,5 +22,9 @@ Closeout status before the implementation push: `PASS — LOCAL CANDIDATE`; remo
 - R4F4A CLI `verify` — all three derived artifacts matched.
 - `git diff --check` — passed.
 - JSON, secret-like value, absolute user path, and trailing-whitespace scan across 13 stage files — passed.
+
+Implementation-tip CI: GitHub Actions run [31250532941](https://github.com/dlam12138/ashare-research-lab/actions/runs/31250532941) succeeded at `4d46dcc6ddd7a625058af8542ef3205d05960735`. Ubuntu clean-clone (`93086102405`) and Windows clean-clone (`93086102392`) passed the full offline suite and fingerprint upload; identity-compare (`93086782838`) passed the exactly-two-artifact hard gate and provenance-gated cross-platform envelope comparison.
+
+CI correction history: the first implementation run exposed a test-only platform assumption because working-tree text bytes differ between Windows CRLF and Ubuntu LF; no protected artifact changed. Commit `7983571` moved the protected-text assertions to canonical Git blob hashes. A subsequent clean-clone run showed the ignored default database is intentionally absent from a fresh checkout; commit `4d46dcc` made absence acceptable while retaining the exact hash gate whenever the local database is present. Both corrections remained within the R4F.4A test scope.
 
 Protected SHA-256 baselines remained unchanged: registry v2 `3fa988b…`, policy v2 `16b4099…`, shadow inputs v2 `7c9dffd…`, capsule v5 `dd94621…`, shadow v6 `c60ddef…`, sensitivity v8 `0541174…`, and default DB `4a71d3c…`.
