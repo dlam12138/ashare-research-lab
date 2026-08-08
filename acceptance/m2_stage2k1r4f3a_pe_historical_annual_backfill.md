@@ -2,9 +2,14 @@
 
 ## Verdict: PASS
 
-Status: completed (local validation only; not committed/pushed)
+Status: completed
 
 Decision: `PE_3Y_HISTORICAL_BACKFILL_TRUSTED_VALIDATION_ALLOWED`
+
+Remote CI: PASS (run 31234294698, tip commit 067b3cc — Ubuntu clean-clone,
+Windows clean-clone, identity-compare all success; includes R4F3A tests,
+full offline suite, calendar-pin + overlap checks, R4F3 before-state
+regression, scoring zero-change)
 
 Next-stage implementation: **NOT STARTED** (`R4F.4 — 3Y Historical
 Normalized-PE Cycle-Guard Validation` is the next authorized step; PE
@@ -125,17 +130,24 @@ value is backfilled into the past.**
 - All 8 Fact IDs unique and canonical; supersedes chains complete.
 - A/B builds byte-identical (7/7 artifacts).
 
-## 6. Validation performed (local)
+## 6. Validation performed
 
-- R4F3A tests: **46 passed** (upstream gate, calendar registry + overlap,
-  source/cache, extraction, PIT, restatement, identity, ROE, readiness,
-  boundary).
+- R4F3A tests: **48 passed** (upstream gate, calendar registry + overlap,
+  clean-clone-safe synthetic calendar, source/cache, extraction, PIT,
+  restatement, context-fiscal-year regression, identity, ROE, readiness,
+  boundary, remaining-5Y derivation).
 - R4F3 tests: 45 passed; R4F2: 35 passed; R4F1: 19 passed.
-- Full offline suite: **1835 passed, 2 warnings**.
+- Full offline suite: **1837 passed, 2 warnings**.
 - ruff: All checks passed; compileall: pass; git diff --check: pass.
 - Secret/path/pollution scan: clean.
 - Default DB SHA unchanged (`4a71d3c7…`); stash preserved; protected
   files untouched; calendar v1 + R4D contracts untouched.
+- A/B builds byte-identical (7/7 artifacts).
+- Remote CI (run 31234294698, tip 067b3cc): Ubuntu clean-clone PASS,
+  Windows clean-clone PASS, identity-compare PASS.  The earlier run on
+  b13de6d failed only on the real-parquet calendar tests (gitignored cache
+  absent in clean clone); fixed by the synthetic content-addressed object
+  commit 067b3cc, after which CI is fully green.
 
 ## 7. Boundary preserved
 

@@ -1,6 +1,6 @@
 # 工作记录：M2 Stage 2K.1R4F.3A — Historical Annual Fact Backfill for 3Y Normalized-Earnings Validation
 
-Status: completed（本地验证完成；未 commit/未 push）
+Status: completed（closeout：committed + pushed + CI PASS）
 
 ## 基本信息
 
@@ -197,24 +197,26 @@ Status: completed（本地验证完成；未 commit/未 push）
   2017-12-31 NP）。
 - full_cycle_proven = false（未变）。
 - PE numeric scoring BLOCKED_UNCHANGED；valuation dimension 无数值分。
-- 未 commit、未 push（本地验证阶段，按授权边界停止）。
+- closeout（2026-08-08）：commit `2da7b4a` / `63d874c` / `b13de6d` /
+  `067b3cc` 已 push（`7e1a9c9..067b3cc`）；CI run 31234294698
+  （head 067b3cc）三作业全绿。
 
 ## 遗留问题
 
-- 未 commit / 未 push（待用户授权 closeout）。
-- 5Y historical validation 仍 BLOCKED（9 facts：2015-12-31 equity +
-  2016/2017 equity+NP），留待后续阶段。
+- 5Y historical validation 仍 BLOCKED（403 天）。remaining 5Y gap =
+  程序化减法：baseline 9 − resolved 5 = **4**（2015-12-31 equity、
+  2016-12-31 equity+NP、2017-12-31 NP），留待后续阶段。
 - full_cycle NOT_PROVEN（无独立周期证据）。
 - 2021/2022 AR 未纳入 comparative 扫描（窗口分析排除），如需复核可补。
 - manifest：R4F3A 产出为 report-only 隔离产物，未注册新 schema；
   R4B/R4C/R4A manifest debt 继承不处理。
+- 首次 CI（b13de6d）曾在 clean-clone 因真实 parquet 缺失失败（gitignored
+  cache），已由 `067b3cc` 合成内容寻址对象修复，后续 CI 全绿。
 
 ## 下一步建议
 
-- 用户授权后：commit R4F3A 全部文件 → push → 双平台 CI → acceptance 补
-  CI 证据 → closeout（对照 R4F.3 模式）。
 - R4F.4（3Y Historical Normalized-PE Cycle-Guard Validation）——仅验证，
-  不授权 PE scoring。
+  不授权 PE scoring；需用户另行授权。
 - 5Y backfill 需另行授权（本阶段严格禁止顺手采集 2015/2016）。
 
 ## 最终文件变更
@@ -249,7 +251,11 @@ Status: completed（本地验证完成；未 commit/未 push）
 
 ## 最终 Git 状态
 
-- 当前分支：`feat/m2-value-assessment-mvp`；HEAD `7e1a9c9`（R4F.3 closeout）。
-- **未提交、未推送**（本地验证阶段完成，按授权边界停止）。
-- 新增 20 个未跟踪文件（见上）；保护项未动；stash 未动；
-  默认 DB SHA 未变。
+- 当前分支：`feat/m2-value-assessment-mvp`；HEAD `067b3cc`（R4F3A 实现 tip，
+  CI PASS）；local == origin。
+- 4 笔提交已推送：`2da7b4a`（backfill 核心）、`63d874c`（readiness +
+  decision）、`b13de6d`（acceptance + work record）、`067b3cc`（clean-clone
+  测试修复）。
+- CI：run 31234294698（head 067b3cc）三作业全绿；run 31234032606
+  （b13de6d）曾在 clean-clone 失败（真实 parquet 缺失），已由 067b3cc 修复。
+- 保护项未动；stash 未动；默认 DB SHA 未变。
