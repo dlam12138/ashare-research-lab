@@ -6,7 +6,8 @@ Status: completed
 
 Decision: `PE_NORMALIZED_EARNINGS_PROTOTYPE_TRUSTED_HISTORICAL_FACT_GAPS_REMAIN`
 
-Remote CI: PENDING (local validation only)
+Remote CI: PASS (run 31228901209, tip commit 4d94952 — Ubuntu clean-clone,
+Windows clean-clone, identity-compare all success)
 
 PE numeric scoring: **BLOCKED_UNCHANGED**
 
@@ -169,3 +170,15 @@ if the 3y prototype validation fails, the 5y backfill is unnecessary.
   ruff / compileall / git diff --check / secret-path scan: see work record.
 - Scoring files exact-diff check: zero changes.
 - Default DB SHA unchanged; stash preserved; protected files untouched.
+
+## 9. Remote CI evidence
+
+- Commit `4d94952` (feat: add R4F.3 PE normalized earnings prototype and
+  historical readiness) pushed to `origin/feat/m2-value-assessment-mvp` on
+  2026-08-08; run `31228901209` (`https://github.com/dlam12138/ashare-research-lab/actions/runs/31228901209`).
+- clean-clone (ubuntu-latest): **success**
+- clean-clone (windows-latest): **success** (includes R4F.3 tests in full
+  offline suite)
+- identity-compare: **success** (cross-platform identity envelopes match)
+- Final tip CI: **PASS** — R4F.3 local candidate promoted to committed,
+  pushed, CI-verified state.  R4F.3A precondition (Section 0) satisfied.

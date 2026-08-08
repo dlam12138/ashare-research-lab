@@ -286,7 +286,8 @@ walk-forward 扰动验证（validate_prototype，fixture 驱动）：future fact
   peak classifier、无未来泄漏、无网络、无 DB 写入）。
 - 可用性：prototype/readiness/plan 产物全部生成，非评分、可复现；
   decision 为 CONDITIONAL PASS（B 分支），与预期一致。
-- 提交/推送：**未提交、未推送**（本轮为本地验证阶段，未经授权）。
+- 提交/推送：**2026-08-08 closeout 完成** —— commit `4d94952` 已 push，
+  final tip CI（run 31228901209）三作业全绿（见"最终 Git 状态"）。
 
 ## 遗留问题
 
@@ -300,7 +301,9 @@ walk-forward 扰动验证（validate_prototype，fixture 驱动）：future fact
   NOT_REQUIRED_PROTOTYPE_STAGE。
 - 本阶段不建 artifact manifest（prototype 不改变正式 scoring runtime
   identity；未注册新 verifier schema）。
-- 未执行：remote CI（本轮仅本地验证）；未提交未推送。
+- （2026-08-08 closeout 更新）remote CI 已执行并 PASS（run 31228901209）；
+  提交与推送已完成；原"未执行 remote CI / 未提交未推送"表述已由 closeout
+  更新取代。
 
 ## 下一步建议
 
@@ -338,10 +341,18 @@ walk-forward 扰动验证（validate_prototype，fixture 驱动）：future fact
 
 ## 最终 Git 状态
 
-- 当前分支：`feat/m2-value-assessment-mvp`；HEAD `83e0685`（R4F.2
-  closeout）；local == origin。
-- **未提交、未推送**：本轮 R4F.3 全部新增文件处于未跟踪状态
-  （本地验证阶段，按 Section 二十七 要求停止）。
+（2026-08-08 closeout 更新）
+
+- 当前分支：`feat/m2-value-assessment-mvp`；HEAD `4d94952`（R4F.3
+  commit，已推送 origin）；local == origin == `4d94952`。
+- 第一笔提交 `4d94952`（feat: add R4F.3 PE normalized earnings prototype
+  and historical readiness，14 个文件，6752 insertions）已 push
+  （`83e0685..4d94952`）。
+- 最终 tip CI（Stage 2G reproducibility run `31228901209`，headSha
+  `4d94952`）：Ubuntu clean-clone success、Windows clean-clone success、
+  identity-compare success —— **final tip CI PASS**（2026-08-08，
+  created 00:01:10Z，updated 00:07:46Z）。
+- 第二笔提交（本 closeout：acceptance/work record 补 CI 证据）随后推送。
 - 未 force push、未 reset、未 git clean、未 merge、未 PR、未 tag、
   未 release。
 - 既有未跟踪/修改项（`AGENTS.md`、`agent/goals/`、
@@ -351,4 +362,5 @@ walk-forward 扰动验证（validate_prototype，fixture 驱动）：future fact
 
 ## 最终Git状态
 
-（待完成。）
+closeout 已完成：R4F.3 committed + pushed + final tip CI PASS
+（见上）；R4F.3A 前置条件满足。
