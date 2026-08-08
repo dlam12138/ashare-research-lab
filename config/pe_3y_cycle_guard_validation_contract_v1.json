@@ -1,0 +1,96 @@
+{
+  "schema": "pe_3y_cycle_guard_validation_contract_v1",
+  "contract_id": "pe_3y_normalized_pe_cycle_guard_validation_v1",
+  "version": "1.0",
+  "stage": "2K.1R4F.4",
+  "symbol": "601857.SH",
+  "window": {
+    "start": "2023-07-31",
+    "end": "2026-07-31"
+  },
+  "required_trade_days": 728,
+  "normalized_method": "AVERAGE_ROE_X_CURRENT_BVPS",
+  "normalized_method_contract": "pe_normalized_earnings_average_roe_v1",
+  "minimum_roe_years": 5,
+  "roe_window_shortening": "PROHIBITED",
+  "protective_direction_definition": "current_ttm_eps > normalized_eps",
+  "expected_pe_direction": "normalized_pe > raw_pe",
+  "direction_cases": {
+    "case_a": {"eps_relation": "current_eps > normalized_eps", "expected": "normalized_pe > raw_pe"},
+    "case_b": {"eps_relation": "current_eps < normalized_eps", "expected": "normalized_pe < raw_pe"},
+    "case_c": {"eps_relation": "current_eps == normalized_eps", "expected": "normalized_pe == raw_pe"}
+  },
+  "recurrence_gate": {
+    "frozen_before_results": true,
+    "label": "REPEATED_PROTECTIVE_DIRECTION_OBSERVED",
+    "minimum_distinct_raw_ttm_states_for_recurrence": 2,
+    "result_if_0_states": "NO_PROTECTIVE_DIRECTION_EPISODE_OBSERVED",
+    "result_if_1_state": "SINGLE_PROTECTIVE_DIRECTION_STATE_ONLY",
+    "result_if_ge_2_states": "REPEATED_PROTECTIVE_DIRECTION_OBSERVED",
+    "not_a_statistical_significance_threshold": true,
+    "no_arbitrary_amplitude_threshold": true
+  },
+  "terminology": {
+    "protective_direction_term": "PROTECTIVE_DIRECTION_OBSERVED",
+    "prohibited_terms": ["PEAK", "TROUGH", "BOOM", "RECESSION", "MID_CYCLE", "cycle_peak", "buy_zone", "cheap", "expensive"],
+    "ratio_greater_than_one_is_not_cycle_peak": true
+  },
+  "sample_semantics": {
+    "daily_rows_are_independent_samples": false,
+    "primary_evidence_unit": "unique denominator state / segment",
+    "trade_day_count": 728,
+    "require_state_segmentation": true
+  },
+  "state_identity": {
+    "normalized_denominator_state_id": {
+      "excludes": ["trade_date", "price", "market_observation_id", "raw_pe", "normalized_pe", "wall_clock", "path"],
+      "includes": ["contract_id", "selected_five_roe_years", "annual_fact_ids", "current_equity_fact_id", "current_share_fact_id", "average_roe_decimal", "current_bvps_decimal", "normalized_eps_decimal"]
+    },
+    "raw_ttm_denominator_state_id": {
+      "source": "R4E4 financial_state_id (official upstream)",
+      "excludes": ["price", "trade_date", "pe_ratio"],
+      "back_derived_eps_prohibited": true
+    },
+    "r4f3_normalized_earnings_state_id_unchanged": true
+  },
+  "transition_audit": {
+    "normalized_transition_requires_upstream_change": true,
+    "raw_ttm_transition_requires_input_change": true,
+    "price_only_day_no_transition": true,
+    "orphan_transitions_expected": 0
+  },
+  "percentile": {
+    "window": "3y_only",
+    "method": "MIDRANK_EMPIRICAL_PERCENTILE",
+    "include_current": true,
+    "n": 728,
+    "oracle": "duckdb_exact_match",
+    "5y_percentile": "PROHIBITED",
+    "not_scoring_input": true
+  },
+  "boundaries": {
+    "cycle_stage_classification": "PROHIBITED",
+    "future_return_validation": "OUT_OF_SCOPE",
+    "full_cycle_claim": "PROHIBITED_WITHOUT_INDEPENDENT_PROOF",
+    "scoring_authorization": false,
+    "price_prediction": "PROHIBITED",
+    "peer_comparison": "PROHIBITED",
+    "network": "PROHIBITED",
+    "default_db_write": "PROHIBITED"
+  },
+  "decision_outcomes": {
+    "mechanical_guard_confirmed": "PE_3Y_NORMALIZED_PE_MECHANICAL_GUARD_CONFIRMED_INDEPENDENT_CYCLE_VALIDATION_REQUIRED",
+    "not_trusted": "PE_3Y_NORMALIZED_PE_GUARD_NOT_TRUSTED",
+    "identification_note": "direction relation is algebraically implied by the PE formulas; direction consistency validates implementation correctness only, not independent empirical cycle evidence"
+  },
+  "identification_gates": {
+    "mechanical_relation_excluded_as_empirical_evidence": true,
+    "independent_cycle_context_evidence_present": false,
+    "cycle_stage_identified": false,
+    "cycle_guard_empirically_validated": false,
+    "normalized_earnings_mid_cycle_validated": false,
+    "full_cycle_proven": false
+  },
+  "next_stage": "R4F.4A_INDEPENDENT_CYCLE_CONTEXT_VALIDATION_PREFLIGHT NOT_STARTED",
+  "5y_remaining_facts": "DEFERRED_PENDING_IDENTIFICATION_REVIEW"
+}

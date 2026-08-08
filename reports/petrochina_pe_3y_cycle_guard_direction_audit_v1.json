@@ -1,0 +1,19 @@
+{
+ "schema": "pe_3y_cycle_guard_direction_audit_v1",
+ "symbol": "601857.SH",
+ "trade_days_checked": 728,
+ "above_normalized_trade_days": 644,
+ "below_normalized_trade_days": 84,
+ "equal_trade_days": 0,
+ "above_normalized_unique_raw_states": 11,
+ "above_normalized_unique_normalized_states": 11,
+ "above_normalized_unique_paired_states": 11,
+ "above_normalized_segments": 1,
+ "direction_violation_count": 0,
+ "direction_violations": [],
+ "expected_direction_violation_count": 0,
+ "mechanical_direction_consistency": "PASS",
+ "algebraic_guard_consistency": "PASS",
+ "relation_is_algebraic_identity": "raw_pe = price/current_eps; normalized_pe = price/normalized_eps; for positive operands current_eps > normalized_eps => normalized_pe > raw_pe",
+ "not_independent_empirical_cycle_evidence": true
+}
