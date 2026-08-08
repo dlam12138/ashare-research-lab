@@ -1,0 +1,47 @@
+{
+  "schema": "pe_mechanical_inversion_audit_v1",
+  "symbol": "601857.SH",
+  "as_of_trade_date": "2026-07-31",
+  "contract_id": "pe_normalized_earnings_average_roe_v1",
+  "status": "PASS",
+  "method": "property test: price, 5y ROE chain, current BVPS and normalized EPS held fixed; only current TTM EPS shocked by pure test multipliers (no business threshold meaning)",
+  "multipliers": [
+    "0.5",
+    "1.0",
+    "2.0"
+  ],
+  "scenarios": [
+    {
+      "multiplier": "0.5",
+      "current_ttm_eps": "0.4321471830330334444612796621",
+      "raw_pe_ttm": "25.63941276264906690942193901",
+      "normalized_pe_roe": "12.12889979366021109951970404",
+      "normalized_eps_roe": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "1dacd906630323d0a74c682675f0c022fb91119549c1f20b4803ae06045f583c"
+    },
+    {
+      "multiplier": "1.0",
+      "current_ttm_eps": "0.8642943660660668889225593242",
+      "raw_pe_ttm": "12.81970638132453345471096950",
+      "normalized_pe_roe": "12.12889979366021109951970404",
+      "normalized_eps_roe": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "1dacd906630323d0a74c682675f0c022fb91119549c1f20b4803ae06045f583c"
+    },
+    {
+      "multiplier": "2.0",
+      "current_ttm_eps": "1.728588732132133777845118648",
+      "raw_pe_ttm": "6.409853190662266727355484754",
+      "normalized_pe_roe": "12.12889979366021109951970404",
+      "normalized_eps_roe": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "1dacd906630323d0a74c682675f0c022fb91119549c1f20b4803ae06045f583c"
+    }
+  ],
+  "raw_pe_changed": true,
+  "normalized_pe_changed": false,
+  "direct_current_earnings_denominator_dependence_removed": true,
+  "cycle_stage_identified": false,
+  "cycle_guard_empirically_validated": false,
+  "property_pass_does_not_imply_empirical_validation": true,
+  "no_peak_label_emitted": true,
+  "non_scoring": true
+}

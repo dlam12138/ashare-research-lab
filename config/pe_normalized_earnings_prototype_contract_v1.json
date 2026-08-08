@@ -1,0 +1,46 @@
+{
+  "schema": "pe_normalized_earnings_prototype_contract_v1",
+  "version": "1.0",
+  "contract_id": "pe_normalized_earnings_average_roe_v1",
+  "symbol": "601857.SH",
+  "primary_method": "AVERAGE_ROE_X_CURRENT_BVPS",
+  "minimum_consecutive_annual_roe": 5,
+  "as_of": "2026-07-31",
+  "normalization": {
+    "normalized_eps_formula": "mean(five most recent eligible consecutive annual ROE visible as of as_of) * current PIT BVPS(as_of)",
+    "annual_roe": {
+      "average_equity_y": "(begin_parent_equity_y + end_parent_equity_y) / 2",
+      "roe_y": "parent_net_profit_y / average_equity_y"
+    },
+    "current_bvps": "latest PIT parent equity / company-wide ordinary shares"
+  },
+  "arithmetic_rules": [
+    "Decimal(string) only",
+    "Decimal(float) prohibited",
+    "float aggregation prohibited",
+    "pre-rounding prohibited",
+    "winsorize prohibited",
+    "trim prohibited",
+    "manual year exclusion prohibited"
+  ],
+  "pit_rules": [
+    "visible at as_of only when available_at <= as_of AND effective_from <= as_of",
+    "array order never decides visibility",
+    "restatement: latest visible effective_from wins; tie resolved via supersedes_fact_id; unresolved tie fails closed"
+  ],
+  "share_scope": {
+    "scope": "company_wide_ordinary_shares",
+    "constant": "183020977818",
+    "proof_id": "r4d1-share-continuity-constancy-v1",
+    "a_share_only_denominator": "REJECTED"
+  },
+  "hard_boundary": {
+    "minimum_consecutive_annual_roe_is_fixed": true,
+    "shorter_window_for_more_history_points": "PROHIBITED for the formal prototype",
+    "shorter_window_diagnostic_reporting": "available_roe_count may be reported as diagnostic only",
+    "ratio_equals_one_is_not_a_cycle_threshold": true,
+    "full_cycle_claim_requires_independent_proof": true
+  },
+  "status": "TRUSTED_NON_SCORING",
+  "non_production": true
+}

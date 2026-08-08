@@ -1,0 +1,270 @@
+{
+  "schema": "pe_normalized_earnings_historical_fact_gap_plan_v1",
+  "symbol": "601857.SH",
+  "windows": {
+    "3y": {
+      "start": "2023-07-31",
+      "end": "2026-07-31"
+    },
+    "5y": {
+      "start": "2021-08-02",
+      "end": "2026-07-31"
+    }
+  },
+  "existing_annual_facts": {
+    "years": [
+      "2020",
+      "2021",
+      "2022",
+      "2023",
+      "2024",
+      "2025"
+    ],
+    "concept_period_pairs": [
+      [
+        "basic_eps",
+        "2020-12-31"
+      ],
+      [
+        "basic_eps",
+        "2021-12-31"
+      ],
+      [
+        "basic_eps",
+        "2022-12-31"
+      ],
+      [
+        "basic_eps",
+        "2023-12-31"
+      ],
+      [
+        "basic_eps",
+        "2024-12-31"
+      ],
+      [
+        "basic_eps",
+        "2025-12-31"
+      ],
+      [
+        "equity_attributable_to_parent",
+        "2020-12-31"
+      ],
+      [
+        "equity_attributable_to_parent",
+        "2021-12-31"
+      ],
+      [
+        "equity_attributable_to_parent",
+        "2022-12-31"
+      ],
+      [
+        "equity_attributable_to_parent",
+        "2023-12-31"
+      ],
+      [
+        "equity_attributable_to_parent",
+        "2024-12-31"
+      ],
+      [
+        "equity_attributable_to_parent",
+        "2025-12-31"
+      ],
+      [
+        "net_profit_attributable_to_parent",
+        "2020-12-31"
+      ],
+      [
+        "net_profit_attributable_to_parent",
+        "2021-12-31"
+      ],
+      [
+        "net_profit_attributable_to_parent",
+        "2022-12-31"
+      ],
+      [
+        "net_profit_attributable_to_parent",
+        "2023-12-31"
+      ],
+      [
+        "net_profit_attributable_to_parent",
+        "2024-12-31"
+      ],
+      [
+        "net_profit_attributable_to_parent",
+        "2025-12-31"
+      ],
+      [
+        "revenue",
+        "2020-12-31"
+      ],
+      [
+        "revenue",
+        "2021-12-31"
+      ],
+      [
+        "revenue",
+        "2022-12-31"
+      ],
+      [
+        "revenue",
+        "2023-12-31"
+      ],
+      [
+        "revenue",
+        "2024-12-31"
+      ],
+      [
+        "revenue",
+        "2025-12-31"
+      ],
+      [
+        "total_ordinary_shares_at_period_end",
+        "2020-12-31"
+      ],
+      [
+        "total_ordinary_shares_at_period_end",
+        "2021-12-31"
+      ],
+      [
+        "total_ordinary_shares_at_period_end",
+        "2022-12-31"
+      ],
+      [
+        "total_ordinary_shares_at_period_end",
+        "2023-12-31"
+      ],
+      [
+        "total_ordinary_shares_at_period_end",
+        "2024-12-31"
+      ],
+      [
+        "total_ordinary_shares_at_period_end",
+        "2025-12-31"
+      ],
+      [
+        "weighted_average_total_ordinary_shares",
+        "2020-12-31"
+      ],
+      [
+        "weighted_average_total_ordinary_shares",
+        "2021-12-31"
+      ],
+      [
+        "weighted_average_total_ordinary_shares",
+        "2022-12-31"
+      ],
+      [
+        "weighted_average_total_ordinary_shares",
+        "2023-12-31"
+      ],
+      [
+        "weighted_average_total_ordinary_shares",
+        "2024-12-31"
+      ],
+      [
+        "weighted_average_total_ordinary_shares",
+        "2025-12-31"
+      ]
+    ]
+  },
+  "minimum_3y_backfill": {
+    "label": "MINIMUM_3Y_BACKFILL",
+    "target_trade_date": "2023-07-31",
+    "required_roe_years": [
+      "2018",
+      "2019",
+      "2020",
+      "2021",
+      "2022"
+    ],
+    "missing_facts": [
+      {
+        "concept": "equity_attributable_to_parent",
+        "period_end": "2017-12-31",
+        "required_for": "opening_equity_roe_2018"
+      },
+      {
+        "concept": "equity_attributable_to_parent",
+        "period_end": "2018-12-31",
+        "required_for": "annual_roe_2018"
+      },
+      {
+        "concept": "net_profit_attributable_to_parent",
+        "period_end": "2018-12-31",
+        "required_for": "annual_roe_2018"
+      },
+      {
+        "concept": "equity_attributable_to_parent",
+        "period_end": "2019-12-31",
+        "required_for": "annual_roe_2019"
+      },
+      {
+        "concept": "net_profit_attributable_to_parent",
+        "period_end": "2019-12-31",
+        "required_for": "annual_roe_2019"
+      }
+    ],
+    "missing_fact_count": 5
+  },
+  "minimum_5y_backfill": {
+    "label": "MINIMUM_5Y_BACKFILL",
+    "target_trade_date": "2021-08-02",
+    "required_roe_years": [
+      "2016",
+      "2017",
+      "2018",
+      "2019",
+      "2020"
+    ],
+    "missing_facts": [
+      {
+        "concept": "equity_attributable_to_parent",
+        "period_end": "2015-12-31",
+        "required_for": "opening_equity_roe_2016"
+      },
+      {
+        "concept": "equity_attributable_to_parent",
+        "period_end": "2016-12-31",
+        "required_for": "annual_roe_2016"
+      },
+      {
+        "concept": "net_profit_attributable_to_parent",
+        "period_end": "2016-12-31",
+        "required_for": "annual_roe_2016"
+      },
+      {
+        "concept": "equity_attributable_to_parent",
+        "period_end": "2017-12-31",
+        "required_for": "annual_roe_2017"
+      },
+      {
+        "concept": "net_profit_attributable_to_parent",
+        "period_end": "2017-12-31",
+        "required_for": "annual_roe_2017"
+      },
+      {
+        "concept": "equity_attributable_to_parent",
+        "period_end": "2018-12-31",
+        "required_for": "annual_roe_2018"
+      },
+      {
+        "concept": "net_profit_attributable_to_parent",
+        "period_end": "2018-12-31",
+        "required_for": "annual_roe_2018"
+      },
+      {
+        "concept": "equity_attributable_to_parent",
+        "period_end": "2019-12-31",
+        "required_for": "annual_roe_2019"
+      },
+      {
+        "concept": "net_profit_attributable_to_parent",
+        "period_end": "2019-12-31",
+        "required_for": "annual_roe_2019"
+      }
+    ],
+    "missing_fact_count": 9
+  },
+  "note": "backfill facts require source tier exchange_official, PIT announcement/effective dates <= the target trade date, and their values must be re-verified at acquisition time (R4F.3A); this plan proves the coverage path only",
+  "non_scoring": true
+}

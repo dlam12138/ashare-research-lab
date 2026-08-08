@@ -1,0 +1,1355 @@
+{
+  "schema": "pe_normalized_earnings_historical_state_ledger_v1",
+  "symbol": "601857.SH",
+  "as_of_trade_date": "2026-07-31",
+  "ledger_entries": [
+    {
+      "trade_date": "2026-03-31",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.666006590660952535726769865",
+      "normalized_eps_decimal": "0.8918872760323170721502029433",
+      "normalized_earnings_state_id": "456f886d6cc5828d810f55d84fff2810e20a3636914b1d7a319219a0f4dc705c",
+      "current_equity_period_end": "2025-12-31",
+      "market_close": "12.19"
+    },
+    {
+      "trade_date": "2026-04-01",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.666006590660952535726769865",
+      "normalized_eps_decimal": "0.8918872760323170721502029433",
+      "normalized_earnings_state_id": "714f578709427835c9a9d9dcd7b0548350186280b0b8aaa49f045a9bfd584bc8",
+      "current_equity_period_end": "2025-12-31",
+      "market_close": "12.07"
+    },
+    {
+      "trade_date": "2026-04-02",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.666006590660952535726769865",
+      "normalized_eps_decimal": "0.8918872760323170721502029433",
+      "normalized_earnings_state_id": "9a707658c85749c6c2f5bb29fd72aff4e88ff397d04919c2e5ee792e1ab0a97e",
+      "current_equity_period_end": "2025-12-31",
+      "market_close": "12.35"
+    },
+    {
+      "trade_date": "2026-04-03",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.666006590660952535726769865",
+      "normalized_eps_decimal": "0.8918872760323170721502029433",
+      "normalized_earnings_state_id": "dc9f6188c8ab085933fa49f569d03ace46d79a98528909dfc438162876977241",
+      "current_equity_period_end": "2025-12-31",
+      "market_close": "12.33"
+    },
+    {
+      "trade_date": "2026-04-07",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.666006590660952535726769865",
+      "normalized_eps_decimal": "0.8918872760323170721502029433",
+      "normalized_earnings_state_id": "12109986cfd26b190185181c7df9cf0a6af2e20f0203de81412f385d5e8d5f1f",
+      "current_equity_period_end": "2025-12-31",
+      "market_close": "12.56"
+    },
+    {
+      "trade_date": "2026-04-08",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.666006590660952535726769865",
+      "normalized_eps_decimal": "0.8918872760323170721502029433",
+      "normalized_earnings_state_id": "307a9e7875acd26a8a3935fab7736659b514f22515003b8312c96e661df9dc3a",
+      "current_equity_period_end": "2025-12-31",
+      "market_close": "11.98"
+    },
+    {
+      "trade_date": "2026-04-09",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.666006590660952535726769865",
+      "normalized_eps_decimal": "0.8918872760323170721502029433",
+      "normalized_earnings_state_id": "e7dd80b1f731ce3b66c304b10ae2db3fcba69cb701c8e283760ebd4822be3fe0",
+      "current_equity_period_end": "2025-12-31",
+      "market_close": "12.1"
+    },
+    {
+      "trade_date": "2026-04-10",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.666006590660952535726769865",
+      "normalized_eps_decimal": "0.8918872760323170721502029433",
+      "normalized_earnings_state_id": "f092161d41d95d4132232d74d25c9f1d106cd4aa839d63b5848bcca3b46a0444",
+      "current_equity_period_end": "2025-12-31",
+      "market_close": "11.99"
+    },
+    {
+      "trade_date": "2026-04-13",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.666006590660952535726769865",
+      "normalized_eps_decimal": "0.8918872760323170721502029433",
+      "normalized_earnings_state_id": "d21ca951a7695b748d4941327192fed417b6de6679dcb253ff86710d1c82c818",
+      "current_equity_period_end": "2025-12-31",
+      "market_close": "12.09"
+    },
+    {
+      "trade_date": "2026-04-14",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.666006590660952535726769865",
+      "normalized_eps_decimal": "0.8918872760323170721502029433",
+      "normalized_earnings_state_id": "a98e243543fa14afef03cbb2adf6acbea1d46d740cd949c588ee8a6735d110f3",
+      "current_equity_period_end": "2025-12-31",
+      "market_close": "11.93"
+    },
+    {
+      "trade_date": "2026-04-15",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.666006590660952535726769865",
+      "normalized_eps_decimal": "0.8918872760323170721502029433",
+      "normalized_earnings_state_id": "fa4532da79fcc5e50efed33574d5bacd749904c6b71741d22de4b5bf118ec0b2",
+      "current_equity_period_end": "2025-12-31",
+      "market_close": "11.76"
+    },
+    {
+      "trade_date": "2026-04-16",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.666006590660952535726769865",
+      "normalized_eps_decimal": "0.8918872760323170721502029433",
+      "normalized_earnings_state_id": "c0b06875dcbf2b8d16ca9d75a82bfb18f33421e3d68872d4ac30d2f2d237e9ab",
+      "current_equity_period_end": "2025-12-31",
+      "market_close": "11.65"
+    },
+    {
+      "trade_date": "2026-04-17",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.666006590660952535726769865",
+      "normalized_eps_decimal": "0.8918872760323170721502029433",
+      "normalized_earnings_state_id": "4c13b40cfb75fe8181aaec856efbd8dd9f9232973b3950011cf89c37a4778d02",
+      "current_equity_period_end": "2025-12-31",
+      "market_close": "11.53"
+    },
+    {
+      "trade_date": "2026-04-20",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.666006590660952535726769865",
+      "normalized_eps_decimal": "0.8918872760323170721502029433",
+      "normalized_earnings_state_id": "a57ba44d8bdc5bdce740d4714c588b301bf3e6992298a26e3708dabbfb7ae0e0",
+      "current_equity_period_end": "2025-12-31",
+      "market_close": "11.48"
+    },
+    {
+      "trade_date": "2026-04-21",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.666006590660952535726769865",
+      "normalized_eps_decimal": "0.8918872760323170721502029433",
+      "normalized_earnings_state_id": "bb37b3fd58048a08b541a806aae2fc439d2694fd1e527b71bc4302fdde225d8d",
+      "current_equity_period_end": "2025-12-31",
+      "market_close": "11.47"
+    },
+    {
+      "trade_date": "2026-04-22",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.666006590660952535726769865",
+      "normalized_eps_decimal": "0.8918872760323170721502029433",
+      "normalized_earnings_state_id": "2727e43108a15bb1e9ea3aff757f0bff86eb83f35ac27e13e9217dfc925adfeb",
+      "current_equity_period_end": "2025-12-31",
+      "market_close": "11.45"
+    },
+    {
+      "trade_date": "2026-04-23",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.666006590660952535726769865",
+      "normalized_eps_decimal": "0.8918872760323170721502029433",
+      "normalized_earnings_state_id": "f545c1265897901690c4342f8080b749a9d9530732a332726391b13bbacd1935",
+      "current_equity_period_end": "2025-12-31",
+      "market_close": "11.82"
+    },
+    {
+      "trade_date": "2026-04-24",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.666006590660952535726769865",
+      "normalized_eps_decimal": "0.8918872760323170721502029433",
+      "normalized_earnings_state_id": "77178b5fae5cff34450ba23423ca8d5f745f900fd5e30f7623143c1dcc99e1b2",
+      "current_equity_period_end": "2025-12-31",
+      "market_close": "11.93"
+    },
+    {
+      "trade_date": "2026-04-27",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.666006590660952535726769865",
+      "normalized_eps_decimal": "0.8918872760323170721502029433",
+      "normalized_earnings_state_id": "b040e78ea775fe0025b170f96d254ccbe290d75cbaa85283f506d2194eb9613b",
+      "current_equity_period_end": "2025-12-31",
+      "market_close": "11.96"
+    },
+    {
+      "trade_date": "2026-04-28",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.666006590660952535726769865",
+      "normalized_eps_decimal": "0.8918872760323170721502029433",
+      "normalized_earnings_state_id": "4eb634d54878b626ab7199af019004dd05b5689923512e22724bb0ce03658ae4",
+      "current_equity_period_end": "2025-12-31",
+      "market_close": "12.18"
+    },
+    {
+      "trade_date": "2026-04-29",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.666006590660952535726769865",
+      "normalized_eps_decimal": "0.8918872760323170721502029433",
+      "normalized_earnings_state_id": "b2b787daa4ba7486843ab5cb8b984d6f02a20d99014310fb6a8642d3522cda1f",
+      "current_equity_period_end": "2025-12-31",
+      "market_close": "12.25"
+    },
+    {
+      "trade_date": "2026-04-30",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.666006590660952535726769865",
+      "normalized_eps_decimal": "0.8918872760323170721502029433",
+      "normalized_earnings_state_id": "da07b416449d8272efbb203e11c92297641ac901346a195272d08f7e043eebe8",
+      "current_equity_period_end": "2025-12-31",
+      "market_close": "12.22"
+    },
+    {
+      "trade_date": "2026-05-06",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "847926dbbb2cf668ad54e66cbd93d7bcc9648dd313a77b036502c566a9857733",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "11.89"
+    },
+    {
+      "trade_date": "2026-05-07",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "60fefcb4eff7f9e1d006437a2db218f87b896c93b0e72acae932a62c4212a3e4",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "11.27"
+    },
+    {
+      "trade_date": "2026-05-08",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "466f22f0d06d0ee62e3bcde901f85b34d93682a87630f4d3483c5cee483e6ed1",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "11.12"
+    },
+    {
+      "trade_date": "2026-05-11",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "ea1d95873b5a029208441c5d12c13f78abe5a0d1c7f946402cf3e724eaa844fb",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "11.11"
+    },
+    {
+      "trade_date": "2026-05-12",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "d5be6695fc56f2560d388e7f3ec75facba59e8c6ea66690aa4ca8a98b91842a2",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "11.19"
+    },
+    {
+      "trade_date": "2026-05-13",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "d4976842c070c227622644e84785bff57d5542c74da13878b624641c7a9542a0",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "11.12"
+    },
+    {
+      "trade_date": "2026-05-14",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "82244a8b33bca862962f47e803c5cb21d3edfd241d840f9045880d90134ad512",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "11.25"
+    },
+    {
+      "trade_date": "2026-05-15",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "d7a133d39aa7c89968b0a3ef642bb6f9a2713855313cf9468fc7c207b04aefca",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "11.51"
+    },
+    {
+      "trade_date": "2026-05-18",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "354464afafe6be52e446ac322811bfb68c785c1812b877d7023124732ce9ea1f",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "11.54"
+    },
+    {
+      "trade_date": "2026-05-19",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "1620bf93342c7ed4b6fb1b177772af9fff0f07fdb63dc654c8a2b60963068b97",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "11.56"
+    },
+    {
+      "trade_date": "2026-05-20",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "7585921849def916c18910d2dc15ae72af078c4b1e540a212f79e11404e0e06d",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "11.63"
+    },
+    {
+      "trade_date": "2026-05-21",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "b5991fb4077170773a2e8aca58dc98d3c58e64656496797444a245c1f78df5ff",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "11.29"
+    },
+    {
+      "trade_date": "2026-05-22",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "cac84f28389fe205339c469d2aa21ae0cc784edd51174d47c8f522316c34c4a6",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "11.08"
+    },
+    {
+      "trade_date": "2026-05-25",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "3a272222efd0fff7020cb6fd2c5222b1623a981c6164e3485eb8660030fbcaea",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "10.73"
+    },
+    {
+      "trade_date": "2026-05-26",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "890115ec4ca33e8cdcce7b7225976b417aa68f394955d66b2abf1422656ea373",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "10.96"
+    },
+    {
+      "trade_date": "2026-05-27",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "4bf2750010bd903fca224e5c48240919b999a682b3a259f6f9e178651ef1aac1",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "10.8"
+    },
+    {
+      "trade_date": "2026-05-28",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "a3e590943f14e628a74b8de640f36b52d9467c837799ec52324ce9c89038cbc8",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "10.8"
+    },
+    {
+      "trade_date": "2026-05-29",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "f04f097adf7b343a5c5043bda45b15343cabe5ca75357284c859e967c2687560",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "10.87"
+    },
+    {
+      "trade_date": "2026-06-01",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "f608f39f718645e6beb39bd725e33068075d38c83b4f02ac12445922d503b854",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "10.82"
+    },
+    {
+      "trade_date": "2026-06-02",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "f822a84c151a2d4039c50d5a21a8d36b6c278e1a87fd89a8d529d5b74a4146e0",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "10.66"
+    },
+    {
+      "trade_date": "2026-06-03",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "4f0ed55f817d47da4f8393c499528b03d991b8b59c36dc4017245fefd52bae73",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "10.85"
+    },
+    {
+      "trade_date": "2026-06-04",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "850d552ef5448cce5ba37b7c5f48a67841c298a0d1ff6e4827023fda35cf47c2",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "10.65"
+    },
+    {
+      "trade_date": "2026-06-05",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "af75af816829a969d250151568c02db5c79b66bcb61f06007440d98d8d363a18",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "10.61"
+    },
+    {
+      "trade_date": "2026-06-08",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "52db01fa8d1e4081f4ba00d457d8af046567728ed2905048e849b16a4515b274",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "10.95"
+    },
+    {
+      "trade_date": "2026-06-09",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "95ae322d57ac7974604b47313ad9b6a9c0d254534ab4ffa8050fe0d85f379af7",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "10.34"
+    },
+    {
+      "trade_date": "2026-06-10",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "8e63850aab926b6604f17f66d2d561463d6c70bfef988907f79d09a805cae9f5",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "10.24"
+    },
+    {
+      "trade_date": "2026-06-11",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "14993dfc4fcaae7de0615b53f8d0fe6efec181a7cce2eaaadc87458087c7c8b4",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "10.37"
+    },
+    {
+      "trade_date": "2026-06-12",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "dac90b634a60d49f6170e6c28cce44986d8bfc218c860c755b08325415a0cd91",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "10.38"
+    },
+    {
+      "trade_date": "2026-06-15",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "4865ffb2b4d1186d0f78711e473a68156836978880660688cc1d7a9280bd0f75",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "10.13"
+    },
+    {
+      "trade_date": "2026-06-16",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "fd37ca1f351d4552ffbc46c61c0ee1dcd3aa922b23d9731a2004f3c6e6905fc3",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "9.95"
+    },
+    {
+      "trade_date": "2026-06-17",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "388ae83dc18be25534e786dc36b89bcd8babe7f658b2df4f7a210b813cd9b710",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "9.77"
+    },
+    {
+      "trade_date": "2026-06-18",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "d672b5ea0487d51e34b121ea7a24712e30325b0fec5a05493721fab5f44809fd",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "9.58"
+    },
+    {
+      "trade_date": "2026-06-22",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "17e2bce4ed27bfb48abda8671df5870c97ad3212cc6bf6d80be5382a40f2492d",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "9.68"
+    },
+    {
+      "trade_date": "2026-06-23",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "271417863f4bbefe9f07a4ca0ea4f652a4486293383b3c609b9b5bc3924038c4",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "9.41"
+    },
+    {
+      "trade_date": "2026-06-24",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "74a3f25837fa69d9b6e4c5909115de24379e0c0d9d8c6a8189405580d50e7d41",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "9.41"
+    },
+    {
+      "trade_date": "2026-06-25",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "d1fd656c51f5bd20a00fc472136de32bf714608a9c8a830cc742f1b55b32c289",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "9.06"
+    },
+    {
+      "trade_date": "2026-06-26",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "25d29769dad922e49eb7f7ccd30eb97914d6d6d2d6d901706923013176ed3553",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "8.93"
+    },
+    {
+      "trade_date": "2026-06-29",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "f2b405ad7970348b9588fdc6ee02ea1a31ef477147f32d40385ab04f4c91defe",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "8.92"
+    },
+    {
+      "trade_date": "2026-06-30",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "f04dd0e79f5ebfd0b7d4e1ac132f5893c5af985da40a48006019c535bee98d7c",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "8.68"
+    },
+    {
+      "trade_date": "2026-07-01",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "2a1d4030d8b854545215b7507048104ccde918a02f82b9a1eb837c7ea0007521",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "8.73"
+    },
+    {
+      "trade_date": "2026-07-02",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "8be5f6b21c7fe4fec28de1b0de62a6c017ddff7b271ff0229ecbf2ee67692ae9",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "8.82"
+    },
+    {
+      "trade_date": "2026-07-03",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "6c47d15e4111084c175160b1baf962214ed9ad6c3d088934580e0fff6231de19",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "8.97"
+    },
+    {
+      "trade_date": "2026-07-06",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "5c04300b74f5094c2ca7b8b95f3121b10051acdb723776f7abeae22d6054effa",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "9.09"
+    },
+    {
+      "trade_date": "2026-07-07",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "bce478dcd076ed2ff7f2eea4404ee84a1d3b202a41ef0ebff8708236f845fdad",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "9.13"
+    },
+    {
+      "trade_date": "2026-07-08",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "6219ba7ad84601d3cf1fb118e9c29cb593ac819725233785d528592ab8a64230",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "9.26"
+    },
+    {
+      "trade_date": "2026-07-09",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "5e1d51a4ef23687a6886f0e418f1f3c573dd6db0bb31c6032e9673582a3027be",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "9.4"
+    },
+    {
+      "trade_date": "2026-07-10",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "18ae23d60eded27bd2b68beb07772ad35dac5c43c86680d87adcc1760bcee79c",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "9.27"
+    },
+    {
+      "trade_date": "2026-07-13",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "a530f9bc4397f55e08f35ec9892a21f10ac11ac522ed908ab11078f65ccaa11c",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "9.66"
+    },
+    {
+      "trade_date": "2026-07-14",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "d3955c749adaf62c9913dac7eab4083b617eba9efd5aa194ee19907ffc90d1d0",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "10"
+    },
+    {
+      "trade_date": "2026-07-15",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "52a5c954af43c21cf708d4e7c1fed67abda1952ab91bdeb5e3214d07ed4a41ac",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "10.02"
+    },
+    {
+      "trade_date": "2026-07-16",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "acea73cb0f1983801d30f714a9def43235d3cc8aa15ec964b2037be5e521e30b",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "9.99"
+    },
+    {
+      "trade_date": "2026-07-17",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "93852f6c7b65c79f07ca1791b6f9b1b58072d2fc89be7f06cbf315c260202e60",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "10.29"
+    },
+    {
+      "trade_date": "2026-07-20",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "0b81346e45d38c2f898935043a18d0a70470af1b3e4843bc361c8ef5c85b038d",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "11.01"
+    },
+    {
+      "trade_date": "2026-07-21",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "24e323e29755b1d1114836846104e3426706d48470285e904cbcd14a161daa29",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "10.67"
+    },
+    {
+      "trade_date": "2026-07-22",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "412af0fc88cd1ee4afc07fda0b3b8799df2750756a975f16ea0f283a366f40f2",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "10.92"
+    },
+    {
+      "trade_date": "2026-07-23",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "87fbed4213c080e3a49060cdcff2512513c3c6d723f9e4f502106fa460dfc214",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "10.88"
+    },
+    {
+      "trade_date": "2026-07-24",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "42c3e9ac298d1557340b118e53a149b2d33577eeb7909ae233926c1202d43b81",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "11.03"
+    },
+    {
+      "trade_date": "2026-07-27",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "ac119e2772d75d51d8bacfbd03c440a38f4aeae350af4d198c64f8fabea73135",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "10.9"
+    },
+    {
+      "trade_date": "2026-07-28",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "5d35f9210309e544fb3f899d8ba4f0b1aab4073ddf1028f0146c5a25ad69a8cd",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "11.1"
+    },
+    {
+      "trade_date": "2026-07-29",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "03802bbc1dd8994509a823e4370ae4d90545b5e66a50a710a04d7f30c22d8f08",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "10.89"
+    },
+    {
+      "trade_date": "2026-07-30",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "f6287855a5d0e66225d55fb6fad076534f4ed53e9541c856f7149b7b96ae628c",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "11.27"
+    },
+    {
+      "trade_date": "2026-07-31",
+      "selected_five_roe_years": [
+        "2021",
+        "2022",
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "average_roe_decimal": "0.1029179088085938346085963897",
+      "current_bvps_decimal": "8.876206538550294436827638346",
+      "normalized_eps_decimal": "0.9135206151007635380066173292",
+      "normalized_earnings_state_id": "1dacd906630323d0a74c682675f0c022fb91119549c1f20b4803ae06045f583c",
+      "current_equity_period_end": "2026-03-31",
+      "market_close": "11.08"
+    }
+  ],
+  "ledger_entry_count": 84,
+  "diagnostic_only": true,
+  "no_normalized_pe_percentile_series": true,
+  "non_scoring": true
+}

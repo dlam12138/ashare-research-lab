@@ -1,0 +1,121 @@
+{
+  "schema": "pe_normalized_earnings_prototype_state_v1",
+  "symbol": "601857.SH",
+  "as_of_trade_date": "2026-07-31",
+  "contract_id": "pe_normalized_earnings_average_roe_v1",
+  "primary_method": "AVERAGE_ROE_X_CURRENT_BVPS",
+  "prototype_status": "TRUSTED_NON_SCORING",
+  "annual_roe_observations": [
+    {
+      "fiscal_year": "2021",
+      "parent_net_profit": "92161000000.0",
+      "begin_equity": "1215421000000.0",
+      "end_equity": "1263815000000.0",
+      "average_equity": "1239618000000.0",
+      "roe_decimal": "0.07434629055079871379731497929",
+      "np_fact_id": "eb1a6271b4a359bda90f7bc6439ee61ff0597990457d348abd5ae451040a527e",
+      "begin_equity_fact_id": "b83a65483f61b802b74ff34561fa8f547f755c62936487963e0f1a8bfdd117cf",
+      "end_equity_fact_id": "7204099afd5fdb133831e9a97c086c89ed8e6af462e28abc6422801ce4c8e06c"
+    },
+    {
+      "fiscal_year": "2022",
+      "parent_net_profit": "148738000000.0",
+      "begin_equity": "1263815000000.0",
+      "end_equity": "1369576000000.0",
+      "average_equity": "1316695500000.0",
+      "roe_decimal": "0.1129630958714448405117204395",
+      "np_fact_id": "0e086ca894c661c8ad719d8bbe814ce6af17d9fb3d6bd6171a20566a90793874",
+      "begin_equity_fact_id": "7204099afd5fdb133831e9a97c086c89ed8e6af462e28abc6422801ce4c8e06c",
+      "end_equity_fact_id": "dedc229cb470fed54889288a9d12c05106f70cb9f61d9918e0dcc425a21b004a"
+    },
+    {
+      "fiscal_year": "2023",
+      "parent_net_profit": "161414000000.0",
+      "begin_equity": "1369576000000.0",
+      "end_equity": "1446410000000.0",
+      "average_equity": "1407993000000.0",
+      "roe_decimal": "0.1146411949491226163766439180",
+      "np_fact_id": "c1b5a6869b209bcf1af660d7564047fe4a583aa47283d19a8c49de5ff30f0a5c",
+      "begin_equity_fact_id": "dedc229cb470fed54889288a9d12c05106f70cb9f61d9918e0dcc425a21b004a",
+      "end_equity_fact_id": "5d0120786f5c73274098a5f719651514476208d5bd683f4851667d84decea5ea"
+    },
+    {
+      "fiscal_year": "2024",
+      "parent_net_profit": "164676000000.0",
+      "begin_equity": "1446410000000.0",
+      "end_equity": "1515371000000.0",
+      "average_equity": "1480890500000.0",
+      "roe_decimal": "0.1112006593330161818176293251",
+      "np_fact_id": "ea454577cf53f36214712ce87f0a5c993acdeab3fd08bbe2813ec2605f33d3d9",
+      "begin_equity_fact_id": "5d0120786f5c73274098a5f719651514476208d5bd683f4851667d84decea5ea",
+      "end_equity_fact_id": "b4c277e606f9cf0e409f381c5529a4eaa7458d1b124c998fbe0e760702340b68"
+    },
+    {
+      "fiscal_year": "2025",
+      "parent_net_profit": "157302000000.0",
+      "begin_equity": "1515371000000.0",
+      "end_equity": "1586061000000.0",
+      "average_equity": "1550716000000.0",
+      "roe_decimal": "0.1014383033385868205396732864",
+      "np_fact_id": "dea845ccad75d66b363fa67618f3f735c2dd756d43028e075859f5b94cf2b5a8",
+      "begin_equity_fact_id": "b4c277e606f9cf0e409f381c5529a4eaa7458d1b124c998fbe0e760702340b68",
+      "end_equity_fact_id": "00cb0c64831e9611889aa8a461cfa3e6f0be53efacca1ef5bd89e80c7db8262b"
+    }
+  ],
+  "annual_fact_ids": [
+    {
+      "fiscal_year": "2021",
+      "np_fact_id": "eb1a6271b4a359bda90f7bc6439ee61ff0597990457d348abd5ae451040a527e",
+      "begin_equity_fact_id": "b83a65483f61b802b74ff34561fa8f547f755c62936487963e0f1a8bfdd117cf",
+      "end_equity_fact_id": "7204099afd5fdb133831e9a97c086c89ed8e6af462e28abc6422801ce4c8e06c"
+    },
+    {
+      "fiscal_year": "2022",
+      "np_fact_id": "0e086ca894c661c8ad719d8bbe814ce6af17d9fb3d6bd6171a20566a90793874",
+      "begin_equity_fact_id": "7204099afd5fdb133831e9a97c086c89ed8e6af462e28abc6422801ce4c8e06c",
+      "end_equity_fact_id": "dedc229cb470fed54889288a9d12c05106f70cb9f61d9918e0dcc425a21b004a"
+    },
+    {
+      "fiscal_year": "2023",
+      "np_fact_id": "c1b5a6869b209bcf1af660d7564047fe4a583aa47283d19a8c49de5ff30f0a5c",
+      "begin_equity_fact_id": "dedc229cb470fed54889288a9d12c05106f70cb9f61d9918e0dcc425a21b004a",
+      "end_equity_fact_id": "5d0120786f5c73274098a5f719651514476208d5bd683f4851667d84decea5ea"
+    },
+    {
+      "fiscal_year": "2024",
+      "np_fact_id": "ea454577cf53f36214712ce87f0a5c993acdeab3fd08bbe2813ec2605f33d3d9",
+      "begin_equity_fact_id": "5d0120786f5c73274098a5f719651514476208d5bd683f4851667d84decea5ea",
+      "end_equity_fact_id": "b4c277e606f9cf0e409f381c5529a4eaa7458d1b124c998fbe0e760702340b68"
+    },
+    {
+      "fiscal_year": "2025",
+      "np_fact_id": "dea845ccad75d66b363fa67618f3f735c2dd756d43028e075859f5b94cf2b5a8",
+      "begin_equity_fact_id": "b4c277e606f9cf0e409f381c5529a4eaa7458d1b124c998fbe0e760702340b68",
+      "end_equity_fact_id": "00cb0c64831e9611889aa8a461cfa3e6f0be53efacca1ef5bd89e80c7db8262b"
+    }
+  ],
+  "equity_fact_ids": {
+    "begin": [
+      "b83a65483f61b802b74ff34561fa8f547f755c62936487963e0f1a8bfdd117cf",
+      "7204099afd5fdb133831e9a97c086c89ed8e6af462e28abc6422801ce4c8e06c",
+      "dedc229cb470fed54889288a9d12c05106f70cb9f61d9918e0dcc425a21b004a",
+      "5d0120786f5c73274098a5f719651514476208d5bd683f4851667d84decea5ea",
+      "b4c277e606f9cf0e409f381c5529a4eaa7458d1b124c998fbe0e760702340b68"
+    ],
+    "end": [
+      "7204099afd5fdb133831e9a97c086c89ed8e6af462e28abc6422801ce4c8e06c",
+      "dedc229cb470fed54889288a9d12c05106f70cb9f61d9918e0dcc425a21b004a",
+      "5d0120786f5c73274098a5f719651514476208d5bd683f4851667d84decea5ea",
+      "b4c277e606f9cf0e409f381c5529a4eaa7458d1b124c998fbe0e760702340b68",
+      "00cb0c64831e9611889aa8a461cfa3e6f0be53efacca1ef5bd89e80c7db8262b"
+    ]
+  },
+  "share_fact_id": "4ea90cb2990731ba3c4b44d602973a260f3888b2ac1e4bfd95805c4460e6e25d",
+  "current_equity_fact_id": "9d483639eacd7a4961655203c0fb72292df4ba1fa78769de59194e5ba3845389",
+  "average_roe_decimal": "0.1029179088085938346085963897",
+  "current_bvps_decimal": "8.876206538550294436827638346",
+  "normalized_eps_decimal": "0.9135206151007635380066173292",
+  "normalized_earnings_state_id": "1dacd906630323d0a74c682675f0c022fb91119549c1f20b4803ae06045f583c",
+  "no_trim_no_winsorize_no_exclusion": true,
+  "non_scoring": true
+}
