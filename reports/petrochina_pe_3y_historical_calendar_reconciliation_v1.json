@@ -1,0 +1,31 @@
+{
+  "schema": "pit_valuation_historical_calendar_reconciliation_v1",
+  "symbol": "601857.SH",
+  "old_object_sha256": "77021dceda8aae05c7bc2329e6efb65711ccea232bb289e880cd16b99151b92d",
+  "new_object_sha256": "6a3cf1a0f920cd3098c525c0462af9cc924aea6a044ef0334205fbef3baad1e3",
+  "new_object_key": "6a3cf1a0f920cd3098c525c0462af9cc924aea6a044ef0334205fbef3baad1e3.parquet",
+  "old_calendar_range": [
+    "2020-01-02",
+    "2026-08-05"
+  ],
+  "new_calendar_range": [
+    "2017-01-03",
+    "2026-08-07"
+  ],
+  "overlap_start": "2020-01-02",
+  "overlap_end": "2026-08-05",
+  "old_overlap_count": 1597,
+  "new_overlap_count": 1597,
+  "missing_dates": [],
+  "extra_dates": [],
+  "missing_old_dates_in_new_anywhere": [],
+  "overlap_status": "PASS",
+  "earliest_required_announcement_covered": true,
+  "coverage_status": "PASS",
+  "required_start": "2018-03-22",
+  "required_end": "2026-08-02",
+  "new_row_count": 2330,
+  "new_trading_day_count": 2330,
+  "note": "R4F3A historical calendar (2017-01-03..2026-08-07) extends calendar v1 (2020-01-02..2026-08-05); overlap trading-date set identical (1597/1597).",
+  "status": "PASS"
+}
