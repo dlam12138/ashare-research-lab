@@ -1,6 +1,6 @@
 # 工作记录：M2 Stage 2K.1R4F.4 — 3Y Historical Normalized-PE Cycle-Guard Validation
 
-Status: completed（本地验证完成；未 commit/未 push；**reviewer correction 已应用**）
+Status: completed（closeout：committed + pushed + CI PASS；reviewer correction 已应用）
 
 ## 基本信息
 
@@ -206,7 +206,6 @@ cycle-guard validation 证据。已按指令修正（未删除任何工程成果
 
 ## 遗留问题
 
-- 未 commit / 未 push（待用户授权 closeout）。
 - **independent cycle-context validation 未建立**——R4F.4A preflight 需
   冻结不由 raw/norm PE 算式定义的、可证伪的 cycle-context contract。
 - 5Y remaining 4 facts DEFERRED_PENDING_IDENTIFICATION_REVIEW（先确认
@@ -214,13 +213,33 @@ cycle-guard validation 证据。已按指令修正（未删除任何工程成果
 - full_cycle NOT_PROVEN（单一 issuer、无独立周期证据）。
 - 未来收益预测属独立机制研究（OUT_OF_SCOPE，未混入本 gate）。
 
+## Closeout（2026-08-08，用户授权）
+
+1. commit `25c182b`（feat: validate 3y normalized PE mechanical guard，
+   12 文件）+ `f3b37cb`（docs: record R4F.4 conditional local closeout）+
+   `3b8fe15`（fix: restatement test clean-clone safe）。
+2. push `c38b75a..3b8fe15`；local == origin。
+3. CI run 31239398738（f3b37cb）失败：`test_later_restatement_does_not_alter_history`
+   加载 gitignored `tmp/r4f4_synthetic_later_restatement.json` →
+   FileNotFoundError（双平台，与 R4F3A 同型问题）→ `3b8fe15` 改为内联
+   构造合成 facts，本地 1886 全绿。
+4. CI run 31239685208（3b8fe15）：**三作业全绿**（Ubuntu/Windows
+   clean-clone + identity-compare）。
+5. 本 closeout（acceptance/work record 补 CI 证据）→ push → final-tip CI。
+
+## 最终 Git 状态
+
+- 当前分支：`feat/m2-value-assessment-mvp`；HEAD `3b8fe15`（R4F4 实现 tip，
+  CI PASS）；local == origin。
+- 3 笔提交已推送：`25c182b`、`f3b37cb`、`3b8fe15`。
+- 保护项未动；stash 未动；默认 DB SHA 未变。
+
 ## 下一步建议
 
-- 用户授权后：commit R4F4（含 reviewer correction）全部文件 → push →
-  双平台 CI → acceptance 补 CI 证据 → closeout（对照 R4F3A 模式）。
 - R4F.4A（Independent Cycle-Context Validation Preflight）——需另行授权；
   冻结不由 PE 算式定义的 cycle-context contract；5Y 补数
   DEFERRED_PENDING_IDENTIFICATION_REVIEW；不授权 scoring。
+- final-tip CI 全绿后 R4F4 正式关闭（CONDITIONAL PASS — CI CONFIRMED）。
 
 ## 最终文件变更
 

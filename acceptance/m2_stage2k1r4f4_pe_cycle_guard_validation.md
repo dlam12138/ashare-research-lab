@@ -1,10 +1,15 @@
 # M2 Stage 2K.1R4F.4 — 3Y Historical Normalized-PE Cycle-Guard Validation
 
-## Verdict: CONDITIONAL PASS — LOCAL CANDIDATE
+## Verdict: CONDITIONAL PASS — CI CONFIRMED
 
-Status: completed (local validation only; not committed/pushed)
+Status: completed
 
 Decision: `PE_3Y_NORMALIZED_PE_MECHANICAL_GUARD_CONFIRMED_INDEPENDENT_CYCLE_VALIDATION_REQUIRED`
+
+Remote CI: PASS (run 31239685208, tip commit 3b8fe15 — Ubuntu clean-clone,
+Windows clean-clone, identity-compare all success; includes R4F4 49 tests,
+full offline suite, R4F3A/R4F3 protected regressions, Python/DuckDB oracle,
+scoring zero-change)
 
 Next-stage implementation: **NOT STARTED** (`R4F.4A — Independent
 Cycle-Context Validation Preflight`; PE scoring stays blocked)
@@ -134,20 +139,27 @@ exact rational ratios (`normalized_pe/raw_pe == ttm_eps/normalized_eps`).
   correctness.  No buy/sell/cheap/expensive interpretation; never a
   scoring input.
 
-## 6. Validation performed (local)
+## 6. Validation performed
 
 - R4F4 tests: **49 passed** (upstream gate, series exactness, identity
   exclusion/change tests, direction cases + algebraic-identity regression,
   recurrence gate pre-registration, identification gates, transition
   orphans, restatement perturbation, array order, percentile
   Python/DuckDB oracle, no-prohibited-terms, no-future-return, scoring
-  zero-change, DB SHA).
+  zero-change, DB SHA).  All clean-clone safe (synthetic fixtures built
+  inline, no gitignored external files).
 - R4F3A: 48 passed; R4F3: 45 passed; R4F2: 35 passed; R4F1: 19 passed.
-- Full offline suite: **1883 passed, 2 warnings**.
+- Full offline suite: **1886 passed, 2 warnings**.
 - ruff: All checks passed; compileall: pass; git diff --check: pass.
-- A/B builds byte-identical (7/7); secret/path/pollution scan clean.
+- A/B builds byte-identical (7/7); Python/DuckDB percentile oracle exact;
+  secret/path/pollution scan clean.
 - Default DB SHA unchanged (`4a71d3c7…`); stash preserved; protected
   files untouched; R4F3/R4F3A committed artifacts untouched.
+- Remote CI (run 31239685208, tip 3b8fe15): Ubuntu clean-clone PASS,
+  Windows clean-clone PASS, identity-compare PASS.  The earlier run on
+  f3b37cb failed only on the gitignored tmp fixture in the restatement
+  perturbation test; fixed by commit 3b8fe15 (inline synthetic facts),
+  after which CI is fully green.
 
 ## 7. Boundary preserved
 
