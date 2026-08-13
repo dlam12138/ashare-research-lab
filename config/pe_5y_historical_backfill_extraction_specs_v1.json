@@ -1,0 +1,16 @@
+{
+  "schema": "pe_5y_historical_backfill_extraction_specs_v1",
+  "symbol": "601857.SH",
+  "scope_rule": "CONSOLIDATED attributable-to-parent only; parent-company columns rejected",
+  "canonical_unit": "CNY",
+  "raw_unit": "CNY_million",
+  "conversion_multiplier": "1000000",
+  "ocr_allowed": false,
+  "llm_value_entry_allowed": false,
+  "specs": [
+    {"evidence_id": "R4F4A1-SSE-2015-AR", "concept_id": "equity_attributable_to_parent", "period_end": "2015-12-31", "page": 109, "table": "2015-12-31 consolidated balance sheet", "raw_label": "归属于母公司股东权益合计", "column": "2015-12-31 consolidated", "raw_token": "1,179,968"},
+    {"evidence_id": "R4F4A1-SSE-2016-AR", "concept_id": "equity_attributable_to_parent", "period_end": "2016-12-31", "page": 119, "table": "2016-12-31 consolidated balance sheet", "raw_label": "归属于母公司股东权益合计", "column": "2016-12-31 consolidated", "raw_token": "1,189,319"},
+    {"evidence_id": "R4F4A1-SSE-2016-AR", "concept_id": "net_profit_attributable_to_parent", "period_end": "2016-12-31", "page": 120, "table": "2016 consolidated income statement", "raw_label": "母公司股东", "column": "2016 consolidated", "raw_token": "7,900"},
+    {"evidence_id": "R4F3A-SSE-2017-AR", "concept_id": "net_profit_attributable_to_parent", "period_end": "2017-12-31", "page": 123, "table": "2017 consolidated income statement", "raw_label": "母公司股东", "column": "2017 consolidated", "raw_token": "22,793"}
+  ]
+}

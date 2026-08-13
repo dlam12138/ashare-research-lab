@@ -1,0 +1,17 @@
+{
+  "schema": "pit_valuation_market_calendar_registry_v1",
+  "provider": "baostock",
+  "symbol": "601857.SH",
+  "object_sha256": "997726a98028eb7e7bcb4587d221c67526765d0db0be162afc0d4f0101b6dcfb",
+  "object_key": "997726a98028eb7e7bcb4587d221c67526765d0db0be162afc0d4f0101b6dcfb.parquet",
+  "row_count": 2574,
+  "first_trading_day": "2016-01-04",
+  "last_trading_day": "2026-08-07",
+  "evidence_cutoff": "2026-08-02",
+  "resolver_contract": "explicit_content_addressed_object_no_scan_no_fallback",
+  "purpose": "R4F4A1_5Y_HISTORICAL_ANNOUNCEMENT_EFFECTIVE_FROM",
+  "required_start": "2016-03-24",
+  "required_end": "2026-08-02",
+  "supersedes_calendar": false,
+  "extends_coverage_of": "config/pit_valuation_market_calendar_registry_r4f3a_v1.json"
+}
