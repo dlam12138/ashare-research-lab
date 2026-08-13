@@ -73,4 +73,3 @@ episodes.
 The data stage is trusted, but independent outcome validation is
 `NOT_TESTABLE_WITH_FROZEN_5Y_HISTORY`. The required action is
 `STOP_FOR_NORTH_STAR_REVIEW`; automatic history extension is prohibited.
-
