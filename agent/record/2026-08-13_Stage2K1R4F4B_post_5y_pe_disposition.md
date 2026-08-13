@@ -1,6 +1,6 @@
 # 工作记录：M2 Stage 2K.1R4F.4B — Post-5Y PE disposition
 
-Status: LOCAL PASS — final-tip remote CI pending
+Status: PASS — local and remote acceptance complete
 
 ## 基线与保护边界
 
@@ -83,3 +83,8 @@ LF/CRLF checkout 影响；此前 PowerShell 命令未设置遇错即停，导致
 修正后 targeted 为 10 passed，full suite 为 1936 passed / 2 个既有 warning，Ruff、
 compileall、diff-check 均 PASS。由于同样禁止 amend / force-push，需追加第 4 笔纠错提交并
 以其 final-tip CI 为最终远端验收依据。
+
+实现 tip `afae63685c8512966449d7884b99053397917b8d` 的 remote CI run
+`31688229436` 已通过：Windows / Ubuntu clean-clone 全部门禁及 full offline suite PASS，
+cross-platform identity envelope compare PASS。仅有 GitHub Actions Node.js 20 deprecation
+annotation，无本阶段失败。随后只补录本段 CI 证据；该文档 tip 仍须通过同一远端门禁。
