@@ -1,0 +1,71 @@
+{
+ "schema": "petrochina_pe_independent_cycle_outcome_readiness_5y_v1",
+ "symbol": "601857.SH",
+ "read_mode": "METADATA_ONLY_READINESS",
+ "permitted_fields": [
+  "financial_state_id",
+  "period_end",
+  "available_at",
+  "effective_from",
+  "input_fact_ids",
+  "existence",
+  "maturity"
+ ],
+ "forbidden_fields": [
+  "value_decimal",
+  "per_share_denominator_decimal",
+  "future_eps"
+ ],
+ "future_eps_values_read": false,
+ "partial_quarter_proxy": false,
+ "forecast_fallback": false,
+ "candidate_regimes_with_4q_target_metadata_available": 1,
+ "candidate_regimes_with_8q_target_metadata_available": 1,
+ "protocol_valid_mature_4q_episode_count": 0,
+ "protocol_valid_mature_8q_episode_count": 0,
+ "existing_financial_state_target_coverage": [
+  {
+   "candidate_regime_id": "above-normalized-regime-001",
+   "episode_id": null,
+   "anchor_status": "NOT_IDENTIFIABLE_LEFT_CENSORED",
+   "metadata_reference_policy": "CANDIDATE_FIRST_OBSERVED_REFERENCE_METADATA_ONLY",
+   "horizons": {
+    "4q": {
+     "target_period_end": "2022-03-31",
+     "metadata_status": "MATURED",
+     "protocol_valid_maturity": false,
+     "future_financial_state_id": "d0fd1c1b339819fbaa8c5dea859785fa0c9c133ab38aba5123d3878fe8cc868c",
+     "period_end": "2022-03-31",
+     "available_at": "2022-04-30",
+     "effective_from": "2022-05-05",
+     "constituent_fact_ids": [
+      "2608838fc8bb4b9f3d1772c9edcfa1ffe7c030c0bd5c326b672815593aee55f5",
+      "df0f50cd04273f81dac23e7c3e84de42d13a27fa988d133e2da347f8fa162fc8",
+      "eb1a6271b4a359bda90f7bc6439ee61ff0597990457d348abd5ae451040a527e"
+     ]
+    },
+    "8q": {
+     "target_period_end": "2023-03-31",
+     "metadata_status": "MATURED",
+     "protocol_valid_maturity": false,
+     "future_financial_state_id": "e982384f59fb8bd2af2e3de993dfaacdd17891f60712643fc78fefff341ace44",
+     "period_end": "2023-03-31",
+     "available_at": "2023-04-29",
+     "effective_from": "2023-05-04",
+     "constituent_fact_ids": [
+      "1f1cc75d460a9efc57b0e48b02aec9e27107babae8723e0622d64908e6fdd9f0",
+      "896a2f045d34941d1a9db5f33047480033f5bea6eee8ba632d22a306af6ac613",
+      "e03d2e80e2e600e3682afd29eecf51f480a455fda0d4f953f5cce52818ca9726"
+     ]
+    }
+   }
+  }
+ ],
+ "earliest_missing_target_period": null,
+ "latest_available_target_period": "2026-03-31",
+ "5y_candidate_regime_count": 1,
+ "valid_onset_anchored_episode_count": 0,
+ "current_5y_validation_executable": false,
+ "primary_4q_execution_gate": "INDEPENDENT_VALIDATION_NOT_TESTABLE_WITH_FROZEN_5Y_HISTORY",
+ "8q_robustness_readiness": "8Q_ROBUSTNESS_PARTIAL"
+}

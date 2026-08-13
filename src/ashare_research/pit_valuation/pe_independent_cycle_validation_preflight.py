@@ -38,12 +38,29 @@ def derive_episode_inventory(
     timeline: dict[str, Any],
     normalized_states: dict[str, dict[str, Any]],
 ) -> dict[str, Any]:
+    """Backward-compatible 3Y wrapper (output remains byte-identical)."""
+    return derive_episode_inventory_for_window(
+        "3y", "2023-07-31", ledger, timeline, normalized_states
+    )
+
+
+def derive_episode_inventory_for_window(
+    window_id: str,
+    window_start: str,
+    ledger: dict[str, Any],
+    timeline: dict[str, Any],
+    normalized_states: dict[str, dict[str, Any]],
+) -> dict[str, Any]:
     """Derive contiguous above-normalized regimes using t-state data only.
 
     A regime already active on the first observed state is retained as a
     left-censored candidate episode.  It is never represented as an observed
     sign-transition onset.
     """
+    if window_id not in {"3y", "5y"}:
+        raise ValueError("window_id must be 3y or 5y")
+    left_censored_key = f"left_censored_at_{window_id}_window_start"
+    unknown_onset = f"UNKNOWN_OUTSIDE_{window_id.upper()}_WINDOW"
     state_by_id = _timeline_index(timeline)
     episodes: list[dict[str, Any]] = []
     active: dict[str, Any] | None = None
@@ -88,12 +105,10 @@ def derive_episode_inventory(
                 "episode_semantics": "ABOVE_NORMALIZED_EARNINGS_EPISODE",
                 "onset_rule": "FIRST_RAW_TTM_STATE_AFTER_EARNINGS_EXCESS_NONPOSITIVE_TO_POSITIVE",
                 "onset_observed": not left_censored,
-                "left_censored_at_3y_window_start": left_censored,
+                left_censored_key: left_censored,
                 "first_observed_trade_date": segment["start_trade_date"],
                 "true_onset_trade_date": (
-                    segment["start_trade_date"]
-                    if anchor_identifiable
-                    else "UNKNOWN_OUTSIDE_3Y_WINDOW"
+                    segment["start_trade_date"] if anchor_identifiable else unknown_onset
                 ),
                 "anchor_status": (
                     "IDENTIFIED_AT_OBSERVED_ONSET"
@@ -156,8 +171,12 @@ def derive_episode_inventory(
         previous_direction = segment["direction"]
     if active is not None:
         episodes.append(active)
-    return {
-        "schema": "petrochina_pe_independent_cycle_episode_inventory_v1",
+    payload = {
+        "schema": (
+            "petrochina_pe_independent_cycle_episode_inventory_v1"
+            if window_id == "3y"
+            else "petrochina_pe_independent_cycle_episode_inventory_5y_v1"
+        ),
         "symbol": "601857.SH",
         "validation_unit": "INDEPENDENT_EPISODE_ONSET",
         "episode_semantics": "INDEPENDENT_CONTIGUOUS_ABOVE_NORMALIZED_REGIME",
@@ -167,8 +186,8 @@ def derive_episode_inventory(
         "observed_onset_count": sum(e["onset_observed"] for e in episodes),
         "observed_onsets": sum(e["onset_observed"] for e in episodes),
         "observed_episode_onsets": sum(e["onset_observed"] for e in episodes),
-        "left_censored_episode_count": sum(e["left_censored_at_3y_window_start"] for e in episodes),
-        "left_censored_regimes": sum(e["left_censored_at_3y_window_start"] for e in episodes),
+        "left_censored_episode_count": sum(e[left_censored_key] for e in episodes),
+        "left_censored_regimes": sum(e[left_censored_key] for e in episodes),
         "valid_onset_anchored_episodes": sum(
             e["anchor_status"] == "IDENTIFIED_AT_OBSERVED_ONSET" for e in episodes
         ),
@@ -185,10 +204,23 @@ def derive_episode_inventory(
         "candidate_regimes": episodes,
         "episodes": episodes,
     }
+    if window_id == "5y":
+        payload["window_id"] = "5y"
+        payload["window_start"] = window_start
+    return payload
 
 
 def build_outcome_readiness(inventory: dict[str, Any], timeline: dict[str, Any]) -> dict[str, Any]:
+    """Backward-compatible 3Y wrapper (output remains byte-identical)."""
+    return build_outcome_readiness_for_window("3y", inventory, timeline)
+
+
+def build_outcome_readiness_for_window(
+    window_id: str, inventory: dict[str, Any], timeline: dict[str, Any]
+) -> dict[str, Any]:
     """Resolve only target-state metadata; future value fields are never read."""
+    if window_id not in {"3y", "5y"}:
+        raise ValueError("window_id must be 3y or 5y")
     by_period = _period_index(timeline)
     latest = max(by_period) if by_period else None
     rows: list[dict[str, Any]] = []
@@ -241,8 +273,12 @@ def build_outcome_readiness(inventory: dict[str, Any], timeline: dict[str, Any])
     metadata8 = sum(r["horizons"]["8q"]["metadata_status"] == MATURED for r in rows)
     valid4 = sum(r["horizons"]["4q"]["protocol_valid_maturity"] for r in rows)
     valid8 = sum(r["horizons"]["8q"]["protocol_valid_maturity"] for r in rows)
-    return {
-        "schema": "petrochina_pe_independent_cycle_outcome_readiness_v1",
+    payload = {
+        "schema": (
+            "petrochina_pe_independent_cycle_outcome_readiness_v1"
+            if window_id == "3y"
+            else "petrochina_pe_independent_cycle_outcome_readiness_5y_v1"
+        ),
         "symbol": "601857.SH",
         "read_mode": "METADATA_ONLY_READINESS",
         "permitted_fields": [
@@ -276,6 +312,30 @@ def build_outcome_readiness(inventory: dict[str, Any], timeline: dict[str, Any])
         "earliest_missing_target_period": min(missing) if missing else None,
         "latest_available_target_period": latest,
     }
+    if window_id == "5y":
+        for key in (
+            "3y_candidate_regime_count",
+            "3y_valid_onset_anchored_episode_count",
+            "current_3y_validation_executable",
+            "current_3y_validation_block_reason",
+            "current_3y_validation_reason",
+            "5y_historical_extension_needed",
+        ):
+            payload.pop(key, None)
+        payload.update(
+            {
+                "5y_candidate_regime_count": inventory["candidate_contiguous_regimes"],
+                "valid_onset_anchored_episode_count": inventory["valid_onset_anchored_episodes"],
+                "current_5y_validation_executable": valid4 >= 2,
+                "primary_4q_execution_gate": (
+                    "INDEPENDENT_OUTCOME_VALIDATION_EXECUTION_READY"
+                    if valid4 >= 2
+                    else "INDEPENDENT_VALIDATION_NOT_TESTABLE_WITH_FROZEN_5Y_HISTORY"
+                ),
+                "8q_robustness_readiness": ("READY" if valid8 >= 2 else "8Q_ROBUSTNESS_PARTIAL"),
+            }
+        )
+    return payload
 
 
 def derive_5y_justification(inventory: dict[str, Any], readiness: dict[str, Any]) -> dict[str, Any]:
