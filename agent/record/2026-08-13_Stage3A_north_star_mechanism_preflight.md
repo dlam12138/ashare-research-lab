@@ -1,6 +1,6 @@
 # Work Record: M3 Stage 3A — North-Star Mechanism Research Preflight
 
-Status: LOCAL PASS — commit / push / remote CI pending
+Status: PASS — local and remote acceptance complete
 
 ## Integration checkpoint
 
@@ -38,4 +38,7 @@ Status: LOCAL PASS — commit / push / remote CI pending
 - Focused Stage 3A tests: 10 passed.
 - First full-suite attempt mixed the original checkout's editable install with this worktree and produced path-dependent legacy failures. Two manifest tests showed imports resolving to `D:\量化分析\src` while test roots resolved here. No old test was changed.
 - Full suite rerun with `PYTHONPATH` explicitly bound to this clean worktree: 1943 passed, 3 skipped, 2 pre-existing pandas warnings.
-- Final static/protected-state gates, commit, push, and remote CI remain pending.
+- Ruff, compileall, diff-check, pollution and protected-state gates passed.
+- Implementation commit `77aeebded56889a1a020cf865e53dd86afa3a0ec` was pushed normally.
+- Remote CI run `31708691802` passed Windows and Ubuntu clean-clone jobs plus cross-platform identity comparison. Only upstream GitHub Actions Node.js deprecation annotations remain.
+- This evidence-only closeout does not start Stage 3B.

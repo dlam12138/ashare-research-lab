@@ -1,6 +1,6 @@
 # M3 Stage 3A — North-Star Mechanism Research Preflight Acceptance
 
-Status: LOCAL PASS — commit, push, and remote CI pending
+Status: PASS — local and remote acceptance complete
 
 ## Decision
 
@@ -53,8 +53,9 @@ Existing provider interfaces cover target daily prices, trade calendars, and ind
 - `python -m pytest tests/test_m3_stage3a_mechanism_preflight.py -q`: 10 passed.
 - `python -m pytest -q` with `PYTHONPATH` bound to this clean worktree: 1943 passed, 3 skipped, 2 pre-existing pandas date-parser warnings.
 - The first full-suite attempt inherited the original checkout's editable install and therefore mixed two repository roots. Two focused manifest tests proved the mismatch; binding `PYTHONPATH` to this worktree corrected the environment without changing tests or implementation.
-- Ruff, compileall, diff-check, pollution/protected-state checks: pending final pre-commit gate.
-- Remote CI: pending.
+- Ruff, compileall, diff-check, pollution/protected-state checks: PASS.
+- Implementation commit: `77aeebded56889a1a020cf865e53dd86afa3a0ec`.
+- Remote CI run `31708691802`: Windows clean clone PASS, Ubuntu clean clone PASS, and cross-platform identity comparison PASS. Only upstream GitHub Actions Node.js deprecation annotations remain.
 
 ## Protected state
 
