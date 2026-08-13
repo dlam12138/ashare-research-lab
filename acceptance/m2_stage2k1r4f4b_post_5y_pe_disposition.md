@@ -59,6 +59,7 @@ Exact commands and local results:
 11. Secret/absolute-path review — no credential or real local-path leakage; `/home/` tokens occur only in negative test assertions.
 12. Pollution scan — no tracked/untracked PDF, DB, cache, raw-response, bytecode, or tmp output added.
 13. First remote CI run `31685905455` exposed two cross-platform test-contract issues after all earlier gates passed: protected text hashes used checkout-dependent line endings, and a legacy clean-clone stash test used absence of `agent/goals` as its clone marker. Both were corrected without changing upstream artifacts or the disposition; focused post-fix tests are 32 passed and a replacement CI run is pending.
+14. Replacement run `31686959723`: Ubuntu clean clone/full suite passed. Windows had one remaining test-only newline failure because `Path.write_text` converted deterministic LF content to CRLF in temporary A/B files; the test now writes exact UTF-8 bytes. A final replacement CI run is pending.
 
 ## Protected state
 

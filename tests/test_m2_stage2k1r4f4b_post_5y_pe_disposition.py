@@ -151,8 +151,8 @@ def test_build_is_byte_deterministic_and_matches_committed_artifacts(tmp_path):
         b = tmp_path / "b" / name
         a.parent.mkdir(exist_ok=True)
         b.parent.mkdir(exist_ok=True)
-        a.write_text(content, encoding="utf-8")
-        b.write_text(content, encoding="utf-8")
+        a.write_bytes(content.encode("utf-8"))
+        b.write_bytes(content.encode("utf-8"))
         assert hashlib.sha256(a.read_bytes()).digest() == hashlib.sha256(b.read_bytes()).digest()
         assert (ROOT / "reports" / name).read_bytes() == a.read_bytes()
 

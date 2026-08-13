@@ -70,3 +70,9 @@ Git、push 和 remote CI 证据待补。
   Goal contract 后该判据失效。改为“本地有受保护 stash，或 clean clone tracked diff clean”。
 - 修正后 `verify-upstream` / build / verify PASS；focused tests 32 passed；Ruff、compileall、
   diff-check PASS。等待第二笔 CI closeout commit 与 replacement CI。
+
+Replacement run `31686959723` 的 Ubuntu 全部通过；Windows 只剩一个 test-only A/B
+newline failure：`Path.write_text` 在 Windows 临时文件中把 LF 转为 CRLF。改为
+`write_bytes(content.encode("utf-8"))` 精确写出 deterministic bytes。因禁止 amend 与
+force-push，必须追加第 3 笔纠错 commit；这是对原“两笔最多”策略的明确偏离，不改变方法、
+产物或上游内容。
