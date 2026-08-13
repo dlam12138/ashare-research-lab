@@ -1,0 +1,64 @@
+{
+ "schema": "m2_stage2k1r4f4b_pe_method_disposition_matrix_v1",
+ "stage": "M2_STAGE_2K1R4F4B",
+ "subject": "601857.SH",
+ "basis": "FROZEN_5Y_INDEPENDENT_VALIDATION_NOT_TESTABLE",
+ "selection_rule": "SELECT_THE_MOST_AUDITABLE_NORTH_STAR_ALIGNED_OPTION_WITHOUT_EX_POST_SCOPE_EXPANSION",
+ "candidates": [
+  {
+   "candidate": "EXTEND_HISTORY_GT_5Y",
+   "north_star_value": "MEDIUM",
+   "methodological_risk": "HIGH",
+   "scope_expansion": "HIGH",
+   "incremental_data_cost": "HIGH",
+   "reusability": "MEDIUM",
+   "current_protocol_allowed": false,
+   "acquisition_performed": false,
+   "decision": "REJECT_FOR_CURRENT_M2",
+   "reason": "Would change the pre-frozen 5Y stop boundary after observing the result."
+  },
+  {
+   "candidate": "ADD_COMMODITY_AND_INDUSTRY_CYCLE_CONTEXT",
+   "north_star_value": "HIGH",
+   "methodological_value": "HIGH",
+   "methodological_risk": "MEDIUM",
+   "scope_expansion": "MEDIUM_HIGH",
+   "belongs_to_m2": "WEAK",
+   "belongs_to_m3": "STRONG",
+   "current_protocol_allowed": false,
+   "acquisition_performed": false,
+   "decision": "DEFER_TO_MECHANISM_RESEARCH",
+   "reason": "Oil and industry controls are North-Star mechanism variables, not an ex-post rescue for M2 PE scoring."
+  },
+  {
+   "candidate": "MULTI_ISSUER_OR_PEER_VALIDATION",
+   "north_star_value": "MEDIUM",
+   "methodological_value": "MEDIUM",
+   "methodological_risk": "MEDIUM",
+   "scope_expansion": "VERY_HIGH",
+   "peer_dependency": "HIGH",
+   "current_m2_need": "LOW",
+   "current_protocol_allowed": false,
+   "acquisition_performed": false,
+   "decision": "DEFER",
+   "reason": "The MVP requires one demonstrator; peer acquisition would turn this bounded disposition into an industry study."
+  },
+  {
+   "candidate": "KEEP_PE_DESCRIPTIVE_DEFER_NUMERIC_SCORING",
+   "north_star_value": "HIGH",
+   "methodological_value": "HIGH",
+   "methodological_risk": "LOW",
+   "scope_expansion": "LOW",
+   "auditability": "HIGH",
+   "future_reopenable": true,
+   "current_protocol_allowed": true,
+   "acquisition_performed": false,
+   "decision": "SELECT",
+   "reason": "Retains trusted descriptive evidence while limiting claims to what frozen evidence can support."
+  }
+ ],
+ "selected_candidate": "KEEP_PE_DESCRIPTIVE_DEFER_NUMERIC_SCORING",
+ "new_economic_fact_acquisition": false,
+ "future_outcome_read": false,
+ "m3_implementation": false
+}

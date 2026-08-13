@@ -1,0 +1,75 @@
+{
+ "schema": "m2_stage2k1r4f4b_pe_disposition_decision_v1",
+ "stage": "M2_STAGE_2K1R4F4B",
+ "subject": "601857.SH",
+ "decision": "PE_NUMERIC_SCORING_DEFERRED_FROZEN_5Y_VALIDATION_NOT_TESTABLE",
+ "verdict": "PASS",
+ "upstream_decision": "PE_5Y_BACKFILL_TRUSTED_INDEPENDENT_VALIDATION_NOT_TESTABLE_WITH_FROZEN_5Y_HISTORY",
+ "pe_evidence": {
+  "raw_pe": "TRUSTED",
+  "historical_percentile_3y": "TRUSTED",
+  "historical_percentile_5y": "TRUSTED",
+  "normalized_pe_cycle_context_methodology": "RETAINED_AS_RESEARCH_HISTORY",
+  "cycle_context_independent_validation": "NOT_TESTABLE_WITH_FROZEN_5Y",
+  "numeric_scoring_authorized": false
+ },
+ "frozen_5y_evidence": {
+  "required_days": 1211,
+  "ready_days": 1211,
+  "blocked_days": 0,
+  "candidate_regimes": 1,
+  "observed_onsets": 0,
+  "left_censored_regimes": 1,
+  "valid_onset_episodes": 0,
+  "mature_4q": 0,
+  "mature_8q": 0,
+  "future_eps_values_read": false
+ },
+ "scoring_policy": {
+  "pe_component_score": null,
+  "pe_zero_imputation": false,
+  "weight_redistribution": false,
+  "registered_weight_topology_unchanged": true,
+  "valuation_dimension_score": null,
+  "valuation_dimension_numeric_score": false,
+  "pb_ps_component_shadow_retained": true,
+  "production_scoring": false,
+  "overall_score": false,
+  "ranking": false,
+  "recommendation": false,
+  "target_price": false
+ },
+ "scope_boundary": {
+  "history_extension_beyond_frozen_5y": false,
+  "commodity_or_industry_cycle_acquisition": false,
+  "peer_issuer_acquisition": false,
+  "new_pe_percentile_computation": false,
+  "future_outcome_read": false,
+  "default_db_modification": false,
+  "upstream_artifact_rewrite": false,
+  "m3_implementation": false
+ },
+ "m2_status": {
+  "milestone": "CONDITIONALLY_CLOSED",
+  "scoring_addendum": "CONDITIONAL_CLOSEOUT_ALLOWED",
+  "fully_complete": false
+ },
+ "method_reopen_gate": {
+  "allowed_reasons": [
+   "NEW_PRE_REGISTERED_METHOD",
+   "NEW_INDEPENDENT_EVIDENCE_CLASS",
+   "NORTH_STAR_MATERIAL_CHANGE"
+  ],
+  "prohibited_reasons": [
+   "MORE_HISTORY_ONLY",
+   "THRESHOLD_TUNING_AFTER_RESULT",
+   "OUTCOME_DRIVEN_METHOD_SELECTION"
+  ]
+ },
+ "next_stage": {
+  "stage": "M3_NORTH_STAR_PREFLIGHT",
+  "preflight_allowed": true,
+  "implementation_authorized": false,
+  "automatic_start": false
+ }
+}

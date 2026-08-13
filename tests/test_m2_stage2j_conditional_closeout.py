@@ -155,11 +155,13 @@ def test_closeout_wording_and_scoring_boundary_are_exact():
     for path in immutable:
         text = (ROOT / path).read_text(encoding="utf-8")
         assert "Milestone 2: CONDITIONALLY CLOSED WITH EXPLICIT EVIDENCE GAPS" in text
-    # Living docs reflect the Stage 2K scoring-addendum reopened status.
-    for path in ("README.md", "docs/value_fact_coverage_roadmap.md"):
-        text = (ROOT / path).read_text(encoding="utf-8")
-        assert "Milestone 2: CONDITIONALLY CLOSED; SCORING ADDENDUM REOPENED" in text
-        assert "M3_NORTH_STAR_PREFLIGHT_ALLOWED" in text
+    # The protected roadmap keeps Stage 2K reopening history; README is current.
+    roadmap = (ROOT / "docs/value_fact_coverage_roadmap.md").read_text(encoding="utf-8")
+    assert "Milestone 2: CONDITIONALLY CLOSED; SCORING ADDENDUM REOPENED" in roadmap
+    current = (ROOT / "README.md").read_text(encoding="utf-8")
+    assert "Milestone 2: CONDITIONALLY CLOSED; SCORING ADDENDUM CONDITIONALLY CLOSED" in current
+    assert "PE_NUMERIC_SCORING_DEFERRED_FROZEN_5Y_VALIDATION_NOT_TESTABLE" in current
+    assert "M3_NORTH_STAR_PREFLIGHT_ALLOWED" in current
     packet = (ROOT / "reports/m2_stage2j_closeout_summary.md").read_text(
         encoding="utf-8"
     )
