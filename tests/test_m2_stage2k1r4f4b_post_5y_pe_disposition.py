@@ -154,7 +154,8 @@ def test_build_is_byte_deterministic_and_matches_committed_artifacts(tmp_path):
         a.write_bytes(content.encode("utf-8"))
         b.write_bytes(content.encode("utf-8"))
         assert hashlib.sha256(a.read_bytes()).digest() == hashlib.sha256(b.read_bytes()).digest()
-        assert (ROOT / "reports" / name).read_bytes() == a.read_bytes()
+        committed = (ROOT / "reports" / name).read_text(encoding="utf-8")
+        assert committed.replace("\r\n", "\n").replace("\r", "\n") == content
 
 
 def test_artifacts_do_not_leak_local_absolute_paths():

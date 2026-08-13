@@ -1,6 +1,6 @@
 # 工作记录：M2 Stage 2K.1R4F.4B — Post-5Y PE disposition
 
-Status: LOCAL PASS — commit / push / remote CI pending
+Status: LOCAL PASS — final-tip remote CI pending
 
 ## 基线与保护边界
 
@@ -76,3 +76,10 @@ newline failure：`Path.write_text` 在 Windows 临时文件中把 LF 转为 CRL
 `write_bytes(content.encode("utf-8"))` 精确写出 deterministic bytes。因禁止 amend 与
 force-push，必须追加第 3 笔纠错 commit；这是对原“两笔最多”策略的明确偏离，不改变方法、
 产物或上游内容。
+
+第 3 笔提交后，本地定向复跑发现 committed-artifact 的 raw-byte 断言仍会受 working-tree
+LF/CRLF checkout 影响；此前 PowerShell 命令未设置遇错即停，导致该失败未阻止提交和 push。
+现已将该断言改为 UTF-8 内容换行归一化比较，同时保留 A/B 临时产物的 exact-byte 比较。
+修正后 targeted 为 10 passed，full suite 为 1936 passed / 2 个既有 warning，Ruff、
+compileall、diff-check 均 PASS。由于同样禁止 amend / force-push，需追加第 4 笔纠错提交并
+以其 final-tip CI 为最终远端验收依据。

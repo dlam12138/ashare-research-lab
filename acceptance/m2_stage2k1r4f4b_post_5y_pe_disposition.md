@@ -1,6 +1,6 @@
 # M2 Stage 2K.1R4F.4B acceptance
 
-Status: LOCAL PASS — commit, push, and remote CI pending.
+Status: LOCAL PASS — final-tip remote CI pending.
 
 ## Task contract
 
@@ -60,6 +60,7 @@ Exact commands and local results:
 12. Pollution scan — no tracked/untracked PDF, DB, cache, raw-response, bytecode, or tmp output added.
 13. First remote CI run `31685905455` exposed two cross-platform test-contract issues after all earlier gates passed: protected text hashes used checkout-dependent line endings, and a legacy clean-clone stash test used absence of `agent/goals` as its clone marker. Both were corrected without changing upstream artifacts or the disposition; focused post-fix tests are 32 passed and a replacement CI run is pending.
 14. Replacement run `31686959723`: Ubuntu clean clone/full suite passed. Windows had one remaining test-only newline failure because `Path.write_text` converted deterministic LF content to CRLF in temporary A/B files; the test now writes exact UTF-8 bytes. A final replacement CI run is pending.
+15. A subsequent local rerun exposed that comparing those exact LF temporary bytes to a CRLF working-tree checkout was itself checkout-dependent. The committed-artifact assertion now compares UTF-8 content after newline normalization, while A/B determinism still compares exact bytes. Post-fix targeted tests are 10 passed and the full local suite is 1936 passed; final-tip CI remains pending.
 
 ## Protected state
 
@@ -71,4 +72,4 @@ Exact commands and local results:
 
 ## Git and remote state
 
-Implementation is not yet committed or pushed. Local/origin remain 0/0 at the pre-commit checkpoint. Remote CI is pending. M3 was not started.
+Commits `63545b4`, `67d29a9`, and `1986994` were pushed normally. The final newline-normalization correction is awaiting its own commit/push and final-tip remote CI. The task-contract maximum of two commits was exceeded because the two Windows-only portability failures were found only by replacement CI and amend/force-push are forbidden. M3 was not started.
