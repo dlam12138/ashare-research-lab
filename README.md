@@ -347,7 +347,7 @@ ruff check src/ tests/
 |--------|------|------|
 | Milestone 1: 免费数据底座 | 股票基础信息、交易日历、日线行情、Parquet/DuckDB 存储 | ✅ 已完成 |
 | Milestone 2: 价值评估 MVP | 企业质量、估值、现金流、安全边际、风险否决项 | 条件关闭；评分附加项已条件关闭，PE numeric scoring deferred |
-| Milestone 3: 机制验证 MVP | 假设检验、条件收益、控制变量、证据分级 | 仅允许 North-Star preflight；实现未开始 |
+| Milestone 3: 机制验证 MVP | 假设检验、条件收益、控制变量、证据分级 | Stage 3A preflight 契约已冻结；真实数据获取与机制分析未开始 |
 | Milestone 4: 通用研究器 | 可配置的假设验证框架 | 🔲 计划中 |
 | Milestone 5: 分钟级研究 | 按需分钟数据验证 | 🔲 计划中 |
 | Milestone 6: 本地 Web 界面 | Streamlit 工作台 | 🔲 计划中 |

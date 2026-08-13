@@ -1,0 +1,106 @@
+{
+ "inventory_method": "OFFLINE_INTERFACE_AND_SCHEMA_RECONNAISSANCE_ONLY",
+ "network_calls_performed": false,
+ "oil_point_in_time_policy": {
+  "choice_must_be_frozen_before_results": true,
+  "fallback": "OIL_RETURN_T_MINUS_1",
+  "primary": "LATEST_OBSERVABLE_BEFORE_A_SHARE_CLOSE",
+  "same_day_overseas_close_allowed": false
+ },
+ "primary_market_proxy": {
+  "constituent_history": "DATA_ACQUISITION_REQUIRED",
+  "exact_reproducibility": "DATA_ACQUISITION_REQUIRED",
+  "fallback_to_sse_composite_allowed": false,
+  "historical_weight_history": "DATA_ACQUISITION_REQUIRED",
+  "id": "SH_MARKET_EX_601857",
+  "required_construction": "Point-in-time Shanghai-listed equity return aggregate excluding 601857.SH"
+ },
+ "real_data_acquired": false,
+ "requirements": [
+  {
+   "id": "target_daily",
+   "interface": "BaseProvider.get_stock_daily",
+   "status": "AVAILABLE",
+   "tier": 1
+  },
+  {
+   "id": "trade_calendar",
+   "interface": "BaseProvider.get_trade_calendar",
+   "status": "AVAILABLE",
+   "tier": 1
+  },
+  {
+   "id": "market_ex_target",
+   "status": "DATA_ACQUISITION_REQUIRED",
+   "tier": 1
+  },
+  {
+   "id": "oil",
+   "status": "DATA_ACQUISITION_REQUIRED",
+   "tier": 1
+  },
+  {
+   "id": "petrochemical_industry",
+   "status": "DATA_ACQUISITION_REQUIRED",
+   "tier": 1
+  },
+  {
+   "id": "dividend_style",
+   "status": "PROXY_REQUIRED",
+   "tier": 2
+  },
+  {
+   "id": "central_soe_style",
+   "status": "PROXY_REQUIRED",
+   "tier": 2
+  },
+  {
+   "id": "large_cap_style",
+   "status": "ACQUIRABLE",
+   "tier": 2
+  },
+  {
+   "id": "usd_cny",
+   "status": "DATA_ACQUISITION_REQUIRED",
+   "tier": 3
+  },
+  {
+   "id": "market_turnover",
+   "status": "ACQUIRABLE",
+   "tier": 3
+  },
+  {
+   "id": "volatility",
+   "status": "PROXY_REQUIRED",
+   "tier": 3
+  },
+  {
+   "id": "small_large_spread",
+   "status": "PROXY_REQUIRED",
+   "tier": 3
+  },
+  {
+   "id": "historical_target_index_weight",
+   "status": "DATA_ACQUISITION_REQUIRED",
+   "tier": "CONTRIBUTION"
+  }
+ ],
+ "sample_availability_policy": {
+  "effective_primary_start": "MAX_TRUSTWORTHY_START_OF_REQUIRED_PRIMARY_INPUTS",
+  "forward_fill_missing_history_allowed": false,
+  "pre_effective_period": "DESCRIPTIVE_ONLY",
+  "requested_end": "2026-08-13",
+  "requested_start": "2015-01-01"
+ },
+ "schema_version": "1.0.0",
+ "secondary_market_proxies": [
+  "SH_EQUAL_WEIGHT",
+  "A_SHARE_EQUAL_WEIGHT",
+  "A_SHARE_MEDIAN_RETURN",
+  "ADVANCING_STOCK_RATIO",
+  "CSI300",
+  "SSE50"
+ ],
+ "stage": "M3_STAGE3A",
+ "stage3b_required": true
+}
