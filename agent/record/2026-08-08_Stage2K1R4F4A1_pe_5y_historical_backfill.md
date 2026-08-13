@@ -1,6 +1,6 @@
 # 工作记录：M2 Stage 2K.1R4F.4A1 — Frozen-5Y historical backfill
 
-Status: PASS — LOCAL CANDIDATE; closeout authorized; remote CI pending
+Status: PASS — CI CONFIRMED; final-tip CI pending
 
 ## 基线与范围
 
@@ -53,3 +53,20 @@ Status: PASS — LOCAL CANDIDATE; closeout authorized; remote CI pending
 实现阶段本地验证完成；关闭授权允许分范围 commit、normal push 与 CI closeout。
 当前尚未 commit/push，且不会开始 outcome-validation stage；machine-readable
 next stage 已冻结为 `NONE_PENDING_NORTH_STAR_REVIEW`。
+
+## Implementation-tip CI closeout
+
+- 三笔 implementation/local-closeout commits：
+  - `4c7d500` — frozen 5Y fact/readiness backfill
+  - `e17711b` — frozen 5Y episode boundary recovery
+  - `df8b999` — local closeout documentation
+- 普通 push：`284d308..df8b999` 到
+  `origin/feat/m2-value-assessment-mvp`。
+- GitHub Actions run `31680410291`，head
+  `df8b999ebb19c1732eb1dcf12494f5678a3a8a32`：
+  - Ubuntu clean-clone：PASS
+  - Windows clean-clone：PASS
+  - identity-compare：PASS
+- CI 仅有 actions Node.js 20 deprecation annotation；不影响 job success，
+  与本阶段方法或产物无关。
+- 本次仅更新 acceptance 与 work record，等待 final-tip CI 后停止。

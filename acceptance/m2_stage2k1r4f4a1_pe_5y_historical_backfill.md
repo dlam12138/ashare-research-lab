@@ -1,6 +1,6 @@
 # M2 Stage 2K.1R4F.4A1 acceptance
 
-Status: PASS — LOCAL CANDIDATE; closeout authorized; remote CI pending.
+Status: PASS — CI CONFIRMED; final-tip CI pending.
 
 ## Task contract
 
@@ -18,7 +18,9 @@ Status: PASS — LOCAL CANDIDATE; closeout authorized; remote CI pending.
 
 **PASS**
 
-Closeout state: `PASS — LOCAL CANDIDATE`; Remote CI: `PENDING`.
+Closeout state: `PASS — CI CONFIRMED`. Implementation-tip remote CI run
+`31680410291` passed Ubuntu clean-clone, Windows clean-clone, and
+cross-platform identity-compare at commit `df8b999ebb19c1732eb1dcf12494f5678a3a8a32`.
 
 - Upstream R4F.4A: trusted; committed decision and three 3Y artifacts verified.
 - Target logical cells: 4/4 resolved using canonical concepts only.
@@ -75,3 +77,14 @@ Exact commands and results:
 External PDFs and the extended parquet remain gitignored external-cache
 objects. Temporary visual-QA renders and A/B output roots were removed after
 verification.
+
+## Remote CI evidence
+
+- Workflow: `Stage 2G reproducibility`
+- Implementation tip: `df8b999ebb19c1732eb1dcf12494f5678a3a8a32`
+- Run: `31680410291`
+- URL: `https://github.com/dlam12138/ashare-research-lab/actions/runs/31680410291`
+- Ubuntu clean-clone: PASS
+- Windows clean-clone: PASS
+- Cross-platform identity-compare: PASS
+- Final-tip status: pending this CI-evidence-only commit.
