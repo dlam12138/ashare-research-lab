@@ -56,19 +56,19 @@ PROTECTED_SHA256 = {
         "73ee0ccb444551882adc07745e881c4947ed3ecbf484264bfa5b7787107fa207"
     ),
     "config/value_dimension_scoring_registry_v2.json": (
-        "3fa988b2018fccffdffe18e8c82240b363a6f0b6fddf178ce1fcc36b257d0e75"
+        "9e43b1a296b6acd85b7b12ef2ee6b3f645b1252978e4a60fdb287d1ca279317d"
     ),
     "config/value_dimension_scoring_policy_v2.json": (
-        "16b4099df9aa671b776ef4e7fb926865029f248bd33cd536e7936080dc2e71a9"
+        "4c35a5363ba352433f807079dfc2af8bf7ddbf35f6f36d168f6dd06cbc89a3c8"
     ),
     "reports/petrochina_dimension_scoring_shadow_v6.json": (
-        "c60ddeff47877183880ccf95c2a1a87745384b547f949ba64752e58a3839a001"
+        "a3c14ad9c4b5900ab8492b9f0e79608683fa66363d43e0c1c268f025356068fc"
     ),
     "reports/m2_stage2k1r4f4a_decision.json": (
         "a4378408060fdda90c771fb97e7eed2460500c62c5b7858d251378225d23cfe0"
     ),
     "reports/m2_stage2k1r4f4a1_decision.json": (
-        "cd52cd18b23b8f339fa0c02573cf447f1df6b587f698b893f8b937f5032a435f"
+        "564efbc1fb6c1f929ec08980f94a70877e90133ac7c5fb0a01f5dae9162cc41d"
     ),
 }
 
@@ -88,7 +88,8 @@ def canonical_json(payload: dict[str, Any]) -> str:
 
 
 def sha256(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    text = path.read_text(encoding="utf-8").replace("\r\n", "\n").replace("\r", "\n")
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
 def verify_upstream() -> list[str]:

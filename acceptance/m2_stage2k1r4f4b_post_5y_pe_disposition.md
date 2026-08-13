@@ -58,6 +58,7 @@ Exact commands and local results:
 10. `git diff --check` — PASS.
 11. Secret/absolute-path review — no credential or real local-path leakage; `/home/` tokens occur only in negative test assertions.
 12. Pollution scan — no tracked/untracked PDF, DB, cache, raw-response, bytecode, or tmp output added.
+13. First remote CI run `31685905455` exposed two cross-platform test-contract issues after all earlier gates passed: protected text hashes used checkout-dependent line endings, and a legacy clean-clone stash test used absence of `agent/goals` as its clone marker. Both were corrected without changing upstream artifacts or the disposition; focused post-fix tests are 32 passed and a replacement CI run is pending.
 
 ## Protected state
 

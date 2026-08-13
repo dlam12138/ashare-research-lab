@@ -59,3 +59,14 @@ Status: LOCAL PASS — commit / push / remote CI pending
 - 无 PDF/DB/cache/raw/tmp/bytecode 污染；无 secret 或真实 absolute path 泄漏。
 
 Git、push 和 remote CI 证据待补。
+
+## 首轮 remote CI 修正
+
+- implementation commit `63545b4` 已 normal push；run `31685905455` 的 Ubuntu / Windows
+  clean-clone、static、contract 与全部 capsule gates 均通过，但 full suite 各有 3 个失败。
+- 失败一：4 个 protected JSON SHA 使用 checkout bytes，LF/CRLF 不同。改为 UTF-8 文本
+  LF canonicalization 后计算 SHA；protected artifact 内容没有修改。
+- 失败二：既有 stash test 把 `agent/goals` 目录不存在作为 clean-clone 判据；4B 正式跟踪
+  Goal contract 后该判据失效。改为“本地有受保护 stash，或 clean clone tracked diff clean”。
+- 修正后 `verify-upstream` / build / verify PASS；focused tests 32 passed；Ruff、compileall、
+  diff-check PASS。等待第二笔 CI closeout commit 与 replacement CI。

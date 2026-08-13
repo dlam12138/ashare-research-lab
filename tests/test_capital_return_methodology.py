@@ -375,8 +375,12 @@ def test_stash_unchanged():
         ["git", "stash", "list"],
         cwd=str(ROOT), capture_output=True, text=True, check=True,
     )
-    # A working tree retains the user's protected stash; a clean clone
-    # intentionally has no local stash and must remain valid without it.
-    assert "protect pre-existing Stage 1B.4 record edit" in result.stdout or not (
-        ROOT / "agent" / "goals"
-    ).exists()
+    # A working tree retains the user's protected stash. A clean clone has no
+    # local stash and remains valid when tracked files are unchanged; tracked
+    # Goal contracts are repository state, not evidence of a local stash.
+    tracked_clean = subprocess.run(
+        ["git", "diff", "--quiet", "HEAD", "--"],
+        cwd=str(ROOT),
+        check=False,
+    ).returncode == 0
+    assert "protect pre-existing Stage 1B.4 record edit" in result.stdout or tracked_clean
