@@ -1,0 +1,54 @@
+{
+  "contract": "earnings_quality_restatement_evidence_v1",
+  "symbol": "601857.SH",
+  "target_fiscal_year": 2023,
+  "evidence_fiscal_year": 2024,
+  "evidence_bundle_path": "acceptance/fixtures/official_facts/601857.SH/2024_annual.json",
+  "concepts": [
+    {
+      "concept_id": "net_profit_excluding_non_recurring",
+      "original_raw_value": "187130",
+      "later_comparative_raw_value": "187389",
+      "raw_unit": "人民币百万元",
+      "changed": true,
+      "disclosed_change_reason": "same-control merger with 中国石油集团电能有限公司",
+      "review_status": "reviewed_changed",
+      "company": {
+        "manual_review_status": "visually_verified_twice"
+      },
+      "exchange": {
+        "manual_review_status": "visually_verified_twice"
+      }
+    },
+    {
+      "concept_id": "operating_cost",
+      "original_raw_value": "2302385",
+      "later_comparative_raw_value": "2303005",
+      "raw_unit": "人民币百万元",
+      "changed": true,
+      "disclosed_change_reason": "same-control merger with 中国石油集团电能有限公司",
+      "review_status": "reviewed_changed",
+      "company": {
+        "manual_review_status": "visually_verified_twice"
+      },
+      "exchange": {
+        "manual_review_status": "visually_verified_twice"
+      }
+    },
+    {
+      "concept_id": "operating_profit",
+      "original_raw_value": "253024",
+      "later_comparative_raw_value": "253522",
+      "raw_unit": "人民币百万元",
+      "changed": true,
+      "disclosed_change_reason": "same-control merger with 中国石油集团电能有限公司",
+      "review_status": "reviewed_changed",
+      "company": {
+        "manual_review_status": "visually_verified_twice"
+      },
+      "exchange": {
+        "manual_review_status": "visually_verified_twice"
+      }
+    }
+  ]
+}

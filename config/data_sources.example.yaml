@@ -7,6 +7,7 @@ storage:
   staging_dir: data/staging
   quarantine_dir: data/quarantine
   parquet_dir: data/parquet
+  value_assessment_output_dir: output/value_assessment
 
 providers:
   stock_daily_primary: baostock

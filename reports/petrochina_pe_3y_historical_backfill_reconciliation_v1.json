@@ -1,0 +1,145 @@
+{
+  "schema": "pe_3y_historical_backfill_reconciliation_v1",
+  "symbol": "601857.SH",
+  "stage": "2K.1R4F.3A",
+  "as_of": "2026-08-08",
+  "note": "Independent human-verifiable evidence check for each of the 5 target logical cells. Values read directly from the official SSE annual-report PDFs (exchange_official tier); restated_1 values from the 2019 AR comparative columns per the Dalian Xitai same-control acquisition (note 6(2)). ROE recomputed Decimal-only, identical to the R4F.3 readiness resolver.",
+  "cells": [
+    {
+      "target_cell": "A",
+      "concept": "equity_attributable_to_parent",
+      "period_end": "2017-12-31",
+      "original": {
+        "selected_value_million": 1193810,
+        "source_report": "2017 AR (601857_2017_n.pdf)",
+        "page_table": "p122 consolidated balance sheet",
+        "announcement_date": "2018-03-22",
+        "effective_from": "2018-03-23",
+        "fact_id": "c64e1b62a7794d02",
+        "restatement_version": "original"
+      },
+      "restated_1": {
+        "selected_value_million": 1192862,
+        "source_report": "2019 AR (601857_2019_n.pdf) equity-changes statement opening",
+        "page_table": "p118 equity-changes statement",
+        "announcement_date": "2020-03-26",
+        "effective_from": "2020-03-27",
+        "fact_id": "812d80f68547c5d1",
+        "restatement_version": "restated_1",
+        "supersedes_fact_id": "c64e1b62a7794d02",
+        "reason": "Dalian Xitai same-control acquisition (note 6(2)): -948 million adjustment"
+      }
+    },
+    {
+      "target_cell": "B",
+      "concept": "equity_attributable_to_parent",
+      "period_end": "2018-12-31",
+      "original": {
+        "selected_value_million": 1214570,
+        "source_report": "2018 AR (601857_2018_n.pdf)",
+        "page_table": "p113 consolidated balance sheet",
+        "announcement_date": "2019-03-21",
+        "effective_from": "2019-03-22",
+        "fact_id": "7345dcd01be61945",
+        "restatement_version": "original"
+      },
+      "restated_1": {
+        "selected_value_million": 1214067,
+        "source_report": "2019 AR (601857_2019_n.pdf) comparative column",
+        "page_table": "p114 consolidated balance sheet",
+        "announcement_date": "2020-03-26",
+        "effective_from": "2020-03-27",
+        "fact_id": "dbcb236b0a2acd61",
+        "restatement_version": "restated_1",
+        "supersedes_fact_id": "7345dcd01be61945",
+        "reason": "Dalian Xitai same-control acquisition (note 6(2)): -503 million adjustment"
+      }
+    },
+    {
+      "target_cell": "C",
+      "concept": "net_profit_attributable_to_parent",
+      "period_end": "2018-12-31",
+      "original": {
+        "selected_value_million": 52585,
+        "source_report": "2018 AR (601857_2018_n.pdf)",
+        "page_table": "p114 consolidated income statement",
+        "announcement_date": "2019-03-21",
+        "effective_from": "2019-03-22",
+        "fact_id": "9077b1fd8f928f22",
+        "restatement_version": "original"
+      },
+      "restated_1": {
+        "selected_value_million": 53030,
+        "source_report": "2019 AR (601857_2019_n.pdf) comparative column",
+        "page_table": "p115 consolidated income statement",
+        "announcement_date": "2020-03-26",
+        "effective_from": "2020-03-27",
+        "fact_id": "c478e7392189887f",
+        "restatement_version": "restated_1",
+        "supersedes_fact_id": "9077b1fd8f928f22",
+        "reason": "Dalian Xitai same-control acquisition (note 6(2)): +445 million adjustment"
+      }
+    },
+    {
+      "target_cell": "D",
+      "concept": "equity_attributable_to_parent",
+      "period_end": "2019-12-31",
+      "original": {
+        "selected_value_million": 1230428,
+        "source_report": "2019 AR (601857_2019_n.pdf)",
+        "page_table": "p114 consolidated balance sheet",
+        "announcement_date": "2020-03-26",
+        "effective_from": "2020-03-27",
+        "fact_id": "c6e1b313d220f9ac",
+        "restatement_version": "original"
+      },
+      "restatement_check": "2020 AR (R4D-SSE-2020-AR) comparative column confirms 1,230,428 - no restatement"
+    },
+    {
+      "target_cell": "E",
+      "concept": "net_profit_attributable_to_parent",
+      "period_end": "2019-12-31",
+      "original": {
+        "selected_value_million": 45677,
+        "source_report": "2019 AR (601857_2019_n.pdf)",
+        "page_table": "p115 consolidated income statement",
+        "announcement_date": "2020-03-26",
+        "effective_from": "2020-03-27",
+        "fact_id": "b2c6e81110ad769d",
+        "restatement_version": "original"
+      },
+      "restatement_check": "2020 AR (R4D-SSE-2020-AR) comparative column confirms 45,677 - no restatement"
+    }
+  ],
+  "roe_independent_recomputation": {
+    "method": "ROE_y = NP_y / ((Equity_{y-1} + Equity_y) / 2); Decimal-only",
+    "roe_2018": {
+      "np_million": 53030,
+      "begin_equity_million": 1192862,
+      "end_equity_million": 1214067,
+      "result": "0.04406444893056670969521743267",
+      "resolver_match": true
+    },
+    "roe_2019": {
+      "np_million": 45677,
+      "begin_equity_million": 1214067,
+      "end_equity_million": 1230428,
+      "result": "0.03737131800228677088723846848",
+      "resolver_match": true
+    },
+    "roe_2020": {
+      "np_million": 19002,
+      "begin_equity_million": 1230428,
+      "end_equity_million": 1215421,
+      "result": "0.01553816282198941962484192606",
+      "resolver_match": true
+    }
+  },
+  "scope_check": {
+    "all_values_consolidated": true,
+    "attributable_to_parent_shareholders": true,
+    "parent_company_only_values_rejected": true,
+    "unit": "CNY (canonical); CNY_million (reported, x1000000)"
+  },
+  "status": "PASS"
+}

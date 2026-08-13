@@ -1,0 +1,69 @@
+{
+  "schema": "pit_valuation_official_cache_registry_r4f3a_v1",
+  "data_class": "official_document",
+  "symbol": "601857.SH",
+  "cache_root_policy": "explicit_external_only",
+  "objects": [
+    {
+      "object_key": "objects/5c205cc110a1650c7463530a05aac544737b78a317891ffc8f93ea5e35f6bf92.pdf",
+      "sha256": "5c205cc110a1650c7463530a05aac544737b78a317891ffc8f93ea5e35f6bf92",
+      "byte_size": 1790304,
+      "page_count": 292,
+      "media_type": "application/pdf",
+      "evidence_ids": [
+        "R4F3A-SSE-2018-AR"
+      ],
+      "registry_version": "r4f3a-v1",
+      "reporting_period": "2018-annual",
+      "announcement_date": "2019-03-22"
+    },
+    {
+      "object_key": "objects/d5fc46581ffc4617ee267682079c245f8d9e1c0eacdd8451c5d62151d6090778.pdf",
+      "sha256": "d5fc46581ffc4617ee267682079c245f8d9e1c0eacdd8451c5d62151d6090778",
+      "byte_size": 5820801,
+      "page_count": 306,
+      "media_type": "application/pdf",
+      "evidence_ids": [
+        "R4F3A-SSE-2019-AR"
+      ],
+      "registry_version": "r4f3a-v1",
+      "reporting_period": "2019-annual",
+      "announcement_date": "2020-03-27"
+    },
+    {
+      "object_key": "objects/c1a6fbffcc210020e672410400646e0c9fe2097f5de43047a24b950ae7930cea.pdf",
+      "sha256": "c1a6fbffcc210020e672410400646e0c9fe2097f5de43047a24b950ae7930cea",
+      "byte_size": 4583449,
+      "page_count": 274,
+      "media_type": "application/pdf",
+      "evidence_ids": [
+        "R4F3A-SSE-2017-AR"
+      ],
+      "registry_version": "r4f3a-v1",
+      "reporting_period": "2017-annual",
+      "announcement_date": "2018-03-23"
+    },
+    {
+      "object_key": "objects/7aac267c1db1fd0ef0b51f02b587ad679a2501ebde874937cf57efd6628cd56b.pdf",
+      "sha256": "7aac267c1db1fd0ef0b51f02b587ad679a2501ebde874937cf57efd6628cd56b",
+      "byte_size": 2383273,
+      "page_count": 301,
+      "media_type": "application/pdf",
+      "evidence_ids": [
+        "R4F3A-SSE-2020-AR-COMP"
+      ],
+      "registry_version": "r4f3a-v1",
+      "reporting_period": "2020-annual",
+      "announcement_date": "2021-03-26"
+    }
+  ],
+  "forbidden_fallbacks": [
+    "Downloads",
+    "browser_cache",
+    "repository_tmp",
+    "test_capsule",
+    "third_party_mirror"
+  ],
+  "formal_network_access": false,
+  "note": "Populated by acquire mode 2026-08-08. PDFs never committed to git."
+}

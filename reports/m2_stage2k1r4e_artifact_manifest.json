@@ -1,0 +1,41 @@
+{
+ "schema": "m2_stage2k1r4e_artifact_manifest",
+ "version": "1.0",
+ "mode": "real",
+ "market_reconciliation_status": "BLOCKED_EXTERNAL_MARKET_CACHE_UNAVAILABLE",
+ "decision": "PIT_VALUATION_SERIES_GAPS_REMAIN",
+ "observation_count": 4053,
+ "dual_oracle_identical": true,
+ "identity_consistent": true,
+ "ratio_consistent": true,
+ "artifacts": [
+  {
+   "name": "timeline",
+   "path": "reports/petrochina_pit_financial_state_timeline_v1.json"
+  },
+  {
+   "name": "candidate",
+   "path": "reports/petrochina_pit_valuation_series_candidate_v1.json"
+  },
+  {
+   "name": "coverage",
+   "path": "reports/petrochina_pit_valuation_series_coverage_v1.json"
+  },
+  {
+   "name": "audit",
+   "path": "reports/petrochina_pit_valuation_series_audit_samples_v1.json"
+  },
+  {
+   "name": "dual",
+   "path": "reports/petrochina_pit_valuation_series_dual_oracle_validation_v1.json"
+  },
+  {
+   "name": "decision",
+   "path": "reports/m2_stage2k1r4e_decision.json"
+  },
+  {
+   "name": "manifest",
+   "path": "reports/m2_stage2k1r4e_artifact_manifest.json"
+  }
+ ]
+}

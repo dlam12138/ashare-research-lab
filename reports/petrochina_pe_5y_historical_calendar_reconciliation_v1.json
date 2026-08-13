@@ -1,0 +1,22 @@
+{
+ "schema": "petrochina_pe_5y_historical_calendar_reconciliation_v1",
+ "symbol": "601857.SH",
+ "old_r4f3a_sha256": "6a3cf1a0f920cd3098c525c0462af9cc924aea6a044ef0334205fbef3baad1e3",
+ "new_r4f4a1_sha256": "997726a98028eb7e7bcb4587d221c67526765d0db0be162afc0d4f0101b6dcfb",
+ "old_calendar_unchanged": true,
+ "new_calendar_range": {
+  "start": "2016-01-04",
+  "end": "2026-08-07"
+ },
+ "required_start": "2016-03-24",
+ "overlap_start": "2017-01-03",
+ "overlap_end": "2026-08-07",
+ "old_count": 2330,
+ "new_overlap_count": 2330,
+ "missing": [],
+ "extra": [],
+ "missing_dates": 0,
+ "extra_dates": 0,
+ "target_pit_calendar_gaps": 0,
+ "status": "PASS"
+}

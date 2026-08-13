@@ -1,0 +1,93 @@
+{
+  "schema": "pit_valuation_quarterly_fact_role_registry_v1",
+  "version": "1.0",
+  "date": "2026-08-05",
+  "symbol": "601857.SH",
+  "accounting_standard": "CAS",
+  "roles": [
+    {
+      "role_id": "net_profit_attributable_to_parent",
+      "concept_id": "net_profit_attributable_to_parent",
+      "concept_version": "1",
+      "statement": "income_statement",
+      "statement_scope": "consolidated",
+      "instant_or_duration": "duration",
+      "allowed_period_types": ["quarter_ytd", "half_year_ytd", "three_quarter_ytd", "annual"],
+      "canonical_unit": "CNY",
+      "expected_source_labels": ["归属于母公司股东的净利润", "归属于母公司股东的净（亏损）/利润", "归属于母公司股东的净利润/(亏损)"],
+      "direct_or_derived": "reported",
+      "required_for": ["PE_TTM"],
+      "prohibited_fallbacks": ["net_profit_total", "IFRS_value_as_cas", "commercial_database_value"]
+    },
+    {
+      "role_id": "revenue",
+      "concept_id": "revenue",
+      "concept_version": "1",
+      "statement": "income_statement",
+      "statement_scope": "consolidated",
+      "instant_or_duration": "duration",
+      "allowed_period_types": ["quarter_ytd", "half_year_ytd", "three_quarter_ytd", "annual"],
+      "canonical_unit": "CNY",
+      "expected_source_labels": ["营业收入"],
+      "direct_or_derived": "reported",
+      "required_for": ["PS_TTM"],
+      "prohibited_fallbacks": ["segment_revenue_sum", "IFRS_value_as_cas", "commercial_database_value"]
+    },
+    {
+      "role_id": "equity_attributable_to_parent",
+      "concept_id": "equity_attributable_to_parent",
+      "concept_version": "1",
+      "statement": "balance_sheet",
+      "statement_scope": "consolidated",
+      "instant_or_duration": "instant",
+      "allowed_period_types": ["instant"],
+      "canonical_unit": "CNY",
+      "expected_source_labels": ["归属于母公司股东权益", "归属于母公司股东权益合计"],
+      "direct_or_derived": "reported",
+      "required_for": ["PB_MRQ"],
+      "prohibited_fallbacks": ["shareholders_equity_total", "IFRS_value_as_cas", "commercial_database_value"]
+    },
+    {
+      "role_id": "basic_earnings_per_share",
+      "concept_id": "basic_eps",
+      "concept_version": "1",
+      "statement": "per_share",
+      "statement_scope": "consolidated",
+      "instant_or_duration": "duration",
+      "allowed_period_types": ["quarter_ytd", "half_year_ytd", "three_quarter_ytd", "annual"],
+      "canonical_unit": "CNY_PER_SHARE",
+      "expected_source_labels": ["基本每股收益", "基本每股（亏损）/收益"],
+      "direct_or_derived": "reported",
+      "required_for": ["PE_TTM"],
+      "prohibited_fallbacks": ["diluted_eps", "h_share_eps", "commercial_database_value"]
+    },
+    {
+      "role_id": "total_ordinary_shares_at_period_end",
+      "concept_id": "total_ordinary_shares_at_period_end",
+      "concept_version": "1",
+      "statement": "share_capital",
+      "statement_scope": "company",
+      "instant_or_duration": "instant",
+      "allowed_period_types": ["instant"],
+      "canonical_unit": "SHARE",
+      "expected_source_labels": ["总股本", "股本变动"],
+      "direct_or_derived": "reported",
+      "required_for": ["PB_MRQ", "PS_TTM"],
+      "prohibited_fallbacks": ["dividend_dps_basis_timeline", "rounded_million_shares", "commercial_database_value"]
+    },
+    {
+      "role_id": "weighted_average_total_ordinary_shares",
+      "concept_id": "weighted_average_total_ordinary_shares",
+      "concept_version": "1",
+      "statement": "per_share_denominator",
+      "statement_scope": "consolidated",
+      "instant_or_duration": "duration",
+      "allowed_period_types": ["quarter_ytd", "half_year_ytd", "three_quarter_ytd", "annual"],
+      "canonical_unit": "SHARE",
+      "expected_source_labels": [],
+      "direct_or_derived": "derived",
+      "required_for": ["PE_TTM"],
+      "prohibited_fallbacks": ["period_end_shares", "dividend_dps_basis_timeline", "commercial_database_value"]
+    }
+  ]
+}

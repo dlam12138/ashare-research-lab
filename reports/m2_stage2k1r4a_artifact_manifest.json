@@ -1,0 +1,65 @@
+{
+  "schema": "m2_stage2k1r4a_artifact_manifest_v1",
+  "version": "1.0",
+  "date": "2026-08-04",
+  "branch": "feat/m2-value-assessment-mvp",
+  "stage": "2K.1R4A",
+  "note": "sha256 over LF-normalized content; byte_size is LF-normalized length",
+  "files": [
+    {
+      "path": "src/ashare_research/scoring/capsule.py",
+      "sha256": "954f1ee8cc3dd4fe73b2efdcc682b6ada96257f3ae4d6266e73e16bdf4837573",
+      "byte_size": 14351
+    },
+    {
+      "path": "src/ashare_research/scoring/validator.py",
+      "sha256": "f8282b47e9e24ea47be3dfa30966080b6c8c1f37c61c799a3b815d79694db099",
+      "byte_size": 6870
+    },
+    {
+      "path": "src/ashare_research/scoring/confidence.py",
+      "sha256": "f09c508d70af7207ef1f6bda7fe65e16e56f82853fde567b02f8c9f47360c858",
+      "byte_size": 3377
+    },
+    {
+      "path": "src/ashare_research/scoring/shadow.py",
+      "sha256": "aea1096ecec44bc3235206d4cf61a5d8ff675b816a5af90d1526ef4cd30ffc7c",
+      "byte_size": 5572
+    },
+    {
+      "path": "src/ashare_research/scoring/sensitivity.py",
+      "sha256": "aa295be7de24c698d410cbcb5e6bbe8f169822c53653001e1d20cfaac53a6863",
+      "byte_size": 10213
+    },
+    {
+      "path": "src/ashare_research/tools/m2_stage2k1r3_closeout.py",
+      "sha256": "2fd0acc369ed95fe192f1d31ab33065382d0017e9fa6bf0392b36bfebf5b8a45",
+      "byte_size": 7446
+    },
+    {
+      "path": "reports/petrochina_score_input_lineage_validation_v2.json",
+      "sha256": "c262bc86e0d103d38b0ec54b64caff46702f035cdbf8a938069f4ec59a391cc7",
+      "byte_size": 238
+    },
+    {
+      "path": "reports/petrochina_dimension_scoring_shadow_v5.json",
+      "sha256": "6a2db9ff90daef535514a73c4c63de8f0191f4da11d6ebb3ba6294d486416a94",
+      "byte_size": 9673
+    },
+    {
+      "path": "reports/petrochina_dimension_scoring_sensitivity_v5.json",
+      "sha256": "6dfb8ef976968611544c84b3d919f1bc5e632fad58891dd650ab353b8d6b1dc2",
+      "byte_size": 4019
+    },
+    {
+      "path": "tests/test_m2_stage2k1r4a_engineering_closeout.py",
+      "sha256": "3fa4e85caf9c40abf3923f88c55eb9da7ffbefcdcf5f58537b6837510c3a5d83",
+      "byte_size": 16509
+    },
+    {
+      "path": "tests/test_m2_stage2k1r3_true_upstream_capsule.py",
+      "sha256": "d4fa7bfaf40151da04abe3a53a92a09d221b13e0d2fb4d478ec97cedceb328ff",
+      "byte_size": 16622
+    }
+  ]
+}

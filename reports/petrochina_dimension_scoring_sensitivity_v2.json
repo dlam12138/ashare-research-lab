@@ -1,0 +1,58 @@
+{
+  "schema": "petrochina_dimension_scoring_sensitivity_v2",
+  "version": "2.0",
+  "non_production": true,
+  "research_methodology_test_only": true,
+  "overall_score_prohibited": true,
+  "recommendation_prohibited": true,
+  "score_eligible": false,
+  "thresholds_frozen_before_rerun": true,
+  "synthetic_values_are_not_company_facts": true,
+  "dimensions": {
+    "enterprise_quality": {
+      "dimension_id": "enterprise_quality",
+      "base_score": 73.4738,
+      "base_band": "B",
+      "min_score": 68.0525,
+      "max_score": 77.5911,
+      "max_score_delta": 9.5386,
+      "band_flip_count": 0,
+      "insufficient_evidence_count": 1,
+      "veto_block_count": 0,
+      "scenario_count": 38,
+      "stability_status": "NOT_STABLE",
+      "stability_tolerance": 1.0,
+      "production_readiness_reason": "dimension band or coverage changes under a frozen scenario"
+    },
+    "valuation_attractiveness": {
+      "dimension_id": "valuation_attractiveness",
+      "base_score": 12.1733,
+      "base_band": "E",
+      "min_score": 10.431,
+      "max_score": 13.5947,
+      "max_score_delta": 3.1637,
+      "band_flip_count": 0,
+      "insufficient_evidence_count": 1,
+      "veto_block_count": 0,
+      "scenario_count": 24,
+      "stability_status": "NOT_STABLE",
+      "stability_tolerance": 1.0,
+      "production_readiness_reason": "dimension band or coverage changes under a frozen scenario"
+    },
+    "value_realization_capacity": {
+      "dimension_id": "value_realization_capacity",
+      "base_score": 70.1253,
+      "base_band": "B",
+      "min_score": 65.9066,
+      "max_score": 75.1566,
+      "max_score_delta": 9.25,
+      "band_flip_count": 0,
+      "insufficient_evidence_count": 0,
+      "veto_block_count": 0,
+      "scenario_count": 24,
+      "stability_status": "NOT_STABLE",
+      "stability_tolerance": 1.0,
+      "production_readiness_reason": "dimension band or coverage changes under a frozen scenario"
+    }
+  }
+}

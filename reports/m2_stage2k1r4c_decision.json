@@ -1,0 +1,42 @@
+{
+  "schema": "m2_stage2k1r4c_decision_v1",
+  "version": "1.0",
+  "date": "2026-08-04",
+  "symbol": "601857.SH",
+  "stage": "M2 Stage 2K.1R4C",
+  "decision": "A_SHARE_CONVENTION_FROZEN_ACQUISITION_ALLOWED",
+  "allowed_decisions": [
+    "A_SHARE_CONVENTION_FROZEN_ACQUISITION_ALLOWED",
+    "A_SHARE_CONVENTION_FROZEN_ACQUISITION_GAPS_REMAIN",
+    "VALUATION_CONVENTION_NOT_TRUSTED"
+  ],
+  "convention": {
+    "adr": "ADR-VALUATION-002",
+    "code": "A_SHARE_PRICE_PER_SHARE_VALUATION_CONVENTION",
+    "route": "A_SHARE_PRICE_PER_SHARE",
+    "route_status": "FROZEN",
+    "core_market": "SSE_A_SHARE",
+    "a_h_split_required": false,
+    "total_ordinary_share_timeline_required": true
+  },
+  "meaning_of_allowed": "The next round may perform official quarterly denominator fact collection per the acquisition contract. It does NOT authorize PIT daily PE/PB/PS construction, historical valuation percentages, valuation score updates, peer acquisition, production scores, or M3.",
+  "implementation": {
+    "series_builder_built": false,
+    "downloads": false,
+    "scoring_expansion": false,
+    "peer_acquisition": false,
+    "m3_started": false
+  },
+  "non_production": true,
+  "score_eligible": false,
+  "boundaries_hold": {
+    "close_percentile_not_valuation_percentile": true,
+    "current_denominator_backfill_forbidden": true,
+    "annual_value_not_effective_before_report_end": true,
+    "negative_pe_not_cheap": true,
+    "static_shares_not_used_for_cross_period_per_share": true,
+    "external_percentile_not_trusted_without_lineage": true,
+    "h_share_not_in_core_valuation": true,
+    "ah_premium_optional_separate_reference": true
+  }
+}

@@ -1,0 +1,28 @@
+{
+ "schema": "m2_stage2k1r4e2_decision",
+ "version": "1.0",
+ "symbol": "601857.SH",
+ "decision": "PIT_VALUATION_SERIES_GAPS_REMAIN",
+ "acquisition_stability": "ACQUISITION_INCOMPLETE",
+ "registry_v3": {
+  "path": "events/market_data_snapshot_registry_v3.json",
+  "acquisition_batch_id": "c4c3239a7a781910259a6f98ab2e86762c600843a32f8c0ab46463995bda0792",
+  "reconciliation_status": "pending_real_reconciliation",
+  "baostock_sha256": "c6771aa57b0210ee558a91c7bdb87cc346ce910a395eda057cb9d7224475ab67",
+  "akshare_sha256": ""
+ },
+ "provider_gaps": [
+  {
+   "provider": "akshare",
+   "acquisition_status": "provider_gap",
+   "error_type": "MarketAcquisitionError",
+   "message": "akshare acquisition failed after 3 attempts: ProxyError: HTTPSConnectionPool(host='push2his.eastmoney.com', port=443): Max retries exceeded with url: /api/qt/stock/kline/get?fields1=f1%2Cf2%2Cf3%2Cf4%2Cf5%2Cf6&fields2=f51%2Cf52%2Cf53%2Cf54%2Cf55%2Cf56%2Cf57%2Cf58%2Cf59%2Cf60%2Cf61%2Cf116&ut=7eea3edcaed734bea9cbfc24409ed989&klt=101&fqt=0&secid=1.601857&beg=20210101&end=20260731 (Caused by ProxyError('Unable to connect to proxy', RemoteDisconnected('Remote end closed connection without response')))"
+  }
+ ],
+ "dual_source_complete": false,
+ "reconciliation_trusted": false,
+ "candidate_v2_published": false,
+ "percentile_computed": false,
+ "score_eligible": false,
+ "production_eligible": false
+}

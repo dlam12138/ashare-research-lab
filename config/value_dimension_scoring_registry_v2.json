@@ -1,0 +1,957 @@
+{
+  "schema": "value_dimension_scoring_registry_v2",
+  "version": "2.0",
+  "owner": "M2 Stage 2K scoring addendum",
+  "non_production": true,
+  "research_methodology_test_only": true,
+  "overall_score_prohibited": true,
+  "recommendation_prohibited": true,
+  "score_eligible": false,
+  "dimension_order": [
+    "enterprise_quality",
+    "valuation_attractiveness",
+    "value_realization_capacity",
+    "risk_and_evidence_integrity"
+  ],
+  "dimensions": {
+    "enterprise_quality": {
+      "dimension_id": "enterprise_quality",
+      "display_name_zh": "企业质量",
+      "representation": "ordinal_band",
+      "minimum_coverage_gate": 0.6,
+      "stability_tolerance": 1.0,
+      "weight_mode": "theory_informed",
+      "cycle_rule": "oil/gas cyclical; quality is read over the 5-year window, not a single peak year",
+      "subdimensions": {
+        "profitability_quality": {
+          "subdimension_id": "profitability_quality",
+          "weight": 0.25,
+          "weight_rationale": "Profitability is the primary enterprise-quality signal but is read with cash conversion and leverage.",
+          "components": [
+            "eq_gross_margin",
+            "eq_operating_margin",
+            "eq_np_yoy"
+          ]
+        },
+        "cash_conversion": {
+          "subdimension_id": "cash_conversion",
+          "weight": 0.2,
+          "weight_rationale": "Cash conversion separates real earnings from accrual earnings; the North Star requires cash-based quality.",
+          "components": [
+            "eq_ocf_np"
+          ]
+        },
+        "capital_return": {
+          "subdimension_id": "capital_return",
+          "weight": 0.3,
+          "weight_rationale": "Capital return is the central quality question; ROIC absence is a coverage gap, not a zero.",
+          "components": [
+            "eq_roe",
+            "eq_roa",
+            "eq_roic"
+          ]
+        },
+        "financial_safety": {
+          "subdimension_id": "financial_safety",
+          "weight": 0.25,
+          "weight_rationale": "Leverage and liquidity bound the quality view; a high ROE from high leverage is not quality.",
+          "components": [
+            "eq_asset_liability",
+            "eq_cash_coverage"
+          ]
+        }
+      },
+      "components": {
+        "eq_gross_margin": {
+          "component_id": "eq_gross_margin",
+          "dimension_id": "enterprise_quality",
+          "subdimension_id": "profitability_quality",
+          "metric_role": "gross_margin",
+          "accepted_contract_versions": [
+            "earnings_quality_v1"
+          ],
+          "direction": "higher_better",
+          "benchmark_mode": "absolute_contract",
+          "transform_version": "piecewise_linear_v1",
+          "valid_domain": [
+            0.0,
+            1.0
+          ],
+          "outlier_policy": "winsorize at [0,1]",
+          "missingness_policy": "missing_never_zero",
+          "minimum_history": 1,
+          "weight": 0.08,
+          "weight_rationale": "profitability-quality subdimension weight 0.25 split across three components",
+          "sensitivity_range": [
+            0.06,
+            0.1
+          ],
+          "score_contribution_cap": null,
+          "evidence_requirements": "trusted canonical Metric Result",
+          "pit_requirements": "available_at <= score date",
+          "cycle_interpretation_rule": "margin level read over the 5-year window",
+          "prohibited_fallback": "no peer average, no zero fill",
+          "score_eligibility": false,
+          "reviewer_status": "methodology_defined"
+        },
+        "eq_operating_margin": {
+          "component_id": "eq_operating_margin",
+          "dimension_id": "enterprise_quality",
+          "subdimension_id": "profitability_quality",
+          "metric_role": "operating_profit_margin",
+          "accepted_contract_versions": [
+            "earnings_quality_v1"
+          ],
+          "direction": "higher_better",
+          "benchmark_mode": "absolute_contract",
+          "transform_version": "piecewise_linear_v1",
+          "valid_domain": [
+            0.0,
+            1.0
+          ],
+          "outlier_policy": "winsorize at [0,1]",
+          "missingness_policy": "missing_never_zero",
+          "minimum_history": 1,
+          "weight": 0.08,
+          "weight_rationale": "profitability-quality subdimension weight 0.25 split across three components",
+          "sensitivity_range": [
+            0.06,
+            0.1
+          ],
+          "score_contribution_cap": null,
+          "evidence_requirements": "trusted canonical Metric Result",
+          "pit_requirements": "available_at <= score date",
+          "cycle_interpretation_rule": "margin level read over the 5-year window",
+          "prohibited_fallback": "no peer average, no zero fill",
+          "score_eligibility": false,
+          "reviewer_status": "methodology_defined"
+        },
+        "eq_np_yoy": {
+          "component_id": "eq_np_yoy",
+          "dimension_id": "enterprise_quality",
+          "subdimension_id": "profitability_quality",
+          "metric_role": "net_profit_attributable_to_parent_yoy",
+          "accepted_contract_versions": [
+            "ashare_value_evaluation_v1"
+          ],
+          "direction": "higher_better",
+          "benchmark_mode": "absolute_contract",
+          "transform_version": "piecewise_linear_v1",
+          "valid_domain": [
+            -1.0,
+            2.0
+          ],
+          "outlier_policy": "winsorize at [-1,2]",
+          "missingness_policy": "missing_never_zero",
+          "minimum_history": 2,
+          "weight": 0.09,
+          "weight_rationale": "profitability-quality subdimension weight 0.25 split across three components",
+          "sensitivity_range": [
+            0.0675,
+            0.1125
+          ],
+          "score_contribution_cap": null,
+          "evidence_requirements": "trusted canonical Metric Result",
+          "pit_requirements": "available_at <= score date",
+          "cycle_interpretation_rule": "growth read over the 5-year window; a single cyclical peak year is not a trend",
+          "prohibited_fallback": "no peer average, no zero fill",
+          "score_eligibility": false,
+          "reviewer_status": "methodology_defined"
+        },
+        "eq_ocf_np": {
+          "component_id": "eq_ocf_np",
+          "dimension_id": "enterprise_quality",
+          "subdimension_id": "cash_conversion",
+          "metric_role": "operating_cash_flow_to_attributable_net_profit",
+          "accepted_contract_versions": [
+            "ashare_value_evaluation_v1"
+          ],
+          "direction": "target_range",
+          "benchmark_mode": "absolute_contract",
+          "transform_version": "piecewise_linear_v1",
+          "valid_domain": [
+            0.0,
+            10.0
+          ],
+          "outlier_policy": "cap at 10",
+          "missingness_policy": "missing_never_zero",
+          "minimum_history": 1,
+          "weight": 0.2,
+          "weight_rationale": "single cash-conversion component; the North Star warns not to use 1 as a mechanical boundary",
+          "sensitivity_range": [
+            0.15,
+            0.25
+          ],
+          "score_contribution_cap": null,
+          "evidence_requirements": "trusted canonical Metric Result",
+          "pit_requirements": "available_at <= score date",
+          "cycle_interpretation_rule": "higher generally reflects stronger cash realization; not a 1.0 mechanical boundary",
+          "prohibited_fallback": "no mechanical 1.0 good/bad boundary, no zero fill",
+          "score_eligibility": false,
+          "reviewer_status": "methodology_defined"
+        },
+        "eq_roe": {
+          "component_id": "eq_roe",
+          "dimension_id": "enterprise_quality",
+          "subdimension_id": "capital_return",
+          "metric_role": "return_on_average_equity_attributable_to_parent",
+          "accepted_contract_versions": [
+            "capital_return_methodology_v1"
+          ],
+          "direction": "higher_better",
+          "benchmark_mode": "absolute_contract",
+          "transform_version": "piecewise_linear_v1",
+          "valid_domain": [
+            0.0,
+            0.5
+          ],
+          "outlier_policy": "winsorize at [0,0.5]",
+          "missingness_policy": "missing_never_zero",
+          "minimum_history": 1,
+          "weight": 0.1,
+          "weight_rationale": "equal weight within capital-return subdimension (3 components)",
+          "sensitivity_range": [
+            0.075,
+            0.125
+          ],
+          "score_contribution_cap": null,
+          "evidence_requirements": "trusted canonical Metric Result",
+          "pit_requirements": "available_at <= score date",
+          "cycle_interpretation_rule": "ROE read with ROA and leverage; high ROE from leverage is not quality",
+          "prohibited_fallback": "no ROIC substitution, no zero fill",
+          "score_eligibility": false,
+          "reviewer_status": "methodology_defined"
+        },
+        "eq_roa": {
+          "component_id": "eq_roa",
+          "dimension_id": "enterprise_quality",
+          "subdimension_id": "capital_return",
+          "metric_role": "return_on_average_total_assets",
+          "accepted_contract_versions": [
+            "capital_return_methodology_v1"
+          ],
+          "direction": "higher_better",
+          "benchmark_mode": "absolute_contract",
+          "transform_version": "piecewise_linear_v1",
+          "valid_domain": [
+            0.0,
+            0.3
+          ],
+          "outlier_policy": "winsorize at [0,0.3]",
+          "missingness_policy": "missing_never_zero",
+          "minimum_history": 1,
+          "weight": 0.1,
+          "weight_rationale": "equal weight within capital-return subdimension (3 components)",
+          "sensitivity_range": [
+            0.075,
+            0.125
+          ],
+          "score_contribution_cap": null,
+          "evidence_requirements": "trusted canonical Metric Result",
+          "pit_requirements": "available_at <= score date",
+          "cycle_interpretation_rule": "ROA read with ROE to isolate leverage",
+          "prohibited_fallback": "no ROIC substitution, no zero fill",
+          "score_eligibility": false,
+          "reviewer_status": "methodology_defined"
+        },
+        "eq_roic": {
+          "component_id": "eq_roic",
+          "dimension_id": "enterprise_quality",
+          "subdimension_id": "capital_return",
+          "metric_role": "roic",
+          "accepted_contract_versions": [
+            "value_evaluation_methodology_roic_v1"
+          ],
+          "direction": "higher_better",
+          "benchmark_mode": "not_computable",
+          "transform_version": "not_applicable",
+          "valid_domain": null,
+          "outlier_policy": "not_applicable",
+          "missingness_policy": "coverage_gap_not_zero",
+          "minimum_history": 0,
+          "weight": 0.1,
+          "weight_rationale": "registered capital-return weight; absence lowers coverage, never score to zero",
+          "sensitivity_range": [
+            0.075,
+            0.125
+          ],
+          "score_contribution_cap": null,
+          "evidence_requirements": "not_computable_under_strict_evidence_contract",
+          "pit_requirements": "not run",
+          "cycle_interpretation_rule": "ROIC absence is a coverage gap, not poor capital return",
+          "prohibited_fallback": "no proxy, no zero, no silent reweight",
+          "score_eligibility": false,
+          "reviewer_status": "coverage_gap"
+        },
+        "eq_asset_liability": {
+          "component_id": "eq_asset_liability",
+          "dimension_id": "enterprise_quality",
+          "subdimension_id": "financial_safety",
+          "metric_role": "asset_liability_ratio",
+          "accepted_contract_versions": [
+            "financial_safety_methodology_v1"
+          ],
+          "direction": "lower_better",
+          "benchmark_mode": "absolute_contract",
+          "transform_version": "piecewise_linear_v1",
+          "valid_domain": [
+            0.0,
+            1.0
+          ],
+          "outlier_policy": "winsorize at [0,1]",
+          "missingness_policy": "missing_never_zero",
+          "minimum_history": 1,
+          "weight": 0.125,
+          "weight_rationale": "equal weight within financial-safety subdimension (2 components)",
+          "sensitivity_range": [
+            0.09375,
+            0.15625
+          ],
+          "score_contribution_cap": null,
+          "evidence_requirements": "trusted canonical Metric Result",
+          "pit_requirements": "available_at <= score date",
+          "cycle_interpretation_rule": "total liabilities are not a substitute for interest-bearing debt",
+          "prohibited_fallback": "no total-liability substitute, no zero fill",
+          "score_eligibility": false,
+          "reviewer_status": "methodology_defined"
+        },
+        "eq_cash_coverage": {
+          "component_id": "eq_cash_coverage",
+          "dimension_id": "enterprise_quality",
+          "subdimension_id": "financial_safety",
+          "metric_role": "cash_coverage_of_interest_bearing_debt",
+          "accepted_contract_versions": [
+            "financial_safety_methodology_v1"
+          ],
+          "direction": "higher_better",
+          "benchmark_mode": "absolute_contract",
+          "transform_version": "piecewise_linear_v1",
+          "valid_domain": [
+            0.0,
+            5.0
+          ],
+          "outlier_policy": "cap at 5",
+          "missingness_policy": "missing_never_zero",
+          "minimum_history": 1,
+          "weight": 0.125,
+          "weight_rationale": "equal weight within financial-safety subdimension (2 components)",
+          "sensitivity_range": [
+            0.09375,
+            0.15625
+          ],
+          "score_contribution_cap": null,
+          "evidence_requirements": "trusted canonical Metric Result",
+          "pit_requirements": "available_at <= score date",
+          "cycle_interpretation_rule": "cash coverage of gross interest-bearing debt",
+          "prohibited_fallback": "no zero fill",
+          "score_eligibility": false,
+          "reviewer_status": "methodology_defined"
+        }
+      }
+    },
+    "valuation_attractiveness": {
+      "dimension_id": "valuation_attractiveness",
+      "display_name_zh": "估值吸引力",
+      "representation": "ordinal_band",
+      "minimum_coverage_gate": 0.6,
+      "stability_tolerance": 1.0,
+      "weight_mode": "theory_informed",
+      "cycle_rule": "low PE at a possible cycle peak must not automatically receive a high score",
+      "subdimensions": {
+        "multiple_position": {
+          "subdimension_id": "multiple_position",
+          "weight": 0.6,
+          "weight_rationale": "PE, PB, and PS positions are the core price-coverage signals.",
+          "components": [
+            "va_pe",
+            "va_pb",
+            "va_ps"
+          ]
+        },
+        "yield_position": {
+          "subdimension_id": "yield_position",
+          "weight": 0.4,
+          "weight_rationale": "FCF-proxy and dividend yields are the cash-based price signals.",
+          "components": [
+            "va_fcf_yield",
+            "va_dividend_yield"
+          ]
+        }
+      },
+      "components": {
+        "va_pe": {
+          "component_id": "va_pe",
+          "dimension_id": "valuation_attractiveness",
+          "subdimension_id": "multiple_position",
+          "metric_role": "PE_A_TTM",
+          "accepted_contract_versions": [
+            "petrochina_pit_valuation_series_candidate_v1",
+            "pit_valuation_historical_percentile_v1",
+            "petrochina_pit_valuation_percentile_record_v1",
+            "self_history_dual_window_percentile_v1"
+          ],
+          "direction": "lower_better",
+          "benchmark_mode": "self_history_dual_window_percentile",
+          "transform_version": "dual_window_percentile_direction_v1",
+          "valid_domain": [
+            0.0,
+            1.0
+          ],
+          "outlier_policy": "percentile in [0,1]",
+          "missingness_policy": "missing_never_zero",
+          "minimum_history": 500,
+          "weight": 0.2,
+          "weight_rationale": "equal weight within multiple-position subdimension",
+          "sensitivity_range": [
+            0.15,
+            0.25
+          ],
+          "score_contribution_cap": null,
+          "evidence_requirements": "computed PIT observation with percentile",
+          "pit_requirements": "percentile uses only observations visible at score date",
+          "cycle_interpretation_rule": "PE percentile is TRUSTED_DESCRIPTIVE_EVIDENCE; numeric score NOT AUTHORIZED until a formal cycle-context contract exists",
+          "prohibited_fallback": "no peer percentile, no future-distribution percentile",
+          "score_eligibility": false,
+          "reviewer_status": "methodology_defined",
+          "numeric_shadow_status": "coverage_gap_cycle_context_required",
+          "pe_numeric_scoring_authorized": false,
+          "pe_blocked_reason": "cycle_context_contract_required",
+          "cycle_context_status": "not_yet_formalized"
+        },
+        "va_pb": {
+          "component_id": "va_pb",
+          "dimension_id": "valuation_attractiveness",
+          "subdimension_id": "multiple_position",
+          "metric_role": "PB_A_MRQ",
+          "accepted_contract_versions": [
+            "petrochina_pit_valuation_series_candidate_v1",
+            "pit_valuation_historical_percentile_v1",
+            "petrochina_pit_valuation_percentile_record_v1",
+            "self_history_dual_window_percentile_v1"
+          ],
+          "direction": "lower_better",
+          "benchmark_mode": "self_history_dual_window_percentile",
+          "transform_version": "dual_window_percentile_direction_v1",
+          "valid_domain": [
+            0.0,
+            1.0
+          ],
+          "outlier_policy": "percentile in [0,1]",
+          "missingness_policy": "missing_never_zero",
+          "minimum_history": 500,
+          "weight": 0.2,
+          "weight_rationale": "equal weight within multiple-position subdimension",
+          "sensitivity_range": [
+            0.15,
+            0.25
+          ],
+          "score_contribution_cap": null,
+          "evidence_requirements": "computed PIT observation with percentile",
+          "pit_requirements": "percentile uses only observations visible at score date",
+          "cycle_interpretation_rule": "dual-window (3y+5y) midrank percentile; high percentile = expensive",
+          "prohibited_fallback": "no peer percentile, no future-distribution percentile",
+          "score_eligibility": false,
+          "reviewer_status": "methodology_defined",
+          "numeric_shadow_status": "allowed_after_v2_migration",
+          "pe_numeric_scoring_authorized": false
+        },
+        "va_ps": {
+          "component_id": "va_ps",
+          "dimension_id": "valuation_attractiveness",
+          "subdimension_id": "multiple_position",
+          "metric_role": "PS_A_TTM",
+          "accepted_contract_versions": [
+            "petrochina_pit_valuation_series_candidate_v1",
+            "pit_valuation_historical_percentile_v1",
+            "petrochina_pit_valuation_percentile_record_v1",
+            "self_history_dual_window_percentile_v1"
+          ],
+          "direction": "lower_better",
+          "benchmark_mode": "self_history_dual_window_percentile",
+          "transform_version": "dual_window_percentile_direction_v1",
+          "valid_domain": [
+            0.0,
+            1.0
+          ],
+          "outlier_policy": "percentile in [0,1]",
+          "missingness_policy": "missing_never_zero",
+          "minimum_history": 500,
+          "weight": 0.2,
+          "weight_rationale": "equal weight within multiple-position subdimension",
+          "sensitivity_range": [
+            0.15,
+            0.25
+          ],
+          "score_contribution_cap": null,
+          "evidence_requirements": "computed PIT observation with percentile",
+          "pit_requirements": "percentile uses only observations visible at score date",
+          "cycle_interpretation_rule": "dual-window (3y+5y) midrank percentile; high percentile = expensive",
+          "prohibited_fallback": "no peer percentile, no future-distribution percentile",
+          "score_eligibility": false,
+          "reviewer_status": "methodology_defined",
+          "numeric_shadow_status": "allowed_after_v2_migration",
+          "pe_numeric_scoring_authorized": false
+        },
+        "va_fcf_yield": {
+          "component_id": "va_fcf_yield",
+          "dimension_id": "valuation_attractiveness",
+          "subdimension_id": "yield_position",
+          "metric_role": "latest_annual_fcf_proxy_yield",
+          "accepted_contract_versions": [
+            "value_evaluation_methodology_valuation_pit_v1"
+          ],
+          "direction": "higher_better",
+          "benchmark_mode": "self_history_percentile",
+          "transform_version": "percentile_direction_v1",
+          "valid_domain": [
+            0.0,
+            1.0
+          ],
+          "outlier_policy": "percentile in [0,1]",
+          "missingness_policy": "missing_never_zero",
+          "minimum_history": 500,
+          "weight": 0.2,
+          "weight_rationale": "equal weight within yield-position subdimension",
+          "sensitivity_range": [
+            0.15,
+            0.25
+          ],
+          "score_contribution_cap": null,
+          "evidence_requirements": "computed PIT observation with percentile",
+          "pit_requirements": "percentile uses only observations visible at score date",
+          "cycle_interpretation_rule": "high yield percentile = cheap",
+          "prohibited_fallback": "no peer percentile, no future-distribution percentile",
+          "score_eligibility": false,
+          "reviewer_status": "methodology_defined"
+        },
+        "va_dividend_yield": {
+          "component_id": "va_dividend_yield",
+          "dimension_id": "valuation_attractiveness",
+          "subdimension_id": "yield_position",
+          "metric_role": "trailing_12m_announced_dividend_yield",
+          "accepted_contract_versions": [
+            "value_evaluation_methodology_valuation_pit_v1"
+          ],
+          "direction": "higher_better",
+          "benchmark_mode": "self_history_percentile",
+          "transform_version": "percentile_direction_v1",
+          "valid_domain": [
+            0.0,
+            1.0
+          ],
+          "outlier_policy": "percentile in [0,1]",
+          "missingness_policy": "missing_never_zero",
+          "minimum_history": 120,
+          "weight": 0.2,
+          "weight_rationale": "equal weight within yield-position subdimension",
+          "sensitivity_range": [
+            0.15,
+            0.25
+          ],
+          "score_contribution_cap": null,
+          "evidence_requirements": "partial_evidence or missing_input; latest is missing_input",
+          "pit_requirements": "percentile uses only observations visible at score date",
+          "cycle_interpretation_rule": "missing dividend yield lowers coverage; not a zero",
+          "prohibited_fallback": "no zero fill, no partial-value substitution",
+          "score_eligibility": false,
+          "reviewer_status": "coverage_gap"
+        }
+      }
+    },
+    "value_realization_capacity": {
+      "dimension_id": "value_realization_capacity",
+      "display_name_zh": "价值兑现能力",
+      "representation": "ordinal_band",
+      "minimum_coverage_gate": 0.6,
+      "stability_tolerance": 1.0,
+      "weight_mode": "theory_informed",
+      "cycle_rule": "realization is about sustainability of cash distributions, not a single payout year",
+      "subdimensions": {
+        "dividend_sustainability": {
+          "subdimension_id": "dividend_sustainability",
+          "weight": 0.6,
+          "weight_rationale": "coverage and payout sustainability are the core realization signals.",
+          "components": [
+            "vr_ocf_dividend_coverage",
+            "vr_fcf_dividend_coverage",
+            "vr_payout_ratio"
+          ]
+        },
+        "payout_realization": {
+          "subdimension_id": "payout_realization",
+          "weight": 0.4,
+          "weight_rationale": "realized dividend per share and its trend; exchange-payload gaps bound confidence.",
+          "components": [
+            "vr_dps",
+            "vr_repurchase"
+          ]
+        }
+      },
+      "components": {
+        "vr_ocf_dividend_coverage": {
+          "component_id": "vr_ocf_dividend_coverage",
+          "dimension_id": "value_realization_capacity",
+          "subdimension_id": "dividend_sustainability",
+          "metric_role": "operating_cash_flow_dividend_coverage",
+          "accepted_contract_versions": [
+            "dividend_realization_v1"
+          ],
+          "direction": "higher_better",
+          "benchmark_mode": "absolute_contract",
+          "transform_version": "piecewise_linear_v1",
+          "valid_domain": [
+            0.0,
+            20.0
+          ],
+          "outlier_policy": "cap at 20",
+          "missingness_policy": "missing_never_zero",
+          "minimum_history": 1,
+          "weight": 0.2,
+          "weight_rationale": "equal weight within dividend-sustainability subdimension",
+          "sensitivity_range": [
+            0.15,
+            0.25
+          ],
+          "score_contribution_cap": null,
+          "evidence_requirements": "trusted canonical Metric Result",
+          "pit_requirements": "available_at <= score date",
+          "cycle_interpretation_rule": "coverage above 1 supports sustainability; 1.0 is not a mechanical boundary",
+          "prohibited_fallback": "no zero fill",
+          "score_eligibility": false,
+          "reviewer_status": "methodology_defined"
+        },
+        "vr_fcf_dividend_coverage": {
+          "component_id": "vr_fcf_dividend_coverage",
+          "dimension_id": "value_realization_capacity",
+          "subdimension_id": "dividend_sustainability",
+          "metric_role": "free_cash_flow_proxy_dividend_coverage",
+          "accepted_contract_versions": [
+            "dividend_realization_v1"
+          ],
+          "direction": "higher_better",
+          "benchmark_mode": "absolute_contract",
+          "transform_version": "piecewise_linear_v1",
+          "valid_domain": [
+            0.0,
+            10.0
+          ],
+          "outlier_policy": "cap at 10",
+          "missingness_policy": "missing_never_zero",
+          "minimum_history": 1,
+          "weight": 0.2,
+          "weight_rationale": "equal weight within dividend-sustainability subdimension",
+          "sensitivity_range": [
+            0.15,
+            0.25
+          ],
+          "score_contribution_cap": null,
+          "evidence_requirements": "trusted canonical Metric Result",
+          "pit_requirements": "available_at <= score date",
+          "cycle_interpretation_rule": "coverage approaching 1.0 is a red flag; FCF proxy is not full free cash flow",
+          "prohibited_fallback": "no zero fill",
+          "score_eligibility": false,
+          "reviewer_status": "methodology_defined"
+        },
+        "vr_payout_ratio": {
+          "component_id": "vr_payout_ratio",
+          "dimension_id": "value_realization_capacity",
+          "subdimension_id": "dividend_sustainability",
+          "metric_role": "cash_dividend_payout_ratio",
+          "accepted_contract_versions": [
+            "dividend_realization_v1"
+          ],
+          "direction": "target_range",
+          "benchmark_mode": "absolute_contract",
+          "transform_version": "piecewise_linear_v1",
+          "valid_domain": [
+            0.0,
+            1.0
+          ],
+          "outlier_policy": "winsorize at [0,1]",
+          "missingness_policy": "missing_never_zero",
+          "minimum_history": 1,
+          "weight": 0.2,
+          "weight_rationale": "equal weight within dividend-sustainability subdimension",
+          "sensitivity_range": [
+            0.15,
+            0.25
+          ],
+          "score_contribution_cap": null,
+          "evidence_requirements": "trusted canonical Metric Result",
+          "pit_requirements": "available_at <= score date",
+          "cycle_interpretation_rule": "payout near 50% is sustainable; extremes are read with coverage",
+          "prohibited_fallback": "no zero fill",
+          "score_eligibility": false,
+          "reviewer_status": "methodology_defined"
+        },
+        "vr_dps": {
+          "component_id": "vr_dps",
+          "dimension_id": "value_realization_capacity",
+          "subdimension_id": "payout_realization",
+          "metric_role": "implemented_cash_dividend_per_share",
+          "accepted_contract_versions": [
+            "dividend_realization_v1"
+          ],
+          "direction": "higher_better",
+          "benchmark_mode": "absolute_contract",
+          "transform_version": "piecewise_linear_v1",
+          "valid_domain": [
+            0.0,
+            10.0
+          ],
+          "outlier_policy": "cap at 10",
+          "missingness_policy": "missing_never_zero",
+          "minimum_history": 1,
+          "weight": 0.2,
+          "weight_rationale": "equal weight within payout-realization subdimension",
+          "sensitivity_range": [
+            0.15,
+            0.25
+          ],
+          "score_contribution_cap": null,
+          "evidence_requirements": "trusted canonical Metric Result",
+          "pit_requirements": "available_at <= score date",
+          "cycle_interpretation_rule": "rising DPS read over the 5-year window",
+          "prohibited_fallback": "no zero fill",
+          "score_eligibility": false,
+          "reviewer_status": "methodology_defined"
+        },
+        "vr_repurchase": {
+          "component_id": "vr_repurchase",
+          "dimension_id": "value_realization_capacity",
+          "subdimension_id": "payout_realization",
+          "metric_role": "repurchase_event_scan",
+          "accepted_contract_versions": [
+            "repurchase_event_scan_2021_2026_v1"
+          ],
+          "direction": "categorical",
+          "benchmark_mode": "binary_or_categorical_evidence",
+          "transform_version": "categorical_v1",
+          "valid_domain": [
+            "no_event_found",
+            "event_found",
+            "insufficient_evidence"
+          ],
+          "outlier_policy": "not_applicable",
+          "missingness_policy": "missing_never_zero",
+          "minimum_history": 0,
+          "weight": 0.2,
+          "weight_rationale": "equal weight within payout-realization subdimension",
+          "sensitivity_range": [
+            0.15,
+            0.25
+          ],
+          "score_contribution_cap": null,
+          "evidence_requirements": "bounded repurchase scan; no-event-found is not a zero",
+          "pit_requirements": "bounded scan coverage",
+          "cycle_interpretation_rule": "no repurchase event is not a numeric zero",
+          "prohibited_fallback": "no zero repurchase fact",
+          "score_eligibility": false,
+          "reviewer_status": "bounded_evidence_only"
+        }
+      }
+    },
+    "risk_and_evidence_integrity": {
+      "dimension_id": "risk_and_evidence_integrity",
+      "display_name_zh": "风险与证据完整性",
+      "representation": "ordinal_band",
+      "minimum_coverage_gate": 0.6,
+      "stability_tolerance": 1.0,
+      "weight_mode": "theory_informed",
+      "cycle_rule": "risk vetoes are non-compensatory; missing evidence is not no risk",
+      "subdimensions": {
+        "risk_veto": {
+          "subdimension_id": "risk_veto",
+          "weight": 0.5,
+          "weight_rationale": "risk vetoes are separate flags that no other dimension can erase.",
+          "components": [
+            "rk_veto_triggered",
+            "rk_missing_evidence_slots"
+          ]
+        },
+        "evidence_integrity": {
+          "subdimension_id": "evidence_integrity",
+          "weight": 0.5,
+          "weight_rationale": "evidence completeness and PIT/lineage integrity bound the confidence of every dimension.",
+          "components": [
+            "rk_gap_count",
+            "rk_pit_integrity",
+            "rk_evidence_freshness"
+          ]
+        }
+      },
+      "components": {
+        "rk_veto_triggered": {
+          "component_id": "rk_veto_triggered",
+          "dimension_id": "risk_and_evidence_integrity",
+          "subdimension_id": "risk_veto",
+          "metric_role": "risk_veto_triggered_count",
+          "accepted_contract_versions": [
+            "risk_veto_methodology_v2"
+          ],
+          "direction": "lower_better",
+          "benchmark_mode": "binary_or_categorical_evidence",
+          "transform_version": "categorical_v1",
+          "valid_domain": [
+            0,
+            8
+          ],
+          "outlier_policy": "not_applicable",
+          "missingness_policy": "missing_never_zero",
+          "minimum_history": 0,
+          "weight": 0.25,
+          "weight_rationale": "equal weight within risk-veto subdimension",
+          "sensitivity_range": [
+            0.1875,
+            0.3125
+          ],
+          "score_contribution_cap": null,
+          "evidence_requirements": "8 fixed risk slots; a triggered veto blocks the dimension",
+          "pit_requirements": "conclusion_available_at <= score date",
+          "cycle_interpretation_rule": "any triggered veto is non-compensatory",
+          "prohibited_fallback": "no veto averaged away",
+          "score_eligibility": false,
+          "reviewer_status": "methodology_defined"
+        },
+        "rk_missing_evidence_slots": {
+          "component_id": "rk_missing_evidence_slots",
+          "dimension_id": "risk_and_evidence_integrity",
+          "subdimension_id": "risk_veto",
+          "metric_role": "risk_missing_evidence_slot_count",
+          "accepted_contract_versions": [
+            "risk_veto_methodology_v2"
+          ],
+          "direction": "lower_better",
+          "benchmark_mode": "binary_or_categorical_evidence",
+          "transform_version": "categorical_v1",
+          "valid_domain": [
+            0,
+            8
+          ],
+          "outlier_policy": "not_applicable",
+          "missingness_policy": "missing_never_zero",
+          "minimum_history": 0,
+          "weight": 0.25,
+          "weight_rationale": "equal weight within risk-veto subdimension",
+          "sensitivity_range": [
+            0.1875,
+            0.3125
+          ],
+          "score_contribution_cap": null,
+          "evidence_requirements": "a missing_evidence slot is not a negative conclusion",
+          "pit_requirements": "conclusion_available_at <= score date",
+          "cycle_interpretation_rule": "missing evidence lowers confidence, not an assumed risk",
+          "prohibited_fallback": "missing evidence never treated as no risk",
+          "score_eligibility": false,
+          "reviewer_status": "methodology_defined"
+        },
+        "rk_gap_count": {
+          "component_id": "rk_gap_count",
+          "dimension_id": "risk_and_evidence_integrity",
+          "subdimension_id": "evidence_integrity",
+          "metric_role": "canonical_gap_count",
+          "accepted_contract_versions": [
+            "m2_explicit_gap_ledger_v1"
+          ],
+          "direction": "lower_better",
+          "benchmark_mode": "binary_or_categorical_evidence",
+          "transform_version": "categorical_v1",
+          "valid_domain": [
+            0,
+            30
+          ],
+          "outlier_policy": "not_applicable",
+          "missingness_policy": "missing_never_zero",
+          "minimum_history": 0,
+          "weight": 0.16,
+          "weight_rationale": "evidence-integrity subdimension weight 0.50 split across three components",
+          "sensitivity_range": [
+            0.12,
+            0.2
+          ],
+          "score_contribution_cap": null,
+          "evidence_requirements": "18 canonical current gaps (9 DIV + 2 RISK + 7 ROIC)",
+          "pit_requirements": "gap ledger recomputed from source ledgers",
+          "cycle_interpretation_rule": "gaps lower evidence confidence, not business quality",
+          "prohibited_fallback": "no gap silently resolved",
+          "score_eligibility": false,
+          "reviewer_status": "methodology_defined"
+        },
+        "rk_pit_integrity": {
+          "component_id": "rk_pit_integrity",
+          "dimension_id": "risk_and_evidence_integrity",
+          "subdimension_id": "evidence_integrity",
+          "metric_role": "pit_and_lineage_integrity",
+          "accepted_contract_versions": [
+            "fact_schema_2.1_and_metric_schema_1.0"
+          ],
+          "direction": "categorical",
+          "benchmark_mode": "binary_or_categorical_evidence",
+          "transform_version": "categorical_v1",
+          "valid_domain": [
+            "pass",
+            "fail",
+            "partial"
+          ],
+          "outlier_policy": "not_applicable",
+          "missingness_policy": "missing_never_zero",
+          "minimum_history": 0,
+          "weight": 0.17,
+          "weight_rationale": "evidence-integrity subdimension weight 0.50 split across three components",
+          "sensitivity_range": [
+            0.1275,
+            0.2125
+          ],
+          "score_contribution_cap": null,
+          "evidence_requirements": "Fact/Metric Identity and PIT checks pass",
+          "pit_requirements": "available_at <= score date",
+          "cycle_interpretation_rule": "PIT/lineage integrity is a precondition",
+          "prohibited_fallback": "no scored input without identity",
+          "score_eligibility": false,
+          "reviewer_status": "methodology_defined"
+        },
+        "rk_evidence_freshness": {
+          "component_id": "rk_evidence_freshness",
+          "dimension_id": "risk_and_evidence_integrity",
+          "subdimension_id": "evidence_integrity",
+          "metric_role": "evidence_freshness",
+          "accepted_contract_versions": [
+            "pit_contract_v1"
+          ],
+          "direction": "categorical",
+          "benchmark_mode": "binary_or_categorical_evidence",
+          "transform_version": "categorical_v1",
+          "valid_domain": [
+            "current",
+            "stale",
+            "missing"
+          ],
+          "outlier_policy": "not_applicable",
+          "missingness_policy": "missing_never_zero",
+          "minimum_history": 0,
+          "weight": 0.17,
+          "weight_rationale": "evidence-integrity subdimension weight 0.50 split across three components",
+          "sensitivity_range": [
+            0.1275,
+            0.2125
+          ],
+          "score_contribution_cap": null,
+          "evidence_requirements": "evidence as-of dates within the score date",
+          "pit_requirements": "available_at <= score date",
+          "cycle_interpretation_rule": "stale evidence lowers confidence",
+          "prohibited_fallback": "no stale evidence treated as current",
+          "score_eligibility": false,
+          "reviewer_status": "methodology_defined"
+        }
+      }
+    }
+  },
+  "supersedes": "value_dimension_scoring_registry_v1",
+  "supersession_reason": "trusted_pit_ttm_mrq_dual_window_percentile_migration",
+  "migration_stage": "M2_STAGE_2K1R4F1",
+  "dual_window_contract": "self_history_dual_window_percentile_v1",
+  "window_weights": {
+    "3y": "0.5",
+    "5y": "0.5"
+  }
+}

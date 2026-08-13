@@ -1,0 +1,84 @@
+{
+  "schema": "pe_3y_historical_backfill_extraction_v1",
+  "cells": [
+    {
+      "target_cell": "A_equity_2017",
+      "concept": "equity_attributable_to_parent",
+      "period_end": "2017-12-31",
+      "source_document": "objects/c1a6fbffcc210020e672410400646e0c9fe2097f5de43047a24b950ae7930cea.pdf",
+      "source_page": 122,
+      "raw_value_million": "1193810",
+      "expected_million": "1193810",
+      "match": true,
+      "evidence_id": "R4F3A-SSE-2017-AR"
+    },
+    {
+      "target_cell": "B_equity_2018",
+      "concept": "equity_attributable_to_parent",
+      "period_end": "2018-12-31",
+      "source_document": "objects/5c205cc110a1650c7463530a05aac544737b78a317891ffc8f93ea5e35f6bf92.pdf",
+      "source_page": 113,
+      "raw_value_million": "1214570",
+      "expected_million": "1214570",
+      "match": true,
+      "evidence_id": "R4F3A-SSE-2018-AR"
+    },
+    {
+      "target_cell": "C_np_2018",
+      "concept": "net_profit_attributable_to_parent",
+      "period_end": "2018-12-31",
+      "source_document": "objects/5c205cc110a1650c7463530a05aac544737b78a317891ffc8f93ea5e35f6bf92.pdf",
+      "source_page": 114,
+      "raw_value_million": "52585",
+      "expected_million": "52585",
+      "match": true,
+      "evidence_id": "R4F3A-SSE-2018-AR"
+    },
+    {
+      "target_cell": "D_equity_2019",
+      "concept": "equity_attributable_to_parent",
+      "period_end": "2019-12-31",
+      "source_document": "objects/d5fc46581ffc4617ee267682079c245f8d9e1c0eacdd8451c5d62151d6090778.pdf",
+      "source_page": 114,
+      "raw_value_million": "1230428",
+      "expected_million": "1230428",
+      "match": true,
+      "evidence_id": "R4F3A-SSE-2019-AR"
+    },
+    {
+      "target_cell": "E_np_2019",
+      "concept": "net_profit_attributable_to_parent",
+      "period_end": "2019-12-31",
+      "source_document": "objects/d5fc46581ffc4617ee267682079c245f8d9e1c0eacdd8451c5d62151d6090778.pdf",
+      "source_page": 115,
+      "raw_value_million": "45677",
+      "expected_million": "45677",
+      "match": true,
+      "evidence_id": "R4F3A-SSE-2019-AR"
+    },
+    {
+      "target_cell": "RESTATED",
+      "concept": "equity_attributable_to_parent",
+      "period_end": "2018-12-31",
+      "raw_value_million": "1214067",
+      "restatement_version": "restated_1",
+      "source_evidence": "R4F3A-SSE-2019-AR"
+    },
+    {
+      "target_cell": "RESTATED",
+      "concept": "net_profit_attributable_to_parent",
+      "period_end": "2018-12-31",
+      "raw_value_million": "53030",
+      "restatement_version": "restated_1",
+      "source_evidence": "R4F3A-SSE-2019-AR"
+    },
+    {
+      "target_cell": "RESTATED",
+      "concept": "equity_attributable_to_parent",
+      "period_end": "2017-12-31",
+      "raw_value_million": "1192862",
+      "restatement_version": "restated_1",
+      "source_evidence": "R4F3A-SSE-2019-AR"
+    }
+  ]
+}

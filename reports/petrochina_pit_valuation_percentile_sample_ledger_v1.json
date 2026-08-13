@@ -1,0 +1,90 @@
+{
+ "schema": "petrochina_pit_valuation_percentile_sample_ledger_v1",
+ "version": "1.0",
+ "symbol": "601857.SH",
+ "as_of_trade_date": "2026-07-31",
+ "records": [
+  {
+   "metric_id": "PE_A_TTM",
+   "window_id": "3y",
+   "eligible_observation_count": 728,
+   "excluded_observation_count": 623,
+   "excluded_status_counts": {
+    "missing_ttm_input": 55,
+    "before_window_start": 568
+   },
+   "sample_observation_ids_digest": "55d26e6410d1eaa9ca9425b6944ac549afa492ee2f6bcaf69373a3aad00f46dd",
+   "sample_values_digest": "1d2b408aa9ebb4573f23cea00d5648e87dc9440ec33d98ccc3d1a1039ce8c2c5",
+   "minimum_required": 500,
+   "coverage_status": "READY"
+  },
+  {
+   "metric_id": "PE_A_TTM",
+   "window_id": "5y",
+   "eligible_observation_count": 1211,
+   "excluded_observation_count": 140,
+   "excluded_status_counts": {
+    "missing_ttm_input": 55,
+    "before_window_start": 85
+   },
+   "sample_observation_ids_digest": "d60269f078a1d691b2b617ab9a96f5559bf507c8463d8abac8e77e6e1e8d92bf",
+   "sample_values_digest": "f3c7f05933f3518f3589240386ea130bbed9b6fec64435bbf07d2c690ecc0342",
+   "minimum_required": 900,
+   "coverage_status": "READY"
+  },
+  {
+   "metric_id": "PB_A_MRQ",
+   "window_id": "3y",
+   "eligible_observation_count": 728,
+   "excluded_observation_count": 623,
+   "excluded_status_counts": {
+    "before_window_start": 623
+   },
+   "sample_observation_ids_digest": "31753359d3284fd400e96bac5f0b3c8915dbe88d27b78e8dcca44f8b8e449de1",
+   "sample_values_digest": "664d583f22403f5309e1eab34b25804efb63ca67da9dc034322b389dc0bbb7bf",
+   "minimum_required": 500,
+   "coverage_status": "READY"
+  },
+  {
+   "metric_id": "PB_A_MRQ",
+   "window_id": "5y",
+   "eligible_observation_count": 1211,
+   "excluded_observation_count": 140,
+   "excluded_status_counts": {
+    "before_window_start": 140
+   },
+   "sample_observation_ids_digest": "42ace48b9f77016851d32ff806c5ee19ca06a349a265c12a96048331ad195284",
+   "sample_values_digest": "a4d1b9a16bda8687b31dc8215bf7e2b91e0bab9a4a48d709fca090657f95df9e",
+   "minimum_required": 900,
+   "coverage_status": "READY"
+  },
+  {
+   "metric_id": "PS_A_TTM",
+   "window_id": "3y",
+   "eligible_observation_count": 728,
+   "excluded_observation_count": 623,
+   "excluded_status_counts": {
+    "missing_ttm_input": 55,
+    "before_window_start": 568
+   },
+   "sample_observation_ids_digest": "93a00c9c7a9a9754ea499191a081c59c90f9255f8319c6359f19c61ff281fd79",
+   "sample_values_digest": "38577622c3335b08b7ed271cf008d484976dc46f13bd985e1e949331c61c40b4",
+   "minimum_required": 500,
+   "coverage_status": "READY"
+  },
+  {
+   "metric_id": "PS_A_TTM",
+   "window_id": "5y",
+   "eligible_observation_count": 1211,
+   "excluded_observation_count": 140,
+   "excluded_status_counts": {
+    "missing_ttm_input": 55,
+    "before_window_start": 85
+   },
+   "sample_observation_ids_digest": "b2e0dd959a31faaa04e5cfb6d838e680ccde42a66cb4c13b3b4ed7ec54c353f9",
+   "sample_values_digest": "6824df576d1e675104aea233454045512b2382bd820920a1a9170708d026d016",
+   "minimum_required": 900,
+   "coverage_status": "READY"
+  }
+ ]
+}

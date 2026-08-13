@@ -1,0 +1,10 @@
+{
+ "schema": "pe_3y_denominator_transition_audit_v1",
+ "symbol": "601857.SH",
+ "normalized_transition_count": 12,
+ "raw_ttm_transition_count": 12,
+ "orphan_normalized_transitions": [],
+ "orphan_raw_ttm_transitions": [],
+ "expected_orphan_transitions": 0,
+ "price_only_day_no_transition": true
+}

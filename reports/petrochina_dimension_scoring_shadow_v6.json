@@ -1,0 +1,304 @@
+{
+  "schema": "petrochina_dimension_scoring_shadow_v6",
+  "version": "6.0",
+  "symbol": "601857.SH",
+  "time_contract": {
+    "market_data_as_of_date": "2026-07-31",
+    "research_evidence_as_of": "2026-08-02",
+    "scorecard_formed_at": "2026-08-02",
+    "timezone": "Asia/Shanghai",
+    "time_contract_version": "1.0",
+    "digest": "e47b3c22717004132ade342668ce85b5b57bad226f81c5c2231e0ee41079c70d"
+  },
+  "capsule_digest": "3aa064419a2f3a12b714a1349d48fffdea3fb00fb7bdbc24645cedaebe03a19e",
+  "registry_schema": "value_dimension_scoring_registry_v2",
+  "policy_schema": "value_dimension_scoring_policy_v2",
+  "aggregation_contract_version": "self_history_dual_window_percentile_v1",
+  "non_production": true,
+  "overall_score_prohibited": true,
+  "recommendation_prohibited": true,
+  "score_eligible": false,
+  "status": "pass",
+  "dimensions": {
+    "enterprise_quality": {
+      "dimension_id": "enterprise_quality",
+      "score": 73.6694,
+      "band": "B",
+      "status": "ordinal_shadow",
+      "eligible_weight": 1.0,
+      "covered_weight": 0.9,
+      "coverage_ratio": 0.9,
+      "missing_component_ids": [
+        "eq_roic"
+      ],
+      "effective_weights": {
+        "eq_gross_margin": 0.088889,
+        "eq_operating_margin": 0.088889,
+        "eq_np_yoy": 0.1,
+        "eq_ocf_np": 0.222222,
+        "eq_roe": 0.111111,
+        "eq_roa": 0.111111,
+        "eq_asset_liability": 0.138889,
+        "eq_cash_coverage": 0.138889
+      },
+      "components": {
+        "eq_gross_margin": {
+          "score": 46.3473,
+          "status": "computed_shadow",
+          "eligible": true,
+          "covered": true,
+          "source": "acceptance/fixtures/official_facts/601857.SH/2025_annual.json",
+          "note": "absolute_contract band"
+        },
+        "eq_operating_margin": {
+          "score": 41.0815,
+          "status": "computed_shadow",
+          "eligible": true,
+          "covered": true,
+          "source": "acceptance/fixtures/official_facts/601857.SH/2025_annual.json",
+          "note": "absolute_contract band"
+        },
+        "eq_np_yoy": {
+          "score": 40.0,
+          "status": "computed_shadow",
+          "eligible": true,
+          "covered": true,
+          "source": "acceptance/fixtures/official_facts/601857.SH/2025_annual.json",
+          "note": "absolute_contract band"
+        },
+        "eq_ocf_np": {
+          "score": 92.4482,
+          "status": "computed_shadow",
+          "eligible": true,
+          "covered": true,
+          "source": "acceptance/fixtures/official_facts/601857.SH/2025_annual.json",
+          "note": "absolute_contract band"
+        },
+        "eq_roe": {
+          "score": 79.1778,
+          "status": "computed_shadow",
+          "eligible": true,
+          "covered": true,
+          "source": "acceptance/fixtures/official_facts/601857.SH/2025_annual.json",
+          "note": "absolute_contract band"
+        },
+        "eq_roa": {
+          "score": 84.3287,
+          "status": "computed_shadow",
+          "eligible": true,
+          "covered": true,
+          "source": "acceptance/fixtures/official_facts/601857.SH/supplemental/2025_net_profit.json",
+          "note": "absolute_contract band"
+        },
+        "eq_roic": {
+          "score": null,
+          "status": "coverage_gap",
+          "eligible": true,
+          "covered": false,
+          "source": "reports/m2_explicit_gap_ledger.json",
+          "note": "missing input is never zero; it is a coverage gap"
+        },
+        "eq_asset_liability": {
+          "score": 83.6329,
+          "status": "computed_shadow",
+          "eligible": true,
+          "covered": true,
+          "source": "acceptance/fixtures/official_facts/601857.SH/supplemental/2025_financial_safety.json",
+          "note": "absolute_contract band"
+        },
+        "eq_cash_coverage": {
+          "score": 83.31,
+          "status": "computed_shadow",
+          "eligible": true,
+          "covered": true,
+          "source": "acceptance/fixtures/official_facts/601857.SH/supplemental/2025_financial_safety.json",
+          "note": "absolute_contract band"
+        }
+      },
+      "evidence_confidence": {
+        "dimension_id": "enterprise_quality",
+        "grade": "medium",
+        "reasons": [
+          "coverage_gap:eq_roic"
+        ],
+        "supporting_ids": [
+          "M2G-ROIC-001",
+          "M2G-ROIC-002",
+          "M2G-ROIC-003",
+          "M2G-ROIC-004",
+          "M2G-ROIC-005",
+          "M2G-ROIC-006",
+          "M2G-ROIC-007"
+        ]
+      }
+    },
+    "valuation_attractiveness": {
+      "dimension_id": "valuation_attractiveness",
+      "score": null,
+      "band": null,
+      "status": "insufficient_evidence_cycle_context",
+      "eligible_weight": 1.0,
+      "covered_weight": 0.6,
+      "coverage_ratio": 0.6,
+      "missing_component_ids": [
+        "va_pe",
+        "va_dividend_yield"
+      ],
+      "blocked_component_ids": [
+        "va_pe"
+      ],
+      "components": {
+        "va_pe": {
+          "score": null,
+          "status": "coverage_gap_cycle_context_required",
+          "eligible": true,
+          "covered": false,
+          "source": "reports/petrochina_pit_valuation_percentile_profile_v1.json",
+          "note": "cycle-context contract required; numeric score not authorized (blocked)"
+        },
+        "va_pb": {
+          "score": 12.0417,
+          "status": "computed_shadow",
+          "eligible": true,
+          "covered": true,
+          "source": "reports/petrochina_pit_valuation_percentile_profile_v1.json",
+          "note": "dual-window percentile=87.9583385"
+        },
+        "va_ps": {
+          "score": 6.4332,
+          "status": "computed_shadow",
+          "eligible": true,
+          "covered": true,
+          "source": "reports/petrochina_pit_valuation_percentile_profile_v1.json",
+          "note": "dual-window percentile=93.566784"
+        },
+        "va_fcf_yield": {
+          "score": 17.4003,
+          "status": "computed_shadow",
+          "eligible": true,
+          "covered": true,
+          "source": "reports/petrochina_value_profile.json",
+          "note": "self-history percentile 3y=0.1740"
+        },
+        "va_dividend_yield": {
+          "score": null,
+          "status": "coverage_gap",
+          "eligible": true,
+          "covered": false,
+          "source": "reports/petrochina_value_profile.json",
+          "note": "missing input is never zero; it is a coverage gap"
+        }
+      },
+      "evidence_confidence": {
+        "dimension_id": "valuation_attractiveness",
+        "grade": "low",
+        "reasons": [
+          "cycle_context_gap:va_pe",
+          "coverage_gap:va_dividend_yield"
+        ],
+        "supporting_ids": [
+          "va_pe",
+          "va_dividend_yield"
+        ]
+      }
+    },
+    "value_realization_capacity": {
+      "dimension_id": "value_realization_capacity",
+      "score": 21.7562,
+      "band": "D",
+      "status": "ordinal_shadow",
+      "eligible_weight": 1.0,
+      "covered_weight": 0.8,
+      "coverage_ratio": 0.8,
+      "missing_component_ids": [
+        "vr_repurchase"
+      ],
+      "effective_weights": {
+        "vr_ocf_dividend_coverage": 0.25,
+        "vr_fcf_dividend_coverage": 0.25,
+        "vr_payout_ratio": 0.25,
+        "vr_dps": 0.25
+      },
+      "components": {
+        "vr_ocf_dividend_coverage": {
+          "score": 0.0192,
+          "status": "computed_shadow",
+          "eligible": true,
+          "covered": true,
+          "source": "acceptance/fixtures/official_facts/601857.SH/2025_annual.json",
+          "note": "absolute_contract band"
+        },
+        "vr_fcf_dividend_coverage": {
+          "score": 0.0056,
+          "status": "computed_shadow",
+          "eligible": true,
+          "covered": true,
+          "source": "acceptance/fixtures/official_facts/601857.SH/2025_annual.json",
+          "note": "absolute_contract band"
+        },
+        "vr_payout_ratio": {
+          "score": 0.0,
+          "status": "computed_shadow",
+          "eligible": true,
+          "covered": true,
+          "source": "acceptance/fixtures/official_facts/601857.SH/2025_annual.json",
+          "note": "absolute_contract band"
+        },
+        "vr_dps": {
+          "score": 87.0,
+          "status": "computed_shadow",
+          "eligible": true,
+          "covered": true,
+          "source": "events/dividend_events_2021_2026_v2.json",
+          "note": "absolute_contract band"
+        },
+        "vr_repurchase": {
+          "score": null,
+          "status": "coverage_gap",
+          "eligible": true,
+          "covered": false,
+          "source": "events/repurchase_event_scan_2021_2026.json",
+          "note": "unrecognized categorical value"
+        }
+      },
+      "evidence_confidence": {
+        "dimension_id": "value_realization_capacity",
+        "grade": "medium",
+        "reasons": [],
+        "supporting_ids": []
+      }
+    },
+    "risk_and_evidence_integrity": {
+      "dimension_id": "risk_and_evidence_integrity",
+      "representation": "status_outputs",
+      "risk_veto_status": {
+        "status": "no_trigger_observed_with_missing_evidence",
+        "triggered_count": 0,
+        "missing_evidence_slots": 2,
+        "complete_absence_claim": false,
+        "non_compensatory": true
+      },
+      "evidence_integrity": {
+        "dimension_id": "risk_and_evidence_integrity",
+        "grade": "medium",
+        "reasons": [
+          "coverage_gap:rk_gap_count"
+        ],
+        "supporting_ids": [
+          "M2G-DIV-001",
+          "M2G-DIV-002",
+          "M2G-DIV-003",
+          "M2G-DIV-004",
+          "M2G-DIV-005",
+          "M2G-DIV-006",
+          "M2G-DIV-007",
+          "M2G-DIV-008",
+          "M2G-DIV-009",
+          "M2G-RISK-001",
+          "M2G-RISK-002"
+        ]
+      },
+      "no_merged_numeric_score": true
+    }
+  }
+}

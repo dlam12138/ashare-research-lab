@@ -1,0 +1,50 @@
+{
+  "schema": "pe_5y_independent_cycle_backfill_contract_v1",
+  "stage": "2K.1R4F.4A1",
+  "symbol": "601857.SH",
+  "frozen_validation_window": {
+    "start": "2021-08-02",
+    "end": "2026-07-31"
+  },
+  "required_trade_days": 1211,
+  "target_logical_cell_count": 4,
+  "target_source": "reports/petrochina_pe_5y_backfill_identification_justification_v1.json",
+  "canonical_aliases": {
+    "parent_equity": "equity_attributable_to_parent",
+    "parent_net_profit": "net_profit_attributable_to_parent"
+  },
+  "canonical_concepts": [
+    "equity_attributable_to_parent",
+    "net_profit_attributable_to_parent"
+  ],
+  "target_logical_cells": [
+    {"period_end": "2015-12-31", "concept_id": "equity_attributable_to_parent"},
+    {"period_end": "2016-12-31", "concept_id": "equity_attributable_to_parent"},
+    {"period_end": "2016-12-31", "concept_id": "net_profit_attributable_to_parent"},
+    {"period_end": "2017-12-31", "concept_id": "net_profit_attributable_to_parent"}
+  ],
+  "dependency_contract": {
+    "ROE_2016": ["Equity_2015", "Equity_2016", "NP_2016"],
+    "ROE_2017": ["Equity_2016", "Equity_2017_existing", "NP_2017"],
+    "forbidden_additional_economic_targets": ["NP_2015", "Equity_2014", "NP_2014"]
+  },
+  "accounting_scope": "consolidated",
+  "canonical_unit": "CNY",
+  "roe_formula": "NP_y / ((Equity_y_minus_1 + Equity_y) / 2)",
+  "arithmetic": "Decimal-only",
+  "source": "exchange_official",
+  "pit_rule": "announcement-date-to-next-trading-day-v1",
+  "restatement_lineage": "required",
+  "full_cycle_claim": "NOT_PROVEN",
+  "future_outcome_validation": "PROHIBITED_THIS_STAGE",
+  "automatic_history_extension_beyond_5y": "PROHIBITED",
+  "pe_scoring": "BLOCKED_UNCHANGED",
+  "references_reviewed": ["XBRL fact semantics", "W3C PROV"],
+  "borrowed_designs": [
+    "concept + entity + period/context + unit jointly define financial-fact semantics",
+    "versioned entities, derivation, revision lineage, and reproducibility"
+  ],
+  "why_applicable": "Prevents scope/version collisions and preserves original-to-revision supersession for PIT selection.",
+  "not_copied": ["XBRL parser", "taxonomy engine", "RDF", "PROV-O runtime", "graph database"],
+  "repository_specific_cuts": ["FactIdentity", "supersedes_fact_id", "source_object_sha256", "content-addressed cache"]
+}

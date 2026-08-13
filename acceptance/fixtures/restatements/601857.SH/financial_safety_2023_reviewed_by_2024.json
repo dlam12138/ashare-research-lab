@@ -1,0 +1,143 @@
+{
+  "contract": "financial_safety_restatement_evidence_v1",
+  "schema_version": "1.0",
+  "symbol": "601857.SH",
+  "target_fiscal_year": 2023,
+  "evidence_fiscal_year": 2024,
+  "accounting_standard": "CAS",
+  "consolidation_scope": "consolidated",
+  "period_end": "2023-12-31",
+  "review_status": "reviewed_unchanged",
+  "document_relationship": "later annual-report comparative column",
+  "changed_concepts": [
+    "total_liabilities",
+    "current_portion_of_interest_bearing_non_current_liabilities",
+    "lease_liabilities"
+  ],
+  "canonical_changed_concepts": [
+    "total_liabilities",
+    "current_portion_of_lease_liabilities",
+    "lease_liabilities"
+  ],
+  "rejected_aggregate_concepts": [
+    "current_portion_of_interest_bearing_non_current_liabilities"
+  ],
+  "current_portion_components": {
+    "original": {"aggregate_raw_value": 117816, "current_portion_of_long_term_borrowings": 72532, "current_portion_of_bonds_payable": 37269, "current_portion_of_lease_liabilities": 7773, "excluded_long_term_payables": 242},
+    "later_comparative": {"aggregate_raw_value": 117823, "current_portion_of_long_term_borrowings": 72532, "current_portion_of_bonds_payable": 37269, "current_portion_of_lease_liabilities": 7780, "excluded_long_term_payables": 242},
+    "source_page": "PDF page 168 / printed page 166",
+    "proof_status": "proven"
+  },
+  "concepts": [
+    {
+      "concept_id": "total_liabilities",
+      "original_raw_value": "1122089",
+      "later_comparative_raw_value": "1123693",
+      "raw_unit": "人民币百万元",
+      "original_normalized_value": 112208900,
+      "later_comparative_normalized_value": 112369300,
+      "changed": true,
+      "change_reason": "FY2024 comparative column for 负债合计 differs from the original FY2023 disclosure; preserve as a new Fact version.",
+      "original_source_page": "PDF page 113",
+      "later_source_page": "PDF page 114",
+      "source_label": "负债合计",
+      "scope": "CAS consolidated",
+      "manual_review_status": "visually_verified_and_text_checked"
+    },
+    {
+      "concept_id": "short_term_borrowings",
+      "original_raw_value": "38979",
+      "later_comparative_raw_value": "38979",
+      "raw_unit": "人民币百万元",
+      "original_normalized_value": 3897900,
+      "later_comparative_normalized_value": 3897900,
+      "changed": false,
+      "change_reason": "comparative column exactly matches original FY disclosure.",
+      "original_source_page": "PDF page 113",
+      "later_source_page": "PDF page 114",
+      "source_label": "短期借款",
+      "scope": "CAS consolidated",
+      "manual_review_status": "visually_verified_and_text_checked"
+    },
+    {
+      "concept_id": "current_portion_of_interest_bearing_non_current_liabilities",
+      "original_raw_value": "117816",
+      "later_comparative_raw_value": "117823",
+      "raw_unit": "人民币百万元",
+      "original_normalized_value": 11781600,
+      "later_comparative_normalized_value": 11782300,
+      "changed": true,
+      "change_reason": "FY2024 comparative column for 一年内到期的非流动负债 differs from the original FY2023 disclosure; preserve as a new Fact version.",
+      "original_source_page": "PDF page 113",
+      "later_source_page": "PDF page 114",
+      "source_label": "一年内到期的非流动负债",
+      "scope": "CAS consolidated",
+      "manual_review_status": "visually_verified_and_text_checked"
+    },
+    {
+      "concept_id": "long_term_borrowings",
+      "original_raw_value": "126165",
+      "later_comparative_raw_value": "126165",
+      "raw_unit": "人民币百万元",
+      "original_normalized_value": 12616500,
+      "later_comparative_normalized_value": 12616500,
+      "changed": false,
+      "change_reason": "comparative column exactly matches original FY disclosure.",
+      "original_source_page": "PDF page 113",
+      "later_source_page": "PDF page 114",
+      "source_label": "长期借款",
+      "scope": "CAS consolidated",
+      "manual_review_status": "visually_verified_and_text_checked"
+    },
+    {
+      "concept_id": "bonds_payable",
+      "original_raw_value": "17033",
+      "later_comparative_raw_value": "17033",
+      "raw_unit": "人民币百万元",
+      "original_normalized_value": 1703300,
+      "later_comparative_normalized_value": 1703300,
+      "changed": false,
+      "change_reason": "comparative column exactly matches original FY disclosure.",
+      "original_source_page": "PDF page 113",
+      "later_source_page": "PDF page 114",
+      "source_label": "应付债券",
+      "scope": "CAS consolidated",
+      "manual_review_status": "visually_verified_and_text_checked"
+    },
+    {
+      "concept_id": "lease_liabilities",
+      "original_raw_value": "113438",
+      "later_comparative_raw_value": "113440",
+      "raw_unit": "人民币百万元",
+      "original_normalized_value": 11343800,
+      "later_comparative_normalized_value": 11344000,
+      "changed": true,
+      "change_reason": "FY2024 comparative column for 租赁负债 differs from the original FY2023 disclosure; preserve as a new Fact version.",
+      "original_source_page": "PDF page 113",
+      "later_source_page": "PDF page 114",
+      "source_label": "租赁负债",
+      "scope": "CAS consolidated",
+      "manual_review_status": "visually_verified_and_text_checked"
+    },
+    {
+      "concept_id": "cash_and_cash_equivalents",
+      "original_raw_value": "249001",
+      "later_comparative_raw_value": "249001",
+      "raw_unit": "人民币百万元",
+      "original_normalized_value": 24900100,
+      "later_comparative_normalized_value": 24900100,
+      "changed": false,
+      "change_reason": "comparative column exactly matches original FY disclosure.",
+      "original_source_page": "PDF page 115",
+      "later_source_page": "PDF page 116",
+      "source_label": "期末现金及现金等价物余额",
+      "scope": "CAS consolidated",
+      "manual_review_status": "visually_verified_and_text_checked"
+    }
+  ],
+  "limitations": [
+    "Only the seven financial-safety direct concepts are covered here; reused total_assets restatements remain governed by Stage 2D-B.",
+    "A changed later comparative is a disclosed restatement/reclassification evidence event, not an inferred correction.",
+    "No unchanged year receives a synthetic Fact version."
+  ]
+}

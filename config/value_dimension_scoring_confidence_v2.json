@@ -1,0 +1,36 @@
+{
+  "schema": "value_dimension_scoring_confidence_v2",
+  "version": "2.0",
+  "frozen_date": "2026-08-04",
+  "owner": "M2 Stage 2K.1R2 confidence v2 closeout",
+  "timezone": "Asia/Shanghai",
+  "non_production": true,
+  "research_methodology_test_only": true,
+  "score_eligible": false,
+  "overall_score_prohibited": true,
+  "recommendation_prohibited": true,
+  "confidence_separate_from_score": true,
+  "confidence_separate_from_coverage": true,
+  "source_tier_registry": {
+    "computed_from_verified_canonical_inputs": {"grade": "high", "note": "value derived from verified canonical facts and committed artifacts"},
+    "committed_computed_report": {"grade": "medium", "note": "value read from a committed computed report (e.g. value profile risk profile, gap ledger)"},
+    "external_manifest_only": {"grade": "medium", "note": "value is an external-market observation carried by a manifest-only registry"},
+    "bounded_search_complete": {"grade": "medium", "note": "evidence from a completed bounded search (e.g. no repurchase event found within scope)"},
+    "coverage_gap": {"grade": "low", "note": "component is not computable under the strict evidence contract; never zero"}
+  },
+  "execution_rule": {
+    "source_of_grade": "each component's source_tier field in the v2 capsule is executed (looked up in the registry) to produce a per-component grade",
+    "dimension_aggregation": "the dimension grade is the weakest (lowest) per-component grade among that dimension's components (fail-closed)",
+    "coverage_gap_reason": "a component with source_tier coverage_gap contributes a specific reason and its gap_ids to supporting_ids",
+    "no_manual_grade": "per-dimension grades are computed, never hand-assigned"
+  },
+  "prohibited_fallbacks": [
+    "do not report a dimension grade without executing its component source tiers",
+    "do not let a coverage gap raise confidence",
+    "do not merge confidence into the score",
+    "do not conflate confidence with coverage gating"
+  ],
+  "identity_inclusion": {
+    "note": "confidence report embeds the time-contract identity and the capsule digest so the confidence is bound to the exact observation set used"
+  }
+}

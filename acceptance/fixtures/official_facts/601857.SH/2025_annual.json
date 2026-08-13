@@ -1,0 +1,123 @@
+{
+  "schema_version": "1.0",
+  "symbol": "601857.SH",
+  "company_name": "中国石油天然气股份有限公司",
+  "fiscal_year": 2025,
+  "report_type": "annual",
+  "period_start": "2025-01-01",
+  "period_end": "2025-12-31",
+  "accounting_standard": "CAS",
+  "consolidation_scope": "consolidated",
+  "language": "zh-CN",
+  "document_relationship": "same_report_different_bytes",
+  "documents": {
+    "company": {
+      "source_tier": "company_official",
+      "source_provider": "petrochina_ir_manual_registry",
+      "source_id": "company_ir:601857.SH:2025:annual:zh-cn",
+      "source_document": "中国石油天然气股份有限公司2025年年度报告",
+      "landing_url": "https://www.petrochina.com.cn/petrochina/rdxx/202603/77efc25cfdc14bad83525f05cf092454.shtml",
+      "pdf_url": "https://www.petrochina.com.cn/petrochina/rdxx/202603/77efc25cfdc14bad83525f05cf092454/files/e3eab58b4de94a8aa43abf7ec9a40123.pdf",
+      "final_pdf_url": "https://www.petrochina.com.cn/petrochina/rdxx/202603/77efc25cfdc14bad83525f05cf092454/files/e3eab58b4de94a8aa43abf7ec9a40123.pdf",
+      "announcement_date": "2026-03-29",
+      "retrieved_at": "2026-07-29T19:44:10+08:00",
+      "sha256": "0eba96bd4e815187e7b64645f523f2b5d363ca3fea8168a63ec930f624715f8d",
+      "content_type": "application/pdf",
+      "content_length": 10608680,
+      "page_count": 273
+    },
+    "exchange": {
+      "source_tier": "exchange_official",
+      "source_provider": "sse_disclosure_manual_registry",
+      "source_id": "sse:601857.SH:2025:annual:zh-cn",
+      "source_document": "中国石油天然气股份有限公司2025年年度报告",
+      "landing_url": "https://www.sse.com.cn/disclosure/listedinfo/regular/index.shtml?productId=601857",
+      "pdf_url": "https://www.sse.com.cn/disclosure/listedinfo/announcement/c/new/2026-03-30/601857_20260330_6PPK.pdf",
+      "final_pdf_url": "https://static.sse.com.cn/disclosure/listedinfo/announcement/c/new/2026-03-30/601857_20260330_6PPK.pdf",
+      "announcement_date": "2026-03-30",
+      "retrieved_at": "2026-07-29T19:50:48+08:00",
+      "sha256": "840b15aa4dc38745a6b86a3656063e6a73081ce87407acb0ca93554f4e836e65",
+      "content_type": "application/pdf",
+      "content_length": 9416509,
+      "page_count": 273
+    }
+  },
+  "facts": [
+    {
+      "source_key": "company",
+      "concept_id": "revenue",
+      "source_page": "PDF page 109 / printed page 107",
+      "source_table": "2025年度合并及公司利润表",
+      "source_label": "营业收入",
+      "column_label": "2025年合并",
+      "raw_value": "2864469",
+      "raw_unit": "人民币百万元",
+      "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+      "expected_normalized_value": 286446900
+    },
+    {
+      "source_key": "company",
+      "concept_id": "net_profit_attributable_to_parent",
+      "source_page": "PDF page 109 / printed page 107",
+      "source_table": "2025年度合并及公司利润表",
+      "source_label": "归属于母公司股东的净利润",
+      "column_label": "2025年合并",
+      "raw_value": "157302",
+      "raw_unit": "人民币百万元",
+      "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+      "expected_normalized_value": 15730200
+    },
+    {
+      "source_key": "company",
+      "concept_id": "operating_cash_flow",
+      "source_page": "PDF page 110 / printed page 108",
+      "source_table": "2025年度合并及公司现金流量表",
+      "source_label": "经营活动产生的现金流量净额",
+      "column_label": "2025年合并",
+      "raw_value": "412510",
+      "raw_unit": "人民币百万元",
+      "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+      "expected_normalized_value": 41251000
+    },
+    {
+      "source_key": "exchange",
+      "concept_id": "revenue",
+      "source_page": "PDF page 109 / printed page 107",
+      "source_table": "2025年度合并及公司利润表",
+      "source_label": "营业收入",
+      "column_label": "2025年合并",
+      "raw_value": "2864469",
+      "raw_unit": "人民币百万元",
+      "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+      "expected_normalized_value": 286446900
+    },
+    {
+      "source_key": "exchange",
+      "concept_id": "net_profit_attributable_to_parent",
+      "source_page": "PDF page 109 / printed page 107",
+      "source_table": "2025年度合并及公司利润表",
+      "source_label": "归属于母公司股东的净利润",
+      "column_label": "2025年合并",
+      "raw_value": "157302",
+      "raw_unit": "人民币百万元",
+      "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+      "expected_normalized_value": 15730200
+    },
+    {
+      "source_key": "exchange",
+      "concept_id": "operating_cash_flow",
+      "source_page": "PDF page 110 / printed page 108",
+      "source_table": "2025年度合并及公司现金流量表",
+      "source_label": "经营活动产生的现金流量净额",
+      "column_label": "2025年合并",
+      "raw_value": "412510",
+      "raw_unit": "人民币百万元",
+      "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+      "expected_normalized_value": 41251000
+    }
+  ],
+  "limitations": [
+    "两个正式发布路径承载同一份年度报告，不是两个独立编制的内容来源。",
+    "PDF字节不同；标题、报告期、页数、经审计财务报表页面和三项事实一致。"
+  ]
+}

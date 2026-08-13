@@ -67,3 +67,107 @@ class DateRangeError(AshareDataError):
 class RawPersistenceError(AshareDataError):
     """原始响应保存失败。"""
     pass
+
+
+# ── M2 Stage 1 异常 ──────────────────────────────────────
+
+
+class FactValidationError(AshareDataError):
+    """财务事实校验失败。"""
+    pass
+
+
+class ConceptNotFoundError(AshareDataError):
+    """概念ID未在注册表中找到。"""
+    pass
+
+
+class UnitConversionError(AshareDataError):
+    """单位转换不支持。"""
+    pass
+
+
+class DerivationError(AshareDataError):
+    """派生事实计算失败。"""
+    pass
+
+
+class PointInTimeError(AshareDataError):
+    """PIT查询违反时序约束。"""
+    pass
+
+
+class SourceDocumentError(AshareDataError):
+    """官方来源文档不可访问或不可解析。"""
+    pass
+
+
+class ReconciliationError(AshareDataError):
+    """交叉核验发现无法解释的不一致。"""
+    pass
+
+
+class ReconciliationValidationError(AshareDataError):
+    """双源 Reconciliation 写入前的完整验证失败。
+
+    由 OfficialFactReconciliationService 在写入 reconciled fact 之前触发：
+    输入/输出 FactValidator 报错、输入来源组合非法（FACT_RECON_INPUT_001）、
+    或输入事实的 context_id 未在 fact_contexts 注册时抛出。
+    任何 error severity 校验结果都不得写入 reconciled fact，
+    transaction_committed 始终为 false。
+    """
+    pass
+
+
+class FactPersistenceError(AshareDataError):
+    """事实持久化失败，事务已回滚。"""
+    pass
+
+
+class FactIdentityError(FactPersistenceError):
+    """事实 fact_id 与 canonical 身份不一致，或 fact_id 缺失。
+
+    由 Service 边界和 Repository 边界共同强制：Provider 返回事实后、
+    以及持久化写入前，都会校验 fact_id == build_fact_id(fact)。
+    """
+    pass
+
+
+class LineagePersistenceError(AshareDataError):
+    """运行 Manifest 写入失败。
+
+    只有 write_manifest 成功返回后才能将运行标记为 finalized；
+    底层 OSError/PermissionError/JSON 序列化/os.replace 失败统一
+    转换为此异常，避免把运行错误地汇报为成功。
+    """
+    pass
+
+
+class VersionChainCycleError(FactValidationError):
+    """事实版本链形成循环（A supersedes B, B supersedes A ...）。"""
+    pass
+
+
+class FactSchemaMigrationError(AshareDataError):
+    """Fact schema 迁移失败。"""
+    pass
+
+
+class FactCheckpointError(AshareDataError):
+    """事实构建 checkpoint 校验失败。"""
+    pass
+
+
+class FactVersionConflictError(AshareDataError):
+    """事实版本冲突：已有不同内容的同 fact_id 事实存在，拒绝覆盖。"""
+    pass
+
+
+class ContextVersionConflictError(AshareDataError):
+    """上下文版本冲突：已有不同内容的同 context_id 上下文存在，拒绝覆盖。"""
+    pass
+
+
+class ConceptVersionConflictError(AshareDataError):
+    """概念版本冲突：已有不同内容的同 (concept_id, version) 概念存在，拒绝覆盖。"""
+    pass

@@ -1,0 +1,558 @@
+{
+  "schema": "roic_fact_acquisition_result_v1",
+  "symbol": "601857.SH",
+  "plan_digest": "aedaebcaa5b85fd4bbfa39f77c2ac09a55c548cf2bb099cdc008271aa3340215",
+  "cell_count": 16,
+  "cells": [
+    {
+      "plan_acquisition_id": "A-2024-finance-core",
+      "role_id": "nopat.finance_cost_excluding_lease_interest",
+      "fiscal_year": 2024,
+      "expected_period_type": "annual_duration",
+      "source_evidence_ids": [
+        "pc-roic-2024-issuer-annual-cas",
+        "pc-roic-2024-exchange-annual-cas"
+      ],
+      "exact_locators": [
+        {
+          "evidence_ids": [
+            "pc-roic-2024-issuer-annual-cas",
+            "pc-roic-2024-exchange-annual-cas"
+          ],
+          "pdf_page_index_zero_based": 177,
+          "pdf_page_number_one_based": 178,
+          "printed_page_number": 176,
+          "section_note_number": "47",
+          "table_title": "财务费用",
+          "row_label": "财务费用减租赁负债利息支出",
+          "column_year": "2024年度",
+          "nearby_unit_declaration": "金额单位为人民币百万元",
+          "source_excerpt_sha256": "e71f8ac3370c22959eaacf551e7f1d36a2f208f3c07a79cabe0043764692d12a",
+          "deterministic_cell_locator": "p178|47|财务费用减租赁负债利息支出|2024年度",
+          "extraction_method": "pypdf_embedded_text_regex_v1",
+          "ocr_used": false
+        }
+      ],
+      "extraction_result": "acquired_verified",
+      "reconciliation_status": "acquired_verified",
+      "canonical_fact_ids": [
+        "fc3112ace4925bfc776955bf71813565a4f1c9add4901fd6d9a0e92a8475a34d"
+      ],
+      "selected_active_fact_id": "fc3112ace4925bfc776955bf71813565a4f1c9add4901fd6d9a0e92a8475a34d",
+      "superseded_fact_ids": [],
+      "missing_or_conflict_reason": null,
+      "readiness_before": "missing_official_fact",
+      "readiness_after": "ready",
+      "formula_dependency_impact": "+ component of nopat.finance_cost_adjustment",
+      "review_status": "verified",
+      "score_eligibility": false
+    },
+    {
+      "plan_acquisition_id": "A-2024-investment-income",
+      "role_id": "nopat.investment_income",
+      "fiscal_year": 2024,
+      "expected_period_type": "annual_duration",
+      "source_evidence_ids": [
+        "pc-roic-2024-issuer-annual-cas",
+        "pc-roic-2024-exchange-annual-cas"
+      ],
+      "exact_locators": [
+        {
+          "evidence_ids": [
+            "pc-roic-2024-issuer-annual-cas",
+            "pc-roic-2024-exchange-annual-cas"
+          ],
+          "pdf_page_index_zero_based": 114,
+          "pdf_page_number_one_based": 115,
+          "printed_page_number": 113,
+          "section_note_number": "49",
+          "table_title": "投资收益",
+          "row_label": "投资收益",
+          "column_year": "2024年度合并",
+          "nearby_unit_declaration": "金额单位为人民币百万元",
+          "source_excerpt_sha256": "aaff356e4cde1b64fcafa17ae5d4fcf3e7b0b495ca8673d151fbb887d3ec0958",
+          "deterministic_cell_locator": "p115|49|投资收益|2024年度合并",
+          "extraction_method": "pypdf_embedded_text_regex_v1",
+          "ocr_used": false
+        }
+      ],
+      "extraction_result": "acquired_verified",
+      "reconciliation_status": "acquired_verified",
+      "canonical_fact_ids": [
+        "c7d728ad5a85f30ded3d94a4e60c30cded5451b08c76301268bd95e7d97b0509"
+      ],
+      "selected_active_fact_id": "c7d728ad5a85f30ded3d94a4e60c30cded5451b08c76301268bd95e7d97b0509",
+      "superseded_fact_ids": [],
+      "missing_or_conflict_reason": null,
+      "readiness_before": "missing_official_fact",
+      "readiness_after": "ready",
+      "formula_dependency_impact": "independent negative NOPAT-bridge adjustment",
+      "review_status": "verified",
+      "score_eligibility": false
+    },
+    {
+      "plan_acquisition_id": "A-2024-fair-value",
+      "role_id": "nopat.fair_value_net_change",
+      "fiscal_year": 2024,
+      "expected_period_type": "annual_duration",
+      "source_evidence_ids": [
+        "pc-roic-2024-issuer-annual-cas",
+        "pc-roic-2024-exchange-annual-cas"
+      ],
+      "exact_locators": [
+        {
+          "evidence_ids": [
+            "pc-roic-2024-issuer-annual-cas",
+            "pc-roic-2024-exchange-annual-cas"
+          ],
+          "pdf_page_index_zero_based": 114,
+          "pdf_page_number_one_based": 115,
+          "printed_page_number": 113,
+          "section_note_number": "50",
+          "table_title": "公允价值变动收益",
+          "row_label": "公允价值变动收益",
+          "column_year": "2024年度合并",
+          "nearby_unit_declaration": "金额单位为人民币百万元",
+          "source_excerpt_sha256": "04c93eab0764e1fd056435ff9cbc16ceed4078e614a89e5ec9c0802328523e77",
+          "deterministic_cell_locator": "p115|50|公允价值变动收益|2024年度合并",
+          "extraction_method": "pypdf_embedded_text_regex_v1",
+          "ocr_used": false
+        }
+      ],
+      "extraction_result": "acquired_verified",
+      "reconciliation_status": "acquired_verified",
+      "canonical_fact_ids": [
+        "e1a0cd1aa6ed22f3861042353b7227ab658eda124193d6d90e3d29b99e2b20df"
+      ],
+      "selected_active_fact_id": "e1a0cd1aa6ed22f3861042353b7227ab658eda124193d6d90e3d29b99e2b20df",
+      "superseded_fact_ids": [],
+      "missing_or_conflict_reason": null,
+      "readiness_before": "missing_official_fact",
+      "readiness_after": "ready",
+      "formula_dependency_impact": "independent negative NOPAT-bridge adjustment",
+      "review_status": "verified",
+      "score_eligibility": false
+    },
+    {
+      "plan_acquisition_id": "A-2024-asset-disposal",
+      "role_id": "nopat.asset_disposal_gain_loss",
+      "fiscal_year": 2024,
+      "expected_period_type": "annual_duration",
+      "source_evidence_ids": [
+        "pc-roic-2024-issuer-annual-cas",
+        "pc-roic-2024-exchange-annual-cas"
+      ],
+      "exact_locators": [
+        {
+          "evidence_ids": [
+            "pc-roic-2024-issuer-annual-cas",
+            "pc-roic-2024-exchange-annual-cas"
+          ],
+          "pdf_page_index_zero_based": 114,
+          "pdf_page_number_one_based": 115,
+          "printed_page_number": 113,
+          "section_note_number": "53",
+          "table_title": "资产处置收益",
+          "row_label": "资产处置收益",
+          "column_year": "2024年度合并",
+          "nearby_unit_declaration": "金额单位为人民币百万元",
+          "source_excerpt_sha256": "b8564e04411657902e030d85fd9981853f3d51771cc6ff01172b0628f2811235",
+          "deterministic_cell_locator": "p115|53|资产处置收益|2024年度合并",
+          "extraction_method": "pypdf_embedded_text_regex_v1",
+          "ocr_used": false
+        }
+      ],
+      "extraction_result": "acquired_verified",
+      "reconciliation_status": "acquired_verified",
+      "canonical_fact_ids": [
+        "5d7e7435a6d5a1a4cb1f1fe441458527e3bf147e9908340ba87cf43baab426f0"
+      ],
+      "selected_active_fact_id": "5d7e7435a6d5a1a4cb1f1fe441458527e3bf147e9908340ba87cf43baab426f0",
+      "superseded_fact_ids": [],
+      "missing_or_conflict_reason": null,
+      "readiness_before": "missing_official_fact",
+      "readiness_after": "ready",
+      "formula_dependency_impact": "independent negative NOPAT-bridge adjustment",
+      "review_status": "verified",
+      "score_eligibility": false
+    },
+    {
+      "plan_acquisition_id": "A-2024-operating-tax",
+      "role_id": "tax.operating_tax_expense",
+      "fiscal_year": 2024,
+      "expected_period_type": "annual_duration",
+      "source_evidence_ids": [
+        "pc-roic-2024-issuer-annual-cas",
+        "pc-roic-2024-exchange-annual-cas"
+      ],
+      "exact_locators": [],
+      "extraction_result": "missing_official_fact",
+      "reconciliation_status": "missing_official_fact",
+      "canonical_fact_ids": [],
+      "selected_active_fact_id": null,
+      "superseded_fact_ids": [],
+      "missing_or_conflict_reason": "ETR, statutory rate and total income-tax expense are forbidden proxies",
+      "readiness_before": "missing_official_fact",
+      "readiness_after": "missing_official_fact",
+      "formula_dependency_impact": "independent negative operating-tax contribution",
+      "review_status": "bounded_search_complete",
+      "score_eligibility": false
+    },
+    {
+      "plan_acquisition_id": "B-2024-lease-interest",
+      "role_id": "nopat.lease_interest_expense",
+      "fiscal_year": 2024,
+      "expected_period_type": "annual_duration",
+      "source_evidence_ids": [
+        "pc-roic-2024-issuer-annual-cas",
+        "pc-roic-2024-exchange-annual-cas"
+      ],
+      "exact_locators": [
+        {
+          "evidence_ids": [
+            "pc-roic-2024-issuer-annual-cas",
+            "pc-roic-2024-exchange-annual-cas"
+          ],
+          "pdf_page_index_zero_based": 177,
+          "pdf_page_number_one_based": 178,
+          "printed_page_number": 176,
+          "section_note_number": "47",
+          "table_title": "财务费用",
+          "row_label": "其中：租赁负债的利息支出",
+          "column_year": "2024年度",
+          "nearby_unit_declaration": "金额单位为人民币百万元",
+          "source_excerpt_sha256": "a6a8f80f228214f3b629b3cf52ea134a0645fa5c9f9d162334c03f796008de8d",
+          "deterministic_cell_locator": "p178|47|其中：租赁负债的利息支出|2024年度",
+          "extraction_method": "pypdf_embedded_text_regex_v1",
+          "ocr_used": false
+        }
+      ],
+      "extraction_result": "acquired_verified",
+      "reconciliation_status": "acquired_verified",
+      "canonical_fact_ids": [
+        "d57ef6b2b88b0a13a247aab095a168216e9d87289754906f389ca54fe5146b05"
+      ],
+      "selected_active_fact_id": "d57ef6b2b88b0a13a247aab095a168216e9d87289754906f389ca54fe5146b05",
+      "superseded_fact_ids": [],
+      "missing_or_conflict_reason": null,
+      "readiness_before": "missing_official_fact",
+      "readiness_after": "ready",
+      "formula_dependency_impact": "+ component of nopat.finance_cost_adjustment; matches lease liabilities",
+      "review_status": "verified",
+      "score_eligibility": false
+    },
+    {
+      "plan_acquisition_id": "B-2023-2024-nci",
+      "role_id": "invested_capital.non_controlling_interest",
+      "fiscal_year": 2023,
+      "expected_period_type": "year_end_instant",
+      "source_evidence_ids": [
+        "pc-roic-2023-issuer-annual-cas",
+        "pc-roic-2023-exchange-annual-cas"
+      ],
+      "exact_locators": [
+        {
+          "evidence_ids": [
+            "pc-roic-2023-issuer-annual-cas",
+            "pc-roic-2023-exchange-annual-cas"
+          ],
+          "pdf_page_index_zero_based": 112,
+          "pdf_page_number_one_based": 113,
+          "printed_page_number": 111,
+          "section_note_number": "42",
+          "table_title": "2023年12月31日合并及公司资产负债表(续)",
+          "row_label": "少数股东权益",
+          "column_year": "2023年12月31日合并",
+          "nearby_unit_declaration": "金额单位为人民币百万元",
+          "source_excerpt_sha256": "5d50050c2785f45c8493e5babb524b75a47d4c37bdfc255c843c31d98edc63d7",
+          "deterministic_cell_locator": "p113|42|少数股东权益|2023年12月31日合并",
+          "extraction_method": "pypdf_embedded_text_regex_v1",
+          "ocr_used": false
+        }
+      ],
+      "extraction_result": "acquired_verified",
+      "reconciliation_status": "acquired_verified",
+      "canonical_fact_ids": [
+        "56d73f8d567bcc35515475b1f81685f089f5fd539c3923c252a243cd1cacdbd3"
+      ],
+      "selected_active_fact_id": "56d73f8d567bcc35515475b1f81685f089f5fd539c3923c252a243cd1cacdbd3",
+      "superseded_fact_ids": [],
+      "missing_or_conflict_reason": null,
+      "readiness_before": "missing_official_fact",
+      "readiness_after": "ready",
+      "formula_dependency_impact": "+ opening/closing invested capital for consolidated scope",
+      "review_status": "verified",
+      "score_eligibility": false
+    },
+    {
+      "plan_acquisition_id": "B-2023-2024-nci",
+      "role_id": "invested_capital.non_controlling_interest",
+      "fiscal_year": 2024,
+      "expected_period_type": "year_end_instant",
+      "source_evidence_ids": [
+        "pc-roic-2024-issuer-annual-cas",
+        "pc-roic-2024-exchange-annual-cas"
+      ],
+      "exact_locators": [
+        {
+          "evidence_ids": [
+            "pc-roic-2024-issuer-annual-cas",
+            "pc-roic-2024-exchange-annual-cas"
+          ],
+          "pdf_page_index_zero_based": 113,
+          "pdf_page_number_one_based": 114,
+          "printed_page_number": 112,
+          "section_note_number": "41",
+          "table_title": "2024年12月31日合并及公司资产负债表(续)",
+          "row_label": "少数股东权益",
+          "column_year": "2024年12月31日合并",
+          "nearby_unit_declaration": "金额单位为人民币百万元",
+          "source_excerpt_sha256": "c597af72ea8d4dde19e4f94dcea59f308a74f3c7a35bbba3149c52889737046a",
+          "deterministic_cell_locator": "p114|41|少数股东权益|2024年12月31日合并",
+          "extraction_method": "pypdf_embedded_text_regex_v1",
+          "ocr_used": false
+        }
+      ],
+      "extraction_result": "acquired_verified",
+      "reconciliation_status": "acquired_verified",
+      "canonical_fact_ids": [
+        "7d52dde2084e23bc22cc26b95869ad62b97da36eaede56003bd29a99aa240fe2"
+      ],
+      "selected_active_fact_id": "7d52dde2084e23bc22cc26b95869ad62b97da36eaede56003bd29a99aa240fe2",
+      "superseded_fact_ids": [],
+      "missing_or_conflict_reason": null,
+      "readiness_before": "missing_official_fact",
+      "readiness_after": "ready",
+      "formula_dependency_impact": "+ opening/closing invested capital for consolidated scope",
+      "review_status": "verified",
+      "score_eligibility": false
+    },
+    {
+      "plan_acquisition_id": "B-2023-2024-associate",
+      "role_id": "invested_capital.associate_investment",
+      "fiscal_year": 2023,
+      "expected_period_type": "year_end_instant",
+      "source_evidence_ids": [
+        "pc-roic-2023-issuer-annual-cas",
+        "pc-roic-2023-exchange-annual-cas"
+      ],
+      "exact_locators": [],
+      "extraction_result": "ambiguous_scope",
+      "reconciliation_status": "ambiguous_scope",
+      "canonical_fact_ids": [],
+      "selected_active_fact_id": null,
+      "superseded_fact_ids": [],
+      "missing_or_conflict_reason": "a complete separate balance would require a forbidden residual allocation or plug",
+      "readiness_before": "missing_official_fact",
+      "readiness_after": "scope_mismatch",
+      "formula_dependency_impact": "component of qualifying_non_operating_assets and scope matching",
+      "review_status": "bounded_search_complete",
+      "score_eligibility": false
+    },
+    {
+      "plan_acquisition_id": "B-2023-2024-associate",
+      "role_id": "invested_capital.associate_investment",
+      "fiscal_year": 2024,
+      "expected_period_type": "year_end_instant",
+      "source_evidence_ids": [
+        "pc-roic-2024-issuer-annual-cas",
+        "pc-roic-2024-exchange-annual-cas"
+      ],
+      "exact_locators": [],
+      "extraction_result": "ambiguous_scope",
+      "reconciliation_status": "ambiguous_scope",
+      "canonical_fact_ids": [],
+      "selected_active_fact_id": null,
+      "superseded_fact_ids": [],
+      "missing_or_conflict_reason": "a complete separate balance would require a forbidden residual allocation or plug",
+      "readiness_before": "missing_official_fact",
+      "readiness_after": "scope_mismatch",
+      "formula_dependency_impact": "component of qualifying_non_operating_assets and scope matching",
+      "review_status": "bounded_search_complete",
+      "score_eligibility": false
+    },
+    {
+      "plan_acquisition_id": "B-2023-2024-jv",
+      "role_id": "invested_capital.joint_venture_investment",
+      "fiscal_year": 2023,
+      "expected_period_type": "year_end_instant",
+      "source_evidence_ids": [
+        "pc-roic-2023-issuer-annual-cas",
+        "pc-roic-2023-exchange-annual-cas"
+      ],
+      "exact_locators": [],
+      "extraction_result": "ambiguous_scope",
+      "reconciliation_status": "ambiguous_scope",
+      "canonical_fact_ids": [],
+      "selected_active_fact_id": null,
+      "superseded_fact_ids": [],
+      "missing_or_conflict_reason": "a complete separate balance would require a forbidden residual allocation or plug",
+      "readiness_before": "missing_official_fact",
+      "readiness_after": "scope_mismatch",
+      "formula_dependency_impact": "component of qualifying_non_operating_assets and scope matching",
+      "review_status": "bounded_search_complete",
+      "score_eligibility": false
+    },
+    {
+      "plan_acquisition_id": "B-2023-2024-jv",
+      "role_id": "invested_capital.joint_venture_investment",
+      "fiscal_year": 2024,
+      "expected_period_type": "year_end_instant",
+      "source_evidence_ids": [
+        "pc-roic-2024-issuer-annual-cas",
+        "pc-roic-2024-exchange-annual-cas"
+      ],
+      "exact_locators": [],
+      "extraction_result": "ambiguous_scope",
+      "reconciliation_status": "ambiguous_scope",
+      "canonical_fact_ids": [],
+      "selected_active_fact_id": null,
+      "superseded_fact_ids": [],
+      "missing_or_conflict_reason": "a complete separate balance would require a forbidden residual allocation or plug",
+      "readiness_before": "missing_official_fact",
+      "readiness_after": "scope_mismatch",
+      "formula_dependency_impact": "component of qualifying_non_operating_assets and scope matching",
+      "review_status": "bounded_search_complete",
+      "score_eligibility": false
+    },
+    {
+      "plan_acquisition_id": "C-2023-2024-restricted-cash",
+      "role_id": "invested_capital.restricted_cash",
+      "fiscal_year": 2023,
+      "expected_period_type": "year_end_instant",
+      "source_evidence_ids": [
+        "pc-roic-2023-issuer-annual-cas",
+        "pc-roic-2023-exchange-annual-cas"
+      ],
+      "exact_locators": [
+        {
+          "evidence_ids": [
+            "pc-roic-2023-issuer-annual-cas",
+            "pc-roic-2023-exchange-annual-cas"
+          ],
+          "pdf_page_index_zero_based": 153,
+          "pdf_page_number_one_based": 154,
+          "printed_page_number": 152,
+          "section_note_number": "7",
+          "table_title": "货币资金(续)",
+          "row_label": "保证金账户存款作为美元借款质押",
+          "column_year": "2023年12月31日",
+          "nearby_unit_declaration": "句内金额单位为亿元",
+          "source_excerpt_sha256": "4214055e7f7150378282cef49efbdd03947635ab5d0ece6a535a4e23b4de63fe",
+          "deterministic_cell_locator": "p154|7|保证金账户存款作为美元借款质押|2023年12月31日",
+          "extraction_method": "pypdf_embedded_text_regex_v1",
+          "ocr_used": false
+        }
+      ],
+      "extraction_result": "acquired_verified",
+      "reconciliation_status": "acquired_verified",
+      "canonical_fact_ids": [
+        "8c2b7bfc07e7713ad60afb31984e5341d6f0dbb5cac4b1c4752dfcbbbc349566"
+      ],
+      "selected_active_fact_id": "8c2b7bfc07e7713ad60afb31984e5341d6f0dbb5cac4b1c4752dfcbbbc349566",
+      "superseded_fact_ids": [],
+      "missing_or_conflict_reason": null,
+      "readiness_before": "missing_official_fact",
+      "readiness_after": "ready",
+      "formula_dependency_impact": "supporting evidence only; zero independent formula contribution",
+      "review_status": "verified",
+      "score_eligibility": false
+    },
+    {
+      "plan_acquisition_id": "C-2023-2024-restricted-cash",
+      "role_id": "invested_capital.restricted_cash",
+      "fiscal_year": 2024,
+      "expected_period_type": "year_end_instant",
+      "source_evidence_ids": [
+        "pc-roic-2024-issuer-annual-cas",
+        "pc-roic-2024-exchange-annual-cas"
+      ],
+      "exact_locators": [
+        {
+          "evidence_ids": [
+            "pc-roic-2024-issuer-annual-cas",
+            "pc-roic-2024-exchange-annual-cas"
+          ],
+          "pdf_page_index_zero_based": 148,
+          "pdf_page_number_one_based": 149,
+          "printed_page_number": 147,
+          "section_note_number": "7",
+          "table_title": "货币资金",
+          "row_label": "保证金账户存款作为美元借款质押",
+          "column_year": "2024年12月31日",
+          "nearby_unit_declaration": "comparative sentence uses 亿元",
+          "source_excerpt_sha256": "71fc5bb77d8fc60ffa7029edf002bae96353bb77e575858bcaccdedc2eb31576",
+          "deterministic_cell_locator": "p149|7|保证金账户存款作为美元借款质押|2024年12月31日",
+          "extraction_method": "pypdf_embedded_text_regex_v1",
+          "ocr_used": false
+        }
+      ],
+      "extraction_result": "acquired_verified",
+      "reconciliation_status": "acquired_verified",
+      "canonical_fact_ids": [
+        "cbfddefa98aba11750ba35e8c38f1cbb9d61e9787c83bd06a59633370ceb48aa"
+      ],
+      "selected_active_fact_id": "cbfddefa98aba11750ba35e8c38f1cbb9d61e9787c83bd06a59633370ceb48aa",
+      "superseded_fact_ids": [],
+      "missing_or_conflict_reason": null,
+      "readiness_before": "missing_official_fact",
+      "readiness_after": "ready",
+      "formula_dependency_impact": "supporting evidence only; zero independent formula contribution",
+      "review_status": "verified",
+      "score_eligibility": false
+    },
+    {
+      "plan_acquisition_id": "C-2023-2024-non-operating-financial-assets",
+      "role_id": "invested_capital.non_operating_financial_assets",
+      "fiscal_year": 2023,
+      "expected_period_type": "year_end_instant",
+      "source_evidence_ids": [
+        "pc-roic-2023-issuer-annual-cas",
+        "pc-roic-2023-exchange-annual-cas"
+      ],
+      "exact_locators": [],
+      "extraction_result": "missing_official_fact",
+      "reconciliation_status": "missing_official_fact",
+      "canonical_fact_ids": [],
+      "selected_active_fact_id": null,
+      "superseded_fact_ids": [],
+      "missing_or_conflict_reason": "unproven assets remain included in invested capital; no residual classification",
+      "readiness_before": "missing_official_fact",
+      "readiness_after": "missing_official_fact",
+      "formula_dependency_impact": "component of qualifying_non_operating_assets after policy classification",
+      "review_status": "bounded_search_complete",
+      "score_eligibility": false
+    },
+    {
+      "plan_acquisition_id": "C-2023-2024-non-operating-financial-assets",
+      "role_id": "invested_capital.non_operating_financial_assets",
+      "fiscal_year": 2024,
+      "expected_period_type": "year_end_instant",
+      "source_evidence_ids": [
+        "pc-roic-2024-issuer-annual-cas",
+        "pc-roic-2024-exchange-annual-cas"
+      ],
+      "exact_locators": [],
+      "extraction_result": "missing_official_fact",
+      "reconciliation_status": "missing_official_fact",
+      "canonical_fact_ids": [],
+      "selected_active_fact_id": null,
+      "superseded_fact_ids": [],
+      "missing_or_conflict_reason": "unproven assets remain included in invested capital; no residual classification",
+      "readiness_before": "missing_official_fact",
+      "readiness_after": "missing_official_fact",
+      "formula_dependency_impact": "component of qualifying_non_operating_assets after policy classification",
+      "review_status": "bounded_search_complete",
+      "score_eligibility": false
+    }
+  ],
+  "status_counts": {
+    "acquired_verified": 9,
+    "ambiguous_scope": 4,
+    "missing_official_fact": 3
+  },
+  "plan_v3_acquisition_coverage": "COMPLETE",
+  "shadow_feasibility": "NOT_RUN",
+  "production_metric_result_created": false,
+  "score_eligibility": false
+}

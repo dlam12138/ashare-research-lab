@@ -1,0 +1,199 @@
+{
+  "methodology_id": "value_evaluation_methodology_capital_return_v1",
+  "schema_version": "1.0",
+  "version": "1",
+  "extends": "value_evaluation_methodology_v1",
+  "scope": "methodology_only_no_computation",
+  "score_eligible": false,
+  "decimal": {
+    "precision": 28,
+    "canonical_quantum": "0.000000000001",
+    "rounding": "ROUND_HALF_EVEN"
+  },
+  "average_rule": {
+    "formula": "(opening + closing) / 2",
+    "two_time_points_required": true,
+    "missing_handling": "do_not_compute_average_when_either_point_missing",
+    "version_selection": "latest_available_version_as_of_annual_report_date",
+    "opening_2020_baseline_limit": "comparison_only_opening_baseline_may_only_serve_as_FY2021_opening_not_a_standalone_2020_fact",
+    "fiscal_year_2025_status": "not_yet_reviewable"
+  },
+  "pit_rule": {
+    "metric_available_at": "max(numerator_available_at, opening_available_at, closing_available_at)",
+    "lookback_only": "use_only_fact_versions_publicly_available_at_research_time",
+    "view_labeling": "must_distinguish_as_of_then_vs_latest_reviewed"
+  },
+  "restatement_rule": {
+    "propagation": "any_input_fact_id_or_value_change_creates_new_metric_version",
+    "version_field": "result_version",
+    "link_field": "supersedes_metric_result_id",
+    "old_version_retention": "keep_old_version_do_not_delete",
+    "metric_result_id": "canonical_sha256_via_build_metric_result_id_includes_input_fact_ids_and_result_version"
+  },
+  "status_rules": {
+    "denominator_zero": "undefined_zero_denominator",
+    "roe_average_equity_negative": "not_comparable",
+    "negative_denominator_enum_gap": "MetricStatus_has_no_dedicated_negative_denominator_value_implementation_stage_must_bind_honestly_or_escalate_schema_proposal_this_stage_does_not_change_enum",
+    "any_input_missing": "missing_input",
+    "missing_not_zero": true,
+    "insufficient_history": "insufficient_history",
+    "computed": "computed"
+  },
+  "scope_compatibility": {
+    "accounting_standard": "CAS",
+    "consolidation": "consolidated",
+    "same_unit_required": true,
+    "adjacent_period_end_required": "12-31",
+    "opening_closing_same_concept": true,
+    "eligible_reconciled_required": true
+  },
+  "metrics": [
+    {
+      "metric_id": "return_on_average_equity_attributable_to_parent",
+      "version": "1",
+      "display_name_zh": "基于平均归母权益的净资产收益率",
+      "formula": "net_profit_attributable_to_parent / ((opening_equity_attributable_to_parent + closing_equity_attributable_to_parent) / 2)",
+      "input_concepts": [
+        "net_profit_attributable_to_parent",
+        "equity_attributable_to_parent",
+        "equity_attributable_to_parent"
+      ],
+      "input_roles": ["numerator", "opening", "closing"],
+      "input_period_types": {
+        "numerator": "duration",
+        "opening": "instant",
+        "closing": "instant"
+      },
+      "unit": "ratio",
+      "numerator_scope": "attributable_to_parent",
+      "denominator_scope": "attributable_to_parent",
+      "supports": "归母权益的账面期间回报率量级与方向",
+      "does_not_support": "不能回答回报由杠杆还是经营效率驱动、是否可持续、估值或买卖",
+      "high_roe_leverage_check": "高ROE可能由高杠杆形成，必须结合资产负债结构与ROA/财务安全共同解释",
+      "pit_required": true,
+      "restatement_sensitive": true,
+      "industry_context_required": true,
+      "multi_year_trend_required": true,
+      "cyclical_company_limitation": "周期企业峰值利润会抬升ROE，须跨周期解释",
+      "score_eligible": false,
+      "score_blockers": ["missing_cross_cycle_history", "missing_industry_benchmark", "no_approved_threshold"],
+      "blockers": [],
+      "decision": {
+        "inputs_ready": true,
+        "methodology_ready": true,
+        "metric_computation": "allowed_next_stage"
+      },
+      "references": ["cfa_fsa", "cfa_analysis_techniques", "penman_fsa_sv", "mof_cas", "qlib_pit", "openlineage"]
+    },
+    {
+      "metric_id": "return_on_average_total_assets",
+      "version": "1",
+      "display_name_zh": "基于平均总资产的资产收益率",
+      "formula": "net_profit / ((opening_total_assets + closing_total_assets) / 2)",
+      "input_concepts": [
+        "net_profit",
+        "total_assets",
+        "total_assets"
+      ],
+      "input_roles": ["numerator", "opening", "closing"],
+      "input_period_types": {
+        "numerator": "duration",
+        "opening": "instant",
+        "closing": "instant"
+      },
+      "unit": "ratio",
+      "numerator_scope": "consolidated_net_profit",
+      "denominator_scope": "consolidated_total_assets",
+      "supports": "全部资产的账面期间回报率，与ROE对照识别杠杆贡献",
+      "does_not_support": "不能用归母净利润冒充分子，不回答估值或买卖",
+      "numerator_proxy_policy": "不得静默生成proxy；未来若需归母口径ROA代理，须另设attributable_proxy命名的独立方法论阶段",
+      "pit_required": true,
+      "restatement_sensitive": true,
+      "industry_context_required": true,
+      "multi_year_trend_required": true,
+      "cyclical_company_limitation": "资产基数与重资产周期共同影响，须跨周期解释",
+      "score_eligible": false,
+      "score_blockers": ["missing_numerator_fact", "no_approved_threshold"],
+      "blockers": [
+        "net_profit consolidated fact 2021-2025 not yet covered",
+        "numerator_ready is false; do not substitute net_profit_attributable_to_parent"
+      ],
+      "decision": {
+        "denominator_ready": true,
+        "numerator_ready": false,
+        "required_fact": "net_profit",
+        "metric_computation": "blocked"
+      },
+      "references": ["cfa_fsa", "cfa_analysis_techniques", "penman_fsa_sv", "mof_cas", "qlib_pit", "openlineage"]
+    }
+  ],
+  "decision_matrix": {
+    "ROE": {
+      "inputs_ready": true,
+      "methodology_ready": true,
+      "metric_computation": "allowed_next_stage"
+    },
+    "ROA": {
+      "denominator_ready": true,
+      "numerator_ready": false,
+      "required_fact": "net_profit",
+      "metric_computation": "blocked"
+    },
+    "ROIC": {
+      "inputs_ready": false,
+      "methodology_ready": false,
+      "metric_computation": "blocked",
+      "note": "NOPAT与投入资本口径未登记，不讨论实现"
+    },
+    "scoring": {
+      "metric_computation": "blocked",
+      "note": "评分门禁未触发"
+    }
+  },
+  "next_stages": {
+    "A_stage_2dd": "ROE透明Metric计算（基于本合同与Stage 2D-B平均余额输入对）",
+    "B_stage_2de": "2021-2025 consolidated net_profit官方事实与重列",
+    "C_roa": "net_profit覆盖与重列完成后才允许ROA计算",
+    "this_stage_executes": "none_of_A_B_C"
+  },
+  "forbidden_fields": ["weight", "score", "rating", "threshold", "target_price", "buy", "sell"],
+  "score_blockers": [
+    "missing_cross_cycle_history",
+    "missing_industry_benchmark",
+    "missing_numerator_fact",
+    "missing_capital_return_facts",
+    "no_approved_threshold_or_weight_contract"
+  ],
+  "references": [
+    {
+      "reference_id": "cfa_fsa",
+      "title": "CFA Institute Financial Statement Analysis (Introduction)",
+      "url": "https://www.cfainstitute.org/insights/professional-learning/refresher-readings/2026/introduction-financial-statement-analysis"
+    },
+    {
+      "reference_id": "cfa_analysis_techniques",
+      "title": "CFA Institute Financial Analysis Techniques",
+      "url": "https://www.cfainstitute.org/insights/professional-learning/refresher-readings/2026/financial-analysis-techniques"
+    },
+    {
+      "reference_id": "penman_fsa_sv",
+      "title": "Stephen H. Penman, Financial Statement Analysis and Security Valuation, 5th ed., McGraw-Hill, 2013",
+      "url": "https://www.mheducation.com/highered/product/financial-statement-analysis-and-security-valuation-penman.html"
+    },
+    {
+      "reference_id": "mof_cas",
+      "title": "财政部企业会计准则（基本准则 / CAS 30 / CAS 28）",
+      "url": "https://kjs.mof.gov.cn/zt/kjzzss/"
+    },
+    {
+      "reference_id": "qlib_pit",
+      "title": "Qlib Point-in-Time PIT design",
+      "url": "https://qlib.readthedocs.io/en/stable/advanced/PIT.html"
+    },
+    {
+      "reference_id": "openlineage",
+      "title": "OpenLineage specification (input/output lineage)",
+      "url": "https://github.com/OpenLineage/OpenLineage/blob/main/spec/OpenLineage.md"
+    }
+  ]
+}

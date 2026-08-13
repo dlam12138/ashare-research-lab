@@ -1,0 +1,97 @@
+{
+ "schema": "m2_stage2k1r4e5_artifact_manifest_v2",
+ "version": "2.0",
+ "files": [
+  {
+   "path": "acceptance/m2_stage2k1r4e5_historical_valuation_percentile.md",
+   "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+   "sha256": "77cbd06663aa646d9b648245cf7de71a1f1fdcf3c78683a226cbbb900a6ff8cf",
+   "byte_size": 10024
+  },
+  {
+   "path": "agent/record/2026-08-07_Stage2K1R4E5_historical_valuation_percentile.md",
+   "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+   "sha256": "01583781f1430ccbc0d6e4f9d7346bb7d16c99b2c2aee2185dfcb7c2ce2bf0bc",
+   "byte_size": 14091
+  },
+  {
+   "path": "config/pit_valuation_percentile_contract_v1.json",
+   "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+   "sha256": "53ce687f10505345ac88fb74ee1d920a9bbed6ffd67908783dac8eda0700023d",
+   "byte_size": 1893
+  },
+  {
+   "path": "docs/historical_valuation_percentile_methodology.md",
+   "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+   "sha256": "97acccfc828bb9318075ff65b147fbedc766c4b35ac50f43e7fa7bac7e6fbbf5",
+   "byte_size": 6262
+  },
+  {
+   "path": "reports/m2_stage2k1r4e5_decision.json",
+   "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+   "sha256": "5fed566e64dbe5f669d82ebe737020378088f9cc6bcf596e79f314aeb6a4d0ad",
+   "byte_size": 996
+  },
+  {
+   "path": "reports/petrochina_pit_valuation_percentile_audit_samples_v1.json",
+   "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+   "sha256": "0d262e5bbc48465b384d8be100d1471182dbecacb8c0f8d05d0f6361a298e0be",
+   "byte_size": 2534
+  },
+  {
+   "path": "reports/petrochina_pit_valuation_percentile_dual_oracle_v1.json",
+   "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+   "sha256": "b2adc8d7faed163e8d082ff66b43d83cc958967eb63b6203e0588acf15076689",
+   "byte_size": 2307
+  },
+  {
+   "path": "reports/petrochina_pit_valuation_percentile_method_audit_v1.json",
+   "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+   "sha256": "460629e7a9b3200969b78a330ecb4f0af149f9f220d2154d625cbd1ef69e7e2b",
+   "byte_size": 1875
+  },
+  {
+   "path": "reports/petrochina_pit_valuation_percentile_profile_v1.json",
+   "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+   "sha256": "6636730a4d7c3c496579e1b95d799fc9ce7aeba4ad4c1df2aa0cb483dd24692f",
+   "byte_size": 10605
+  },
+  {
+   "path": "reports/petrochina_pit_valuation_percentile_sample_ledger_v1.json",
+   "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+   "sha256": "50e512fa04f7932e1a433069edabcc0e1ea3896f1f73a5d3882ade63071618af",
+   "byte_size": 3042
+  },
+  {
+   "path": "src/ashare_research/pit_valuation/historical_percentile.py",
+   "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+   "sha256": "f070159284a8d2489af65e89e6288a7a4355e5e6dc14bb13aaba45ac978ffa2e",
+   "byte_size": 20392
+  },
+  {
+   "path": "src/ashare_research/pit_valuation/percentile_oracle.py",
+   "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+   "sha256": "4af3f4afaebc0bac52ce4de7f8c86126335d3760da86542c3f4ade671c16a272",
+   "byte_size": 6272
+  },
+  {
+   "path": "src/ashare_research/scoring/artifact_manifest.py",
+   "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+   "sha256": "97bfdd2308a2656d55db99014669cc01b08762c91accd58bd93ca4bd54edc809",
+   "byte_size": 14045
+  },
+  {
+   "path": "src/ashare_research/tools/m2_stage2k1r4e5_historical_percentile.py",
+   "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+   "sha256": "31800c3c21ee95173e96dc5d400cfe5f0556e1219ebc85dcd4bdbf30fc1fc579",
+   "byte_size": 18900
+  },
+  {
+   "path": "tests/test_m2_stage2k1r4e5_historical_percentile.py",
+   "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+   "sha256": "fa5fdcf6f2b52d9196b9bc62b1ba5c9caaaf4aa8bc8740373c842d95f82722a6",
+   "byte_size": 16105
+  }
+ ],
+ "manifest_digest": "c05f9a0e278b30ccf626b0720a1e91aeb3927ae6ebac696a72a4a7264e009cc3"
+}

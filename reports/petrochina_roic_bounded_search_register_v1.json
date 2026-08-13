@@ -1,0 +1,173 @@
+{
+  "schema": "roic_bounded_search_register_v1",
+  "records": [
+    {
+      "acquisition_id": "A-2024-operating-tax",
+      "role_id": "tax.operating_tax_expense",
+      "fiscal_year": 2024,
+      "status": "missing_official_fact",
+      "documents_searched": [
+        "FY2024 issuer CAS annual report",
+        "FY2024 SSE CAS annual report"
+      ],
+      "terms_searched": [
+        "所得税费用",
+        "当期所得税",
+        "递延所得税",
+        "经营税",
+        "营业利润税"
+      ],
+      "page_ranges": [
+        "PDF 115 / printed 113",
+        "PDF 180 / printed 178",
+        "full embedded-text search PDF 1-280"
+      ],
+      "result": "only total current/deferred income tax and tax-rate reconciliation are disclosed; no direct operating-tax allocation",
+      "why_no_fact": "ETR, statutory rate and total income-tax expense are forbidden proxies"
+    },
+    {
+      "acquisition_id": "B-2023-2024-associate",
+      "role_id": "invested_capital.associate_investment",
+      "fiscal_year": 2023,
+      "status": "ambiguous_scope",
+      "documents_searched": [
+        "FY2023 issuer CAS annual report",
+        "FY2023 SSE CAS annual report",
+        "FY2024 comparative CAS notes"
+      ],
+      "terms_searched": [
+        "长期股权投资",
+        "联营企业",
+        "合营企业",
+        "单项不重大"
+      ],
+      "page_ranges": [
+        "FY2023 PDF 158-161 / printed 156-159",
+        "FY2024 PDF 153-156 / printed 151-154"
+      ],
+      "result": "major associates and JVs are separate, but remaining individually immaterial holdings are disclosed only as a combined associate/JV amount",
+      "why_no_fact": "a complete separate balance would require a forbidden residual allocation or plug"
+    },
+    {
+      "acquisition_id": "B-2023-2024-associate",
+      "role_id": "invested_capital.associate_investment",
+      "fiscal_year": 2024,
+      "status": "ambiguous_scope",
+      "documents_searched": [
+        "FY2024 issuer CAS annual report",
+        "FY2024 SSE CAS annual report",
+        "FY2024 comparative CAS notes"
+      ],
+      "terms_searched": [
+        "长期股权投资",
+        "联营企业",
+        "合营企业",
+        "单项不重大"
+      ],
+      "page_ranges": [
+        "FY2023 PDF 158-161 / printed 156-159",
+        "FY2024 PDF 153-156 / printed 151-154"
+      ],
+      "result": "major associates and JVs are separate, but remaining individually immaterial holdings are disclosed only as a combined associate/JV amount",
+      "why_no_fact": "a complete separate balance would require a forbidden residual allocation or plug"
+    },
+    {
+      "acquisition_id": "B-2023-2024-jv",
+      "role_id": "invested_capital.joint_venture_investment",
+      "fiscal_year": 2023,
+      "status": "ambiguous_scope",
+      "documents_searched": [
+        "FY2023 issuer CAS annual report",
+        "FY2023 SSE CAS annual report",
+        "FY2024 comparative CAS notes"
+      ],
+      "terms_searched": [
+        "长期股权投资",
+        "联营企业",
+        "合营企业",
+        "单项不重大"
+      ],
+      "page_ranges": [
+        "FY2023 PDF 158-161 / printed 156-159",
+        "FY2024 PDF 153-156 / printed 151-154"
+      ],
+      "result": "major associates and JVs are separate, but remaining individually immaterial holdings are disclosed only as a combined associate/JV amount",
+      "why_no_fact": "a complete separate balance would require a forbidden residual allocation or plug"
+    },
+    {
+      "acquisition_id": "B-2023-2024-jv",
+      "role_id": "invested_capital.joint_venture_investment",
+      "fiscal_year": 2024,
+      "status": "ambiguous_scope",
+      "documents_searched": [
+        "FY2024 issuer CAS annual report",
+        "FY2024 SSE CAS annual report",
+        "FY2024 comparative CAS notes"
+      ],
+      "terms_searched": [
+        "长期股权投资",
+        "联营企业",
+        "合营企业",
+        "单项不重大"
+      ],
+      "page_ranges": [
+        "FY2023 PDF 158-161 / printed 156-159",
+        "FY2024 PDF 153-156 / printed 151-154"
+      ],
+      "result": "major associates and JVs are separate, but remaining individually immaterial holdings are disclosed only as a combined associate/JV amount",
+      "why_no_fact": "a complete separate balance would require a forbidden residual allocation or plug"
+    },
+    {
+      "acquisition_id": "C-2023-2024-non-operating-financial-assets",
+      "role_id": "invested_capital.non_operating_financial_assets",
+      "fiscal_year": 2023,
+      "status": "missing_official_fact",
+      "documents_searched": [
+        "FY2023 issuer CAS annual report",
+        "FY2023 SSE CAS annual report",
+        "FY2024 comparative CAS notes"
+      ],
+      "terms_searched": [
+        "非经营",
+        "非主营",
+        "交易性金融资产",
+        "其他权益工具投资",
+        "定期存款",
+        "投资收益",
+        "利息收入"
+      ],
+      "page_ranges": [
+        "full embedded-text search FY2023 official PDF",
+        "financial-instrument, cash, investment-income and cash-flow notes"
+      ],
+      "result": "financial asset classes and income lines are disclosed, but no exact official non-operating-purpose and linked-income classification is provided",
+      "why_no_fact": "unproven assets remain included in invested capital; no residual classification"
+    },
+    {
+      "acquisition_id": "C-2023-2024-non-operating-financial-assets",
+      "role_id": "invested_capital.non_operating_financial_assets",
+      "fiscal_year": 2024,
+      "status": "missing_official_fact",
+      "documents_searched": [
+        "FY2024 issuer CAS annual report",
+        "FY2024 SSE CAS annual report",
+        "FY2024 comparative CAS notes"
+      ],
+      "terms_searched": [
+        "非经营",
+        "非主营",
+        "交易性金融资产",
+        "其他权益工具投资",
+        "定期存款",
+        "投资收益",
+        "利息收入"
+      ],
+      "page_ranges": [
+        "full embedded-text search FY2024 official PDF",
+        "financial-instrument, cash, investment-income and cash-flow notes"
+      ],
+      "result": "financial asset classes and income lines are disclosed, but no exact official non-operating-purpose and linked-income classification is provided",
+      "why_no_fact": "unproven assets remain included in invested capital; no residual classification"
+    }
+  ]
+}

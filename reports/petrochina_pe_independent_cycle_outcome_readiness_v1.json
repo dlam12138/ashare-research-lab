@@ -1,0 +1,72 @@
+{
+ "schema": "petrochina_pe_independent_cycle_outcome_readiness_v1",
+ "symbol": "601857.SH",
+ "read_mode": "METADATA_ONLY_READINESS",
+ "permitted_fields": [
+  "financial_state_id",
+  "period_end",
+  "available_at",
+  "effective_from",
+  "input_fact_ids",
+  "existence",
+  "maturity"
+ ],
+ "forbidden_fields": [
+  "value_decimal",
+  "per_share_denominator_decimal",
+  "future_eps"
+ ],
+ "future_eps_values_read": false,
+ "partial_quarter_proxy": false,
+ "forecast_fallback": false,
+ "3y_candidate_regime_count": 1,
+ "3y_valid_onset_anchored_episode_count": 0,
+ "candidate_regimes_with_4q_target_metadata_available": 1,
+ "candidate_regimes_with_8q_target_metadata_available": 1,
+ "protocol_valid_mature_4q_episode_count": 0,
+ "protocol_valid_mature_8q_episode_count": 0,
+ "current_3y_validation_executable": false,
+ "current_3y_validation_block_reason": "NO_OBSERVED_EPISODE_ONSET_LEFT_CENSORED",
+ "current_3y_validation_reason": "LEFT_CENSORED_EPISODE_ONSET_NOT_OBSERVED",
+ "5y_historical_extension_needed": true,
+ "existing_financial_state_target_coverage": [
+  {
+   "candidate_regime_id": "above-normalized-regime-001",
+   "episode_id": null,
+   "anchor_status": "NOT_IDENTIFIABLE_LEFT_CENSORED",
+   "metadata_reference_policy": "CANDIDATE_FIRST_OBSERVED_REFERENCE_METADATA_ONLY",
+   "horizons": {
+    "4q": {
+     "target_period_end": "2024-03-31",
+     "metadata_status": "MATURED",
+     "protocol_valid_maturity": false,
+     "future_financial_state_id": "bdcc4225f4e701dc738a59266eb63be804f58f84c02a31358df5c28d6dbbb51e",
+     "period_end": "2024-03-31",
+     "available_at": "2024-04-30",
+     "effective_from": "2024-05-06",
+     "constituent_fact_ids": [
+      "c49f537445ac38d8effbc868162863a777ba6de2865cf1eb7cdca37d4ed49d0b",
+      "c954daede8684386a0709dd4d7a27a3a7997dfd71c4e9c36037da2a4ab575995",
+      "e03d2e80e2e600e3682afd29eecf51f480a455fda0d4f953f5cce52818ca9726"
+     ]
+    },
+    "8q": {
+     "target_period_end": "2025-03-31",
+     "metadata_status": "MATURED",
+     "protocol_valid_maturity": false,
+     "future_financial_state_id": "c88e17df9cfd879e11d2c993e0e9f5860d64a4e7e581299c4df2d4b47bafceb1",
+     "period_end": "2025-03-31",
+     "available_at": "2025-04-30",
+     "effective_from": "2025-05-06",
+     "constituent_fact_ids": [
+      "1676c4edd23a2c1f5a37e4d5a2333f4710f6935fe4b56b41ded145b9eb0f0c68",
+      "2f3c2d6ee370a62a629a7bd6f52475344815c54ba7d4a205c151710d96ee091e",
+      "ea454577cf53f36214712ce87f0a5c993acdeab3fd08bbe2813ec2605f33d3d9"
+     ]
+    }
+   }
+  }
+ ],
+ "earliest_missing_target_period": null,
+ "latest_available_target_period": "2026-03-31"
+}

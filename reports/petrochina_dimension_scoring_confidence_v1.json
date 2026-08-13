@@ -1,0 +1,71 @@
+{
+  "schema": "petrochina_dimension_evidence_confidence_v1",
+  "version": "1.0",
+  "symbol": "601857.SH",
+  "score_date": "2026-07-31",
+  "non_production": true,
+  "research_methodology_test_only": true,
+  "overall_score_prohibited": true,
+  "recommendation_prohibited": true,
+  "score_eligible": false,
+  "confidence_contract": "value_dimension_scoring_confidence_v1",
+  "confidence_separate_from_score": true,
+  "dimensions": {
+    "enterprise_quality": {
+      "dimension_id": "enterprise_quality",
+      "grade": "medium",
+      "reasons": [
+        "roic_gap_present:eq_roic",
+        "roic_gaps_present"
+      ],
+      "supporting_ids": [
+        "M2G-ROIC-001",
+        "M2G-ROIC-002",
+        "M2G-ROIC-003",
+        "M2G-ROIC-004",
+        "M2G-ROIC-005",
+        "M2G-ROIC-006",
+        "M2G-ROIC-007"
+      ]
+    },
+    "valuation_attractiveness": {
+      "dimension_id": "valuation_attractiveness",
+      "grade": "medium",
+      "reasons": [
+        "coverage_gap:va_dividend_yield"
+      ],
+      "supporting_ids": [
+        "va_dividend_yield"
+      ]
+    },
+    "value_realization_capacity": {
+      "dimension_id": "value_realization_capacity",
+      "grade": "medium",
+      "reasons": [
+        "dividend_exchange_payload_gaps_present"
+      ],
+      "supporting_ids": [
+        "M2G-DIV-001",
+        "M2G-DIV-002",
+        "M2G-DIV-003",
+        "M2G-DIV-004",
+        "M2G-DIV-005",
+        "M2G-DIV-006",
+        "M2G-DIV-007",
+        "M2G-DIV-008",
+        "M2G-DIV-009"
+      ]
+    },
+    "risk_and_evidence_integrity": {
+      "dimension_id": "risk_and_evidence_integrity",
+      "grade": "medium",
+      "reasons": [
+        "risk_missing_evidence_slots_present"
+      ],
+      "supporting_ids": [
+        "M2G-RISK-001",
+        "M2G-RISK-002"
+      ]
+    }
+  }
+}

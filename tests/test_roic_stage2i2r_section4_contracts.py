@@ -1,0 +1,358 @@
+import hashlib
+import json
+import re
+from decimal import Decimal
+from pathlib import Path
+
+import pytest
+
+from ashare_research.tools import roic_official_fact_acquisition as stage
+
+
+def test_search_classification_is_match_content_driven():
+    assert (
+        stage.classify_search_match(term="所得税费用", excerpt="税率调节", acquisition_id="x")[0]
+        == "tax_proxy_only"
+    )
+    assert (
+        stage.classify_search_match(term="合营企业", excerpt="合计单项不重大", acquisition_id="x")[
+            0
+        ]
+        == "aggregate_only_disclosure"
+    )
+    assert (
+        stage.classify_search_match(term="非经营金融资产", excerpt="利息收入", acquisition_id="x")[
+            0
+        ]
+        == "acceptable_exact_fact"
+    )
+    assert (
+        stage.classify_search_match(
+            term="其他权益工具投资", excerpt="金融资产", acquisition_id="x"
+        )[0]
+        == "purpose_income_linkage_missing"
+    )
+    assert (
+        stage.classify_search_match(term="未知", excerpt="无关", acquisition_id="x")[0]
+        == "irrelevant"
+    )
+
+
+def test_gate_whitelist_fails_closed_for_each_validator():
+    for status in ("FAILED", "UNKNOWN", None):
+        assert (
+            stage.decide_acquisition_gate("READY_FOR_SHADOW", {"validator": status})["decision"]
+            == "ROIC_ACQUISITION_NOT_TRUSTED"
+        )
+    assert (
+        stage.decide_acquisition_gate("BLOCKED_WITH_EXPLICIT_GAPS", {"all": "TRUSTED"})["decision"]
+        == "ROIC_FACT_GAPS_REMAIN"
+    )
+
+
+def test_search_specs_cover_all_cells_and_rejection_codes():
+    records = stage._missing_records()
+    assert len(records) == 7
+    assert all(item["acceptance_patterns"] and item["exclusion_patterns"] for item in records)
+    assert all("TAX_PROXY_ONLY" in item["rejection_reason_codes"] for item in records)
+
+
+def test_search_validator_rejects_missing_object_and_bad_pit():
+    record = stage._missing_records()[0]
+    with pytest.raises(ValueError):
+        stage.validate_search_results([record] * 6)
+    record["content_object_ids"] = []
+    with pytest.raises(ValueError):
+        stage.validate_search_results([record] + stage._missing_records()[1:])
+
+
+def test_decimal_and_identity_helpers_are_non_float():
+    assert isinstance(Decimal("1.20"), Decimal)
+    assert "float(" not in stage.Path(stage.__file__).read_text(encoding="utf-8")
+
+
+def test_plan_and_artifact_contracts_remain_complete():
+    result = stage.validate_contracts()
+    assert result["approved_item_count"] == 11
+    assert result["affected_cell_count"] == 16
+
+
+def test_reconciled_validator_requires_ordered_dual_evidence_and_digest():
+    evidence = [
+        {
+            "fact_id": "i",
+            "source_id": "s1",
+            "source_type": "company_official",
+            "content_sha256": "a",
+        },
+        {
+            "fact_id": "e",
+            "source_id": "s2",
+            "source_type": "exchange_official",
+            "content_sha256": "b",
+        },
+    ]
+    fact = {
+        "concept_id": "test_concept",
+        "period_end": "2024-12-31",
+        "source_type": "reconciled_derived",
+        "source_tier": "dual_official_reconciled",
+        "source_evidence": evidence,
+        "derivation_definition_id": stage.RECONCILIATION_RULE_ID,
+        "derivation_version": stage.RECONCILIATION_RULE_VERSION,
+        "evidence_order_semantics_id": stage.EVIDENCE_ORDER_SEMANTICS_ID,
+        "evidence_order_semantics_version": stage.EVIDENCE_ORDER_SEMANTICS_VERSION,
+        "input_fact_ids": "i,e",
+    }
+    fact["evidence_set_digest"] = stage.canonical_digest(
+        [
+            {
+                "fact_id": x["fact_id"],
+                "source_id": x["source_id"],
+                "content_sha256": x["content_sha256"],
+            }
+            for x in evidence
+        ]
+    )
+    identity = stage._reconciliation_identity_payload(evidence)["identity_digest"]
+    fact["source_id"] = (
+        f"reconciled:test_concept:2024:{stage.RECONCILIATION_RULE_ID}:"
+        f"v{stage.RECONCILIATION_RULE_VERSION}:{identity}"
+    )
+    fact["fact_id"] = stage.build_fact_id(fact)
+    assert stage.validate_reconciled_fact(fact)["status"] == "TRUSTED"
+    fact["source_evidence"] = list(reversed(evidence))
+    with pytest.raises(ValueError):
+        stage.validate_reconciled_fact(fact)
+
+
+@pytest.mark.parametrize(
+    "validator",
+    ["cache", "extraction", "reconciliation", "identity", "pit", "search", "artifact", "plan"],
+)
+def test_each_gate_validator_failure_is_not_trusted(validator):
+    assert (
+        stage.decide_acquisition_gate("READY_FOR_SHADOW", {validator: "NOT TRUSTED"})["decision"]
+        == "ROIC_ACQUISITION_NOT_TRUSTED"
+    )
+
+
+def test_search_identity_changes_when_spec_or_source_changes():
+    records = stage._missing_records()
+    first = records[0]["deterministic_id"]
+    records[0]["search_spec_id"] += "-changed"
+    changed = stage.canonical_digest(
+        {k: v for k, v in records[0].items() if k != "deterministic_id"}
+    )
+    assert changed != first
+
+
+def test_committed_delivery_manifest_recomputes_hashes():
+    root = Path(__file__).parents[1]
+    manifest = json.loads(
+        (root / "reports/petrochina_roic_stage2i2r_delivery_manifest.json").read_text()
+    )
+    assert (
+        manifest["formal_artifact_set_sha256"]
+        == "90632b11b4784a019f8765237fe0d4bafcf1b8a80ff5c681a57fba3798da2483"
+    )
+    for item in manifest["files"]:
+        path = root / item["logical_path"]
+        assert path.is_file()
+        payload = path.read_bytes()
+        if path.suffix in {".md", ".json"}:
+            payload = path.read_text(encoding="utf-8").replace("\r\n", "\n").encode()
+        assert len(payload) == item["byte_size"]
+        assert hashlib.sha256(payload).hexdigest() == item["sha256"]
+
+
+def test_definition_specs_compile_and_have_a1_contract():
+    for _spec_id, spec in stage.EXTRACTION_SPECS.items():
+        assert spec["version"] == "3"
+        groups = re.compile(spec["named_capture_pattern"]).groupindex
+        assert set(spec["capture_groups"]).issubset(groups)
+        for field in (
+            "extraction_spec_id",
+            "acquisition_id",
+            "role_id",
+            "concept_id",
+            "fiscal_year",
+            "source_unit",
+            "deterministic_transform",
+            "sign_rule",
+            "extraction_method_version",
+        ):
+            assert field in spec
+        assert not any(
+            token in spec["named_capture_pattern"] for token in ("12552", "5165", "7387")
+        )
+
+
+def test_old_new_report_has_distinct_ids_and_identity_sections():
+    report = json.loads(
+        (
+            Path(__file__).parents[1] / "reports/petrochina_roic_stage2i2r_old_new_report.json"
+        ).read_text()
+    )
+    rows = report["fact_id_comparison"]
+    assert len(rows) == 9
+    assert all(row["old_fact_id"] != row["current_fact_id"] for row in rows)
+    assert all(row["current_identity"]["evidence"] for row in rows)
+
+
+def test_reconciliation_identity_mutations_and_order_stability():
+    base = [
+        {
+            "fact_id": "a",
+            "source_id": "sa",
+            "source_type": "company_official",
+            "content_sha256": "ha",
+        },
+        {
+            "fact_id": "b",
+            "source_id": "sb",
+            "source_type": "exchange_official",
+            "content_sha256": "hb",
+        },
+    ]
+    original = stage._reconciliation_identity_payload(base)["identity_digest"]
+    assert (
+        stage._reconciliation_identity_payload(list(reversed(base)))["identity_digest"] == original
+    )
+    for key in ("fact_id", "source_id", "source_type", "content_sha256"):
+        changed = [dict(x) for x in base]
+        changed[0][key] = changed[0][key] + "-changed"
+        assert stage._reconciliation_identity_payload(changed)["identity_digest"] != original
+
+
+@pytest.mark.parametrize(
+    "field",
+    ["value_decimal", "unit", "currency", "scope", "period_end", "context_id", "concept_id"],
+)
+def test_reconciliation_comparable_conflicts_fail(field):
+    left = {
+        "symbol": "X",
+        "concept_id": "c",
+        "concept_version": "1",
+        "context_id": "ctx",
+        "value_decimal": "1",
+        "unit": "u",
+        "currency": "CNY",
+        "accounting_standard": "CAS",
+        "scope": "consolidated",
+        "period_type": "instant",
+        "period_start": "2024-12-31",
+        "period_end": "2024-12-31",
+        "source_id": "s1",
+        "source_type": "company_official",
+        "source_tier": "company_official",
+        "content_sha256": "a",
+        "available_at": "2025-01-01",
+        "announcement_date": "2025-01-01",
+        "filing_date": "2025-01-01",
+        "fact_id": "a",
+    }
+    right = dict(
+        left, source_id="s2", source_type="exchange_official", content_sha256="b", fact_id="b"
+    )
+    right[field] = "different"
+    with pytest.raises(ValueError):
+        stage._reconciled_fact(None, [left, right])
+
+
+def _minimal_reconciliation_inputs():
+    cell = stage.ExtractedCell(
+        "a",
+        "r",
+        "c",
+        2024,
+        "instant",
+        "1",
+        "1",
+        "positive",
+        "u",
+        "1",
+        "1",
+        "identity",
+        {"evidence_ids": []},
+    )
+    base = {
+        "symbol": "X",
+        "concept_id": "c",
+        "concept_version": "1",
+        "context_id": "ctx",
+        "value_decimal": "1",
+        "unit": "u",
+        "currency": "CNY",
+        "accounting_standard": "CAS",
+        "scope": "consolidated",
+        "period_type": "instant",
+        "period_start": "2024-12-31",
+        "period_end": "2024-12-31",
+        "source_tier": "official",
+        "source_document": "d",
+        "source_locator": "path",
+        "source_page": "p",
+        "source_table": "t",
+        "source_label": "l",
+        "verification_status": "verified",
+        "eligible_for_metrics": False,
+        "is_derived": False,
+        "input_fact_ids": "",
+        "source_evidence": [],
+        "content_sha256": "h",
+        "available_at": "2024-01-01",
+        "announcement_date": "2024-01-01",
+        "filing_date": "2024-01-01",
+    }
+    return cell, [
+        dict(base, fact_id="a", source_id="s1", source_type="company_official"),
+        dict(base, fact_id="b", source_id="s2", source_type="exchange_official"),
+    ]
+
+
+def test_reconciliation_rule_and_order_versions_change_real_fact_id(monkeypatch):
+    cell, inputs = _minimal_reconciliation_inputs()
+    first = stage._reconciled_fact(cell, inputs)["fact_id"]
+    monkeypatch.setattr(stage, "RECONCILIATION_RULE_VERSION", "9")
+    assert stage._reconciled_fact(cell, inputs)["fact_id"] != first
+    monkeypatch.setattr(stage, "RECONCILIATION_RULE_VERSION", "2")
+    monkeypatch.setattr(stage, "EVIDENCE_ORDER_SEMANTICS_VERSION", "9")
+    assert stage._reconciled_fact(cell, inputs)["fact_id"] != first
+
+
+def test_reconciliation_paths_stable_and_available_at_max():
+    cell, inputs = _minimal_reconciliation_inputs()
+    inputs[0]["available_at"] = "2025-01-01"
+    inputs[1]["available_at"] = "2025-02-01"
+    first = stage._reconciled_fact(cell, inputs)
+    reversed_fact = stage._reconciled_fact(cell, list(reversed(inputs)))
+    assert first["fact_id"] == reversed_fact["fact_id"]
+    assert first["available_at"] == "2025-02-01"
+    inputs[0]["source_locator"] = "different-path"
+    assert stage._reconciled_fact(cell, inputs)["fact_id"] == first["fact_id"]
+
+
+def test_reconciled_validator_rejects_source_and_fact_id_tamper():
+    cell, inputs = _minimal_reconciliation_inputs()
+    fact = stage._reconciled_fact(cell, inputs)
+    stage.validate_reconciled_fact(fact)
+    bad = dict(fact, source_id=fact["source_id"] + "x")
+    with pytest.raises(ValueError):
+        stage.validate_reconciled_fact(bad)
+    bad = dict(fact, fact_id="0" * 64)
+    with pytest.raises(ValueError):
+        stage.validate_reconciled_fact(bad)
+
+
+def test_internal_artifact_manifest_maps_committed_stage2i2r_files():
+    root = Path(__file__).parents[1]
+    manifest = json.loads(
+        (root / "reports/petrochina_roic_stage2i2r_artifact_manifest.json").read_text()
+    )
+    for item in manifest["files"]:
+        path = root / item["logical_path"]
+        assert path.is_file()
+        payload = path.read_text(encoding="utf-8").replace("\r\n", "\n").encode()
+        assert len(payload) == item["byte_size"]
+        assert hashlib.sha256(payload).hexdigest() == item["sha256"]

@@ -1,0 +1,10 @@
+{
+  "schema": "roic_stage2i2r_gate_matrix_v1",
+  "branches": [
+    {"readiness": "READY_FOR_SHADOW", "validators": "all TRUSTED", "decision": "ROIC_SHADOW_ALLOWED"},
+    {"readiness": "BLOCKED_WITH_EXPLICIT_GAPS", "validators": "all TRUSTED", "decision": "ROIC_FACT_GAPS_REMAIN"},
+    {"readiness": "UNKNOWN", "validators": "any", "decision": "ROIC_ACQUISITION_NOT_TRUSTED"},
+    {"readiness": "any", "validators": "cache/extraction/reconciliation/identity/PIT/search/artifact/Plan failure", "decision": "ROIC_ACQUISITION_NOT_TRUSTED"}
+  ],
+  "selected_decision": "ROIC_FACT_GAPS_REMAIN"
+}

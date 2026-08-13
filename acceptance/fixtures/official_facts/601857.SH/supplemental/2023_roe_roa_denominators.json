@@ -1,0 +1,113 @@
+{
+  "contract": "roe_roa_denominator_official_facts_v1",
+  "base_bundle_path": "acceptance/fixtures/official_facts/601857.SH/2023_annual.json",
+  "base_bundle_sha256": "3f1bd6859927871570aaf1d4efbea2ce36c6d1013bbb2b2630115600c03aae2c",
+  "base_bundle_git_blob": "6612148ea91b2004605b98e0c8fe799a4d2686ea",
+  "symbol": "601857.SH",
+  "fiscal_year": 2023,
+  "report_type": "annual",
+  "accounting_standard": "CAS",
+  "consolidation_scope": "consolidated",
+  "language": "zh-CN",
+  "document_relationship": "byte_identical",
+  "period_type": "instant",
+  "period_end": "2023-12-31",
+  "reconciliation_rule_id": "RECON_OFFICIAL_NUMERIC_004",
+  "reconciliation_rule_version": "1",
+  "revision_review_status": "reviewed_changed",
+  "sources": {
+    "company": {
+      "facts": [
+        {
+          "concept_id": "total_assets",
+          "source_page": "PDF page 112 / printed page 110",
+          "pdf_page": 112,
+          "printed_page": 110,
+          "source_table": "2023年12月31日合并及公司资产负债表",
+          "source_label": "资产总计",
+          "column_label": "2023年12月31日合并",
+          "source_display_value": "2,752,710",
+          "raw_value": "2752710",
+          "raw_unit": "人民币百万元",
+          "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+          "expected_normalized_value": 275271000,
+          "evidence_type": "audited_consolidated_balance_sheet",
+          "manual_review_status": "visually_verified_twice"
+        },
+        {
+          "concept_id": "equity_attributable_to_parent",
+          "source_page": "PDF page 113 / printed page 111",
+          "pdf_page": 113,
+          "printed_page": 111,
+          "source_table": "2023年12月31日合并及公司资产负债表(续)",
+          "source_label": "归属于母公司股东权益合计",
+          "column_label": "2023年12月31日合并",
+          "source_display_value": "1,446,410",
+          "raw_value": "1446410",
+          "raw_unit": "人民币百万元",
+          "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+          "expected_normalized_value": 144641000,
+          "evidence_type": "audited_consolidated_balance_sheet",
+          "manual_review_status": "visually_verified_twice"
+        }
+      ]
+    },
+    "exchange": {
+      "facts": [
+        {
+          "concept_id": "total_assets",
+          "source_page": "PDF page 112 / printed page 110",
+          "pdf_page": 112,
+          "printed_page": 110,
+          "source_table": "2023年12月31日合并及公司资产负债表",
+          "source_label": "资产总计",
+          "column_label": "2023年12月31日合并",
+          "source_display_value": "2,752,710",
+          "raw_value": "2752710",
+          "raw_unit": "人民币百万元",
+          "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+          "expected_normalized_value": 275271000,
+          "evidence_type": "audited_consolidated_balance_sheet",
+          "manual_review_status": "visually_verified_twice"
+        },
+        {
+          "concept_id": "equity_attributable_to_parent",
+          "source_page": "PDF page 113 / printed page 111",
+          "pdf_page": 113,
+          "printed_page": 111,
+          "source_table": "2023年12月31日合并及公司资产负债表(续)",
+          "source_label": "归属于母公司股东权益合计",
+          "column_label": "2023年12月31日合并",
+          "source_display_value": "1,446,410",
+          "raw_value": "1446410",
+          "raw_unit": "人民币百万元",
+          "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+          "expected_normalized_value": 144641000,
+          "evidence_type": "audited_consolidated_balance_sheet",
+          "manual_review_status": "visually_verified_twice"
+        }
+      ]
+    }
+  },
+  "accounting_identity_check": {
+    "unit": "人民币百万元",
+    "total_current_assets": 658520,
+    "total_non_current_assets": 2094190,
+    "computed_total_assets": 2752710,
+    "reported_total_assets": 2752710,
+    "equity_attributable_to_parent": 1446410,
+    "minority_interest": 184211,
+    "computed_total_equity": 1630621,
+    "reported_total_equity": 1630621,
+    "total_liabilities": 1122089,
+    "computed_liabilities_plus_equity": 2752710,
+    "reported_liabilities_plus_equity": 2752710,
+    "exact_tie_out": true,
+    "scope": "consolidated_only"
+  },
+  "limitations": [
+    "2023 两项被 2024 年度报告比较列追溯重述（同一控制下企业合并中油电能），本证据记录 v1 原值；v2 由 2023_reviewed_by_2024 重述证据驱动。",
+    "资产总计和归属于母公司股东权益均为经审计合并资产负债表时点值；未使用总权益、流动资产、分部或母公司单体数据。",
+    "时点 Concept 取当年合并列，period_start=period_end=2023-12-31，不复用 duration Context。"
+  ]
+}

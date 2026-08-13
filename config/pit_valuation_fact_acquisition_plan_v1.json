@@ -1,0 +1,126 @@
+{
+  "schema": "pit_valuation_fact_acquisition_plan_v1",
+  "version": "1.0",
+  "symbol": "601857.SH",
+  "date": "2026-08-04",
+  "stage": "M2 Stage 2K.1R4C",
+  "convention_adr": "ADR-VALUATION-002",
+  "convention": "A_SHARE_PRICE_PER_SHARE_VALUATION_CONVENTION",
+  "status": "FROZEN_PLAN_ONLY",
+  "collection_started": false,
+  "injection_started": false,
+  "implementation": {
+    "quarterly_polling": false,
+    "downloads": false,
+    "fact_injection": false,
+    "series_builder": false,
+    "valuation_percentile": false,
+    "scoring_expansion": false,
+    "peer_acquisition": false,
+    "m3_started": false
+  },
+  "target_metrics": {
+    "pe_ttm": {
+      "metric_id": "pe_ttm_net_profit",
+      "formula": "A_share_close(t) / PIT_TTM_basic_EPS(t)",
+      "facts_required": [
+        "net_profit_attributable_to_parent"
+      ],
+      "period_types": [
+        "annual",
+        "quarterly_cumulative",
+        "single_quarter"
+      ],
+      "ttm_rule": "TTM(t) = latest annual value + current-year latest cumulative value - prior-year same-period cumulative value",
+      "share_count_convention": "weighted_average_total_ordinary_shares for the period",
+      "warmup_required": "5y window from 2021-07-31 needs quarterly cumulative data from 2020 Q1"
+    },
+    "ps_ttm": {
+      "metric_id": "ps_ttm_revenue",
+      "formula": "A_share_close(t) / PIT_TTM_sales_per_share(t)",
+      "facts_required": [
+        "revenue"
+      ],
+      "period_types": [
+        "annual",
+        "quarterly_cumulative",
+        "single_quarter"
+      ],
+      "ttm_rule": "TTM(t) = latest annual value + current-year latest cumulative value - prior-year same-period cumulative value",
+      "share_count_convention": "total_ordinary_shares_at_period_end effective on valuation date",
+      "warmup_required": "5y window from 2021-07-31 needs quarterly cumulative data from 2020 Q1"
+    },
+    "pb_mrq": {
+      "metric_id": "pb_equity",
+      "formula": "A_share_close(t) / PIT_parent_BVPS(t)",
+      "facts_required": [
+        "equity_attributable_to_parent"
+      ],
+      "period_types": [
+        "quarterly_end",
+        "year_end"
+      ],
+      "share_count_convention": "total_ordinary_shares_at_period_end",
+      "warmup_required": false
+    }
+  },
+  "share_facts": {
+    "total_ordinary_shares_at_period_end": {
+      "role": "PB denominator share count; PS denominator share count",
+      "required_fields": [
+        "effective_date",
+        "report_period",
+        "corporate_actions"
+      ],
+      "corporate_actions": [
+        "buyback_cancellation",
+        "issuance",
+        "bonus_share",
+        "rights_issue",
+        "other_company_action",
+        "no_change_official_evidence"
+      ]
+    },
+    "weighted_average_total_ordinary_shares": {
+      "role": "PE denominator share count",
+      "required_fields": [
+        "effective_date",
+        "report_period",
+        "corporate_actions"
+      ],
+      "note": "must not be replaced by the dividend-DPS-basis share timeline; it is a separate, canonical valuation share contract"
+    }
+  },
+  "sources": {
+    "allowed": [
+      "petrochina_quarterly_report",
+      "petrochina_half_year_report",
+      "petrochina_annual_report",
+      "sse_announcement",
+      "share_change_and_corporate_action_announcement"
+    ],
+    "forbidden": [
+      "commercial_terminal_direct_transcription",
+      "third_party_daily_pe_pb_ps",
+      "llm_inference",
+      "current_share_count_backfill_to_all_history",
+      "annual_value_effective_before_report_end",
+      "h_share_price",
+      "h_share_fx"
+    ]
+  },
+  "time_contract": {
+    "required_fields_per_fact": [
+      "period_start",
+      "period_end",
+      "filing_date",
+      "available_at",
+      "effective_from",
+      "restatement_version",
+      "supersedes_fact_id",
+      "source_evidence_id"
+    ],
+    "effective_rule": "announcement-only date -> effective from the next trading day (conservative)",
+    "restatement_rule": "old version visible until restatement available_at; restated version after; never backfill restated value to before the restatement"
+  }
+}

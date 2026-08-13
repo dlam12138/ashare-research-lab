@@ -1,0 +1,203 @@
+{
+  "schema": "roic_concept_registry_v2",
+  "version": "2",
+  "migration": {
+    "base_registry": "config/roic_concept_registry_v1.json",
+    "formula_dependency_graph": "config/roic_formula_dependency_graph_v1.json",
+    "methodology_decisions": "config/roic_methodology_decisions_v1.json",
+    "v1_status": "historical_read_only",
+    "notes": [
+      "Every resolved entry receives formula and acquisition fields from the dependency graph.",
+      "invested_capital.non_operating_asset_boundary is a deprecated migration tombstone.",
+      "policy.non_operating_asset_classification and invested_capital.qualifying_non_operating_assets replace the mixed v1 role."
+    ]
+  },
+  "entry_overrides": {
+    "nopat.finance_cost_adjustment": {
+      "input_type": "deterministic_derivation",
+      "derivation_components": [
+        "nopat.finance_cost_excluding_lease_interest",
+        "nopat.lease_interest_expense"
+      ],
+      "forbidden_approximates": ["net_interest_expense", "manual_balancing_plug"]
+    },
+    "nopat.other_non_operating_income_expense": {
+      "required_primary_formula": false,
+      "required_shadow": false,
+      "required_secondary": true,
+      "blocker_severity": "reconciliation"
+    },
+    "tax.operating_tax_expense": {
+      "required_secondary": false
+    },
+    "invested_capital.parent_equity": {
+      "required_secondary": false
+    },
+    "invested_capital.non_controlling_interest": {
+      "required_secondary": false
+    },
+    "invested_capital.associate_investment": {
+      "required_secondary": false
+    },
+    "invested_capital.joint_venture_investment": {
+      "required_secondary": false
+    },
+    "invested_capital.interest_bearing_debt_total": {
+      "required_secondary": false
+    },
+    "invested_capital.non_operating_asset_boundary": {
+      "eligible": false,
+      "required_primary_formula": false,
+      "required_shadow": false,
+      "required_secondary": false,
+      "missing_status": "not_applicable",
+      "blocker_severity": "none"
+    }
+  },
+  "new_entries": [
+    {
+      "role_id": "nopat.finance_cost_excluding_lease_interest",
+      "canonical_concept_id": "finance_cost_excluding_lease_interest",
+      "concept_version_requirement": "1",
+      "display_name": "Finance cost excluding lease interest",
+      "formula_candidate": "B_operating_profit_bridge_financing_view",
+      "analytical_side": "nopat",
+      "input_type": "direct_fact",
+      "period_type": "annual_duration",
+      "expected_scope": "consolidated",
+      "accounting_standard": "CAS",
+      "expected_unit": "万元",
+      "expected_currency": "CNY",
+      "required_source_types": ["company_official", "exchange_official", "reconciled_derived"],
+      "verification_statuses": ["verified", "reconciled"],
+      "eligible": true,
+      "required_primary_formula": true,
+      "required_shadow": true,
+      "required_secondary": false,
+      "fy2020_opening_policy": "not_applicable_duration",
+      "derivation_components": [],
+      "aliases": ["finance_cost_core"],
+      "forbidden_approximates": ["net_interest_expense", "finance_cost_including_unseparated_lease_interest"],
+      "missing_status": "missing_official_fact",
+      "blocker_severity": "hard",
+      "acquisition_priority": 2
+    },
+    {
+      "role_id": "policy.non_operating_asset_classification",
+      "canonical_concept_id": "non_operating_asset_classification_policy",
+      "concept_version_requirement": "1",
+      "display_name": "Non-operating asset classification policy",
+      "formula_candidate": "B_operating_profit_bridge_financing_view",
+      "analytical_side": "cash_policy",
+      "input_type": "methodology_choice",
+      "period_type": "year_end_instant",
+      "expected_scope": "consolidated",
+      "accounting_standard": "CAS",
+      "expected_unit": null,
+      "expected_currency": null,
+      "required_source_types": [],
+      "verification_statuses": [],
+      "eligible": false,
+      "required_primary_formula": true,
+      "required_shadow": true,
+      "required_secondary": false,
+      "fy2020_opening_policy": "decision_applies_to_all_years",
+      "derivation_components": [],
+      "aliases": [],
+      "forbidden_approximates": ["all_cash_subtraction", "manual_balancing_plug"],
+      "missing_status": "methodology_unresolved",
+      "blocker_severity": "hard",
+      "acquisition_priority": 0,
+      "methodology_decision_id": "policy.non_operating_asset_classification"
+    },
+    {
+      "role_id": "invested_capital.qualifying_non_operating_assets",
+      "canonical_concept_id": "qualifying_non_operating_assets",
+      "concept_version_requirement": "1",
+      "display_name": "Qualifying non-operating assets",
+      "formula_candidate": "B_operating_profit_bridge_financing_view",
+      "analytical_side": "cash_policy",
+      "input_type": "deterministic_derivation",
+      "period_type": "year_end_instant",
+      "expected_scope": "consolidated",
+      "accounting_standard": "CAS",
+      "expected_unit": "万元",
+      "expected_currency": "CNY",
+      "required_source_types": [],
+      "verification_statuses": [],
+      "eligible": true,
+      "required_primary_formula": true,
+      "required_shadow": true,
+      "required_secondary": false,
+      "fy2020_opening_policy": "required_as_opening_for_FY2021_only",
+      "derivation_components": [
+        "policy.non_operating_asset_classification",
+        "invested_capital.associate_investment",
+        "invested_capital.joint_venture_investment",
+        "invested_capital.non_operating_financial_assets"
+      ],
+      "aliases": [],
+      "forbidden_approximates": ["all_cash_subtraction", "balance_sheet_plug", "manual_entry"],
+      "missing_status": "partially_ready",
+      "blocker_severity": "hard",
+      "acquisition_priority": 19,
+      "methodology_decision_id": "policy.non_operating_asset_classification"
+    },
+    {
+      "role_id": "invested_capital.restricted_cash",
+      "canonical_concept_id": "restricted_cash",
+      "concept_version_requirement": "1",
+      "display_name": "Restricted cash",
+      "formula_candidate": "B_operating_profit_bridge_financing_view",
+      "analytical_side": "cash_policy",
+      "input_type": "direct_fact",
+      "period_type": "year_end_instant",
+      "expected_scope": "consolidated",
+      "accounting_standard": "CAS",
+      "expected_unit": "万元",
+      "expected_currency": "CNY",
+      "required_source_types": ["company_official", "exchange_official", "reconciled_derived"],
+      "verification_statuses": ["verified", "reconciled"],
+      "eligible": true,
+      "required_primary_formula": false,
+      "required_shadow": true,
+      "required_secondary": false,
+      "fy2020_opening_policy": "required_as_opening_for_FY2021_only",
+      "derivation_components": [],
+      "aliases": [],
+      "forbidden_approximates": ["cash_and_cash_equivalents"],
+      "missing_status": "missing_official_fact",
+      "blocker_severity": "methodology_support",
+      "acquisition_priority": 22,
+      "methodology_decision_id": "policy.non_operating_asset_classification"
+    },
+    {
+      "role_id": "invested_capital.non_operating_financial_assets",
+      "canonical_concept_id": "non_operating_financial_assets",
+      "concept_version_requirement": "1",
+      "display_name": "Officially classified non-operating financial assets",
+      "formula_candidate": "B_operating_profit_bridge_financing_view",
+      "analytical_side": "cash_policy",
+      "input_type": "direct_fact",
+      "period_type": "year_end_instant",
+      "expected_scope": "consolidated",
+      "accounting_standard": "CAS",
+      "expected_unit": "万元",
+      "expected_currency": "CNY",
+      "required_source_types": ["company_official", "exchange_official", "reconciled_derived"],
+      "verification_statuses": ["verified", "reconciled"],
+      "eligible": true,
+      "required_primary_formula": true,
+      "required_shadow": true,
+      "required_secondary": false,
+      "fy2020_opening_policy": "required_as_opening_for_FY2021_only",
+      "derivation_components": [],
+      "aliases": ["financial_assets_with_non_operating_proof"],
+      "forbidden_approximates": ["all_financial_assets", "balance_sheet_residual"],
+      "missing_status": "missing_official_fact",
+      "blocker_severity": "hard",
+      "acquisition_priority": 23,
+      "methodology_decision_id": "policy.non_operating_asset_classification"
+    }
+  ]
+}

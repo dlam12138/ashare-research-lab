@@ -1,0 +1,339 @@
+{
+  "schema": "roic_extraction_spec_v3",
+  "specification_source": "EXTRACTION_SPECS",
+  "specs": [
+    {
+      "version": "3",
+      "source_roles": [
+        "issuer_official",
+        "exchange_official"
+      ],
+      "source_unit": "人民币百万元",
+      "sign_rule": "source_accounting_sign_identity",
+      "rounding_policy": "ROUND_HALF_EVEN",
+      "review_status": "verified",
+      "ocr_used": false,
+      "llm_used": false,
+      "acquisition_id": "A-2024-finance-core",
+      "capture_groups": [
+        "finance",
+        "lease"
+      ],
+      "named_capture_pattern": "(?P<finance>\\(?[0-9][0-9,]*(?:\\.[0-9]+)?\\)?).*(?P<lease>\\(?[0-9][0-9,]*(?:\\.[0-9]+)?\\)?)",
+      "operand_names": [
+        "finance_cost_amount",
+        "lease_interest_amount"
+      ],
+      "transform_expression_id": "finance_minus_lease",
+      "formula": "abs(finance_cost_amount)-lease_interest_amount",
+      "extraction_spec_id": "roic-extract-finance-core-v3",
+      "role_id": "nopat.finance_cost_excluding_lease_interest",
+      "concept_id": "finance_cost_excluding_lease_interest",
+      "fiscal_year": "cell_year",
+      "source_report_year": "registry_metadata",
+      "source_page": "registry_locator",
+      "printed_page": "registry_locator",
+      "note": "registry_locator",
+      "table": "registry_locator",
+      "row": "registry_locator",
+      "column": "registry_locator",
+      "period_type": "registry_period",
+      "conversion_multiplier": "registry_unit_conversion",
+      "extraction_method_version": "pypdf_embedded_text_regex_v3",
+      "deterministic_transform": "finance_minus_lease",
+      "captured_operand_names": [
+        "finance_cost_amount",
+        "lease_interest_amount"
+      ]
+    },
+    {
+      "version": "3",
+      "source_roles": [
+        "issuer_official",
+        "exchange_official"
+      ],
+      "source_unit": "人民币百万元",
+      "sign_rule": "source_accounting_sign_identity",
+      "rounding_policy": "ROUND_HALF_EVEN",
+      "review_status": "verified",
+      "ocr_used": false,
+      "llm_used": false,
+      "acquisition_id": "B-2024-lease-interest",
+      "capture_groups": [
+        "lease"
+      ],
+      "named_capture_pattern": "(?P<lease>\\(?[0-9][0-9,]*(?:\\.[0-9]+)?\\)?)",
+      "operand_names": [
+        "lease_interest_amount"
+      ],
+      "transform_expression_id": "identity",
+      "formula": "lease_interest_amount",
+      "extraction_spec_id": "roic-extract-lease-interest-v3",
+      "role_id": "nopat.lease_interest_expense",
+      "concept_id": "lease_interest_expense",
+      "fiscal_year": "cell_year",
+      "source_report_year": "registry_metadata",
+      "source_page": "registry_locator",
+      "printed_page": "registry_locator",
+      "note": "registry_locator",
+      "table": "registry_locator",
+      "row": "registry_locator",
+      "column": "registry_locator",
+      "period_type": "registry_period",
+      "conversion_multiplier": "registry_unit_conversion",
+      "extraction_method_version": "pypdf_embedded_text_regex_v3",
+      "deterministic_transform": "identity",
+      "captured_operand_names": [
+        "lease_interest_amount"
+      ]
+    },
+    {
+      "version": "3",
+      "source_roles": [
+        "issuer_official",
+        "exchange_official"
+      ],
+      "source_unit": "人民币百万元",
+      "sign_rule": "source_accounting_sign_identity",
+      "rounding_policy": "ROUND_HALF_EVEN",
+      "review_status": "verified",
+      "ocr_used": false,
+      "llm_used": false,
+      "acquisition_id": "A-2024-investment-income",
+      "capture_groups": [
+        "target",
+        "comparative"
+      ],
+      "named_capture_pattern": "(?P<label>.+?)\\s+(?P<note>\\d+)\\s+(?P<target>\\(?[0-9][0-9,]*(?:\\.[0-9]+)?\\)?)\\s+(?P<comparative>\\(?[0-9][0-9,]*(?:\\.[0-9]+)?\\)?)",
+      "operand_names": [
+        "target"
+      ],
+      "transform_expression_id": "identity",
+      "formula": "target",
+      "extraction_spec_id": "roic-extract-investment_income-v3",
+      "role_id": "nopat.investment_income",
+      "concept_id": "investment_income",
+      "fiscal_year": "cell_year",
+      "source_report_year": "registry_metadata",
+      "source_page": "registry_locator",
+      "printed_page": "registry_locator",
+      "note": "registry_locator",
+      "table": "registry_locator",
+      "row": "registry_locator",
+      "column": "registry_locator",
+      "period_type": "registry_period",
+      "conversion_multiplier": "registry_unit_conversion",
+      "extraction_method_version": "pypdf_embedded_text_regex_v3",
+      "deterministic_transform": "identity",
+      "captured_operand_names": [
+        "target"
+      ]
+    },
+    {
+      "version": "3",
+      "source_roles": [
+        "issuer_official",
+        "exchange_official"
+      ],
+      "source_unit": "人民币百万元",
+      "sign_rule": "source_accounting_sign_identity",
+      "rounding_policy": "ROUND_HALF_EVEN",
+      "review_status": "verified",
+      "ocr_used": false,
+      "llm_used": false,
+      "acquisition_id": "A-2024-fair-value",
+      "capture_groups": [
+        "target",
+        "comparative"
+      ],
+      "named_capture_pattern": "(?P<label>.+?)\\s+(?P<note>\\d+)\\s+(?P<target>\\(?[0-9][0-9,]*(?:\\.[0-9]+)?\\)?)\\s+(?P<comparative>\\(?[0-9][0-9,]*(?:\\.[0-9]+)?\\)?)",
+      "operand_names": [
+        "target"
+      ],
+      "transform_expression_id": "identity",
+      "formula": "target",
+      "extraction_spec_id": "roic-extract-fair_value_net_change-v3",
+      "role_id": "nopat.fair_value_net_change",
+      "concept_id": "fair_value_net_change",
+      "fiscal_year": "cell_year",
+      "source_report_year": "registry_metadata",
+      "source_page": "registry_locator",
+      "printed_page": "registry_locator",
+      "note": "registry_locator",
+      "table": "registry_locator",
+      "row": "registry_locator",
+      "column": "registry_locator",
+      "period_type": "registry_period",
+      "conversion_multiplier": "registry_unit_conversion",
+      "extraction_method_version": "pypdf_embedded_text_regex_v3",
+      "deterministic_transform": "identity",
+      "captured_operand_names": [
+        "target"
+      ]
+    },
+    {
+      "version": "3",
+      "source_roles": [
+        "issuer_official",
+        "exchange_official"
+      ],
+      "source_unit": "人民币百万元",
+      "sign_rule": "source_accounting_sign_identity",
+      "rounding_policy": "ROUND_HALF_EVEN",
+      "review_status": "verified",
+      "ocr_used": false,
+      "llm_used": false,
+      "acquisition_id": "A-2024-asset-disposal",
+      "capture_groups": [
+        "target",
+        "comparative"
+      ],
+      "named_capture_pattern": "(?P<label>.+?)\\s+(?P<note>\\d+)\\s+(?P<target>\\(?[0-9][0-9,]*(?:\\.[0-9]+)?\\)?)\\s+(?P<comparative>\\(?[0-9][0-9,]*(?:\\.[0-9]+)?\\)?)",
+      "operand_names": [
+        "target"
+      ],
+      "transform_expression_id": "identity",
+      "formula": "target",
+      "extraction_spec_id": "roic-extract-asset_disposal_gain_loss-v3",
+      "role_id": "nopat.asset_disposal_gain_loss",
+      "concept_id": "asset_disposal_gain_loss",
+      "fiscal_year": "cell_year",
+      "source_report_year": "registry_metadata",
+      "source_page": "registry_locator",
+      "printed_page": "registry_locator",
+      "note": "registry_locator",
+      "table": "registry_locator",
+      "row": "registry_locator",
+      "column": "registry_locator",
+      "period_type": "registry_period",
+      "conversion_multiplier": "registry_unit_conversion",
+      "extraction_method_version": "pypdf_embedded_text_regex_v3",
+      "deterministic_transform": "identity",
+      "captured_operand_names": [
+        "target"
+      ]
+    },
+    {
+      "version": "3",
+      "source_roles": [
+        "issuer_official",
+        "exchange_official"
+      ],
+      "source_unit": "人民币百万元",
+      "sign_rule": "source_accounting_sign_identity",
+      "rounding_policy": "ROUND_HALF_EVEN",
+      "review_status": "verified",
+      "ocr_used": false,
+      "llm_used": false,
+      "acquisition_id": "B-2023-2024-nci",
+      "capture_groups": [
+        "target",
+        "comparative"
+      ],
+      "named_capture_pattern": "少数股东权益\\s+(?P<note>\\d+)\\s+(?P<target>\\(?[0-9][0-9,]*(?:\\.[0-9]+)?\\)?)\\s+(?P<comparative>\\(?[0-9][0-9,]*(?:\\.[0-9]+)?\\)?)",
+      "operand_names": [
+        "target"
+      ],
+      "transform_expression_id": "identity",
+      "formula": "target",
+      "extraction_spec_id": "roic-extract-nci-v3",
+      "role_id": "invested_capital.non_controlling_interest",
+      "concept_id": "non_controlling_interest",
+      "fiscal_year": "cell_year",
+      "source_report_year": "registry_metadata",
+      "source_page": "registry_locator",
+      "printed_page": "registry_locator",
+      "note": "registry_locator",
+      "table": "registry_locator",
+      "row": "registry_locator",
+      "column": "registry_locator",
+      "period_type": "registry_period",
+      "conversion_multiplier": "registry_unit_conversion",
+      "extraction_method_version": "pypdf_embedded_text_regex_v3",
+      "deterministic_transform": "identity",
+      "captured_operand_names": [
+        "target"
+      ]
+    },
+    {
+      "version": "3",
+      "source_roles": [
+        "issuer_official",
+        "exchange_official"
+      ],
+      "source_unit": "亿元",
+      "sign_rule": "source_accounting_sign_identity",
+      "rounding_policy": "ROUND_HALF_EVEN",
+      "review_status": "verified",
+      "ocr_used": false,
+      "llm_used": false,
+      "acquisition_id": "C-2023-2024-restricted-cash",
+      "capture_groups": [
+        "target",
+        "comparative"
+      ],
+      "named_capture_pattern": "账面价值为 (?P<target>\\(?[0-9][0-9,]*(?:\\.[0-9]+)?\\)?) 亿元.*?：(?P<comparative>\\(?[0-9][0-9,]*(?:\\.[0-9]+)?\\)?) 亿元",
+      "operand_names": [
+        "target"
+      ],
+      "transform_expression_id": "identity",
+      "formula": "target",
+      "extraction_spec_id": "roic-extract-restricted-cash-2023-v3",
+      "role_id": "invested_capital.restricted_cash",
+      "concept_id": "restricted_cash",
+      "fiscal_year": "cell_year",
+      "source_report_year": "registry_metadata",
+      "source_page": "registry_locator",
+      "printed_page": "registry_locator",
+      "note": "registry_locator",
+      "table": "registry_locator",
+      "row": "registry_locator",
+      "column": "registry_locator",
+      "period_type": "registry_period",
+      "conversion_multiplier": "registry_unit_conversion",
+      "extraction_method_version": "pypdf_embedded_text_regex_v3",
+      "deterministic_transform": "identity",
+      "captured_operand_names": [
+        "target"
+      ]
+    },
+    {
+      "version": "3",
+      "source_roles": [
+        "issuer_official",
+        "exchange_official"
+      ],
+      "source_unit": "亿元",
+      "sign_rule": "source_accounting_sign_identity",
+      "rounding_policy": "ROUND_HALF_EVEN",
+      "review_status": "verified",
+      "ocr_used": false,
+      "llm_used": false,
+      "acquisition_id": "C-2023-2024-restricted-cash",
+      "capture_groups": [
+        "absence_statement"
+      ],
+      "named_capture_pattern": "(?P<absence_statement>无保证金账户存款作为美元借款质押)",
+      "operand_names": [],
+      "transform_expression_id": "explicit_absence",
+      "formula": "0",
+      "explicit_absence_rule": "matched absence statement required",
+      "extraction_spec_id": "roic-extract-restricted-cash-2024-v3",
+      "role_id": "invested_capital.restricted_cash",
+      "concept_id": "restricted_cash",
+      "fiscal_year": "cell_year",
+      "source_report_year": "registry_metadata",
+      "source_page": "registry_locator",
+      "printed_page": "registry_locator",
+      "note": "registry_locator",
+      "table": "registry_locator",
+      "row": "registry_locator",
+      "column": "registry_locator",
+      "period_type": "registry_period",
+      "conversion_multiplier": "registry_unit_conversion",
+      "extraction_method_version": "pypdf_embedded_text_regex_v3",
+      "deterministic_transform": "explicit_absence",
+      "captured_operand_names": []
+    }
+  ]
+}

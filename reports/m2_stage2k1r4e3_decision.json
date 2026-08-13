@@ -1,0 +1,47 @@
+{
+ "schema": "m2_stage2k1r4e3_decision",
+ "version": "1.0",
+ "symbol": "601857.SH",
+ "decision": "ALTERNATIVE_SECONDARY_PROVIDER_INTEGRATION_ALLOWED",
+ "reason": "qualified_provider_selected",
+ "selected_provider": "tencent_via_akshare",
+ "selected_transport": "akshare",
+ "selected_underlying_provider": "tencent",
+ "selected_provider_dependency": "akshare",
+ "selected_object_sha256": "d760923aae952d9ba400d792d4155b4c6dfa3b728210de64001aa6024c8f7dd7",
+ "selected_table_digest": "e6cbee888949b13c0ee47a6193d58026ad6da72a332ffd66948ee4bc4b908cda",
+ "selected_endpoint_identity": "web.ifzq.gtimg.cn",
+ "selected_row_count": 1351,
+ "selected_first_trade_date": "2021-01-04",
+ "selected_last_trade_date": "2026-07-31",
+ "selected_comparison_digest": "21a1ad83f3f6de6e6260c3db210793bf5ba7290946b4398e3d69636df7dc0013",
+ "selected_mismatch_ledger_digest": "d1dba16ca46cdd059e745e88b95298bbf2192eca929c51e004893f37f8928b8c",
+ "pytdx_probe_runtime_version": "1.72",
+ "pytdx_core_dependency": false,
+ "limitations": [],
+ "candidates": [
+  {
+   "candidate_id": "tencent_via_akshare",
+   "classification": "QUALIFIED"
+  },
+  {
+   "candidate_id": "sina_via_akshare",
+   "classification": "QUALIFIED"
+  },
+  {
+   "candidate_id": "pytdx_tongdaxin",
+   "classification": "BLOCKED"
+  },
+  {
+   "candidate_id": "tushare_pro_optional",
+   "classification": "BLOCKED"
+  }
+ ],
+ "registry_v3_unchanged": true,
+ "candidate_v2_published": false,
+ "percentile_computed": false,
+ "scoring_unchanged": true,
+ "default_db_unchanged": true,
+ "peer_acquisition": "NOT_ALLOWED",
+ "m3_started": false
+}

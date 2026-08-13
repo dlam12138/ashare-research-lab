@@ -1,0 +1,39 @@
+{
+  "contract": "capex_cash_restatement_evidence_v1",
+  "symbol": "601857.SH",
+  "concept_id": "cash_paid_for_fixed_assets",
+  "target_fiscal_year": 2023,
+  "evidence_fiscal_year": 2024,
+  "evidence_bundle_path": "acceptance/fixtures/official_facts/601857.SH/2024_annual.json",
+  "evidence_bundle_sha256": "d596ebfc9404cc6bca7520de10ddec5647830212daa946ff25b9e8fe9cc54176",
+  "evidence_bundle_git_blob": "03a2ec2813c31676aebed20e4df50042f42f140b",
+  "original_raw_value": "282519",
+  "later_comparative_raw_value": "282508",
+  "raw_unit": "人民币百万元",
+  "changed": true,
+  "disclosed_change_reason": "2024年同一控制下企业合并中国石油集团电能有限公司，比较数据相应重列",
+  "reason_reference": "PDF page 115 / printed page 113",
+  "review_status": "reviewed_changed",
+  "company": {
+    "announcement_date": "2025-03-30",
+    "source_page": "PDF page 116 / printed page 114",
+    "pdf_page": 116,
+    "printed_page": 114,
+    "source_table": "2024年度合并及公司现金流量表",
+    "source_label": "购建固定资产、油气资产、无形资产和其他长期资产支付的现金",
+    "column_label": "2023年度合并",
+    "source_display_value": "(282,508)",
+    "manual_review_status": "visually_verified_twice"
+  },
+  "exchange": {
+    "announcement_date": "2025-03-31",
+    "source_page": "PDF page 116 / printed page 114",
+    "pdf_page": 116,
+    "printed_page": 114,
+    "source_table": "2024年度合并及公司现金流量表",
+    "source_label": "购建固定资产、油气资产、无形资产和其他长期资产支付的现金",
+    "column_label": "2023年度合并",
+    "source_display_value": "(282,508)",
+    "manual_review_status": "visually_verified_twice"
+  }
+}

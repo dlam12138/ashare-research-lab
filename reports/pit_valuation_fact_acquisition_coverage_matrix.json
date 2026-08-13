@@ -1,0 +1,135 @@
+{
+  "schema": "pit_valuation_fact_acquisition_coverage_matrix_v1",
+  "version": "1.0",
+  "date": "2026-08-04",
+  "symbol": "601857.SH",
+  "stage": "M2 Stage 2K.1R4C",
+  "convention": "A_SHARE_PRICE_PER_SHARE_VALUATION_CONVENTION",
+  "status": "FROZEN_PLAN_ONLY",
+  "collection_started": false,
+  "non_production": true,
+  "score_eligible": false,
+  "coverage_status_enum": [
+    "current_facts_present",
+    "current_facts_partial",
+    "acquisition_required"
+  ],
+  "requirements": [
+    {
+      "requirement_id": "FIN-01",
+      "metric_id": "pe_ttm_net_profit",
+      "fact": "net_profit_attributable_to_parent",
+      "period_types_required": [
+        "annual",
+        "quarterly_cumulative",
+        "single_quarter"
+      ],
+      "current_period_types": [
+        "annual"
+      ],
+      "coverage_status": "acquisition_required",
+      "gap": "annual only; no quarterly cumulative, no single-quarter",
+      "ttm_constructible": false,
+      "warmup_start_required": true,
+      "blocks_3y": true,
+      "blocks_5y": true
+    },
+    {
+      "requirement_id": "FIN-02",
+      "metric_id": "pb_equity",
+      "fact": "equity_attributable_to_parent",
+      "period_types_required": [
+        "quarterly_end",
+        "year_end"
+      ],
+      "current_period_types": [
+        "year_end"
+      ],
+      "coverage_status": "acquisition_required",
+      "gap": "year-end instant only; no MRQ",
+      "ttm_constructible": false,
+      "warmup_start_required": false,
+      "blocks_3y": true,
+      "blocks_5y": true
+    },
+    {
+      "requirement_id": "FIN-03",
+      "metric_id": "ps_ttm_revenue",
+      "fact": "revenue",
+      "period_types_required": [
+        "annual",
+        "quarterly_cumulative",
+        "single_quarter"
+      ],
+      "current_period_types": [
+        "annual"
+      ],
+      "coverage_status": "acquisition_required",
+      "gap": "annual only; no quarterly cumulative, no single-quarter",
+      "ttm_constructible": false,
+      "warmup_start_required": true,
+      "blocks_3y": true,
+      "blocks_5y": true
+    },
+    {
+      "requirement_id": "FIN-04",
+      "metric_id": "share_capital_total_ordinary",
+      "fact": "total_ordinary_shares_at_period_end",
+      "period_types_required": [
+        "period_end_with_effective_dates",
+        "corporate_actions"
+      ],
+      "current_period_types": [
+        "total_ordinary_constant"
+      ],
+      "coverage_status": "acquisition_required",
+      "gap": "constant total-ordinary (dividend DPS basis) only; no canonical effective-date/corporate-action timeline",
+      "ttm_constructible": false,
+      "warmup_start_required": false,
+      "blocks_3y": true,
+      "blocks_5y": true
+    },
+    {
+      "requirement_id": "FIN-05",
+      "metric_id": "share_capital_weighted_average",
+      "fact": "weighted_average_total_ordinary_shares",
+      "period_types_required": [
+        "period_with_effective_dates"
+      ],
+      "current_period_types": [],
+      "coverage_status": "acquisition_required",
+      "gap": "not present in the fact inventory",
+      "ttm_constructible": false,
+      "warmup_start_required": false,
+      "blocks_3y": true,
+      "blocks_5y": true
+    },
+    {
+      "requirement_id": "TIME-01",
+      "metric_id": "available_at_and_restatement",
+      "fact": "available_at / restatement_version / supersedes_fact_id",
+      "period_types_required": [
+        "per_fact"
+      ],
+      "current_period_types": [
+        "annual_facts_carry_them"
+      ],
+      "coverage_status": "current_facts_present",
+      "gap": "annual facts already carry available_at and restatement; quarterly facts must carry the same contract",
+      "ttm_constructible": false,
+      "warmup_start_required": false,
+      "blocks_3y": false,
+      "blocks_5y": false
+    }
+  ],
+  "decision": "A_SHARE_CONVENTION_FROZEN_ACQUISITION_ALLOWED",
+  "acquisition_scope": "official quarterly fact collection (net profit, revenue, equity, share counts) per the acquisition contract",
+  "not_allowed_until_later": [
+    "PIT daily PE/PB/PS construction",
+    "historical valuation percentile",
+    "valuation score update",
+    "peer acquisition",
+    "production score",
+    "M3"
+  ]
+}

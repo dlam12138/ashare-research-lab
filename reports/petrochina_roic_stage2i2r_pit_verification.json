@@ -1,0 +1,13 @@
+{
+  "schema": "roic_stage2i2_pit_restatement_verification_v1",
+  "status": "PASS",
+  "fy2023_original_comparative": {
+    "non_controlling_interest": "unchanged_184211_RMB_million_corroboration_no_new_economic_version",
+    "restricted_cash": "unchanged_prior_year_restricted_cash_corroboration_no_new_economic_version",
+    "associate_and_jv": "combined_scope_remains_ambiguous_no_version_created"
+  },
+  "supersession_edges_created": 0,
+  "backward_time_edges": 0,
+  "cross_context_edges": 0,
+  "active_fact_selection_as_of": "2026-08-03"
+}

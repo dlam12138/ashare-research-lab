@@ -1,0 +1,227 @@
+{
+ "schema": "petrochina_secondary_provider_comparison_matrix_v1",
+ "symbol": "601857.SH",
+ "primary_provider": "baostock",
+ "primary_object_sha256": "c6771aa57b0210ee558a91c7bdb87cc346ce910a395eda057cb9d7224475ab67",
+ "tolerance": "0.01",
+ "event_windows": [
+  {
+   "trade_date": "2021-09-17",
+   "type": "ex_dividend",
+   "before": [
+    "2021-09-15",
+    "2021-09-16"
+   ],
+   "after": [
+    "2021-09-22",
+    "2021-09-23"
+   ]
+  },
+  {
+   "trade_date": "2022-06-28",
+   "type": "ex_dividend",
+   "before": [
+    "2022-06-24",
+    "2022-06-27"
+   ],
+   "after": [
+    "2022-06-29",
+    "2022-06-30"
+   ]
+  },
+  {
+   "trade_date": "2022-09-20",
+   "type": "ex_dividend",
+   "before": [
+    "2022-09-16",
+    "2022-09-19"
+   ],
+   "after": [
+    "2022-09-21",
+    "2022-09-22"
+   ]
+  },
+  {
+   "trade_date": "2024-01-15",
+   "type": "control_non_event",
+   "before": [
+    "2024-01-11",
+    "2024-01-12"
+   ],
+   "after": [
+    "2024-01-16",
+    "2024-01-17"
+   ]
+  }
+ ],
+ "matrix": [
+  {
+   "candidate_id": "tencent_via_akshare",
+   "classification": "QUALIFIED",
+   "comparison": {
+    "candidate_row_count": 1351,
+    "primary_row_count": 1351,
+    "common_trade_days": 1351,
+    "primary_only_dates": [],
+    "candidate_only_dates": [],
+    "max_close_difference": "0",
+    "tolerance": "0.01",
+    "nonzero_close_difference_count": 0,
+    "over_tolerance_count": 0,
+    "changed_ohlc_count": 0,
+    "first_mismatch": null,
+    "mismatch_ledger_digest": "d1dba16ca46cdd059e745e88b95298bbf2192eca929c51e004893f37f8928b8c",
+    "comparison_digest": "21a1ad83f3f6de6e6260c3db210793bf5ba7290946b4398e3d69636df7dc0013"
+   },
+   "adjustment": {
+    "status": "TRUSTED",
+    "window_count": 4,
+    "untrusted_windows": [],
+    "windows": [
+     {
+      "anchor": "2021-09-17",
+      "type": "ex_dividend",
+      "candidate_close_tracks_primary": true,
+      "missing": [],
+      "status": "TRUSTED"
+     },
+     {
+      "anchor": "2022-06-28",
+      "type": "ex_dividend",
+      "candidate_close_tracks_primary": true,
+      "missing": [],
+      "status": "TRUSTED"
+     },
+     {
+      "anchor": "2022-09-20",
+      "type": "ex_dividend",
+      "candidate_close_tracks_primary": true,
+      "missing": [],
+      "status": "TRUSTED"
+     },
+     {
+      "anchor": "2024-01-15",
+      "type": "control_non_event",
+      "candidate_close_tracks_primary": true,
+      "missing": [],
+      "status": "TRUSTED"
+     }
+    ]
+   },
+   "limitations": [],
+   "object_sha256": "d760923aae952d9ba400d792d4155b4c6dfa3b728210de64001aa6024c8f7dd7",
+   "table_digest": "e6cbee888949b13c0ee47a6193d58026ad6da72a332ffd66948ee4bc4b908cda",
+   "independence_evidence": {
+    "transport_library": "akshare",
+    "underlying_provider": "tencent",
+    "endpoint_host": "web.ifzq.gtimg.cn",
+    "function_name": "stock_zh_a_hist_tx",
+    "request_parameters": {
+     "symbol": "sh601857",
+     "start_date": "20210101",
+     "end_date": "20260731",
+     "adjust": ""
+    },
+    "provider_version": "1.18.79",
+    "endpoint_host_not_push2his_eastmoney_com": true,
+    "underlying_provider_not_eastmoney": true
+   }
+  },
+  {
+   "candidate_id": "sina_via_akshare",
+   "classification": "QUALIFIED",
+   "comparison": {
+    "candidate_row_count": 1351,
+    "primary_row_count": 1351,
+    "common_trade_days": 1351,
+    "primary_only_dates": [],
+    "candidate_only_dates": [],
+    "max_close_difference": "0",
+    "tolerance": "0.01",
+    "nonzero_close_difference_count": 0,
+    "over_tolerance_count": 0,
+    "changed_ohlc_count": 0,
+    "first_mismatch": null,
+    "mismatch_ledger_digest": "d1dba16ca46cdd059e745e88b95298bbf2192eca929c51e004893f37f8928b8c",
+    "comparison_digest": "21a1ad83f3f6de6e6260c3db210793bf5ba7290946b4398e3d69636df7dc0013"
+   },
+   "adjustment": {
+    "status": "TRUSTED",
+    "window_count": 4,
+    "untrusted_windows": [],
+    "windows": [
+     {
+      "anchor": "2021-09-17",
+      "type": "ex_dividend",
+      "candidate_close_tracks_primary": true,
+      "missing": [],
+      "status": "TRUSTED"
+     },
+     {
+      "anchor": "2022-06-28",
+      "type": "ex_dividend",
+      "candidate_close_tracks_primary": true,
+      "missing": [],
+      "status": "TRUSTED"
+     },
+     {
+      "anchor": "2022-09-20",
+      "type": "ex_dividend",
+      "candidate_close_tracks_primary": true,
+      "missing": [],
+      "status": "TRUSTED"
+     },
+     {
+      "anchor": "2024-01-15",
+      "type": "control_non_event",
+      "candidate_close_tracks_primary": true,
+      "missing": [],
+      "status": "TRUSTED"
+     }
+    ]
+   },
+   "limitations": [],
+   "object_sha256": "cd02995e13633b3b2baa956b00b2eaa139b12c2f596b3882a377101ec6fb5a70",
+   "table_digest": "e0c5429feccb5bbe101a33af027e492cf0a8345ea905a461f850d78d638b086c",
+   "independence_evidence": {
+    "transport_library": "akshare",
+    "underlying_provider": "sina",
+    "endpoint_host": "finance.sina.com.cn",
+    "function_name": "stock_zh_a_daily",
+    "request_parameters": {
+     "symbol": "sh601857",
+     "start_date": "20210101",
+     "end_date": "20260731",
+     "adjust": ""
+    },
+    "provider_version": "1.18.79",
+    "endpoint_host_not_push2his_eastmoney_com": true,
+    "underlying_provider_not_eastmoney": true
+   }
+  },
+  {
+   "candidate_id": "pytdx_tongdaxin",
+   "classification": "BLOCKED",
+   "comparison": null,
+   "adjustment": null,
+   "limitations": [
+    "pytdx_tongdaxin acquisition failed after 3 attempts: "
+   ],
+   "object_sha256": null,
+   "table_digest": null,
+   "independence_evidence": null
+  },
+  {
+   "candidate_id": "tushare_pro_optional",
+   "classification": "BLOCKED",
+   "comparison": null,
+   "adjustment": null,
+   "limitations": [
+    "credential_not_available"
+   ],
+   "object_sha256": null,
+   "table_digest": null,
+   "independence_evidence": null
+  }
+ ]
+}

@@ -1,0 +1,1332 @@
+{
+  "as_of_trade_date": "2026-07-31",
+  "canonical_fact_input": {
+    "eligible_fact_count": 67,
+    "fact_count": 201,
+    "identity_status": "pass",
+    "logical_name": "net_profit.duckdb",
+    "pit_snapshot_dates": [
+      "2022-03-31",
+      "2022-04-01",
+      "2023-03-29",
+      "2023-03-30",
+      "2024-03-25",
+      "2024-03-26",
+      "2025-03-30",
+      "2025-03-31",
+      "2026-03-29",
+      "2026-03-30",
+      "2026-07-31"
+    ],
+    "required_concept_coverage": {
+      "cash_paid_for_fixed_assets": 6,
+      "equity_attributable_to_parent": 8,
+      "net_profit_attributable_to_parent": 7,
+      "operating_cash_flow": 6,
+      "revenue": 6
+    },
+    "schema_version": "2.1",
+    "sha256": "47a09e98a8062f72b6907bc6ec55927588e4a815517ba8b4c0b595507ada7f0e",
+    "used_fact_count": 33,
+    "used_fact_ids": [
+      "00a7319ffc9aeff068a71d1895a8ba05c042b289894d1e3e9e2a65aa3c5521f4",
+      "0263db7efe1b96fe00743e64af87eea76d75dce1365941139e9a87fe09be4129",
+      "109d4cdd03072680a5cb5325bbb38b40fcb0f834aac8661daa8db0c7ff0564c4",
+      "19e4884fedb6b2d37a89de73f4c44f8930ea620e7e817145cdb5377132786c5c",
+      "1b1612e8ca2f32f885d577d67f83bb02a4a7e2f8f220b64f25dbd3be7f4161d6",
+      "1e15d297a93bb8d290dd7a9282fa14473ccc38b1f2d4927caf1007ec5b2fb3f8",
+      "32a6f0876918e0178d246730c14c1d542f10d6aa953d233b7629ac2033125bd4",
+      "3356c5c1cb02b386d2d6d0720c81109f13191aad4d453ead86553267ab3c2e43",
+      "3ca12114806d0fc07bedfa0e78ee5c9b8c086d7d377aa27c2dfdb1d998bbd0e9",
+      "45a8911a4b1626157c179dc44880da947bde9dfda937d18f8464a9381606eb90",
+      "460056dc565a2ee49c9906554a29816a89ef25669390ecf3c6af407e5721e0f1",
+      "4d50fd7245c2c29409924c1cf4607c0d8d65530dab74beefb2c6208337fb4f93",
+      "4ec845de58f9c0d120bd06e783b234885605cb597cd6df915491250b268d1561",
+      "5dc4c375138e6cac5a26866d2120fc9d6bc68b69a19dabd56902ae0a6660b34f",
+      "5fde7bb54b26f2528b72cc04cc6a28289455e25f1faa4d78dceb9988e82e5a55",
+      "62c9961e2e5a2c19ba3885bf212764b706645c5c1b59d5e65bf23a6c1faf3e43",
+      "70b275562a63b6acd02b7aa4e9ef6cad6ac9fa9e5c55a6b1fd4d655280f47ccb",
+      "7eb6dbc54c5804849fc89cbfb3cb6434406d8cb4e38d29498f2c5eafbd8d1289",
+      "8d62e85945e56a637bf65425257231d793e9e2e61fb1ccd72c2566c257e95577",
+      "8fc1ab550cae3ec8ad73de2a0328dcc730bb76ee9d1abe89c04eeb884b8cb0dd",
+      "9009dbb2ddaf6981e33d68fafd2cce681c0c87e591d30a1fa366d0051b38df6c",
+      "932e9eb9ef2ee654f0a31036eb5bad324231c6274bbc5b9befe6d1c216b61da2",
+      "9a181c95213fbd68920bcf490a3903e8d608cf86505a4ff5524710b0c188e2a7",
+      "ad3b6e2a3675ce7e8a8e16bda427597b72d28e30808281e17cd4aa549949357a",
+      "b6dbcb21298994846d241b265f8847e2819642b47259732bd45670f953f0d510",
+      "c1f4119d6a60dd2e7d093e0d7f33c56603dcea3ea6cd3f9ea32bef6dc342db21",
+      "d082020ffd54095ac923e545c0c540449a7b8a3b7b1c78872b184423b9af065f",
+      "d3f70991ddb193324747fd7673274da61d56ffbfbac9a8a813ef3a1467072603",
+      "d9b223cb06f96359793d28cac41a30c068834b4979c358f48cca6af99734c2f4",
+      "e695784ac714744d5d8250e9b5efa4dd91291dd509e84719e9d534a04cc0c91d",
+      "edbac03ffc9b1bde84db242ece1cf7e5c8eddeb7e33337fbcc2cf3b04515d196",
+      "efe1cc1b1d0cdb4b09b828dd5a658295585ff5d398d0a51621d651110f75b6d5",
+      "fb2c528c6b9009465dfbed06dd1a76f7277ec2c78655d57aeb0da541f62ab534"
+    ],
+    "version_chain_status": "pass"
+  },
+  "contract": "petrochina_value_profile_v1",
+  "capital_return": {
+    "roe": {
+      "status": "trusted_existing_results_unchanged",
+      "methodology_version": "capital_return_methodology_v1",
+      "acceptance_references": [
+        "acceptance/m2_stage2dc_roe_roa_methodology_contract.md",
+        "acceptance/m2_stage2dd_petrochina_roe_metric_extension.md"
+      ],
+      "score_eligible": false
+    },
+    "roa": {
+      "status": "trusted_existing_results_unchanged",
+      "methodology_version": "capital_return_methodology_v1",
+      "acceptance_references": [
+        "acceptance/m2_stage2dc_roe_roa_methodology_contract.md",
+        "acceptance/m2_stage2df_petrochina_roa_metric_extension.md"
+      ],
+      "score_eligible": false
+    },
+    "roic": {
+      "status": "not_computable_under_strict_evidence_contract",
+      "decision_code": "ROIC_NOT_COMPUTABLE_UNDER_STRICT_EVIDENCE_CONTRACT",
+      "methodology_version": "value_evaluation_methodology_roic_v1_and_plan_v3",
+      "missing_gap_ids": [
+        "M2G-ROIC-001",
+        "M2G-ROIC-002",
+        "M2G-ROIC-003",
+        "M2G-ROIC-004",
+        "M2G-ROIC-005",
+        "M2G-ROIC-006",
+        "M2G-ROIC-007"
+      ],
+      "shadow_status": "not_run",
+      "production_metric_created": false,
+      "score_eligible": false,
+      "decision_record": "docs/decisions/ADR-ROIC-001-strict-evidence-non-computability.md",
+      "gap_ledger": "reports/m2_explicit_gap_ledger.json",
+      "limitations": [
+        "Direct operating-tax evidence is not separately disclosed for the frozen numerator scope.",
+        "Complete associate and joint-venture balances are not separately disclosed for both denominator dates.",
+        "Non-operating financial-asset deductions lack official purpose and linked-income proof."
+      ]
+    }
+  },
+  "current_risk_veto_profile": {
+    "as_of_date": "2026-08-02",
+    "completeness_status": "complete",
+    "contract_version": "risk_universe_evaluation_v1",
+    "event_supersession_status": "pass",
+    "expected_risk_count": 8,
+    "formal_run_status": "conditional_pass",
+    "lineage_status": "pass",
+    "methodology_version": "risk_veto_methodology_v2",
+    "missing_evidence_risk_ids": [
+      "formal_regulatory_investigation_or_major_discipline",
+      "controlling_shareholder_fund_occupation_or_related_guarantee"
+    ],
+    "missing_slot_count": 0,
+    "observations": [
+      {
+        "active_event_ids": [
+          "risk_event_8bee0de3520d1d850fb69e62",
+          "risk_event_3119b577d7a0333d956162a8",
+          "risk_event_8fc587387d228b348925b94f",
+          "risk_event_e2971013eb4296365439685a",
+          "risk_event_1ca5d72d21d7965611a8887a"
+        ],
+        "all_evidence_ids": [
+          "pc-2021-exchange-annual",
+          "pc-2021-issuer-annual",
+          "pc-2022-exchange-annual",
+          "pc-2022-issuer-annual",
+          "pc-2023-exchange-annual",
+          "pc-2023-issuer-annual",
+          "pc-2024-exchange-annual",
+          "pc-2024-issuer-annual",
+          "pc-2025-exchange-annual",
+          "pc-2025-issuer-annual"
+        ],
+        "applied_supersession_edges": [],
+        "available_at": "2026-08-02T05:30:00+08:00",
+        "bounded_search_complete": true,
+        "code_version": "stage2h1r_risk_veto_v1",
+        "conclusion_available_at": "2026-08-02T05:30:00+08:00",
+        "contract": "risk_veto_observation_v3",
+        "deterministic_id": "risk_observation_d774875b76fd626f8dc3111a",
+        "evaluation_as_of_date": "2026-08-02",
+        "event_version_resolution_status": "pass",
+        "input_evidence_ids": [
+          "pc-2021-issuer-annual",
+          "pc-2022-issuer-annual",
+          "pc-2023-issuer-annual",
+          "pc-2024-issuer-annual",
+          "pc-2025-issuer-annual"
+        ],
+        "inputs": {
+          "bounded_search_complete": true,
+          "pit_visible_event_count": 5,
+          "triggered_event_count": 0
+        },
+        "lineage_status": "pass",
+        "missing_reasons": [],
+        "observation_id": "risk_observation_d774875b76fd626f8dc3111a",
+        "risk_id": "modified_audit_opinion",
+        "score_eligible": false,
+        "search_available_at": "2026-08-02T05:30:00+08:00",
+        "search_contract_version": "bounded_search_register_v2",
+        "search_coverage_end": "2025-12-31",
+        "search_gap_reasons": [],
+        "search_register_id": "pc-search-modified-audit-opinion-v2",
+        "status": "not_observed_within_bounded_evidence",
+        "superseded_event_ids": [],
+        "supersedes": null,
+        "supplemental_evidence_ids": [
+          "pc-2021-exchange-annual",
+          "pc-2022-exchange-annual",
+          "pc-2023-exchange-annual",
+          "pc-2024-exchange-annual",
+          "pc-2025-exchange-annual"
+        ],
+        "symbol": "601857.SH",
+        "trigger_version": "modified_audit_opinion_v1",
+        "warnings": [
+          "key audit matters are separate from opinion modification"
+        ]
+      },
+      {
+        "active_event_ids": [
+          "risk_event_de7b71e55bdb7cb390b127fd",
+          "risk_event_dfae6331a6d926cdb03f33b8",
+          "risk_event_3f1478109151c86ea1332a35",
+          "risk_event_5ae166e7887d8f8c054c4d83",
+          "risk_event_6fcddc4e8c091eafe19fb635"
+        ],
+        "all_evidence_ids": [
+          "pc-2021-exchange-annual",
+          "pc-2021-issuer-annual",
+          "pc-2022-exchange-annual",
+          "pc-2022-issuer-annual",
+          "pc-2023-exchange-annual",
+          "pc-2023-issuer-annual",
+          "pc-2024-exchange-annual",
+          "pc-2024-issuer-annual",
+          "pc-2025-exchange-annual",
+          "pc-2025-issuer-annual"
+        ],
+        "applied_supersession_edges": [],
+        "available_at": "2026-08-02T05:30:00+08:00",
+        "bounded_search_complete": true,
+        "code_version": "stage2h1r_risk_veto_v1",
+        "conclusion_available_at": "2026-08-02T05:30:00+08:00",
+        "contract": "risk_veto_observation_v3",
+        "deterministic_id": "risk_observation_36900a36e77ecf40dd8c2c42",
+        "evaluation_as_of_date": "2026-08-02",
+        "event_version_resolution_status": "pass",
+        "input_evidence_ids": [
+          "pc-2021-exchange-annual",
+          "pc-2022-issuer-annual",
+          "pc-2023-issuer-annual",
+          "pc-2024-issuer-annual",
+          "pc-2025-issuer-annual"
+        ],
+        "inputs": {
+          "bounded_search_complete": true,
+          "pit_visible_event_count": 5,
+          "triggered_event_count": 0
+        },
+        "lineage_status": "pass",
+        "missing_reasons": [],
+        "observation_id": "risk_observation_36900a36e77ecf40dd8c2c42",
+        "risk_id": "going_concern_material_uncertainty",
+        "score_eligible": false,
+        "search_available_at": "2026-08-02T05:30:00+08:00",
+        "search_contract_version": "bounded_search_register_v2",
+        "search_coverage_end": "2025-12-31",
+        "search_gap_reasons": [],
+        "search_register_id": "pc-search-going-concern-v2",
+        "status": "not_observed_within_bounded_evidence",
+        "superseded_event_ids": [],
+        "supersedes": null,
+        "supplemental_evidence_ids": [
+          "pc-2021-issuer-annual",
+          "pc-2022-exchange-annual",
+          "pc-2023-exchange-annual",
+          "pc-2024-exchange-annual",
+          "pc-2025-exchange-annual"
+        ],
+        "symbol": "601857.SH",
+        "trigger_version": "going_concern_material_uncertainty_v1",
+        "warnings": [
+          "bounded annual-report scope; no permanent absence claim"
+        ]
+      },
+      {
+        "active_event_ids": [
+          "risk_event_4874082c486b6e09b8ed2089"
+        ],
+        "all_evidence_ids": [],
+        "applied_supersession_edges": [],
+        "available_at": "2026-08-02T05:40:00+08:00",
+        "bounded_search_complete": false,
+        "code_version": "stage2h1r_risk_veto_v1",
+        "conclusion_available_at": "2026-08-02T05:40:00+08:00",
+        "contract": "risk_veto_observation_v3",
+        "deterministic_id": "risk_observation_feff9792a99dd226f161cdb5",
+        "evaluation_as_of_date": "2026-08-02",
+        "event_version_resolution_status": "pass",
+        "input_evidence_ids": [],
+        "inputs": {
+          "bounded_search_complete": false,
+          "pit_visible_event_count": 1,
+          "triggered_event_count": 0
+        },
+        "lineage_status": "pass",
+        "missing_reasons": [
+          "bounded search register is incomplete",
+          "historical CSRC/SSE regulatory result universe was not fully retrievable in bounded search"
+        ],
+        "observation_id": "risk_observation_feff9792a99dd226f161cdb5",
+        "risk_id": "formal_regulatory_investigation_or_major_discipline",
+        "score_eligible": false,
+        "search_available_at": "2026-08-02T05:40:00+08:00",
+        "search_contract_version": "bounded_search_register_v2",
+        "search_coverage_end": "2026-08-02",
+        "search_gap_reasons": [
+          "CSRC/SSE result pages may require interactive pagination or anti-bot challenge",
+          "No unrestricted historical API export was available in this bounded run"
+        ],
+        "search_register_id": "pc-search-regulatory-v2",
+        "status": "missing_evidence",
+        "superseded_event_ids": [],
+        "supersedes": null,
+        "supplemental_evidence_ids": [],
+        "symbol": "601857.SH",
+        "trigger_version": "formal_regulatory_investigation_or_major_discipline_v1",
+        "warnings": [
+          "routine inquiries are not major discipline; no negative conclusion is drawn"
+        ]
+      },
+      {
+        "active_event_ids": [
+          "risk_event_39077512a87c551b4e2d89d9",
+          "risk_event_5482ea3f758f97d5c29b7f91",
+          "risk_event_e375ac636f2a455b9d8fde78",
+          "risk_event_d1d27eed7f9ba535c6165467",
+          "risk_event_b9fecf322b2ddba0fa84ce96"
+        ],
+        "all_evidence_ids": [
+          "pc-2021-exchange-annual",
+          "pc-2022-exchange-annual",
+          "pc-2023-exchange-annual",
+          "pc-2024-exchange-annual",
+          "pc-2025-exchange-annual"
+        ],
+        "applied_supersession_edges": [],
+        "available_at": "2026-08-02T05:50:00+08:00",
+        "bounded_search_complete": true,
+        "code_version": "stage2h1r_risk_veto_v1",
+        "conclusion_available_at": "2026-08-02T05:50:00+08:00",
+        "contract": "risk_veto_observation_v3",
+        "deterministic_id": "risk_observation_052c3846c2a6bfa327cfb5cc",
+        "evaluation_as_of_date": "2026-08-02",
+        "event_version_resolution_status": "pass",
+        "input_evidence_ids": [
+          "pc-2021-exchange-annual",
+          "pc-2022-exchange-annual",
+          "pc-2023-exchange-annual",
+          "pc-2024-exchange-annual",
+          "pc-2025-exchange-annual"
+        ],
+        "inputs": {
+          "bounded_search_complete": true,
+          "pit_visible_event_count": 5,
+          "triggered_event_count": 0
+        },
+        "lineage_status": "pass",
+        "missing_reasons": [],
+        "observation_id": "risk_observation_052c3846c2a6bfa327cfb5cc",
+        "risk_id": "material_error_restatement",
+        "score_eligible": false,
+        "search_available_at": "2026-08-02T05:50:00+08:00",
+        "search_contract_version": "bounded_search_register_v2",
+        "search_coverage_end": "2026-03-30",
+        "search_gap_reasons": [],
+        "search_register_id": "pc-search-restatement-v2",
+        "status": "not_observed_within_bounded_evidence",
+        "superseded_event_ids": [],
+        "supersedes": null,
+        "supplemental_evidence_ids": [],
+        "symbol": "601857.SH",
+        "trigger_version": "material_error_restatement_v1",
+        "warnings": [
+          "ordinary accounting-policy, standard-change and common-control recasts are not error risk"
+        ]
+      },
+      {
+        "active_event_ids": [
+          "risk_event_f7079e631c408b8bb947ff22",
+          "risk_event_faf6151d1d5386a1e6fc0e9e",
+          "risk_event_ba7832f81b5897adee5576aa",
+          "risk_event_cf1fc873ffbf3f9073aa14e9",
+          "risk_event_dd0f91475e1dc65b9db0ee2e"
+        ],
+        "all_evidence_ids": [
+          "pc-2021-exchange-annual",
+          "pc-2021-issuer-annual",
+          "pc-2022-exchange-annual",
+          "pc-2022-issuer-annual",
+          "pc-2023-exchange-annual",
+          "pc-2023-issuer-annual",
+          "pc-2024-exchange-annual",
+          "pc-2024-issuer-annual",
+          "pc-2025-exchange-annual",
+          "pc-2025-issuer-annual"
+        ],
+        "applied_supersession_edges": [],
+        "available_at": "2026-08-02T06:00:00+08:00",
+        "bounded_search_complete": true,
+        "code_version": "stage2h1r_risk_veto_v1",
+        "conclusion_available_at": "2026-08-02T06:00:00+08:00",
+        "contract": "risk_veto_observation_v3",
+        "deterministic_id": "risk_observation_3f80905aa96f00f364715499",
+        "evaluation_as_of_date": "2026-08-02",
+        "event_version_resolution_status": "pass",
+        "input_evidence_ids": [
+          "pc-2021-exchange-annual",
+          "pc-2022-exchange-annual",
+          "pc-2023-exchange-annual",
+          "pc-2024-exchange-annual",
+          "pc-2025-exchange-annual"
+        ],
+        "inputs": {
+          "bounded_search_complete": true,
+          "pit_visible_event_count": 5,
+          "triggered_event_count": 0
+        },
+        "lineage_status": "pass",
+        "missing_reasons": [],
+        "observation_id": "risk_observation_3f80905aa96f00f364715499",
+        "risk_id": "controlling_shareholder_pledge_risk",
+        "score_eligible": false,
+        "search_available_at": "2026-08-02T06:00:00+08:00",
+        "search_contract_version": "bounded_search_register_v2",
+        "search_coverage_end": "2025-12-31",
+        "search_gap_reasons": [],
+        "search_register_id": "pc-search-pledge-v2",
+        "status": "not_observed_within_bounded_evidence",
+        "superseded_event_ids": [],
+        "supersedes": null,
+        "supplemental_evidence_ids": [
+          "pc-2021-issuer-annual",
+          "pc-2022-issuer-annual",
+          "pc-2023-issuer-annual",
+          "pc-2024-issuer-annual",
+          "pc-2025-issuer-annual"
+        ],
+        "symbol": "601857.SH",
+        "trigger_version": "controlling_shareholder_pledge_risk_v1",
+        "warnings": [
+          "exchangeable-bond trust-account pledge is retained as raw exposure, not direct controller pledge"
+        ]
+      },
+      {
+        "active_event_ids": [
+          "risk_event_9ddd9d0d705462c8835c412a",
+          "risk_event_efc11ea90ce4d6a292c40da9",
+          "risk_event_5e98a95c6e0ca691fd8f51cc",
+          "risk_event_ecd3da164d960468d18bac0a",
+          "risk_event_f72e3709f041c80ed31d5606"
+        ],
+        "all_evidence_ids": [
+          "pc-2021-exchange-annual",
+          "pc-2021-issuer-annual",
+          "pc-2022-exchange-annual",
+          "pc-2022-issuer-annual",
+          "pc-2023-exchange-annual",
+          "pc-2023-issuer-annual",
+          "pc-2024-exchange-annual",
+          "pc-2024-issuer-annual",
+          "pc-2025-exchange-annual",
+          "pc-2025-issuer-annual"
+        ],
+        "applied_supersession_edges": [],
+        "available_at": "2026-08-02T06:10:00+08:00",
+        "bounded_search_complete": true,
+        "code_version": "stage2h1r_risk_veto_v1",
+        "conclusion_available_at": "2026-08-02T06:10:00+08:00",
+        "contract": "risk_veto_observation_v3",
+        "deterministic_id": "risk_observation_fc9149e19ce39d95291879d9",
+        "evaluation_as_of_date": "2026-08-02",
+        "event_version_resolution_status": "pass",
+        "input_evidence_ids": [
+          "pc-2021-exchange-annual",
+          "pc-2022-exchange-annual",
+          "pc-2023-exchange-annual",
+          "pc-2024-exchange-annual",
+          "pc-2025-exchange-annual"
+        ],
+        "inputs": {
+          "bounded_search_complete": true,
+          "pit_visible_event_count": 5,
+          "triggered_event_count": 0
+        },
+        "lineage_status": "pass",
+        "missing_reasons": [],
+        "observation_id": "risk_observation_fc9149e19ce39d95291879d9",
+        "risk_id": "material_related_party_transaction_risk",
+        "score_eligible": false,
+        "search_available_at": "2026-08-02T06:10:00+08:00",
+        "search_contract_version": "bounded_search_register_v2",
+        "search_coverage_end": "2025-12-31",
+        "search_gap_reasons": [],
+        "search_register_id": "pc-search-rpt-v2",
+        "status": "not_observed_within_bounded_evidence",
+        "superseded_event_ids": [],
+        "supersedes": null,
+        "supplemental_evidence_ids": [
+          "pc-2021-issuer-annual",
+          "pc-2022-issuer-annual",
+          "pc-2023-issuer-annual",
+          "pc-2024-issuer-annual",
+          "pc-2025-issuer-annual"
+        ],
+        "symbol": "601857.SH",
+        "trigger_version": "material_related_party_transaction_risk_v1",
+        "warnings": [
+          "ordinary related-party transactions are not abuse without an explicit trigger"
+        ]
+      },
+      {
+        "active_event_ids": [
+          "risk_event_cd074f6637e004c251e66011",
+          "risk_event_c7caeacef05c96a68b606cd4",
+          "risk_event_2351fa75659676f198a01615",
+          "risk_event_fe3ce5b9c3e2bec3b72c825a",
+          "risk_event_7409029593795f3e4ff2868a"
+        ],
+        "all_evidence_ids": [
+          "pc-2021-exchange-annual",
+          "pc-2021-issuer-annual",
+          "pc-2022-exchange-annual",
+          "pc-2022-issuer-annual",
+          "pc-2023-exchange-annual",
+          "pc-2023-issuer-annual",
+          "pc-2024-exchange-annual",
+          "pc-2024-issuer-annual",
+          "pc-2025-exchange-annual",
+          "pc-2025-issuer-annual"
+        ],
+        "applied_supersession_edges": [],
+        "available_at": "2026-08-02T06:20:00+08:00",
+        "bounded_search_complete": false,
+        "code_version": "stage2h1r_risk_veto_v1",
+        "conclusion_available_at": "2026-08-02T06:20:00+08:00",
+        "contract": "risk_veto_observation_v3",
+        "deterministic_id": "risk_observation_a6fd612c59638073df29dbdf",
+        "evaluation_as_of_date": "2026-08-02",
+        "event_version_resolution_status": "pass",
+        "input_evidence_ids": [
+          "pc-2021-exchange-annual",
+          "pc-2022-exchange-annual",
+          "pc-2023-exchange-annual",
+          "pc-2024-exchange-annual",
+          "pc-2025-exchange-annual"
+        ],
+        "inputs": {
+          "bounded_search_complete": false,
+          "pit_visible_event_count": 5,
+          "triggered_event_count": 0
+        },
+        "lineage_status": "pass",
+        "missing_reasons": [
+          "bounded search register is incomplete"
+        ],
+        "observation_id": "risk_observation_a6fd612c59638073df29dbdf",
+        "risk_id": "controlling_shareholder_fund_occupation_or_related_guarantee",
+        "score_eligible": false,
+        "search_available_at": "2026-08-02T06:20:00+08:00",
+        "search_contract_version": "bounded_search_register_v2",
+        "search_coverage_end": "2026-08-02",
+        "search_gap_reasons": [
+          "Historical discipline search has the same bounded regulator pagination gap",
+          "No unrestricted historical disciplinary API export was available"
+        ],
+        "search_register_id": "pc-search-fund-occupation-v2",
+        "status": "missing_evidence",
+        "superseded_event_ids": [],
+        "supersedes": null,
+        "supplemental_evidence_ids": [
+          "pc-2021-issuer-annual",
+          "pc-2022-issuer-annual",
+          "pc-2023-issuer-annual",
+          "pc-2024-issuer-annual",
+          "pc-2025-issuer-annual"
+        ],
+        "symbol": "601857.SH",
+        "trigger_version": "fund_occupation_or_related_guarantee_v1",
+        "warnings": [
+          "disclosed related-party balance is not itself an occupation classification"
+        ]
+      },
+      {
+        "active_event_ids": [
+          "risk_event_1b2d525d3220d09c26f43047",
+          "risk_event_636890ee68ecb23e6a979243",
+          "risk_event_19e47609582d868a5cd7690e",
+          "risk_event_35262131a4fdcdbd18188ccb",
+          "risk_event_8958d4f770c8d45990463dac"
+        ],
+        "all_evidence_ids": [
+          "pc-2021-exchange-annual",
+          "pc-2021-issuer-annual",
+          "pc-2022-exchange-annual",
+          "pc-2022-issuer-annual",
+          "pc-2023-exchange-annual",
+          "pc-2023-issuer-annual",
+          "pc-2024-exchange-annual",
+          "pc-2024-issuer-annual",
+          "pc-2025-exchange-annual",
+          "pc-2025-issuer-annual"
+        ],
+        "applied_supersession_edges": [],
+        "available_at": "2026-08-02T06:30:00+08:00",
+        "bounded_search_complete": true,
+        "code_version": "stage2h1r_risk_veto_v1",
+        "conclusion_available_at": "2026-08-02T06:30:00+08:00",
+        "contract": "risk_veto_observation_v3",
+        "deterministic_id": "risk_observation_3bb97c18f6021ab3be2c7ae6",
+        "evaluation_as_of_date": "2026-08-02",
+        "event_version_resolution_status": "pass",
+        "input_evidence_ids": [
+          "pc-2021-exchange-annual",
+          "pc-2022-exchange-annual",
+          "pc-2023-exchange-annual",
+          "pc-2024-exchange-annual",
+          "pc-2025-exchange-annual"
+        ],
+        "inputs": {
+          "bounded_search_complete": true,
+          "pit_visible_event_count": 5,
+          "triggered_event_count": 0
+        },
+        "lineage_status": "pass",
+        "missing_reasons": [],
+        "observation_id": "risk_observation_3bb97c18f6021ab3be2c7ae6",
+        "risk_id": "repeated_equity_financing_or_material_dilution",
+        "score_eligible": false,
+        "search_available_at": "2026-08-02T06:30:00+08:00",
+        "search_contract_version": "bounded_search_register_v2",
+        "search_coverage_end": "2026-08-02",
+        "search_gap_reasons": [],
+        "search_register_id": "pc-search-financing-v2",
+        "status": "not_observed_within_bounded_evidence",
+        "superseded_event_ids": [],
+        "supersedes": null,
+        "supplemental_evidence_ids": [
+          "pc-2021-issuer-annual",
+          "pc-2022-issuer-annual",
+          "pc-2023-issuer-annual",
+          "pc-2024-issuer-annual",
+          "pc-2025-issuer-annual"
+        ],
+        "symbol": "601857.SH",
+        "trigger_version": "repeated_equity_financing_or_material_dilution_v1",
+        "warnings": [
+          "proposal or authorization is not realized dilution"
+        ]
+      }
+    ],
+    "observed_risk_ids": [],
+    "risk_slots": [
+      {
+        "code_version": "stage2h1r_risk_veto_v1",
+        "conclusion_available_at": "2026-08-02T05:30:00+08:00",
+        "contract": "risk_evaluation_slot_v1",
+        "evaluation_as_of_date": "2026-08-02",
+        "evaluation_status": "not_observed_within_bounded_evidence",
+        "lineage_status": "pass",
+        "missing_reasons": [],
+        "observation_emitted": true,
+        "observation_id": "risk_observation_d774875b76fd626f8dc3111a",
+        "risk_id": "modified_audit_opinion",
+        "score_eligible": false,
+        "selected_search_register_id": "pc-search-modified-audit-opinion-v2",
+        "slot_id": "risk_slot_7412996678b47a06a06dbd30",
+        "symbol": "601857.SH",
+        "visible_active_event_ids": [
+          "risk_event_8bee0de3520d1d850fb69e62",
+          "risk_event_3119b577d7a0333d956162a8",
+          "risk_event_8fc587387d228b348925b94f",
+          "risk_event_e2971013eb4296365439685a",
+          "risk_event_1ca5d72d21d7965611a8887a"
+        ],
+        "visible_input_evidence_ids": [
+          "pc-2021-issuer-annual",
+          "pc-2022-issuer-annual",
+          "pc-2023-issuer-annual",
+          "pc-2024-issuer-annual",
+          "pc-2025-issuer-annual"
+        ]
+      },
+      {
+        "code_version": "stage2h1r_risk_veto_v1",
+        "conclusion_available_at": "2026-08-02T05:30:00+08:00",
+        "contract": "risk_evaluation_slot_v1",
+        "evaluation_as_of_date": "2026-08-02",
+        "evaluation_status": "not_observed_within_bounded_evidence",
+        "lineage_status": "pass",
+        "missing_reasons": [],
+        "observation_emitted": true,
+        "observation_id": "risk_observation_36900a36e77ecf40dd8c2c42",
+        "risk_id": "going_concern_material_uncertainty",
+        "score_eligible": false,
+        "selected_search_register_id": "pc-search-going-concern-v2",
+        "slot_id": "risk_slot_3cb100dd74e1b27f91d0a676",
+        "symbol": "601857.SH",
+        "visible_active_event_ids": [
+          "risk_event_de7b71e55bdb7cb390b127fd",
+          "risk_event_dfae6331a6d926cdb03f33b8",
+          "risk_event_3f1478109151c86ea1332a35",
+          "risk_event_5ae166e7887d8f8c054c4d83",
+          "risk_event_6fcddc4e8c091eafe19fb635"
+        ],
+        "visible_input_evidence_ids": [
+          "pc-2021-exchange-annual",
+          "pc-2022-issuer-annual",
+          "pc-2023-issuer-annual",
+          "pc-2024-issuer-annual",
+          "pc-2025-issuer-annual"
+        ]
+      },
+      {
+        "code_version": "stage2h1r_risk_veto_v1",
+        "conclusion_available_at": "2026-08-02T05:40:00+08:00",
+        "contract": "risk_evaluation_slot_v1",
+        "evaluation_as_of_date": "2026-08-02",
+        "evaluation_status": "missing_evidence",
+        "lineage_status": "pass",
+        "missing_reasons": [
+          "bounded search register is incomplete",
+          "historical CSRC/SSE regulatory result universe was not fully retrievable in bounded search"
+        ],
+        "observation_emitted": true,
+        "observation_id": "risk_observation_feff9792a99dd226f161cdb5",
+        "risk_id": "formal_regulatory_investigation_or_major_discipline",
+        "score_eligible": false,
+        "selected_search_register_id": "pc-search-regulatory-v2",
+        "slot_id": "risk_slot_73a8609b66bb07d7e825b0a9",
+        "symbol": "601857.SH",
+        "visible_active_event_ids": [
+          "risk_event_4874082c486b6e09b8ed2089"
+        ],
+        "visible_input_evidence_ids": []
+      },
+      {
+        "code_version": "stage2h1r_risk_veto_v1",
+        "conclusion_available_at": "2026-08-02T05:50:00+08:00",
+        "contract": "risk_evaluation_slot_v1",
+        "evaluation_as_of_date": "2026-08-02",
+        "evaluation_status": "not_observed_within_bounded_evidence",
+        "lineage_status": "pass",
+        "missing_reasons": [],
+        "observation_emitted": true,
+        "observation_id": "risk_observation_052c3846c2a6bfa327cfb5cc",
+        "risk_id": "material_error_restatement",
+        "score_eligible": false,
+        "selected_search_register_id": "pc-search-restatement-v2",
+        "slot_id": "risk_slot_612c19991b0504124c97c3cf",
+        "symbol": "601857.SH",
+        "visible_active_event_ids": [
+          "risk_event_39077512a87c551b4e2d89d9",
+          "risk_event_5482ea3f758f97d5c29b7f91",
+          "risk_event_e375ac636f2a455b9d8fde78",
+          "risk_event_d1d27eed7f9ba535c6165467",
+          "risk_event_b9fecf322b2ddba0fa84ce96"
+        ],
+        "visible_input_evidence_ids": [
+          "pc-2021-exchange-annual",
+          "pc-2022-exchange-annual",
+          "pc-2023-exchange-annual",
+          "pc-2024-exchange-annual",
+          "pc-2025-exchange-annual"
+        ]
+      },
+      {
+        "code_version": "stage2h1r_risk_veto_v1",
+        "conclusion_available_at": "2026-08-02T06:00:00+08:00",
+        "contract": "risk_evaluation_slot_v1",
+        "evaluation_as_of_date": "2026-08-02",
+        "evaluation_status": "not_observed_within_bounded_evidence",
+        "lineage_status": "pass",
+        "missing_reasons": [],
+        "observation_emitted": true,
+        "observation_id": "risk_observation_3f80905aa96f00f364715499",
+        "risk_id": "controlling_shareholder_pledge_risk",
+        "score_eligible": false,
+        "selected_search_register_id": "pc-search-pledge-v2",
+        "slot_id": "risk_slot_c70c527f9e348c70c7b26fa8",
+        "symbol": "601857.SH",
+        "visible_active_event_ids": [
+          "risk_event_f7079e631c408b8bb947ff22",
+          "risk_event_faf6151d1d5386a1e6fc0e9e",
+          "risk_event_ba7832f81b5897adee5576aa",
+          "risk_event_cf1fc873ffbf3f9073aa14e9",
+          "risk_event_dd0f91475e1dc65b9db0ee2e"
+        ],
+        "visible_input_evidence_ids": [
+          "pc-2021-exchange-annual",
+          "pc-2022-exchange-annual",
+          "pc-2023-exchange-annual",
+          "pc-2024-exchange-annual",
+          "pc-2025-exchange-annual"
+        ]
+      },
+      {
+        "code_version": "stage2h1r_risk_veto_v1",
+        "conclusion_available_at": "2026-08-02T06:10:00+08:00",
+        "contract": "risk_evaluation_slot_v1",
+        "evaluation_as_of_date": "2026-08-02",
+        "evaluation_status": "not_observed_within_bounded_evidence",
+        "lineage_status": "pass",
+        "missing_reasons": [],
+        "observation_emitted": true,
+        "observation_id": "risk_observation_fc9149e19ce39d95291879d9",
+        "risk_id": "material_related_party_transaction_risk",
+        "score_eligible": false,
+        "selected_search_register_id": "pc-search-rpt-v2",
+        "slot_id": "risk_slot_b77bf2d0c791c6544672f9b4",
+        "symbol": "601857.SH",
+        "visible_active_event_ids": [
+          "risk_event_9ddd9d0d705462c8835c412a",
+          "risk_event_efc11ea90ce4d6a292c40da9",
+          "risk_event_5e98a95c6e0ca691fd8f51cc",
+          "risk_event_ecd3da164d960468d18bac0a",
+          "risk_event_f72e3709f041c80ed31d5606"
+        ],
+        "visible_input_evidence_ids": [
+          "pc-2021-exchange-annual",
+          "pc-2022-exchange-annual",
+          "pc-2023-exchange-annual",
+          "pc-2024-exchange-annual",
+          "pc-2025-exchange-annual"
+        ]
+      },
+      {
+        "code_version": "stage2h1r_risk_veto_v1",
+        "conclusion_available_at": "2026-08-02T06:20:00+08:00",
+        "contract": "risk_evaluation_slot_v1",
+        "evaluation_as_of_date": "2026-08-02",
+        "evaluation_status": "missing_evidence",
+        "lineage_status": "pass",
+        "missing_reasons": [
+          "bounded search register is incomplete"
+        ],
+        "observation_emitted": true,
+        "observation_id": "risk_observation_a6fd612c59638073df29dbdf",
+        "risk_id": "controlling_shareholder_fund_occupation_or_related_guarantee",
+        "score_eligible": false,
+        "selected_search_register_id": "pc-search-fund-occupation-v2",
+        "slot_id": "risk_slot_d7a3cd6ca8718fbea85ab013",
+        "symbol": "601857.SH",
+        "visible_active_event_ids": [
+          "risk_event_cd074f6637e004c251e66011",
+          "risk_event_c7caeacef05c96a68b606cd4",
+          "risk_event_2351fa75659676f198a01615",
+          "risk_event_fe3ce5b9c3e2bec3b72c825a",
+          "risk_event_7409029593795f3e4ff2868a"
+        ],
+        "visible_input_evidence_ids": [
+          "pc-2021-exchange-annual",
+          "pc-2022-exchange-annual",
+          "pc-2023-exchange-annual",
+          "pc-2024-exchange-annual",
+          "pc-2025-exchange-annual"
+        ]
+      },
+      {
+        "code_version": "stage2h1r_risk_veto_v1",
+        "conclusion_available_at": "2026-08-02T06:30:00+08:00",
+        "contract": "risk_evaluation_slot_v1",
+        "evaluation_as_of_date": "2026-08-02",
+        "evaluation_status": "not_observed_within_bounded_evidence",
+        "lineage_status": "pass",
+        "missing_reasons": [],
+        "observation_emitted": true,
+        "observation_id": "risk_observation_3bb97c18f6021ab3be2c7ae6",
+        "risk_id": "repeated_equity_financing_or_material_dilution",
+        "score_eligible": false,
+        "selected_search_register_id": "pc-search-financing-v2",
+        "slot_id": "risk_slot_c32db2a2f032e7965b4a8789",
+        "symbol": "601857.SH",
+        "visible_active_event_ids": [
+          "risk_event_1b2d525d3220d09c26f43047",
+          "risk_event_636890ee68ecb23e6a979243",
+          "risk_event_19e47609582d868a5cd7690e",
+          "risk_event_35262131a4fdcdbd18188ccb",
+          "risk_event_8958d4f770c8d45990463dac"
+        ],
+        "visible_input_evidence_ids": [
+          "pc-2021-exchange-annual",
+          "pc-2022-exchange-annual",
+          "pc-2023-exchange-annual",
+          "pc-2024-exchange-annual",
+          "pc-2025-exchange-annual"
+        ]
+      }
+    ],
+    "score_eligible": false,
+    "search_pit_status": "pass",
+    "universe_evaluation_id": "risk_universe_6231c32047f90529316d931e"
+  },
+  "evidence": {
+    "gaps": [
+      {
+        "available_source_types": [
+          "issuer_official"
+        ],
+        "event_id": "dve2_31d8f2d9e40ce1ff45989915",
+        "event_key": "2021-interim",
+        "gap": "exact exchange payload could not be retrieved because the official endpoint returned an anti-bot challenge",
+        "status": "issuer_only"
+      },
+      {
+        "available_source_types": [
+          "issuer_official"
+        ],
+        "event_id": "dve2_09864b9b129b87fbe82d770c",
+        "event_key": "2021-final",
+        "gap": "exact exchange payload could not be retrieved because the official endpoint returned an anti-bot challenge",
+        "status": "issuer_only"
+      },
+      {
+        "available_source_types": [
+          "issuer_official"
+        ],
+        "event_id": "dve2_1df3144a2ad4afb3d74569d1",
+        "event_key": "2022-interim",
+        "gap": "exact exchange payload could not be retrieved because the official endpoint returned an anti-bot challenge",
+        "status": "issuer_only"
+      },
+      {
+        "available_source_types": [
+          "issuer_official"
+        ],
+        "event_id": "dve2_545dca7962b7546dda01cf8f",
+        "event_key": "2022-final",
+        "gap": "exact exchange payload could not be retrieved because the official endpoint returned an anti-bot challenge",
+        "status": "issuer_only"
+      },
+      {
+        "available_source_types": [
+          "issuer_official"
+        ],
+        "event_id": "dve2_87942f04cbe07d8fa7f72a34",
+        "event_key": "2023-interim",
+        "gap": "exact exchange payload could not be retrieved because the official endpoint returned an anti-bot challenge",
+        "status": "issuer_only"
+      },
+      {
+        "available_source_types": [
+          "issuer_official"
+        ],
+        "event_id": "dve2_feace1c8156be53a04cb0fa2",
+        "event_key": "2023-final",
+        "gap": "exact exchange payload could not be retrieved because the official endpoint returned an anti-bot challenge",
+        "status": "issuer_only"
+      },
+      {
+        "available_source_types": [
+          "issuer_official"
+        ],
+        "event_id": "dve2_b01e73d5301952998595ff05",
+        "event_key": "2024-final",
+        "gap": "exact exchange payload could not be retrieved because the official endpoint returned an anti-bot challenge",
+        "status": "issuer_only"
+      },
+      {
+        "available_source_types": [
+          "issuer_official"
+        ],
+        "event_id": "dve2_40135402681a3e67ad7b9e96",
+        "event_key": "2025-interim",
+        "gap": "exact exchange payload could not be retrieved because the official endpoint returned an anti-bot challenge",
+        "status": "issuer_only"
+      },
+      {
+        "available_source_types": [
+          "issuer_official"
+        ],
+        "event_id": "dve2_d9a78550b9e4eff7fd1e41b6",
+        "event_key": "2025-final",
+        "gap": "exact exchange payload could not be retrieved because the official endpoint returned an anti-bot challenge",
+        "status": "issuer_only"
+      }
+    ],
+    "phase_a_status": "pass_with_explicit_gaps",
+    "rule007_eligible_event_count": 1
+  },
+  "integrated_layers": {
+    "daily_market_mechanism": "not_evaluated",
+    "dividend_announced": "partial_evidence",
+    "dividend_paid": "partial_evidence",
+    "earnings_cash_quality": "observed",
+    "financial_safety": "observed",
+    "roe_roa": "observed",
+    "roic": "not_computable_under_strict_evidence_contract"
+  },
+  "latest_observations": {
+    "a_share_price_to_latest_annual_parent_earnings": {
+      "lineage": {
+        "dividend_event_ids": [],
+        "financial_fact_ids": [
+          "9009dbb2ddaf6981e33d68fafd2cce681c0c87e591d30a1fa366d0051b38df6c"
+        ],
+        "missing_event_ids": [],
+        "share_timeline_ids": [
+          "share_e2fb0e416be93af602b999db"
+        ]
+      },
+      "score_eligible": false,
+      "status": "computed",
+      "trade_date": "2026-07-31",
+      "value": 12.891587101393752,
+      "value_decimal": "12.89158710139375214555441126"
+    },
+    "a_share_price_to_latest_annual_revenue": {
+      "lineage": {
+        "dividend_event_ids": [],
+        "financial_fact_ids": [
+          "460056dc565a2ee49c9906554a29816a89ef25669390ecf3c6af407e5721e0f1"
+        ],
+        "missing_event_ids": [],
+        "share_timeline_ids": [
+          "share_e2fb0e416be93af602b999db"
+        ]
+      },
+      "score_eligible": false,
+      "status": "computed",
+      "trade_date": "2026-07-31",
+      "value": 0.7079400874030893,
+      "value_decimal": "0.7079400874030893683960273264"
+    },
+    "a_share_price_to_latest_year_end_parent_equity": {
+      "lineage": {
+        "dividend_event_ids": [],
+        "financial_fact_ids": [
+          "45a8911a4b1626157c179dc44880da947bde9dfda937d18f8464a9381606eb90"
+        ],
+        "missing_event_ids": [],
+        "share_timeline_ids": [
+          "share_e2fb0e416be93af602b999db"
+        ]
+      },
+      "score_eligible": false,
+      "status": "computed",
+      "trade_date": "2026-07-31",
+      "value": 1.2785589168534124,
+      "value_decimal": "1.278558916853412321468089815"
+    },
+    "latest_annual_fcf_proxy_yield": {
+      "lineage": {
+        "dividend_event_ids": [],
+        "financial_fact_ids": [
+          "ad3b6e2a3675ce7e8a8e16bda427597b72d28e30808281e17cd4aa549949357a",
+          "5dc4c375138e6cac5a26866d2120fc9d6bc68b69a19dabd56902ae0a6660b34f"
+        ],
+        "missing_event_ids": [],
+        "share_timeline_ids": [
+          "share_e2fb0e416be93af602b999db"
+        ]
+      },
+      "score_eligible": false,
+      "status": "computed",
+      "trade_date": "2026-07-31",
+      "value": 0.059037737275543345,
+      "value_decimal": "0.05903773727554334316827771199"
+    },
+    "trailing_12m_announced_dividend_yield": {
+      "lineage": {
+        "dividend_event_ids": [],
+        "financial_fact_ids": [],
+        "missing_event_ids": [
+          "dve2_40135402681a3e67ad7b9e96",
+          "dve2_d9a78550b9e4eff7fd1e41b6"
+        ],
+        "share_timeline_ids": [
+          "share_e2fb0e416be93af602b999db"
+        ]
+      },
+      "score_eligible": false,
+      "status": "missing_input",
+      "trade_date": "2026-07-31",
+      "value": null,
+      "value_decimal": null
+    },
+    "trailing_12m_paid_dividend_yield": {
+      "lineage": {
+        "dividend_event_ids": [],
+        "financial_fact_ids": [],
+        "missing_event_ids": [
+          "dve2_40135402681a3e67ad7b9e96",
+          "dve2_d9a78550b9e4eff7fd1e41b6"
+        ],
+        "share_timeline_ids": [
+          "share_e2fb0e416be93af602b999db"
+        ]
+      },
+      "score_eligible": false,
+      "status": "missing_input",
+      "trade_date": "2026-07-31",
+      "value": null,
+      "value_decimal": null
+    }
+  },
+  "legacy_risk_veto_checks": [
+    {
+      "current": false,
+      "do_not_use_for_current_profile": true,
+      "legacy": true,
+      "risk_id": "governance_risk",
+      "status_at_original_stage": "not_evaluated",
+      "superseded_at_stage": "M2 Stage 2H",
+      "superseded_by": [
+        "formal_regulatory_investigation_or_major_discipline",
+        "controlling_shareholder_pledge_risk",
+        "repeated_equity_financing_or_material_dilution"
+      ]
+    },
+    {
+      "current": false,
+      "do_not_use_for_current_profile": true,
+      "legacy": true,
+      "risk_id": "audit_risk",
+      "status_at_original_stage": "not_evaluated",
+      "superseded_at_stage": "M2 Stage 2H",
+      "superseded_by": [
+        "modified_audit_opinion",
+        "going_concern_material_uncertainty",
+        "material_error_restatement"
+      ]
+    },
+    {
+      "current": false,
+      "do_not_use_for_current_profile": true,
+      "legacy": true,
+      "risk_id": "related_party_risk",
+      "status_at_original_stage": "not_evaluated",
+      "superseded_at_stage": "M2 Stage 2H",
+      "superseded_by": [
+        "material_related_party_transaction_risk",
+        "controlling_shareholder_fund_occupation_or_related_guarantee"
+      ]
+    }
+  ],
+  "north_star_decision": "valuation",
+  "percentile_position": {
+    "a_share_price_to_latest_annual_parent_earnings": {
+      "3y": 0.920907840440165,
+      "5y": 0.9452380952380952,
+      "effective_samples": {
+        "3y": 727,
+        "5y": 1050,
+        "expanding": 1050
+      },
+      "expanding": 0.9452380952380952,
+      "latest": {
+        "status": "computed",
+        "trade_date": "2026-07-31",
+        "value": 12.891587101393752
+      },
+      "minimum_samples": {
+        "3y": 500,
+        "5y": 900,
+        "expanding": 120
+      },
+      "missing_reason": null
+    },
+    "a_share_price_to_latest_annual_revenue": {
+      "3y": 0.920907840440165,
+      "5y": 0.9452380952380952,
+      "effective_samples": {
+        "3y": 727,
+        "5y": 1050,
+        "expanding": 1050
+      },
+      "expanding": 0.9452380952380952,
+      "latest": {
+        "status": "computed",
+        "trade_date": "2026-07-31",
+        "value": 0.7079400874030893
+      },
+      "minimum_samples": {
+        "3y": 500,
+        "5y": 900,
+        "expanding": 120
+      },
+      "missing_reason": null
+    },
+    "a_share_price_to_latest_year_end_parent_equity": {
+      "3y": 0.8452544704264099,
+      "5y": 0.8928571428571429,
+      "effective_samples": {
+        "3y": 727,
+        "5y": 1050,
+        "expanding": 1050
+      },
+      "expanding": 0.8928571428571429,
+      "latest": {
+        "status": "computed",
+        "trade_date": "2026-07-31",
+        "value": 1.2785589168534124
+      },
+      "minimum_samples": {
+        "3y": 500,
+        "5y": 900,
+        "expanding": 120
+      },
+      "missing_reason": null
+    },
+    "latest_annual_fcf_proxy_yield": {
+      "3y": 0.17400275103163687,
+      "5y": 0.12047619047619047,
+      "effective_samples": {
+        "3y": 727,
+        "5y": 1050,
+        "expanding": 1050
+      },
+      "expanding": 0.12047619047619047,
+      "latest": {
+        "status": "computed",
+        "trade_date": "2026-07-31",
+        "value": 0.059037737275543345
+      },
+      "minimum_samples": {
+        "3y": 500,
+        "5y": 900,
+        "expanding": 120
+      },
+      "missing_reason": null
+    },
+    "trailing_12m_announced_dividend_yield": {
+      "3y": null,
+      "5y": null,
+      "effective_samples": {
+        "3y": 242,
+        "5y": 410,
+        "expanding": 410
+      },
+      "expanding": 0.5158536585365854,
+      "latest": {
+        "status": "partial_evidence",
+        "trade_date": "2025-09-09",
+        "value": 0.02502844141069397
+      },
+      "minimum_samples": {
+        "3y": 500,
+        "5y": 900,
+        "expanding": 120
+      },
+      "missing_reason": "insufficient_valid_samples_for_one_or_more_windows"
+    },
+    "trailing_12m_paid_dividend_yield": {
+      "3y": null,
+      "5y": null,
+      "effective_samples": {
+        "3y": 244,
+        "5y": 418,
+        "expanding": 418
+      },
+      "expanding": 0.7870813397129187,
+      "latest": {
+        "status": "partial_evidence",
+        "trade_date": "2025-09-18",
+        "value": 0.02679658952496955
+      },
+      "minimum_samples": {
+        "3y": 500,
+        "5y": 900,
+        "expanding": 120
+      },
+      "missing_reason": "insufficient_valid_samples_for_one_or_more_windows"
+    }
+  },
+  "scenarios": [
+    {
+      "base_value": 12.891587101393752,
+      "input_shock": -0.2,
+      "lineage": {
+        "base_observation_type": "a_share_price_to_latest_annual_parent_earnings",
+        "sample_end_trade_date": "2026-07-31"
+      },
+      "observation_type": "a_share_price_to_latest_annual_parent_earnings",
+      "sample_end_trade_date": "2026-07-31",
+      "scenario_id": "scenario_f46ee343dd325b99194da4dc",
+      "shock_group": "net_profit",
+      "stressed_value": 16.114483876742188
+    },
+    {
+      "base_value": 12.891587101393752,
+      "input_shock": -0.3,
+      "lineage": {
+        "base_observation_type": "a_share_price_to_latest_annual_parent_earnings",
+        "sample_end_trade_date": "2026-07-31"
+      },
+      "observation_type": "a_share_price_to_latest_annual_parent_earnings",
+      "sample_end_trade_date": "2026-07-31",
+      "scenario_id": "scenario_149a2c7f59a7d21c32467d22",
+      "shock_group": "net_profit",
+      "stressed_value": 18.416553001991076
+    },
+    {
+      "base_value": 0.059037737275543345,
+      "input_shock": -0.2,
+      "lineage": {
+        "base_observation_type": "latest_annual_fcf_proxy_yield",
+        "sample_end_trade_date": "2026-07-31"
+      },
+      "observation_type": "latest_annual_fcf_proxy_yield",
+      "sample_end_trade_date": "2026-07-31",
+      "scenario_id": "scenario_cd16fb4099e7fde0ea9d2570",
+      "shock_group": "fcf_proxy",
+      "stressed_value": 0.04723018982043468
+    },
+    {
+      "base_value": 0.059037737275543345,
+      "input_shock": -0.3,
+      "lineage": {
+        "base_observation_type": "latest_annual_fcf_proxy_yield",
+        "sample_end_trade_date": "2026-07-31"
+      },
+      "observation_type": "latest_annual_fcf_proxy_yield",
+      "sample_end_trade_date": "2026-07-31",
+      "scenario_id": "scenario_0e4086c59b42aea7d62680a8",
+      "shock_group": "fcf_proxy",
+      "stressed_value": 0.04132641609288034
+    }
+  ],
+  "score_eligible": false,
+  "share_capital_timeline_status": "observed_with_explicit_a_h_split_gap",
+  "stage2g1_status": "pass_with_explicit_gaps",
+  "symbol": "601857.SH",
+  "technical_integrity_checks": [
+    {
+      "basis": "canonical available_at <= trade_date and PIT transitions audited",
+      "risk_id": "future_data_leakage",
+      "status": "not_observed_within_bounded_evidence"
+    },
+    {
+      "basis": "Fact Identity and version-chain validation passed",
+      "risk_id": "canonical_identity_break",
+      "status": "not_observed_within_bounded_evidence"
+    },
+    {
+      "basis": "nine bounded dividend events lack independently retrieved exchange payloads",
+      "risk_id": "official_exchange_evidence_gap",
+      "status": "observed"
+    },
+    {
+      "basis": "all computed comparable inputs were audited for positivity",
+      "risk_id": "non_positive_comparable_input",
+      "status": "not_observed_within_bounded_evidence"
+    }
+  ]
+}

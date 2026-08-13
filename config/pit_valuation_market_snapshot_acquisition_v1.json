@@ -1,0 +1,76 @@
+{
+  "schema": "pit_valuation_market_snapshot_acquisition_v1",
+  "version": "1",
+  "purpose": "frozen dual-source daily market snapshot acquisition contract for the R4E.2 versioned reacquisition",
+  "symbol": "601857.SH",
+  "akshare_symbol": "601857",
+  "baostock_symbol": "sh.601857",
+  "requested_start": "2021-01-01",
+  "required_first_trade_date": "2021-01-04",
+  "requested_end": "2026-07-31",
+  "required_last_trade_date": "2026-07-31",
+  "frequency": "daily",
+  "adjustment": "none",
+  "currency": "CNY",
+  "close_unit": "CNY/share",
+  "volume_unit": "share",
+  "amount_unit": "CNY",
+  "akshare": {
+    "function": "ak.stock_zh_a_hist",
+    "symbol": "601857",
+    "period": "daily",
+    "start_date": "20210101",
+    "end_date": "20260731",
+    "adjust": ""
+  },
+  "baostock": {
+    "function": "bs.query_history_k_data_plus",
+    "code": "sh.601857",
+    "frequency": "d",
+    "start_date": "2021-01-01",
+    "end_date": "2026-07-31",
+    "adjustflag": "3"
+  },
+  "provider_versions": {
+    "akshare": "1.18.79",
+    "baostock": "0.9.3"
+  },
+  "runtime_versions": {
+    "python": "3.13.9",
+    "pandas": "2.3.3",
+    "pyarrow": "21.0.0"
+  },
+  "retry_policy": {
+    "max_attempts_per_provider": 3,
+    "ab_runs_required": 2,
+    "infinite_retry_allowed": false,
+    "silent_interface_switch_allowed": false,
+    "third_party_backfill_allowed": false
+  },
+  "canonical_writer_contract": {
+    "columns": [
+      "symbol",
+      "trade_date",
+      "open",
+      "high",
+      "low",
+      "close",
+      "volume",
+      "amount",
+      "is_trading",
+      "adjustment",
+      "provider",
+      "provider_version"
+    ],
+    "trade_date_sort": "strictly_ascending",
+    "duplicate_trade_date_allowed": false,
+    "numeric_encoding": "canonical_decimal_string",
+    "volume_encoding": "normalized_integer_shares",
+    "float_repr_for_identity_allowed": false,
+    "dataframe_index_saved": false,
+    "absolute_path_saved": false,
+    "wall_clock_in_batch_identity": false,
+    "parquet_engine": "pyarrow",
+    "parquet_index": false
+  }
+}

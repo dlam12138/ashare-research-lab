@@ -1,0 +1,144 @@
+{
+  "schema": "m2_stage2k1r4f3_decision",
+  "version": "1.0",
+  "stage": "2K.1R4F.3",
+  "decision": "PE_NORMALIZED_EARNINGS_PROTOTYPE_TRUSTED_HISTORICAL_FACT_GAPS_REMAIN",
+  "verdict": "CONDITIONAL PASS",
+  "r4f2_upstream": "TRUSTED",
+  "pe_numeric_scoring_authorized": false,
+  "pe_status": "coverage_gap_cycle_context_required",
+  "valuation_dimension_status": "insufficient_evidence_cycle_context",
+  "production_scoring": "NOT_AUTHORIZED",
+  "overall_score": "PROHIBITED",
+  "gates": {
+    "r4f2_upstream_trusted": true,
+    "current_prototype_trusted": true,
+    "exact_current_normalized_pe_trusted": true,
+    "raw_pe_recomputation_identical": true,
+    "mechanical_inversion_property_pass": true,
+    "pit_resolver_trusted": true,
+    "3y_historical_validation_window_ready": false,
+    "historical_states_deterministic": true,
+    "no_scoring_changes": true,
+    "no_forward_fill": true,
+    "no_shorter_roe_window": true
+  },
+  "failed_gates": [
+    "3y_historical_validation_window_ready"
+  ],
+  "evidence": {
+    "current_prototype_status": "TRUSTED_NON_SCORING",
+    "current_normalized_eps": "0.9135206151007635380066173292",
+    "current_raw_pe": "12.81970638132453345471096950",
+    "current_normalized_pe": "12.12889979366021109951970404",
+    "earnings_normalization_ratio": "0.9461136965920940114716739512",
+    "mechanical_inversion_property": "PASS",
+    "cycle_stage_identified": false,
+    "cycle_guard_empirically_validated": false,
+    "earliest_historical_pit_ready_date": "2026-03-31",
+    "3y_historical_validation": "BLOCKED",
+    "5y_historical_validation": "BLOCKED",
+    "full_cycle_coverage": "NOT_PROVEN",
+    "historical_fact_gaps": "PRESENT",
+    "minimum_3y_backfill": {
+      "label": "MINIMUM_3Y_BACKFILL",
+      "target_trade_date": "2023-07-31",
+      "required_roe_years": [
+        "2018",
+        "2019",
+        "2020",
+        "2021",
+        "2022"
+      ],
+      "missing_facts": [
+        {
+          "concept": "equity_attributable_to_parent",
+          "period_end": "2017-12-31",
+          "required_for": "opening_equity_roe_2018"
+        },
+        {
+          "concept": "equity_attributable_to_parent",
+          "period_end": "2018-12-31",
+          "required_for": "annual_roe_2018"
+        },
+        {
+          "concept": "net_profit_attributable_to_parent",
+          "period_end": "2018-12-31",
+          "required_for": "annual_roe_2018"
+        },
+        {
+          "concept": "equity_attributable_to_parent",
+          "period_end": "2019-12-31",
+          "required_for": "annual_roe_2019"
+        },
+        {
+          "concept": "net_profit_attributable_to_parent",
+          "period_end": "2019-12-31",
+          "required_for": "annual_roe_2019"
+        }
+      ],
+      "missing_fact_count": 5
+    },
+    "minimum_5y_backfill": {
+      "label": "MINIMUM_5Y_BACKFILL",
+      "target_trade_date": "2021-08-02",
+      "required_roe_years": [
+        "2016",
+        "2017",
+        "2018",
+        "2019",
+        "2020"
+      ],
+      "missing_facts": [
+        {
+          "concept": "equity_attributable_to_parent",
+          "period_end": "2015-12-31",
+          "required_for": "opening_equity_roe_2016"
+        },
+        {
+          "concept": "equity_attributable_to_parent",
+          "period_end": "2016-12-31",
+          "required_for": "annual_roe_2016"
+        },
+        {
+          "concept": "net_profit_attributable_to_parent",
+          "period_end": "2016-12-31",
+          "required_for": "annual_roe_2016"
+        },
+        {
+          "concept": "equity_attributable_to_parent",
+          "period_end": "2017-12-31",
+          "required_for": "annual_roe_2017"
+        },
+        {
+          "concept": "net_profit_attributable_to_parent",
+          "period_end": "2017-12-31",
+          "required_for": "annual_roe_2017"
+        },
+        {
+          "concept": "equity_attributable_to_parent",
+          "period_end": "2018-12-31",
+          "required_for": "annual_roe_2018"
+        },
+        {
+          "concept": "net_profit_attributable_to_parent",
+          "period_end": "2018-12-31",
+          "required_for": "annual_roe_2018"
+        },
+        {
+          "concept": "equity_attributable_to_parent",
+          "period_end": "2019-12-31",
+          "required_for": "annual_roe_2019"
+        },
+        {
+          "concept": "net_profit_attributable_to_parent",
+          "period_end": "2019-12-31",
+          "required_for": "annual_roe_2019"
+        }
+      ],
+      "missing_fact_count": 9
+    }
+  },
+  "next_stage": "R4F.3A_HISTORICAL_ANNUAL_FACT_BACKFILL NOT_STARTED",
+  "no_score_computed": true
+}

@@ -1,0 +1,62 @@
+{
+ "schema": "petrochina_pit_valuation_percentile_audit_samples_v1",
+ "version": "1.0",
+ "symbol": "601857.SH",
+ "as_of_trade_date": "2026-07-31",
+ "samples": [
+  {
+   "metric_id": "PE_A_TTM",
+   "window_id": "3y",
+   "current_observation_id": "98d47da1a60919889c2a143b6a704a373ac9128beafe8cade842dd4a8f075701",
+   "current_ratio_decimal": "12.81970638132453345471096950",
+   "first_sampled_observation_id": "05ac9eb652576f37e6e5fa3942c20082f2c6eab1ff8ac4c8963b5e363b9de705",
+   "first_sampled_trade_date": "2023-07-31",
+   "sample_count_bound": 728
+  },
+  {
+   "metric_id": "PE_A_TTM",
+   "window_id": "5y",
+   "current_observation_id": "98d47da1a60919889c2a143b6a704a373ac9128beafe8cade842dd4a8f075701",
+   "current_ratio_decimal": "12.81970638132453345471096950",
+   "first_sampled_observation_id": "53bb1e01828d0450c5b83df00f4656b3da63bde83f9bb73fa06b88fb0edfc7ea",
+   "first_sampled_trade_date": "2021-08-02",
+   "sample_count_bound": 1211
+  },
+  {
+   "metric_id": "PB_A_MRQ",
+   "window_id": "3y",
+   "current_observation_id": "7e01565f7f1992b4fd3b0073ea7e0751bf6c7cd205ca9358bb73c1fb8be78ad0",
+   "current_ratio_decimal": "1.248281002912494182940071356",
+   "first_sampled_observation_id": "49dd9be0400dffa8399d54f03efad8dfb982696a8c8c600ff5173b9ea5ae8ade",
+   "first_sampled_trade_date": "2023-07-31",
+   "sample_count_bound": 728
+  },
+  {
+   "metric_id": "PB_A_MRQ",
+   "window_id": "5y",
+   "current_observation_id": "7e01565f7f1992b4fd3b0073ea7e0751bf6c7cd205ca9358bb73c1fb8be78ad0",
+   "current_ratio_decimal": "1.248281002912494182940071356",
+   "first_sampled_observation_id": "f20536b64864ff59fc77608d200cc5e05aa6aea4411022df60f33d3b4be18a77",
+   "first_sampled_trade_date": "2021-08-02",
+   "sample_count_bound": 1211
+  },
+  {
+   "metric_id": "PS_A_TTM",
+   "window_id": "3y",
+   "current_observation_id": "d1254dfb7d838f56998bc5c57b436e63d3f875d6dd1ae8ea0660ccf7bfcb24d2",
+   "current_ratio_decimal": "0.7120848664101782571504419559",
+   "first_sampled_observation_id": "7927fb00a98b3b60c411911f55c97f6a80f4958f0e252ee06122e91fb2c65a05",
+   "first_sampled_trade_date": "2023-07-31",
+   "sample_count_bound": 728
+  },
+  {
+   "metric_id": "PS_A_TTM",
+   "window_id": "5y",
+   "current_observation_id": "d1254dfb7d838f56998bc5c57b436e63d3f875d6dd1ae8ea0660ccf7bfcb24d2",
+   "current_ratio_decimal": "0.7120848664101782571504419559",
+   "first_sampled_observation_id": "405cf25c0735ad0474b8f750b5fd39e0597b09f4fd5023ed2e643ac07110df7a",
+   "first_sampled_trade_date": "2021-08-02",
+   "sample_count_bound": 1211
+  }
+ ]
+}

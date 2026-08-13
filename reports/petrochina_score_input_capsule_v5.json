@@ -1,0 +1,3809 @@
+{
+  "schema": "petrochina_score_input_capsule_v5",
+  "version": "5.0",
+  "symbol": "601857.SH",
+  "time_contract": {
+    "market_data_as_of_date": "2026-07-31",
+    "research_evidence_as_of": "2026-08-02",
+    "scorecard_formed_at": "2026-08-02",
+    "timezone": "Asia/Shanghai",
+    "time_contract_version": "1.0",
+    "digest": "e47b3c22717004132ade342668ce85b5b57bad226f81c5c2231e0ee41079c70d"
+  },
+  "dimensions": [
+    "enterprise_quality",
+    "valuation_attractiveness",
+    "value_realization_capacity",
+    "risk_and_evidence_integrity"
+  ],
+  "component_count": 24,
+  "components": {
+    "eq_gross_margin": {
+      "component_id": "eq_gross_margin",
+      "dimension_id": "enterprise_quality",
+      "resolver_id": "canonical_fact_bundle_resolver",
+      "resolver_version": "1.0",
+      "upstream_ref_type": "derived_from_canonical_facts",
+      "resolved_records": [
+        {
+          "record_id": "a4b8e6c1a9b11e31722a13af81e10b06de616e65538d3e7e24e105a1aa0e6fd0",
+          "record_digest": "a4b8e6c1a9b11e31722a13af81e10b06de616e65538d3e7e24e105a1aa0e6fd0",
+          "record_identity_type": "adapter_record_digest",
+          "artifact_logical_path": "acceptance/fixtures/official_facts/601857.SH/2025_annual.json",
+          "artifact_contract": "official_fact_bundle",
+          "artifact_sha256": "1cea469542ec4293658703167e7d10cc00b7ced21c9ce6a5e13843bed6e1caab",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 5353,
+          "field_path": "/facts/revenue/2025",
+          "symbol": "601857.SH",
+          "period": "2025",
+          "raw_value": "286446900",
+          "unit": "人民币百万元",
+          "domain": "ratio_gte_0",
+          "available_at": "2026-03-30",
+          "source_tier": "canonical_fact_verified",
+          "source_evidence_ids": [
+            "company/exchange"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "880bb3aae09343a3583cce917ca4c8fd0b74a02e666791c626f95b01bf5f0e67",
+          "record_digest": "880bb3aae09343a3583cce917ca4c8fd0b74a02e666791c626f95b01bf5f0e67",
+          "record_identity_type": "adapter_record_digest",
+          "artifact_logical_path": "acceptance/fixtures/official_facts/601857.SH/supplemental/2025_earnings_quality.json",
+          "artifact_contract": "official_fact_bundle",
+          "artifact_sha256": "74b0e1d3319b9a19711cc639567d0a08f472bd951b2ffce3cfc7ecb738db6829",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 7304,
+          "field_path": "/facts/operating_cost/2025",
+          "symbol": "601857.SH",
+          "period": "2025",
+          "raw_value": "224612100",
+          "unit": "人民币百万元",
+          "domain": "ratio_gte_0",
+          "available_at": "2026-03-30",
+          "source_tier": "canonical_fact_verified",
+          "source_evidence_ids": [
+            "company/exchange"
+          ],
+          "gap_ids": []
+        }
+      ],
+      "operand_record_ids": [
+        "a4b8e6c1a9b11e31722a13af81e10b06de616e65538d3e7e24e105a1aa0e6fd0",
+        "880bb3aae09343a3583cce917ca4c8fd0b74a02e666791c626f95b01bf5f0e67"
+      ],
+      "operand_record_digests": [
+        "a4b8e6c1a9b11e31722a13af81e10b06de616e65538d3e7e24e105a1aa0e6fd0",
+        "880bb3aae09343a3583cce917ca4c8fd0b74a02e666791c626f95b01bf5f0e67"
+      ],
+      "transform_id": "gross_margin_v1",
+      "transform_version": "1.0",
+      "selected_value_decimal": "0.2158682813463856651965861736",
+      "unit": "ratio",
+      "domain": "ratio_gte_0",
+      "period": "2025",
+      "available_at": "2026-03-30",
+      "resolved_source_tier": "computed_from_verified_canonical_inputs",
+      "source_evidence_ids": [
+        "company/exchange"
+      ],
+      "gap_ids": [],
+      "transform_inputs": {
+        "revenue": "286446900",
+        "operating_cost": "224612100"
+      },
+      "transform_inputs_role": "derived_snapshot_only",
+      "validator_must_rebuild": true,
+      "calculation_trace": [
+        "gross_margin = 61834800 / 286446900"
+      ],
+      "observation_set": null,
+      "score_input_id": "282db67bdfa31b2258ee8820b6a34d9006116f986e5c5a640ceced70227a5c74"
+    },
+    "eq_operating_margin": {
+      "component_id": "eq_operating_margin",
+      "dimension_id": "enterprise_quality",
+      "resolver_id": "canonical_fact_bundle_resolver",
+      "resolver_version": "1.0",
+      "upstream_ref_type": "derived_from_canonical_facts",
+      "resolved_records": [
+        {
+          "record_id": "28df7eb6062e9152f205b9b35f34db70ecffc0f73b208558cfe454fc634e1baa",
+          "record_digest": "28df7eb6062e9152f205b9b35f34db70ecffc0f73b208558cfe454fc634e1baa",
+          "record_identity_type": "adapter_record_digest",
+          "artifact_logical_path": "acceptance/fixtures/official_facts/601857.SH/2025_annual.json",
+          "artifact_contract": "official_fact_bundle",
+          "artifact_sha256": "1cea469542ec4293658703167e7d10cc00b7ced21c9ce6a5e13843bed6e1caab",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 5353,
+          "field_path": "/facts/revenue/2025",
+          "symbol": "601857.SH",
+          "period": "2025",
+          "raw_value": "286446900",
+          "unit": "人民币百万元",
+          "domain": "ratio",
+          "available_at": "2026-03-30",
+          "source_tier": "canonical_fact_verified",
+          "source_evidence_ids": [
+            "company/exchange"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "11e215d02ee665d16c02f5092e31bf9736f3b70adb4942aa76ec9ef4fec51329",
+          "record_digest": "11e215d02ee665d16c02f5092e31bf9736f3b70adb4942aa76ec9ef4fec51329",
+          "record_identity_type": "adapter_record_digest",
+          "artifact_logical_path": "acceptance/fixtures/official_facts/601857.SH/supplemental/2025_earnings_quality.json",
+          "artifact_contract": "official_fact_bundle",
+          "artifact_sha256": "74b0e1d3319b9a19711cc639567d0a08f472bd951b2ffce3cfc7ecb738db6829",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 7304,
+          "field_path": "/facts/operating_profit/2025",
+          "symbol": "601857.SH",
+          "period": "2025",
+          "raw_value": "23457900",
+          "unit": "人民币百万元",
+          "domain": "ratio",
+          "available_at": "2026-03-30",
+          "source_tier": "canonical_fact_verified",
+          "source_evidence_ids": [
+            "company/exchange"
+          ],
+          "gap_ids": []
+        }
+      ],
+      "operand_record_ids": [
+        "28df7eb6062e9152f205b9b35f34db70ecffc0f73b208558cfe454fc634e1baa",
+        "11e215d02ee665d16c02f5092e31bf9736f3b70adb4942aa76ec9ef4fec51329"
+      ],
+      "operand_record_digests": [
+        "28df7eb6062e9152f205b9b35f34db70ecffc0f73b208558cfe454fc634e1baa",
+        "11e215d02ee665d16c02f5092e31bf9736f3b70adb4942aa76ec9ef4fec51329"
+      ],
+      "transform_id": "operating_margin_v1",
+      "transform_version": "1.0",
+      "selected_value_decimal": "0.08189266492323708163712017829",
+      "unit": "ratio",
+      "domain": "ratio",
+      "period": "2025",
+      "available_at": "2026-03-30",
+      "resolved_source_tier": "computed_from_verified_canonical_inputs",
+      "source_evidence_ids": [
+        "company/exchange"
+      ],
+      "gap_ids": [],
+      "transform_inputs": {
+        "revenue": "286446900",
+        "operating_profit": "23457900"
+      },
+      "transform_inputs_role": "derived_snapshot_only",
+      "validator_must_rebuild": true,
+      "calculation_trace": [
+        "operating_margin = 23457900 / 286446900"
+      ],
+      "observation_set": null,
+      "score_input_id": "c53bff7e0d1c180b43bcbdd8e54dd7b09ed15ad2f967b10ef9f7aa66d2523834"
+    },
+    "eq_np_yoy": {
+      "component_id": "eq_np_yoy",
+      "dimension_id": "enterprise_quality",
+      "resolver_id": "canonical_fact_bundle_resolver",
+      "resolver_version": "1.0",
+      "upstream_ref_type": "derived_from_canonical_facts",
+      "resolved_records": [
+        {
+          "record_id": "92679cbb16a24fd08f6aafb9c17e9032731842df1d8d810e93b9802cf925b9c4",
+          "record_digest": "92679cbb16a24fd08f6aafb9c17e9032731842df1d8d810e93b9802cf925b9c4",
+          "record_identity_type": "adapter_record_digest",
+          "artifact_logical_path": "acceptance/fixtures/official_facts/601857.SH/2025_annual.json",
+          "artifact_contract": "official_fact_bundle",
+          "artifact_sha256": "1cea469542ec4293658703167e7d10cc00b7ced21c9ce6a5e13843bed6e1caab",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 5353,
+          "field_path": "/facts/net_profit_attributable_to_parent/2025",
+          "symbol": "601857.SH",
+          "period": "2025",
+          "raw_value": "15730200",
+          "unit": "人民币百万元",
+          "domain": "ratio",
+          "available_at": "2026-03-30",
+          "source_tier": "canonical_fact_verified",
+          "source_evidence_ids": [
+            "company/exchange"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "8c6e5d0b043fc12d33384c46dccb885b1dee6d45a0dfb3e18bd1fc075a37976b",
+          "record_digest": "8c6e5d0b043fc12d33384c46dccb885b1dee6d45a0dfb3e18bd1fc075a37976b",
+          "record_identity_type": "adapter_record_digest",
+          "artifact_logical_path": "acceptance/fixtures/official_facts/601857.SH/2025_annual.json",
+          "artifact_contract": "official_fact_bundle",
+          "artifact_sha256": "1cea469542ec4293658703167e7d10cc00b7ced21c9ce6a5e13843bed6e1caab",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 5353,
+          "field_path": "/facts/net_profit_attributable_to_parent/2024",
+          "symbol": "601857.SH",
+          "period": "2024",
+          "raw_value": "15730200",
+          "unit": "人民币百万元",
+          "domain": "ratio",
+          "available_at": "2026-03-30",
+          "source_tier": "canonical_fact_verified",
+          "source_evidence_ids": [
+            "company/exchange"
+          ],
+          "gap_ids": []
+        }
+      ],
+      "operand_record_ids": [
+        "92679cbb16a24fd08f6aafb9c17e9032731842df1d8d810e93b9802cf925b9c4",
+        "8c6e5d0b043fc12d33384c46dccb885b1dee6d45a0dfb3e18bd1fc075a37976b"
+      ],
+      "operand_record_digests": [
+        "92679cbb16a24fd08f6aafb9c17e9032731842df1d8d810e93b9802cf925b9c4",
+        "8c6e5d0b043fc12d33384c46dccb885b1dee6d45a0dfb3e18bd1fc075a37976b"
+      ],
+      "transform_id": "np_yoy_v1",
+      "transform_version": "1.0",
+      "selected_value_decimal": "0",
+      "unit": "ratio",
+      "domain": "ratio",
+      "period": "2025",
+      "available_at": "2026-03-30",
+      "resolved_source_tier": "computed_from_verified_canonical_inputs",
+      "source_evidence_ids": [
+        "company/exchange"
+      ],
+      "gap_ids": [],
+      "transform_inputs": {
+        "np_2025": "15730200",
+        "np_2024": "15730200"
+      },
+      "transform_inputs_role": "derived_snapshot_only",
+      "validator_must_rebuild": true,
+      "calculation_trace": [
+        "np_yoy = 0 / 15730200"
+      ],
+      "observation_set": null,
+      "score_input_id": "5e785927cf3c59239a95bf26f704ead1358c26deac7dea4f1323568aeb738d63"
+    },
+    "eq_ocf_np": {
+      "component_id": "eq_ocf_np",
+      "dimension_id": "enterprise_quality",
+      "resolver_id": "canonical_fact_bundle_resolver",
+      "resolver_version": "1.0",
+      "upstream_ref_type": "derived_from_canonical_facts",
+      "resolved_records": [
+        {
+          "record_id": "14db7d89cbafe99e6f44c2d23e0d9bbfde9db249691f9c3c29fcb29be5ae2b71",
+          "record_digest": "14db7d89cbafe99e6f44c2d23e0d9bbfde9db249691f9c3c29fcb29be5ae2b71",
+          "record_identity_type": "adapter_record_digest",
+          "artifact_logical_path": "acceptance/fixtures/official_facts/601857.SH/2025_annual.json",
+          "artifact_contract": "official_fact_bundle",
+          "artifact_sha256": "1cea469542ec4293658703167e7d10cc00b7ced21c9ce6a5e13843bed6e1caab",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 5353,
+          "field_path": "/facts/operating_cash_flow/2025",
+          "symbol": "601857.SH",
+          "period": "2025",
+          "raw_value": "41251000",
+          "unit": "人民币百万元",
+          "domain": "ratio",
+          "available_at": "2026-03-30",
+          "source_tier": "canonical_fact_verified",
+          "source_evidence_ids": [
+            "company/exchange"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "8d3e851a137b23d797e41a9bafd0bc6a513f9d115dfebb57205c6693410aee14",
+          "record_digest": "8d3e851a137b23d797e41a9bafd0bc6a513f9d115dfebb57205c6693410aee14",
+          "record_identity_type": "adapter_record_digest",
+          "artifact_logical_path": "acceptance/fixtures/official_facts/601857.SH/2025_annual.json",
+          "artifact_contract": "official_fact_bundle",
+          "artifact_sha256": "1cea469542ec4293658703167e7d10cc00b7ced21c9ce6a5e13843bed6e1caab",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 5353,
+          "field_path": "/facts/net_profit_attributable_to_parent/2025",
+          "symbol": "601857.SH",
+          "period": "2025",
+          "raw_value": "15730200",
+          "unit": "人民币百万元",
+          "domain": "ratio",
+          "available_at": "2026-03-30",
+          "source_tier": "canonical_fact_verified",
+          "source_evidence_ids": [
+            "company/exchange"
+          ],
+          "gap_ids": []
+        }
+      ],
+      "operand_record_ids": [
+        "14db7d89cbafe99e6f44c2d23e0d9bbfde9db249691f9c3c29fcb29be5ae2b71",
+        "8d3e851a137b23d797e41a9bafd0bc6a513f9d115dfebb57205c6693410aee14"
+      ],
+      "operand_record_digests": [
+        "14db7d89cbafe99e6f44c2d23e0d9bbfde9db249691f9c3c29fcb29be5ae2b71",
+        "8d3e851a137b23d797e41a9bafd0bc6a513f9d115dfebb57205c6693410aee14"
+      ],
+      "transform_id": "ocf_to_net_profit_v1",
+      "transform_version": "1.0",
+      "selected_value_decimal": "2.622407852411285298343314135",
+      "unit": "ratio",
+      "domain": "ratio",
+      "period": "2025",
+      "available_at": "2026-03-30",
+      "resolved_source_tier": "computed_from_verified_canonical_inputs",
+      "source_evidence_ids": [
+        "company/exchange"
+      ],
+      "gap_ids": [],
+      "transform_inputs": {
+        "ocf": "41251000",
+        "np": "15730200"
+      },
+      "transform_inputs_role": "derived_snapshot_only",
+      "validator_must_rebuild": true,
+      "calculation_trace": [
+        "ocf_to_net_profit = 41251000 / 15730200"
+      ],
+      "observation_set": null,
+      "score_input_id": "f1687ab1669b4bd44bee47ab394767781a690e30ee86245412f7b43d2f9e517c"
+    },
+    "eq_roe": {
+      "component_id": "eq_roe",
+      "dimension_id": "enterprise_quality",
+      "resolver_id": "canonical_fact_bundle_resolver",
+      "resolver_version": "1.0",
+      "upstream_ref_type": "derived_from_canonical_facts",
+      "resolved_records": [
+        {
+          "record_id": "ac689f0696f2a6d7a05d5bffa886d991f0788922c1e1f576d1a49e2955535a84",
+          "record_digest": "ac689f0696f2a6d7a05d5bffa886d991f0788922c1e1f576d1a49e2955535a84",
+          "record_identity_type": "adapter_record_digest",
+          "artifact_logical_path": "acceptance/fixtures/official_facts/601857.SH/2025_annual.json",
+          "artifact_contract": "official_fact_bundle",
+          "artifact_sha256": "1cea469542ec4293658703167e7d10cc00b7ced21c9ce6a5e13843bed6e1caab",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 5353,
+          "field_path": "/facts/net_profit_attributable_to_parent/2025",
+          "symbol": "601857.SH",
+          "period": "2025",
+          "raw_value": "15730200",
+          "unit": "人民币百万元",
+          "domain": "ratio",
+          "available_at": "2026-03-30",
+          "source_tier": "canonical_fact_verified",
+          "source_evidence_ids": [
+            "company/exchange"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "f4c82eb7cd54513a7de6859d2ec5d89629e75279450117f6a2df26a1001b7f39",
+          "record_digest": "f4c82eb7cd54513a7de6859d2ec5d89629e75279450117f6a2df26a1001b7f39",
+          "record_identity_type": "adapter_record_digest",
+          "artifact_logical_path": "acceptance/fixtures/official_facts/601857.SH/supplemental/2025_roe_roa_denominators.json",
+          "artifact_contract": "official_fact_bundle",
+          "artifact_sha256": "2f91f7140c6e32067037e2be4856e23a5dc559133910ff265d6a21366a99dcad",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 4977,
+          "field_path": "/facts/equity_attributable_to_parent/2025",
+          "symbol": "601857.SH",
+          "period": "2025",
+          "raw_value": "158606100",
+          "unit": "人民币百万元",
+          "domain": "ratio",
+          "available_at": "2026-03-30",
+          "source_tier": "canonical_fact_verified",
+          "source_evidence_ids": [
+            "company/exchange"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "d4d707d1c2ed48c40e48a11bdaf569c9320d5f8cd88bdb667960ce066357a4c5",
+          "record_digest": "d4d707d1c2ed48c40e48a11bdaf569c9320d5f8cd88bdb667960ce066357a4c5",
+          "record_identity_type": "adapter_record_digest",
+          "artifact_logical_path": "acceptance/fixtures/official_facts/601857.SH/supplemental/2025_roe_roa_denominators.json",
+          "artifact_contract": "official_fact_bundle",
+          "artifact_sha256": "2f91f7140c6e32067037e2be4856e23a5dc559133910ff265d6a21366a99dcad",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 4977,
+          "field_path": "/facts/equity_attributable_to_parent/2024",
+          "symbol": "601857.SH",
+          "period": "2024",
+          "raw_value": "158606100",
+          "unit": "人民币百万元",
+          "domain": "ratio",
+          "available_at": "2026-03-30",
+          "source_tier": "canonical_fact_verified",
+          "source_evidence_ids": [
+            "company/exchange"
+          ],
+          "gap_ids": []
+        }
+      ],
+      "operand_record_ids": [
+        "ac689f0696f2a6d7a05d5bffa886d991f0788922c1e1f576d1a49e2955535a84",
+        "f4c82eb7cd54513a7de6859d2ec5d89629e75279450117f6a2df26a1001b7f39",
+        "d4d707d1c2ed48c40e48a11bdaf569c9320d5f8cd88bdb667960ce066357a4c5"
+      ],
+      "operand_record_digests": [
+        "ac689f0696f2a6d7a05d5bffa886d991f0788922c1e1f576d1a49e2955535a84",
+        "f4c82eb7cd54513a7de6859d2ec5d89629e75279450117f6a2df26a1001b7f39",
+        "d4d707d1c2ed48c40e48a11bdaf569c9320d5f8cd88bdb667960ce066357a4c5"
+      ],
+      "transform_id": "roe_v1",
+      "transform_version": "1.0",
+      "selected_value_decimal": "0.09917777437311679689494918543",
+      "unit": "ratio",
+      "domain": "ratio",
+      "period": "2025",
+      "available_at": "2026-03-30",
+      "resolved_source_tier": "computed_from_verified_canonical_inputs",
+      "source_evidence_ids": [
+        "company/exchange"
+      ],
+      "gap_ids": [],
+      "transform_inputs": {
+        "np": "15730200",
+        "equity_2024": "158606100",
+        "equity_2025": "158606100"
+      },
+      "transform_inputs_role": "derived_snapshot_only",
+      "validator_must_rebuild": true,
+      "calculation_trace": [
+        "roe = 15730200 / 158606100"
+      ],
+      "observation_set": null,
+      "score_input_id": "ef2a13acd36c88f395127ac374bcadd67c2c29ca320aa4c3870c2c8f70433d13"
+    },
+    "eq_roa": {
+      "component_id": "eq_roa",
+      "dimension_id": "enterprise_quality",
+      "resolver_id": "canonical_fact_bundle_resolver",
+      "resolver_version": "1.0",
+      "upstream_ref_type": "derived_from_canonical_facts",
+      "resolved_records": [
+        {
+          "record_id": "6cc41661b64318100636312347c6953c29374cd82acfffdbb9b3e86aa49b3b1b",
+          "record_digest": "6cc41661b64318100636312347c6953c29374cd82acfffdbb9b3e86aa49b3b1b",
+          "record_identity_type": "adapter_record_digest",
+          "artifact_logical_path": "acceptance/fixtures/official_facts/601857.SH/supplemental/2025_net_profit.json",
+          "artifact_contract": "official_fact_bundle",
+          "artifact_sha256": "274becc25a05f9957b71a9bcbee732b346c0b7d0157a1caf24106a3670c001d9",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 3458,
+          "field_path": "/facts/net_profit/2025",
+          "symbol": "601857.SH",
+          "period": "2025",
+          "raw_value": "17200500",
+          "unit": "人民币百万元",
+          "domain": "ratio",
+          "available_at": "2026-03-30",
+          "source_tier": "canonical_fact_verified",
+          "source_evidence_ids": [
+            "company/exchange"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "19b2fe5decda1710ec3bd563eb746356f89df026e4449d924fc69dd63278133d",
+          "record_digest": "19b2fe5decda1710ec3bd563eb746356f89df026e4449d924fc69dd63278133d",
+          "record_identity_type": "adapter_record_digest",
+          "artifact_logical_path": "acceptance/fixtures/official_facts/601857.SH/supplemental/2025_roe_roa_denominators.json",
+          "artifact_contract": "official_fact_bundle",
+          "artifact_sha256": "2f91f7140c6e32067037e2be4856e23a5dc559133910ff265d6a21366a99dcad",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 4977,
+          "field_path": "/facts/total_assets/2025",
+          "symbol": "601857.SH",
+          "period": "2025",
+          "raw_value": "282801700",
+          "unit": "人民币百万元",
+          "domain": "ratio",
+          "available_at": "2026-03-30",
+          "source_tier": "canonical_fact_verified",
+          "source_evidence_ids": [
+            "company/exchange"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "d567aeb505795a51a59226ebd59b8e5dca73e57dee02dbf55f1da205e1855006",
+          "record_digest": "d567aeb505795a51a59226ebd59b8e5dca73e57dee02dbf55f1da205e1855006",
+          "record_identity_type": "adapter_record_digest",
+          "artifact_logical_path": "acceptance/fixtures/official_facts/601857.SH/supplemental/2025_roe_roa_denominators.json",
+          "artifact_contract": "official_fact_bundle",
+          "artifact_sha256": "2f91f7140c6e32067037e2be4856e23a5dc559133910ff265d6a21366a99dcad",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 4977,
+          "field_path": "/facts/total_assets/2024",
+          "symbol": "601857.SH",
+          "period": "2024",
+          "raw_value": "282801700",
+          "unit": "人民币百万元",
+          "domain": "ratio",
+          "available_at": "2026-03-30",
+          "source_tier": "canonical_fact_verified",
+          "source_evidence_ids": [
+            "company/exchange"
+          ],
+          "gap_ids": []
+        }
+      ],
+      "operand_record_ids": [
+        "6cc41661b64318100636312347c6953c29374cd82acfffdbb9b3e86aa49b3b1b",
+        "19b2fe5decda1710ec3bd563eb746356f89df026e4449d924fc69dd63278133d",
+        "d567aeb505795a51a59226ebd59b8e5dca73e57dee02dbf55f1da205e1855006"
+      ],
+      "operand_record_digests": [
+        "6cc41661b64318100636312347c6953c29374cd82acfffdbb9b3e86aa49b3b1b",
+        "19b2fe5decda1710ec3bd563eb746356f89df026e4449d924fc69dd63278133d",
+        "d567aeb505795a51a59226ebd59b8e5dca73e57dee02dbf55f1da205e1855006"
+      ],
+      "transform_id": "roa_v1",
+      "transform_version": "1.0",
+      "selected_value_decimal": "0.06082177016616236748223224966",
+      "unit": "ratio",
+      "domain": "ratio",
+      "period": "2025",
+      "available_at": "2026-03-30",
+      "resolved_source_tier": "computed_from_verified_canonical_inputs",
+      "source_evidence_ids": [
+        "company/exchange"
+      ],
+      "gap_ids": [],
+      "transform_inputs": {
+        "net_profit": "17200500",
+        "total_assets_2024": "282801700",
+        "total_assets_2025": "282801700"
+      },
+      "transform_inputs_role": "derived_snapshot_only",
+      "validator_must_rebuild": true,
+      "calculation_trace": [
+        "roa = 17200500 / 282801700"
+      ],
+      "observation_set": null,
+      "score_input_id": "28553e9d6dd27e2dc3808c237f72429b0c5d410bb42f5dcdfc9fa586e996f07b"
+    },
+    "eq_asset_liability": {
+      "component_id": "eq_asset_liability",
+      "dimension_id": "enterprise_quality",
+      "resolver_id": "canonical_fact_bundle_resolver",
+      "resolver_version": "1.0",
+      "upstream_ref_type": "derived_from_canonical_facts",
+      "resolved_records": [
+        {
+          "record_id": "72c97dce6b7f3cfa3779560a814b4c96a03e0bc1f994fdb3c03d3a19b78f6c7d",
+          "record_digest": "72c97dce6b7f3cfa3779560a814b4c96a03e0bc1f994fdb3c03d3a19b78f6c7d",
+          "record_identity_type": "adapter_record_digest",
+          "artifact_logical_path": "acceptance/fixtures/official_facts/601857.SH/supplemental/2025_financial_safety.json",
+          "artifact_contract": "official_fact_bundle",
+          "artifact_sha256": "02af318e60d1162337470acbffccc83223d28796c2693f0f11d03c5c77e3e7c7",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 17007,
+          "field_path": "/facts/total_liabilities/2025",
+          "symbol": "601857.SH",
+          "period": "2025",
+          "raw_value": "102846900",
+          "unit": "人民币百万元",
+          "domain": "ratio",
+          "available_at": "2026-03-30",
+          "source_tier": "canonical_fact_verified",
+          "source_evidence_ids": [
+            "company/exchange"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "d73f0ba9bd51c049e112e63d673b4ab3830440da51952221531732652633cc59",
+          "record_digest": "d73f0ba9bd51c049e112e63d673b4ab3830440da51952221531732652633cc59",
+          "record_identity_type": "adapter_record_digest",
+          "artifact_logical_path": "acceptance/fixtures/official_facts/601857.SH/supplemental/2025_roe_roa_denominators.json",
+          "artifact_contract": "official_fact_bundle",
+          "artifact_sha256": "2f91f7140c6e32067037e2be4856e23a5dc559133910ff265d6a21366a99dcad",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 4977,
+          "field_path": "/facts/total_assets/2025",
+          "symbol": "601857.SH",
+          "period": "2025",
+          "raw_value": "282801700",
+          "unit": "人民币百万元",
+          "domain": "ratio",
+          "available_at": "2026-03-30",
+          "source_tier": "canonical_fact_verified",
+          "source_evidence_ids": [
+            "company/exchange"
+          ],
+          "gap_ids": []
+        }
+      ],
+      "operand_record_ids": [
+        "72c97dce6b7f3cfa3779560a814b4c96a03e0bc1f994fdb3c03d3a19b78f6c7d",
+        "d73f0ba9bd51c049e112e63d673b4ab3830440da51952221531732652633cc59"
+      ],
+      "operand_record_digests": [
+        "72c97dce6b7f3cfa3779560a814b4c96a03e0bc1f994fdb3c03d3a19b78f6c7d",
+        "d73f0ba9bd51c049e112e63d673b4ab3830440da51952221531732652633cc59"
+      ],
+      "transform_id": "asset_liability_v1",
+      "transform_version": "1.0",
+      "selected_value_decimal": "0.3636714347898191559668842160",
+      "unit": "ratio",
+      "domain": "ratio",
+      "period": "2025",
+      "available_at": "2026-03-30",
+      "resolved_source_tier": "computed_from_verified_canonical_inputs",
+      "source_evidence_ids": [
+        "company/exchange"
+      ],
+      "gap_ids": [],
+      "transform_inputs": {
+        "total_liabilities": "102846900",
+        "total_assets": "282801700"
+      },
+      "transform_inputs_role": "derived_snapshot_only",
+      "validator_must_rebuild": true,
+      "calculation_trace": [
+        "asset_liability = 102846900 / 282801700"
+      ],
+      "observation_set": null,
+      "score_input_id": "be7fd14cbec57817bdd2ae010f42f7d0b96c72f4b17538709be980e98ccbb0b7"
+    },
+    "eq_cash_coverage": {
+      "component_id": "eq_cash_coverage",
+      "dimension_id": "enterprise_quality",
+      "resolver_id": "canonical_fact_bundle_resolver",
+      "resolver_version": "1.0",
+      "upstream_ref_type": "derived_from_canonical_facts",
+      "resolved_records": [
+        {
+          "record_id": "77a1d298761abdf86c56e11bb34c30638a8279b496c9de0d4dd414c50b2281e2",
+          "record_digest": "77a1d298761abdf86c56e11bb34c30638a8279b496c9de0d4dd414c50b2281e2",
+          "record_identity_type": "adapter_record_digest",
+          "artifact_logical_path": "acceptance/fixtures/official_facts/601857.SH/supplemental/2025_financial_safety.json",
+          "artifact_contract": "official_fact_bundle",
+          "artifact_sha256": "02af318e60d1162337470acbffccc83223d28796c2693f0f11d03c5c77e3e7c7",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 17007,
+          "field_path": "/facts/cash_and_cash_equivalents/2025",
+          "symbol": "601857.SH",
+          "period": "2025",
+          "raw_value": "20616200",
+          "unit": "人民币百万元",
+          "domain": "ratio",
+          "available_at": "2026-03-30",
+          "source_tier": "canonical_fact_verified",
+          "source_evidence_ids": [
+            "company/exchange"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "16c86110ff57c33e14c9d0e64754b8ddbd03cfb4b86b247a9ea581f31653bd17",
+          "record_digest": "16c86110ff57c33e14c9d0e64754b8ddbd03cfb4b86b247a9ea581f31653bd17",
+          "record_identity_type": "adapter_record_digest",
+          "artifact_logical_path": "acceptance/fixtures/official_facts/601857.SH/supplemental/2025_financial_safety.json",
+          "artifact_contract": "official_fact_bundle",
+          "artifact_sha256": "02af318e60d1162337470acbffccc83223d28796c2693f0f11d03c5c77e3e7c7",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 17007,
+          "field_path": "/facts/short_term_borrowings/2025",
+          "symbol": "601857.SH",
+          "period": "2025",
+          "raw_value": "3451300",
+          "unit": "人民币百万元",
+          "domain": "ratio",
+          "available_at": "2026-03-30",
+          "source_tier": "canonical_fact_verified",
+          "source_evidence_ids": [
+            "company/exchange"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "77355f11d96c2a63961fa7c9058a808d2b3747ef7b1eb1d98f82eb1abada9645",
+          "record_digest": "77355f11d96c2a63961fa7c9058a808d2b3747ef7b1eb1d98f82eb1abada9645",
+          "record_identity_type": "adapter_record_digest",
+          "artifact_logical_path": "acceptance/fixtures/official_facts/601857.SH/supplemental/2025_financial_safety.json",
+          "artifact_contract": "official_fact_bundle",
+          "artifact_sha256": "02af318e60d1162337470acbffccc83223d28796c2693f0f11d03c5c77e3e7c7",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 17007,
+          "field_path": "/facts/current_portion_of_interest_bearing_non_current_liabilities/2025",
+          "symbol": "601857.SH",
+          "period": "2025",
+          "raw_value": "3945800",
+          "unit": "人民币百万元",
+          "domain": "ratio",
+          "available_at": "2026-03-30",
+          "source_tier": "canonical_fact_verified",
+          "source_evidence_ids": [
+            "company/exchange"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "d67e967ee7b01b01be89339bcba7abcb6d38fb87d9db05ad4fbe4f7c4c56c6c0",
+          "record_digest": "d67e967ee7b01b01be89339bcba7abcb6d38fb87d9db05ad4fbe4f7c4c56c6c0",
+          "record_identity_type": "adapter_record_digest",
+          "artifact_logical_path": "acceptance/fixtures/official_facts/601857.SH/supplemental/2025_financial_safety.json",
+          "artifact_contract": "official_fact_bundle",
+          "artifact_sha256": "02af318e60d1162337470acbffccc83223d28796c2693f0f11d03c5c77e3e7c7",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 17007,
+          "field_path": "/facts/long_term_borrowings/2025",
+          "symbol": "601857.SH",
+          "period": "2025",
+          "raw_value": "14846200",
+          "unit": "人民币百万元",
+          "domain": "ratio",
+          "available_at": "2026-03-30",
+          "source_tier": "canonical_fact_verified",
+          "source_evidence_ids": [
+            "company/exchange"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "4753890f7ffff097f169584abd7e323b6c41ffac4cd407e535612a6fa693ca3d",
+          "record_digest": "4753890f7ffff097f169584abd7e323b6c41ffac4cd407e535612a6fa693ca3d",
+          "record_identity_type": "adapter_record_digest",
+          "artifact_logical_path": "acceptance/fixtures/official_facts/601857.SH/supplemental/2025_financial_safety.json",
+          "artifact_contract": "official_fact_bundle",
+          "artifact_sha256": "02af318e60d1162337470acbffccc83223d28796c2693f0f11d03c5c77e3e7c7",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 17007,
+          "field_path": "/facts/bonds_payable/2025",
+          "symbol": "601857.SH",
+          "period": "2025",
+          "raw_value": "1500000",
+          "unit": "人民币百万元",
+          "domain": "ratio",
+          "available_at": "2026-03-30",
+          "source_tier": "canonical_fact_verified",
+          "source_evidence_ids": [
+            "company/exchange"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "f4395ad81a0165918945d865986a1bb62c25bc1a2d87a36527f79af453f756e4",
+          "record_digest": "f4395ad81a0165918945d865986a1bb62c25bc1a2d87a36527f79af453f756e4",
+          "record_identity_type": "adapter_record_digest",
+          "artifact_logical_path": "acceptance/fixtures/official_facts/601857.SH/supplemental/2025_financial_safety.json",
+          "artifact_contract": "official_fact_bundle",
+          "artifact_sha256": "02af318e60d1162337470acbffccc83223d28796c2693f0f11d03c5c77e3e7c7",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 17007,
+          "field_path": "/facts/lease_liabilities/2025",
+          "symbol": "601857.SH",
+          "period": "2025",
+          "raw_value": "11634200",
+          "unit": "人民币百万元",
+          "domain": "ratio",
+          "available_at": "2026-03-30",
+          "source_tier": "canonical_fact_verified",
+          "source_evidence_ids": [
+            "company/exchange"
+          ],
+          "gap_ids": []
+        }
+      ],
+      "operand_record_ids": [
+        "77a1d298761abdf86c56e11bb34c30638a8279b496c9de0d4dd414c50b2281e2",
+        "16c86110ff57c33e14c9d0e64754b8ddbd03cfb4b86b247a9ea581f31653bd17",
+        "77355f11d96c2a63961fa7c9058a808d2b3747ef7b1eb1d98f82eb1abada9645",
+        "d67e967ee7b01b01be89339bcba7abcb6d38fb87d9db05ad4fbe4f7c4c56c6c0",
+        "4753890f7ffff097f169584abd7e323b6c41ffac4cd407e535612a6fa693ca3d",
+        "f4395ad81a0165918945d865986a1bb62c25bc1a2d87a36527f79af453f756e4"
+      ],
+      "operand_record_digests": [
+        "77a1d298761abdf86c56e11bb34c30638a8279b496c9de0d4dd414c50b2281e2",
+        "16c86110ff57c33e14c9d0e64754b8ddbd03cfb4b86b247a9ea581f31653bd17",
+        "77355f11d96c2a63961fa7c9058a808d2b3747ef7b1eb1d98f82eb1abada9645",
+        "d67e967ee7b01b01be89339bcba7abcb6d38fb87d9db05ad4fbe4f7c4c56c6c0",
+        "4753890f7ffff097f169584abd7e323b6c41ffac4cd407e535612a6fa693ca3d",
+        "f4395ad81a0165918945d865986a1bb62c25bc1a2d87a36527f79af453f756e4"
+      ],
+      "transform_id": "cash_coverage_v1",
+      "transform_version": "1.0",
+      "selected_value_decimal": "0.5827489223376439827574023037",
+      "unit": "ratio",
+      "domain": "ratio",
+      "period": "2025",
+      "available_at": "2026-03-30",
+      "resolved_source_tier": "computed_from_verified_canonical_inputs",
+      "source_evidence_ids": [
+        "company/exchange"
+      ],
+      "gap_ids": [],
+      "transform_inputs": {
+        "cash": "20616200",
+        "gross_interest_bearing_debt": "35377500"
+      },
+      "transform_inputs_role": "derived_snapshot_only",
+      "validator_must_rebuild": true,
+      "calculation_trace": [
+        "gross_interest_bearing_debt = sum(['3451300', '3945800', '14846200', '1500000', '11634200']) = 35377500",
+        "cash_coverage = 20616200 / 35377500"
+      ],
+      "observation_set": null,
+      "score_input_id": "d8daa1985fbbf1154e2b9652fbc8f5c575b36147552aa13adc0135b193ff9bf7"
+    },
+    "eq_roic": {
+      "component_id": "eq_roic",
+      "dimension_id": "enterprise_quality",
+      "resolver_id": "gap_ledger_resolver",
+      "resolver_version": "1.0",
+      "upstream_ref_type": "gap_record",
+      "resolved_records": [
+        {
+          "record_id": "M2G-ROIC-001",
+          "record_digest": "e34e2b27719b278049c8f01c5550e3c6d1f6f6e0e085f751fce8ac4133b7617e",
+          "record_identity_type": "gap_id",
+          "artifact_logical_path": "reports/m2_explicit_gap_ledger.json",
+          "artifact_contract": "m2_explicit_gap_ledger_v1",
+          "artifact_sha256": "74ff95b18690187072850a462da5dcb90b4c9482717db7b99b7a06cf9555e0d4",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 27464,
+          "field_path": "/gaps/M2G-ROIC-001",
+          "symbol": "601857.SH",
+          "period": "FY2024",
+          "raw_value": "current_explicit_gap",
+          "unit": "categorical",
+          "domain": "categorical_enum",
+          "available_at": "2026-08-02",
+          "source_tier": "coverage_gap",
+          "source_evidence_ids": [
+            "A-2024-operating-tax",
+            "stage2i2r-search-01",
+            "9417f93db84af6f553bfaf5ba2c7b18b6d43510371ff3f8773d38f8db2793112"
+          ],
+          "gap_ids": [
+            "M2G-ROIC-001"
+          ]
+        },
+        {
+          "record_id": "M2G-ROIC-002",
+          "record_digest": "5ecfd27b343be793df6a94b65546e73ab00f13a1695f36bae619ad506953245b",
+          "record_identity_type": "gap_id",
+          "artifact_logical_path": "reports/m2_explicit_gap_ledger.json",
+          "artifact_contract": "m2_explicit_gap_ledger_v1",
+          "artifact_sha256": "74ff95b18690187072850a462da5dcb90b4c9482717db7b99b7a06cf9555e0d4",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 27464,
+          "field_path": "/gaps/M2G-ROIC-002",
+          "symbol": "601857.SH",
+          "period": "FY2023",
+          "raw_value": "current_explicit_gap",
+          "unit": "categorical",
+          "domain": "categorical_enum",
+          "available_at": "2026-08-02",
+          "source_tier": "coverage_gap",
+          "source_evidence_ids": [
+            "B-2023-2024-associate",
+            "stage2i2r-search-02",
+            "32eea1b32fca6ff86c8a3dfc5613c7d830d4502666b4bf131e6a01b2f20f1f31"
+          ],
+          "gap_ids": [
+            "M2G-ROIC-002"
+          ]
+        },
+        {
+          "record_id": "M2G-ROIC-003",
+          "record_digest": "80eef801ab27db53c41bbbdf0bd89b6dcdbed43d83cd3c090ee6f6d543017d63",
+          "record_identity_type": "gap_id",
+          "artifact_logical_path": "reports/m2_explicit_gap_ledger.json",
+          "artifact_contract": "m2_explicit_gap_ledger_v1",
+          "artifact_sha256": "74ff95b18690187072850a462da5dcb90b4c9482717db7b99b7a06cf9555e0d4",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 27464,
+          "field_path": "/gaps/M2G-ROIC-003",
+          "symbol": "601857.SH",
+          "period": "FY2024",
+          "raw_value": "current_explicit_gap",
+          "unit": "categorical",
+          "domain": "categorical_enum",
+          "available_at": "2026-08-02",
+          "source_tier": "coverage_gap",
+          "source_evidence_ids": [
+            "B-2023-2024-associate",
+            "stage2i2r-search-03",
+            "e76dc85268a0b53f2ec065c9bb0d2cceb03397260a11a008ce66c774a2c6a229"
+          ],
+          "gap_ids": [
+            "M2G-ROIC-003"
+          ]
+        },
+        {
+          "record_id": "M2G-ROIC-004",
+          "record_digest": "592ddbe4da85d88b297e6c2ebb4571b442082777d3cf9557e6a546a2e25f8df6",
+          "record_identity_type": "gap_id",
+          "artifact_logical_path": "reports/m2_explicit_gap_ledger.json",
+          "artifact_contract": "m2_explicit_gap_ledger_v1",
+          "artifact_sha256": "74ff95b18690187072850a462da5dcb90b4c9482717db7b99b7a06cf9555e0d4",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 27464,
+          "field_path": "/gaps/M2G-ROIC-004",
+          "symbol": "601857.SH",
+          "period": "FY2023",
+          "raw_value": "current_explicit_gap",
+          "unit": "categorical",
+          "domain": "categorical_enum",
+          "available_at": "2026-08-02",
+          "source_tier": "coverage_gap",
+          "source_evidence_ids": [
+            "B-2023-2024-jv",
+            "stage2i2r-search-04",
+            "8d68e5880fab6ca33668791e52e3fa42eeef7a8fb197eabc0b3b4f1484ba9cec"
+          ],
+          "gap_ids": [
+            "M2G-ROIC-004"
+          ]
+        },
+        {
+          "record_id": "M2G-ROIC-005",
+          "record_digest": "bc6736ad61cbfb700e16f7cec756b573e874e74d950d6394082d872fde65c9d7",
+          "record_identity_type": "gap_id",
+          "artifact_logical_path": "reports/m2_explicit_gap_ledger.json",
+          "artifact_contract": "m2_explicit_gap_ledger_v1",
+          "artifact_sha256": "74ff95b18690187072850a462da5dcb90b4c9482717db7b99b7a06cf9555e0d4",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 27464,
+          "field_path": "/gaps/M2G-ROIC-005",
+          "symbol": "601857.SH",
+          "period": "FY2024",
+          "raw_value": "current_explicit_gap",
+          "unit": "categorical",
+          "domain": "categorical_enum",
+          "available_at": "2026-08-02",
+          "source_tier": "coverage_gap",
+          "source_evidence_ids": [
+            "B-2023-2024-jv",
+            "stage2i2r-search-05",
+            "91b0b86e6dee3eebb1658845bdf5d6fccd52a9c9061e1306a0e699c95885658c"
+          ],
+          "gap_ids": [
+            "M2G-ROIC-005"
+          ]
+        },
+        {
+          "record_id": "M2G-ROIC-006",
+          "record_digest": "e84044746ce79d6b2f82542dfedb2949f169fe355c4648f6831e3a7203d0bd6c",
+          "record_identity_type": "gap_id",
+          "artifact_logical_path": "reports/m2_explicit_gap_ledger.json",
+          "artifact_contract": "m2_explicit_gap_ledger_v1",
+          "artifact_sha256": "74ff95b18690187072850a462da5dcb90b4c9482717db7b99b7a06cf9555e0d4",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 27464,
+          "field_path": "/gaps/M2G-ROIC-006",
+          "symbol": "601857.SH",
+          "period": "FY2023",
+          "raw_value": "current_explicit_gap",
+          "unit": "categorical",
+          "domain": "categorical_enum",
+          "available_at": "2026-08-02",
+          "source_tier": "coverage_gap",
+          "source_evidence_ids": [
+            "C-2023-2024-non-operating-financial-assets",
+            "stage2i2r-search-06",
+            "8007bf09664f0d95440e2c302884a4a3dd2736a88acc17e4a1c504bc47a13201"
+          ],
+          "gap_ids": [
+            "M2G-ROIC-006"
+          ]
+        },
+        {
+          "record_id": "M2G-ROIC-007",
+          "record_digest": "97923e0759374cef78a81d3584d596c512095584587c8689507b130f95780b56",
+          "record_identity_type": "gap_id",
+          "artifact_logical_path": "reports/m2_explicit_gap_ledger.json",
+          "artifact_contract": "m2_explicit_gap_ledger_v1",
+          "artifact_sha256": "74ff95b18690187072850a462da5dcb90b4c9482717db7b99b7a06cf9555e0d4",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 27464,
+          "field_path": "/gaps/M2G-ROIC-007",
+          "symbol": "601857.SH",
+          "period": "FY2024",
+          "raw_value": "current_explicit_gap",
+          "unit": "categorical",
+          "domain": "categorical_enum",
+          "available_at": "2026-08-02",
+          "source_tier": "coverage_gap",
+          "source_evidence_ids": [
+            "C-2023-2024-non-operating-financial-assets",
+            "stage2i2r-search-07",
+            "30172aff6acd92a8270cc57f50983efc81cf17d1e61d6f98a78ea5fe6c80d045"
+          ],
+          "gap_ids": [
+            "M2G-ROIC-007"
+          ]
+        }
+      ],
+      "operand_record_ids": [
+        "M2G-ROIC-001",
+        "M2G-ROIC-002",
+        "M2G-ROIC-003",
+        "M2G-ROIC-004",
+        "M2G-ROIC-005",
+        "M2G-ROIC-006",
+        "M2G-ROIC-007"
+      ],
+      "operand_record_digests": [
+        "e34e2b27719b278049c8f01c5550e3c6d1f6f6e0e085f751fce8ac4133b7617e",
+        "5ecfd27b343be793df6a94b65546e73ab00f13a1695f36bae619ad506953245b",
+        "80eef801ab27db53c41bbbdf0bd89b6dcdbed43d83cd3c090ee6f6d543017d63",
+        "592ddbe4da85d88b297e6c2ebb4571b442082777d3cf9557e6a546a2e25f8df6",
+        "bc6736ad61cbfb700e16f7cec756b573e874e74d950d6394082d872fde65c9d7",
+        "e84044746ce79d6b2f82542dfedb2949f169fe355c4648f6831e3a7203d0bd6c",
+        "97923e0759374cef78a81d3584d596c512095584587c8689507b130f95780b56"
+      ],
+      "transform_id": "gap_count_v1",
+      "transform_version": "1.0",
+      "selected_value_decimal": "7",
+      "unit": "count",
+      "domain": "count_gte_0",
+      "period": "2025",
+      "available_at": "2026-08-02",
+      "resolved_source_tier": "coverage_gap",
+      "source_evidence_ids": [
+        "30172aff6acd92a8270cc57f50983efc81cf17d1e61d6f98a78ea5fe6c80d045",
+        "32eea1b32fca6ff86c8a3dfc5613c7d830d4502666b4bf131e6a01b2f20f1f31",
+        "8007bf09664f0d95440e2c302884a4a3dd2736a88acc17e4a1c504bc47a13201",
+        "8d68e5880fab6ca33668791e52e3fa42eeef7a8fb197eabc0b3b4f1484ba9cec",
+        "91b0b86e6dee3eebb1658845bdf5d6fccd52a9c9061e1306a0e699c95885658c",
+        "9417f93db84af6f553bfaf5ba2c7b18b6d43510371ff3f8773d38f8db2793112",
+        "A-2024-operating-tax",
+        "B-2023-2024-associate",
+        "B-2023-2024-jv",
+        "C-2023-2024-non-operating-financial-assets",
+        "e76dc85268a0b53f2ec065c9bb0d2cceb03397260a11a008ce66c774a2c6a229",
+        "stage2i2r-search-01",
+        "stage2i2r-search-02",
+        "stage2i2r-search-03",
+        "stage2i2r-search-04",
+        "stage2i2r-search-05",
+        "stage2i2r-search-06",
+        "stage2i2r-search-07"
+      ],
+      "gap_ids": [
+        "M2G-ROIC-001",
+        "M2G-ROIC-002",
+        "M2G-ROIC-003",
+        "M2G-ROIC-004",
+        "M2G-ROIC-005",
+        "M2G-ROIC-006",
+        "M2G-ROIC-007"
+      ],
+      "transform_inputs": {
+        "count": "7"
+      },
+      "transform_inputs_role": "derived_snapshot_only",
+      "validator_must_rebuild": true,
+      "calculation_trace": [
+        "gap_count = 7"
+      ],
+      "observation_set": null,
+      "score_input_id": "a7562c11bc2515da69e53c63d89bb51e05666e0a00f780b18a0005d7040057ae"
+    },
+    "va_pe": {
+      "component_id": "va_pe",
+      "dimension_id": "valuation_attractiveness",
+      "resolver_id": "market_manifest_resolver",
+      "resolver_version": "1.0",
+      "upstream_ref_type": "valuation_observation",
+      "resolved_records": [
+        {
+          "record_id": "percentile:a_share_price_to_latest_annual_parent_earnings",
+          "record_digest": "0997a5b5f995f5fd92c7b0708ce42a71ac9be379d931e1a8c298aec7cce6622c",
+          "record_identity_type": "adapter_record_digest",
+          "artifact_logical_path": "reports/petrochina_value_profile.json",
+          "artifact_contract": "petrochina_value_profile_v1",
+          "artifact_sha256": "074b85646995d40206cabf25e12ba82718c11aed8dbb41cfe5859533ee3759ce",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 49887,
+          "field_path": "/percentile_position/a_share_price_to_latest_annual_parent_earnings",
+          "symbol": "601857.SH",
+          "period": "2026-07-31",
+          "raw_value": "12.891587101393752",
+          "unit": "ratio",
+          "domain": "ratio",
+          "available_at": "2026-07-31",
+          "source_tier": "external_manifest_only",
+          "source_evidence_ids": [
+            "9009dbb2ddaf6981e33d68fafd2cce681c0c87e591d30a1fa366d0051b38df6c"
+          ],
+          "gap_ids": []
+        }
+      ],
+      "operand_record_ids": [
+        "percentile:a_share_price_to_latest_annual_parent_earnings"
+      ],
+      "operand_record_digests": [
+        "0997a5b5f995f5fd92c7b0708ce42a71ac9be379d931e1a8c298aec7cce6622c"
+      ],
+      "transform_id": "categorical_pass_v1",
+      "transform_version": "1.0",
+      "selected_value_decimal": "12.891587101393752",
+      "unit": "categorical",
+      "domain": "categorical_enum",
+      "period": "2026-07-31",
+      "available_at": "2026-07-31",
+      "resolved_source_tier": "external_manifest_only",
+      "source_evidence_ids": [
+        "9009dbb2ddaf6981e33d68fafd2cce681c0c87e591d30a1fa366d0051b38df6c"
+      ],
+      "gap_ids": [],
+      "transform_inputs": {
+        "value": "12.891587101393752"
+      },
+      "transform_inputs_role": "derived_snapshot_only",
+      "validator_must_rebuild": true,
+      "calculation_trace": [
+        "categorical_pass = 12.891587101393752"
+      ],
+      "observation_set": {
+        "market_validation_mode": "synthetic_test_capsule",
+        "real_market_verified": false,
+        "provider_sha256": "074b85646995d40206cabf25e12ba82718c11aed8dbb41cfe5859533ee3759ce",
+        "observation_id": "percentile:PE_A_TTM",
+        "percentile_source": "r4e5_trusted_profile",
+        "percentile_3y": "91.964286",
+        "percentile_5y": "93.270025",
+        "dual_window_percentile_decimal": "92.6171555",
+        "percentile_3y_record_id": "612f0ebda518c1cd36ea45be4851744b9018bede3df8242581d99cb6c5bf24cc",
+        "percentile_5y_record_id": "a313af597a2662e2f22182bcef2e593960fe75ee0343be9caabc883299f44f5d",
+        "aggregation_contract_version": "self_history_dual_window_percentile_v1"
+      },
+      "score_input_id": "ce03b4872e5ad5f2fe4b1bc39e99a2633e8a626b5845c76ce2c137b863874777",
+      "benchmark_mode": "self_history_dual_window_percentile",
+      "numeric_shadow_status": "coverage_gap_cycle_context_required",
+      "pe_numeric_scoring_authorized": false,
+      "pe_blocked_reason": "cycle_context_contract_required"
+    },
+    "va_pb": {
+      "component_id": "va_pb",
+      "dimension_id": "valuation_attractiveness",
+      "resolver_id": "market_manifest_resolver",
+      "resolver_version": "1.0",
+      "upstream_ref_type": "valuation_observation",
+      "resolved_records": [
+        {
+          "record_id": "percentile:a_share_price_to_latest_year_end_parent_equity",
+          "record_digest": "cdff0c0b58c2a0f7b0c55929707a1721b9a98f002b706dcc9d91714fd787513a",
+          "record_identity_type": "adapter_record_digest",
+          "artifact_logical_path": "reports/petrochina_value_profile.json",
+          "artifact_contract": "petrochina_value_profile_v1",
+          "artifact_sha256": "074b85646995d40206cabf25e12ba82718c11aed8dbb41cfe5859533ee3759ce",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 49887,
+          "field_path": "/percentile_position/a_share_price_to_latest_year_end_parent_equity",
+          "symbol": "601857.SH",
+          "period": "2026-07-31",
+          "raw_value": "1.2785589168534124",
+          "unit": "ratio",
+          "domain": "ratio",
+          "available_at": "2026-07-31",
+          "source_tier": "external_manifest_only",
+          "source_evidence_ids": [
+            "45a8911a4b1626157c179dc44880da947bde9dfda937d18f8464a9381606eb90"
+          ],
+          "gap_ids": []
+        }
+      ],
+      "operand_record_ids": [
+        "percentile:a_share_price_to_latest_year_end_parent_equity"
+      ],
+      "operand_record_digests": [
+        "cdff0c0b58c2a0f7b0c55929707a1721b9a98f002b706dcc9d91714fd787513a"
+      ],
+      "transform_id": "categorical_pass_v1",
+      "transform_version": "1.0",
+      "selected_value_decimal": "1.2785589168534124",
+      "unit": "categorical",
+      "domain": "categorical_enum",
+      "period": "2026-07-31",
+      "available_at": "2026-07-31",
+      "resolved_source_tier": "external_manifest_only",
+      "source_evidence_ids": [
+        "45a8911a4b1626157c179dc44880da947bde9dfda937d18f8464a9381606eb90"
+      ],
+      "gap_ids": [],
+      "transform_inputs": {
+        "value": "1.2785589168534124"
+      },
+      "transform_inputs_role": "derived_snapshot_only",
+      "validator_must_rebuild": true,
+      "calculation_trace": [
+        "categorical_pass = 1.2785589168534124"
+      ],
+      "observation_set": {
+        "market_validation_mode": "synthetic_test_capsule",
+        "real_market_verified": false,
+        "provider_sha256": "074b85646995d40206cabf25e12ba82718c11aed8dbb41cfe5859533ee3759ce",
+        "observation_id": "percentile:PB_A_MRQ",
+        "percentile_source": "r4e5_trusted_profile",
+        "percentile_3y": "84.958791",
+        "percentile_5y": "90.957886",
+        "dual_window_percentile_decimal": "87.9583385",
+        "percentile_3y_record_id": "79bf082e7f7063ab744754f3320f6b668889f6349f68c6c1943d1ca610e7f47a",
+        "percentile_5y_record_id": "7805b71f271cd02c13c3833738d7cce3dd312d2310869875fabed921f941edb1",
+        "aggregation_contract_version": "self_history_dual_window_percentile_v1"
+      },
+      "score_input_id": "04a732f105aa6578decdcb382ca2d1ef25a9ced8bff6140645146b2f4e4f3956",
+      "benchmark_mode": "self_history_dual_window_percentile"
+    },
+    "va_ps": {
+      "component_id": "va_ps",
+      "dimension_id": "valuation_attractiveness",
+      "resolver_id": "market_manifest_resolver",
+      "resolver_version": "1.0",
+      "upstream_ref_type": "valuation_observation",
+      "resolved_records": [
+        {
+          "record_id": "percentile:a_share_price_to_latest_annual_revenue",
+          "record_digest": "63c7f96ba91074a5e7b1eed70fd0294ff49191da871001040b6ee23767e96284",
+          "record_identity_type": "adapter_record_digest",
+          "artifact_logical_path": "reports/petrochina_value_profile.json",
+          "artifact_contract": "petrochina_value_profile_v1",
+          "artifact_sha256": "074b85646995d40206cabf25e12ba82718c11aed8dbb41cfe5859533ee3759ce",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 49887,
+          "field_path": "/percentile_position/a_share_price_to_latest_annual_revenue",
+          "symbol": "601857.SH",
+          "period": "2026-07-31",
+          "raw_value": "0.7079400874030893",
+          "unit": "ratio",
+          "domain": "ratio",
+          "available_at": "2026-07-31",
+          "source_tier": "external_manifest_only",
+          "source_evidence_ids": [
+            "460056dc565a2ee49c9906554a29816a89ef25669390ecf3c6af407e5721e0f1"
+          ],
+          "gap_ids": []
+        }
+      ],
+      "operand_record_ids": [
+        "percentile:a_share_price_to_latest_annual_revenue"
+      ],
+      "operand_record_digests": [
+        "63c7f96ba91074a5e7b1eed70fd0294ff49191da871001040b6ee23767e96284"
+      ],
+      "transform_id": "categorical_pass_v1",
+      "transform_version": "1.0",
+      "selected_value_decimal": "0.7079400874030893",
+      "unit": "categorical",
+      "domain": "categorical_enum",
+      "period": "2026-07-31",
+      "available_at": "2026-07-31",
+      "resolved_source_tier": "external_manifest_only",
+      "source_evidence_ids": [
+        "460056dc565a2ee49c9906554a29816a89ef25669390ecf3c6af407e5721e0f1"
+      ],
+      "gap_ids": [],
+      "transform_inputs": {
+        "value": "0.7079400874030893"
+      },
+      "transform_inputs_role": "derived_snapshot_only",
+      "validator_must_rebuild": true,
+      "calculation_trace": [
+        "categorical_pass = 0.7079400874030893"
+      ],
+      "observation_set": {
+        "market_validation_mode": "synthetic_test_capsule",
+        "real_market_verified": false,
+        "provider_sha256": "074b85646995d40206cabf25e12ba82718c11aed8dbb41cfe5859533ee3759ce",
+        "observation_id": "percentile:PS_A_TTM",
+        "percentile_source": "r4e5_trusted_profile",
+        "percentile_3y": "91.964286",
+        "percentile_5y": "95.169282",
+        "dual_window_percentile_decimal": "93.566784",
+        "percentile_3y_record_id": "045238c3e31e80699a8c3d17ddaa2f71811290b7053e8557e70e61ddd8717a0c",
+        "percentile_5y_record_id": "2c2e4b644eec868412624b8a3316fccc9342a1f7c5695af24b660be683abcef2",
+        "aggregation_contract_version": "self_history_dual_window_percentile_v1"
+      },
+      "score_input_id": "bd671efa442a30e5c285affdadf84ab9e3e4b1d84a2f683ba53d1bda4376cad7",
+      "benchmark_mode": "self_history_dual_window_percentile"
+    },
+    "va_fcf_yield": {
+      "component_id": "va_fcf_yield",
+      "dimension_id": "valuation_attractiveness",
+      "resolver_id": "market_manifest_resolver",
+      "resolver_version": "1.0",
+      "upstream_ref_type": "valuation_observation",
+      "resolved_records": [
+        {
+          "record_id": "percentile:latest_annual_fcf_proxy_yield",
+          "record_digest": "669b65ef3cd1494e59ef3b38a6bcb1bcfca2c6d960698fc782b3f33b465e23d8",
+          "record_identity_type": "adapter_record_digest",
+          "artifact_logical_path": "reports/petrochina_value_profile.json",
+          "artifact_contract": "petrochina_value_profile_v1",
+          "artifact_sha256": "074b85646995d40206cabf25e12ba82718c11aed8dbb41cfe5859533ee3759ce",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 49887,
+          "field_path": "/percentile_position/latest_annual_fcf_proxy_yield",
+          "symbol": "601857.SH",
+          "period": "2026-07-31",
+          "raw_value": "0.059037737275543345",
+          "unit": "ratio",
+          "domain": "ratio",
+          "available_at": "2026-07-31",
+          "source_tier": "external_manifest_only",
+          "source_evidence_ids": [
+            "ad3b6e2a3675ce7e8a8e16bda427597b72d28e30808281e17cd4aa549949357a",
+            "5dc4c375138e6cac5a26866d2120fc9d6bc68b69a19dabd56902ae0a6660b34f"
+          ],
+          "gap_ids": []
+        }
+      ],
+      "operand_record_ids": [
+        "percentile:latest_annual_fcf_proxy_yield"
+      ],
+      "operand_record_digests": [
+        "669b65ef3cd1494e59ef3b38a6bcb1bcfca2c6d960698fc782b3f33b465e23d8"
+      ],
+      "transform_id": "categorical_pass_v1",
+      "transform_version": "1.0",
+      "selected_value_decimal": "0.059037737275543345",
+      "unit": "categorical",
+      "domain": "categorical_enum",
+      "period": "2026-07-31",
+      "available_at": "2026-07-31",
+      "resolved_source_tier": "external_manifest_only",
+      "source_evidence_ids": [
+        "5dc4c375138e6cac5a26866d2120fc9d6bc68b69a19dabd56902ae0a6660b34f",
+        "ad3b6e2a3675ce7e8a8e16bda427597b72d28e30808281e17cd4aa549949357a"
+      ],
+      "gap_ids": [],
+      "transform_inputs": {
+        "value": "0.059037737275543345"
+      },
+      "transform_inputs_role": "derived_snapshot_only",
+      "validator_must_rebuild": true,
+      "calculation_trace": [
+        "categorical_pass = 0.059037737275543345"
+      ],
+      "observation_set": {
+        "market_validation_mode": "synthetic_test_capsule",
+        "real_market_verified": false,
+        "provider_sha256": "074b85646995d40206cabf25e12ba82718c11aed8dbb41cfe5859533ee3759ce",
+        "observation_id": "percentile:latest_annual_fcf_proxy_yield",
+        "observation_set_digest": "669b65ef3cd1494e59ef3b38a6bcb1bcfca2c6d960698fc782b3f33b465e23d8",
+        "percentile_source": "committed_manifest",
+        "percentile_3y": 0.17400275103163687,
+        "percentile_5y": 0.12047619047619047
+      },
+      "score_input_id": "6e96bfc65ea001203ff04f67e0b6716b819bab06120d6515f8937ce14086842a"
+    },
+    "va_dividend_yield": {
+      "component_id": "va_dividend_yield",
+      "dimension_id": "valuation_attractiveness",
+      "resolver_id": "market_manifest_resolver",
+      "resolver_version": "1.0",
+      "upstream_ref_type": "valuation_observation",
+      "resolved_records": [
+        {
+          "record_id": "percentile:trailing_12m_announced_dividend_yield",
+          "record_digest": "c426821904c8f64be3429c2e6f81d160acd764953dcd00d45610a2f576556c83",
+          "record_identity_type": "adapter_record_digest",
+          "artifact_logical_path": "reports/petrochina_value_profile.json",
+          "artifact_contract": "petrochina_value_profile_v1",
+          "artifact_sha256": "074b85646995d40206cabf25e12ba82718c11aed8dbb41cfe5859533ee3759ce",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 49887,
+          "field_path": "/percentile_position/trailing_12m_announced_dividend_yield",
+          "symbol": "601857.SH",
+          "period": "2025-09-09",
+          "raw_value": null,
+          "unit": "ratio",
+          "domain": "ratio",
+          "available_at": "2026-07-31",
+          "source_tier": "external_manifest_only",
+          "source_evidence_ids": [],
+          "gap_ids": []
+        }
+      ],
+      "operand_record_ids": [
+        "percentile:trailing_12m_announced_dividend_yield"
+      ],
+      "operand_record_digests": [
+        "c426821904c8f64be3429c2e6f81d160acd764953dcd00d45610a2f576556c83"
+      ],
+      "transform_id": "categorical_pass_v1",
+      "transform_version": "1.0",
+      "selected_value_decimal": null,
+      "unit": "categorical",
+      "domain": "categorical_enum",
+      "period": "2026-07-31",
+      "available_at": "2026-07-31",
+      "resolved_source_tier": "external_manifest_only",
+      "source_evidence_ids": [],
+      "gap_ids": [],
+      "transform_inputs": {
+        "value": ""
+      },
+      "transform_inputs_role": "derived_snapshot_only",
+      "validator_must_rebuild": true,
+      "calculation_trace": [
+        "categorical_pass = None"
+      ],
+      "observation_set": {
+        "market_validation_mode": "synthetic_test_capsule",
+        "real_market_verified": false,
+        "provider_sha256": "074b85646995d40206cabf25e12ba82718c11aed8dbb41cfe5859533ee3759ce",
+        "observation_id": "percentile:trailing_12m_announced_dividend_yield",
+        "observation_set_digest": "c426821904c8f64be3429c2e6f81d160acd764953dcd00d45610a2f576556c83",
+        "percentile_source": "committed_manifest",
+        "percentile_3y": null,
+        "percentile_5y": null
+      },
+      "score_input_id": "16a5544ea0a58c0327199ad553daf4deec1bc67b7ecebb2dfbf4dd935a90bb4c"
+    },
+    "vr_ocf_dividend_coverage": {
+      "component_id": "vr_ocf_dividend_coverage",
+      "dimension_id": "value_realization_capacity",
+      "resolver_id": "canonical_fact_bundle_resolver",
+      "resolver_version": "1.0",
+      "upstream_ref_type": "derived_from_canonical_facts",
+      "resolved_records": [
+        {
+          "record_id": "ed3739fe9f0494892ef0fc3ba8529fa4c236f673402b49fd942d39e525c7474f",
+          "record_digest": "ed3739fe9f0494892ef0fc3ba8529fa4c236f673402b49fd942d39e525c7474f",
+          "record_identity_type": "adapter_record_digest",
+          "artifact_logical_path": "acceptance/fixtures/official_facts/601857.SH/2025_annual.json",
+          "artifact_contract": "official_fact_bundle",
+          "artifact_sha256": "1cea469542ec4293658703167e7d10cc00b7ced21c9ce6a5e13843bed6e1caab",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 5353,
+          "field_path": "/facts/operating_cash_flow/2025",
+          "symbol": "601857.SH",
+          "period": "2025",
+          "raw_value": "41251000",
+          "unit": "人民币百万元",
+          "domain": "ratio",
+          "available_at": "2026-03-30",
+          "source_tier": "canonical_fact_verified",
+          "source_evidence_ids": [
+            "company/exchange"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "dve2_40135402681a3e67ad7b9e96",
+          "record_digest": "3f0a1e9edc82e6ec801c8538b96e471715492a353d611bebe3d700c4428b7fac",
+          "record_identity_type": "event_id",
+          "artifact_logical_path": "events/dividend_events_2021_2026_v2.json",
+          "artifact_contract": "dividend_event_record_v2",
+          "artifact_sha256": "937745233495833f977348ee1eaff859e15b75a7c447e6b8ae46de7b6239a835",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 10969,
+          "field_path": "/events/dve2_40135402681a3e67ad7b9e96/cash_dividend_per_share",
+          "symbol": "601857.SH",
+          "period": "2025",
+          "raw_value": "0.22000",
+          "unit": "CNY",
+          "domain": null,
+          "available_at": "2025-09-09",
+          "source_tier": "event_verified",
+          "source_evidence_ids": [
+            "2025-interim-issuer",
+            "2025-interim-exchange"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "dve2_40135402681a3e67ad7b9e96",
+          "record_digest": "3f0a1e9edc82e6ec801c8538b96e471715492a353d611bebe3d700c4428b7fac",
+          "record_identity_type": "event_id",
+          "artifact_logical_path": "events/dividend_events_2021_2026_v2.json",
+          "artifact_contract": "dividend_event_record_v2",
+          "artifact_sha256": "937745233495833f977348ee1eaff859e15b75a7c447e6b8ae46de7b6239a835",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 10969,
+          "field_path": "/events/dve2_40135402681a3e67ad7b9e96/cash_dividend_total",
+          "symbol": "601857.SH",
+          "period": "2025",
+          "raw_value": "40264615119.96",
+          "unit": "CNY",
+          "domain": null,
+          "available_at": "2025-09-09",
+          "source_tier": "event_verified",
+          "source_evidence_ids": [
+            "2025-interim-issuer",
+            "2025-interim-exchange"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "dve2_d9a78550b9e4eff7fd1e41b6",
+          "record_digest": "a52c80385672a7a5d0c1ea7e6e3504f8748447fd083ae75cf44487a7512a2f2d",
+          "record_identity_type": "event_id",
+          "artifact_logical_path": "events/dividend_events_2021_2026_v2.json",
+          "artifact_contract": "dividend_event_record_v2",
+          "artifact_sha256": "937745233495833f977348ee1eaff859e15b75a7c447e6b8ae46de7b6239a835",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 10969,
+          "field_path": "/events/dve2_d9a78550b9e4eff7fd1e41b6/cash_dividend_per_share",
+          "symbol": "601857.SH",
+          "period": "2025",
+          "raw_value": "0.25000",
+          "unit": "CNY",
+          "domain": null,
+          "available_at": "2026-06-22",
+          "source_tier": "event_verified",
+          "source_evidence_ids": [
+            "2025-final-issuer",
+            "2025-final-exchange"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "dve2_d9a78550b9e4eff7fd1e41b6",
+          "record_digest": "a52c80385672a7a5d0c1ea7e6e3504f8748447fd083ae75cf44487a7512a2f2d",
+          "record_identity_type": "event_id",
+          "artifact_logical_path": "events/dividend_events_2021_2026_v2.json",
+          "artifact_contract": "dividend_event_record_v2",
+          "artifact_sha256": "937745233495833f977348ee1eaff859e15b75a7c447e6b8ae46de7b6239a835",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 10969,
+          "field_path": "/events/dve2_d9a78550b9e4eff7fd1e41b6/cash_dividend_total",
+          "symbol": "601857.SH",
+          "period": "2025",
+          "raw_value": "45755244454.50",
+          "unit": "CNY",
+          "domain": null,
+          "available_at": "2026-06-22",
+          "source_tier": "event_verified",
+          "source_evidence_ids": [
+            "2025-final-issuer",
+            "2025-final-exchange"
+          ],
+          "gap_ids": []
+        }
+      ],
+      "operand_record_ids": [
+        "ed3739fe9f0494892ef0fc3ba8529fa4c236f673402b49fd942d39e525c7474f",
+        "dve2_40135402681a3e67ad7b9e96",
+        "dve2_40135402681a3e67ad7b9e96",
+        "dve2_d9a78550b9e4eff7fd1e41b6",
+        "dve2_d9a78550b9e4eff7fd1e41b6"
+      ],
+      "operand_record_digests": [
+        "ed3739fe9f0494892ef0fc3ba8529fa4c236f673402b49fd942d39e525c7474f",
+        "3f0a1e9edc82e6ec801c8538b96e471715492a353d611bebe3d700c4428b7fac",
+        "3f0a1e9edc82e6ec801c8538b96e471715492a353d611bebe3d700c4428b7fac",
+        "a52c80385672a7a5d0c1ea7e6e3504f8748447fd083ae75cf44487a7512a2f2d",
+        "a52c80385672a7a5d0c1ea7e6e3504f8748447fd083ae75cf44487a7512a2f2d"
+      ],
+      "transform_id": "ocf_dividend_coverage_v1",
+      "transform_version": "1.0",
+      "selected_value_decimal": "0.0004795520500041336891127124604",
+      "unit": "ratio",
+      "domain": "ratio",
+      "period": "2025",
+      "available_at": "2026-06-22",
+      "resolved_source_tier": "computed_from_verified_canonical_inputs",
+      "source_evidence_ids": [
+        "2025-final-exchange",
+        "2025-final-issuer",
+        "2025-interim-exchange",
+        "2025-interim-issuer",
+        "company/exchange"
+      ],
+      "gap_ids": [],
+      "transform_inputs": {
+        "ocf": "41251000",
+        "total_cash_dividend": "86019859574.46"
+      },
+      "transform_inputs_role": "derived_snapshot_only",
+      "validator_must_rebuild": true,
+      "calculation_trace": [
+        "total_cash_dividend = sum(['86019859574.46']) = 86019859574.46",
+        "ocf_dividend_coverage = 41251000 / 86019859574.46"
+      ],
+      "observation_set": null,
+      "score_input_id": "e629f96c057dcd5a357c34ddd076b40a8ad3451cdbbeb1da60425e63d2d7ce28"
+    },
+    "vr_fcf_dividend_coverage": {
+      "component_id": "vr_fcf_dividend_coverage",
+      "dimension_id": "value_realization_capacity",
+      "resolver_id": "canonical_fact_bundle_resolver",
+      "resolver_version": "1.0",
+      "upstream_ref_type": "derived_from_canonical_facts",
+      "resolved_records": [
+        {
+          "record_id": "261bf0ca0b5dfaff3aca6c1e9fee9487198bbe3291f2e362a350d8d795eb4fe0",
+          "record_digest": "261bf0ca0b5dfaff3aca6c1e9fee9487198bbe3291f2e362a350d8d795eb4fe0",
+          "record_identity_type": "adapter_record_digest",
+          "artifact_logical_path": "acceptance/fixtures/official_facts/601857.SH/2025_annual.json",
+          "artifact_contract": "official_fact_bundle",
+          "artifact_sha256": "1cea469542ec4293658703167e7d10cc00b7ced21c9ce6a5e13843bed6e1caab",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 5353,
+          "field_path": "/facts/operating_cash_flow/2025",
+          "symbol": "601857.SH",
+          "period": "2025",
+          "raw_value": "41251000",
+          "unit": "人民币百万元",
+          "domain": "ratio",
+          "available_at": "2026-03-30",
+          "source_tier": "canonical_fact_verified",
+          "source_evidence_ids": [
+            "company/exchange"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "108d797771a1c069c54039d067249b8860fdccdccd7f0862a67f9548177ee689",
+          "record_digest": "108d797771a1c069c54039d067249b8860fdccdccd7f0862a67f9548177ee689",
+          "record_identity_type": "adapter_record_digest",
+          "artifact_logical_path": "acceptance/fixtures/official_facts/601857.SH/supplemental/2025_capex_cash.json",
+          "artifact_contract": "official_fact_bundle",
+          "artifact_sha256": "aac0366e65b362ea306fa74e2907813796da79a72d0f566acc160ee14496d83d",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 1639,
+          "field_path": "/facts/cash_paid_for_fixed_assets/2025",
+          "symbol": "601857.SH",
+          "period": "2025",
+          "raw_value": "29278900",
+          "unit": "人民币百万元",
+          "domain": "ratio",
+          "available_at": "2026-03-30",
+          "source_tier": "canonical_fact_verified",
+          "source_evidence_ids": [
+            "company/exchange"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "dve2_40135402681a3e67ad7b9e96",
+          "record_digest": "3f0a1e9edc82e6ec801c8538b96e471715492a353d611bebe3d700c4428b7fac",
+          "record_identity_type": "event_id",
+          "artifact_logical_path": "events/dividend_events_2021_2026_v2.json",
+          "artifact_contract": "dividend_event_record_v2",
+          "artifact_sha256": "937745233495833f977348ee1eaff859e15b75a7c447e6b8ae46de7b6239a835",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 10969,
+          "field_path": "/events/dve2_40135402681a3e67ad7b9e96/cash_dividend_per_share",
+          "symbol": "601857.SH",
+          "period": "2025",
+          "raw_value": "0.22000",
+          "unit": "CNY",
+          "domain": null,
+          "available_at": "2025-09-09",
+          "source_tier": "event_verified",
+          "source_evidence_ids": [
+            "2025-interim-issuer",
+            "2025-interim-exchange"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "dve2_40135402681a3e67ad7b9e96",
+          "record_digest": "3f0a1e9edc82e6ec801c8538b96e471715492a353d611bebe3d700c4428b7fac",
+          "record_identity_type": "event_id",
+          "artifact_logical_path": "events/dividend_events_2021_2026_v2.json",
+          "artifact_contract": "dividend_event_record_v2",
+          "artifact_sha256": "937745233495833f977348ee1eaff859e15b75a7c447e6b8ae46de7b6239a835",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 10969,
+          "field_path": "/events/dve2_40135402681a3e67ad7b9e96/cash_dividend_total",
+          "symbol": "601857.SH",
+          "period": "2025",
+          "raw_value": "40264615119.96",
+          "unit": "CNY",
+          "domain": null,
+          "available_at": "2025-09-09",
+          "source_tier": "event_verified",
+          "source_evidence_ids": [
+            "2025-interim-issuer",
+            "2025-interim-exchange"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "dve2_d9a78550b9e4eff7fd1e41b6",
+          "record_digest": "a52c80385672a7a5d0c1ea7e6e3504f8748447fd083ae75cf44487a7512a2f2d",
+          "record_identity_type": "event_id",
+          "artifact_logical_path": "events/dividend_events_2021_2026_v2.json",
+          "artifact_contract": "dividend_event_record_v2",
+          "artifact_sha256": "937745233495833f977348ee1eaff859e15b75a7c447e6b8ae46de7b6239a835",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 10969,
+          "field_path": "/events/dve2_d9a78550b9e4eff7fd1e41b6/cash_dividend_per_share",
+          "symbol": "601857.SH",
+          "period": "2025",
+          "raw_value": "0.25000",
+          "unit": "CNY",
+          "domain": null,
+          "available_at": "2026-06-22",
+          "source_tier": "event_verified",
+          "source_evidence_ids": [
+            "2025-final-issuer",
+            "2025-final-exchange"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "dve2_d9a78550b9e4eff7fd1e41b6",
+          "record_digest": "a52c80385672a7a5d0c1ea7e6e3504f8748447fd083ae75cf44487a7512a2f2d",
+          "record_identity_type": "event_id",
+          "artifact_logical_path": "events/dividend_events_2021_2026_v2.json",
+          "artifact_contract": "dividend_event_record_v2",
+          "artifact_sha256": "937745233495833f977348ee1eaff859e15b75a7c447e6b8ae46de7b6239a835",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 10969,
+          "field_path": "/events/dve2_d9a78550b9e4eff7fd1e41b6/cash_dividend_total",
+          "symbol": "601857.SH",
+          "period": "2025",
+          "raw_value": "45755244454.50",
+          "unit": "CNY",
+          "domain": null,
+          "available_at": "2026-06-22",
+          "source_tier": "event_verified",
+          "source_evidence_ids": [
+            "2025-final-issuer",
+            "2025-final-exchange"
+          ],
+          "gap_ids": []
+        }
+      ],
+      "operand_record_ids": [
+        "261bf0ca0b5dfaff3aca6c1e9fee9487198bbe3291f2e362a350d8d795eb4fe0",
+        "108d797771a1c069c54039d067249b8860fdccdccd7f0862a67f9548177ee689",
+        "dve2_40135402681a3e67ad7b9e96",
+        "dve2_40135402681a3e67ad7b9e96",
+        "dve2_d9a78550b9e4eff7fd1e41b6",
+        "dve2_d9a78550b9e4eff7fd1e41b6"
+      ],
+      "operand_record_digests": [
+        "261bf0ca0b5dfaff3aca6c1e9fee9487198bbe3291f2e362a350d8d795eb4fe0",
+        "108d797771a1c069c54039d067249b8860fdccdccd7f0862a67f9548177ee689",
+        "3f0a1e9edc82e6ec801c8538b96e471715492a353d611bebe3d700c4428b7fac",
+        "3f0a1e9edc82e6ec801c8538b96e471715492a353d611bebe3d700c4428b7fac",
+        "a52c80385672a7a5d0c1ea7e6e3504f8748447fd083ae75cf44487a7512a2f2d",
+        "a52c80385672a7a5d0c1ea7e6e3504f8748447fd083ae75cf44487a7512a2f2d"
+      ],
+      "transform_id": "fcf_dividend_coverage_v1",
+      "transform_version": "1.0",
+      "selected_value_decimal": "0.0001391783253219192004903227764",
+      "unit": "ratio",
+      "domain": "ratio",
+      "period": "2025",
+      "available_at": "2026-06-22",
+      "resolved_source_tier": "computed_from_verified_canonical_inputs",
+      "source_evidence_ids": [
+        "2025-final-exchange",
+        "2025-final-issuer",
+        "2025-interim-exchange",
+        "2025-interim-issuer",
+        "company/exchange"
+      ],
+      "gap_ids": [],
+      "transform_inputs": {
+        "ocf": "41251000",
+        "capex": "29278900",
+        "total_cash_dividend": "86019859574.46"
+      },
+      "transform_inputs_role": "derived_snapshot_only",
+      "validator_must_rebuild": true,
+      "calculation_trace": [
+        "total_cash_dividend = sum(['86019859574.46']) = 86019859574.46",
+        "fcf_dividend_coverage = 11972100 / 86019859574.46"
+      ],
+      "observation_set": null,
+      "score_input_id": "2f3fd93b21681e915c68d5e9ef02797d469d46fe3a0ec802df76f9e4834caaeb"
+    },
+    "vr_payout_ratio": {
+      "component_id": "vr_payout_ratio",
+      "dimension_id": "value_realization_capacity",
+      "resolver_id": "canonical_fact_bundle_resolver",
+      "resolver_version": "1.0",
+      "upstream_ref_type": "derived_from_canonical_facts",
+      "resolved_records": [
+        {
+          "record_id": "144beb29fabd46da1193cc81609120467985aaa8758038c258ac3a9f3f03ef87",
+          "record_digest": "144beb29fabd46da1193cc81609120467985aaa8758038c258ac3a9f3f03ef87",
+          "record_identity_type": "adapter_record_digest",
+          "artifact_logical_path": "acceptance/fixtures/official_facts/601857.SH/2025_annual.json",
+          "artifact_contract": "official_fact_bundle",
+          "artifact_sha256": "1cea469542ec4293658703167e7d10cc00b7ced21c9ce6a5e13843bed6e1caab",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 5353,
+          "field_path": "/facts/net_profit_attributable_to_parent/2025",
+          "symbol": "601857.SH",
+          "period": "2025",
+          "raw_value": "15730200",
+          "unit": "人民币百万元",
+          "domain": "ratio",
+          "available_at": "2026-03-30",
+          "source_tier": "canonical_fact_verified",
+          "source_evidence_ids": [
+            "company/exchange"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "dve2_40135402681a3e67ad7b9e96",
+          "record_digest": "3f0a1e9edc82e6ec801c8538b96e471715492a353d611bebe3d700c4428b7fac",
+          "record_identity_type": "event_id",
+          "artifact_logical_path": "events/dividend_events_2021_2026_v2.json",
+          "artifact_contract": "dividend_event_record_v2",
+          "artifact_sha256": "937745233495833f977348ee1eaff859e15b75a7c447e6b8ae46de7b6239a835",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 10969,
+          "field_path": "/events/dve2_40135402681a3e67ad7b9e96/cash_dividend_per_share",
+          "symbol": "601857.SH",
+          "period": "2025",
+          "raw_value": "0.22000",
+          "unit": "CNY",
+          "domain": null,
+          "available_at": "2025-09-09",
+          "source_tier": "event_verified",
+          "source_evidence_ids": [
+            "2025-interim-issuer",
+            "2025-interim-exchange"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "dve2_40135402681a3e67ad7b9e96",
+          "record_digest": "3f0a1e9edc82e6ec801c8538b96e471715492a353d611bebe3d700c4428b7fac",
+          "record_identity_type": "event_id",
+          "artifact_logical_path": "events/dividend_events_2021_2026_v2.json",
+          "artifact_contract": "dividend_event_record_v2",
+          "artifact_sha256": "937745233495833f977348ee1eaff859e15b75a7c447e6b8ae46de7b6239a835",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 10969,
+          "field_path": "/events/dve2_40135402681a3e67ad7b9e96/cash_dividend_total",
+          "symbol": "601857.SH",
+          "period": "2025",
+          "raw_value": "40264615119.96",
+          "unit": "CNY",
+          "domain": null,
+          "available_at": "2025-09-09",
+          "source_tier": "event_verified",
+          "source_evidence_ids": [
+            "2025-interim-issuer",
+            "2025-interim-exchange"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "dve2_d9a78550b9e4eff7fd1e41b6",
+          "record_digest": "a52c80385672a7a5d0c1ea7e6e3504f8748447fd083ae75cf44487a7512a2f2d",
+          "record_identity_type": "event_id",
+          "artifact_logical_path": "events/dividend_events_2021_2026_v2.json",
+          "artifact_contract": "dividend_event_record_v2",
+          "artifact_sha256": "937745233495833f977348ee1eaff859e15b75a7c447e6b8ae46de7b6239a835",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 10969,
+          "field_path": "/events/dve2_d9a78550b9e4eff7fd1e41b6/cash_dividend_per_share",
+          "symbol": "601857.SH",
+          "period": "2025",
+          "raw_value": "0.25000",
+          "unit": "CNY",
+          "domain": null,
+          "available_at": "2026-06-22",
+          "source_tier": "event_verified",
+          "source_evidence_ids": [
+            "2025-final-issuer",
+            "2025-final-exchange"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "dve2_d9a78550b9e4eff7fd1e41b6",
+          "record_digest": "a52c80385672a7a5d0c1ea7e6e3504f8748447fd083ae75cf44487a7512a2f2d",
+          "record_identity_type": "event_id",
+          "artifact_logical_path": "events/dividend_events_2021_2026_v2.json",
+          "artifact_contract": "dividend_event_record_v2",
+          "artifact_sha256": "937745233495833f977348ee1eaff859e15b75a7c447e6b8ae46de7b6239a835",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 10969,
+          "field_path": "/events/dve2_d9a78550b9e4eff7fd1e41b6/cash_dividend_total",
+          "symbol": "601857.SH",
+          "period": "2025",
+          "raw_value": "45755244454.50",
+          "unit": "CNY",
+          "domain": null,
+          "available_at": "2026-06-22",
+          "source_tier": "event_verified",
+          "source_evidence_ids": [
+            "2025-final-issuer",
+            "2025-final-exchange"
+          ],
+          "gap_ids": []
+        }
+      ],
+      "operand_record_ids": [
+        "144beb29fabd46da1193cc81609120467985aaa8758038c258ac3a9f3f03ef87",
+        "dve2_40135402681a3e67ad7b9e96",
+        "dve2_40135402681a3e67ad7b9e96",
+        "dve2_d9a78550b9e4eff7fd1e41b6",
+        "dve2_d9a78550b9e4eff7fd1e41b6"
+      ],
+      "operand_record_digests": [
+        "144beb29fabd46da1193cc81609120467985aaa8758038c258ac3a9f3f03ef87",
+        "3f0a1e9edc82e6ec801c8538b96e471715492a353d611bebe3d700c4428b7fac",
+        "3f0a1e9edc82e6ec801c8538b96e471715492a353d611bebe3d700c4428b7fac",
+        "a52c80385672a7a5d0c1ea7e6e3504f8748447fd083ae75cf44487a7512a2f2d",
+        "a52c80385672a7a5d0c1ea7e6e3504f8748447fd083ae75cf44487a7512a2f2d"
+      ],
+      "transform_id": "payout_ratio_v1",
+      "transform_version": "1.0",
+      "selected_value_decimal": "5468.453012324064538276690697",
+      "unit": "ratio",
+      "domain": "ratio",
+      "period": "2025",
+      "available_at": "2026-06-22",
+      "resolved_source_tier": "computed_from_verified_canonical_inputs",
+      "source_evidence_ids": [
+        "2025-final-exchange",
+        "2025-final-issuer",
+        "2025-interim-exchange",
+        "2025-interim-issuer",
+        "company/exchange"
+      ],
+      "gap_ids": [],
+      "transform_inputs": {
+        "total_cash_dividend": "86019859574.46",
+        "net_profit": "15730200"
+      },
+      "transform_inputs_role": "derived_snapshot_only",
+      "validator_must_rebuild": true,
+      "calculation_trace": [
+        "total_cash_dividend = sum(['86019859574.46']) = 86019859574.46",
+        "payout_ratio = 86019859574.46 / 15730200"
+      ],
+      "observation_set": null,
+      "score_input_id": "465bcb202bfc1ebb2c6f424c892ad5588965d779afd6c8911e48de5639d26518"
+    },
+    "vr_dps": {
+      "component_id": "vr_dps",
+      "dimension_id": "value_realization_capacity",
+      "resolver_id": "dividend_event_resolver",
+      "resolver_version": "1.0",
+      "upstream_ref_type": "dividend_event",
+      "resolved_records": [
+        {
+          "record_id": "dve2_40135402681a3e67ad7b9e96",
+          "record_digest": "3f0a1e9edc82e6ec801c8538b96e471715492a353d611bebe3d700c4428b7fac",
+          "record_identity_type": "event_id",
+          "artifact_logical_path": "events/dividend_events_2021_2026_v2.json",
+          "artifact_contract": "dividend_events_2021_2026_v2",
+          "artifact_sha256": "937745233495833f977348ee1eaff859e15b75a7c447e6b8ae46de7b6239a835",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 10969,
+          "field_path": "/events/dve2_40135402681a3e67ad7b9e96/cash_dividend_per_share",
+          "symbol": "601857.SH",
+          "period": "2025",
+          "raw_value": "0.22000",
+          "unit": "CNY",
+          "domain": "cny_gte_0",
+          "available_at": "2025-09-09",
+          "source_tier": "event_verified",
+          "source_evidence_ids": [
+            "2025-interim-issuer",
+            "2025-interim-exchange"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "dve2_40135402681a3e67ad7b9e96",
+          "record_digest": "3f0a1e9edc82e6ec801c8538b96e471715492a353d611bebe3d700c4428b7fac",
+          "record_identity_type": "event_id",
+          "artifact_logical_path": "events/dividend_events_2021_2026_v2.json",
+          "artifact_contract": "dividend_events_2021_2026_v2",
+          "artifact_sha256": "937745233495833f977348ee1eaff859e15b75a7c447e6b8ae46de7b6239a835",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 10969,
+          "field_path": "/events/dve2_40135402681a3e67ad7b9e96/cash_dividend_total",
+          "symbol": "601857.SH",
+          "period": "2025",
+          "raw_value": "40264615119.96",
+          "unit": "CNY",
+          "domain": "cny_gte_0",
+          "available_at": "2025-09-09",
+          "source_tier": "event_verified",
+          "source_evidence_ids": [
+            "2025-interim-issuer",
+            "2025-interim-exchange"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "dve2_d9a78550b9e4eff7fd1e41b6",
+          "record_digest": "a52c80385672a7a5d0c1ea7e6e3504f8748447fd083ae75cf44487a7512a2f2d",
+          "record_identity_type": "event_id",
+          "artifact_logical_path": "events/dividend_events_2021_2026_v2.json",
+          "artifact_contract": "dividend_events_2021_2026_v2",
+          "artifact_sha256": "937745233495833f977348ee1eaff859e15b75a7c447e6b8ae46de7b6239a835",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 10969,
+          "field_path": "/events/dve2_d9a78550b9e4eff7fd1e41b6/cash_dividend_per_share",
+          "symbol": "601857.SH",
+          "period": "2025",
+          "raw_value": "0.25000",
+          "unit": "CNY",
+          "domain": "cny_gte_0",
+          "available_at": "2026-06-22",
+          "source_tier": "event_verified",
+          "source_evidence_ids": [
+            "2025-final-issuer",
+            "2025-final-exchange"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "dve2_d9a78550b9e4eff7fd1e41b6",
+          "record_digest": "a52c80385672a7a5d0c1ea7e6e3504f8748447fd083ae75cf44487a7512a2f2d",
+          "record_identity_type": "event_id",
+          "artifact_logical_path": "events/dividend_events_2021_2026_v2.json",
+          "artifact_contract": "dividend_events_2021_2026_v2",
+          "artifact_sha256": "937745233495833f977348ee1eaff859e15b75a7c447e6b8ae46de7b6239a835",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 10969,
+          "field_path": "/events/dve2_d9a78550b9e4eff7fd1e41b6/cash_dividend_total",
+          "symbol": "601857.SH",
+          "period": "2025",
+          "raw_value": "45755244454.50",
+          "unit": "CNY",
+          "domain": "cny_gte_0",
+          "available_at": "2026-06-22",
+          "source_tier": "event_verified",
+          "source_evidence_ids": [
+            "2025-final-issuer",
+            "2025-final-exchange"
+          ],
+          "gap_ids": []
+        }
+      ],
+      "operand_record_ids": [
+        "dve2_40135402681a3e67ad7b9e96",
+        "dve2_40135402681a3e67ad7b9e96",
+        "dve2_d9a78550b9e4eff7fd1e41b6",
+        "dve2_d9a78550b9e4eff7fd1e41b6"
+      ],
+      "operand_record_digests": [
+        "3f0a1e9edc82e6ec801c8538b96e471715492a353d611bebe3d700c4428b7fac",
+        "3f0a1e9edc82e6ec801c8538b96e471715492a353d611bebe3d700c4428b7fac",
+        "a52c80385672a7a5d0c1ea7e6e3504f8748447fd083ae75cf44487a7512a2f2d",
+        "a52c80385672a7a5d0c1ea7e6e3504f8748447fd083ae75cf44487a7512a2f2d"
+      ],
+      "transform_id": "sum_dps_v1",
+      "transform_version": "1.0",
+      "selected_value_decimal": "0.47000",
+      "unit": "CNY",
+      "domain": "cny_gte_0",
+      "period": "2025",
+      "available_at": "2026-06-22",
+      "resolved_source_tier": "event_verified",
+      "source_evidence_ids": [
+        "2025-final-exchange",
+        "2025-final-issuer",
+        "2025-interim-exchange",
+        "2025-interim-issuer"
+      ],
+      "gap_ids": [],
+      "transform_inputs": {
+        "dps": "0.47000"
+      },
+      "transform_inputs_role": "derived_snapshot_only",
+      "validator_must_rebuild": true,
+      "calculation_trace": [
+        "sum_dps = sum(['0.47000']) = 0.47000"
+      ],
+      "observation_set": null,
+      "score_input_id": "3c60595cef91a3bc3e61fd40f71f615f7342d533766b28790866d09bac65bc73"
+    },
+    "vr_repurchase": {
+      "component_id": "vr_repurchase",
+      "dimension_id": "value_realization_capacity",
+      "resolver_id": "repurchase_search_resolver",
+      "resolver_version": "1.0",
+      "upstream_ref_type": "repurchase_search_result",
+      "resolved_records": [
+        {
+          "record_id": "search_register:601857.SH:repurchase_event_scan_2021_2026",
+          "record_digest": "e7a021065f3f3737118700bdcd362f2b5d0c36b502a41a99e9a1909a9070b1b7",
+          "record_identity_type": "search_register_id",
+          "artifact_logical_path": "events/repurchase_event_scan_2021_2026.json",
+          "artifact_contract": "repurchase_event_scan_2021_2026",
+          "artifact_sha256": "2e5538afe25d2af3dfb989186bc8c4515067fd78833742d886a97c7740a5e159",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 576,
+          "field_path": "/status",
+          "symbol": "601857.SH",
+          "period": "2021-01-01..2026-06-30",
+          "raw_value": "bounded_search_no_event_found",
+          "unit": "categorical",
+          "domain": "categorical_enum",
+          "available_at": "2026-06-30",
+          "source_tier": "bounded_search_complete",
+          "source_evidence_ids": [],
+          "gap_ids": []
+        }
+      ],
+      "operand_record_ids": [
+        "search_register:601857.SH:repurchase_event_scan_2021_2026"
+      ],
+      "operand_record_digests": [
+        "e7a021065f3f3737118700bdcd362f2b5d0c36b502a41a99e9a1909a9070b1b7"
+      ],
+      "transform_id": "categorical_pass_v1",
+      "transform_version": "1.0",
+      "selected_value_decimal": "bounded_search_no_event_found",
+      "unit": "categorical",
+      "domain": "categorical_enum",
+      "period": "2021-01-01..2026-06-30",
+      "available_at": "2026-06-30",
+      "resolved_source_tier": "bounded_search_complete",
+      "source_evidence_ids": [],
+      "gap_ids": [],
+      "transform_inputs": {
+        "value": "bounded_search_no_event_found"
+      },
+      "transform_inputs_role": "derived_snapshot_only",
+      "validator_must_rebuild": true,
+      "calculation_trace": [
+        "categorical_pass = bounded_search_no_event_found"
+      ],
+      "observation_set": null,
+      "score_input_id": "14abd957a7850a97e1ce0b0713883f1447ac5b2c872294bfc543795ca5418556"
+    },
+    "rk_veto_triggered": {
+      "component_id": "rk_veto_triggered",
+      "dimension_id": "risk_and_evidence_integrity",
+      "resolver_id": "risk_profile_resolver",
+      "resolver_version": "1.0",
+      "upstream_ref_type": "risk_slot",
+      "resolved_records": [
+        {
+          "record_id": "risk_slot_7412996678b47a06a06dbd30",
+          "record_digest": "bdefef474d6941da57e55ef69f3cedad736680a017f4c0a7df066af08d130ea5",
+          "record_identity_type": "risk_slot_id",
+          "artifact_logical_path": "reports/petrochina_value_profile.json",
+          "artifact_contract": "petrochina_value_profile_v1",
+          "artifact_sha256": "074b85646995d40206cabf25e12ba82718c11aed8dbb41cfe5859533ee3759ce",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 49887,
+          "field_path": "/current_risk_veto_profile/risk_slots/risk_slot_7412996678b47a06a06dbd30",
+          "symbol": "601857.SH",
+          "period": "2026-08-02",
+          "raw_value": "not_observed_within_bounded_evidence",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02T05:30:00+08:00",
+          "source_tier": "committed_computed_report",
+          "source_evidence_ids": [
+            "pc-2021-issuer-annual",
+            "pc-2022-issuer-annual",
+            "pc-2023-issuer-annual",
+            "pc-2024-issuer-annual",
+            "pc-2025-issuer-annual"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "risk_slot_3cb100dd74e1b27f91d0a676",
+          "record_digest": "47af362eee9ac456567003e239882e71b0137d0aeac11a6270fc7306cd95c05a",
+          "record_identity_type": "risk_slot_id",
+          "artifact_logical_path": "reports/petrochina_value_profile.json",
+          "artifact_contract": "petrochina_value_profile_v1",
+          "artifact_sha256": "074b85646995d40206cabf25e12ba82718c11aed8dbb41cfe5859533ee3759ce",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 49887,
+          "field_path": "/current_risk_veto_profile/risk_slots/risk_slot_3cb100dd74e1b27f91d0a676",
+          "symbol": "601857.SH",
+          "period": "2026-08-02",
+          "raw_value": "not_observed_within_bounded_evidence",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02T05:30:00+08:00",
+          "source_tier": "committed_computed_report",
+          "source_evidence_ids": [
+            "pc-2021-exchange-annual",
+            "pc-2022-issuer-annual",
+            "pc-2023-issuer-annual",
+            "pc-2024-issuer-annual",
+            "pc-2025-issuer-annual"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "risk_slot_73a8609b66bb07d7e825b0a9",
+          "record_digest": "131fb2b5b53e0f6f100c4ccb3fdcb0db15c8764f9c73ac0f56b61cf014613cce",
+          "record_identity_type": "risk_slot_id",
+          "artifact_logical_path": "reports/petrochina_value_profile.json",
+          "artifact_contract": "petrochina_value_profile_v1",
+          "artifact_sha256": "074b85646995d40206cabf25e12ba82718c11aed8dbb41cfe5859533ee3759ce",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 49887,
+          "field_path": "/current_risk_veto_profile/risk_slots/risk_slot_73a8609b66bb07d7e825b0a9",
+          "symbol": "601857.SH",
+          "period": "2026-08-02",
+          "raw_value": "missing_evidence",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02T05:40:00+08:00",
+          "source_tier": "committed_computed_report",
+          "source_evidence_ids": [],
+          "gap_ids": []
+        },
+        {
+          "record_id": "risk_slot_612c19991b0504124c97c3cf",
+          "record_digest": "4811bbdfad2ee54b7ec6b0222c0d2940bfa698e015a8cb5ecdc88ff56ddbe2e8",
+          "record_identity_type": "risk_slot_id",
+          "artifact_logical_path": "reports/petrochina_value_profile.json",
+          "artifact_contract": "petrochina_value_profile_v1",
+          "artifact_sha256": "074b85646995d40206cabf25e12ba82718c11aed8dbb41cfe5859533ee3759ce",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 49887,
+          "field_path": "/current_risk_veto_profile/risk_slots/risk_slot_612c19991b0504124c97c3cf",
+          "symbol": "601857.SH",
+          "period": "2026-08-02",
+          "raw_value": "not_observed_within_bounded_evidence",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02T05:50:00+08:00",
+          "source_tier": "committed_computed_report",
+          "source_evidence_ids": [
+            "pc-2021-exchange-annual",
+            "pc-2022-exchange-annual",
+            "pc-2023-exchange-annual",
+            "pc-2024-exchange-annual",
+            "pc-2025-exchange-annual"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "risk_slot_c70c527f9e348c70c7b26fa8",
+          "record_digest": "9d7261be089d298e515862a64c8b45ecb575579a504a8fc8fe4e92c7bced2c93",
+          "record_identity_type": "risk_slot_id",
+          "artifact_logical_path": "reports/petrochina_value_profile.json",
+          "artifact_contract": "petrochina_value_profile_v1",
+          "artifact_sha256": "074b85646995d40206cabf25e12ba82718c11aed8dbb41cfe5859533ee3759ce",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 49887,
+          "field_path": "/current_risk_veto_profile/risk_slots/risk_slot_c70c527f9e348c70c7b26fa8",
+          "symbol": "601857.SH",
+          "period": "2026-08-02",
+          "raw_value": "not_observed_within_bounded_evidence",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02T06:00:00+08:00",
+          "source_tier": "committed_computed_report",
+          "source_evidence_ids": [
+            "pc-2021-exchange-annual",
+            "pc-2022-exchange-annual",
+            "pc-2023-exchange-annual",
+            "pc-2024-exchange-annual",
+            "pc-2025-exchange-annual"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "risk_slot_b77bf2d0c791c6544672f9b4",
+          "record_digest": "4cf1ccc7313d50f2743088d79426fc7f2d7935e84f25d3e3f63d4e7caddc713d",
+          "record_identity_type": "risk_slot_id",
+          "artifact_logical_path": "reports/petrochina_value_profile.json",
+          "artifact_contract": "petrochina_value_profile_v1",
+          "artifact_sha256": "074b85646995d40206cabf25e12ba82718c11aed8dbb41cfe5859533ee3759ce",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 49887,
+          "field_path": "/current_risk_veto_profile/risk_slots/risk_slot_b77bf2d0c791c6544672f9b4",
+          "symbol": "601857.SH",
+          "period": "2026-08-02",
+          "raw_value": "not_observed_within_bounded_evidence",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02T06:10:00+08:00",
+          "source_tier": "committed_computed_report",
+          "source_evidence_ids": [
+            "pc-2021-exchange-annual",
+            "pc-2022-exchange-annual",
+            "pc-2023-exchange-annual",
+            "pc-2024-exchange-annual",
+            "pc-2025-exchange-annual"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "risk_slot_d7a3cd6ca8718fbea85ab013",
+          "record_digest": "5a6fb0a2b7ab74d12e15675b14e75e1a7a12fc9277bd1333d6b4ba4f0e0e1628",
+          "record_identity_type": "risk_slot_id",
+          "artifact_logical_path": "reports/petrochina_value_profile.json",
+          "artifact_contract": "petrochina_value_profile_v1",
+          "artifact_sha256": "074b85646995d40206cabf25e12ba82718c11aed8dbb41cfe5859533ee3759ce",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 49887,
+          "field_path": "/current_risk_veto_profile/risk_slots/risk_slot_d7a3cd6ca8718fbea85ab013",
+          "symbol": "601857.SH",
+          "period": "2026-08-02",
+          "raw_value": "missing_evidence",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02T06:20:00+08:00",
+          "source_tier": "committed_computed_report",
+          "source_evidence_ids": [
+            "pc-2021-exchange-annual",
+            "pc-2022-exchange-annual",
+            "pc-2023-exchange-annual",
+            "pc-2024-exchange-annual",
+            "pc-2025-exchange-annual"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "risk_slot_c32db2a2f032e7965b4a8789",
+          "record_digest": "0eb59c7e3be0901e91a08e9254ec7fb1420329fd0dbf995125909c20417e241b",
+          "record_identity_type": "risk_slot_id",
+          "artifact_logical_path": "reports/petrochina_value_profile.json",
+          "artifact_contract": "petrochina_value_profile_v1",
+          "artifact_sha256": "074b85646995d40206cabf25e12ba82718c11aed8dbb41cfe5859533ee3759ce",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 49887,
+          "field_path": "/current_risk_veto_profile/risk_slots/risk_slot_c32db2a2f032e7965b4a8789",
+          "symbol": "601857.SH",
+          "period": "2026-08-02",
+          "raw_value": "not_observed_within_bounded_evidence",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02T06:30:00+08:00",
+          "source_tier": "committed_computed_report",
+          "source_evidence_ids": [
+            "pc-2021-exchange-annual",
+            "pc-2022-exchange-annual",
+            "pc-2023-exchange-annual",
+            "pc-2024-exchange-annual",
+            "pc-2025-exchange-annual"
+          ],
+          "gap_ids": []
+        }
+      ],
+      "operand_record_ids": [
+        "risk_slot_7412996678b47a06a06dbd30",
+        "risk_slot_3cb100dd74e1b27f91d0a676",
+        "risk_slot_73a8609b66bb07d7e825b0a9",
+        "risk_slot_612c19991b0504124c97c3cf",
+        "risk_slot_c70c527f9e348c70c7b26fa8",
+        "risk_slot_b77bf2d0c791c6544672f9b4",
+        "risk_slot_d7a3cd6ca8718fbea85ab013",
+        "risk_slot_c32db2a2f032e7965b4a8789"
+      ],
+      "operand_record_digests": [
+        "bdefef474d6941da57e55ef69f3cedad736680a017f4c0a7df066af08d130ea5",
+        "47af362eee9ac456567003e239882e71b0137d0aeac11a6270fc7306cd95c05a",
+        "131fb2b5b53e0f6f100c4ccb3fdcb0db15c8764f9c73ac0f56b61cf014613cce",
+        "4811bbdfad2ee54b7ec6b0222c0d2940bfa698e015a8cb5ecdc88ff56ddbe2e8",
+        "9d7261be089d298e515862a64c8b45ecb575579a504a8fc8fe4e92c7bced2c93",
+        "4cf1ccc7313d50f2743088d79426fc7f2d7935e84f25d3e3f63d4e7caddc713d",
+        "5a6fb0a2b7ab74d12e15675b14e75e1a7a12fc9277bd1333d6b4ba4f0e0e1628",
+        "0eb59c7e3be0901e91a08e9254ec7fb1420329fd0dbf995125909c20417e241b"
+      ],
+      "transform_id": "risk_observed_count_v1",
+      "transform_version": "1.0",
+      "selected_value_decimal": "0",
+      "unit": "count",
+      "domain": "count_gte_0",
+      "period": "2026-08-02",
+      "available_at": "2026-08-02T06:30:00+08:00",
+      "resolved_source_tier": "committed_computed_report",
+      "source_evidence_ids": [
+        "pc-2021-exchange-annual",
+        "pc-2021-issuer-annual",
+        "pc-2022-exchange-annual",
+        "pc-2022-issuer-annual",
+        "pc-2023-exchange-annual",
+        "pc-2023-issuer-annual",
+        "pc-2024-exchange-annual",
+        "pc-2024-issuer-annual",
+        "pc-2025-exchange-annual",
+        "pc-2025-issuer-annual"
+      ],
+      "gap_ids": [],
+      "transform_inputs": {
+        "observed": "0"
+      },
+      "transform_inputs_role": "derived_snapshot_only",
+      "validator_must_rebuild": true,
+      "calculation_trace": [
+        "risk_observed_count = 0"
+      ],
+      "observation_set": null,
+      "score_input_id": "5735e8309ad6a1b064af01bbda25d1311864bb16d70dcb43f550e5a5fcf00a0a"
+    },
+    "rk_missing_evidence_slots": {
+      "component_id": "rk_missing_evidence_slots",
+      "dimension_id": "risk_and_evidence_integrity",
+      "resolver_id": "risk_profile_resolver",
+      "resolver_version": "1.0",
+      "upstream_ref_type": "risk_slot",
+      "resolved_records": [
+        {
+          "record_id": "risk_slot_7412996678b47a06a06dbd30",
+          "record_digest": "bdefef474d6941da57e55ef69f3cedad736680a017f4c0a7df066af08d130ea5",
+          "record_identity_type": "risk_slot_id",
+          "artifact_logical_path": "reports/petrochina_value_profile.json",
+          "artifact_contract": "petrochina_value_profile_v1",
+          "artifact_sha256": "074b85646995d40206cabf25e12ba82718c11aed8dbb41cfe5859533ee3759ce",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 49887,
+          "field_path": "/current_risk_veto_profile/risk_slots/risk_slot_7412996678b47a06a06dbd30",
+          "symbol": "601857.SH",
+          "period": "2026-08-02",
+          "raw_value": "not_observed_within_bounded_evidence",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02T05:30:00+08:00",
+          "source_tier": "committed_computed_report",
+          "source_evidence_ids": [
+            "pc-2021-issuer-annual",
+            "pc-2022-issuer-annual",
+            "pc-2023-issuer-annual",
+            "pc-2024-issuer-annual",
+            "pc-2025-issuer-annual"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "risk_slot_3cb100dd74e1b27f91d0a676",
+          "record_digest": "47af362eee9ac456567003e239882e71b0137d0aeac11a6270fc7306cd95c05a",
+          "record_identity_type": "risk_slot_id",
+          "artifact_logical_path": "reports/petrochina_value_profile.json",
+          "artifact_contract": "petrochina_value_profile_v1",
+          "artifact_sha256": "074b85646995d40206cabf25e12ba82718c11aed8dbb41cfe5859533ee3759ce",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 49887,
+          "field_path": "/current_risk_veto_profile/risk_slots/risk_slot_3cb100dd74e1b27f91d0a676",
+          "symbol": "601857.SH",
+          "period": "2026-08-02",
+          "raw_value": "not_observed_within_bounded_evidence",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02T05:30:00+08:00",
+          "source_tier": "committed_computed_report",
+          "source_evidence_ids": [
+            "pc-2021-exchange-annual",
+            "pc-2022-issuer-annual",
+            "pc-2023-issuer-annual",
+            "pc-2024-issuer-annual",
+            "pc-2025-issuer-annual"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "risk_slot_73a8609b66bb07d7e825b0a9",
+          "record_digest": "131fb2b5b53e0f6f100c4ccb3fdcb0db15c8764f9c73ac0f56b61cf014613cce",
+          "record_identity_type": "risk_slot_id",
+          "artifact_logical_path": "reports/petrochina_value_profile.json",
+          "artifact_contract": "petrochina_value_profile_v1",
+          "artifact_sha256": "074b85646995d40206cabf25e12ba82718c11aed8dbb41cfe5859533ee3759ce",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 49887,
+          "field_path": "/current_risk_veto_profile/risk_slots/risk_slot_73a8609b66bb07d7e825b0a9",
+          "symbol": "601857.SH",
+          "period": "2026-08-02",
+          "raw_value": "missing_evidence",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02T05:40:00+08:00",
+          "source_tier": "committed_computed_report",
+          "source_evidence_ids": [],
+          "gap_ids": []
+        },
+        {
+          "record_id": "risk_slot_612c19991b0504124c97c3cf",
+          "record_digest": "4811bbdfad2ee54b7ec6b0222c0d2940bfa698e015a8cb5ecdc88ff56ddbe2e8",
+          "record_identity_type": "risk_slot_id",
+          "artifact_logical_path": "reports/petrochina_value_profile.json",
+          "artifact_contract": "petrochina_value_profile_v1",
+          "artifact_sha256": "074b85646995d40206cabf25e12ba82718c11aed8dbb41cfe5859533ee3759ce",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 49887,
+          "field_path": "/current_risk_veto_profile/risk_slots/risk_slot_612c19991b0504124c97c3cf",
+          "symbol": "601857.SH",
+          "period": "2026-08-02",
+          "raw_value": "not_observed_within_bounded_evidence",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02T05:50:00+08:00",
+          "source_tier": "committed_computed_report",
+          "source_evidence_ids": [
+            "pc-2021-exchange-annual",
+            "pc-2022-exchange-annual",
+            "pc-2023-exchange-annual",
+            "pc-2024-exchange-annual",
+            "pc-2025-exchange-annual"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "risk_slot_c70c527f9e348c70c7b26fa8",
+          "record_digest": "9d7261be089d298e515862a64c8b45ecb575579a504a8fc8fe4e92c7bced2c93",
+          "record_identity_type": "risk_slot_id",
+          "artifact_logical_path": "reports/petrochina_value_profile.json",
+          "artifact_contract": "petrochina_value_profile_v1",
+          "artifact_sha256": "074b85646995d40206cabf25e12ba82718c11aed8dbb41cfe5859533ee3759ce",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 49887,
+          "field_path": "/current_risk_veto_profile/risk_slots/risk_slot_c70c527f9e348c70c7b26fa8",
+          "symbol": "601857.SH",
+          "period": "2026-08-02",
+          "raw_value": "not_observed_within_bounded_evidence",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02T06:00:00+08:00",
+          "source_tier": "committed_computed_report",
+          "source_evidence_ids": [
+            "pc-2021-exchange-annual",
+            "pc-2022-exchange-annual",
+            "pc-2023-exchange-annual",
+            "pc-2024-exchange-annual",
+            "pc-2025-exchange-annual"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "risk_slot_b77bf2d0c791c6544672f9b4",
+          "record_digest": "4cf1ccc7313d50f2743088d79426fc7f2d7935e84f25d3e3f63d4e7caddc713d",
+          "record_identity_type": "risk_slot_id",
+          "artifact_logical_path": "reports/petrochina_value_profile.json",
+          "artifact_contract": "petrochina_value_profile_v1",
+          "artifact_sha256": "074b85646995d40206cabf25e12ba82718c11aed8dbb41cfe5859533ee3759ce",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 49887,
+          "field_path": "/current_risk_veto_profile/risk_slots/risk_slot_b77bf2d0c791c6544672f9b4",
+          "symbol": "601857.SH",
+          "period": "2026-08-02",
+          "raw_value": "not_observed_within_bounded_evidence",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02T06:10:00+08:00",
+          "source_tier": "committed_computed_report",
+          "source_evidence_ids": [
+            "pc-2021-exchange-annual",
+            "pc-2022-exchange-annual",
+            "pc-2023-exchange-annual",
+            "pc-2024-exchange-annual",
+            "pc-2025-exchange-annual"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "risk_slot_d7a3cd6ca8718fbea85ab013",
+          "record_digest": "5a6fb0a2b7ab74d12e15675b14e75e1a7a12fc9277bd1333d6b4ba4f0e0e1628",
+          "record_identity_type": "risk_slot_id",
+          "artifact_logical_path": "reports/petrochina_value_profile.json",
+          "artifact_contract": "petrochina_value_profile_v1",
+          "artifact_sha256": "074b85646995d40206cabf25e12ba82718c11aed8dbb41cfe5859533ee3759ce",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 49887,
+          "field_path": "/current_risk_veto_profile/risk_slots/risk_slot_d7a3cd6ca8718fbea85ab013",
+          "symbol": "601857.SH",
+          "period": "2026-08-02",
+          "raw_value": "missing_evidence",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02T06:20:00+08:00",
+          "source_tier": "committed_computed_report",
+          "source_evidence_ids": [
+            "pc-2021-exchange-annual",
+            "pc-2022-exchange-annual",
+            "pc-2023-exchange-annual",
+            "pc-2024-exchange-annual",
+            "pc-2025-exchange-annual"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "risk_slot_c32db2a2f032e7965b4a8789",
+          "record_digest": "0eb59c7e3be0901e91a08e9254ec7fb1420329fd0dbf995125909c20417e241b",
+          "record_identity_type": "risk_slot_id",
+          "artifact_logical_path": "reports/petrochina_value_profile.json",
+          "artifact_contract": "petrochina_value_profile_v1",
+          "artifact_sha256": "074b85646995d40206cabf25e12ba82718c11aed8dbb41cfe5859533ee3759ce",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 49887,
+          "field_path": "/current_risk_veto_profile/risk_slots/risk_slot_c32db2a2f032e7965b4a8789",
+          "symbol": "601857.SH",
+          "period": "2026-08-02",
+          "raw_value": "not_observed_within_bounded_evidence",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02T06:30:00+08:00",
+          "source_tier": "committed_computed_report",
+          "source_evidence_ids": [
+            "pc-2021-exchange-annual",
+            "pc-2022-exchange-annual",
+            "pc-2023-exchange-annual",
+            "pc-2024-exchange-annual",
+            "pc-2025-exchange-annual"
+          ],
+          "gap_ids": []
+        }
+      ],
+      "operand_record_ids": [
+        "risk_slot_7412996678b47a06a06dbd30",
+        "risk_slot_3cb100dd74e1b27f91d0a676",
+        "risk_slot_73a8609b66bb07d7e825b0a9",
+        "risk_slot_612c19991b0504124c97c3cf",
+        "risk_slot_c70c527f9e348c70c7b26fa8",
+        "risk_slot_b77bf2d0c791c6544672f9b4",
+        "risk_slot_d7a3cd6ca8718fbea85ab013",
+        "risk_slot_c32db2a2f032e7965b4a8789"
+      ],
+      "operand_record_digests": [
+        "bdefef474d6941da57e55ef69f3cedad736680a017f4c0a7df066af08d130ea5",
+        "47af362eee9ac456567003e239882e71b0137d0aeac11a6270fc7306cd95c05a",
+        "131fb2b5b53e0f6f100c4ccb3fdcb0db15c8764f9c73ac0f56b61cf014613cce",
+        "4811bbdfad2ee54b7ec6b0222c0d2940bfa698e015a8cb5ecdc88ff56ddbe2e8",
+        "9d7261be089d298e515862a64c8b45ecb575579a504a8fc8fe4e92c7bced2c93",
+        "4cf1ccc7313d50f2743088d79426fc7f2d7935e84f25d3e3f63d4e7caddc713d",
+        "5a6fb0a2b7ab74d12e15675b14e75e1a7a12fc9277bd1333d6b4ba4f0e0e1628",
+        "0eb59c7e3be0901e91a08e9254ec7fb1420329fd0dbf995125909c20417e241b"
+      ],
+      "transform_id": "risk_missing_count_v1",
+      "transform_version": "1.0",
+      "selected_value_decimal": "2",
+      "unit": "count",
+      "domain": "count_gte_0",
+      "period": "2026-08-02",
+      "available_at": "2026-08-02T06:30:00+08:00",
+      "resolved_source_tier": "committed_computed_report",
+      "source_evidence_ids": [
+        "pc-2021-exchange-annual",
+        "pc-2021-issuer-annual",
+        "pc-2022-exchange-annual",
+        "pc-2022-issuer-annual",
+        "pc-2023-exchange-annual",
+        "pc-2023-issuer-annual",
+        "pc-2024-exchange-annual",
+        "pc-2024-issuer-annual",
+        "pc-2025-exchange-annual",
+        "pc-2025-issuer-annual"
+      ],
+      "gap_ids": [],
+      "transform_inputs": {
+        "missing": "2"
+      },
+      "transform_inputs_role": "derived_snapshot_only",
+      "validator_must_rebuild": true,
+      "calculation_trace": [
+        "risk_missing_count = 2"
+      ],
+      "observation_set": null,
+      "score_input_id": "0e6141fd21e3621e7f4022cb2d505b382c3044ec8979807b7fd648c70b73c562"
+    },
+    "rk_gap_count": {
+      "component_id": "rk_gap_count",
+      "dimension_id": "risk_and_evidence_integrity",
+      "resolver_id": "gap_ledger_resolver",
+      "resolver_version": "1.0",
+      "upstream_ref_type": "gap_record",
+      "resolved_records": [
+        {
+          "record_id": "M2G-DIV-001",
+          "record_digest": "c27466ba9be4ea0b38a4c9822ac01e2dc895d9408aaeeeb2f3ea084b1eb4cee4",
+          "record_identity_type": "gap_id",
+          "artifact_logical_path": "reports/m2_explicit_gap_ledger.json",
+          "artifact_contract": "m2_explicit_gap_ledger_v1",
+          "artifact_sha256": "74ff95b18690187072850a462da5dcb90b4c9482717db7b99b7a06cf9555e0d4",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 27464,
+          "field_path": "/gaps/M2G-DIV-001",
+          "symbol": "601857.SH",
+          "period": "2021-interim",
+          "raw_value": "current_explicit_gap",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02",
+          "source_tier": "coverage_gap",
+          "source_evidence_ids": [
+            "2021-interim-exchange",
+            "dve2_31d8f2d9e40ce1ff45989915"
+          ],
+          "gap_ids": [
+            "M2G-DIV-001"
+          ]
+        },
+        {
+          "record_id": "M2G-DIV-002",
+          "record_digest": "58c66c7b592636090d49c302c3411f32de0c9ebc5470c253c187d6a95f66e473",
+          "record_identity_type": "gap_id",
+          "artifact_logical_path": "reports/m2_explicit_gap_ledger.json",
+          "artifact_contract": "m2_explicit_gap_ledger_v1",
+          "artifact_sha256": "74ff95b18690187072850a462da5dcb90b4c9482717db7b99b7a06cf9555e0d4",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 27464,
+          "field_path": "/gaps/M2G-DIV-002",
+          "symbol": "601857.SH",
+          "period": "2021-final",
+          "raw_value": "current_explicit_gap",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02",
+          "source_tier": "coverage_gap",
+          "source_evidence_ids": [
+            "2021-final-exchange",
+            "dve2_09864b9b129b87fbe82d770c"
+          ],
+          "gap_ids": [
+            "M2G-DIV-002"
+          ]
+        },
+        {
+          "record_id": "M2G-DIV-003",
+          "record_digest": "fafe9f0fc391674bea59fc359d7ff7e0a27c9a9bb780158aa2cde6d23e6a8b3a",
+          "record_identity_type": "gap_id",
+          "artifact_logical_path": "reports/m2_explicit_gap_ledger.json",
+          "artifact_contract": "m2_explicit_gap_ledger_v1",
+          "artifact_sha256": "74ff95b18690187072850a462da5dcb90b4c9482717db7b99b7a06cf9555e0d4",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 27464,
+          "field_path": "/gaps/M2G-DIV-003",
+          "symbol": "601857.SH",
+          "period": "2022-interim",
+          "raw_value": "current_explicit_gap",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02",
+          "source_tier": "coverage_gap",
+          "source_evidence_ids": [
+            "2022-interim-exchange",
+            "dve2_1df3144a2ad4afb3d74569d1"
+          ],
+          "gap_ids": [
+            "M2G-DIV-003"
+          ]
+        },
+        {
+          "record_id": "M2G-DIV-004",
+          "record_digest": "57b7e3f1433094f2a67b6003839fc6f6469a2fb9fb53a350114d88738a14bdbb",
+          "record_identity_type": "gap_id",
+          "artifact_logical_path": "reports/m2_explicit_gap_ledger.json",
+          "artifact_contract": "m2_explicit_gap_ledger_v1",
+          "artifact_sha256": "74ff95b18690187072850a462da5dcb90b4c9482717db7b99b7a06cf9555e0d4",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 27464,
+          "field_path": "/gaps/M2G-DIV-004",
+          "symbol": "601857.SH",
+          "period": "2022-final",
+          "raw_value": "current_explicit_gap",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02",
+          "source_tier": "coverage_gap",
+          "source_evidence_ids": [
+            "2022-final-exchange",
+            "dve2_545dca7962b7546dda01cf8f"
+          ],
+          "gap_ids": [
+            "M2G-DIV-004"
+          ]
+        },
+        {
+          "record_id": "M2G-DIV-005",
+          "record_digest": "0725f9c5f1a4225b74709b23853553893cbfecaeaf02366870faf4e3b672a5ab",
+          "record_identity_type": "gap_id",
+          "artifact_logical_path": "reports/m2_explicit_gap_ledger.json",
+          "artifact_contract": "m2_explicit_gap_ledger_v1",
+          "artifact_sha256": "74ff95b18690187072850a462da5dcb90b4c9482717db7b99b7a06cf9555e0d4",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 27464,
+          "field_path": "/gaps/M2G-DIV-005",
+          "symbol": "601857.SH",
+          "period": "2023-interim",
+          "raw_value": "current_explicit_gap",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02",
+          "source_tier": "coverage_gap",
+          "source_evidence_ids": [
+            "2023-interim-exchange",
+            "dve2_87942f04cbe07d8fa7f72a34"
+          ],
+          "gap_ids": [
+            "M2G-DIV-005"
+          ]
+        },
+        {
+          "record_id": "M2G-DIV-006",
+          "record_digest": "9361b0e20ffe9e6c8a7728f739eb1808b5def5a74ea5923c6bd433bc9712569a",
+          "record_identity_type": "gap_id",
+          "artifact_logical_path": "reports/m2_explicit_gap_ledger.json",
+          "artifact_contract": "m2_explicit_gap_ledger_v1",
+          "artifact_sha256": "74ff95b18690187072850a462da5dcb90b4c9482717db7b99b7a06cf9555e0d4",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 27464,
+          "field_path": "/gaps/M2G-DIV-006",
+          "symbol": "601857.SH",
+          "period": "2023-final",
+          "raw_value": "current_explicit_gap",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02",
+          "source_tier": "coverage_gap",
+          "source_evidence_ids": [
+            "2023-final-exchange",
+            "dve2_feace1c8156be53a04cb0fa2"
+          ],
+          "gap_ids": [
+            "M2G-DIV-006"
+          ]
+        },
+        {
+          "record_id": "M2G-DIV-007",
+          "record_digest": "39997ccec19f90f97b09d551a184ce5a1d24f12b89c95563d325b45b13208ab2",
+          "record_identity_type": "gap_id",
+          "artifact_logical_path": "reports/m2_explicit_gap_ledger.json",
+          "artifact_contract": "m2_explicit_gap_ledger_v1",
+          "artifact_sha256": "74ff95b18690187072850a462da5dcb90b4c9482717db7b99b7a06cf9555e0d4",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 27464,
+          "field_path": "/gaps/M2G-DIV-007",
+          "symbol": "601857.SH",
+          "period": "2024-final",
+          "raw_value": "current_explicit_gap",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02",
+          "source_tier": "coverage_gap",
+          "source_evidence_ids": [
+            "2024-final-exchange",
+            "dve2_b01e73d5301952998595ff05"
+          ],
+          "gap_ids": [
+            "M2G-DIV-007"
+          ]
+        },
+        {
+          "record_id": "M2G-DIV-008",
+          "record_digest": "c549cab6c35ead5390d9b60c3777c3fd496b6e7851f93df4ad00fc1dbf6e6dee",
+          "record_identity_type": "gap_id",
+          "artifact_logical_path": "reports/m2_explicit_gap_ledger.json",
+          "artifact_contract": "m2_explicit_gap_ledger_v1",
+          "artifact_sha256": "74ff95b18690187072850a462da5dcb90b4c9482717db7b99b7a06cf9555e0d4",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 27464,
+          "field_path": "/gaps/M2G-DIV-008",
+          "symbol": "601857.SH",
+          "period": "2025-interim",
+          "raw_value": "current_explicit_gap",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02",
+          "source_tier": "coverage_gap",
+          "source_evidence_ids": [
+            "2025-interim-exchange",
+            "dve2_40135402681a3e67ad7b9e96"
+          ],
+          "gap_ids": [
+            "M2G-DIV-008"
+          ]
+        },
+        {
+          "record_id": "M2G-DIV-009",
+          "record_digest": "27707b9a3cd5d22c04286a45686e64534767b054334ac2acb3b278a40505b375",
+          "record_identity_type": "gap_id",
+          "artifact_logical_path": "reports/m2_explicit_gap_ledger.json",
+          "artifact_contract": "m2_explicit_gap_ledger_v1",
+          "artifact_sha256": "74ff95b18690187072850a462da5dcb90b4c9482717db7b99b7a06cf9555e0d4",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 27464,
+          "field_path": "/gaps/M2G-DIV-009",
+          "symbol": "601857.SH",
+          "period": "2025-final",
+          "raw_value": "current_explicit_gap",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02",
+          "source_tier": "coverage_gap",
+          "source_evidence_ids": [
+            "2025-final-exchange",
+            "dve2_d9a78550b9e4eff7fd1e41b6"
+          ],
+          "gap_ids": [
+            "M2G-DIV-009"
+          ]
+        },
+        {
+          "record_id": "M2G-RISK-001",
+          "record_digest": "24dc89c53c00939da45f680fdc72538b7df49fb343c011c648edaf9eb66c22b5",
+          "record_identity_type": "gap_id",
+          "artifact_logical_path": "reports/m2_explicit_gap_ledger.json",
+          "artifact_contract": "m2_explicit_gap_ledger_v1",
+          "artifact_sha256": "74ff95b18690187072850a462da5dcb90b4c9482717db7b99b7a06cf9555e0d4",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 27464,
+          "field_path": "/gaps/M2G-RISK-001",
+          "symbol": "601857.SH",
+          "period": "2021-01-01_to_2026-08-02",
+          "raw_value": "current_explicit_gap",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02",
+          "source_tier": "coverage_gap",
+          "source_evidence_ids": [
+            "pc-search-regulatory-v2",
+            "formal_regulatory_investigation_or_major_discipline"
+          ],
+          "gap_ids": [
+            "M2G-RISK-001"
+          ]
+        },
+        {
+          "record_id": "M2G-RISK-002",
+          "record_digest": "f43eec24c7b729cd703f291ea8c0f30a0cdc221137de0518f945187fb99c95c8",
+          "record_identity_type": "gap_id",
+          "artifact_logical_path": "reports/m2_explicit_gap_ledger.json",
+          "artifact_contract": "m2_explicit_gap_ledger_v1",
+          "artifact_sha256": "74ff95b18690187072850a462da5dcb90b4c9482717db7b99b7a06cf9555e0d4",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 27464,
+          "field_path": "/gaps/M2G-RISK-002",
+          "symbol": "601857.SH",
+          "period": "2021-01-01_to_2026-08-02",
+          "raw_value": "current_explicit_gap",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02",
+          "source_tier": "coverage_gap",
+          "source_evidence_ids": [
+            "pc-search-fund-occupation-v2",
+            "controlling_shareholder_fund_occupation_or_related_guarantee"
+          ],
+          "gap_ids": [
+            "M2G-RISK-002"
+          ]
+        },
+        {
+          "record_id": "M2G-ROIC-001",
+          "record_digest": "e34e2b27719b278049c8f01c5550e3c6d1f6f6e0e085f751fce8ac4133b7617e",
+          "record_identity_type": "gap_id",
+          "artifact_logical_path": "reports/m2_explicit_gap_ledger.json",
+          "artifact_contract": "m2_explicit_gap_ledger_v1",
+          "artifact_sha256": "74ff95b18690187072850a462da5dcb90b4c9482717db7b99b7a06cf9555e0d4",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 27464,
+          "field_path": "/gaps/M2G-ROIC-001",
+          "symbol": "601857.SH",
+          "period": "FY2024",
+          "raw_value": "current_explicit_gap",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02",
+          "source_tier": "coverage_gap",
+          "source_evidence_ids": [
+            "A-2024-operating-tax",
+            "stage2i2r-search-01",
+            "9417f93db84af6f553bfaf5ba2c7b18b6d43510371ff3f8773d38f8db2793112"
+          ],
+          "gap_ids": [
+            "M2G-ROIC-001"
+          ]
+        },
+        {
+          "record_id": "M2G-ROIC-002",
+          "record_digest": "5ecfd27b343be793df6a94b65546e73ab00f13a1695f36bae619ad506953245b",
+          "record_identity_type": "gap_id",
+          "artifact_logical_path": "reports/m2_explicit_gap_ledger.json",
+          "artifact_contract": "m2_explicit_gap_ledger_v1",
+          "artifact_sha256": "74ff95b18690187072850a462da5dcb90b4c9482717db7b99b7a06cf9555e0d4",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 27464,
+          "field_path": "/gaps/M2G-ROIC-002",
+          "symbol": "601857.SH",
+          "period": "FY2023",
+          "raw_value": "current_explicit_gap",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02",
+          "source_tier": "coverage_gap",
+          "source_evidence_ids": [
+            "B-2023-2024-associate",
+            "stage2i2r-search-02",
+            "32eea1b32fca6ff86c8a3dfc5613c7d830d4502666b4bf131e6a01b2f20f1f31"
+          ],
+          "gap_ids": [
+            "M2G-ROIC-002"
+          ]
+        },
+        {
+          "record_id": "M2G-ROIC-003",
+          "record_digest": "80eef801ab27db53c41bbbdf0bd89b6dcdbed43d83cd3c090ee6f6d543017d63",
+          "record_identity_type": "gap_id",
+          "artifact_logical_path": "reports/m2_explicit_gap_ledger.json",
+          "artifact_contract": "m2_explicit_gap_ledger_v1",
+          "artifact_sha256": "74ff95b18690187072850a462da5dcb90b4c9482717db7b99b7a06cf9555e0d4",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 27464,
+          "field_path": "/gaps/M2G-ROIC-003",
+          "symbol": "601857.SH",
+          "period": "FY2024",
+          "raw_value": "current_explicit_gap",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02",
+          "source_tier": "coverage_gap",
+          "source_evidence_ids": [
+            "B-2023-2024-associate",
+            "stage2i2r-search-03",
+            "e76dc85268a0b53f2ec065c9bb0d2cceb03397260a11a008ce66c774a2c6a229"
+          ],
+          "gap_ids": [
+            "M2G-ROIC-003"
+          ]
+        },
+        {
+          "record_id": "M2G-ROIC-004",
+          "record_digest": "592ddbe4da85d88b297e6c2ebb4571b442082777d3cf9557e6a546a2e25f8df6",
+          "record_identity_type": "gap_id",
+          "artifact_logical_path": "reports/m2_explicit_gap_ledger.json",
+          "artifact_contract": "m2_explicit_gap_ledger_v1",
+          "artifact_sha256": "74ff95b18690187072850a462da5dcb90b4c9482717db7b99b7a06cf9555e0d4",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 27464,
+          "field_path": "/gaps/M2G-ROIC-004",
+          "symbol": "601857.SH",
+          "period": "FY2023",
+          "raw_value": "current_explicit_gap",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02",
+          "source_tier": "coverage_gap",
+          "source_evidence_ids": [
+            "B-2023-2024-jv",
+            "stage2i2r-search-04",
+            "8d68e5880fab6ca33668791e52e3fa42eeef7a8fb197eabc0b3b4f1484ba9cec"
+          ],
+          "gap_ids": [
+            "M2G-ROIC-004"
+          ]
+        },
+        {
+          "record_id": "M2G-ROIC-005",
+          "record_digest": "bc6736ad61cbfb700e16f7cec756b573e874e74d950d6394082d872fde65c9d7",
+          "record_identity_type": "gap_id",
+          "artifact_logical_path": "reports/m2_explicit_gap_ledger.json",
+          "artifact_contract": "m2_explicit_gap_ledger_v1",
+          "artifact_sha256": "74ff95b18690187072850a462da5dcb90b4c9482717db7b99b7a06cf9555e0d4",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 27464,
+          "field_path": "/gaps/M2G-ROIC-005",
+          "symbol": "601857.SH",
+          "period": "FY2024",
+          "raw_value": "current_explicit_gap",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02",
+          "source_tier": "coverage_gap",
+          "source_evidence_ids": [
+            "B-2023-2024-jv",
+            "stage2i2r-search-05",
+            "91b0b86e6dee3eebb1658845bdf5d6fccd52a9c9061e1306a0e699c95885658c"
+          ],
+          "gap_ids": [
+            "M2G-ROIC-005"
+          ]
+        },
+        {
+          "record_id": "M2G-ROIC-006",
+          "record_digest": "e84044746ce79d6b2f82542dfedb2949f169fe355c4648f6831e3a7203d0bd6c",
+          "record_identity_type": "gap_id",
+          "artifact_logical_path": "reports/m2_explicit_gap_ledger.json",
+          "artifact_contract": "m2_explicit_gap_ledger_v1",
+          "artifact_sha256": "74ff95b18690187072850a462da5dcb90b4c9482717db7b99b7a06cf9555e0d4",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 27464,
+          "field_path": "/gaps/M2G-ROIC-006",
+          "symbol": "601857.SH",
+          "period": "FY2023",
+          "raw_value": "current_explicit_gap",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02",
+          "source_tier": "coverage_gap",
+          "source_evidence_ids": [
+            "C-2023-2024-non-operating-financial-assets",
+            "stage2i2r-search-06",
+            "8007bf09664f0d95440e2c302884a4a3dd2736a88acc17e4a1c504bc47a13201"
+          ],
+          "gap_ids": [
+            "M2G-ROIC-006"
+          ]
+        },
+        {
+          "record_id": "M2G-ROIC-007",
+          "record_digest": "97923e0759374cef78a81d3584d596c512095584587c8689507b130f95780b56",
+          "record_identity_type": "gap_id",
+          "artifact_logical_path": "reports/m2_explicit_gap_ledger.json",
+          "artifact_contract": "m2_explicit_gap_ledger_v1",
+          "artifact_sha256": "74ff95b18690187072850a462da5dcb90b4c9482717db7b99b7a06cf9555e0d4",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 27464,
+          "field_path": "/gaps/M2G-ROIC-007",
+          "symbol": "601857.SH",
+          "period": "FY2024",
+          "raw_value": "current_explicit_gap",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02",
+          "source_tier": "coverage_gap",
+          "source_evidence_ids": [
+            "C-2023-2024-non-operating-financial-assets",
+            "stage2i2r-search-07",
+            "30172aff6acd92a8270cc57f50983efc81cf17d1e61d6f98a78ea5fe6c80d045"
+          ],
+          "gap_ids": [
+            "M2G-ROIC-007"
+          ]
+        }
+      ],
+      "operand_record_ids": [
+        "M2G-DIV-001",
+        "M2G-DIV-002",
+        "M2G-DIV-003",
+        "M2G-DIV-004",
+        "M2G-DIV-005",
+        "M2G-DIV-006",
+        "M2G-DIV-007",
+        "M2G-DIV-008",
+        "M2G-DIV-009",
+        "M2G-RISK-001",
+        "M2G-RISK-002",
+        "M2G-ROIC-001",
+        "M2G-ROIC-002",
+        "M2G-ROIC-003",
+        "M2G-ROIC-004",
+        "M2G-ROIC-005",
+        "M2G-ROIC-006",
+        "M2G-ROIC-007"
+      ],
+      "operand_record_digests": [
+        "c27466ba9be4ea0b38a4c9822ac01e2dc895d9408aaeeeb2f3ea084b1eb4cee4",
+        "58c66c7b592636090d49c302c3411f32de0c9ebc5470c253c187d6a95f66e473",
+        "fafe9f0fc391674bea59fc359d7ff7e0a27c9a9bb780158aa2cde6d23e6a8b3a",
+        "57b7e3f1433094f2a67b6003839fc6f6469a2fb9fb53a350114d88738a14bdbb",
+        "0725f9c5f1a4225b74709b23853553893cbfecaeaf02366870faf4e3b672a5ab",
+        "9361b0e20ffe9e6c8a7728f739eb1808b5def5a74ea5923c6bd433bc9712569a",
+        "39997ccec19f90f97b09d551a184ce5a1d24f12b89c95563d325b45b13208ab2",
+        "c549cab6c35ead5390d9b60c3777c3fd496b6e7851f93df4ad00fc1dbf6e6dee",
+        "27707b9a3cd5d22c04286a45686e64534767b054334ac2acb3b278a40505b375",
+        "24dc89c53c00939da45f680fdc72538b7df49fb343c011c648edaf9eb66c22b5",
+        "f43eec24c7b729cd703f291ea8c0f30a0cdc221137de0518f945187fb99c95c8",
+        "e34e2b27719b278049c8f01c5550e3c6d1f6f6e0e085f751fce8ac4133b7617e",
+        "5ecfd27b343be793df6a94b65546e73ab00f13a1695f36bae619ad506953245b",
+        "80eef801ab27db53c41bbbdf0bd89b6dcdbed43d83cd3c090ee6f6d543017d63",
+        "592ddbe4da85d88b297e6c2ebb4571b442082777d3cf9557e6a546a2e25f8df6",
+        "bc6736ad61cbfb700e16f7cec756b573e874e74d950d6394082d872fde65c9d7",
+        "e84044746ce79d6b2f82542dfedb2949f169fe355c4648f6831e3a7203d0bd6c",
+        "97923e0759374cef78a81d3584d596c512095584587c8689507b130f95780b56"
+      ],
+      "transform_id": "gap_count_v1",
+      "transform_version": "1.0",
+      "selected_value_decimal": "18",
+      "unit": "count",
+      "domain": "count_gte_0",
+      "period": "2026-08-02",
+      "available_at": "2026-08-02",
+      "resolved_source_tier": "coverage_gap",
+      "source_evidence_ids": [
+        "2021-final-exchange",
+        "2021-interim-exchange",
+        "2022-final-exchange",
+        "2022-interim-exchange",
+        "2023-final-exchange",
+        "2023-interim-exchange",
+        "2024-final-exchange",
+        "2025-final-exchange",
+        "2025-interim-exchange",
+        "30172aff6acd92a8270cc57f50983efc81cf17d1e61d6f98a78ea5fe6c80d045",
+        "32eea1b32fca6ff86c8a3dfc5613c7d830d4502666b4bf131e6a01b2f20f1f31",
+        "8007bf09664f0d95440e2c302884a4a3dd2736a88acc17e4a1c504bc47a13201",
+        "8d68e5880fab6ca33668791e52e3fa42eeef7a8fb197eabc0b3b4f1484ba9cec",
+        "91b0b86e6dee3eebb1658845bdf5d6fccd52a9c9061e1306a0e699c95885658c",
+        "9417f93db84af6f553bfaf5ba2c7b18b6d43510371ff3f8773d38f8db2793112",
+        "A-2024-operating-tax",
+        "B-2023-2024-associate",
+        "B-2023-2024-jv",
+        "C-2023-2024-non-operating-financial-assets",
+        "controlling_shareholder_fund_occupation_or_related_guarantee",
+        "dve2_09864b9b129b87fbe82d770c",
+        "dve2_1df3144a2ad4afb3d74569d1",
+        "dve2_31d8f2d9e40ce1ff45989915",
+        "dve2_40135402681a3e67ad7b9e96",
+        "dve2_545dca7962b7546dda01cf8f",
+        "dve2_87942f04cbe07d8fa7f72a34",
+        "dve2_b01e73d5301952998595ff05",
+        "dve2_d9a78550b9e4eff7fd1e41b6",
+        "dve2_feace1c8156be53a04cb0fa2",
+        "e76dc85268a0b53f2ec065c9bb0d2cceb03397260a11a008ce66c774a2c6a229",
+        "formal_regulatory_investigation_or_major_discipline",
+        "pc-search-fund-occupation-v2",
+        "pc-search-regulatory-v2",
+        "stage2i2r-search-01",
+        "stage2i2r-search-02",
+        "stage2i2r-search-03",
+        "stage2i2r-search-04",
+        "stage2i2r-search-05",
+        "stage2i2r-search-06",
+        "stage2i2r-search-07"
+      ],
+      "gap_ids": [
+        "M2G-DIV-001",
+        "M2G-DIV-002",
+        "M2G-DIV-003",
+        "M2G-DIV-004",
+        "M2G-DIV-005",
+        "M2G-DIV-006",
+        "M2G-DIV-007",
+        "M2G-DIV-008",
+        "M2G-DIV-009",
+        "M2G-RISK-001",
+        "M2G-RISK-002",
+        "M2G-ROIC-001",
+        "M2G-ROIC-002",
+        "M2G-ROIC-003",
+        "M2G-ROIC-004",
+        "M2G-ROIC-005",
+        "M2G-ROIC-006",
+        "M2G-ROIC-007"
+      ],
+      "transform_inputs": {
+        "count": "18"
+      },
+      "transform_inputs_role": "derived_snapshot_only",
+      "validator_must_rebuild": true,
+      "calculation_trace": [
+        "gap_count = 18"
+      ],
+      "observation_set": null,
+      "score_input_id": "0a5324f9117d24aea8be3fa1a1d4cfc41f3cff07eccc3639820000aeeb3c3647"
+    },
+    "rk_pit_integrity": {
+      "component_id": "rk_pit_integrity",
+      "dimension_id": "risk_and_evidence_integrity",
+      "resolver_id": "risk_profile_resolver",
+      "resolver_version": "1.0",
+      "upstream_ref_type": "risk_slot",
+      "resolved_records": [
+        {
+          "record_id": "risk_observation_d774875b76fd626f8dc3111a",
+          "record_digest": "b52372dc6d5b71189bcdf6f06f6de99585dddf80099bc7d976ad35768a8ff7ef",
+          "record_identity_type": "observation_id",
+          "artifact_logical_path": "reports/petrochina_value_profile.json",
+          "artifact_contract": "petrochina_value_profile_v1",
+          "artifact_sha256": "074b85646995d40206cabf25e12ba82718c11aed8dbb41cfe5859533ee3759ce",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 49887,
+          "field_path": "/current_risk_veto_profile/observations/risk_observation_d774875b76fd626f8dc3111a",
+          "symbol": "601857.SH",
+          "period": "2026-08-02",
+          "raw_value": "not_observed_within_bounded_evidence",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02T05:30:00+08:00",
+          "source_tier": "committed_computed_report",
+          "source_evidence_ids": [
+            "pc-2021-issuer-annual",
+            "pc-2022-issuer-annual",
+            "pc-2023-issuer-annual",
+            "pc-2024-issuer-annual",
+            "pc-2025-issuer-annual"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "risk_observation_36900a36e77ecf40dd8c2c42",
+          "record_digest": "c465a2d3aa960df177e816153232e85ba32728b386622f4f942cb570a7f7a6ee",
+          "record_identity_type": "observation_id",
+          "artifact_logical_path": "reports/petrochina_value_profile.json",
+          "artifact_contract": "petrochina_value_profile_v1",
+          "artifact_sha256": "074b85646995d40206cabf25e12ba82718c11aed8dbb41cfe5859533ee3759ce",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 49887,
+          "field_path": "/current_risk_veto_profile/observations/risk_observation_36900a36e77ecf40dd8c2c42",
+          "symbol": "601857.SH",
+          "period": "2026-08-02",
+          "raw_value": "not_observed_within_bounded_evidence",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02T05:30:00+08:00",
+          "source_tier": "committed_computed_report",
+          "source_evidence_ids": [
+            "pc-2021-exchange-annual",
+            "pc-2022-issuer-annual",
+            "pc-2023-issuer-annual",
+            "pc-2024-issuer-annual",
+            "pc-2025-issuer-annual"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "risk_observation_feff9792a99dd226f161cdb5",
+          "record_digest": "6fecf4b596fb08ae7641c549d3b59f69fc49042a1a284fc4fe86b489aca5985b",
+          "record_identity_type": "observation_id",
+          "artifact_logical_path": "reports/petrochina_value_profile.json",
+          "artifact_contract": "petrochina_value_profile_v1",
+          "artifact_sha256": "074b85646995d40206cabf25e12ba82718c11aed8dbb41cfe5859533ee3759ce",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 49887,
+          "field_path": "/current_risk_veto_profile/observations/risk_observation_feff9792a99dd226f161cdb5",
+          "symbol": "601857.SH",
+          "period": "2026-08-02",
+          "raw_value": "missing_evidence",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02T05:40:00+08:00",
+          "source_tier": "committed_computed_report",
+          "source_evidence_ids": [],
+          "gap_ids": []
+        },
+        {
+          "record_id": "risk_observation_052c3846c2a6bfa327cfb5cc",
+          "record_digest": "d48ebad1f1ad8f38b087673e60ac6ff92852ad8940c60257d2257ac2d7ae8a36",
+          "record_identity_type": "observation_id",
+          "artifact_logical_path": "reports/petrochina_value_profile.json",
+          "artifact_contract": "petrochina_value_profile_v1",
+          "artifact_sha256": "074b85646995d40206cabf25e12ba82718c11aed8dbb41cfe5859533ee3759ce",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 49887,
+          "field_path": "/current_risk_veto_profile/observations/risk_observation_052c3846c2a6bfa327cfb5cc",
+          "symbol": "601857.SH",
+          "period": "2026-08-02",
+          "raw_value": "not_observed_within_bounded_evidence",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02T05:50:00+08:00",
+          "source_tier": "committed_computed_report",
+          "source_evidence_ids": [
+            "pc-2021-exchange-annual",
+            "pc-2022-exchange-annual",
+            "pc-2023-exchange-annual",
+            "pc-2024-exchange-annual",
+            "pc-2025-exchange-annual"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "risk_observation_3f80905aa96f00f364715499",
+          "record_digest": "fd132d66561141a89ee2c43c7d0719715698c88e21f8b52484e1f8103a78221d",
+          "record_identity_type": "observation_id",
+          "artifact_logical_path": "reports/petrochina_value_profile.json",
+          "artifact_contract": "petrochina_value_profile_v1",
+          "artifact_sha256": "074b85646995d40206cabf25e12ba82718c11aed8dbb41cfe5859533ee3759ce",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 49887,
+          "field_path": "/current_risk_veto_profile/observations/risk_observation_3f80905aa96f00f364715499",
+          "symbol": "601857.SH",
+          "period": "2026-08-02",
+          "raw_value": "not_observed_within_bounded_evidence",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02T06:00:00+08:00",
+          "source_tier": "committed_computed_report",
+          "source_evidence_ids": [
+            "pc-2021-exchange-annual",
+            "pc-2022-exchange-annual",
+            "pc-2023-exchange-annual",
+            "pc-2024-exchange-annual",
+            "pc-2025-exchange-annual"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "risk_observation_fc9149e19ce39d95291879d9",
+          "record_digest": "3e91175fc17280b797e787981cb457eaf570825342beca0fda4e425c096c3547",
+          "record_identity_type": "observation_id",
+          "artifact_logical_path": "reports/petrochina_value_profile.json",
+          "artifact_contract": "petrochina_value_profile_v1",
+          "artifact_sha256": "074b85646995d40206cabf25e12ba82718c11aed8dbb41cfe5859533ee3759ce",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 49887,
+          "field_path": "/current_risk_veto_profile/observations/risk_observation_fc9149e19ce39d95291879d9",
+          "symbol": "601857.SH",
+          "period": "2026-08-02",
+          "raw_value": "not_observed_within_bounded_evidence",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02T06:10:00+08:00",
+          "source_tier": "committed_computed_report",
+          "source_evidence_ids": [
+            "pc-2021-exchange-annual",
+            "pc-2022-exchange-annual",
+            "pc-2023-exchange-annual",
+            "pc-2024-exchange-annual",
+            "pc-2025-exchange-annual"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "risk_observation_a6fd612c59638073df29dbdf",
+          "record_digest": "543705b18967de948ae4256f7c5349ca7913f84e1fe545061e9acaab7ae5cd17",
+          "record_identity_type": "observation_id",
+          "artifact_logical_path": "reports/petrochina_value_profile.json",
+          "artifact_contract": "petrochina_value_profile_v1",
+          "artifact_sha256": "074b85646995d40206cabf25e12ba82718c11aed8dbb41cfe5859533ee3759ce",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 49887,
+          "field_path": "/current_risk_veto_profile/observations/risk_observation_a6fd612c59638073df29dbdf",
+          "symbol": "601857.SH",
+          "period": "2026-08-02",
+          "raw_value": "missing_evidence",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02T06:20:00+08:00",
+          "source_tier": "committed_computed_report",
+          "source_evidence_ids": [
+            "pc-2021-exchange-annual",
+            "pc-2022-exchange-annual",
+            "pc-2023-exchange-annual",
+            "pc-2024-exchange-annual",
+            "pc-2025-exchange-annual"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "risk_observation_3bb97c18f6021ab3be2c7ae6",
+          "record_digest": "5f947f260d8710cd5a25ca7f0cd07b4c4fee169043ce9b219ec9634edd61fcd4",
+          "record_identity_type": "observation_id",
+          "artifact_logical_path": "reports/petrochina_value_profile.json",
+          "artifact_contract": "petrochina_value_profile_v1",
+          "artifact_sha256": "074b85646995d40206cabf25e12ba82718c11aed8dbb41cfe5859533ee3759ce",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 49887,
+          "field_path": "/current_risk_veto_profile/observations/risk_observation_3bb97c18f6021ab3be2c7ae6",
+          "symbol": "601857.SH",
+          "period": "2026-08-02",
+          "raw_value": "not_observed_within_bounded_evidence",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02T06:30:00+08:00",
+          "source_tier": "committed_computed_report",
+          "source_evidence_ids": [
+            "pc-2021-exchange-annual",
+            "pc-2022-exchange-annual",
+            "pc-2023-exchange-annual",
+            "pc-2024-exchange-annual",
+            "pc-2025-exchange-annual"
+          ],
+          "gap_ids": []
+        }
+      ],
+      "operand_record_ids": [
+        "risk_observation_d774875b76fd626f8dc3111a",
+        "risk_observation_36900a36e77ecf40dd8c2c42",
+        "risk_observation_feff9792a99dd226f161cdb5",
+        "risk_observation_052c3846c2a6bfa327cfb5cc",
+        "risk_observation_3f80905aa96f00f364715499",
+        "risk_observation_fc9149e19ce39d95291879d9",
+        "risk_observation_a6fd612c59638073df29dbdf",
+        "risk_observation_3bb97c18f6021ab3be2c7ae6"
+      ],
+      "operand_record_digests": [
+        "b52372dc6d5b71189bcdf6f06f6de99585dddf80099bc7d976ad35768a8ff7ef",
+        "c465a2d3aa960df177e816153232e85ba32728b386622f4f942cb570a7f7a6ee",
+        "6fecf4b596fb08ae7641c549d3b59f69fc49042a1a284fc4fe86b489aca5985b",
+        "d48ebad1f1ad8f38b087673e60ac6ff92852ad8940c60257d2257ac2d7ae8a36",
+        "fd132d66561141a89ee2c43c7d0719715698c88e21f8b52484e1f8103a78221d",
+        "3e91175fc17280b797e787981cb457eaf570825342beca0fda4e425c096c3547",
+        "543705b18967de948ae4256f7c5349ca7913f84e1fe545061e9acaab7ae5cd17",
+        "5f947f260d8710cd5a25ca7f0cd07b4c4fee169043ce9b219ec9634edd61fcd4"
+      ],
+      "transform_id": "categorical_pass_v1",
+      "transform_version": "1.0",
+      "selected_value_decimal": "not_observed_within_bounded_evidence",
+      "unit": "categorical",
+      "domain": "categorical_enum",
+      "period": "2026-08-02",
+      "available_at": "2026-08-02T06:30:00+08:00",
+      "resolved_source_tier": "committed_computed_report",
+      "source_evidence_ids": [
+        "pc-2021-exchange-annual",
+        "pc-2021-issuer-annual",
+        "pc-2022-exchange-annual",
+        "pc-2022-issuer-annual",
+        "pc-2023-exchange-annual",
+        "pc-2023-issuer-annual",
+        "pc-2024-exchange-annual",
+        "pc-2024-issuer-annual",
+        "pc-2025-exchange-annual",
+        "pc-2025-issuer-annual"
+      ],
+      "gap_ids": [],
+      "transform_inputs": {
+        "value": "not_observed_within_bounded_evidence"
+      },
+      "transform_inputs_role": "derived_snapshot_only",
+      "validator_must_rebuild": true,
+      "calculation_trace": [
+        "categorical_pass = not_observed_within_bounded_evidence"
+      ],
+      "observation_set": null,
+      "score_input_id": "cae99c15552f6a310a6a50fd22b9e509fde6b28989135acf8fa4957593fc8a10"
+    },
+    "rk_evidence_freshness": {
+      "component_id": "rk_evidence_freshness",
+      "dimension_id": "risk_and_evidence_integrity",
+      "resolver_id": "risk_profile_resolver",
+      "resolver_version": "1.0",
+      "upstream_ref_type": "risk_slot",
+      "resolved_records": [
+        {
+          "record_id": "risk_observation_d774875b76fd626f8dc3111a",
+          "record_digest": "b52372dc6d5b71189bcdf6f06f6de99585dddf80099bc7d976ad35768a8ff7ef",
+          "record_identity_type": "observation_id",
+          "artifact_logical_path": "reports/petrochina_value_profile.json",
+          "artifact_contract": "petrochina_value_profile_v1",
+          "artifact_sha256": "074b85646995d40206cabf25e12ba82718c11aed8dbb41cfe5859533ee3759ce",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 49887,
+          "field_path": "/current_risk_veto_profile/observations/risk_observation_d774875b76fd626f8dc3111a",
+          "symbol": "601857.SH",
+          "period": "2026-08-02",
+          "raw_value": "not_observed_within_bounded_evidence",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02T05:30:00+08:00",
+          "source_tier": "committed_computed_report",
+          "source_evidence_ids": [
+            "pc-2021-issuer-annual",
+            "pc-2022-issuer-annual",
+            "pc-2023-issuer-annual",
+            "pc-2024-issuer-annual",
+            "pc-2025-issuer-annual"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "risk_observation_36900a36e77ecf40dd8c2c42",
+          "record_digest": "c465a2d3aa960df177e816153232e85ba32728b386622f4f942cb570a7f7a6ee",
+          "record_identity_type": "observation_id",
+          "artifact_logical_path": "reports/petrochina_value_profile.json",
+          "artifact_contract": "petrochina_value_profile_v1",
+          "artifact_sha256": "074b85646995d40206cabf25e12ba82718c11aed8dbb41cfe5859533ee3759ce",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 49887,
+          "field_path": "/current_risk_veto_profile/observations/risk_observation_36900a36e77ecf40dd8c2c42",
+          "symbol": "601857.SH",
+          "period": "2026-08-02",
+          "raw_value": "not_observed_within_bounded_evidence",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02T05:30:00+08:00",
+          "source_tier": "committed_computed_report",
+          "source_evidence_ids": [
+            "pc-2021-exchange-annual",
+            "pc-2022-issuer-annual",
+            "pc-2023-issuer-annual",
+            "pc-2024-issuer-annual",
+            "pc-2025-issuer-annual"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "risk_observation_feff9792a99dd226f161cdb5",
+          "record_digest": "6fecf4b596fb08ae7641c549d3b59f69fc49042a1a284fc4fe86b489aca5985b",
+          "record_identity_type": "observation_id",
+          "artifact_logical_path": "reports/petrochina_value_profile.json",
+          "artifact_contract": "petrochina_value_profile_v1",
+          "artifact_sha256": "074b85646995d40206cabf25e12ba82718c11aed8dbb41cfe5859533ee3759ce",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 49887,
+          "field_path": "/current_risk_veto_profile/observations/risk_observation_feff9792a99dd226f161cdb5",
+          "symbol": "601857.SH",
+          "period": "2026-08-02",
+          "raw_value": "missing_evidence",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02T05:40:00+08:00",
+          "source_tier": "committed_computed_report",
+          "source_evidence_ids": [],
+          "gap_ids": []
+        },
+        {
+          "record_id": "risk_observation_052c3846c2a6bfa327cfb5cc",
+          "record_digest": "d48ebad1f1ad8f38b087673e60ac6ff92852ad8940c60257d2257ac2d7ae8a36",
+          "record_identity_type": "observation_id",
+          "artifact_logical_path": "reports/petrochina_value_profile.json",
+          "artifact_contract": "petrochina_value_profile_v1",
+          "artifact_sha256": "074b85646995d40206cabf25e12ba82718c11aed8dbb41cfe5859533ee3759ce",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 49887,
+          "field_path": "/current_risk_veto_profile/observations/risk_observation_052c3846c2a6bfa327cfb5cc",
+          "symbol": "601857.SH",
+          "period": "2026-08-02",
+          "raw_value": "not_observed_within_bounded_evidence",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02T05:50:00+08:00",
+          "source_tier": "committed_computed_report",
+          "source_evidence_ids": [
+            "pc-2021-exchange-annual",
+            "pc-2022-exchange-annual",
+            "pc-2023-exchange-annual",
+            "pc-2024-exchange-annual",
+            "pc-2025-exchange-annual"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "risk_observation_3f80905aa96f00f364715499",
+          "record_digest": "fd132d66561141a89ee2c43c7d0719715698c88e21f8b52484e1f8103a78221d",
+          "record_identity_type": "observation_id",
+          "artifact_logical_path": "reports/petrochina_value_profile.json",
+          "artifact_contract": "petrochina_value_profile_v1",
+          "artifact_sha256": "074b85646995d40206cabf25e12ba82718c11aed8dbb41cfe5859533ee3759ce",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 49887,
+          "field_path": "/current_risk_veto_profile/observations/risk_observation_3f80905aa96f00f364715499",
+          "symbol": "601857.SH",
+          "period": "2026-08-02",
+          "raw_value": "not_observed_within_bounded_evidence",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02T06:00:00+08:00",
+          "source_tier": "committed_computed_report",
+          "source_evidence_ids": [
+            "pc-2021-exchange-annual",
+            "pc-2022-exchange-annual",
+            "pc-2023-exchange-annual",
+            "pc-2024-exchange-annual",
+            "pc-2025-exchange-annual"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "risk_observation_fc9149e19ce39d95291879d9",
+          "record_digest": "3e91175fc17280b797e787981cb457eaf570825342beca0fda4e425c096c3547",
+          "record_identity_type": "observation_id",
+          "artifact_logical_path": "reports/petrochina_value_profile.json",
+          "artifact_contract": "petrochina_value_profile_v1",
+          "artifact_sha256": "074b85646995d40206cabf25e12ba82718c11aed8dbb41cfe5859533ee3759ce",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 49887,
+          "field_path": "/current_risk_veto_profile/observations/risk_observation_fc9149e19ce39d95291879d9",
+          "symbol": "601857.SH",
+          "period": "2026-08-02",
+          "raw_value": "not_observed_within_bounded_evidence",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02T06:10:00+08:00",
+          "source_tier": "committed_computed_report",
+          "source_evidence_ids": [
+            "pc-2021-exchange-annual",
+            "pc-2022-exchange-annual",
+            "pc-2023-exchange-annual",
+            "pc-2024-exchange-annual",
+            "pc-2025-exchange-annual"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "risk_observation_a6fd612c59638073df29dbdf",
+          "record_digest": "543705b18967de948ae4256f7c5349ca7913f84e1fe545061e9acaab7ae5cd17",
+          "record_identity_type": "observation_id",
+          "artifact_logical_path": "reports/petrochina_value_profile.json",
+          "artifact_contract": "petrochina_value_profile_v1",
+          "artifact_sha256": "074b85646995d40206cabf25e12ba82718c11aed8dbb41cfe5859533ee3759ce",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 49887,
+          "field_path": "/current_risk_veto_profile/observations/risk_observation_a6fd612c59638073df29dbdf",
+          "symbol": "601857.SH",
+          "period": "2026-08-02",
+          "raw_value": "missing_evidence",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02T06:20:00+08:00",
+          "source_tier": "committed_computed_report",
+          "source_evidence_ids": [
+            "pc-2021-exchange-annual",
+            "pc-2022-exchange-annual",
+            "pc-2023-exchange-annual",
+            "pc-2024-exchange-annual",
+            "pc-2025-exchange-annual"
+          ],
+          "gap_ids": []
+        },
+        {
+          "record_id": "risk_observation_3bb97c18f6021ab3be2c7ae6",
+          "record_digest": "5f947f260d8710cd5a25ca7f0cd07b4c4fee169043ce9b219ec9634edd61fcd4",
+          "record_identity_type": "observation_id",
+          "artifact_logical_path": "reports/petrochina_value_profile.json",
+          "artifact_contract": "petrochina_value_profile_v1",
+          "artifact_sha256": "074b85646995d40206cabf25e12ba82718c11aed8dbb41cfe5859533ee3759ce",
+          "artifact_digest_algorithm": "sha256_lf_normalized_bytes_v1",
+          "artifact_byte_size": 49887,
+          "field_path": "/current_risk_veto_profile/observations/risk_observation_3bb97c18f6021ab3be2c7ae6",
+          "symbol": "601857.SH",
+          "period": "2026-08-02",
+          "raw_value": "not_observed_within_bounded_evidence",
+          "unit": "categorical",
+          "domain": "count_gte_0",
+          "available_at": "2026-08-02T06:30:00+08:00",
+          "source_tier": "committed_computed_report",
+          "source_evidence_ids": [
+            "pc-2021-exchange-annual",
+            "pc-2022-exchange-annual",
+            "pc-2023-exchange-annual",
+            "pc-2024-exchange-annual",
+            "pc-2025-exchange-annual"
+          ],
+          "gap_ids": []
+        }
+      ],
+      "operand_record_ids": [
+        "risk_observation_d774875b76fd626f8dc3111a",
+        "risk_observation_36900a36e77ecf40dd8c2c42",
+        "risk_observation_feff9792a99dd226f161cdb5",
+        "risk_observation_052c3846c2a6bfa327cfb5cc",
+        "risk_observation_3f80905aa96f00f364715499",
+        "risk_observation_fc9149e19ce39d95291879d9",
+        "risk_observation_a6fd612c59638073df29dbdf",
+        "risk_observation_3bb97c18f6021ab3be2c7ae6"
+      ],
+      "operand_record_digests": [
+        "b52372dc6d5b71189bcdf6f06f6de99585dddf80099bc7d976ad35768a8ff7ef",
+        "c465a2d3aa960df177e816153232e85ba32728b386622f4f942cb570a7f7a6ee",
+        "6fecf4b596fb08ae7641c549d3b59f69fc49042a1a284fc4fe86b489aca5985b",
+        "d48ebad1f1ad8f38b087673e60ac6ff92852ad8940c60257d2257ac2d7ae8a36",
+        "fd132d66561141a89ee2c43c7d0719715698c88e21f8b52484e1f8103a78221d",
+        "3e91175fc17280b797e787981cb457eaf570825342beca0fda4e425c096c3547",
+        "543705b18967de948ae4256f7c5349ca7913f84e1fe545061e9acaab7ae5cd17",
+        "5f947f260d8710cd5a25ca7f0cd07b4c4fee169043ce9b219ec9634edd61fcd4"
+      ],
+      "transform_id": "categorical_pass_v1",
+      "transform_version": "1.0",
+      "selected_value_decimal": "not_observed_within_bounded_evidence",
+      "unit": "categorical",
+      "domain": "categorical_enum",
+      "period": "2026-08-02",
+      "available_at": "2026-08-02T06:30:00+08:00",
+      "resolved_source_tier": "committed_computed_report",
+      "source_evidence_ids": [
+        "pc-2021-exchange-annual",
+        "pc-2021-issuer-annual",
+        "pc-2022-exchange-annual",
+        "pc-2022-issuer-annual",
+        "pc-2023-exchange-annual",
+        "pc-2023-issuer-annual",
+        "pc-2024-exchange-annual",
+        "pc-2024-issuer-annual",
+        "pc-2025-exchange-annual",
+        "pc-2025-issuer-annual"
+      ],
+      "gap_ids": [],
+      "transform_inputs": {
+        "value": "not_observed_within_bounded_evidence"
+      },
+      "transform_inputs_role": "derived_snapshot_only",
+      "validator_must_rebuild": true,
+      "calculation_trace": [
+        "categorical_pass = not_observed_within_bounded_evidence"
+      ],
+      "observation_set": null,
+      "score_input_id": "8b19fc7d05718276579e7ae8007190e0e3e538f28bebda1efd8e11e7c0513fd7"
+    }
+  },
+  "market_validation_mode": "synthetic_test_capsule",
+  "real_market_verified": false,
+  "production_eligible": false,
+  "non_production": true,
+  "research_methodology_test_only": true,
+  "overall_score_prohibited": true,
+  "recommendation_prohibited": true,
+  "score_eligible": false,
+  "capsule_digest": "6a195f0f435cefd674f9cfbe134171dcddf7797e06d65a2b6a30bb57b7791dae",
+  "supersedes": "petrochina_score_input_capsule_v4",
+  "migration_stage": "M2_STAGE_2K1R4F1",
+  "aggregation_contract_version": "self_history_dual_window_percentile_v1"
+}

@@ -1,0 +1,45 @@
+# PetroChina value profile — one page
+
+As of `2026-07-31`; evidence status `pass_with_explicit_gaps`; market days `1351`.
+
+The six observations are PIT-safe, unadjusted-price, evidence-aware measures. Dividend announcement and payment windows are intentionally separate. Market mechanism remains outside scope.
+Stage 2G.1 status: `pass_with_explicit_gaps`; canonical Fact input: `net_profit.duckdb` (`47a09e98a8062f72b6907bc6ec55927588e4a815517ba8b4c0b595507ada7f0e`).
+
+## Capital-return evidence status
+
+- ROE and ROA: `trusted_existing_results_unchanged`.
+- ROIC: `not_computable_under_strict_evidence_contract`.
+- Decision: `ROIC_NOT_COMPUTABLE_UNDER_STRICT_EVIDENCE_CONTRACT`.
+- Gaps: `M2G-ROIC-001` through `M2G-ROIC-007`.
+- Shadow: `not_run`; production metric created: `false`; score eligible: `false`.
+
+No numeric/proxy ROIC or performance conclusion is emitted. Consumers must use
+the JSON `capital_return.roic` status and must not interpret missing numeric
+output as zero.
+
+| Observation | Value | Status |
+|---|---:|---|
+| `a_share_price_to_latest_annual_parent_earnings` | 12.89158710139375214555441126 | `computed` |
+| `a_share_price_to_latest_annual_revenue` | 0.7079400874030893683960273264 | `computed` |
+| `a_share_price_to_latest_year_end_parent_equity` | 1.278558916853412321468089815 | `computed` |
+| `latest_annual_fcf_proxy_yield` | 0.05903773727554334316827771199 | `computed` |
+| `trailing_12m_announced_dividend_yield` | — | `missing_input` |
+| `trailing_12m_paid_dividend_yield` | — | `missing_input` |
+
+## Technical integrity checks
+
+- `future_data_leakage`: `not_observed_within_bounded_evidence`
+- `canonical_identity_break`: `not_observed_within_bounded_evidence`
+- `official_exchange_evidence_gap`: `observed`
+- `non_positive_comparable_input`: `not_observed_within_bounded_evidence`
+
+## Canonical current risk slots
+
+- `modified_audit_opinion`: `not_observed_within_bounded_evidence`; emitted `True`
+- `going_concern_material_uncertainty`: `not_observed_within_bounded_evidence`; emitted `True`
+- `formal_regulatory_investigation_or_major_discipline`: `missing_evidence`; emitted `True`
+- `material_error_restatement`: `not_observed_within_bounded_evidence`; emitted `True`
+- `controlling_shareholder_pledge_risk`: `not_observed_within_bounded_evidence`; emitted `True`
+- `material_related_party_transaction_risk`: `not_observed_within_bounded_evidence`; emitted `True`
+- `controlling_shareholder_fund_occupation_or_related_guarantee`: `missing_evidence`; emitted `True`
+- `repeated_equity_financing_or_material_dilution`: `not_observed_within_bounded_evidence`; emitted `True`

@@ -1,0 +1,65 @@
+# 中国石油 601857.SH 事实来源配置
+# Milestone 2 Stage 1B — Candidate & Official Sources
+
+symbol: "601857.SH"
+company_name: "中国石油天然气股份有限公司"
+company_name_en: "PetroChina Company Limited"
+profile: "cyclical"
+reporting_currency: "CNY"
+consolidation_scope: "consolidated"
+accounting_standard: "CAS"
+
+# 候选来源（第三方聚合接口）
+candidate_sources:
+  - name: "akshare_financial_candidate"
+    provider_class: "ashare_research.fact_sources.candidates.akshare_financial.AKShareFinancialCandidateProvider"
+    enabled: true
+    note: "AKShare 聚合数据，未经官方核验。仅用于候选参考。"
+
+# 官方来源（公司官网 / 交易所正式披露）
+official_sources:
+  company:
+    enabled: false
+    provider_class: "ashare_research.fact_sources.official.petrochina_filings.PetroChinaOfficialFilingProvider"
+    status: "pending"
+    note: "官方来源尚未实现。需注册官方手工事实文件或接入认证文档解析。"
+  exchange:
+    enabled: false
+    status: "pending"
+
+# 官方事实状态
+official_fact_status: "pending"
+
+annual_periods:
+  - 2021
+  - 2022
+  - 2023
+  - 2024
+  - 2025
+
+quarter_periods:
+  - "2024Q2"
+  - "2024Q3"
+  - "2024Q4"
+  - "2025Q1"
+  - "2025Q2"
+  - "2025Q3"
+  - "2025Q4"
+  - "2026Q1"
+
+document_sources:
+  - type: "annual_report"
+    year: 2021
+    description: "2021 年度报告"
+  - type: "annual_report"
+    year: 2022
+    description: "2022 年度报告"
+  - type: "annual_report"
+    year: 2023
+    description: "2023 年度报告"
+  - type: "annual_report"
+    year: 2024
+    description: "2024 年度报告"
+  - type: "annual_report"
+    year: 2025
+    description: "2025 年度报告"

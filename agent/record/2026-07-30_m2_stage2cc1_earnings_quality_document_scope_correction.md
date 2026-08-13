@@ -1,0 +1,68 @@
+# M2 Stage 2C-C.1 工作记录：盈利质量官方文档范围合同纠正
+
+## 基线
+
+- Branch：`feat/m2-value-assessment-mvp`
+- Start HEAD：`cce6c5cf55198bc1fd01df75c24d3a6631b3fd74`
+- Stage 2C-B：PASS
+- 初始 Stage 2C-C：FAIL（合同级硬停止，仓库零变更）
+
+## 初始失败与合同纠正
+
+初始合同把 2021 年公司侧扣非归母净利润限定为“公司官网简体 A 股完整年度
+报告”直接披露。现有公司侧经审计财务报表不包含该非标准利润指标，公司官网
+归档的完整报告又只有繁体版本，因此旧合同按设计停止。
+
+Stage 2C-C.1 将“年度官方来源身份”和“实际承载事实的正式文档”分离：
+
+- `source_id` 继续表示发行人、年度和官方来源层级的稳定身份；
+- 每条 Fact 通过 `document_key`、文档范围、URL、哈希和页码绑定实际文件；
+- 扣非归母净利润可由正式年度业绩公告或年报摘要直接披露；
+- 营业成本和营业利润仍必须来自经审计合并利润表。
+
+这项纠正没有降低双官方路径、数值精确一致、公告日 PIT、Rule 003 或血缘要求。
+它只取消了“同一来源身份下三个 Concept 必须由同一 PDF 承载”的过度约束。
+
+## 冻结基线
+
+- 五个 annual bundle、2025 earnings-quality evidence/runner/tests/report 已记录
+  Git blob 与 SHA-256，后续门禁必须逐项复核。
+- 默认 `data/research.duckdb` SHA-256：
+  `4a71d3c7b88c0b16ae46ffb4f9bfbd006d91e0537e559235c9b5a1f919e2fce6`
+- `stash@{0}`：
+  `cb568efd7eaa6f0fca4b3bb5a1e2200b9341985f`
+
+## 2021 新增公司正式文档
+
+- 文档：中国石油天然气股份有限公司二零二一年度业绩公告（年度报告摘要）
+- 范围：`annual_results_announcement`
+- URL：公司官网正式 PDF 路径
+- SHA-256：
+  `555a24ed0ace306ebb249faefd2d131e960cd008ad22df8929993c40183e4786`
+- 大小：`1,195,800` bytes
+- 页数：`44`
+- 缓存：原缓存缺失，经一次官方下载、验证后按哈希写入共享缓存
+
+PDF 第 1 页目视确认发行人、A 股代码 `601857`、2021 年度业绩公告标题、董事会
+真实性/准确性/完整性声明和经审计年度财务数据说明；PDF 第 3 页目视确认中国
+企业会计准则口径归母净利润 `92,161` 百万元、扣非归母净利润 `99,531`
+百万元。
+
+## 定稿
+
+- run_id：`m2_stage2cc1_20260730_164500`
+- result：`PASS`
+- R：`4`
+- facts / eligible / final PIT：`132 / 44 / 35`
+- Audit / Lineage：`132 / 132`
+- annual cumulative PIT：`0 / 7 / 14 / 21 / 28 / 35`
+- upstream 84 Fact IDs：逐 ID 不变
+- frozen 38 Metric Result IDs：不变
+- default database SHA-256：不变
+- 新 Metric / scoring：未计算 / 未实现
+
+初始 Stage 2C-C Fail 继续保留在审计历史中。纠正后的合同仅接受正式年度直接
+披露，并继续执行双官方精确核验、文档哈希与页面绑定、PIT、三角色 lineage 和
+版本链要求。
+
+最终状态：`M2 Stage 2C-C.1: PASS`。

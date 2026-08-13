@@ -1,0 +1,22 @@
+{
+  "contract": "value_evaluation_methodology_valuation_pit_v1",
+  "version": 1,
+  "symbol": "601857.SH",
+  "date_range": {"start": "2021-01-01", "end": "2026-07-31", "end_rule": "min_latest_common_trade_date"},
+  "price_field": "close",
+  "price_adjustment": "none",
+  "share_basis": "applicable_total_ordinary_shares_with_A_H_scope_explicit",
+  "decimal": {"precision": 28, "rounding": "ROUND_HALF_EVEN", "quantum": "0.000000000001"},
+  "observations": [
+    "a_share_price_to_latest_annual_parent_earnings",
+    "a_share_price_to_latest_year_end_parent_equity",
+    "a_share_price_to_latest_annual_revenue",
+    "trailing_12m_announced_dividend_yield",
+    "trailing_12m_paid_dividend_yield",
+    "latest_annual_fcf_proxy_yield"
+  ],
+  "percentile_windows": {"expanding": true, "calendar_years": [3, 5], "minimum_samples": {"expanding": 120, "3y": 500, "5y": 900}},
+  "scenario_shocks": {"net_profit": [-0.2, -0.3], "fcf_proxy": [-0.2, -0.3], "announced_dps": [-0.2, -0.3], "paid_dps": [-0.2, -0.3]},
+  "score_eligible": false,
+  "forbidden_output_fields": ["score", "weight", "rating", "target_price", "buy", "sell", "probability", "upside", "downside"]
+}

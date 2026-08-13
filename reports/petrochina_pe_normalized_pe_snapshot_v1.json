@@ -1,0 +1,70 @@
+{
+  "schema": "pe_normalized_pe_snapshot_v1",
+  "symbol": "601857.SH",
+  "as_of_trade_date": "2026-07-31",
+  "contract_id": "pe_normalized_earnings_average_roe_v1",
+  "status": "TRUSTED_NON_SCORING",
+  "market_observation": {
+    "observation_id": "98d47da1a60919889c2a143b6a704a373ac9128beafe8cade842dd4a8f075701",
+    "trade_date": "2026-07-31",
+    "metric_id": "PE_A_TTM",
+    "market_close_decimal": "11.08",
+    "market_close_digest": "c3d48537336602f4c6e535ed69e79a73d79dfc59a5c29d77d54b8c020a0dc1fc",
+    "market_reconciliation_digest": "4fb3382b25e5889e91e1dc27b46e1ae6c080e4dc5ef23b4e47c65063603d5acc",
+    "market_reconciliation_status": "pass",
+    "primary_market_object_sha256": "c6771aa57b0210ee558a91c7bdb87cc346ce910a395eda057cb9d7224475ab67",
+    "secondary_market_object_sha256": "d760923aae952d9ba400d792d4155b4c6dfa3b728210de64001aa6024c8f7dd7"
+  },
+  "current_ttm_eps": "0.8642943660660668889225593242",
+  "normalized_eps_roe": "0.9135206151007635380066173292",
+  "raw_pe_ttm": "12.81970638132453345471096950",
+  "raw_pe_ttm_matches_candidate": true,
+  "candidate_ratio_decimal": "12.81970638132453345471096950",
+  "normalized_pe_roe": "12.12889979366021109951970404",
+  "normalized_pe_decimal": "12.12889979366021109951970404",
+  "earnings_normalization_ratio": "0.9461136965920940114716739512",
+  "raw_to_normalized_pe_ratio": "1.056955420476423401383024263",
+  "normalized_earnings_state_id": "1dacd906630323d0a74c682675f0c022fb91119549c1f20b4803ae06045f583c",
+  "annual_fact_ids": [
+    {
+      "fiscal_year": "2021",
+      "np_fact_id": "eb1a6271b4a359bda90f7bc6439ee61ff0597990457d348abd5ae451040a527e",
+      "begin_equity_fact_id": "b83a65483f61b802b74ff34561fa8f547f755c62936487963e0f1a8bfdd117cf",
+      "end_equity_fact_id": "7204099afd5fdb133831e9a97c086c89ed8e6af462e28abc6422801ce4c8e06c"
+    },
+    {
+      "fiscal_year": "2022",
+      "np_fact_id": "0e086ca894c661c8ad719d8bbe814ce6af17d9fb3d6bd6171a20566a90793874",
+      "begin_equity_fact_id": "7204099afd5fdb133831e9a97c086c89ed8e6af462e28abc6422801ce4c8e06c",
+      "end_equity_fact_id": "dedc229cb470fed54889288a9d12c05106f70cb9f61d9918e0dcc425a21b004a"
+    },
+    {
+      "fiscal_year": "2023",
+      "np_fact_id": "c1b5a6869b209bcf1af660d7564047fe4a583aa47283d19a8c49de5ff30f0a5c",
+      "begin_equity_fact_id": "dedc229cb470fed54889288a9d12c05106f70cb9f61d9918e0dcc425a21b004a",
+      "end_equity_fact_id": "5d0120786f5c73274098a5f719651514476208d5bd683f4851667d84decea5ea"
+    },
+    {
+      "fiscal_year": "2024",
+      "np_fact_id": "ea454577cf53f36214712ce87f0a5c993acdeab3fd08bbe2813ec2605f33d3d9",
+      "begin_equity_fact_id": "5d0120786f5c73274098a5f719651514476208d5bd683f4851667d84decea5ea",
+      "end_equity_fact_id": "b4c277e606f9cf0e409f381c5529a4eaa7458d1b124c998fbe0e760702340b68"
+    },
+    {
+      "fiscal_year": "2025",
+      "np_fact_id": "dea845ccad75d66b363fa67618f3f735c2dd756d43028e075859f5b94cf2b5a8",
+      "begin_equity_fact_id": "b4c277e606f9cf0e409f381c5529a4eaa7458d1b124c998fbe0e760702340b68",
+      "end_equity_fact_id": "00cb0c64831e9611889aa8a461cfa3e6f0be53efacca1ef5bd89e80c7db8262b"
+    }
+  ],
+  "current_equity_fact_id": "9d483639eacd7a4961655203c0fb72292df4ba1fa78769de59194e5ba3845389",
+  "share_fact_id": "4ea90cb2990731ba3c4b44d602973a260f3888b2ac1e4bfd95805c4460e6e25d",
+  "average_roe_decimal": "0.1029179088085938346085963897",
+  "current_bvps_decimal": "8.876206538550294436827638346",
+  "normalized_eps_decimal": "0.9135206151007635380066173292",
+  "normalized_pe_snapshot_id": "5a084325dabb9aec71014e8f493c87417927a874f73340f1697b4d14e6aa0491",
+  "descriptive_only": true,
+  "no_cheap_expensive_labels": true,
+  "no_cycle_stage_label": true,
+  "non_scoring": true
+}

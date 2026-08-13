@@ -1,0 +1,1151 @@
+{
+ "schema": "pit_denominator_fact_id_migration_v1",
+ "rule": "Context v2: instant facts gain the report period-end in the context_id; duration facts are unchanged",
+ "entries": [
+  {
+   "concept_id": "basic_eps",
+   "source_id": "r4d:R4D-SSE-2020-AR",
+   "old_context_id": "601857.SH|2020|annual|consolidated",
+   "new_context_id": "601857.SH|2020|annual|consolidated",
+   "old_fact_id": "974c8a454dc7208e2e823cc676e79d07dafd91ad60d7e93924dc6a2fb93d7a1e",
+   "new_fact_id": "974c8a454dc7208e2e823cc676e79d07dafd91ad60d7e93924dc6a2fb93d7a1e",
+   "changed": false
+  },
+  {
+   "concept_id": "basic_eps",
+   "source_id": "r4d:R4D-SSE-2020-H1",
+   "old_context_id": "601857.SH|2020|half_year_ytd|consolidated",
+   "new_context_id": "601857.SH|2020|half_year_ytd|consolidated",
+   "old_fact_id": "527069b04e2136fcabef6c5a2d59c8f4345cb72ee1937bd3e9abcd3cef154e8e",
+   "new_fact_id": "527069b04e2136fcabef6c5a2d59c8f4345cb72ee1937bd3e9abcd3cef154e8e",
+   "changed": false
+  },
+  {
+   "concept_id": "basic_eps",
+   "source_id": "r4d:R4D-SSE-2020-Q1",
+   "old_context_id": "601857.SH|2020|quarter_ytd|consolidated",
+   "new_context_id": "601857.SH|2020|quarter_ytd|consolidated",
+   "old_fact_id": "cddaff87693b8cd1f8bd24619a8a54006398f43120ebdbf151e16828f7be4d80",
+   "new_fact_id": "cddaff87693b8cd1f8bd24619a8a54006398f43120ebdbf151e16828f7be4d80",
+   "changed": false
+  },
+  {
+   "concept_id": "basic_eps",
+   "source_id": "r4d:R4D-SSE-2020-Q3",
+   "old_context_id": "601857.SH|2020|three_quarter_ytd|consolidated",
+   "new_context_id": "601857.SH|2020|three_quarter_ytd|consolidated",
+   "old_fact_id": "5dbcd8eaf01f6f5c06dca14f9a7727336dbe914b6be79f4860e1ad7eb482c842",
+   "new_fact_id": "5dbcd8eaf01f6f5c06dca14f9a7727336dbe914b6be79f4860e1ad7eb482c842",
+   "changed": false
+  },
+  {
+   "concept_id": "basic_eps",
+   "source_id": "r4d:R4D-SSE-2021-AR",
+   "old_context_id": "601857.SH|2021|annual|consolidated",
+   "new_context_id": "601857.SH|2021|annual|consolidated",
+   "old_fact_id": "aacb1922addfd3da707d16e5510991014e85bbd2f6b3192e93e2d34ef3657ba9",
+   "new_fact_id": "aacb1922addfd3da707d16e5510991014e85bbd2f6b3192e93e2d34ef3657ba9",
+   "changed": false
+  },
+  {
+   "concept_id": "basic_eps",
+   "source_id": "r4d:R4D-SSE-2021-H1",
+   "old_context_id": "601857.SH|2021|half_year_ytd|consolidated",
+   "new_context_id": "601857.SH|2021|half_year_ytd|consolidated",
+   "old_fact_id": "312fe33c401d7345ff8171e14b8e4d02b3a1db6dbe02ad49b4262f10df016ac9",
+   "new_fact_id": "312fe33c401d7345ff8171e14b8e4d02b3a1db6dbe02ad49b4262f10df016ac9",
+   "changed": false
+  },
+  {
+   "concept_id": "basic_eps",
+   "source_id": "r4d:R4D-SSE-2021-Q1",
+   "old_context_id": "601857.SH|2021|quarter_ytd|consolidated",
+   "new_context_id": "601857.SH|2021|quarter_ytd|consolidated",
+   "old_fact_id": "f374041b84c9df6111dba2867f2fe34327e4599ad4e8b544442ac85c3240542c",
+   "new_fact_id": "f374041b84c9df6111dba2867f2fe34327e4599ad4e8b544442ac85c3240542c",
+   "changed": false
+  },
+  {
+   "concept_id": "basic_eps",
+   "source_id": "r4d:R4D-SSE-2021-Q3",
+   "old_context_id": "601857.SH|2021|three_quarter_ytd|consolidated",
+   "new_context_id": "601857.SH|2021|three_quarter_ytd|consolidated",
+   "old_fact_id": "dcae0abbdb11eb558a0c42ddd1ed1e843dc948b10cbe11b42bd65a5e383b00bc",
+   "new_fact_id": "dcae0abbdb11eb558a0c42ddd1ed1e843dc948b10cbe11b42bd65a5e383b00bc",
+   "changed": false
+  },
+  {
+   "concept_id": "basic_eps",
+   "source_id": "r4d:R4D-SSE-2022-AR",
+   "old_context_id": "601857.SH|2022|annual|consolidated",
+   "new_context_id": "601857.SH|2022|annual|consolidated",
+   "old_fact_id": "900428738b1fe0f419b95026f863315f1aada8488e98c6463b3a4940e68e8d05",
+   "new_fact_id": "900428738b1fe0f419b95026f863315f1aada8488e98c6463b3a4940e68e8d05",
+   "changed": false
+  },
+  {
+   "concept_id": "basic_eps",
+   "source_id": "r4d:R4D-SSE-2022-H1",
+   "old_context_id": "601857.SH|2022|half_year_ytd|consolidated",
+   "new_context_id": "601857.SH|2022|half_year_ytd|consolidated",
+   "old_fact_id": "cc0c4a850d67ba6c7f421b00519005bb9723d791408ad7fd28c9f5cd96bc82b8",
+   "new_fact_id": "cc0c4a850d67ba6c7f421b00519005bb9723d791408ad7fd28c9f5cd96bc82b8",
+   "changed": false
+  },
+  {
+   "concept_id": "basic_eps",
+   "source_id": "r4d:R4D-SSE-2022-Q1",
+   "old_context_id": "601857.SH|2022|quarter_ytd|consolidated",
+   "new_context_id": "601857.SH|2022|quarter_ytd|consolidated",
+   "old_fact_id": "92343a653516638780761bd266f497f27b0bf74629d1dc82ab8e1ecd41a68778",
+   "new_fact_id": "92343a653516638780761bd266f497f27b0bf74629d1dc82ab8e1ecd41a68778",
+   "changed": false
+  },
+  {
+   "concept_id": "basic_eps",
+   "source_id": "r4d:R4D-SSE-2022-Q3",
+   "old_context_id": "601857.SH|2022|three_quarter_ytd|consolidated",
+   "new_context_id": "601857.SH|2022|three_quarter_ytd|consolidated",
+   "old_fact_id": "e924135dfea7e879926fd507816a003baf98e79fdc4a4e3db49b74e478abf213",
+   "new_fact_id": "e924135dfea7e879926fd507816a003baf98e79fdc4a4e3db49b74e478abf213",
+   "changed": false
+  },
+  {
+   "concept_id": "basic_eps",
+   "source_id": "r4d:R4D-SSE-2023-AR",
+   "old_context_id": "601857.SH|2023|annual|consolidated",
+   "new_context_id": "601857.SH|2023|annual|consolidated",
+   "old_fact_id": "d2021010b08ce8bd2c0bf5405e1d8d42071945762d4f890dad1b0af40a9b6ff7",
+   "new_fact_id": "d2021010b08ce8bd2c0bf5405e1d8d42071945762d4f890dad1b0af40a9b6ff7",
+   "changed": false
+  },
+  {
+   "concept_id": "basic_eps",
+   "source_id": "r4d:R4D-SSE-2023-H1",
+   "old_context_id": "601857.SH|2023|half_year_ytd|consolidated",
+   "new_context_id": "601857.SH|2023|half_year_ytd|consolidated",
+   "old_fact_id": "14737e118bfcebb3075c8583c1f6ff57c4783c7b64e32e562dd20b334498d509",
+   "new_fact_id": "14737e118bfcebb3075c8583c1f6ff57c4783c7b64e32e562dd20b334498d509",
+   "changed": false
+  },
+  {
+   "concept_id": "basic_eps",
+   "source_id": "r4d:R4D-SSE-2023-Q1",
+   "old_context_id": "601857.SH|2023|quarter_ytd|consolidated",
+   "new_context_id": "601857.SH|2023|quarter_ytd|consolidated",
+   "old_fact_id": "5b40f71ce8a883a4ebbd372a2108f2abcebc5bccbfbb03ad01d1c8b1a4e023d5",
+   "new_fact_id": "5b40f71ce8a883a4ebbd372a2108f2abcebc5bccbfbb03ad01d1c8b1a4e023d5",
+   "changed": false
+  },
+  {
+   "concept_id": "basic_eps",
+   "source_id": "r4d:R4D-SSE-2023-Q3",
+   "old_context_id": "601857.SH|2023|three_quarter_ytd|consolidated",
+   "new_context_id": "601857.SH|2023|three_quarter_ytd|consolidated",
+   "old_fact_id": "d44eee0ea812c6fdcd29dd9b825d3bfeaa9d45fa0fffb861cd5f6cd3d1913b89",
+   "new_fact_id": "d44eee0ea812c6fdcd29dd9b825d3bfeaa9d45fa0fffb861cd5f6cd3d1913b89",
+   "changed": false
+  },
+  {
+   "concept_id": "basic_eps",
+   "source_id": "r4d:R4D-SSE-2024-AR",
+   "old_context_id": "601857.SH|2024|annual|consolidated",
+   "new_context_id": "601857.SH|2024|annual|consolidated",
+   "old_fact_id": "65f12c7a7fa56d99931fdebf06509bc8ac107812e9273de6dd2c9a6cbe2725eb",
+   "new_fact_id": "65f12c7a7fa56d99931fdebf06509bc8ac107812e9273de6dd2c9a6cbe2725eb",
+   "changed": false
+  },
+  {
+   "concept_id": "basic_eps",
+   "source_id": "r4d:R4D-SSE-2024-H1",
+   "old_context_id": "601857.SH|2024|half_year_ytd|consolidated",
+   "new_context_id": "601857.SH|2024|half_year_ytd|consolidated",
+   "old_fact_id": "e3b355621f53fb2aa83b04d1b317a86bec10908b039a92ec83e504087dc9730f",
+   "new_fact_id": "e3b355621f53fb2aa83b04d1b317a86bec10908b039a92ec83e504087dc9730f",
+   "changed": false
+  },
+  {
+   "concept_id": "basic_eps",
+   "source_id": "r4d:R4D-SSE-2024-Q1",
+   "old_context_id": "601857.SH|2024|quarter_ytd|consolidated",
+   "new_context_id": "601857.SH|2024|quarter_ytd|consolidated",
+   "old_fact_id": "db5449d5a3763e7048afac4cd21818e8b46587a69e80bb777d695a461da0b176",
+   "new_fact_id": "db5449d5a3763e7048afac4cd21818e8b46587a69e80bb777d695a461da0b176",
+   "changed": false
+  },
+  {
+   "concept_id": "basic_eps",
+   "source_id": "r4d:R4D-SSE-2024-Q3",
+   "old_context_id": "601857.SH|2024|three_quarter_ytd|consolidated",
+   "new_context_id": "601857.SH|2024|three_quarter_ytd|consolidated",
+   "old_fact_id": "1f8fdd64dce0b8cf78191e7bc5ca7f3d4e219ea9e007ee70d2de8fd08670e300",
+   "new_fact_id": "1f8fdd64dce0b8cf78191e7bc5ca7f3d4e219ea9e007ee70d2de8fd08670e300",
+   "changed": false
+  },
+  {
+   "concept_id": "basic_eps",
+   "source_id": "r4d:R4D-SSE-2025-AR",
+   "old_context_id": "601857.SH|2025|annual|consolidated",
+   "new_context_id": "601857.SH|2025|annual|consolidated",
+   "old_fact_id": "84111bbedebc275468c0fd8c68d0cf018d55357ff2e9ad351655548dfc3e78fd",
+   "new_fact_id": "84111bbedebc275468c0fd8c68d0cf018d55357ff2e9ad351655548dfc3e78fd",
+   "changed": false
+  },
+  {
+   "concept_id": "basic_eps",
+   "source_id": "r4d:R4D-SSE-2025-H1",
+   "old_context_id": "601857.SH|2025|half_year_ytd|consolidated",
+   "new_context_id": "601857.SH|2025|half_year_ytd|consolidated",
+   "old_fact_id": "0b92db0be1813aec678e8fbfe2b451c90c9ce40b2b391c4741fb7ac4d7c5343d",
+   "new_fact_id": "0b92db0be1813aec678e8fbfe2b451c90c9ce40b2b391c4741fb7ac4d7c5343d",
+   "changed": false
+  },
+  {
+   "concept_id": "basic_eps",
+   "source_id": "r4d:R4D-SSE-2025-Q1",
+   "old_context_id": "601857.SH|2025|quarter_ytd|consolidated",
+   "new_context_id": "601857.SH|2025|quarter_ytd|consolidated",
+   "old_fact_id": "a40a07bfcd4b166ba3b0d807ccfdbba5e22b1c11279715c98d553a4b0c8e1b5a",
+   "new_fact_id": "a40a07bfcd4b166ba3b0d807ccfdbba5e22b1c11279715c98d553a4b0c8e1b5a",
+   "changed": false
+  },
+  {
+   "concept_id": "basic_eps",
+   "source_id": "r4d:R4D-SSE-2025-Q3",
+   "old_context_id": "601857.SH|2025|three_quarter_ytd|consolidated",
+   "new_context_id": "601857.SH|2025|three_quarter_ytd|consolidated",
+   "old_fact_id": "2a281c1035fa9fa72d0b54615712ea7279fef409bcfed5ff0d5d23824ac18a3c",
+   "new_fact_id": "2a281c1035fa9fa72d0b54615712ea7279fef409bcfed5ff0d5d23824ac18a3c",
+   "changed": false
+  },
+  {
+   "concept_id": "basic_eps",
+   "source_id": "r4d:R4D-SSE-2026-Q1",
+   "old_context_id": "601857.SH|2026|quarter_ytd|consolidated",
+   "new_context_id": "601857.SH|2026|quarter_ytd|consolidated",
+   "old_fact_id": "93cc44f4a098eb51aba97742f49492b1f33fc7bf5c635415bf0fe8d876de17f8",
+   "new_fact_id": "93cc44f4a098eb51aba97742f49492b1f33fc7bf5c635415bf0fe8d876de17f8",
+   "changed": false
+  },
+  {
+   "concept_id": "equity_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2020-AR",
+   "old_context_id": "601857.SH|2020|instant|consolidated|2020-12-31",
+   "new_context_id": "601857.SH|2020|instant|consolidated|2020-12-31",
+   "old_fact_id": "b83a65483f61b802b74ff34561fa8f547f755c62936487963e0f1a8bfdd117cf",
+   "new_fact_id": "b83a65483f61b802b74ff34561fa8f547f755c62936487963e0f1a8bfdd117cf",
+   "changed": false
+  },
+  {
+   "concept_id": "equity_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2020-H1",
+   "old_context_id": "601857.SH|2020|instant|consolidated|2020-06-30",
+   "new_context_id": "601857.SH|2020|instant|consolidated|2020-06-30",
+   "old_fact_id": "277274bf2684fe3585a7afa1ac0c46ae5900ceb91b480828c7f5b84c243d7ef9",
+   "new_fact_id": "277274bf2684fe3585a7afa1ac0c46ae5900ceb91b480828c7f5b84c243d7ef9",
+   "changed": false
+  },
+  {
+   "concept_id": "equity_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2020-Q1",
+   "old_context_id": "601857.SH|2020|instant|consolidated|2020-03-31",
+   "new_context_id": "601857.SH|2020|instant|consolidated|2020-03-31",
+   "old_fact_id": "b37cac8bf7568e152cb04ef3edc5ecce48fa98963f6574fd785349b6b6a8139b",
+   "new_fact_id": "b37cac8bf7568e152cb04ef3edc5ecce48fa98963f6574fd785349b6b6a8139b",
+   "changed": false
+  },
+  {
+   "concept_id": "equity_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2020-Q3",
+   "old_context_id": "601857.SH|2020|instant|consolidated|2020-09-30",
+   "new_context_id": "601857.SH|2020|instant|consolidated|2020-09-30",
+   "old_fact_id": "ffa8db91c2f5354bf0bbb1abf12de4840706c99b781c7645bb5847bbb48cd53a",
+   "new_fact_id": "ffa8db91c2f5354bf0bbb1abf12de4840706c99b781c7645bb5847bbb48cd53a",
+   "changed": false
+  },
+  {
+   "concept_id": "equity_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2021-AR",
+   "old_context_id": "601857.SH|2021|instant|consolidated|2021-12-31",
+   "new_context_id": "601857.SH|2021|instant|consolidated|2021-12-31",
+   "old_fact_id": "7204099afd5fdb133831e9a97c086c89ed8e6af462e28abc6422801ce4c8e06c",
+   "new_fact_id": "7204099afd5fdb133831e9a97c086c89ed8e6af462e28abc6422801ce4c8e06c",
+   "changed": false
+  },
+  {
+   "concept_id": "equity_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2021-H1",
+   "old_context_id": "601857.SH|2021|instant|consolidated|2021-06-30",
+   "new_context_id": "601857.SH|2021|instant|consolidated|2021-06-30",
+   "old_fact_id": "2033943e1e942e29b5115e2b78291407f00c4daeedc0815e2b8d6819e4a63d1d",
+   "new_fact_id": "2033943e1e942e29b5115e2b78291407f00c4daeedc0815e2b8d6819e4a63d1d",
+   "changed": false
+  },
+  {
+   "concept_id": "equity_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2021-Q1",
+   "old_context_id": "601857.SH|2021|instant|consolidated|2021-03-31",
+   "new_context_id": "601857.SH|2021|instant|consolidated|2021-03-31",
+   "old_fact_id": "102ff8cc8e2578e9d96f1c7e77922f577261f01b8d10075949f777f4ac449881",
+   "new_fact_id": "102ff8cc8e2578e9d96f1c7e77922f577261f01b8d10075949f777f4ac449881",
+   "changed": false
+  },
+  {
+   "concept_id": "equity_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2021-Q3",
+   "old_context_id": "601857.SH|2021|instant|consolidated|2021-09-30",
+   "new_context_id": "601857.SH|2021|instant|consolidated|2021-09-30",
+   "old_fact_id": "300945373e6480414a17270c843b4eab096e3e8164f03999e83cce9c2ae2999d",
+   "new_fact_id": "300945373e6480414a17270c843b4eab096e3e8164f03999e83cce9c2ae2999d",
+   "changed": false
+  },
+  {
+   "concept_id": "equity_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2022-AR",
+   "old_context_id": "601857.SH|2022|instant|consolidated|2022-12-31",
+   "new_context_id": "601857.SH|2022|instant|consolidated|2022-12-31",
+   "old_fact_id": "dedc229cb470fed54889288a9d12c05106f70cb9f61d9918e0dcc425a21b004a",
+   "new_fact_id": "dedc229cb470fed54889288a9d12c05106f70cb9f61d9918e0dcc425a21b004a",
+   "changed": false
+  },
+  {
+   "concept_id": "equity_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2022-H1",
+   "old_context_id": "601857.SH|2022|instant|consolidated|2022-06-30",
+   "new_context_id": "601857.SH|2022|instant|consolidated|2022-06-30",
+   "old_fact_id": "788bf1b488ba83f321ab2009f66b5f4fbe467272d5ff1f10924364e52cb1ae99",
+   "new_fact_id": "788bf1b488ba83f321ab2009f66b5f4fbe467272d5ff1f10924364e52cb1ae99",
+   "changed": false
+  },
+  {
+   "concept_id": "equity_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2022-Q1",
+   "old_context_id": "601857.SH|2022|instant|consolidated|2022-03-31",
+   "new_context_id": "601857.SH|2022|instant|consolidated|2022-03-31",
+   "old_fact_id": "ed74b6afa3ecba3ab1f89607b714ece0fed9631783b105728524b2105d62d66f",
+   "new_fact_id": "ed74b6afa3ecba3ab1f89607b714ece0fed9631783b105728524b2105d62d66f",
+   "changed": false
+  },
+  {
+   "concept_id": "equity_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2022-Q3",
+   "old_context_id": "601857.SH|2022|instant|consolidated|2022-09-30",
+   "new_context_id": "601857.SH|2022|instant|consolidated|2022-09-30",
+   "old_fact_id": "b20590a14bdfdb95dcc1aec4d59807632d51b5308f6e503b0a33e2783e1a2b37",
+   "new_fact_id": "b20590a14bdfdb95dcc1aec4d59807632d51b5308f6e503b0a33e2783e1a2b37",
+   "changed": false
+  },
+  {
+   "concept_id": "equity_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2023-AR",
+   "old_context_id": "601857.SH|2023|instant|consolidated|2023-12-31",
+   "new_context_id": "601857.SH|2023|instant|consolidated|2023-12-31",
+   "old_fact_id": "5d0120786f5c73274098a5f719651514476208d5bd683f4851667d84decea5ea",
+   "new_fact_id": "5d0120786f5c73274098a5f719651514476208d5bd683f4851667d84decea5ea",
+   "changed": false
+  },
+  {
+   "concept_id": "equity_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2023-H1",
+   "old_context_id": "601857.SH|2023|instant|consolidated|2023-06-30",
+   "new_context_id": "601857.SH|2023|instant|consolidated|2023-06-30",
+   "old_fact_id": "4201944f6ede52c2f1a89664f32c770e7111e4501ff34b3e083c618456576c02",
+   "new_fact_id": "4201944f6ede52c2f1a89664f32c770e7111e4501ff34b3e083c618456576c02",
+   "changed": false
+  },
+  {
+   "concept_id": "equity_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2023-Q1",
+   "old_context_id": "601857.SH|2023|instant|consolidated|2023-03-31",
+   "new_context_id": "601857.SH|2023|instant|consolidated|2023-03-31",
+   "old_fact_id": "6e07931cf462f077ce8e138fd2ae0a721185c7e68514bb0c7c98b828d20e140c",
+   "new_fact_id": "6e07931cf462f077ce8e138fd2ae0a721185c7e68514bb0c7c98b828d20e140c",
+   "changed": false
+  },
+  {
+   "concept_id": "equity_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2023-Q3",
+   "old_context_id": "601857.SH|2023|instant|consolidated|2023-09-30",
+   "new_context_id": "601857.SH|2023|instant|consolidated|2023-09-30",
+   "old_fact_id": "47e18dfcafc92ceec32bcbc46e53e5d28a32dcbaf39708c8ac2ff770c3b74ed2",
+   "new_fact_id": "47e18dfcafc92ceec32bcbc46e53e5d28a32dcbaf39708c8ac2ff770c3b74ed2",
+   "changed": false
+  },
+  {
+   "concept_id": "equity_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2024-AR",
+   "old_context_id": "601857.SH|2024|instant|consolidated|2024-12-31",
+   "new_context_id": "601857.SH|2024|instant|consolidated|2024-12-31",
+   "old_fact_id": "b4c277e606f9cf0e409f381c5529a4eaa7458d1b124c998fbe0e760702340b68",
+   "new_fact_id": "b4c277e606f9cf0e409f381c5529a4eaa7458d1b124c998fbe0e760702340b68",
+   "changed": false
+  },
+  {
+   "concept_id": "equity_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2024-H1",
+   "old_context_id": "601857.SH|2024|instant|consolidated|2024-06-30",
+   "new_context_id": "601857.SH|2024|instant|consolidated|2024-06-30",
+   "old_fact_id": "aa780949b677efa0739f01e117e21bbb0f86c02b6d9e85c57bfea8aecf118071",
+   "new_fact_id": "aa780949b677efa0739f01e117e21bbb0f86c02b6d9e85c57bfea8aecf118071",
+   "changed": false
+  },
+  {
+   "concept_id": "equity_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2024-Q1",
+   "old_context_id": "601857.SH|2024|instant|consolidated|2024-03-31",
+   "new_context_id": "601857.SH|2024|instant|consolidated|2024-03-31",
+   "old_fact_id": "9c821285185dce152d820ca6249d1a83a871e7fe69a1cc0be50f25785dd98103",
+   "new_fact_id": "9c821285185dce152d820ca6249d1a83a871e7fe69a1cc0be50f25785dd98103",
+   "changed": false
+  },
+  {
+   "concept_id": "equity_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2024-Q3",
+   "old_context_id": "601857.SH|2024|instant|consolidated|2024-09-30",
+   "new_context_id": "601857.SH|2024|instant|consolidated|2024-09-30",
+   "old_fact_id": "5658b64f2a3eee647c82aad68a7887a9635f17df55653d980e3012eee17e9a93",
+   "new_fact_id": "5658b64f2a3eee647c82aad68a7887a9635f17df55653d980e3012eee17e9a93",
+   "changed": false
+  },
+  {
+   "concept_id": "equity_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2025-AR",
+   "old_context_id": "601857.SH|2025|instant|consolidated|2025-12-31",
+   "new_context_id": "601857.SH|2025|instant|consolidated|2025-12-31",
+   "old_fact_id": "00cb0c64831e9611889aa8a461cfa3e6f0be53efacca1ef5bd89e80c7db8262b",
+   "new_fact_id": "00cb0c64831e9611889aa8a461cfa3e6f0be53efacca1ef5bd89e80c7db8262b",
+   "changed": false
+  },
+  {
+   "concept_id": "equity_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2025-H1",
+   "old_context_id": "601857.SH|2025|instant|consolidated|2025-06-30",
+   "new_context_id": "601857.SH|2025|instant|consolidated|2025-06-30",
+   "old_fact_id": "1a2ce5682ea7f71c22f2fa78b4013cce9759d433f789581c91ae9b04ddea2eb5",
+   "new_fact_id": "1a2ce5682ea7f71c22f2fa78b4013cce9759d433f789581c91ae9b04ddea2eb5",
+   "changed": false
+  },
+  {
+   "concept_id": "equity_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2025-Q1",
+   "old_context_id": "601857.SH|2025|instant|consolidated|2025-03-31",
+   "new_context_id": "601857.SH|2025|instant|consolidated|2025-03-31",
+   "old_fact_id": "da9cefb7efd6ebf939bffa082583d068f3174a8697d427ce5bbeae1f9acce8ba",
+   "new_fact_id": "da9cefb7efd6ebf939bffa082583d068f3174a8697d427ce5bbeae1f9acce8ba",
+   "changed": false
+  },
+  {
+   "concept_id": "equity_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2025-Q3",
+   "old_context_id": "601857.SH|2025|instant|consolidated|2025-09-30",
+   "new_context_id": "601857.SH|2025|instant|consolidated|2025-09-30",
+   "old_fact_id": "e1d7bf26ce8500f0d9116caa367622c286269e328c732a3907f13ce24923e0f2",
+   "new_fact_id": "e1d7bf26ce8500f0d9116caa367622c286269e328c732a3907f13ce24923e0f2",
+   "changed": false
+  },
+  {
+   "concept_id": "equity_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2026-Q1",
+   "old_context_id": "601857.SH|2026|instant|consolidated|2026-03-31",
+   "new_context_id": "601857.SH|2026|instant|consolidated|2026-03-31",
+   "old_fact_id": "9d483639eacd7a4961655203c0fb72292df4ba1fa78769de59194e5ba3845389",
+   "new_fact_id": "9d483639eacd7a4961655203c0fb72292df4ba1fa78769de59194e5ba3845389",
+   "changed": false
+  },
+  {
+   "concept_id": "net_profit_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2020-AR",
+   "old_context_id": "601857.SH|2020|annual|consolidated",
+   "new_context_id": "601857.SH|2020|annual|consolidated",
+   "old_fact_id": "5ce2000c1ecab1745d80ee0a0e9886b444e072f0d8813d07f2f388702fa3ffc2",
+   "new_fact_id": "5ce2000c1ecab1745d80ee0a0e9886b444e072f0d8813d07f2f388702fa3ffc2",
+   "changed": false
+  },
+  {
+   "concept_id": "net_profit_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2020-H1",
+   "old_context_id": "601857.SH|2020|half_year_ytd|consolidated",
+   "new_context_id": "601857.SH|2020|half_year_ytd|consolidated",
+   "old_fact_id": "81b6486b5b62bda7d1e7d8ce8bec74d99d3a99bc6a9f92745f8445c350e73eb7",
+   "new_fact_id": "81b6486b5b62bda7d1e7d8ce8bec74d99d3a99bc6a9f92745f8445c350e73eb7",
+   "changed": false
+  },
+  {
+   "concept_id": "net_profit_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2020-Q1",
+   "old_context_id": "601857.SH|2020|quarter_ytd|consolidated",
+   "new_context_id": "601857.SH|2020|quarter_ytd|consolidated",
+   "old_fact_id": "65f8f61d00a5c0b54cc2f3168d02d0668566906213c7815eb2b7ae3c6acc0d1c",
+   "new_fact_id": "65f8f61d00a5c0b54cc2f3168d02d0668566906213c7815eb2b7ae3c6acc0d1c",
+   "changed": false
+  },
+  {
+   "concept_id": "net_profit_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2020-Q3",
+   "old_context_id": "601857.SH|2020|three_quarter_ytd|consolidated",
+   "new_context_id": "601857.SH|2020|three_quarter_ytd|consolidated",
+   "old_fact_id": "53dacb028f282b3dd2adbc29ecf816257efe09f55a6332f6b6588d27903dddd8",
+   "new_fact_id": "53dacb028f282b3dd2adbc29ecf816257efe09f55a6332f6b6588d27903dddd8",
+   "changed": false
+  },
+  {
+   "concept_id": "net_profit_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2021-AR",
+   "old_context_id": "601857.SH|2021|annual|consolidated",
+   "new_context_id": "601857.SH|2021|annual|consolidated",
+   "old_fact_id": "eb1a6271b4a359bda90f7bc6439ee61ff0597990457d348abd5ae451040a527e",
+   "new_fact_id": "eb1a6271b4a359bda90f7bc6439ee61ff0597990457d348abd5ae451040a527e",
+   "changed": false
+  },
+  {
+   "concept_id": "net_profit_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2021-H1",
+   "old_context_id": "601857.SH|2021|half_year_ytd|consolidated",
+   "new_context_id": "601857.SH|2021|half_year_ytd|consolidated",
+   "old_fact_id": "13fde8161656b89a80e6f211b02abdf1713c77daaa4d04341c34420f94207b84",
+   "new_fact_id": "13fde8161656b89a80e6f211b02abdf1713c77daaa4d04341c34420f94207b84",
+   "changed": false
+  },
+  {
+   "concept_id": "net_profit_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2021-Q1",
+   "old_context_id": "601857.SH|2021|quarter_ytd|consolidated",
+   "new_context_id": "601857.SH|2021|quarter_ytd|consolidated",
+   "old_fact_id": "df0f50cd04273f81dac23e7c3e84de42d13a27fa988d133e2da347f8fa162fc8",
+   "new_fact_id": "df0f50cd04273f81dac23e7c3e84de42d13a27fa988d133e2da347f8fa162fc8",
+   "changed": false
+  },
+  {
+   "concept_id": "net_profit_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2021-Q3",
+   "old_context_id": "601857.SH|2021|three_quarter_ytd|consolidated",
+   "new_context_id": "601857.SH|2021|three_quarter_ytd|consolidated",
+   "old_fact_id": "65dec25525a61bac7bab03b70b128ad89fe69d597d0235b8febfae7ca45f0d49",
+   "new_fact_id": "65dec25525a61bac7bab03b70b128ad89fe69d597d0235b8febfae7ca45f0d49",
+   "changed": false
+  },
+  {
+   "concept_id": "net_profit_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2022-AR",
+   "old_context_id": "601857.SH|2022|annual|consolidated",
+   "new_context_id": "601857.SH|2022|annual|consolidated",
+   "old_fact_id": "1f1cc75d460a9efc57b0e48b02aec9e27107babae8723e0622d64908e6fdd9f0",
+   "new_fact_id": "1f1cc75d460a9efc57b0e48b02aec9e27107babae8723e0622d64908e6fdd9f0",
+   "changed": false
+  },
+  {
+   "concept_id": "net_profit_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2022-H1",
+   "old_context_id": "601857.SH|2022|half_year_ytd|consolidated",
+   "new_context_id": "601857.SH|2022|half_year_ytd|consolidated",
+   "old_fact_id": "467050b93db6edc6bc40f9596557fd8946c1b1c988158a3bb5fd7509e28abc0e",
+   "new_fact_id": "467050b93db6edc6bc40f9596557fd8946c1b1c988158a3bb5fd7509e28abc0e",
+   "changed": false
+  },
+  {
+   "concept_id": "net_profit_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2022-Q1",
+   "old_context_id": "601857.SH|2022|quarter_ytd|consolidated",
+   "new_context_id": "601857.SH|2022|quarter_ytd|consolidated",
+   "old_fact_id": "2608838fc8bb4b9f3d1772c9edcfa1ffe7c030c0bd5c326b672815593aee55f5",
+   "new_fact_id": "2608838fc8bb4b9f3d1772c9edcfa1ffe7c030c0bd5c326b672815593aee55f5",
+   "changed": false
+  },
+  {
+   "concept_id": "net_profit_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2022-Q3",
+   "old_context_id": "601857.SH|2022|three_quarter_ytd|consolidated",
+   "new_context_id": "601857.SH|2022|three_quarter_ytd|consolidated",
+   "old_fact_id": "ce5725837f0952f584f9b3192f6137a55f83f33d1f4d615333c68647288d8d8e",
+   "new_fact_id": "ce5725837f0952f584f9b3192f6137a55f83f33d1f4d615333c68647288d8d8e",
+   "changed": false
+  },
+  {
+   "concept_id": "net_profit_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2023-AR",
+   "old_context_id": "601857.SH|2022|annual|consolidated",
+   "new_context_id": "601857.SH|2022|annual|consolidated",
+   "old_fact_id": "0e086ca894c661c8ad719d8bbe814ce6af17d9fb3d6bd6171a20566a90793874",
+   "new_fact_id": "0e086ca894c661c8ad719d8bbe814ce6af17d9fb3d6bd6171a20566a90793874",
+   "changed": false
+  },
+  {
+   "concept_id": "net_profit_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2023-AR",
+   "old_context_id": "601857.SH|2023|annual|consolidated",
+   "new_context_id": "601857.SH|2023|annual|consolidated",
+   "old_fact_id": "c954daede8684386a0709dd4d7a27a3a7997dfd71c4e9c36037da2a4ab575995",
+   "new_fact_id": "c954daede8684386a0709dd4d7a27a3a7997dfd71c4e9c36037da2a4ab575995",
+   "changed": false
+  },
+  {
+   "concept_id": "net_profit_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2023-H1",
+   "old_context_id": "601857.SH|2022|half_year_ytd|consolidated",
+   "new_context_id": "601857.SH|2022|half_year_ytd|consolidated",
+   "old_fact_id": "a2e565d27399d5fa100c699ae47bd75a5ce87eccd1cfc5d020ff8fb7914b1d8c",
+   "new_fact_id": "a2e565d27399d5fa100c699ae47bd75a5ce87eccd1cfc5d020ff8fb7914b1d8c",
+   "changed": false
+  },
+  {
+   "concept_id": "net_profit_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2023-H1",
+   "old_context_id": "601857.SH|2023|half_year_ytd|consolidated",
+   "new_context_id": "601857.SH|2023|half_year_ytd|consolidated",
+   "old_fact_id": "8d7cd0147c3fc665f9f4de70d91a63852583a9a48f0d401915c504cf6ebde138",
+   "new_fact_id": "8d7cd0147c3fc665f9f4de70d91a63852583a9a48f0d401915c504cf6ebde138",
+   "changed": false
+  },
+  {
+   "concept_id": "net_profit_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2023-Q1",
+   "old_context_id": "601857.SH|2022|quarter_ytd|consolidated",
+   "new_context_id": "601857.SH|2022|quarter_ytd|consolidated",
+   "old_fact_id": "896a2f045d34941d1a9db5f33047480033f5bea6eee8ba632d22a306af6ac613",
+   "new_fact_id": "896a2f045d34941d1a9db5f33047480033f5bea6eee8ba632d22a306af6ac613",
+   "changed": false
+  },
+  {
+   "concept_id": "net_profit_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2023-Q1",
+   "old_context_id": "601857.SH|2023|quarter_ytd|consolidated",
+   "new_context_id": "601857.SH|2023|quarter_ytd|consolidated",
+   "old_fact_id": "e03d2e80e2e600e3682afd29eecf51f480a455fda0d4f953f5cce52818ca9726",
+   "new_fact_id": "e03d2e80e2e600e3682afd29eecf51f480a455fda0d4f953f5cce52818ca9726",
+   "changed": false
+  },
+  {
+   "concept_id": "net_profit_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2023-Q3",
+   "old_context_id": "601857.SH|2022|three_quarter_ytd|consolidated",
+   "new_context_id": "601857.SH|2022|three_quarter_ytd|consolidated",
+   "old_fact_id": "c533deb4c844acab1e21f3113f5943049b622c1c50982ad9684e841e709f8fbe",
+   "new_fact_id": "c533deb4c844acab1e21f3113f5943049b622c1c50982ad9684e841e709f8fbe",
+   "changed": false
+  },
+  {
+   "concept_id": "net_profit_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2023-Q3",
+   "old_context_id": "601857.SH|2023|three_quarter_ytd|consolidated",
+   "new_context_id": "601857.SH|2023|three_quarter_ytd|consolidated",
+   "old_fact_id": "5efe4fcb0df80d2ad46c630ee3835e6234b8f7cd6daf424ab5eba7281cb5adbf",
+   "new_fact_id": "5efe4fcb0df80d2ad46c630ee3835e6234b8f7cd6daf424ab5eba7281cb5adbf",
+   "changed": false
+  },
+  {
+   "concept_id": "net_profit_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2024-AR",
+   "old_context_id": "601857.SH|2023|annual|consolidated",
+   "new_context_id": "601857.SH|2023|annual|consolidated",
+   "old_fact_id": "c1b5a6869b209bcf1af660d7564047fe4a583aa47283d19a8c49de5ff30f0a5c",
+   "new_fact_id": "c1b5a6869b209bcf1af660d7564047fe4a583aa47283d19a8c49de5ff30f0a5c",
+   "changed": false
+  },
+  {
+   "concept_id": "net_profit_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2024-AR",
+   "old_context_id": "601857.SH|2024|annual|consolidated",
+   "new_context_id": "601857.SH|2024|annual|consolidated",
+   "old_fact_id": "ea454577cf53f36214712ce87f0a5c993acdeab3fd08bbe2813ec2605f33d3d9",
+   "new_fact_id": "ea454577cf53f36214712ce87f0a5c993acdeab3fd08bbe2813ec2605f33d3d9",
+   "changed": false
+  },
+  {
+   "concept_id": "net_profit_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2024-H1",
+   "old_context_id": "601857.SH|2024|half_year_ytd|consolidated",
+   "new_context_id": "601857.SH|2024|half_year_ytd|consolidated",
+   "old_fact_id": "c0194c0663af23c649f1c73ea460e216fb2fb5d6895a32b397fb178fe49b5f51",
+   "new_fact_id": "c0194c0663af23c649f1c73ea460e216fb2fb5d6895a32b397fb178fe49b5f51",
+   "changed": false
+  },
+  {
+   "concept_id": "net_profit_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2024-Q1",
+   "old_context_id": "601857.SH|2024|quarter_ytd|consolidated",
+   "new_context_id": "601857.SH|2024|quarter_ytd|consolidated",
+   "old_fact_id": "c49f537445ac38d8effbc868162863a777ba6de2865cf1eb7cdca37d4ed49d0b",
+   "new_fact_id": "c49f537445ac38d8effbc868162863a777ba6de2865cf1eb7cdca37d4ed49d0b",
+   "changed": false
+  },
+  {
+   "concept_id": "net_profit_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2024-Q3",
+   "old_context_id": "601857.SH|2024|three_quarter_ytd|consolidated",
+   "new_context_id": "601857.SH|2024|three_quarter_ytd|consolidated",
+   "old_fact_id": "efd795d1a3c29449d3186b5c2d29650f049587511c8b69d18c34477bf0a9b4bf",
+   "new_fact_id": "efd795d1a3c29449d3186b5c2d29650f049587511c8b69d18c34477bf0a9b4bf",
+   "changed": false
+  },
+  {
+   "concept_id": "net_profit_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2025-AR",
+   "old_context_id": "601857.SH|2025|annual|consolidated",
+   "new_context_id": "601857.SH|2025|annual|consolidated",
+   "old_fact_id": "dea845ccad75d66b363fa67618f3f735c2dd756d43028e075859f5b94cf2b5a8",
+   "new_fact_id": "dea845ccad75d66b363fa67618f3f735c2dd756d43028e075859f5b94cf2b5a8",
+   "changed": false
+  },
+  {
+   "concept_id": "net_profit_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2025-H1",
+   "old_context_id": "601857.SH|2024|half_year_ytd|consolidated",
+   "new_context_id": "601857.SH|2024|half_year_ytd|consolidated",
+   "old_fact_id": "36f1e5c595412f28ee8668534cfb712f849a079dd3bf46df7d17a52439a33a78",
+   "new_fact_id": "36f1e5c595412f28ee8668534cfb712f849a079dd3bf46df7d17a52439a33a78",
+   "changed": false
+  },
+  {
+   "concept_id": "net_profit_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2025-H1",
+   "old_context_id": "601857.SH|2025|half_year_ytd|consolidated",
+   "new_context_id": "601857.SH|2025|half_year_ytd|consolidated",
+   "old_fact_id": "58d202d8b011b403f2b7ea46477c67f41eaac7ef5c51d3b1a57df9130a8759de",
+   "new_fact_id": "58d202d8b011b403f2b7ea46477c67f41eaac7ef5c51d3b1a57df9130a8759de",
+   "changed": false
+  },
+  {
+   "concept_id": "net_profit_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2025-Q1",
+   "old_context_id": "601857.SH|2024|quarter_ytd|consolidated",
+   "new_context_id": "601857.SH|2024|quarter_ytd|consolidated",
+   "old_fact_id": "1676c4edd23a2c1f5a37e4d5a2333f4710f6935fe4b56b41ded145b9eb0f0c68",
+   "new_fact_id": "1676c4edd23a2c1f5a37e4d5a2333f4710f6935fe4b56b41ded145b9eb0f0c68",
+   "changed": false
+  },
+  {
+   "concept_id": "net_profit_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2025-Q1",
+   "old_context_id": "601857.SH|2025|quarter_ytd|consolidated",
+   "new_context_id": "601857.SH|2025|quarter_ytd|consolidated",
+   "old_fact_id": "2f3c2d6ee370a62a629a7bd6f52475344815c54ba7d4a205c151710d96ee091e",
+   "new_fact_id": "2f3c2d6ee370a62a629a7bd6f52475344815c54ba7d4a205c151710d96ee091e",
+   "changed": false
+  },
+  {
+   "concept_id": "net_profit_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2025-Q3",
+   "old_context_id": "601857.SH|2024|three_quarter_ytd|consolidated",
+   "new_context_id": "601857.SH|2024|three_quarter_ytd|consolidated",
+   "old_fact_id": "13093008013ff30cf54577782b2cdb4f5c7f7f8fbe8f7978aab218d46e6fd871",
+   "new_fact_id": "13093008013ff30cf54577782b2cdb4f5c7f7f8fbe8f7978aab218d46e6fd871",
+   "changed": false
+  },
+  {
+   "concept_id": "net_profit_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2025-Q3",
+   "old_context_id": "601857.SH|2025|three_quarter_ytd|consolidated",
+   "new_context_id": "601857.SH|2025|three_quarter_ytd|consolidated",
+   "old_fact_id": "09c8c12c6c2ce17159f784706fbc8c511f36ed3ce4aa5bf1ae11decbae1fef09",
+   "new_fact_id": "09c8c12c6c2ce17159f784706fbc8c511f36ed3ce4aa5bf1ae11decbae1fef09",
+   "changed": false
+  },
+  {
+   "concept_id": "net_profit_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2026-Q1",
+   "old_context_id": "601857.SH|2025|quarter_ytd|consolidated",
+   "new_context_id": "601857.SH|2025|quarter_ytd|consolidated",
+   "old_fact_id": "275657b7729e858e2a1c00ffae5c84283004e60cd7cf49899316cd2cda221a4c",
+   "new_fact_id": "275657b7729e858e2a1c00ffae5c84283004e60cd7cf49899316cd2cda221a4c",
+   "changed": false
+  },
+  {
+   "concept_id": "net_profit_attributable_to_parent",
+   "source_id": "r4d:R4D-SSE-2026-Q1",
+   "old_context_id": "601857.SH|2026|quarter_ytd|consolidated",
+   "new_context_id": "601857.SH|2026|quarter_ytd|consolidated",
+   "old_fact_id": "2b03ac88fdffb65b11fd04eaa786bdc20a24460f26adc626952cf8595872c161",
+   "new_fact_id": "2b03ac88fdffb65b11fd04eaa786bdc20a24460f26adc626952cf8595872c161",
+   "changed": false
+  },
+  {
+   "concept_id": "revenue",
+   "source_id": "r4d:R4D-SSE-2020-AR",
+   "old_context_id": "601857.SH|2020|annual|consolidated",
+   "new_context_id": "601857.SH|2020|annual|consolidated",
+   "old_fact_id": "509199223d6ecc1791f13a6f73b6d3929dccd0df34431f43adc97f9d3cf2933a",
+   "new_fact_id": "509199223d6ecc1791f13a6f73b6d3929dccd0df34431f43adc97f9d3cf2933a",
+   "changed": false
+  },
+  {
+   "concept_id": "revenue",
+   "source_id": "r4d:R4D-SSE-2020-H1",
+   "old_context_id": "601857.SH|2020|half_year_ytd|consolidated",
+   "new_context_id": "601857.SH|2020|half_year_ytd|consolidated",
+   "old_fact_id": "16cc655cde45d141ee609c120f4af4c26ca80b183255f8f087e010f839bac35e",
+   "new_fact_id": "16cc655cde45d141ee609c120f4af4c26ca80b183255f8f087e010f839bac35e",
+   "changed": false
+  },
+  {
+   "concept_id": "revenue",
+   "source_id": "r4d:R4D-SSE-2020-Q1",
+   "old_context_id": "601857.SH|2020|quarter_ytd|consolidated",
+   "new_context_id": "601857.SH|2020|quarter_ytd|consolidated",
+   "old_fact_id": "fe85664e80726d2e55b8c39a9bc09605f65574d20f450c9128bbb1ef42b90974",
+   "new_fact_id": "fe85664e80726d2e55b8c39a9bc09605f65574d20f450c9128bbb1ef42b90974",
+   "changed": false
+  },
+  {
+   "concept_id": "revenue",
+   "source_id": "r4d:R4D-SSE-2020-Q3",
+   "old_context_id": "601857.SH|2020|three_quarter_ytd|consolidated",
+   "new_context_id": "601857.SH|2020|three_quarter_ytd|consolidated",
+   "old_fact_id": "c4f2698de2ca5e18565328922e5c7d4b2a66b645809f639eb70dcf8244ba0a05",
+   "new_fact_id": "c4f2698de2ca5e18565328922e5c7d4b2a66b645809f639eb70dcf8244ba0a05",
+   "changed": false
+  },
+  {
+   "concept_id": "revenue",
+   "source_id": "r4d:R4D-SSE-2021-AR",
+   "old_context_id": "601857.SH|2021|annual|consolidated",
+   "new_context_id": "601857.SH|2021|annual|consolidated",
+   "old_fact_id": "027de9ede52314d1c13ab2836afb57b2d517fbdaaaa7c46e48e5de5a1d7d7ab2",
+   "new_fact_id": "027de9ede52314d1c13ab2836afb57b2d517fbdaaaa7c46e48e5de5a1d7d7ab2",
+   "changed": false
+  },
+  {
+   "concept_id": "revenue",
+   "source_id": "r4d:R4D-SSE-2021-H1",
+   "old_context_id": "601857.SH|2021|half_year_ytd|consolidated",
+   "new_context_id": "601857.SH|2021|half_year_ytd|consolidated",
+   "old_fact_id": "20087edcca60dfd64e421d4f674b2c37d359eeba5c151584146fbf5263d18902",
+   "new_fact_id": "20087edcca60dfd64e421d4f674b2c37d359eeba5c151584146fbf5263d18902",
+   "changed": false
+  },
+  {
+   "concept_id": "revenue",
+   "source_id": "r4d:R4D-SSE-2021-Q1",
+   "old_context_id": "601857.SH|2021|quarter_ytd|consolidated",
+   "new_context_id": "601857.SH|2021|quarter_ytd|consolidated",
+   "old_fact_id": "216016a3f605c427fc8fc28bc3c47141549a35686889e72e5eaad5a80fe0d652",
+   "new_fact_id": "216016a3f605c427fc8fc28bc3c47141549a35686889e72e5eaad5a80fe0d652",
+   "changed": false
+  },
+  {
+   "concept_id": "revenue",
+   "source_id": "r4d:R4D-SSE-2021-Q3",
+   "old_context_id": "601857.SH|2021|three_quarter_ytd|consolidated",
+   "new_context_id": "601857.SH|2021|three_quarter_ytd|consolidated",
+   "old_fact_id": "dc02095f6299269279d22a601dd0261019a69d28fa703254f3fead4e33346a4b",
+   "new_fact_id": "dc02095f6299269279d22a601dd0261019a69d28fa703254f3fead4e33346a4b",
+   "changed": false
+  },
+  {
+   "concept_id": "revenue",
+   "source_id": "r4d:R4D-SSE-2022-AR",
+   "old_context_id": "601857.SH|2022|annual|consolidated",
+   "new_context_id": "601857.SH|2022|annual|consolidated",
+   "old_fact_id": "951fc8085b4a7391739090dc184bf5df62d46fed5ca12ae08b349d8c653892d2",
+   "new_fact_id": "951fc8085b4a7391739090dc184bf5df62d46fed5ca12ae08b349d8c653892d2",
+   "changed": false
+  },
+  {
+   "concept_id": "revenue",
+   "source_id": "r4d:R4D-SSE-2022-H1",
+   "old_context_id": "601857.SH|2022|half_year_ytd|consolidated",
+   "new_context_id": "601857.SH|2022|half_year_ytd|consolidated",
+   "old_fact_id": "ad473f2b3f08e9f3314847334e927260dfa62fb9088059ca30f3743e3af3c3f9",
+   "new_fact_id": "ad473f2b3f08e9f3314847334e927260dfa62fb9088059ca30f3743e3af3c3f9",
+   "changed": false
+  },
+  {
+   "concept_id": "revenue",
+   "source_id": "r4d:R4D-SSE-2022-Q1",
+   "old_context_id": "601857.SH|2022|quarter_ytd|consolidated",
+   "new_context_id": "601857.SH|2022|quarter_ytd|consolidated",
+   "old_fact_id": "0aa4b328e7f7d050eeedacdfdf1a070572ab10678181649e5966ab21f18db0c5",
+   "new_fact_id": "0aa4b328e7f7d050eeedacdfdf1a070572ab10678181649e5966ab21f18db0c5",
+   "changed": false
+  },
+  {
+   "concept_id": "revenue",
+   "source_id": "r4d:R4D-SSE-2022-Q3",
+   "old_context_id": "601857.SH|2022|three_quarter_ytd|consolidated",
+   "new_context_id": "601857.SH|2022|three_quarter_ytd|consolidated",
+   "old_fact_id": "ccdf5f3ba528066fc76c8904f3578d6d9640aee22c94809e87c8ba1e60883bcf",
+   "new_fact_id": "ccdf5f3ba528066fc76c8904f3578d6d9640aee22c94809e87c8ba1e60883bcf",
+   "changed": false
+  },
+  {
+   "concept_id": "revenue",
+   "source_id": "r4d:R4D-SSE-2023-AR",
+   "old_context_id": "601857.SH|2022|annual|consolidated",
+   "new_context_id": "601857.SH|2022|annual|consolidated",
+   "old_fact_id": "6498989f87925c3da4981e4c6a7a48a93040d040196b6f2e852c9737d003fe4b",
+   "new_fact_id": "6498989f87925c3da4981e4c6a7a48a93040d040196b6f2e852c9737d003fe4b",
+   "changed": false
+  },
+  {
+   "concept_id": "revenue",
+   "source_id": "r4d:R4D-SSE-2023-AR",
+   "old_context_id": "601857.SH|2023|annual|consolidated",
+   "new_context_id": "601857.SH|2023|annual|consolidated",
+   "old_fact_id": "af3bf3e17caddcc46e3f2cbda27b88d327b4afa99d0a57d30280ba81616ca975",
+   "new_fact_id": "af3bf3e17caddcc46e3f2cbda27b88d327b4afa99d0a57d30280ba81616ca975",
+   "changed": false
+  },
+  {
+   "concept_id": "revenue",
+   "source_id": "r4d:R4D-SSE-2023-H1",
+   "old_context_id": "601857.SH|2023|half_year_ytd|consolidated",
+   "new_context_id": "601857.SH|2023|half_year_ytd|consolidated",
+   "old_fact_id": "8e969154e9c8220542c7448a30311b9631ae79936e5546281ea7dafa59a547b9",
+   "new_fact_id": "8e969154e9c8220542c7448a30311b9631ae79936e5546281ea7dafa59a547b9",
+   "changed": false
+  },
+  {
+   "concept_id": "revenue",
+   "source_id": "r4d:R4D-SSE-2023-Q1",
+   "old_context_id": "601857.SH|2023|quarter_ytd|consolidated",
+   "new_context_id": "601857.SH|2023|quarter_ytd|consolidated",
+   "old_fact_id": "ee8e22faae5c2da57ef71583154bfe8288bc9267fabceddfcc8dc89327a7354d",
+   "new_fact_id": "ee8e22faae5c2da57ef71583154bfe8288bc9267fabceddfcc8dc89327a7354d",
+   "changed": false
+  },
+  {
+   "concept_id": "revenue",
+   "source_id": "r4d:R4D-SSE-2023-Q3",
+   "old_context_id": "601857.SH|2023|three_quarter_ytd|consolidated",
+   "new_context_id": "601857.SH|2023|three_quarter_ytd|consolidated",
+   "old_fact_id": "6a3219ce3fc875afcc9347671ba93a01564a98cb4847aa81261bf04fa17b9ffe",
+   "new_fact_id": "6a3219ce3fc875afcc9347671ba93a01564a98cb4847aa81261bf04fa17b9ffe",
+   "changed": false
+  },
+  {
+   "concept_id": "revenue",
+   "source_id": "r4d:R4D-SSE-2024-AR",
+   "old_context_id": "601857.SH|2023|annual|consolidated",
+   "new_context_id": "601857.SH|2023|annual|consolidated",
+   "old_fact_id": "3d1c68604bfe8ce6f984e2ec2d9559d8b0b88dca6f7084c5cd9492c04cfa9138",
+   "new_fact_id": "3d1c68604bfe8ce6f984e2ec2d9559d8b0b88dca6f7084c5cd9492c04cfa9138",
+   "changed": false
+  },
+  {
+   "concept_id": "revenue",
+   "source_id": "r4d:R4D-SSE-2024-AR",
+   "old_context_id": "601857.SH|2024|annual|consolidated",
+   "new_context_id": "601857.SH|2024|annual|consolidated",
+   "old_fact_id": "4fa6c3ad7f8aeb42e00b240a750685fe9154a0d843d3f405ffb2d6acd726914d",
+   "new_fact_id": "4fa6c3ad7f8aeb42e00b240a750685fe9154a0d843d3f405ffb2d6acd726914d",
+   "changed": false
+  },
+  {
+   "concept_id": "revenue",
+   "source_id": "r4d:R4D-SSE-2024-H1",
+   "old_context_id": "601857.SH|2024|half_year_ytd|consolidated",
+   "new_context_id": "601857.SH|2024|half_year_ytd|consolidated",
+   "old_fact_id": "6776601941b262065de5c6fb44d25e92ac85276d7d232ad688c9903e3ad8b8eb",
+   "new_fact_id": "6776601941b262065de5c6fb44d25e92ac85276d7d232ad688c9903e3ad8b8eb",
+   "changed": false
+  },
+  {
+   "concept_id": "revenue",
+   "source_id": "r4d:R4D-SSE-2024-Q1",
+   "old_context_id": "601857.SH|2024|quarter_ytd|consolidated",
+   "new_context_id": "601857.SH|2024|quarter_ytd|consolidated",
+   "old_fact_id": "c93e3ecece4fc9df0e806171dcc21e0b85a7418347f11ec2bbfe915782a8fb18",
+   "new_fact_id": "c93e3ecece4fc9df0e806171dcc21e0b85a7418347f11ec2bbfe915782a8fb18",
+   "changed": false
+  },
+  {
+   "concept_id": "revenue",
+   "source_id": "r4d:R4D-SSE-2024-Q3",
+   "old_context_id": "601857.SH|2024|three_quarter_ytd|consolidated",
+   "new_context_id": "601857.SH|2024|three_quarter_ytd|consolidated",
+   "old_fact_id": "3aca7bbe7f2b4e6449f6fd7586e342afe7210a9c919f94b885e807989e2a28f5",
+   "new_fact_id": "3aca7bbe7f2b4e6449f6fd7586e342afe7210a9c919f94b885e807989e2a28f5",
+   "changed": false
+  },
+  {
+   "concept_id": "revenue",
+   "source_id": "r4d:R4D-SSE-2025-AR",
+   "old_context_id": "601857.SH|2025|annual|consolidated",
+   "new_context_id": "601857.SH|2025|annual|consolidated",
+   "old_fact_id": "eb7a6d0286eea95bc075757114d0a82c9f725f28c5c59193227ded66959fce9b",
+   "new_fact_id": "eb7a6d0286eea95bc075757114d0a82c9f725f28c5c59193227ded66959fce9b",
+   "changed": false
+  },
+  {
+   "concept_id": "revenue",
+   "source_id": "r4d:R4D-SSE-2025-H1",
+   "old_context_id": "601857.SH|2024|half_year_ytd|consolidated",
+   "new_context_id": "601857.SH|2024|half_year_ytd|consolidated",
+   "old_fact_id": "fdd3701474f5ff927b1e1d4251ea03192428e72d3432b2327f3442f149c9e127",
+   "new_fact_id": "fdd3701474f5ff927b1e1d4251ea03192428e72d3432b2327f3442f149c9e127",
+   "changed": false
+  },
+  {
+   "concept_id": "revenue",
+   "source_id": "r4d:R4D-SSE-2025-H1",
+   "old_context_id": "601857.SH|2025|half_year_ytd|consolidated",
+   "new_context_id": "601857.SH|2025|half_year_ytd|consolidated",
+   "old_fact_id": "dbdd314f910a87f01aedc8771cc6d4e159f1ec45effd41bcae062afc59c083cc",
+   "new_fact_id": "dbdd314f910a87f01aedc8771cc6d4e159f1ec45effd41bcae062afc59c083cc",
+   "changed": false
+  },
+  {
+   "concept_id": "revenue",
+   "source_id": "r4d:R4D-SSE-2025-Q1",
+   "old_context_id": "601857.SH|2024|quarter_ytd|consolidated",
+   "new_context_id": "601857.SH|2024|quarter_ytd|consolidated",
+   "old_fact_id": "392341588879d7e26168116471ce360edf4515b5617a09ae3709912c3774d70a",
+   "new_fact_id": "392341588879d7e26168116471ce360edf4515b5617a09ae3709912c3774d70a",
+   "changed": false
+  },
+  {
+   "concept_id": "revenue",
+   "source_id": "r4d:R4D-SSE-2025-Q1",
+   "old_context_id": "601857.SH|2025|quarter_ytd|consolidated",
+   "new_context_id": "601857.SH|2025|quarter_ytd|consolidated",
+   "old_fact_id": "79c8a790cc93ab7a6859a6e383ae796a20e3bbfe514bc0df3c1f39f530c17757",
+   "new_fact_id": "79c8a790cc93ab7a6859a6e383ae796a20e3bbfe514bc0df3c1f39f530c17757",
+   "changed": false
+  },
+  {
+   "concept_id": "revenue",
+   "source_id": "r4d:R4D-SSE-2025-Q3",
+   "old_context_id": "601857.SH|2024|three_quarter_ytd|consolidated",
+   "new_context_id": "601857.SH|2024|three_quarter_ytd|consolidated",
+   "old_fact_id": "bbee0c2ed6405500ddc5783a83677b270b10eab5c86d74eb8a4ada13c5b73e76",
+   "new_fact_id": "bbee0c2ed6405500ddc5783a83677b270b10eab5c86d74eb8a4ada13c5b73e76",
+   "changed": false
+  },
+  {
+   "concept_id": "revenue",
+   "source_id": "r4d:R4D-SSE-2025-Q3",
+   "old_context_id": "601857.SH|2025|three_quarter_ytd|consolidated",
+   "new_context_id": "601857.SH|2025|three_quarter_ytd|consolidated",
+   "old_fact_id": "a3ddcf9cb8b45531d0960415f440b937bff74e47ecd4fe6defc10a5ee4e51671",
+   "new_fact_id": "a3ddcf9cb8b45531d0960415f440b937bff74e47ecd4fe6defc10a5ee4e51671",
+   "changed": false
+  },
+  {
+   "concept_id": "revenue",
+   "source_id": "r4d:R4D-SSE-2026-Q1",
+   "old_context_id": "601857.SH|2025|quarter_ytd|consolidated",
+   "new_context_id": "601857.SH|2025|quarter_ytd|consolidated",
+   "old_fact_id": "26db6fb3e9cc6e98e14677b2847abf14c8ae398c55608ec8cb1e85481cbf02dc",
+   "new_fact_id": "26db6fb3e9cc6e98e14677b2847abf14c8ae398c55608ec8cb1e85481cbf02dc",
+   "changed": false
+  },
+  {
+   "concept_id": "revenue",
+   "source_id": "r4d:R4D-SSE-2026-Q1",
+   "old_context_id": "601857.SH|2026|quarter_ytd|consolidated",
+   "new_context_id": "601857.SH|2026|quarter_ytd|consolidated",
+   "old_fact_id": "eea34bc6e409453b8767ae5c05d47b8d78b2133cbc7f4d5cfc8f43b1b42ecb0c",
+   "new_fact_id": "eea34bc6e409453b8767ae5c05d47b8d78b2133cbc7f4d5cfc8f43b1b42ecb0c",
+   "changed": false
+  },
+  {
+   "concept_id": "total_ordinary_shares_at_period_end",
+   "source_id": "r4d:R4D-SSE-2020-AR",
+   "old_context_id": "601857.SH|2020|instant|consolidated|2020-12-31",
+   "new_context_id": "601857.SH|2020|instant|consolidated|2020-12-31",
+   "old_fact_id": "0eea8bf17f23afa631ae824510f8d88ea11de9d6055eb478cc00f47f0103d3e1",
+   "new_fact_id": "0eea8bf17f23afa631ae824510f8d88ea11de9d6055eb478cc00f47f0103d3e1",
+   "changed": false
+  },
+  {
+   "concept_id": "total_ordinary_shares_at_period_end",
+   "source_id": "r4d:R4D-SSE-2020-H1",
+   "old_context_id": "601857.SH|2020|instant|consolidated|2020-06-30",
+   "new_context_id": "601857.SH|2020|instant|consolidated|2020-06-30",
+   "old_fact_id": "267c5c11fcbea1b62b03d680eac7abc589b488648977503cdd99803f2ad39d84",
+   "new_fact_id": "267c5c11fcbea1b62b03d680eac7abc589b488648977503cdd99803f2ad39d84",
+   "changed": false
+  },
+  {
+   "concept_id": "total_ordinary_shares_at_period_end",
+   "source_id": "r4d:R4D-SSE-2021-AR",
+   "old_context_id": "601857.SH|2021|instant|consolidated|2021-12-31",
+   "new_context_id": "601857.SH|2021|instant|consolidated|2021-12-31",
+   "old_fact_id": "34024f03ba66ac3001b99100733c3faf1190c04025fe0064140855692b5007c0",
+   "new_fact_id": "34024f03ba66ac3001b99100733c3faf1190c04025fe0064140855692b5007c0",
+   "changed": false
+  },
+  {
+   "concept_id": "total_ordinary_shares_at_period_end",
+   "source_id": "r4d:R4D-SSE-2021-H1",
+   "old_context_id": "601857.SH|2021|instant|consolidated|2021-06-30",
+   "new_context_id": "601857.SH|2021|instant|consolidated|2021-06-30",
+   "old_fact_id": "2d4b556f477f72840e8519d62eb8fb29425e840d09ba8869a29960ce187feb55",
+   "new_fact_id": "2d4b556f477f72840e8519d62eb8fb29425e840d09ba8869a29960ce187feb55",
+   "changed": false
+  },
+  {
+   "concept_id": "total_ordinary_shares_at_period_end",
+   "source_id": "r4d:R4D-SSE-2022-AR",
+   "old_context_id": "601857.SH|2022|instant|consolidated|2022-12-31",
+   "new_context_id": "601857.SH|2022|instant|consolidated|2022-12-31",
+   "old_fact_id": "2274aae072f593925fc74751645365c0570d2843f58eaac695bec8a8d6134caa",
+   "new_fact_id": "2274aae072f593925fc74751645365c0570d2843f58eaac695bec8a8d6134caa",
+   "changed": false
+  },
+  {
+   "concept_id": "total_ordinary_shares_at_period_end",
+   "source_id": "r4d:R4D-SSE-2022-H1",
+   "old_context_id": "601857.SH|2022|instant|consolidated|2022-06-30",
+   "new_context_id": "601857.SH|2022|instant|consolidated|2022-06-30",
+   "old_fact_id": "7c9a56e2180b306a65be7902ea0edd552834eb911149c00ded6abdffd27e0a2a",
+   "new_fact_id": "7c9a56e2180b306a65be7902ea0edd552834eb911149c00ded6abdffd27e0a2a",
+   "changed": false
+  },
+  {
+   "concept_id": "total_ordinary_shares_at_period_end",
+   "source_id": "r4d:R4D-SSE-2023-AR",
+   "old_context_id": "601857.SH|2023|instant|consolidated|2023-12-31",
+   "new_context_id": "601857.SH|2023|instant|consolidated|2023-12-31",
+   "old_fact_id": "95f49a8187021e68e8ba2c429ae54350f551abf0f5f4680282c1db735c805d60",
+   "new_fact_id": "95f49a8187021e68e8ba2c429ae54350f551abf0f5f4680282c1db735c805d60",
+   "changed": false
+  },
+  {
+   "concept_id": "total_ordinary_shares_at_period_end",
+   "source_id": "r4d:R4D-SSE-2023-H1",
+   "old_context_id": "601857.SH|2023|instant|consolidated|2023-06-30",
+   "new_context_id": "601857.SH|2023|instant|consolidated|2023-06-30",
+   "old_fact_id": "2db988b184b5f845cbda91af9913e6c113348c558657fde7a7756cc2243e643c",
+   "new_fact_id": "2db988b184b5f845cbda91af9913e6c113348c558657fde7a7756cc2243e643c",
+   "changed": false
+  },
+  {
+   "concept_id": "total_ordinary_shares_at_period_end",
+   "source_id": "r4d:R4D-SSE-2024-AR",
+   "old_context_id": "601857.SH|2024|instant|consolidated|2024-12-31",
+   "new_context_id": "601857.SH|2024|instant|consolidated|2024-12-31",
+   "old_fact_id": "11103c9f9e3f9b97073f61f02a9198afcac84afa970f916839c993b10e41a04f",
+   "new_fact_id": "11103c9f9e3f9b97073f61f02a9198afcac84afa970f916839c993b10e41a04f",
+   "changed": false
+  },
+  {
+   "concept_id": "total_ordinary_shares_at_period_end",
+   "source_id": "r4d:R4D-SSE-2024-H1",
+   "old_context_id": "601857.SH|2024|instant|consolidated|2024-06-30",
+   "new_context_id": "601857.SH|2024|instant|consolidated|2024-06-30",
+   "old_fact_id": "cb8fb76cb3dc4dd850cf5f09d7b90137dd8e129c71e9a2b9b849680a1a33e15b",
+   "new_fact_id": "cb8fb76cb3dc4dd850cf5f09d7b90137dd8e129c71e9a2b9b849680a1a33e15b",
+   "changed": false
+  },
+  {
+   "concept_id": "total_ordinary_shares_at_period_end",
+   "source_id": "r4d:R4D-SSE-2025-AR",
+   "old_context_id": "601857.SH|2025|instant|consolidated|2025-12-31",
+   "new_context_id": "601857.SH|2025|instant|consolidated|2025-12-31",
+   "old_fact_id": "78cf4db8ca9b6f654b00055a339a5b8126f6ffd56bed485dd79ae9b8346cca9c",
+   "new_fact_id": "78cf4db8ca9b6f654b00055a339a5b8126f6ffd56bed485dd79ae9b8346cca9c",
+   "changed": false
+  },
+  {
+   "concept_id": "total_ordinary_shares_at_period_end",
+   "source_id": "r4d:R4D-SSE-2025-H1",
+   "old_context_id": "601857.SH|2025|instant|consolidated|2025-06-30",
+   "new_context_id": "601857.SH|2025|instant|consolidated|2025-06-30",
+   "old_fact_id": "5f4fc8b4243edcf9660e0592f0a34eb763ed8d793c39c8e0750de5125a1942b0",
+   "new_fact_id": "5f4fc8b4243edcf9660e0592f0a34eb763ed8d793c39c8e0750de5125a1942b0",
+   "changed": false
+  }
+ ],
+ "entry_count": 127,
+ "changed_count": 0
+}

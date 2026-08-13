@@ -1,0 +1,60 @@
+{
+  "schema": "pe_normalized_earnings_3y_readiness_after_backfill_v1",
+  "symbol": "601857.SH",
+  "as_of_trade_date": "2026-07-31",
+  "windows": {
+    "3y": {
+      "start": "2023-07-31",
+      "end": "2026-07-31"
+    },
+    "5y": {
+      "start": "2021-08-02",
+      "end": "2026-07-31"
+    }
+  },
+  "before": {
+    "candidate_trade_day_count": 1351,
+    "prototype_ready_trade_days": 84,
+    "blocked_trade_days": 1267,
+    "earliest_ready_trade_date": "2026-03-31",
+    "gap_reason_counts": {
+      "insufficient_roe_history": 1267
+    },
+    "verdicts": {
+      "CURRENT_ASOF_READY": true,
+      "3Y_HISTORICAL_VALIDATION_READY": false,
+      "5Y_HISTORICAL_VALIDATION_READY": false,
+      "FULL_CYCLE_VALIDATION_READY": false,
+      "full_cycle_reason": "no independent deterministic full-cycle proof exists in-repo"
+    }
+  },
+  "after": {
+    "candidate_trade_day_count": 1351,
+    "prototype_ready_trade_days": 808,
+    "blocked_trade_days": 543,
+    "earliest_ready_trade_date": "2023-03-31",
+    "gap_reason_counts": {
+      "insufficient_roe_history": 543
+    },
+    "verdicts": {
+      "CURRENT_ASOF_READY": true,
+      "3Y_HISTORICAL_VALIDATION_READY": true,
+      "5Y_HISTORICAL_VALIDATION_READY": false,
+      "FULL_CYCLE_VALIDATION_READY": false,
+      "full_cycle_reason": "no independent deterministic full-cycle proof exists in-repo"
+    }
+  },
+  "3y_gate": {
+    "required_days": 728,
+    "ready_days": 728,
+    "blocked_days": 0,
+    "status": "THREE_YEAR_HISTORICAL_VALIDATION_READY"
+  },
+  "overlay": {
+    "existing_fact_set_digest": "5ef0c4c40b2674864a8070402b454cbfae8da89247749abde10ff8a8c9ed321a",
+    "backfill_bundle_digest": "d779ead8a5c2b859b1e30df152e0919505122df16032f03fd6b686bc56a57966",
+    "combined_fact_set_digest": "ad5f4331b1350078a6120349744eff98edfc19220ee49a74d2e8ff7411220119"
+  },
+  "no_forward_fill": true,
+  "full_cycle_proven": false
+}

@@ -1,0 +1,18 @@
+{
+  "schema": "pit_valuation_market_calendar_registry_v1",
+  "provider": "baostock",
+  "symbol": "601857.SH",
+  "object_sha256": "6a3cf1a0f920cd3098c525c0462af9cc924aea6a044ef0334205fbef3baad1e3",
+  "object_key": "6a3cf1a0f920cd3098c525c0462af9cc924aea6a044ef0334205fbef3baad1e3.parquet",
+  "row_count": 2330,
+  "first_trading_day": "2017-01-03",
+  "last_trading_day": "2026-08-07",
+  "evidence_cutoff": "2026-08-02",
+  "resolver_contract": "explicit_content_addressed_object_no_scan_no_fallback",
+  "purpose": "R4F3A_HISTORICAL_ANNOUNCEMENT_EFFECTIVE_FROM",
+  "required_start": "2018-03-22",
+  "required_end": "2026-08-02",
+  "supersedes_calendar": false,
+  "extends_coverage_of": "config/pit_valuation_market_calendar_registry_v1.json",
+  "acquisition_note": "R4F3A historical calendar extension: baostock 601857 daily unadjusted (adjustflag=3), 2017-01-01..2026-08-10. Overlap with calendar v1 (2020-01-02..2026-08-05) verified identical trading-date set (1597/1597, missing=0, extra=0). Calendar v1 object 77021dce... untouched."
+}

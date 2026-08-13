@@ -1,0 +1,111 @@
+{
+  "contract": "restatement_evidence_v1",
+  "symbol": "601857.SH",
+  "target_fiscal_year": 2021,
+  "evidence_fiscal_year": 2022,
+  "accounting_standard": "CAS",
+  "consolidation_scope": "consolidated",
+  "language": "zh-CN",
+  "document_relationship": "same_report_different_bytes",
+  "documents": {
+    "company": {
+      "source_tier": "company_official",
+      "source_provider": "petrochina_ir_manual_registry",
+      "source_document": "中国石油天然气股份有限公司2022年度报告（A股）",
+      "source_url": "https://www.petrochina.com.cn/petrochina/gsgg/202303/c19b382ed0784b67a77de51a42a0ca3d/files/d780ae64c9d0404d882a02dfd201e162.pdf",
+      "announcement_date": "2023-03-29",
+      "retrieved_at": "2026-07-30T10:38:43.081+08:00",
+      "sha256": "fea19e9033bbcff24357575d02da3e9b8ddda7d5bbcdd7cabfb018a7e35615c1",
+      "content_length": 12261788,
+      "page_count": 285
+    },
+    "exchange": {
+      "source_tier": "exchange_official",
+      "source_provider": "sse_disclosure_manual_registry",
+      "source_document": "中国石油天然气股份有限公司2022年度报告",
+      "source_url": "https://static.sse.com.cn/disclosure/listedinfo/announcement/c/new/2023-03-30/601857_20230330_LSV2.pdf",
+      "announcement_date": "2023-03-30",
+      "retrieved_at": "2026-07-30T10:45:43.496+08:00",
+      "sha256": "da64c67d9e575c3cfcfbd892ce5e8c19d4cf8ca07d51c47df01be2fa4587d861",
+      "content_length": 12257199,
+      "page_count": 285
+    }
+  },
+  "concepts": [
+    {
+      "concept_id": "revenue",
+      "original_fact_ids": {
+        "company": "dcccf0526fd2d52cf0c791615035d62938c6d68bf8b563788ef661bae5048850",
+        "exchange": "3a337163978075c730e517bfee5f4faad8a4ddcbd7ea578b5e3187bfc82b2e71"
+      },
+      "original_raw_value": "2614349",
+      "later_comparative_raw_value": "2614349",
+      "raw_unit": "人民币百万元",
+      "company": {
+        "page": "PDF page 113 / printed page 111",
+        "table": "2022年度合并及公司利润表",
+        "label": "营业收入",
+        "column": "2021年度合并"
+      },
+      "exchange": {
+        "page": "PDF page 113 / printed page 111",
+        "table": "2022年度合并及公司利润表",
+        "label": "营业收入",
+        "column": "2021年度合并"
+      },
+      "changed": false,
+      "disclosed_change_reason": "not_applicable",
+      "review_status": "reviewed_unchanged"
+    },
+    {
+      "concept_id": "net_profit_attributable_to_parent",
+      "original_fact_ids": {
+        "company": "65c656bcac5d2efc9d5e79e30891e7daeb1d6c0c7ab952890db33b665a60b1b9",
+        "exchange": "38ec7019d25dededf58d5dc046f346ec91e1441a2b78b6b5c398a25f0201aa1a"
+      },
+      "original_raw_value": "92161",
+      "later_comparative_raw_value": "92161",
+      "raw_unit": "人民币百万元",
+      "company": {
+        "page": "PDF page 113 / printed page 111",
+        "table": "2022年度合并及公司利润表",
+        "label": "归属于母公司股东的净利润",
+        "column": "2021年度合并"
+      },
+      "exchange": {
+        "page": "PDF page 113 / printed page 111",
+        "table": "2022年度合并及公司利润表",
+        "label": "归属于母公司股东的净利润",
+        "column": "2021年度合并"
+      },
+      "changed": false,
+      "disclosed_change_reason": "not_applicable",
+      "review_status": "reviewed_unchanged"
+    },
+    {
+      "concept_id": "operating_cash_flow",
+      "original_fact_ids": {
+        "company": "bff27442c19c115839326e362696bda86003bb00f81ada5740d6c8dc44fe96f1",
+        "exchange": "5429fd7e648f4d3d06217e57e1e8344baab06ab7328fd41595a029992501b5bc"
+      },
+      "original_raw_value": "341469",
+      "later_comparative_raw_value": "341469",
+      "raw_unit": "人民币百万元",
+      "company": {
+        "page": "PDF page 114 / printed page 112",
+        "table": "2022年度合并及公司现金流量表",
+        "label": "经营活动产生的现金流量净额",
+        "column": "2021年度合并"
+      },
+      "exchange": {
+        "page": "PDF page 114 / printed page 112",
+        "table": "2022年度合并及公司现金流量表",
+        "label": "经营活动产生的现金流量净额",
+        "column": "2021年度合并"
+      },
+      "changed": false,
+      "disclosed_change_reason": "not_applicable",
+      "review_status": "reviewed_unchanged"
+    }
+  ]
+}

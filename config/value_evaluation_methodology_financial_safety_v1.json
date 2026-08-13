@@ -1,0 +1,207 @@
+{
+  "methodology_id": "financial_safety_v1",
+  "version": "1",
+  "schema_version": "1.0",
+  "status": "frozen_methodology_contract",
+  "decision_use": "descriptive_evidence_only; no scoring, thresholds, grades, or investment recommendation",
+  "entity_scope": "consolidated",
+  "accounting_standard": "CAS",
+  "canonical_unit": "万元",
+  "period": {
+    "period_type": "instant",
+    "period_end_rule": "12-31",
+    "annual_as_of_rule": "use AsOfQuery.get_latest_available() at each annual-report availability date",
+    "available_at_rule": "max(all direct and expanded derived inputs)",
+    "future_fact_rule": "a fact is not eligible before its available_at"
+  },
+  "restatement_policy": {
+    "revision_rule": "a changed eligible fact creates a new metric version and supersedes the prior version",
+    "unchanged_rule": "unchanged annual input does not create a synthetic metric version",
+    "review_status_2025": "not_yet_reviewable",
+    "missing_rule": "missing is explicit and never coerced to zero",
+    "comparability_rule": "negative denominators are not comparable when the method says so"
+  },
+  "methods": [
+    {
+      "metric_id": "asset_liability_ratio",
+      "version": "1",
+      "formula": "total_liabilities / total_assets",
+      "input_concept_ids": ["total_liabilities", "total_assets"],
+      "input_roles": ["numerator", "denominator"],
+      "input_type": "instant",
+      "period_end_rule": "same 12-31",
+      "scope": "CAS consolidated",
+      "unit": "ratio",
+      "available_at_rule": "max(total_liabilities, total_assets)",
+      "status_rules": {
+        "missing": "missing_input",
+        "denominator_zero": "undefined_zero_denominator",
+        "denominator_negative": "not_comparable_negative_denominator"
+      },
+      "methodology_status": "methodology_ready",
+      "computation_status": "blocked_until_minimum_official_fact_foundation",
+      "score_eligible": false,
+      "blockers": ["annual CAS consolidated eligible coverage must be proven before computation"]
+    },
+    {
+      "metric_id": "gross_interest_bearing_debt",
+      "version": "1",
+      "formula": "short_term_borrowings + current_portion_of_interest_bearing_non_current_liabilities + long_term_borrowings + bonds_payable + lease_liabilities",
+      "input_concept_ids": [
+        "short_term_borrowings",
+        "current_portion_of_interest_bearing_non_current_liabilities",
+        "long_term_borrowings",
+        "bonds_payable",
+        "lease_liabilities"
+      ],
+      "input_roles": [
+        "short_term_borrowings",
+        "current_portion",
+        "long_term_borrowings",
+        "bonds_payable",
+        "lease_liabilities"
+      ],
+      "input_type": "instant",
+      "period_end_rule": "same 12-31",
+      "scope": "CAS consolidated",
+      "unit": "万元",
+      "available_at_rule": "max(all five direct components)",
+      "status_rules": {
+        "any_missing_component": "missing_input",
+        "negative_component_or_total": "not_comparable_negative_debt_component"
+      },
+      "component_policy": {
+        "required": "all five direct mutually exclusive components",
+        "forbidden_substitution": ["total_liabilities", "interest_bearing_debt"],
+        "duplicate_policy": "current and long-term portions must not be counted twice",
+        "unavailable_split": "blocked; do not infer from total_liabilities"
+      },
+      "methodology_status": "methodology_ready",
+      "computation_status": "blocked_until_direct_component_coverage_and_exclusivity_are_proven",
+      "score_eligible": false,
+      "blockers": ["current portion direct official fact is not yet proven in the minimum foundation"]
+    },
+    {
+      "metric_id": "cash_coverage_of_interest_bearing_debt",
+      "version": "1",
+      "formula": "cash_and_cash_equivalents / gross_interest_bearing_debt",
+      "input_concept_ids": ["cash_and_cash_equivalents", "gross_interest_bearing_debt"],
+      "input_roles": ["numerator", "denominator"],
+      "input_type": "instant",
+      "period_end_rule": "same 12-31",
+      "scope": "CAS consolidated",
+      "unit": "ratio",
+      "available_at_rule": "max(canonical cash, expanded gross-debt inputs)",
+      "status_rules": {
+        "missing": "missing_input",
+        "debt_zero": "undefined_no_debt",
+        "debt_negative": "not_comparable_negative_denominator"
+      },
+      "cash_policy": {
+        "canonical": "period-end cash_and_cash_equivalents from the cash-flow statement",
+        "allowed_explicit_proxy": "monetary_funds only when the filing explicitly identifies it as the comparable cash proxy",
+        "restricted_cash": "not canonical unless a separate contract proves comparability",
+        "missing_cash": "missing_input; never zero"
+      },
+      "methodology_status": "methodology_ready",
+      "computation_status": "blocked_until_canonical_cash_and_gross_debt_are_available",
+      "score_eligible": false,
+      "blockers": ["canonical cash statement line and direct gross-debt foundation require evidence"]
+    },
+    {
+      "metric_id": "net_interest_bearing_debt",
+      "version": "1",
+      "formula": "gross_interest_bearing_debt - cash_and_cash_equivalents",
+      "input_concept_ids": ["gross_interest_bearing_debt", "cash_and_cash_equivalents"],
+      "input_roles": ["gross_debt", "cash"],
+      "input_type": "instant",
+      "period_end_rule": "same 12-31",
+      "scope": "CAS consolidated",
+      "unit": "万元",
+      "available_at_rule": "max(expanded gross-debt inputs, canonical cash)",
+      "status_rules": {
+        "missing": "missing_input",
+        "negative_result": "computed_and_displayed; do not clamp to zero"
+      },
+      "display_policy": "always disclose gross debt and canonical cash beside net debt",
+      "methodology_status": "methodology_ready",
+      "computation_status": "blocked_until_canonical_cash_and_gross_debt_are_available",
+      "score_eligible": false,
+      "blockers": ["same as gross debt and canonical cash foundation"]
+    },
+    {
+      "metric_id": "interest_coverage",
+      "version": "1",
+      "formula": null,
+      "input_concept_ids": [],
+      "input_roles": [],
+      "input_type": "duration_over_instant_or_duration",
+      "period_end_rule": "not frozen",
+      "scope": "CAS consolidated when eventually defined",
+      "unit": "ratio",
+      "status_rules": {
+        "current_status": "blocked",
+        "reason": "interest expense capitalization, expense recognition, cash-paid boundary, and numerator are not uniquely evidenced",
+        "forbidden_guess": "do not use operating_profit or finance_expense as an uncontracted proxy"
+      },
+      "methodology_status": "blocked",
+      "computation_status": "blocked",
+      "score_eligible": false,
+      "blockers": [
+        "freeze interest_expense boundary",
+        "freeze capitalization and cash-paid treatment",
+        "freeze numerator and duration alignment"
+      ]
+    }
+  ],
+  "references": [
+    {
+      "reference_id": "openbb_provider_mapping_standard_model",
+      "source": "OpenBB Standardization and Provider Extensions",
+      "url": "https://docs.openbb.co/odp/python/developer/standardization",
+      "borrow": "separate source-provider mapping from a stable canonical model",
+      "apply_to": "input concept mapping and validation boundary",
+      "not_copy": "no provider, API, network, or automatic source-priority layer"
+    },
+    {
+      "reference_id": "financetoolkit_reported_to_derived",
+      "source": "FinanceToolkit",
+      "url": "https://pypi.org/project/financetoolkit/",
+      "borrow": "keep reported statement inputs and derived metric formulas transparent",
+      "apply_to": "formula and direct-component disclosure",
+      "not_copy": "no provider normalization, fiscal-year conversion, or unverified ratio vocabulary"
+    },
+    {
+      "reference_id": "arelle_xbrl_fact_context_unit",
+      "source": "Arelle XBRL model documentation",
+      "url": "https://arelle.readthedocs.io/en/latest/apidocs/arelle/arelle.ModelXbrl.html",
+      "borrow": "distinguish fact, context, unit, instant, and duration",
+      "apply_to": "period and scope eligibility",
+      "not_copy": "no full XBRL processor or taxonomy engine"
+    },
+    {
+      "reference_id": "pandera_stable_rule_ids",
+      "source": "Pandera Check",
+      "url": "https://pandera.readthedocs.io/en/stable/reference/generated/pandera.api.checks.Check.html",
+      "borrow": "named deterministic validation rules with explicit failure semantics",
+      "apply_to": "input contract and future checkpoint rule IDs",
+      "not_copy": "no dependency or opaque framework migration"
+    },
+    {
+      "reference_id": "great_expectations_checkpoint",
+      "source": "Great Expectations Checkpoint",
+      "url": "https://docs.greatexpectations.io/docs/reference/api/checkpoint_class/",
+      "borrow": "group validation definitions into a reproducible checkpoint",
+      "apply_to": "future financial-safety acceptance run",
+      "not_copy": "no external checkpoint store or runtime dependency in this stage"
+    },
+    {
+      "reference_id": "openlineage_run_input_output",
+      "source": "OpenLineage object model",
+      "url": "https://openlineage.io/docs/1.30.0/spec/object-model",
+      "borrow": "run-scoped input/output lineage vocabulary",
+      "apply_to": "future facts-to-metrics manifest and lineage",
+      "not_copy": "current repository lineage IDs and audit artifacts remain authoritative"
+    }
+  ]
+}

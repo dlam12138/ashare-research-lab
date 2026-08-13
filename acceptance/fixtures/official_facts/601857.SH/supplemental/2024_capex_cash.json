@@ -1,0 +1,38 @@
+{
+  "contract": "supplemental_annual_official_facts_v1",
+  "base_bundle_path": "acceptance/fixtures/official_facts/601857.SH/2024_annual.json",
+  "base_bundle_sha256": "d596ebfc9404cc6bca7520de10ddec5647830212daa946ff25b9e8fe9cc54176",
+  "base_bundle_git_blob": "03a2ec2813c31676aebed20e4df50042f42f140b",
+  "symbol": "601857.SH",
+  "fiscal_year": 2024,
+  "concept_id": "cash_paid_for_fixed_assets",
+  "restatement_review_status": "reviewed_unchanged",
+  "company": {
+    "source_page": "PDF page 116 / printed page 114",
+    "pdf_page": 116,
+    "printed_page": 114,
+    "source_table": "2024年度合并及公司现金流量表",
+    "source_label": "购建固定资产、油气资产、无形资产和其他长期资产支付的现金",
+    "column_label": "2024年度合并",
+    "source_display_value": "(302,651)",
+    "raw_value": "302651",
+    "raw_unit": "人民币百万元",
+    "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+    "expected_normalized_value": 30265100,
+    "manual_review_status": "visually_verified_twice"
+  },
+  "exchange": {
+    "source_page": "PDF page 116 / printed page 114",
+    "pdf_page": 116,
+    "printed_page": 114,
+    "source_table": "2024年度合并及公司现金流量表",
+    "source_label": "购建固定资产、油气资产、无形资产和其他长期资产支付的现金",
+    "column_label": "2024年度合并",
+    "source_display_value": "(302,651)",
+    "raw_value": "302651",
+    "raw_unit": "人民币百万元",
+    "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+    "expected_normalized_value": 30265100,
+    "manual_review_status": "visually_verified_twice"
+  }
+}

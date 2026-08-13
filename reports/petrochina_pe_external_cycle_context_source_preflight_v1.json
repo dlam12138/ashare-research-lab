@@ -1,0 +1,15 @@
+{
+  "schema": "petrochina_pe_external_cycle_context_source_preflight_v1",
+  "candidate": "US EIA Europe Brent Spot Price FOB",
+  "review_mode": "SOURCE_FEASIBILITY_REVIEW_ONLY",
+  "status": ["SECONDARY_SOURCE_FEASIBLE", "PIT_PUBLICATION_CONTRACT_UNRESOLVED"],
+  "official_history_length": "SUFFICIENT_CANDIDATE",
+  "downloaded_values": false,
+  "formal_series_used": false,
+  "unresolved": ["source endpoint", "frequency", "observation date semantics", "availability lag", "revision semantics", "content addressing", "calendar alignment"],
+  "permitted_future_role": "SECONDARY_EXTERNAL_CONTEXT",
+  "standalone_scoring_unlock_gate": false,
+  "brent_price_threshold": null,
+  "brent_percentile_threshold": null,
+  "company_scope_note": "PetroChina is not a pure upstream single-business company"
+}

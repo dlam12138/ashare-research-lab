@@ -1,0 +1,155 @@
+{
+  "schema": "pit_valuation_secondary_provider_preflight_v1",
+  "version": "1.0",
+  "purpose": "bounded, auditable preflight of free A-share daily secondary market sources independent of Eastmoney, for M2 Stage 2K.1R4E.3",
+  "symbol": "601857.SH",
+  "window": {
+    "requested_start": "2021-01-01",
+    "required_first_trade_date": "2021-01-04",
+    "requested_end": "2026-07-31",
+    "required_last_trade_date": "2026-07-31",
+    "required_trade_days": 1351
+  },
+  "adjustment": "none",
+  "currency": "CNY",
+  "close_unit": "CNY/share",
+  "close_tolerance_cny_per_share": "0.01",
+  "candidates": [
+    {
+      "candidate_id": "tencent_via_akshare",
+      "transport_library": "akshare",
+      "function": "stock_zh_a_hist_tx",
+      "underlying_provider": "tencent",
+      "symbol": "sh601857",
+      "start_date": "20210101",
+      "end_date": "20260731",
+      "adjust": "",
+      "endpoints": ["web.ifzq.gtimg.cn", "qt.gtimg.cn"],
+      "expected_volume_unit": "share",
+      "expected_amount_unit": "CNY",
+      "bounded_call_policy": {"max_attempts_per_candidate": 3, "ab_runs_required": 2}
+    },
+    {
+      "candidate_id": "sina_via_akshare",
+      "transport_library": "akshare",
+      "function": "stock_zh_a_daily",
+      "underlying_provider": "sina",
+      "symbol": "sh601857",
+      "start_date": "20210101",
+      "end_date": "20260731",
+      "adjust": "",
+      "endpoints": ["finance.sina.com.cn"],
+      "expected_volume_unit": "share",
+      "expected_amount_unit": "CNY",
+      "bounded_call_policy": {
+        "max_attempts_per_candidate": 3,
+        "ab_runs_required": 2,
+        "bounded_total_calls": true,
+        "no_loop_pagination": true,
+        "stop_on_ban": true,
+        "no_auto_proxy_rotation": true
+      }
+    },
+    {
+      "candidate_id": "pytdx_tongdaxin",
+      "transport_library": "pytdx",
+      "underlying_provider": "tongdaxin_quote_server",
+      "market": "SH",
+      "symbol": "601857",
+      "category": "daily",
+      "required_pagination": true,
+      "maximum_page_size": "按实际接口合同登记",
+      "bounded_call_policy": {"max_attempts_per_candidate": 3, "ab_runs_required": 2},
+      "contract_notes": [
+        "record the actual server address",
+        "a single full A/B run must pin one server",
+        "no silent server switch after a failed request",
+        "pagination must detect overlap, gap and ordering",
+        "two-server results may be extra consistency evidence but never mixed into one object"
+      ]
+    },
+    {
+      "candidate_id": "tushare_pro_optional",
+      "transport_library": "tushare",
+      "underlying_provider": "tushare_pro",
+      "symbol": "601857.SH",
+      "category": "daily",
+      "only_enabled_if": "an existing legal token is already present in the environment and the account can read the full daily series without new payment",
+      "no_token": {
+        "status": "credential_not_available",
+        "not_a_failure": true
+      },
+      "forbidden_when_no_token": ["new_account_registration", "recharge", "purchase_points", "write_token_to_config_log_report_git"]
+    }
+  ],
+  "forbidden": {
+    "endpoint_hosts": ["push2his.eastmoney.com"],
+    "underlying_providers": ["eastmoney"],
+    "sources": ["yahoo", "xueqiu_page_scrape", "random_website_csv"],
+    "behavior": [
+      "eastmoney_wrapper_masquerading_as_independent_source",
+      "temporarily_add_unregistered_candidate",
+      "use_baostock_to_backfill_candidate_gaps"
+    ]
+  },
+  "canonical_row_contract": {
+    "columns": [
+      "symbol",
+      "trade_date",
+      "open",
+      "high",
+      "low",
+      "close",
+      "volume",
+      "amount",
+      "is_trading",
+      "adjustment",
+      "transport_library",
+      "underlying_provider",
+      "provider_version",
+      "endpoint_identity"
+    ],
+    "trade_date_encode": "iso_date",
+    "trade_date_sort": "strictly_increasing",
+    "duplicate_trade_date_allowed": false,
+    "empty_trade_date_allowed": false,
+    "numeric_encoding": "Decimal(str(source_scalar))",
+    "decimal_of_binary_float_allowed": false,
+    "float_repr_into_identity_allowed": false,
+    "volume_amount_unit": "explicitly_registered_or_not_comparable",
+    "reindex_backfill_allowed": false,
+    "missing_dates_kept_as_real_provider_gap": true
+  },
+  "hard_gates": [
+    "close",
+    "trade_date",
+    "adjustment"
+  ],
+  "classification_enum": ["QUALIFIED", "PARTIAL", "REJECTED", "BLOCKED"],
+  "decision_enum": [
+    "ALTERNATIVE_SECONDARY_PROVIDER_INTEGRATION_ALLOWED",
+    "ALTERNATIVE_SECONDARY_PROVIDER_GAPS_REMAIN",
+    "NO_ACCEPTABLE_FREE_SECONDARY_PROVIDER_UNDER_CURRENT_CONTRACT",
+    "SECONDARY_PROVIDER_PREFLIGHT_NOT_TRUSTED"
+  ],
+  "selection_priority": [
+    "no_credential_no_new_payment",
+    "underlying_provider_clear_and_independent",
+    "complete_single_date_range",
+    "ab_stable",
+    "fully_satisfies_baostock_date_and_close_contract",
+    "interface_currently_maintained",
+    "lower_access_ban_risk",
+    "simpler_adapter_and_ongoing_maintenance"
+  ],
+  "product_boundary": {
+    "registry_v3_unchanged": true,
+    "registry_v4_not_created": true,
+    "candidate_v2_not_published": true,
+    "percentile_not_computed": true,
+    "scoring_unchanged": true,
+    "default_db_unchanged": true,
+    "peer_acquisition_not_allowed": true,
+    "m3_not_started": true
+  }
+}

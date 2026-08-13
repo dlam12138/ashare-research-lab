@@ -1,0 +1,428 @@
+{
+  "schema": "roic_stage2i2r_old_new_report_v4",
+  "old_artifact_set_sha256": "363f53a2e906cadfb464a3116cc212b629daf94af67fd2d01848b6d155806de9",
+  "new_artifact_set_sha256": "90632b11b4784a019f8765237fe0d4bafcf1b8a80ff5c681a57fba3798da2483",
+  "fact_id_comparison": [
+    {
+      "acquisition_id": "A-2024-asset-disposal",
+      "fiscal_year": 2024,
+      "old_fact_id": "3c5f5616f0bc587c0f88f4dcf953d49af23ecb54d33b674ca2ec341c177bf8fc",
+      "current_fact_id": "5d7e7435a6d5a1a4cb1f1fe441458527e3bf147e9908340ba87cf43baab426f0",
+      "old_source": {
+        "source_id": "reconciled:601857.SH:company_exchange:stage2i2:asset_disposal_gain_loss:2024:v1",
+        "source_type": "exchange_official"
+      },
+      "current_identity": {
+        "source_id": "reconciled:asset_disposal_gain_loss:2024:official_dual_source_reconciliation:v2:b52057fea9db425e430dff7bb174af25943336e9e5a2e5e7f1b983072dcdfe24",
+        "source_type": "reconciled_derived",
+        "source_tier": "dual_official_reconciled",
+        "reconciliation_rule_id": "official_dual_source_reconciliation",
+        "reconciliation_rule_version": "2",
+        "order_semantics_id": "issuer_then_exchange",
+        "order_semantics_version": "1",
+        "input_fact_ids": [
+          "13461d4c7668e6036f43ee4a4af07b2ef34c24eff8f1e792bff3ab7290954836",
+          "6e90a6938bf48fc01355fae8022b3d8e938ca9b20cce96d57a9d10fc79acd5aa"
+        ],
+        "evidence": [
+          {
+            "fact_id": "13461d4c7668e6036f43ee4a4af07b2ef34c24eff8f1e792bff3ab7290954836",
+            "source_id": "company_ir:601857.SH:2024:annual:zh-cn",
+            "source_type": "company_official",
+            "source_tier": "company_official",
+            "source_document": "\u4e2d\u56fd\u77f3\u6cb9\u5929\u7136\u6c14\u80a1\u4efd\u6709\u9650\u516c\u53f82024\u5e74\u5e74\u5ea6\u62a5\u544a\uff08A\u80a1\uff09",
+            "source_locator": "https://www.petrochina.com.cn/petrochina/rdxx/202503/b8750418435d4da380a6b13d5725ebe9/files/4ed3388fde7b4f4a922b2de43d6225d6.pdf",
+            "source_page": "PDF page 115 / printed page 113",
+            "content_sha256": "15a2de01653ceefa46fdd18a02a127f434f06db02da9efb0b62c3a12a35a9bba"
+          },
+          {
+            "fact_id": "6e90a6938bf48fc01355fae8022b3d8e938ca9b20cce96d57a9d10fc79acd5aa",
+            "source_id": "sse:601857.SH:2024:annual:zh-cn",
+            "source_type": "exchange_official",
+            "source_tier": "exchange_official",
+            "source_document": "\u4e2d\u56fd\u77f3\u6cb9\u5929\u7136\u6c14\u80a1\u4efd\u6709\u9650\u516c\u53f82024\u5e74\u5e74\u5ea6\u62a5\u544a",
+            "source_locator": "https://static.sse.com.cn/disclosure/listedinfo/announcement/c/new/2025-03-31/601857_20250331_9OUT.pdf",
+            "source_page": "PDF page 115 / printed page 113",
+            "content_sha256": "15a2de01653ceefa46fdd18a02a127f434f06db02da9efb0b62c3a12a35a9bba"
+          }
+        ]
+      },
+      "economic_value_unchanged": true
+    },
+    {
+      "acquisition_id": "A-2024-fair-value",
+      "fiscal_year": 2024,
+      "old_fact_id": "05122c72af2f47956a35d6e12a918698a2f61e716b122732d897cfe53eea2667",
+      "current_fact_id": "e1a0cd1aa6ed22f3861042353b7227ab658eda124193d6d90e3d29b99e2b20df",
+      "old_source": {
+        "source_id": "reconciled:601857.SH:company_exchange:stage2i2:fair_value_net_change:2024:v1",
+        "source_type": "exchange_official"
+      },
+      "current_identity": {
+        "source_id": "reconciled:fair_value_net_change:2024:official_dual_source_reconciliation:v2:8c739ff6ec0e29fde48de7fe3450b5931137716ad29d5f3fbb56304d47633b22",
+        "source_type": "reconciled_derived",
+        "source_tier": "dual_official_reconciled",
+        "reconciliation_rule_id": "official_dual_source_reconciliation",
+        "reconciliation_rule_version": "2",
+        "order_semantics_id": "issuer_then_exchange",
+        "order_semantics_version": "1",
+        "input_fact_ids": [
+          "0317b1e094fbf6408c536b57a880dd3aa818f7d6832dff58ccbd5ff94b1a29c6",
+          "d14236d3ef62de00e8cf3e5b84494b257fddefeffffc795e2c3d2b3f202444c3"
+        ],
+        "evidence": [
+          {
+            "fact_id": "0317b1e094fbf6408c536b57a880dd3aa818f7d6832dff58ccbd5ff94b1a29c6",
+            "source_id": "company_ir:601857.SH:2024:annual:zh-cn",
+            "source_type": "company_official",
+            "source_tier": "company_official",
+            "source_document": "\u4e2d\u56fd\u77f3\u6cb9\u5929\u7136\u6c14\u80a1\u4efd\u6709\u9650\u516c\u53f82024\u5e74\u5e74\u5ea6\u62a5\u544a\uff08A\u80a1\uff09",
+            "source_locator": "https://www.petrochina.com.cn/petrochina/rdxx/202503/b8750418435d4da380a6b13d5725ebe9/files/4ed3388fde7b4f4a922b2de43d6225d6.pdf",
+            "source_page": "PDF page 115 / printed page 113",
+            "content_sha256": "15a2de01653ceefa46fdd18a02a127f434f06db02da9efb0b62c3a12a35a9bba"
+          },
+          {
+            "fact_id": "d14236d3ef62de00e8cf3e5b84494b257fddefeffffc795e2c3d2b3f202444c3",
+            "source_id": "sse:601857.SH:2024:annual:zh-cn",
+            "source_type": "exchange_official",
+            "source_tier": "exchange_official",
+            "source_document": "\u4e2d\u56fd\u77f3\u6cb9\u5929\u7136\u6c14\u80a1\u4efd\u6709\u9650\u516c\u53f82024\u5e74\u5e74\u5ea6\u62a5\u544a",
+            "source_locator": "https://static.sse.com.cn/disclosure/listedinfo/announcement/c/new/2025-03-31/601857_20250331_9OUT.pdf",
+            "source_page": "PDF page 115 / printed page 113",
+            "content_sha256": "15a2de01653ceefa46fdd18a02a127f434f06db02da9efb0b62c3a12a35a9bba"
+          }
+        ]
+      },
+      "economic_value_unchanged": true
+    },
+    {
+      "acquisition_id": "A-2024-finance-core",
+      "fiscal_year": 2024,
+      "old_fact_id": "69ca13d7fc66752e99d579624a8a03797ca51a071fa60b5d4c39fe9b8b5fe99d",
+      "current_fact_id": "fc3112ace4925bfc776955bf71813565a4f1c9add4901fd6d9a0e92a8475a34d",
+      "old_source": {
+        "source_id": "reconciled:601857.SH:company_exchange:stage2i2:finance_cost_excluding_lease_interest:2024:v1",
+        "source_type": "exchange_official"
+      },
+      "current_identity": {
+        "source_id": "reconciled:finance_cost_excluding_lease_interest:2024:official_dual_source_reconciliation:v2:18b7ca5f36f9672a7003af923e5f2d682f0629afc52774987aac2bb7243c86ca",
+        "source_type": "reconciled_derived",
+        "source_tier": "dual_official_reconciled",
+        "reconciliation_rule_id": "official_dual_source_reconciliation",
+        "reconciliation_rule_version": "2",
+        "order_semantics_id": "issuer_then_exchange",
+        "order_semantics_version": "1",
+        "input_fact_ids": [
+          "b9d8228d603b5316420630fdf0afa037ce8e890236a11de3fe72db96b0e36546",
+          "7b89871113fd626ae5276311a6c8db5333e1fd5cdef5710ff4c9c791c70956a2"
+        ],
+        "evidence": [
+          {
+            "fact_id": "b9d8228d603b5316420630fdf0afa037ce8e890236a11de3fe72db96b0e36546",
+            "source_id": "company_ir:601857.SH:2024:annual:zh-cn",
+            "source_type": "company_official",
+            "source_tier": "company_official",
+            "source_document": "\u4e2d\u56fd\u77f3\u6cb9\u5929\u7136\u6c14\u80a1\u4efd\u6709\u9650\u516c\u53f82024\u5e74\u5e74\u5ea6\u62a5\u544a\uff08A\u80a1\uff09",
+            "source_locator": "https://www.petrochina.com.cn/petrochina/rdxx/202503/b8750418435d4da380a6b13d5725ebe9/files/4ed3388fde7b4f4a922b2de43d6225d6.pdf",
+            "source_page": "PDF page 178 / printed page 176",
+            "content_sha256": "15a2de01653ceefa46fdd18a02a127f434f06db02da9efb0b62c3a12a35a9bba"
+          },
+          {
+            "fact_id": "7b89871113fd626ae5276311a6c8db5333e1fd5cdef5710ff4c9c791c70956a2",
+            "source_id": "sse:601857.SH:2024:annual:zh-cn",
+            "source_type": "exchange_official",
+            "source_tier": "exchange_official",
+            "source_document": "\u4e2d\u56fd\u77f3\u6cb9\u5929\u7136\u6c14\u80a1\u4efd\u6709\u9650\u516c\u53f82024\u5e74\u5e74\u5ea6\u62a5\u544a",
+            "source_locator": "https://static.sse.com.cn/disclosure/listedinfo/announcement/c/new/2025-03-31/601857_20250331_9OUT.pdf",
+            "source_page": "PDF page 178 / printed page 176",
+            "content_sha256": "15a2de01653ceefa46fdd18a02a127f434f06db02da9efb0b62c3a12a35a9bba"
+          }
+        ]
+      },
+      "economic_value_unchanged": true
+    },
+    {
+      "acquisition_id": "A-2024-investment-income",
+      "fiscal_year": 2024,
+      "old_fact_id": "69d9b5072bdc8c611d67867899d85d143019dc611acc6434fe6a6bc0d38b8970",
+      "current_fact_id": "c7d728ad5a85f30ded3d94a4e60c30cded5451b08c76301268bd95e7d97b0509",
+      "old_source": {
+        "source_id": "reconciled:601857.SH:company_exchange:stage2i2:investment_income:2024:v1",
+        "source_type": "exchange_official"
+      },
+      "current_identity": {
+        "source_id": "reconciled:investment_income:2024:official_dual_source_reconciliation:v2:19ee566f42b61a9751512eaeb02ea7cdfa718afafde380be8b5d7fa683d16180",
+        "source_type": "reconciled_derived",
+        "source_tier": "dual_official_reconciled",
+        "reconciliation_rule_id": "official_dual_source_reconciliation",
+        "reconciliation_rule_version": "2",
+        "order_semantics_id": "issuer_then_exchange",
+        "order_semantics_version": "1",
+        "input_fact_ids": [
+          "6ae3d3604792eb360b83843179a4251757f974a684445705f34a64aca44db3b2",
+          "0ac15837a1f4182185cdf91e3efc90882ba859338bccad09ce5353b8cbc0cde9"
+        ],
+        "evidence": [
+          {
+            "fact_id": "6ae3d3604792eb360b83843179a4251757f974a684445705f34a64aca44db3b2",
+            "source_id": "company_ir:601857.SH:2024:annual:zh-cn",
+            "source_type": "company_official",
+            "source_tier": "company_official",
+            "source_document": "\u4e2d\u56fd\u77f3\u6cb9\u5929\u7136\u6c14\u80a1\u4efd\u6709\u9650\u516c\u53f82024\u5e74\u5e74\u5ea6\u62a5\u544a\uff08A\u80a1\uff09",
+            "source_locator": "https://www.petrochina.com.cn/petrochina/rdxx/202503/b8750418435d4da380a6b13d5725ebe9/files/4ed3388fde7b4f4a922b2de43d6225d6.pdf",
+            "source_page": "PDF page 115 / printed page 113",
+            "content_sha256": "15a2de01653ceefa46fdd18a02a127f434f06db02da9efb0b62c3a12a35a9bba"
+          },
+          {
+            "fact_id": "0ac15837a1f4182185cdf91e3efc90882ba859338bccad09ce5353b8cbc0cde9",
+            "source_id": "sse:601857.SH:2024:annual:zh-cn",
+            "source_type": "exchange_official",
+            "source_tier": "exchange_official",
+            "source_document": "\u4e2d\u56fd\u77f3\u6cb9\u5929\u7136\u6c14\u80a1\u4efd\u6709\u9650\u516c\u53f82024\u5e74\u5e74\u5ea6\u62a5\u544a",
+            "source_locator": "https://static.sse.com.cn/disclosure/listedinfo/announcement/c/new/2025-03-31/601857_20250331_9OUT.pdf",
+            "source_page": "PDF page 115 / printed page 113",
+            "content_sha256": "15a2de01653ceefa46fdd18a02a127f434f06db02da9efb0b62c3a12a35a9bba"
+          }
+        ]
+      },
+      "economic_value_unchanged": true
+    },
+    {
+      "acquisition_id": "B-2023-2024-nci",
+      "fiscal_year": 2023,
+      "old_fact_id": "3b386b1d9aa7cb848c55db9032829a53fb7b73c033b1a5776cd2703b9d79e391",
+      "current_fact_id": "56d73f8d567bcc35515475b1f81685f089f5fd539c3923c252a243cd1cacdbd3",
+      "old_source": {
+        "source_id": "reconciled:601857.SH:company_exchange:stage2i2:non_controlling_interest:2023:v1",
+        "source_type": "exchange_official"
+      },
+      "current_identity": {
+        "source_id": "reconciled:non_controlling_interest:2023:official_dual_source_reconciliation:v2:9c557e917ec31ab33b303e4d4ac5431157c906b042027485371e1ecf9c380f81",
+        "source_type": "reconciled_derived",
+        "source_tier": "dual_official_reconciled",
+        "reconciliation_rule_id": "official_dual_source_reconciliation",
+        "reconciliation_rule_version": "2",
+        "order_semantics_id": "issuer_then_exchange",
+        "order_semantics_version": "1",
+        "input_fact_ids": [
+          "9ce4845aa85c248d3ece032bb0cf06613b11c71376e6daf497cbf47cbae140ff",
+          "1ea4e4b81bcd61ace3a66eefb599f8f45cecb3f6dbf7a47fc26b7b14ba3db623"
+        ],
+        "evidence": [
+          {
+            "fact_id": "9ce4845aa85c248d3ece032bb0cf06613b11c71376e6daf497cbf47cbae140ff",
+            "source_id": "company_ir:601857.SH:2023:annual:zh-cn",
+            "source_type": "company_official",
+            "source_tier": "company_official",
+            "source_document": "\u4e2d\u56fd\u77f3\u6cb9\u5929\u7136\u6c14\u80a1\u4efd\u6709\u9650\u516c\u53f82023\u5e74\u5ea6\u62a5\u544a\uff08A\u80a1\uff09",
+            "source_locator": "https://www.petrochina.com.cn/petrochina/gsgg/202403/b539f133283f4ed59ccfd3abaf257ec7/files/951707e943ab4b989219698aac0e29a1.pdf",
+            "source_page": "PDF page 113 / printed page 111",
+            "content_sha256": "b845502e533311280f89d59c2a92c67f94f2be17451e51e55f93a1d52abe6692"
+          },
+          {
+            "fact_id": "1ea4e4b81bcd61ace3a66eefb599f8f45cecb3f6dbf7a47fc26b7b14ba3db623",
+            "source_id": "sse:601857.SH:2023:annual:zh-cn",
+            "source_type": "exchange_official",
+            "source_tier": "exchange_official",
+            "source_document": "\u4e2d\u56fd\u77f3\u6cb9\u5929\u7136\u6c14\u80a1\u4efd\u6709\u9650\u516c\u53f82023\u5e74\u5e74\u5ea6\u62a5\u544a",
+            "source_locator": "https://static.sse.com.cn/disclosure/listedinfo/announcement/c/new/2024-03-26/601857_20240326_9CKZ.pdf",
+            "source_page": "PDF page 113 / printed page 111",
+            "content_sha256": "b845502e533311280f89d59c2a92c67f94f2be17451e51e55f93a1d52abe6692"
+          }
+        ]
+      },
+      "economic_value_unchanged": true
+    },
+    {
+      "acquisition_id": "B-2023-2024-nci",
+      "fiscal_year": 2024,
+      "old_fact_id": "0507249898b80be99e468d52c5b3e7bf887c12f17f38c1df0a541f24762d79cd",
+      "current_fact_id": "7d52dde2084e23bc22cc26b95869ad62b97da36eaede56003bd29a99aa240fe2",
+      "old_source": {
+        "source_id": "reconciled:601857.SH:company_exchange:stage2i2:non_controlling_interest:2024:v1",
+        "source_type": "exchange_official"
+      },
+      "current_identity": {
+        "source_id": "reconciled:non_controlling_interest:2024:official_dual_source_reconciliation:v2:70ab1804f3da47bafa8bd9177daf105529fd5613454138c4623c6c1f706baa20",
+        "source_type": "reconciled_derived",
+        "source_tier": "dual_official_reconciled",
+        "reconciliation_rule_id": "official_dual_source_reconciliation",
+        "reconciliation_rule_version": "2",
+        "order_semantics_id": "issuer_then_exchange",
+        "order_semantics_version": "1",
+        "input_fact_ids": [
+          "c804eead959af27d39a3ae78d0adef746097a11c1cb3367fae3c8dd51f8b70c7",
+          "324d73184c99f33a8a260102b2a24d2bcb0469999ffe3788454a12bbc5b70cef"
+        ],
+        "evidence": [
+          {
+            "fact_id": "c804eead959af27d39a3ae78d0adef746097a11c1cb3367fae3c8dd51f8b70c7",
+            "source_id": "company_ir:601857.SH:2024:annual:zh-cn",
+            "source_type": "company_official",
+            "source_tier": "company_official",
+            "source_document": "\u4e2d\u56fd\u77f3\u6cb9\u5929\u7136\u6c14\u80a1\u4efd\u6709\u9650\u516c\u53f82024\u5e74\u5e74\u5ea6\u62a5\u544a\uff08A\u80a1\uff09",
+            "source_locator": "https://www.petrochina.com.cn/petrochina/rdxx/202503/b8750418435d4da380a6b13d5725ebe9/files/4ed3388fde7b4f4a922b2de43d6225d6.pdf",
+            "source_page": "PDF page 114 / printed page 112",
+            "content_sha256": "15a2de01653ceefa46fdd18a02a127f434f06db02da9efb0b62c3a12a35a9bba"
+          },
+          {
+            "fact_id": "324d73184c99f33a8a260102b2a24d2bcb0469999ffe3788454a12bbc5b70cef",
+            "source_id": "sse:601857.SH:2024:annual:zh-cn",
+            "source_type": "exchange_official",
+            "source_tier": "exchange_official",
+            "source_document": "\u4e2d\u56fd\u77f3\u6cb9\u5929\u7136\u6c14\u80a1\u4efd\u6709\u9650\u516c\u53f82024\u5e74\u5e74\u5ea6\u62a5\u544a",
+            "source_locator": "https://static.sse.com.cn/disclosure/listedinfo/announcement/c/new/2025-03-31/601857_20250331_9OUT.pdf",
+            "source_page": "PDF page 114 / printed page 112",
+            "content_sha256": "15a2de01653ceefa46fdd18a02a127f434f06db02da9efb0b62c3a12a35a9bba"
+          }
+        ]
+      },
+      "economic_value_unchanged": true
+    },
+    {
+      "acquisition_id": "B-2024-lease-interest",
+      "fiscal_year": 2024,
+      "old_fact_id": "0092f007bbb5564a4cf74db4d22b63c24132379bc0f1db1a3cc2ccf27e2097b0",
+      "current_fact_id": "d57ef6b2b88b0a13a247aab095a168216e9d87289754906f389ca54fe5146b05",
+      "old_source": {
+        "source_id": "reconciled:601857.SH:company_exchange:stage2i2:lease_interest_expense:2024:v1",
+        "source_type": "exchange_official"
+      },
+      "current_identity": {
+        "source_id": "reconciled:lease_interest_expense:2024:official_dual_source_reconciliation:v2:549073aaa485c8aaa8f02092cc13a329455558da2d0c2b44ea8f11c0bbfea7bd",
+        "source_type": "reconciled_derived",
+        "source_tier": "dual_official_reconciled",
+        "reconciliation_rule_id": "official_dual_source_reconciliation",
+        "reconciliation_rule_version": "2",
+        "order_semantics_id": "issuer_then_exchange",
+        "order_semantics_version": "1",
+        "input_fact_ids": [
+          "1007732a527cbde98136f7aa992675f581c789d0742d99e650489cb7aa16489e",
+          "81ff9fb1ca18b32e0584fc99ae2788b8f615e81a74a66e9ee732b666f1db8cc4"
+        ],
+        "evidence": [
+          {
+            "fact_id": "1007732a527cbde98136f7aa992675f581c789d0742d99e650489cb7aa16489e",
+            "source_id": "company_ir:601857.SH:2024:annual:zh-cn",
+            "source_type": "company_official",
+            "source_tier": "company_official",
+            "source_document": "\u4e2d\u56fd\u77f3\u6cb9\u5929\u7136\u6c14\u80a1\u4efd\u6709\u9650\u516c\u53f82024\u5e74\u5e74\u5ea6\u62a5\u544a\uff08A\u80a1\uff09",
+            "source_locator": "https://www.petrochina.com.cn/petrochina/rdxx/202503/b8750418435d4da380a6b13d5725ebe9/files/4ed3388fde7b4f4a922b2de43d6225d6.pdf",
+            "source_page": "PDF page 178 / printed page 176",
+            "content_sha256": "15a2de01653ceefa46fdd18a02a127f434f06db02da9efb0b62c3a12a35a9bba"
+          },
+          {
+            "fact_id": "81ff9fb1ca18b32e0584fc99ae2788b8f615e81a74a66e9ee732b666f1db8cc4",
+            "source_id": "sse:601857.SH:2024:annual:zh-cn",
+            "source_type": "exchange_official",
+            "source_tier": "exchange_official",
+            "source_document": "\u4e2d\u56fd\u77f3\u6cb9\u5929\u7136\u6c14\u80a1\u4efd\u6709\u9650\u516c\u53f82024\u5e74\u5e74\u5ea6\u62a5\u544a",
+            "source_locator": "https://static.sse.com.cn/disclosure/listedinfo/announcement/c/new/2025-03-31/601857_20250331_9OUT.pdf",
+            "source_page": "PDF page 178 / printed page 176",
+            "content_sha256": "15a2de01653ceefa46fdd18a02a127f434f06db02da9efb0b62c3a12a35a9bba"
+          }
+        ]
+      },
+      "economic_value_unchanged": true
+    },
+    {
+      "acquisition_id": "C-2023-2024-restricted-cash",
+      "fiscal_year": 2023,
+      "old_fact_id": "ed7c48eb6b334f6b543ec3a9d2877dba5021efc5c437500f2d3d88bc34965eb7",
+      "current_fact_id": "8c2b7bfc07e7713ad60afb31984e5341d6f0dbb5cac4b1c4752dfcbbbc349566",
+      "old_source": {
+        "source_id": "reconciled:601857.SH:company_exchange:stage2i2:restricted_cash:2023:v1",
+        "source_type": "exchange_official"
+      },
+      "current_identity": {
+        "source_id": "reconciled:restricted_cash:2023:official_dual_source_reconciliation:v2:e5dcc4e07780db22c68885a4b23733eb6b57b4fd31ea87028617db934c33fb1f",
+        "source_type": "reconciled_derived",
+        "source_tier": "dual_official_reconciled",
+        "reconciliation_rule_id": "official_dual_source_reconciliation",
+        "reconciliation_rule_version": "2",
+        "order_semantics_id": "issuer_then_exchange",
+        "order_semantics_version": "1",
+        "input_fact_ids": [
+          "f8584bec08513356cf713f389b247f2aa7fd2b3eef916fb264bb8be14fb65d0b",
+          "82b0cf462b1cbb37a0f286cd85135ea22b3ea536dd4f07dcb0a64cbaa5b204e6"
+        ],
+        "evidence": [
+          {
+            "fact_id": "f8584bec08513356cf713f389b247f2aa7fd2b3eef916fb264bb8be14fb65d0b",
+            "source_id": "company_ir:601857.SH:2023:annual:zh-cn",
+            "source_type": "company_official",
+            "source_tier": "company_official",
+            "source_document": "\u4e2d\u56fd\u77f3\u6cb9\u5929\u7136\u6c14\u80a1\u4efd\u6709\u9650\u516c\u53f82023\u5e74\u5ea6\u62a5\u544a\uff08A\u80a1\uff09",
+            "source_locator": "https://www.petrochina.com.cn/petrochina/gsgg/202403/b539f133283f4ed59ccfd3abaf257ec7/files/951707e943ab4b989219698aac0e29a1.pdf",
+            "source_page": "PDF page 154 / printed page 152",
+            "content_sha256": "b845502e533311280f89d59c2a92c67f94f2be17451e51e55f93a1d52abe6692"
+          },
+          {
+            "fact_id": "82b0cf462b1cbb37a0f286cd85135ea22b3ea536dd4f07dcb0a64cbaa5b204e6",
+            "source_id": "sse:601857.SH:2023:annual:zh-cn",
+            "source_type": "exchange_official",
+            "source_tier": "exchange_official",
+            "source_document": "\u4e2d\u56fd\u77f3\u6cb9\u5929\u7136\u6c14\u80a1\u4efd\u6709\u9650\u516c\u53f82023\u5e74\u5e74\u5ea6\u62a5\u544a",
+            "source_locator": "https://static.sse.com.cn/disclosure/listedinfo/announcement/c/new/2024-03-26/601857_20240326_9CKZ.pdf",
+            "source_page": "PDF page 154 / printed page 152",
+            "content_sha256": "b845502e533311280f89d59c2a92c67f94f2be17451e51e55f93a1d52abe6692"
+          }
+        ]
+      },
+      "economic_value_unchanged": true
+    },
+    {
+      "acquisition_id": "C-2023-2024-restricted-cash",
+      "fiscal_year": 2024,
+      "old_fact_id": "2bd3c8d91485a2c71ac99b8b1acd2734188a582574a112aa229158b7cfc2de1c",
+      "current_fact_id": "cbfddefa98aba11750ba35e8c38f1cbb9d61e9787c83bd06a59633370ceb48aa",
+      "old_source": {
+        "source_id": "reconciled:601857.SH:company_exchange:stage2i2:restricted_cash:2024:v1",
+        "source_type": "exchange_official"
+      },
+      "current_identity": {
+        "source_id": "reconciled:restricted_cash:2024:official_dual_source_reconciliation:v2:27d23b4912d16b424fe5c53a1fd800547527d8ee48bcd62490952721fce30796",
+        "source_type": "reconciled_derived",
+        "source_tier": "dual_official_reconciled",
+        "reconciliation_rule_id": "official_dual_source_reconciliation",
+        "reconciliation_rule_version": "2",
+        "order_semantics_id": "issuer_then_exchange",
+        "order_semantics_version": "1",
+        "input_fact_ids": [
+          "84f170f4d74c8dce09cc0e14c2860669ee940ef85fb87d50638b89b8fbe78f09",
+          "299760ed7f017109c0cbb6843c29f91d0fd982f3e2d6b748e1651f23ba5ff4bb"
+        ],
+        "evidence": [
+          {
+            "fact_id": "84f170f4d74c8dce09cc0e14c2860669ee940ef85fb87d50638b89b8fbe78f09",
+            "source_id": "company_ir:601857.SH:2024:annual:zh-cn",
+            "source_type": "company_official",
+            "source_tier": "company_official",
+            "source_document": "\u4e2d\u56fd\u77f3\u6cb9\u5929\u7136\u6c14\u80a1\u4efd\u6709\u9650\u516c\u53f82024\u5e74\u5e74\u5ea6\u62a5\u544a\uff08A\u80a1\uff09",
+            "source_locator": "https://www.petrochina.com.cn/petrochina/rdxx/202503/b8750418435d4da380a6b13d5725ebe9/files/4ed3388fde7b4f4a922b2de43d6225d6.pdf",
+            "source_page": "PDF page 149 / printed page 147",
+            "content_sha256": "15a2de01653ceefa46fdd18a02a127f434f06db02da9efb0b62c3a12a35a9bba"
+          },
+          {
+            "fact_id": "299760ed7f017109c0cbb6843c29f91d0fd982f3e2d6b748e1651f23ba5ff4bb",
+            "source_id": "sse:601857.SH:2024:annual:zh-cn",
+            "source_type": "exchange_official",
+            "source_tier": "exchange_official",
+            "source_document": "\u4e2d\u56fd\u77f3\u6cb9\u5929\u7136\u6c14\u80a1\u4efd\u6709\u9650\u516c\u53f82024\u5e74\u5e74\u5ea6\u62a5\u544a",
+            "source_locator": "https://static.sse.com.cn/disclosure/listedinfo/announcement/c/new/2025-03-31/601857_20250331_9OUT.pdf",
+            "source_page": "PDF page 149 / printed page 147",
+            "content_sha256": "15a2de01653ceefa46fdd18a02a127f434f06db02da9efb0b62c3a12a35a9bba"
+          }
+        ]
+      },
+      "economic_value_unchanged": true
+    }
+  ],
+  "static_to_executed_search": true,
+  "comparative_evidence_bound": true,
+  "gate_behavior": "three_state_fail_closed",
+  "unchanged_economic_outcome": {
+    "acquired": 9,
+    "gaps": 7
+  }
+}

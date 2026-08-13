@@ -1,0 +1,84 @@
+{
+  "schema": "pe_independent_cycle_validation_contract_v1",
+  "contract_id": "pe_independent_cycle_validation_v1",
+  "stage": "2K.1R4F.4A",
+  "research_question": "Does the PIT-frozen normalized earnings proxy provide an economically meaningful earnings anchor, as judged by evidence independent of the raw/normalized PE algebra?",
+  "primary_method": "FUTURE_REALIZED_EARNINGS_REVERSION_TO_FROZEN_ANCHOR",
+  "validation_unit": "INDEPENDENT_EPISODE_ONSET",
+  "episode": {
+    "name": "ABOVE_NORMALIZED_EARNINGS_EPISODE",
+    "onset": "first raw TTM state after earnings_excess transitions from <=0 to >0",
+    "end": "first raw TTM state where earnings_excess <= 0",
+    "earnings_excess": "current_ttm_eps - normalized_eps",
+    "uses_pe": false,
+    "uses_future_information": false,
+    "daily_rows_are_episodes": false,
+    "left_censored_regime_is_not_observed_onset": true,
+    "valid_episode_requires_observed_onset": true
+  },
+  "anchor_freeze": {
+    "fields": ["episode_id", "anchor_trade_date", "anchor_raw_financial_state_id", "anchor_normalized_denominator_state_id", "anchor_current_ttm_eps", "anchor_normalized_eps", "anchor_current_bvps", "anchor_selected_roe_years", "anchor_fact_ids", "anchor_available_at_effective_identities"],
+    "primary_anchor": "normalized_eps_t0",
+    "future_normalized_eps_may_replace_anchor": false,
+    "anchor_ledger_separate_from_outcome_ledger": true,
+    "future_references_in_anchor": "PROHIBITED",
+    "anchor_must_be_frozen_at_true_episode_onset": true,
+    "left_censored_episode_anchor_policy": "PROHIBIT_FIRST_OBSERVED_DATE_SUBSTITUTION",
+    "left_censored_anchor_status": "NOT_IDENTIFIABLE_LEFT_CENSORED",
+    "formal_outcome_metrics_without_identifiable_anchor": "PROHIBITED"
+  },
+  "horizons": {
+    "primary": "+4_FISCAL_QUARTERS",
+    "secondary": "+8_FISCAL_QUARTERS",
+    "365_730_day_approximation": "PROHIBITED",
+    "partial_quarter_proxy": "PROHIBITED",
+    "forecast_fallback": "PROHIBITED"
+  },
+  "outcome_identity": ["future_financial_state_id", "constituent_fact_ids", "period_end", "available_at", "effective_from"],
+  "outcome_maturity": ["MATURED", "NOT_MATURED"],
+  "readiness_split": {
+    "metadata_availability": "candidate target financial-state metadata exists",
+    "protocol_valid_maturity": "observed true onset anchor exists and target metadata is matured",
+    "metadata_availability_does_not_imply_protocol_maturity": true
+  },
+  "metrics": {
+    "initial_gap": "anchor_current_eps - anchor_normalized_eps; must be > 0",
+    "future_gap_h": "future_realized_ttm_eps_h - anchor_normalized_eps",
+    "distance_ratio_h": "abs(future_realized_ttm_eps_h-anchor_normalized_eps)/abs(anchor_current_eps-anchor_normalized_eps)",
+    "distance_classes": {"<1": "MOVED_TOWARD_FROZEN_ANCHOR", "=1": "NO_DISTANCE_CHANGE", ">1": "MOVED_AWAY_FROM_FROZEN_ANCHOR"},
+    "benchmark": "FROZEN_NORMALIZED_ANCHOR_VS_CURRENT_EARNINGS_PERSISTENCE",
+    "benchmark_classes": ["NORMALIZED_ANCHOR_BEATS_CURRENT_EARNINGS_BASELINE", "TIE", "CURRENT_EARNINGS_BASELINE_BETTER"],
+    "numeric_type": "Decimal"
+  },
+  "interpretation": {
+    "primary_favorable": "4Q moved toward frozen anchor AND normalized anchor beats current-earnings baseline",
+    "primary_unfavorable": "4Q moved away OR current-earnings baseline better",
+    "mixed": "one favorable and one unfavorable or tie",
+    "8q_role": "ROBUSTNESS_ONLY",
+    "evidence_count": {"0": "NOT_TESTABLE_NO_MATURE_EPISODE", "1": "SINGLE_MATURE_EPISODE_EVIDENCE_ONLY", ">=2": "MULTI_EPISODE_VALIDATION_AVAILABLE"},
+    "minimum_recurrence_requirement": 2,
+    "statistical_significance_threshold": false,
+    "disagreement_must_be_reported_mixed": true
+  },
+  "final_evidence_classes": ["INDEPENDENT_VALIDATION_NOT_TESTABLE", "INDEPENDENT_CYCLE_ANCHOR_EVIDENCE_LIMITED", "INDEPENDENT_CYCLE_ANCHOR_EVIDENCE_SUPPORTED", "INDEPENDENT_CYCLE_ANCHOR_EVIDENCE_CONTRADICTED"],
+  "anti_leakage": {
+    "future_outcome_never_visible_to_anchor_t0": true,
+    "remove_all_future_facts_anchor_ledger_byte_identical": true,
+    "metadata_only_readiness": true,
+    "future_eps_value_in_preflight": "PROHIBITED"
+  },
+  "boundaries": {
+    "network": "PROHIBITED",
+    "5y_fact_acquisition": "NOT_PERFORMED",
+    "brent_download": "NOT_PERFORMED",
+    "future_outcome_validation": "NOT_PERFORMED",
+    "pe_numeric_scoring": "BLOCKED_UNCHANGED",
+    "production_scoring": "NOT_AUTHORIZED",
+    "m3": "PROHIBITED",
+    "frozen_history_limit_after_authorized_backfill": "5Y",
+    "automatic_history_extension_beyond_5y": "PROHIBITED",
+    "if_valid_onset_anchored_episodes_lt_2_after_5y": "INDEPENDENT_VALIDATION_NOT_TESTABLE_WITH_FROZEN_5Y_HISTORY",
+    "stop_expansion_action": "STOP_FOR_NORTH_STAR_REVIEW",
+    "longer_history_requires": "NEW_NORTH_STAR_METHOD_VALUE_REVIEW"
+  }
+}

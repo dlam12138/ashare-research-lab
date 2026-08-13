@@ -1,0 +1,25 @@
+{
+ "schema": "petrochina_tencent_snapshot_promotion_receipt_v1",
+ "version": "1.0",
+ "symbol": "601857.SH",
+ "source_stage": "R4E.3",
+ "selected_provider": "tencent_via_akshare",
+ "selected_object_sha256": "d760923aae952d9ba400d792d4155b4c6dfa3b728210de64001aa6024c8f7dd7",
+ "selected_table_digest": "e6cbee888949b13c0ee47a6193d58026ad6da72a332ffd66948ee4bc4b908cda",
+ "formal_cache_object_sha256": "d760923aae952d9ba400d792d4155b4c6dfa3b728210de64001aa6024c8f7dd7",
+ "formal_cache_object_key": "r4e4/tencent_via_akshare/d760923aae952d9ba400d792d4155b4c6dfa3b728210de64001aa6024c8f7dd7.parquet",
+ "row_count": 1351,
+ "date_range": [
+  "2021-01-04",
+  "2026-07-31"
+ ],
+ "transport_library": "akshare",
+ "underlying_provider": "tencent",
+ "endpoint_identity": "web.ifzq.gtimg.cn",
+ "promotion_mode": "byte_identical_content_addressed_copy",
+ "byte_identity_preserved": true,
+ "primary_object_sha256": "c6771aa57b0210ee558a91c7bdb87cc346ce910a395eda057cb9d7224475ab67",
+ "primary_table_digest": "ba4f83185b9644e157e4439aaea26d8692db7043f6d3ce06dc502549d60dc96c",
+ "primary_formal_cache_object_key": "baostock/c6771aa57b0210ee558a91c7bdb87cc346ce910a395eda057cb9d7224475ab67.parquet",
+ "primary_formal_cache_object_sha256": "c6771aa57b0210ee558a91c7bdb87cc346ce910a395eda057cb9d7224475ab67"
+}

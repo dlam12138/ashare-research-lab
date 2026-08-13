@@ -1,0 +1,12 @@
+{
+ "schema": "petrochina_pe_5y_historical_backfill_reconciliation_v1",
+ "symbol": "601857.SH",
+ "as_of": "2021-08-02",
+ "roe_2016_decimal": "0.006668672896107563161406786092",
+ "roe_2017_decimal": "0.01913624531469271226661618072",
+ "resolver_roe_2016_decimal": "0.006668672896107563161406786092",
+ "resolver_roe_2017_decimal": "0.01913624531469271226661618072",
+ "roe_2016_match": true,
+ "roe_2017_match": true,
+ "disclosed_weighted_average_roe_role": "CROSS_CHECK_DIAGNOSTIC_ONLY"
+}

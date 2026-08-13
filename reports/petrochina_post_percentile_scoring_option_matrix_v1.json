@@ -1,0 +1,141 @@
+{
+ "schema": "petrochina_post_percentile_scoring_option_matrix_v1",
+ "version": "1.0",
+ "symbol": "601857.SH",
+ "as_of_trade_date": "2026-07-31",
+ "review_stage": "M2_STAGE_2K1R4F",
+ "purpose": "compare the five candidate window models for the valuation_attractiveness v2 migration on fixed evaluation axes; option scores are method attributes, NOT derived from PetroChina's actual percentile values",
+ "governance_note": "No option is accepted or rejected because of today's percentile numbers. The actual midrank percentiles are reported in the R4F north-star doc for evidence only and are not part of the option-choice rationale. R4F does not compute 'what would option A score' / 'what would option B score' and then pick the more convenient one.",
+ "fixed_axes": [
+  "north_star_alignment",
+  "uses_trusted_R4E5_evidence",
+  "avoids_double_counting",
+  "preserves_component_topology",
+  "adds_free_parameters",
+  "cycle_safety",
+  "explainability",
+  "determinism",
+  "migration_complexity",
+  "production_false_precision_risk"
+ ],
+ "axis_descriptions": {
+  "north_star_alignment": "low PE at a possible cycle peak must not automatically score high",
+  "uses_trusted_R4E5_evidence": "consumes the CI-confirmed R4E.5 dual-window trusted percentile profile",
+  "avoids_double_counting": "does not weight one economic valuation signal twice",
+  "preserves_component_topology": "keeps va_pe/va_pb/va_ps as exactly three valuation components",
+  "adds_free_parameters": "number of new tunable parameters introduced (fewer is better)",
+  "cycle_safety": "behavior is safe before the PE cycle-context contract is formalized",
+  "explainability": "an observer can state why a component got its evidence bundle",
+  "determinism": "identical fixed inputs reproduce identical component evidence",
+  "migration_complexity": "work to move the current shadow to this model",
+  "production_false_precision_risk": "risk of presenting a non-production estimate as a precise production value"
+ },
+ "options": [
+  {
+   "option_id": "A",
+   "name": "THREE_YEAR_ONLY",
+   "verdict": "REJECT",
+   "verdict_source": "method attributes only",
+   "axes": {
+    "north_star_alignment": "PARTIAL",
+    "uses_trusted_R4E5_evidence": "PARTIAL (drops 5y)",
+    "avoids_double_counting": "YES",
+    "preserves_component_topology": "YES",
+    "adds_free_parameters": "0",
+    "cycle_safety": "FAILS_OPEN (numeric lower_better without cycle gate)",
+    "explainability": "HIGH",
+    "determinism": "HIGH",
+    "migration_complexity": "LOW",
+    "production_false_precision_risk": "HIGH"
+   },
+   "rationale": "Closest to the old engine, but it discards the trusted 5y evidence and contradicts the dual-window policy intent. It keeps the numeric lower_better transform with no cycle gate."
+  },
+  {
+   "option_id": "B",
+   "name": "FIVE_YEAR_ONLY",
+   "verdict": "REJECT",
+   "verdict_source": "method attributes only",
+   "axes": {
+    "north_star_alignment": "PARTIAL",
+    "uses_trusted_R4E5_evidence": "PARTIAL (drops 3y)",
+    "avoids_double_counting": "YES",
+    "preserves_component_topology": "YES",
+    "adds_free_parameters": "0",
+    "cycle_safety": "FAILS_OPEN (numeric lower_better without cycle gate)",
+    "explainability": "HIGH",
+    "determinism": "HIGH",
+    "migration_complexity": "LOW",
+    "production_false_precision_risk": "HIGH"
+   },
+   "rationale": "Longer look-back, but arbitrarily drops 3y; the North Star asks to observe both 3y and 5y. Keeps the numeric lower_better transform with no cycle gate."
+  },
+  {
+   "option_id": "C",
+   "name": "SIX_SEPARATE_COMPONENTS",
+   "verdict": "REJECT",
+   "verdict_source": "method attributes only",
+   "axes": {
+    "north_star_alignment": "PARTIAL",
+    "uses_trusted_R4E5_evidence": "YES",
+    "avoids_double_counting": "NO (same metric scored twice per window)",
+    "preserves_component_topology": "NO (six components replace three)",
+    "adds_free_parameters": "3 (new component weights)",
+    "cycle_safety": "FAILS_OPEN (numeric lower_better without cycle gate)",
+    "explainability": "LOW",
+    "determinism": "HIGH",
+    "migration_complexity": "HIGH",
+    "production_false_precision_risk": "HIGH"
+   },
+   "rationale": "3y and 5y are overlapping windows of the same valuation signal; splitting them into six components double-counts the same economic signal and breaks the three-component topology."
+  },
+  {
+   "option_id": "D",
+   "name": "DUAL_WINDOW_SINGLE_COMPONENT",
+   "verdict": "ACCEPT",
+   "verdict_source": "method attributes only",
+   "axes": {
+    "north_star_alignment": "YES (PE numeric contribution gated pending cycle context)",
+    "uses_trusted_R4E5_evidence": "YES (binds both 3y and 5y on every component)",
+    "avoids_double_counting": "YES (one component per metric, one aggregated value)",
+    "preserves_component_topology": "YES (va_pe/va_pb/va_ps retained)",
+    "adds_free_parameters": "0 (fixed 0.5/0.5 window weights)",
+    "cycle_safety": "FAIL_CLOSED (PE numeric scoring NOT AUTHORIZED until cycle-context contract)",
+    "explainability": "HIGH (each component binds a dual-window evidence bundle)",
+    "determinism": "HIGH (Decimal-only, fixed weights)",
+    "migration_complexity": "MEDIUM (registry v2 / policy v2 / shadow refresh)",
+    "production_false_precision_risk": "LOW (explicitly non-production, PE blocked)"
+   },
+   "rationale": "Keeps the three-component topology; each component binds both percentile_3y and percentile_5y as one dual-window evidence bundle with fixed 0.5/0.5 Decimal weights. No window is dropped, no economic signal is weighted twice, no free parameter is added, and the PE numeric contribution is fail-closed until the cycle-context contract exists."
+  },
+  {
+   "option_id": "E",
+   "name": "EVIDENCE_CARD_ONLY_NO_SHADOW_REFRESH",
+   "verdict": "REJECT_AS_DEFAULT",
+   "verdict_source": "method attributes only",
+   "axes": {
+    "north_star_alignment": "PARTIAL",
+    "uses_trusted_R4E5_evidence": "YES (evidence card only)",
+    "avoids_double_counting": "YES",
+    "preserves_component_topology": "YES",
+    "adds_free_parameters": "0",
+    "cycle_safety": "FAILS_OPEN (keeps old numeric shadow crystalized)",
+    "explainability": "HIGH",
+    "determinism": "HIGH",
+    "migration_complexity": "LOW (no engine change)",
+    "production_false_precision_risk": "HIGH (keeps presenting old 3y-only shadow as current)"
+   },
+   "rationale": "The North Star already authorizes independent dimension scoring and a non-production shadow exists; refusing migration entirely is too conservative. Production stays blocked regardless of this option."
+  }
+ ],
+ "selected_option": {
+  "option_id": "D",
+  "name": "DUAL_WINDOW_SINGLE_COMPONENT",
+  "aggregation_contract_version": "self_history_dual_window_percentile_v1",
+  "window_weights": {
+   "3y": "0.5",
+   "5y": "0.5"
+  },
+  "aggregation": "EQUAL_WEIGHT_3Y_5Y_DECIMAL_MEAN",
+  "note": "selection rationale is method attributes only; no actual percentile value was used to accept or reject any option"
+ }
+}

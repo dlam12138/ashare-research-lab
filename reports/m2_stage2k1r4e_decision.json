@@ -1,0 +1,29 @@
+{
+ "schema": "m2_stage2k1r4e_decision",
+ "version": "1.0",
+ "symbol": "601857.SH",
+ "contracts_trusted": true,
+ "financial_state_timeline_trusted": true,
+ "dual_oracle_identical": true,
+ "identity_consistent": true,
+ "ratio_consistent": true,
+ "market_reconciliation_status": "BLOCKED_EXTERNAL_MARKET_CACHE_UNAVAILABLE",
+ "coverage": {
+  "PE_A_TTM": {
+   "3y_ready": true,
+   "5y_ready": true
+  },
+  "PB_A_MRQ": {
+   "3y_ready": true,
+   "5y_ready": true
+  },
+  "PS_A_TTM": {
+   "3y_ready": true,
+   "5y_ready": true
+  }
+ },
+ "percentile_computed": false,
+ "score_eligible": false,
+ "production_eligible": false,
+ "decision": "PIT_VALUATION_SERIES_GAPS_REMAIN"
+}

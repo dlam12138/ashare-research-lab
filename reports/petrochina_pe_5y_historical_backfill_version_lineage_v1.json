@@ -1,0 +1,62 @@
+{
+ "schema": "petrochina_pe_5y_historical_backfill_version_lineage_v1",
+ "symbol": "601857.SH",
+ "logical_cell_count": 4,
+ "actual_fact_records": 4,
+ "restatement_versions": 0,
+ "bounded_evidence_scan": [
+  "2015_AR",
+  "2016_AR",
+  "2017_AR",
+  "2018_AR",
+  "2019_AR",
+  "2020_AR"
+ ],
+ "chains": [
+  {
+   "logical_cell": "2015-12-31|equity_attributable_to_parent",
+   "version_count": 1,
+   "versions": [
+    "9889ad990a690d542c7aaf7c5b16c6ed7e5c050c43fe341629eda6c520757107"
+   ],
+   "selected_fact_id": "9889ad990a690d542c7aaf7c5b16c6ed7e5c050c43fe341629eda6c520757107",
+   "later_comparative_result": "2016_AR_COMPARATIVE_MATCH",
+   "later_value_overwrite": false,
+   "status": "RESOLVED_NO_RESTATEMENT"
+  },
+  {
+   "logical_cell": "2016-12-31|equity_attributable_to_parent",
+   "version_count": 1,
+   "versions": [
+    "8bdbc73b19f372f28cfe1fb6f512e0a2ac254f2e6f9ca35a327e10d301548f79"
+   ],
+   "selected_fact_id": "8bdbc73b19f372f28cfe1fb6f512e0a2ac254f2e6f9ca35a327e10d301548f79",
+   "later_comparative_result": "2017_AR_COMPARATIVE_MATCH",
+   "later_value_overwrite": false,
+   "status": "RESOLVED_NO_RESTATEMENT"
+  },
+  {
+   "logical_cell": "2016-12-31|net_profit_attributable_to_parent",
+   "version_count": 1,
+   "versions": [
+    "417e57bf1ce75a76018fc6d6632e1d1c1450f764d0bbb4e750fdc24d443792c0"
+   ],
+   "selected_fact_id": "417e57bf1ce75a76018fc6d6632e1d1c1450f764d0bbb4e750fdc24d443792c0",
+   "later_comparative_result": "2017_AR_COMPARATIVE_MATCH",
+   "later_value_overwrite": false,
+   "status": "RESOLVED_NO_RESTATEMENT"
+  },
+  {
+   "logical_cell": "2017-12-31|net_profit_attributable_to_parent",
+   "version_count": 1,
+   "versions": [
+    "6b693690917a6c1b46668fa352afcd9f0d3930f70e56f9fb3fd2243a38bc226f"
+   ],
+   "selected_fact_id": "6b693690917a6c1b46668fa352afcd9f0d3930f70e56f9fb3fd2243a38bc226f",
+   "later_comparative_result": "2018_AR_COMPARATIVE_MATCH",
+   "later_value_overwrite": false,
+   "status": "RESOLVED_NO_RESTATEMENT"
+  }
+ ],
+ "restatement_ambiguity": false
+}

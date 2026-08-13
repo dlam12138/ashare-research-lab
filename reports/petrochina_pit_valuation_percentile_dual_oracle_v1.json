@@ -1,0 +1,136 @@
+{
+ "schema": "petrochina_pit_valuation_percentile_dual_oracle_v1",
+ "version": "1.0",
+ "symbol": "601857.SH",
+ "as_of_trade_date": "2026-07-31",
+ "rank_method": "MIDRANK_EMPIRICAL_PERCENTILE",
+ "all_identical": true,
+ "comparisons": [
+  {
+   "metric_id": "PE_A_TTM",
+   "window_id": "3y",
+   "python": {
+    "N": 728,
+    "L": 668,
+    "E": 2,
+    "G": 58,
+    "rank_numerator": 1339,
+    "rank_denominator": 1456
+   },
+   "duckdb": {
+    "N": 728,
+    "L": 668,
+    "E": 2,
+    "G": 58,
+    "rank_numerator": 1339,
+    "rank_denominator": 1456
+   },
+   "identical": true
+  },
+  {
+   "metric_id": "PE_A_TTM",
+   "window_id": "5y",
+   "python": {
+    "N": 1211,
+    "L": 1128,
+    "E": 2,
+    "G": 81,
+    "rank_numerator": 2259,
+    "rank_denominator": 2422
+   },
+   "duckdb": {
+    "N": 1211,
+    "L": 1128,
+    "E": 2,
+    "G": 81,
+    "rank_numerator": 2259,
+    "rank_denominator": 2422
+   },
+   "identical": true
+  },
+  {
+   "metric_id": "PB_A_MRQ",
+   "window_id": "3y",
+   "python": {
+    "N": 728,
+    "L": 617,
+    "E": 2,
+    "G": 109,
+    "rank_numerator": 1237,
+    "rank_denominator": 1456
+   },
+   "duckdb": {
+    "N": 728,
+    "L": 617,
+    "E": 2,
+    "G": 109,
+    "rank_numerator": 1237,
+    "rank_denominator": 1456
+   },
+   "identical": true
+  },
+  {
+   "metric_id": "PB_A_MRQ",
+   "window_id": "5y",
+   "python": {
+    "N": 1211,
+    "L": 1100,
+    "E": 2,
+    "G": 109,
+    "rank_numerator": 2203,
+    "rank_denominator": 2422
+   },
+   "duckdb": {
+    "N": 1211,
+    "L": 1100,
+    "E": 2,
+    "G": 109,
+    "rank_numerator": 2203,
+    "rank_denominator": 2422
+   },
+   "identical": true
+  },
+  {
+   "metric_id": "PS_A_TTM",
+   "window_id": "3y",
+   "python": {
+    "N": 728,
+    "L": 668,
+    "E": 2,
+    "G": 58,
+    "rank_numerator": 1339,
+    "rank_denominator": 1456
+   },
+   "duckdb": {
+    "N": 728,
+    "L": 668,
+    "E": 2,
+    "G": 58,
+    "rank_numerator": 1339,
+    "rank_denominator": 1456
+   },
+   "identical": true
+  },
+  {
+   "metric_id": "PS_A_TTM",
+   "window_id": "5y",
+   "python": {
+    "N": 1211,
+    "L": 1151,
+    "E": 2,
+    "G": 58,
+    "rank_numerator": 2305,
+    "rank_denominator": 2422
+   },
+   "duckdb": {
+    "N": 1211,
+    "L": 1151,
+    "E": 2,
+    "G": 58,
+    "rank_numerator": 2305,
+    "rank_denominator": 2422
+   },
+   "identical": true
+  }
+ ]
+}

@@ -1,0 +1,67 @@
+{
+  "schema": "value_dimension_scoring_confidence_v1",
+  "version": "1.0",
+  "frozen_date": "2026-08-04",
+  "owner": "M2 Stage 2K.1R scoring-input closeout",
+  "non_production": true,
+  "research_methodology_test_only": true,
+  "overall_score_prohibited": true,
+  "recommendation_prohibited": true,
+  "score_eligible": false,
+  "confidence_separate_from_score": true,
+  "confidence_grade_scale": ["high", "medium", "low", "not_trusted"],
+  "confidence_inputs": [
+    "input_verification",
+    "source_tier",
+    "freshness",
+    "benchmark_completeness",
+    "stage_gap_ids"
+  ],
+  "source_tiers": {
+    "official_exchange": "canonical official-facts fixtures / dividend events",
+    "bounded_scan": "bounded search registry (repurchase)",
+    "computed_report": "committed computed report (value profile / gap ledger)",
+    "coverage_gap": "not computable under strict evidence contract"
+  },
+  "grade_rules": {
+    "start_grade": "high",
+    "lower_to_medium": [
+      "any_roic_gap_present",
+      "any_dividend_exchange_payload_gap",
+      "any_risk_missing_evidence_slot",
+      "any_pit_finding_available_at_after_score_date"
+    ],
+    "lower_to_low": [
+      "input_verification_failed",
+      "source_tier_bounded_scan_only",
+      "benchmark_completeness_below_minimum"
+    ],
+    "not_trusted": [
+      "input_unverified",
+      "overall_score_present",
+      "score_eligible_true"
+    ]
+  },
+  "roic_rule": {
+    "effect": "lowers enterprise-quality coverage and confidence, never a zero or poor-capital-return claim",
+    "gap_ids": ["M2G-ROIC-001", "M2G-ROIC-002", "M2G-ROIC-003", "M2G-ROIC-004", "M2G-ROIC-005", "M2G-ROIC-006", "M2G-ROIC-007"]
+  },
+  "stage2f_gap_effect": {
+    "effect": "9 dividend exchange-payload gaps reduce realization evidence confidence; they do not lower the business-quality score",
+    "gap_ids": ["M2G-DIV-001", "M2G-DIV-002", "M2G-DIV-003", "M2G-DIV-004", "M2G-DIV-005", "M2G-DIV-006", "M2G-DIV-007", "M2G-DIV-008", "M2G-DIV-009"]
+  },
+  "stage2h_gap_effect": {
+    "effect": "2 missing_evidence risk slots reduce risk evidence confidence; they are not a negative conclusion",
+    "gap_ids": ["M2G-RISK-001", "M2G-RISK-002"]
+  },
+  "confidence_not_quality": "evidence confidence must never be described as business quality",
+  "prohibited_outputs": [
+    "overall_score",
+    "rank",
+    "recommendation",
+    "target_price",
+    "upside_probability",
+    "portfolio_weight",
+    "buy_sell_signal"
+  ]
+}

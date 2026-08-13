@@ -1,0 +1,62 @@
+{
+  "status": "pass",
+  "schema": "m2_stage2k1r4b_artifact_manifest_v1",
+  "manifest_path": "reports\\m2_stage2k1r4b_artifact_manifest.json",
+  "verified_file_count": 9,
+  "missing_files": [],
+  "hash_mismatches": [],
+  "size_mismatches": [],
+  "duplicate_paths": [],
+  "invalid_paths": [],
+  "unexpected_contract_errors": [],
+  "verified_entries": [
+    {
+      "path": "src/ashare_research/scoring/artifact_manifest.py",
+      "sha256": "75dc6c526f95b576d4c93c3c531efaf4bb16a089fbcb0098594ca5451087b846",
+      "byte_size": 12235
+    },
+    {
+      "path": "src/ashare_research/scoring/sensitivity.py",
+      "sha256": "5022edf48446478f4aa90d09d7e3fb212e5391aa1bee62a34d495894cca43af9",
+      "byte_size": 34556
+    },
+    {
+      "path": "src/ashare_research/tools/m2_stage2k1r3_closeout.py",
+      "sha256": "902b25bace4f22e0f15a7ca5cc28b86f8f65ea3cc742c98366c13ff2bff8f6db",
+      "byte_size": 8288
+    },
+    {
+      "path": "reports/petrochina_dimension_scoring_sensitivity_v6.json",
+      "sha256": "31387ace24fc6cc5cb91d7e519ef64c9cf2102320d39895d2a33c66c36a845ec",
+      "byte_size": 100240
+    },
+    {
+      "path": "reports/pit_valuation_denominator_readiness_matrix.json",
+      "sha256": "86345deec45e46998c58970a19578aea973851236029aa2cf9f2a053e07969b2",
+      "byte_size": 11968
+    },
+    {
+      "path": "reports/m2_stage2k1r4b_decision.json",
+      "sha256": "3716f683a49f86ff5c02a46bce3387250c7f6a301c40e3983f105917fd95dd6f",
+      "byte_size": 1766
+    },
+    {
+      "path": "docs/pit_valuation_denominator_readiness_review.md",
+      "sha256": "d2d1ab1cc0378ef27d4a430e9f41688835f9af64d33224bc65443934eb27ff25",
+      "byte_size": 12721
+    },
+    {
+      "path": "tests/test_m2_stage2k1r4b_artifact_and_sensitivity_audit.py",
+      "sha256": "5c0413d6ffb3876fb35dec0237deee3b93fef1e28aef893556a34024d9b765e3",
+      "byte_size": 17700
+    },
+    {
+      "path": "tests/test_m2_stage2k1r4b_pit_valuation_readiness.py",
+      "sha256": "c526e9e04dc49cff24bf0a5323ebbee641c608e6219c4042a7addc1b3b825ea4",
+      "byte_size": 9786
+    }
+  ],
+  "manifest_digest": "26b783f3e569dd56326286b9739026e84c043327fab78794ba80f7d385f3b7d6",
+  "errors": [],
+  "warnings": []
+}

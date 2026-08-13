@@ -19,6 +19,13 @@ from pathlib import Path
 from ashare_research import __version__
 from ashare_research.config import load_config
 from ashare_research.exceptions import AshareDataError
+from ashare_research.fact_sources.candidates.akshare_financial import (
+    AKShareFinancialCandidateProvider,
+)
+from ashare_research.fact_sources.registry import FactSourceRegistry
+from ashare_research.facts.as_of import AsOfQuery
+from ashare_research.facts.repository import FactRepository
+from ashare_research.facts.service import FactService
 from ashare_research.providers.akshare_provider import AKShareProvider
 from ashare_research.providers.baostock_provider import BaostockProvider
 from ashare_research.services.data_service import DataService
@@ -274,8 +281,301 @@ def cmd_inspect(args: argparse.Namespace) -> int:
         service.store.close()
 
 
-def main(argv: list[str] | None = None) -> int:
-    """CLI 入口。"""
+# ── M2 价值评估子命令 ──────────────────────────────────────────
+
+
+def create_fact_service(
+    config: dict,
+    *,
+    registry: FactSourceRegistry | None = None,
+    output_root: str | None = None,
+    symbol: str | None = None,
+    source_mode: str = "candidate",
+    raw_dir: str | None = None,
+) -> tuple[FactService, FactRepository, DuckDBStore]:
+    """Create a FactService wired to a DuckDB store and source registry.
+
+    Production code calls this with defaults (AKShare candidate provider
+    registered for the symbol).  Tests inject a custom ``registry``
+    (with mock providers), a temporary ``output_root`` and rely on a
+    config whose ``duckdb_path`` points at a tmp file -- they do *not*
+    replace the validator, repository transaction, manifest, or
+    exit-code logic.
+
+    For ``source_mode="official"`` no provider is registered, so
+    ``registry.get_provider`` raises and the service writes a failed
+    manifest (no fallback to candidate).
+    """
+    store = DuckDBStore(config["storage"]["duckdb_path"])
+    store.connect()
+    repo = FactRepository(store)
+    repo.ensure_schema()
+
+    if registry is None:
+        registry = FactSourceRegistry()
+
+    if (
+        source_mode == "candidate"
+        and symbol is not None
+        and symbol not in registry.list_candidates()
+    ):
+        registry.register_candidate(
+            symbol,
+            AKShareFinancialCandidateProvider(
+                raw_dir=raw_dir or config["storage"].get(
+                    "raw_dir", "data/raw",
+                ),
+            ),
+        )
+
+    out = output_root or config["storage"].get(
+        "value_assessment_output_dir", "output/value_assessment",
+    )
+    service = FactService(
+        fact_repository=repo, source_registry=registry, output_root=out,
+    )
+    return service, repo, store
+
+
+def cmd_build_value_facts(args: argparse.Namespace) -> int:
+    """Build value-assessment facts via validate-before-write.
+
+    Exit codes: 0=passed, 2=conditional_pass, 1=failed.
+
+    ``--source official`` with no official provider registered lets the
+    service write a failed manifest and returns 1 -- it never falls
+    back to candidate data.
+    """
+    config = load_config(args.config)
+    source_mode = getattr(args, "source", "candidate")
+    service_factory = getattr(args, "_service_factory", None)
+
+    store = None
+    try:
+        if service_factory is not None:
+            service, repo, store = service_factory(config)
+        else:
+            service, repo, store = create_fact_service(
+                config, symbol=args.symbol, source_mode=source_mode,
+            )
+
+        result = service.build_facts(
+            args.symbol, args.start_year, args.end_year,
+            source_mode=source_mode,
+        )
+
+        print(f"run_id:           {result['run_id']}")
+        print(f"symbol:           {result['symbol']}")
+        print(f"reported_count:   {result['reported_count']}")
+        print(f"derived_count:    {result['derived_count']}")
+        print(f"total_error_count:{result['total_error_count']}")
+        print(f"status:           {result['status']}")
+        print(f"checkpoint:       {result['checkpoint_decision']}")
+
+        # Official source unavailable: report explicitly and never fall
+        # back to candidate data.
+        if source_mode == "official" and result["status"] == "failed":
+            print(
+                f"official source unavailable for {args.symbol}",
+                file=sys.stderr,
+            )
+            print(
+                "no fallback: candidate data is not used when "
+                "--source official is requested",
+                file=sys.stderr,
+            )
+
+        status = result["status"]
+        if status == "passed":
+            return 0
+        elif status == "conditional_pass":
+            return 2
+        else:
+            return 1
+    except Exception as e:
+        print(f"Error: {e}", file=sys.stderr)
+        return 1
+    finally:
+        if store is not None:
+            store.close()
+
+
+def cmd_verify_value_facts(args: argparse.Namespace) -> int:
+    """重新验证已有事实（从数据库读取事实并重新运行校验）。
+
+    不访问网络，不修改事实本身。
+    """
+    config = load_config(args.config)
+    service_factory = getattr(args, "_service_factory", None)
+
+    store = None
+    try:
+        if service_factory is not None:
+            # reuse the test factory's DuckDB store (same db_path as
+            # build-value-facts used) without registering providers.
+            store = DuckDBStore(service_factory.db_path)  # type: ignore[attr-defined]
+            store.connect()
+            repo = FactRepository(store)
+            repo.ensure_schema()
+        else:
+            store = DuckDBStore(config["storage"]["duckdb_path"])
+            store.connect()
+            repo = FactRepository(store)
+            repo.ensure_schema()
+
+        from datetime import datetime
+
+        from ashare_research.validation.results import summarize_results
+        from ashare_research.validation.validator import FactValidator
+
+        validator = FactValidator()
+
+        # 按 run_id 查询该运行的事实 ID
+        conn = store.connect()
+        if args.run_id:
+            fact_ids = conn.execute(
+                "SELECT fact_id FROM fact_lineage WHERE run_id = ?",
+                [args.run_id],
+            ).fetchall()
+            if not fact_ids:
+                print(f"No facts found for run_id: {args.run_id}")
+                return 1
+            fid_list = [r[0] for r in fact_ids]
+            placeholders = ", ".join(["?"] * len(fid_list))
+            facts_df = conn.execute(
+                f"SELECT * FROM financial_facts "
+                f"WHERE symbol = ? AND fact_id IN ({placeholders})",
+                [args.symbol] + fid_list,
+            ).df()
+        else:
+            facts_df = repo.get_all_versions_for_audit(args.symbol)
+
+        if facts_df.empty:
+            print(f"No facts found for symbol={args.symbol} "
+                  f"{'run_id=' + args.run_id if args.run_id else ''}")
+            return 1
+
+        facts = facts_df.to_dict("records")
+        results = validator.validate_batch(facts)
+        summary = summarize_results(results)
+
+        # 创建新的 validation run（事务保护）
+        run_id = f"verify_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+        txn_conn = store.connect()
+        txn_conn.execute("BEGIN TRANSACTION")
+        try:
+            repo.store_validation_run(
+                run_id=run_id,
+                fact_count=len(facts),
+                error_count=summary["error_count"],
+                warning_count=summary["warning_count"],
+                status=(
+                    "passed" if summary["error_count"] == 0
+                    else "failed"
+                ),
+                conn=txn_conn,
+            )
+            repo.store_validation_results(
+                results=[{
+                    "target_id": r.target_id,
+                    "rule_id": r.rule_id,
+                    "rule_version": r.rule_version,
+                    "severity": r.severity,
+                    "passed": r.passed,
+                    "expected": r.expected,
+                    "actual": r.actual,
+                "message": r.message,
+                "checked_at": r.checked_at,
+            } for r in results],
+            validation_run_id=run_id,
+        )
+
+            txn_conn.execute("COMMIT")
+        except Exception:
+            txn_conn.execute("ROLLBACK")
+            raise
+
+        print(f"Build Run:        {args.run_id}")
+        print(f"Verification Run: {run_id}")
+        print(f"  Symbol:       {args.symbol}")
+        print(f"  Fact count:   {len(facts)}")
+        print(f"  Passed:       {summary['passed']}")
+        print(f"  Failed:       {summary['failed']}")
+        print(f"  Errors:       {summary['error_count']}")
+        print(f"  Warnings:     {summary['warning_count']}")
+
+        return 0 if summary["error_count"] == 0 else 1
+    except Exception as e:
+        print(f"Error: {e}", file=sys.stderr)
+        return 1
+    finally:
+        store.close()
+
+
+def cmd_query_value_facts(args: argparse.Namespace) -> int:
+    """PIT 查询价值评估事实。
+
+    通过 AsOfQuery 对事实表执行时点查询，
+    默认仅返回 verified/reconciled + eligible_for_metrics 的事实。
+    """
+    config = load_config(args.config)
+    store = DuckDBStore(config["storage"]["duckdb_path"])
+    store.connect()
+
+    try:
+        repo = FactRepository(store)
+        as_of = AsOfQuery(repo)
+
+        concept_ids: list[str] | None = args.concept if args.concept else None
+
+        df = as_of.query(
+            symbol=args.symbol,
+            concept_ids=concept_ids,
+            as_of_date=args.as_of,
+            include_unverified=args.include_unverified,
+        )
+
+        if df.empty:
+            print(f"No facts found for {args.symbol} as of {args.as_of}")
+            if args.include_unverified:
+                print("  (include_unverified=True)")
+            return 0
+
+        print(f"Symbol:  {args.symbol}")
+        print(f"As of:   {args.as_of}")
+        print(f"Rows:    {len(df)}")
+        print(f"Concepts:{df['concept_id'].nunique()}")
+        print()
+
+        cols = [
+            "concept_id", "period_end", "value", "unit",
+            "verification_status", "is_derived", "filing_date",
+        ]
+        available_cols = [c for c in cols if c in df.columns]
+        print(df[available_cols].to_string(index=False))
+
+        return 0
+    except Exception as e:
+        print(f"Error: {e}", file=sys.stderr)
+        return 1
+    finally:
+        store.close()
+
+
+def main(
+    argv: list[str] | None = None,
+    *,
+    service_factory=None,
+) -> int:
+    """CLI entry point.
+
+    ``service_factory`` is an optional callable ``config -> (service,
+    repo, store)`` used only by tests to inject a custom registry /
+    DuckDB path / output_root for ``build-value-facts``.  Production
+    calls pass ``None`` and the default :func:`create_fact_service` is
+    used; the validator, repository transaction, manifest, and
+    exit-code logic are never replaced.
+    """
     parser = argparse.ArgumentParser(
         prog="ashare-research",
         description="A股研究平台 — 免费数据底座",
@@ -360,7 +660,63 @@ def main(argv: list[str] | None = None) -> int:
     )
     p_inspect.set_defaults(func=cmd_inspect)
 
+    # build-value-facts
+    p_bvf = subparsers.add_parser(
+        "build-value-facts", help="构建价值评估事实数据",
+    )
+    p_bvf.add_argument(
+        "symbol", type=str, help="股票代码 (e.g. 000001.SZ)",
+    )
+    p_bvf.add_argument(
+        "--start-year", type=int, required=True, help="起始年份",
+    )
+    p_bvf.add_argument(
+        "--end-year", type=int, required=True, help="结束年份",
+    )
+    p_bvf.add_argument(
+        "--source", type=str, default="candidate",
+        choices=["candidate", "official"],
+        help="数据来源类型 (default: candidate)",
+    )
+    p_bvf.set_defaults(func=cmd_build_value_facts)
+
+    # verify-value-facts
+    p_vvf = subparsers.add_parser(
+        "verify-value-facts", help="重新验证已有事实运行",
+    )
+    p_vvf.add_argument(
+        "symbol", type=str, help="股票代码 (e.g. 000001.SZ)",
+    )
+    p_vvf.add_argument(
+        "--run-id", type=str, required=True, help="构建运行 ID",
+    )
+    p_vvf.set_defaults(func=cmd_verify_value_facts)
+
+    # query-value-facts
+    p_qvf = subparsers.add_parser(
+        "query-value-facts", help="PIT 查询价值评估事实",
+    )
+    p_qvf.add_argument(
+        "symbol", type=str, help="股票代码 (e.g. 000001.SZ)",
+    )
+    p_qvf.add_argument(
+        "--as-of", type=str, required=True, dest="as_of",
+        help="PIT 截止日期 YYYY-MM-DD",
+    )
+    p_qvf.add_argument(
+        "--concept", type=str, action="append",
+        help="概念 ID（可重复指定）",
+    )
+    p_qvf.add_argument(
+        "--include-unverified", action="store_true",
+        help="仅用于审计，不得用于正式指标或历史回测",
+    )
+    p_qvf.set_defaults(func=cmd_query_value_facts)
+
     args = parser.parse_args(argv)
+
+    if service_factory is not None:
+        args._service_factory = service_factory
 
     setup_logging(args.debug)
 

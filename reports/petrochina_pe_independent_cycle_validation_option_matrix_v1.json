@@ -1,0 +1,19 @@
+{
+  "schema": "petrochina_pe_independent_cycle_validation_option_matrix_v1",
+  "references_reviewed": ["CFA normalized earnings", "walk-forward validation", "US EIA Europe Brent Spot Price FOB official history"],
+  "borrowed_designs": ["average ROE x current BVPS as one normalized-EPS method", "historical state t uses only facts visible at or before t", "future realized earnings is ex-post outcome only"],
+  "why_applicable": "The claim concerns a PIT-frozen mid-cyclical earnings capacity anchor and must be falsifiable against later realized earnings.",
+  "not_copied": ["forward analyst EPS", "consensus", "peer PE", "DCF", "target price", "sklearn runtime dependency"],
+  "repository_specific_cuts": ["episode-level rather than daily evidence", "4Q primary and 8Q robustness", "separate anchor and outcome ledgers", "Brent excluded from decision gate"],
+  "future_outcomes_inspected_for_selection": false,
+  "options": [
+    {"id": "A", "method": "RAW_VS_NORMALIZED_PE_DIRECTION", "status": "REJECT_AS_INDEPENDENT_EVIDENCE", "reason": "algebraically implied; implementation invariant only"},
+    {"id": "B", "method": "FUTURE_REALIZED_EARNINGS_REVERSION", "status": "SELECT_PRIMARY", "reason": "ex-post realized earnings can independently test movement toward the frozen anchor"},
+    {"id": "C", "method": "FROZEN_ANCHOR_VS_CURRENT_EARNINGS_BENCHMARK", "status": "SELECT_AS_PRIMARY_FALSIFICATION_METRIC", "reason": "tests whether the anchor beats naive current-earnings persistence"},
+    {"id": "D", "method": "EXTERNAL_BRENT_CYCLE_CONTEXT", "status": "SELECT_SECONDARY_CONTEXT_CANDIDATE", "source_candidate": "US EIA Europe Brent Spot Price FOB", "reason": "context only; PIT publication and alignment contracts unresolved"},
+    {"id": "E", "method": "NORMALIZED_MARGIN_CURRENT_MARGIN", "status": "DIAGNOSTIC_ONLY", "reason": "still uses current company earnings"},
+    {"id": "F", "method": "PEER_SECTOR_CYCLE", "status": "DEFERRED", "reason": "peer acquisition not authorized"},
+    {"id": "G", "method": "FUTURE_STOCK_RETURN", "status": "REJECT_OUT_OF_SCOPE", "future_return_validation": "REJECTED_FOR_PE_CYCLE_ANCHOR", "reason": "price prediction and earnings-anchor validity are different propositions"},
+    {"id": "H", "method": "HAND_SET_PEAK_THRESHOLD", "status": "REJECT", "reason": "arbitrary and result-driven threshold risk"}
+  ]
+}

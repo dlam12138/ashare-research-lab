@@ -1,0 +1,39 @@
+{
+  "contract": "roe_roa_denominator_restatement_evidence_v1",
+  "symbol": "601857.SH",
+  "target_fiscal_year": 2023,
+  "evidence_fiscal_year": 2024,
+  "evidence_bundle_path": "acceptance/fixtures/official_facts/601857.SH/2024_annual.json",
+  "concepts": [
+    {
+      "concept_id": "total_assets",
+      "original_raw_value": "2752710",
+      "later_comparative_raw_value": "2759237",
+      "raw_unit": "人民币百万元",
+      "changed": true,
+      "disclosed_change_reason": "Common-control business combination (中油电能 consolidated from 2024-10-29)",
+      "review_status": "reviewed_changed",
+      "company": {
+        "manual_review_status": "visually_verified_twice"
+      },
+      "exchange": {
+        "manual_review_status": "visually_verified_twice"
+      }
+    },
+    {
+      "concept_id": "equity_attributable_to_parent",
+      "original_raw_value": "1446410",
+      "later_comparative_raw_value": "1451333",
+      "raw_unit": "人民币百万元",
+      "changed": true,
+      "disclosed_change_reason": "Common-control business combination (中油电能 consolidated from 2024-10-29)",
+      "review_status": "reviewed_changed",
+      "company": {
+        "manual_review_status": "visually_verified_twice"
+      },
+      "exchange": {
+        "manual_review_status": "visually_verified_twice"
+      }
+    }
+  ]
+}

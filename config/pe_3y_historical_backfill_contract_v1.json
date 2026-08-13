@@ -1,0 +1,100 @@
+{
+  "schema": "pe_3y_historical_backfill_contract_v1",
+  "contract_id": "pe_3y_historical_annual_fact_backfill_v1",
+  "version": "1.0",
+  "stage": "2K.1R4F.3A",
+  "symbol": "601857.SH",
+  "accounting_scope": "consolidated",
+  "accounting_standard": "CAS",
+  "canonical_unit": "CNY",
+  "concepts_allowed": [
+    "equity_attributable_to_parent",
+    "net_profit_attributable_to_parent"
+  ],
+  "target_logical_cells": [
+    {
+      "cell_id": "A",
+      "concept": "equity_attributable_to_parent",
+      "period_end": "2017-12-31",
+      "required_for": "opening_equity_roe_2018"
+    },
+    {
+      "cell_id": "B",
+      "concept": "equity_attributable_to_parent",
+      "period_end": "2018-12-31",
+      "required_for": "annual_roe_2018"
+    },
+    {
+      "cell_id": "C",
+      "concept": "net_profit_attributable_to_parent",
+      "period_end": "2018-12-31",
+      "required_for": "annual_roe_2018"
+    },
+    {
+      "cell_id": "D",
+      "concept": "equity_attributable_to_parent",
+      "period_end": "2019-12-31",
+      "required_for": "annual_roe_2019"
+    },
+    {
+      "cell_id": "E",
+      "concept": "net_profit_attributable_to_parent",
+      "period_end": "2019-12-31",
+      "required_for": "annual_roe_2019"
+    }
+  ],
+  "target_logical_cell_count": 5,
+  "pit_rule": {
+    "rule_id": "announcement-date-to-next-trading-day-v1",
+    "available_at": "official announcement date",
+    "effective_from": "next real trading day after announcement",
+    "calendar_registry": "config/pit_valuation_market_calendar_registry_r4f3a_v1.json",
+    "fail_closed_on_calendar_gap": true
+  },
+  "source_policy": {
+    "primary": "exchange_official",
+    "primary_note": "Shanghai Stock Exchange official annual-report disclosure",
+    "forbidden": [
+      "AKShare_financials",
+      "Eastmoney_financials",
+      "third_party_news",
+      "search_result_summary",
+      "manual_web_numbers",
+      "llm_direct_fill"
+    ],
+    "issuer_official": "evidence_alias_or_cross_check_only",
+    "byte_identical_alias_rule": "share content object identity; never a second economic fact",
+    "non_byte_identical_alias_rule": "separate evidence object; never pretend same source"
+  },
+  "restatement_policy": {
+    "version_chain_required": true,
+    "supersedes_chain_complete": true,
+    "ambiguous_status": "RESTATEMENT_AMBIGUITY",
+    "fail_closed_on_ambiguity": true,
+    "no_latest_value_backfill": true
+  },
+  "roe_contract": {
+    "formula": "NP_y / ((Equity_{y-1} + Equity_y) / 2)",
+    "decimal_only": true,
+    "disclosed_roe_is_cross_check_only": true,
+    "disclosed_roe_never_formal_input": true
+  },
+  "scoring_boundary": {
+    "pe_numeric_score": "BLOCKED_UNCHANGED",
+    "valuation_dimension_score": "NONE",
+    "normalized_pe_percentile": "NOT_COMPUTED",
+    "full_cycle_proven": false
+  },
+  "gates": {
+    "r4f3_upstream_trusted": true,
+    "target_cell_count": 5,
+    "source_trusted": true,
+    "cache_verified": true,
+    "extraction_trusted": true,
+    "restatement_trusted": true,
+    "pit_trusted": true,
+    "identity_trusted": true,
+    "3y_window_ready": false,
+    "no_scoring_changes": true
+  }
+}

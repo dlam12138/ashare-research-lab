@@ -1,0 +1,61 @@
+{
+  "contract": "market_data_snapshot_registry_v2",
+  "schema_version": "2.0",
+  "data_class": "external_real_data_cache",
+  "symbol": "601857.SH",
+  "date_range": {
+    "end": "2026-07-31",
+    "start": "2021-01-01"
+  },
+  "providers": [
+    {
+      "acquisition_warning": null,
+      "adjustment": "none",
+      "date_range": {
+        "end": "2026-07-31",
+        "start": "2021-01-04"
+      },
+      "fields_units": {
+        "amount": "CNY",
+        "close": "CNY/share",
+        "volume": "share"
+      },
+      "logical_name": "601857.SH_baostock_daily_unadjusted",
+      "object_key": "baostock/defd0b9507c0d87cf9d12864923eb24573e4edee28d7b67b9ce319ab4d91a764.parquet",
+      "provider": "baostock",
+      "provider_version": "0.9.3",
+      "retrieval_status": "verified_external",
+      "row_count": 1351,
+      "sha256": "defd0b9507c0d87cf9d12864923eb24573e4edee28d7b67b9ce319ab4d91a764",
+      "snapshot_sha256": "defd0b9507c0d87cf9d12864923eb24573e4edee28d7b67b9ce319ab4d91a764"
+    },
+    {
+      "acquisition_warning": "network_refresh_failed_reused_verified_external_probe:NetworkError",
+      "adjustment": "none",
+      "date_range": {
+        "end": "2026-07-31",
+        "start": "2021-01-04"
+      },
+      "fields_units": {
+        "amount": "CNY",
+        "close": "CNY/share",
+        "volume": "share"
+      },
+      "logical_name": "601857.SH_akshare_daily_unadjusted",
+      "object_key": "akshare/203ddfd7ce14502c61da11dca49df54f62737d28778a1d4b175c1d635c7ce61c.parquet",
+      "provider": "akshare",
+      "provider_version": "1.18.79",
+      "retrieval_status": "verified_external",
+      "row_count": 1351,
+      "sha256": "203ddfd7ce14502c61da11dca49df54f62737d28778a1d4b175c1d635c7ce61c",
+      "snapshot_sha256": "203ddfd7ce14502c61da11dca49df54f62737d28778a1d4b175c1d635c7ce61c"
+    }
+  ],
+  "common_trade_days": 1351,
+  "close_max_abs_difference": 0.0,
+  "close_differences_within_0_01": true,
+  "reconciliation_status": "pass",
+  "official_exchange_anchor_status": "not_available_in_offline_acquisition",
+  "network_used": false,
+  "resolver_contract": "caller_supplied_market_cache_root_plus_content_hash"
+}

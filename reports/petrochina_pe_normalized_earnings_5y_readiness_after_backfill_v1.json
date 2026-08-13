@@ -1,0 +1,61 @@
+{
+ "schema": "petrochina_pe_normalized_earnings_5y_readiness_after_backfill_v1",
+ "symbol": "601857.SH",
+ "window": {
+  "start": "2021-08-02",
+  "end": "2026-07-31"
+ },
+ "5y_gate": {
+  "required_days": 1211,
+  "ready_days": 1211,
+  "blocked_days": 0,
+  "status": "READY"
+ },
+ "engine": "R4F3_NORMALIZED_EARNINGS_READINESS_REUSED",
+ "engine_result": {
+  "schema": "pe_normalized_earnings_historical_readiness_v1",
+  "symbol": "601857.SH",
+  "as_of_trade_date": "2026-07-31",
+  "windows": {
+   "3y": {
+    "start": "2023-07-31",
+    "end": "2026-07-31"
+   },
+   "5y": {
+    "start": "2021-08-02",
+    "end": "2026-07-31"
+   }
+  },
+  "candidate_trade_day_count": 1351,
+  "prototype_ready_trade_days": 1296,
+  "blocked_trade_days": 55,
+  "earliest_ready_trade_date": "2021-03-29",
+  "latest_ready_trade_date": "2026-07-31",
+  "ready_date_ranges": [
+   {
+    "start": "2021-03-29",
+    "end": "2026-07-31"
+   }
+  ],
+  "unique_normalized_earnings_state_count": 22,
+  "annual_roll_transition_count": 5,
+  "gap_reason_counts": {
+   "insufficient_roe_history": 55
+  },
+  "verdicts": {
+   "CURRENT_ASOF_READY": true,
+   "3Y_HISTORICAL_VALIDATION_READY": true,
+   "5Y_HISTORICAL_VALIDATION_READY": true,
+   "FULL_CYCLE_VALIDATION_READY": false,
+   "full_cycle_reason": "no independent deterministic full-cycle proof exists in-repo"
+  },
+  "blocked_dates": {
+   "3y_window": [],
+   "5y_window": []
+  },
+  "no_forward_fill": true,
+  "no_3y_4y_roe_fallback": true,
+  "non_scoring": true
+ },
+ "no_forward_fill": true
+}

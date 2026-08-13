@@ -1,0 +1,96 @@
+{
+ "schema": "petrochina_secondary_provider_probe_v1",
+ "version": "1.0",
+ "symbol": "601857.SH",
+ "window": {
+  "requested_start": "2021-01-01",
+  "required_first_trade_date": "2021-01-04",
+  "requested_end": "2026-07-31",
+  "required_last_trade_date": "2026-07-31",
+  "required_trade_days": 1351
+ },
+ "pytdx_probe_runtime_version": "1.72",
+ "pytdx_core_dependency": false,
+ "candidates": [
+  {
+   "candidate_id": "tencent_via_akshare",
+   "transport_library": "akshare",
+   "underlying_provider": "tencent",
+   "reachable": true,
+   "rows_returned": 1351,
+   "endpoint_identity": "web.ifzq.gtimg.cn",
+   "status": "reachable"
+  },
+  {
+   "candidate_id": "sina_via_akshare",
+   "transport_library": "akshare",
+   "underlying_provider": "sina",
+   "reachable": true,
+   "rows_returned": 1351,
+   "endpoint_identity": "finance.sina.com.cn",
+   "status": "reachable"
+  },
+  {
+   "candidate_id": "pytdx_tongdaxin",
+   "transport_library": "pytdx",
+   "underlying_provider": "tongdaxin_quote_server",
+   "reachable": false,
+   "status": "blocked",
+   "error_type": "PreflightAcquisitionError",
+   "message": "pytdx_tongdaxin acquisition failed after 1 attempts: "
+  },
+  {
+   "candidate_id": "tushare_pro_optional",
+   "transport_library": "tushare",
+   "underlying_provider": "tushare_pro",
+   "reachable": false,
+   "credential_not_available": true,
+   "not_a_failure": true,
+   "status": "credential_not_available",
+   "message": "no tushare token present; candidate not evaluated"
+  }
+ ],
+ "acquisition": [
+  {
+   "candidate_id": "tencent_via_akshare",
+   "transport_library": "akshare",
+   "underlying_provider": "tencent",
+   "endpoint_identity": "web.ifzq.gtimg.cn",
+   "independent": true,
+   "status": "ACQUISITION_STABLE",
+   "stable": true,
+   "row_count_a": 1351,
+   "row_count_b": 1351,
+   "table_digest": "e6cbee888949b13c0ee47a6193d58026ad6da72a332ffd66948ee4bc4b908cda",
+   "object_sha256": "d760923aae952d9ba400d792d4155b4c6dfa3b728210de64001aa6024c8f7dd7",
+   "object_key": "tencent_via_akshare/d760923aae952d9ba400d792d4155b4c6dfa3b728210de64001aa6024c8f7dd7.parquet",
+   "attempt": 3
+  },
+  {
+   "candidate_id": "sina_via_akshare",
+   "transport_library": "akshare",
+   "underlying_provider": "sina",
+   "endpoint_identity": "finance.sina.com.cn",
+   "independent": true,
+   "status": "ACQUISITION_STABLE",
+   "stable": true,
+   "row_count_a": 1351,
+   "row_count_b": 1351,
+   "table_digest": "e0c5429feccb5bbe101a33af027e492cf0a8345ea905a461f850d78d638b086c",
+   "object_sha256": "cd02995e13633b3b2baa956b00b2eaa139b12c2f596b3882a377101ec6fb5a70",
+   "object_key": "sina_via_akshare/cd02995e13633b3b2baa956b00b2eaa139b12c2f596b3882a377101ec6fb5a70.parquet",
+   "attempt": 3
+  },
+  {
+   "candidate_id": "pytdx_tongdaxin",
+   "status": "BLOCKED_PROVIDER_ACCESS",
+   "error_type": "PreflightAcquisitionError",
+   "message": "pytdx_tongdaxin acquisition failed after 3 attempts: "
+  },
+  {
+   "candidate_id": "tushare_pro_optional",
+   "status": "credential_not_available",
+   "not_a_failure": true
+  }
+ ]
+}

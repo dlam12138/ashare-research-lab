@@ -1,0 +1,27 @@
+{
+ "schema": "pe_normalized_3y_percentile_profile_v1",
+ "symbol": "601857.SH",
+ "as_of_trade_date": "2026-07-31",
+ "window": {
+  "start": "2023-07-31",
+  "end": "2026-07-31"
+ },
+ "n": 728,
+ "current_normalized_pe_decimal": "12.12889979366021109951970404",
+ "current_raw_pe_decimal": "12.81970638132453345471096950",
+ "current_raw_pe_3y_percentile": "91.964286",
+ "percentile": {
+  "method_id": "MIDRANK_EMPIRICAL_PERCENTILE",
+  "n": 728,
+  "count_less": 161,
+  "count_equal": 2,
+  "count_greater": 565,
+  "rank_numerator": 325,
+  "rank_denominator": 1456,
+  "midrank_percentile_decimal": "22.32142857142857142857142857",
+  "rational_identity": "325/1456"
+ },
+ "comparison": "DESCRIPTIVE_DENOMINATOR_NORMALIZATION_COMPARISON",
+ "no_buy_sell_interpretation": true,
+ "not_scoring_input": true
+}

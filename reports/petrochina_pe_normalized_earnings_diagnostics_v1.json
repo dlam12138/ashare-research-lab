@@ -1,0 +1,145 @@
+{
+  "schema": "petrochina_pe_normalized_earnings_diagnostics_v1",
+  "symbol": "601857.SH",
+  "as_of_trade_date": "2026-07-31",
+  "non_scoring": true,
+  "no_score_computed": true,
+  "roe_method": {
+    "eligible_years": [
+      "2021",
+      "2022",
+      "2023",
+      "2024",
+      "2025"
+    ],
+    "annual_roe_values": [
+      "0.07434629055079871379731497929",
+      "0.1129630958714448405117204395",
+      "0.1146411949491226163766439180",
+      "0.1112006593330161818176293251",
+      "0.1014383033385868205396732864"
+    ],
+    "average_roe": "0.1029179088085938346085963897",
+    "current_parent_equity": "1624532000000.0",
+    "current_share_count": "183020977818.0",
+    "current_bvps": "8.876206538550294436827638346",
+    "normalized_eps": "0.9135206151007635380066173292"
+  },
+  "historical_eps_diagnostic": {
+    "eligible_years": [
+      {
+        "fiscal_year": "2021",
+        "basic_eps": "0.5",
+        "basic_eps_fact_id": "aacb1922addfd3da707d16e5510991014e85bbd2f6b3192e93e2d34ef3657ba9",
+        "eps_from_np_shares": "0.5035542979758685489682394546"
+      },
+      {
+        "fiscal_year": "2022",
+        "basic_eps": "0.82",
+        "basic_eps_fact_id": "900428738b1fe0f419b95026f863315f1aada8488e98c6463b3a4940e68e8d05",
+        "eps_from_np_shares": "0.8126827961104451583255173012"
+      },
+      {
+        "fiscal_year": "2023",
+        "basic_eps": "0.88",
+        "basic_eps_fact_id": "d2021010b08ce8bd2c0bf5405e1d8d42071945762d4f890dad1b0af40a9b6ff7",
+        "eps_from_np_shares": "0.8819426162202758863636397535"
+      },
+      {
+        "fiscal_year": "2024",
+        "basic_eps": "0.9",
+        "basic_eps_fact_id": "65f12c7a7fa56d99931fdebf06509bc8ac107812e9273de6dd2c9a6cbe2725eb",
+        "eps_from_np_shares": "0.8997657097196659017360250043"
+      },
+      {
+        "fiscal_year": "2025",
+        "basic_eps": "0.86",
+        "basic_eps_fact_id": "84111bbedebc275468c0fd8c68d0cf018d55357ff2e9ad351655548dfc3e78fd",
+        "eps_from_np_shares": "0.8594752463645150821909701792"
+      }
+    ],
+    "average_eps_basic": "0.792",
+    "average_eps_from_np_shares": "0.7914841332781541155168783386",
+    "full_cycle_proven": false,
+    "method_label": "HISTORICAL_WINDOW_AVERAGE_EPS"
+  },
+  "margin_diagnostic": {
+    "eligible_years": [
+      {
+        "fiscal_year": "2021",
+        "parent_net_profit": "92161000000.0",
+        "revenue": "2614349000000.0",
+        "margin": "0.03525198816225377713534038493",
+        "np_fact_id": "eb1a6271b4a359bda90f7bc6439ee61ff0597990457d348abd5ae451040a527e",
+        "revenue_fact_id": "027de9ede52314d1c13ab2836afb57b2d517fbdaaaa7c46e48e5de5a1d7d7ab2"
+      },
+      {
+        "fiscal_year": "2022",
+        "parent_net_profit": "148738000000.0",
+        "revenue": "3239167000000.0",
+        "margin": "0.04591859573773133648249688886",
+        "np_fact_id": "0e086ca894c661c8ad719d8bbe814ce6af17d9fb3d6bd6171a20566a90793874",
+        "revenue_fact_id": "6498989f87925c3da4981e4c6a7a48a93040d040196b6f2e852c9737d003fe4b"
+      },
+      {
+        "fiscal_year": "2023",
+        "parent_net_profit": "161414000000.0",
+        "revenue": "3012812000000.0",
+        "margin": "0.05357586201860587384808610693",
+        "np_fact_id": "c1b5a6869b209bcf1af660d7564047fe4a583aa47283d19a8c49de5ff30f0a5c",
+        "revenue_fact_id": "3d1c68604bfe8ce6f984e2ec2d9559d8b0b88dca6f7084c5cd9492c04cfa9138"
+      },
+      {
+        "fiscal_year": "2024",
+        "parent_net_profit": "164676000000.0",
+        "revenue": "2937981000000.0",
+        "margin": "0.05605073688359455013493960648",
+        "np_fact_id": "ea454577cf53f36214712ce87f0a5c993acdeab3fd08bbe2813ec2605f33d3d9",
+        "revenue_fact_id": "4fa6c3ad7f8aeb42e00b240a750685fe9154a0d843d3f405ffb2d6acd726914d"
+      },
+      {
+        "fiscal_year": "2025",
+        "parent_net_profit": "157302000000.0",
+        "revenue": "2864469000000.0",
+        "margin": "0.05491488998484535877330143911",
+        "np_fact_id": "dea845ccad75d66b363fa67618f3f735c2dd756d43028e075859f5b94cf2b5a8",
+        "revenue_fact_id": "eb7a6d0286eea95bc075757114d0a82c9f725f28c5c59193227ded66959fce9b"
+      }
+    ],
+    "average_parent_np_margin": "0.04914241455740617927483288526",
+    "current_ttm_revenue": "2847796000000.0",
+    "normalized_parent_np": "139947571606.9230877141519913",
+    "normalized_eps": "0.7646531740535774286590419341"
+  },
+  "current": {
+    "current_ttm_parent_net_profit": "158184000000.0",
+    "current_ttm_eps": "0.8642943660660668889225593242",
+    "current_pe_a_ttm": "12.81970638132453345471096950",
+    "current_pe_percentile_3y": "91.964286",
+    "current_pe_percentile_5y": "93.270025"
+  },
+  "context_ratios": {
+    "current_eps_over_roe_normalized_eps": "0.9461136965920940114716739512",
+    "current_eps_over_margin_normalized_eps": "1.130309002033264088698400189"
+  },
+  "method_agreement": {
+    "pairs": {
+      "roe_vs_margin": {
+        "pairwise_absolute_difference": "0.1488674410471861093475753951",
+        "pairwise_relative_difference": "0.1946862265123551582036741905"
+      },
+      "roe_vs_historical_window_avg": {
+        "pairwise_absolute_difference": "0.1215206151007635380066173292",
+        "pairwise_relative_difference": "0.1534351200767216388972441025"
+      },
+      "margin_vs_historical_window_avg": {
+        "pairwise_absolute_difference": "0.0273468259464225713409580659",
+        "pairwise_relative_difference": "0.03452882063942243856181573977"
+      }
+    },
+    "diagnostic_only": true,
+    "no_trust_threshold": true
+  },
+  "no_arbitrary_peak_threshold": true,
+  "no_peak_label": true
+}

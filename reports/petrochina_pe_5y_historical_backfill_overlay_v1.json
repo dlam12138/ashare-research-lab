@@ -1,0 +1,21 @@
+{
+ "schema": "petrochina_pe_5y_historical_backfill_overlay_v1",
+ "symbol": "601857.SH",
+ "components": [
+  "existing_trusted_2020_plus_facts",
+  "r4f3a_5_cell_8_record_backfill",
+  "r4f4a1_4_cell_versioned_facts"
+ ],
+ "existing_fact_count": 173,
+ "new_fact_count": 4,
+ "combined_fact_count": 177,
+ "existing_digest": "926139219c4903a3e17c72178c193bc1950fa8ac1a950cc35d696d400ed3002c",
+ "new_digest": "a9a57c398b72bcfc6cb711c990ad824b31c1f6aae85053aac12c325e645d1c10",
+ "combined_digest": "ca5ec3cd671a05505db6b980b7e69bcb2352c0a9f6823deeca052953b0523f11",
+ "selected_new_fact_ids": [
+  "9889ad990a690d542c7aaf7c5b16c6ed7e5c050c43fe341629eda6c520757107",
+  "8bdbc73b19f372f28cfe1fb6f512e0a2ac254f2e6f9ca35a327e10d301548f79",
+  "417e57bf1ce75a76018fc6d6632e1d1c1450f764d0bbb4e750fdc24d443792c0",
+  "6b693690917a6c1b46668fa352afcd9f0d3930f70e56f9fb3fd2243a38bc226f"
+ ]
+}

@@ -1,0 +1,3289 @@
+{
+  "schema": "roic_fact_readiness_report_v1",
+  "symbol": "601857.SH",
+  "audit_years": [
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "inventory_source": "committed:config/roic_canonical_fact_inventory_v1.json",
+  "inventory_fact_count": 64,
+  "formula_candidate": "B_operating_profit_bridge_financing_view",
+  "formula_status": "frozen_primary_candidate_not_production_metric",
+  "evidence_gate": "BLOCKED_WITH_EXPLICIT_GAPS",
+  "shadow": {
+    "status": "NOT_RUN",
+    "reason": "the direct operating-tax, scope-matched finance and non-operating asset evidence gate is not satisfied",
+    "production_metric_created": false,
+    "current_value_profile_changed": false
+  },
+  "policy_freeze": {
+    "nopat": "Candidate B: operating profit plus eligible finance adjustment minus matched non-operating items minus directly allocated operating tax",
+    "invested_capital": "primary financing view; parent equity plus NCI plus scope-matched interest-bearing debt and leases minus qualifying non-operating assets",
+    "tax": "direct operating tax required; current plus deferred bridge; no clipping and no silent fallback",
+    "cash": "never subtract all cash silently; classification and purpose evidence required",
+    "average_balance": "opening plus closing divided by two; missing opening balance is not computable",
+    "pit": "available_at maximum and restatement version supersession",
+    "restatement": "superseding canonical Fact replaces the prior version",
+    "forbidden_nopat": [
+      "net_profit",
+      "net_profit_attributable_to_parent",
+      "EBITDA",
+      "manual_plug",
+      "LLM_inference"
+    ]
+  },
+  "coverage_by_year": {
+    "2020": {
+      "ready": 2,
+      "missing": 18,
+      "not_applicable": 12
+    },
+    "2021": {
+      "ready": 11,
+      "missing": 21,
+      "not_applicable": 0
+    },
+    "2022": {
+      "ready": 11,
+      "missing": 21,
+      "not_applicable": 0
+    },
+    "2023": {
+      "ready": 11,
+      "missing": 21,
+      "not_applicable": 0
+    },
+    "2024": {
+      "ready": 11,
+      "missing": 21,
+      "not_applicable": 0
+    },
+    "2025": {
+      "ready": 11,
+      "missing": 21,
+      "not_applicable": 0
+    }
+  },
+  "blocking_gaps": [
+    {
+      "fiscal_year": 2021,
+      "concept_id": "finance_cost",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "finance_cost",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "finance_cost",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "finance_cost",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "finance_cost",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "interest_expense",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "interest_expense",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "interest_expense",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "interest_expense",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "interest_expense",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "lease_interest_expense",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "lease_interest_expense",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "lease_interest_expense",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "lease_interest_expense",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "lease_interest_expense",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "investment_income",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "investment_income",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "investment_income",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "investment_income",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "investment_income",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "fair_value_change",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "fair_value_change",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "fair_value_change",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "fair_value_change",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "fair_value_change",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "other_non_operating_income",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "other_non_operating_income",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "other_non_operating_income",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "other_non_operating_income",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "other_non_operating_income",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "other_non_operating_expense",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "other_non_operating_expense",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "other_non_operating_expense",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "other_non_operating_expense",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "other_non_operating_expense",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "operating_tax_expense",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "operating_tax_expense",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "operating_tax_expense",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "operating_tax_expense",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "operating_tax_expense",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "income_tax_expense",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "income_tax_expense",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "income_tax_expense",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "income_tax_expense",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "income_tax_expense",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "deferred_tax_expense",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "deferred_tax_expense",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "deferred_tax_expense",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "deferred_tax_expense",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "deferred_tax_expense",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "profit_before_tax",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "profit_before_tax",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "profit_before_tax",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "profit_before_tax",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "profit_before_tax",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "nci",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "nci",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "nci",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "nci",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "nci",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "nci",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "short_term_borrowings",
+      "status": "missing_canonical_fact",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "current_portion_of_long_term_borrowings",
+      "status": "missing_canonical_fact",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "current_portion_of_bonds_payable",
+      "status": "missing_canonical_fact",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "current_portion_of_lease_liabilities",
+      "status": "missing_canonical_fact",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "long_term_borrowings",
+      "status": "missing_canonical_fact",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "bonds_payable",
+      "status": "missing_canonical_fact",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "lease_liabilities",
+      "status": "missing_canonical_fact",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "interest_bearing_long_term_payables",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "interest_bearing_long_term_payables",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "interest_bearing_long_term_payables",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "interest_bearing_long_term_payables",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "interest_bearing_long_term_payables",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "interest_bearing_long_term_payables",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "cash_and_cash_equivalents",
+      "status": "missing_canonical_fact",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "monetary_funds",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "monetary_funds",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "monetary_funds",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "monetary_funds",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "monetary_funds",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "monetary_funds",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "restricted_cash",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "restricted_cash",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "restricted_cash",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "restricted_cash",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "restricted_cash",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "restricted_cash",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "financial_assets_at_fair_value",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "financial_assets_at_fair_value",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "financial_assets_at_fair_value",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "financial_assets_at_fair_value",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "financial_assets_at_fair_value",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "financial_assets_at_fair_value",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "financial_assets_at_amortized_cost",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "financial_assets_at_amortized_cost",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "financial_assets_at_amortized_cost",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "financial_assets_at_amortized_cost",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "financial_assets_at_amortized_cost",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "financial_assets_at_amortized_cost",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "associate_investment",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "associate_investment",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "associate_investment",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "associate_investment",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "associate_investment",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "associate_investment",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "joint_venture_investment",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "joint_venture_investment",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "joint_venture_investment",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "joint_venture_investment",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "joint_venture_investment",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "joint_venture_investment",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "goodwill",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "goodwill",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "goodwill",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "goodwill",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "goodwill",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "goodwill",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "noninterest_bearing_operating_liabilities",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "noninterest_bearing_operating_liabilities",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "noninterest_bearing_operating_liabilities",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "noninterest_bearing_operating_liabilities",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "noninterest_bearing_operating_liabilities",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "noninterest_bearing_operating_liabilities",
+      "status": "missing",
+      "reason": "required input is absent from the canonical eligible Fact inventory"
+    }
+  ],
+  "matrix": [
+    {
+      "fiscal_year": 2020,
+      "concept_id": "operating_profit",
+      "role": "nopat_operating_profit",
+      "kind": "duration",
+      "required": true,
+      "status": "not_applicable",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "operating_profit",
+      "role": "nopat_operating_profit",
+      "kind": "duration",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "252fe65ca6d3f9fc14578fe9333eeeace10c51f43058fb4846d58b15306942f0"
+      ],
+      "available_at": [
+        "2022-04-01"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "operating_profit",
+      "role": "nopat_operating_profit",
+      "kind": "duration",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "707e35066ae15b6558a8f59c470bebf01f10820829553133543945e8ee992974"
+      ],
+      "available_at": [
+        "2023-03-30"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "operating_profit",
+      "role": "nopat_operating_profit",
+      "kind": "duration",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "bd07502f296ce6f80bcbffee8e35b3b56b0833d08baf098e43a345edd614a252",
+        "b2b38471ceb24e6225c8e0fa91e8fa7585ec5d4104596d913bc91900f7034e4a"
+      ],
+      "available_at": [
+        "2024-03-26",
+        "2025-03-31"
+      ],
+      "restatement_versions": [
+        "original",
+        "restated_1"
+      ]
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "operating_profit",
+      "role": "nopat_operating_profit",
+      "kind": "duration",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "53fc036f99690397a46995970845868c8b4ad53a9321d7656edd025aacd6123f"
+      ],
+      "available_at": [
+        "2025-03-31"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "operating_profit",
+      "role": "nopat_operating_profit",
+      "kind": "duration",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "2a98f29f9c371c6d52fed66efdcd9bb5a0bf6acec95752d699cfea135c3b469c"
+      ],
+      "available_at": [
+        "2026-03-30"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "finance_cost",
+      "role": "nopat_finance_adjustment",
+      "kind": "duration",
+      "required": true,
+      "status": "not_applicable",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "finance_cost",
+      "role": "nopat_finance_adjustment",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "finance_cost",
+      "role": "nopat_finance_adjustment",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "finance_cost",
+      "role": "nopat_finance_adjustment",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "finance_cost",
+      "role": "nopat_finance_adjustment",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "finance_cost",
+      "role": "nopat_finance_adjustment",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "interest_expense",
+      "role": "nopat_finance_adjustment",
+      "kind": "duration",
+      "required": true,
+      "status": "not_applicable",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "interest_expense",
+      "role": "nopat_finance_adjustment",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "interest_expense",
+      "role": "nopat_finance_adjustment",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "interest_expense",
+      "role": "nopat_finance_adjustment",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "interest_expense",
+      "role": "nopat_finance_adjustment",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "interest_expense",
+      "role": "nopat_finance_adjustment",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "lease_interest_expense",
+      "role": "nopat_finance_adjustment",
+      "kind": "duration",
+      "required": true,
+      "status": "not_applicable",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "lease_interest_expense",
+      "role": "nopat_finance_adjustment",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "lease_interest_expense",
+      "role": "nopat_finance_adjustment",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "lease_interest_expense",
+      "role": "nopat_finance_adjustment",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "lease_interest_expense",
+      "role": "nopat_finance_adjustment",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "lease_interest_expense",
+      "role": "nopat_finance_adjustment",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "investment_income",
+      "role": "nopat_non_operating_exclusion",
+      "kind": "duration",
+      "required": true,
+      "status": "not_applicable",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "investment_income",
+      "role": "nopat_non_operating_exclusion",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "investment_income",
+      "role": "nopat_non_operating_exclusion",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "investment_income",
+      "role": "nopat_non_operating_exclusion",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "investment_income",
+      "role": "nopat_non_operating_exclusion",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "investment_income",
+      "role": "nopat_non_operating_exclusion",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "fair_value_change",
+      "role": "nopat_non_operating_exclusion",
+      "kind": "duration",
+      "required": true,
+      "status": "not_applicable",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "fair_value_change",
+      "role": "nopat_non_operating_exclusion",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "fair_value_change",
+      "role": "nopat_non_operating_exclusion",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "fair_value_change",
+      "role": "nopat_non_operating_exclusion",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "fair_value_change",
+      "role": "nopat_non_operating_exclusion",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "fair_value_change",
+      "role": "nopat_non_operating_exclusion",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "other_non_operating_income",
+      "role": "nopat_non_operating_exclusion",
+      "kind": "duration",
+      "required": true,
+      "status": "not_applicable",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "other_non_operating_income",
+      "role": "nopat_non_operating_exclusion",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "other_non_operating_income",
+      "role": "nopat_non_operating_exclusion",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "other_non_operating_income",
+      "role": "nopat_non_operating_exclusion",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "other_non_operating_income",
+      "role": "nopat_non_operating_exclusion",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "other_non_operating_income",
+      "role": "nopat_non_operating_exclusion",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "other_non_operating_expense",
+      "role": "nopat_non_operating_exclusion",
+      "kind": "duration",
+      "required": true,
+      "status": "not_applicable",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "other_non_operating_expense",
+      "role": "nopat_non_operating_exclusion",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "other_non_operating_expense",
+      "role": "nopat_non_operating_exclusion",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "other_non_operating_expense",
+      "role": "nopat_non_operating_exclusion",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "other_non_operating_expense",
+      "role": "nopat_non_operating_exclusion",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "other_non_operating_expense",
+      "role": "nopat_non_operating_exclusion",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "operating_tax_expense",
+      "role": "nopat_tax",
+      "kind": "duration",
+      "required": true,
+      "status": "not_applicable",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "operating_tax_expense",
+      "role": "nopat_tax",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "operating_tax_expense",
+      "role": "nopat_tax",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "operating_tax_expense",
+      "role": "nopat_tax",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "operating_tax_expense",
+      "role": "nopat_tax",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "operating_tax_expense",
+      "role": "nopat_tax",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "income_tax_expense",
+      "role": "tax_bridge",
+      "kind": "duration",
+      "required": true,
+      "status": "not_applicable",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "income_tax_expense",
+      "role": "tax_bridge",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "income_tax_expense",
+      "role": "tax_bridge",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "income_tax_expense",
+      "role": "tax_bridge",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "income_tax_expense",
+      "role": "tax_bridge",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "income_tax_expense",
+      "role": "tax_bridge",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "deferred_tax_expense",
+      "role": "tax_bridge",
+      "kind": "duration",
+      "required": true,
+      "status": "not_applicable",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "deferred_tax_expense",
+      "role": "tax_bridge",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "deferred_tax_expense",
+      "role": "tax_bridge",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "deferred_tax_expense",
+      "role": "tax_bridge",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "deferred_tax_expense",
+      "role": "tax_bridge",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "deferred_tax_expense",
+      "role": "tax_bridge",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "profit_before_tax",
+      "role": "tax_anchor",
+      "kind": "duration",
+      "required": true,
+      "status": "not_applicable",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "profit_before_tax",
+      "role": "tax_anchor",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "profit_before_tax",
+      "role": "tax_anchor",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "profit_before_tax",
+      "role": "tax_anchor",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "profit_before_tax",
+      "role": "tax_anchor",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "profit_before_tax",
+      "role": "tax_anchor",
+      "kind": "duration",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "equity_attributable_to_parent",
+      "role": "invested_capital",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "70b275562a63b6acd02b7aa4e9ef6cad6ac9fa9e5c55a6b1fd4d655280f47ccb"
+      ],
+      "available_at": [
+        "2022-04-01"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "equity_attributable_to_parent",
+      "role": "invested_capital",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "4d50fd7245c2c29409924c1cf4607c0d8d65530dab74beefb2c6208337fb4f93"
+      ],
+      "available_at": [
+        "2022-04-01"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "equity_attributable_to_parent",
+      "role": "invested_capital",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "32a6f0876918e0178d246730c14c1d542f10d6aa953d233b7629ac2033125bd4",
+        "4ec845de58f9c0d120bd06e783b234885605cb597cd6df915491250b268d1561"
+      ],
+      "available_at": [
+        "2023-03-30",
+        "2024-03-26"
+      ],
+      "restatement_versions": [
+        "original",
+        "restated_1"
+      ]
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "equity_attributable_to_parent",
+      "role": "invested_capital",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "8d62e85945e56a637bf65425257231d793e9e2e61fb1ccd72c2566c257e95577",
+        "19e4884fedb6b2d37a89de73f4c44f8930ea620e7e817145cdb5377132786c5c"
+      ],
+      "available_at": [
+        "2024-03-26",
+        "2025-03-31"
+      ],
+      "restatement_versions": [
+        "original",
+        "restated_1"
+      ]
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "equity_attributable_to_parent",
+      "role": "invested_capital",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "efe1cc1b1d0cdb4b09b828dd5a658295585ff5d398d0a51621d651110f75b6d5"
+      ],
+      "available_at": [
+        "2025-03-31"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "equity_attributable_to_parent",
+      "role": "invested_capital",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "45a8911a4b1626157c179dc44880da947bde9dfda937d18f8464a9381606eb90"
+      ],
+      "available_at": [
+        "2026-03-30"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "nci",
+      "role": "invested_capital",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "nci",
+      "role": "invested_capital",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "nci",
+      "role": "invested_capital",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "nci",
+      "role": "invested_capital",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "nci",
+      "role": "invested_capital",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "nci",
+      "role": "invested_capital",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "short_term_borrowings",
+      "role": "invested_capital_debt",
+      "kind": "balance",
+      "required": true,
+      "status": "missing_canonical_fact",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "short_term_borrowings",
+      "role": "invested_capital_debt",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "0c675d2ae5ee129b681b8f26b4d38ccac2e64f4d5dc62120b07385516e70b604"
+      ],
+      "available_at": [
+        "2022-04-01"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "short_term_borrowings",
+      "role": "invested_capital_debt",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "94cd2c58f95de339c154d248a585e065cf79d9480fdde9f3f05e1e5e40d784c4"
+      ],
+      "available_at": [
+        "2023-03-30"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "short_term_borrowings",
+      "role": "invested_capital_debt",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "1795bbed10b8a599bc7d031e26f01002ec78eb93252cf661f9de43277bbfe9e3"
+      ],
+      "available_at": [
+        "2024-03-26"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "short_term_borrowings",
+      "role": "invested_capital_debt",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "3c100463b6a555d7058fc830bb0b3025a8f556dd39ecbe1da2c842d74e392b82"
+      ],
+      "available_at": [
+        "2025-03-31"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "short_term_borrowings",
+      "role": "invested_capital_debt",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "b3cdffe580a1cf04898d64872b4e0e53cbdf8563cc94cf31a7e646935a9feacc"
+      ],
+      "available_at": [
+        "2026-03-30"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "current_portion_of_long_term_borrowings",
+      "role": "invested_capital_debt",
+      "kind": "balance",
+      "required": true,
+      "status": "missing_canonical_fact",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "current_portion_of_long_term_borrowings",
+      "role": "invested_capital_debt",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "c000516d8393e3347e78fba03627e6d8d01f7912fa44419ac1985abe42700519"
+      ],
+      "available_at": [
+        "2022-04-01"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "current_portion_of_long_term_borrowings",
+      "role": "invested_capital_debt",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "bb99ffcf070c431512cae71bc6fa35e25aa31969512f9e41563fd20d8d036860"
+      ],
+      "available_at": [
+        "2023-03-30"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "current_portion_of_long_term_borrowings",
+      "role": "invested_capital_debt",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "1346184bff02463d0360f6bd27fe23c576a51dd217d754dc21680a03389b8985"
+      ],
+      "available_at": [
+        "2024-03-26"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "current_portion_of_long_term_borrowings",
+      "role": "invested_capital_debt",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "514a691015962d6afaee4191029bfa119dc6c389e45c7a09084448d2d31d5cda"
+      ],
+      "available_at": [
+        "2025-03-31"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "current_portion_of_long_term_borrowings",
+      "role": "invested_capital_debt",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "7d58a81764bf515c433fd7d4cca4b4ebdd65b4554242e315003a55d7557c8729"
+      ],
+      "available_at": [
+        "2026-03-30"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "current_portion_of_bonds_payable",
+      "role": "invested_capital_debt",
+      "kind": "balance",
+      "required": true,
+      "status": "missing_canonical_fact",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "current_portion_of_bonds_payable",
+      "role": "invested_capital_debt",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "4cbca53a3387d7bd5541a2fafa1d9ab91d64d1fa194a8f52f0feac7ce263c149"
+      ],
+      "available_at": [
+        "2022-04-01"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "current_portion_of_bonds_payable",
+      "role": "invested_capital_debt",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "226ffe3fa1430176a4158ffe430100a06452bc705147dbd04aca7c5f2657b1ef"
+      ],
+      "available_at": [
+        "2023-03-30"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "current_portion_of_bonds_payable",
+      "role": "invested_capital_debt",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "32bdc29feb4680687b0f013d276f04691f51a7ed50a6db03f3763c7bfb7ceb9a"
+      ],
+      "available_at": [
+        "2024-03-26"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "current_portion_of_bonds_payable",
+      "role": "invested_capital_debt",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "26b2264a87f8d674e0a2b1d5bf06855f450dd7458e6e529a178bbc3647822dcd"
+      ],
+      "available_at": [
+        "2025-03-31"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "current_portion_of_bonds_payable",
+      "role": "invested_capital_debt",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "21ffc2f2b2f8b4f2d70be7d2e04593dbde8aa812840dce62c9dd8c13e7f626c3"
+      ],
+      "available_at": [
+        "2026-03-30"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "current_portion_of_lease_liabilities",
+      "role": "invested_capital_debt",
+      "kind": "balance",
+      "required": true,
+      "status": "missing_canonical_fact",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "current_portion_of_lease_liabilities",
+      "role": "invested_capital_debt",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "3948cb848659f888c4b20c1333d89c4ca4b553a48ce75ffa3fd1235c451a8feb"
+      ],
+      "available_at": [
+        "2022-04-01"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "current_portion_of_lease_liabilities",
+      "role": "invested_capital_debt",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "60bbcaee01e138bfcd44118dc3e1ce87ae565b3038306143bdef85370fcdd40e"
+      ],
+      "available_at": [
+        "2023-03-30"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "current_portion_of_lease_liabilities",
+      "role": "invested_capital_debt",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "0947039aedb41d9ec76530e000e3928a1099f9eb381d7a193b556e11f1f015e4",
+        "067343ea05fcfa101622e9d031fc9d61bb53da3ac61cba268dafb1db25934d63"
+      ],
+      "available_at": [
+        "2024-03-26",
+        "2025-03-31"
+      ],
+      "restatement_versions": [
+        "original",
+        "restated_1"
+      ]
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "current_portion_of_lease_liabilities",
+      "role": "invested_capital_debt",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "404e65bb996862240cb21daa37473b99870c12758a8b8bd99919a909d3d88a55"
+      ],
+      "available_at": [
+        "2025-03-31"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "current_portion_of_lease_liabilities",
+      "role": "invested_capital_debt",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "643e14ae760c69d279583a326db9319bb99f9c1eb7653e39b59ad082fed4b727"
+      ],
+      "available_at": [
+        "2026-03-30"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "long_term_borrowings",
+      "role": "invested_capital_debt",
+      "kind": "balance",
+      "required": true,
+      "status": "missing_canonical_fact",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "long_term_borrowings",
+      "role": "invested_capital_debt",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "73bf73798798bace401970e9daaec95e22665aa37fe1b856f1a0ee9fdb534fc9"
+      ],
+      "available_at": [
+        "2022-04-01"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "long_term_borrowings",
+      "role": "invested_capital_debt",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "116fd8e21e52c19f7d91bd7a2dfeaf9727759ae23521cae889d152a8e40729b9"
+      ],
+      "available_at": [
+        "2023-03-30"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "long_term_borrowings",
+      "role": "invested_capital_debt",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "0088e3ece15c9c0ba892051752da67b590070049b8eb9cdeeaf32a23588ebac0"
+      ],
+      "available_at": [
+        "2024-03-26"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "long_term_borrowings",
+      "role": "invested_capital_debt",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "f7de76a483672fec39f4d64d66475deef0482c9b13882a8421b69fc8155b9478"
+      ],
+      "available_at": [
+        "2025-03-31"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "long_term_borrowings",
+      "role": "invested_capital_debt",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "a0b5f889928a262829f93b2d4d6ba817cad802bc5744a99166f8268aa502abe2"
+      ],
+      "available_at": [
+        "2026-03-30"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "bonds_payable",
+      "role": "invested_capital_debt",
+      "kind": "balance",
+      "required": true,
+      "status": "missing_canonical_fact",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "bonds_payable",
+      "role": "invested_capital_debt",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "58760fb5cc406604c500a82811333a5a3b50c82272f366d73c71ab49d81f4ffc"
+      ],
+      "available_at": [
+        "2022-04-01"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "bonds_payable",
+      "role": "invested_capital_debt",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "bd32e5c46038f1f84472406a5c332b8b8e49b8b48f844a2780381fa30f0b641b"
+      ],
+      "available_at": [
+        "2023-03-30"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "bonds_payable",
+      "role": "invested_capital_debt",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "fd0061b5392a3633097ad99343fb4270862ad3a450e9755687913b1826c98ada"
+      ],
+      "available_at": [
+        "2024-03-26"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "bonds_payable",
+      "role": "invested_capital_debt",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "68c6ae66ef8511656c7062b7b58a0ae29f6b300df4ab0572b61b39958db6192e"
+      ],
+      "available_at": [
+        "2025-03-31"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "bonds_payable",
+      "role": "invested_capital_debt",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "0bf722e0adb8a9077c355942e034d6a2e2828215569b42739765098e85a55e66"
+      ],
+      "available_at": [
+        "2026-03-30"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "lease_liabilities",
+      "role": "invested_capital_debt",
+      "kind": "balance",
+      "required": true,
+      "status": "missing_canonical_fact",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "lease_liabilities",
+      "role": "invested_capital_debt",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "cabbfc09472433869e7069e8a14e8457b8ba84888b0096114bc729359f65e013"
+      ],
+      "available_at": [
+        "2022-04-01"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "lease_liabilities",
+      "role": "invested_capital_debt",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "ee35b35bbed280dfbb919cdd3d1abff7b7fcee6b6205d44aee929c0c21fe3e2b"
+      ],
+      "available_at": [
+        "2023-03-30"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "lease_liabilities",
+      "role": "invested_capital_debt",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "9aae5cba6693624217e51c034d0afd24458a5180fc2e4626f020da9b32bc3e7c",
+        "560c35dc104c57c82a38ad0724f6d1925c41b688899fd4e28e7512aa0ee94d36"
+      ],
+      "available_at": [
+        "2024-03-26",
+        "2025-03-31"
+      ],
+      "restatement_versions": [
+        "original",
+        "restated_1"
+      ]
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "lease_liabilities",
+      "role": "invested_capital_debt",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "f9de018303b2505980f4c6cca462f6f0ee8b577d65cb5b064bac9122c59a1b5f"
+      ],
+      "available_at": [
+        "2025-03-31"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "lease_liabilities",
+      "role": "invested_capital_debt",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "677a3b92c5dc6beb9fa51864ea3914860b15008c3b3515ced841cadef8fd9272"
+      ],
+      "available_at": [
+        "2026-03-30"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "interest_bearing_long_term_payables",
+      "role": "invested_capital_debt",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "interest_bearing_long_term_payables",
+      "role": "invested_capital_debt",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "interest_bearing_long_term_payables",
+      "role": "invested_capital_debt",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "interest_bearing_long_term_payables",
+      "role": "invested_capital_debt",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "interest_bearing_long_term_payables",
+      "role": "invested_capital_debt",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "interest_bearing_long_term_payables",
+      "role": "invested_capital_debt",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "total_assets",
+      "role": "operating_view_reconciliation",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "48238f43f5cd7a4c8bbad61f20484dda04008444b64c6db852e422c39cbc6092"
+      ],
+      "available_at": [
+        "2022-04-01"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "total_assets",
+      "role": "operating_view_reconciliation",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "5c7546d5a8ed9c52309ac08e10adc5ce036af928df89ea6a5e678ff807dd4a76"
+      ],
+      "available_at": [
+        "2022-04-01"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "total_assets",
+      "role": "operating_view_reconciliation",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "207919bea2a35688dd0f3f8c6f60964147505824847e7057507a4e8768de9dd8",
+        "b3f1889a861626f6d6f181d7ceb4a9560f6279878ef1539e3ee9201adce19617"
+      ],
+      "available_at": [
+        "2023-03-30",
+        "2024-03-26"
+      ],
+      "restatement_versions": [
+        "original",
+        "restated_1"
+      ]
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "total_assets",
+      "role": "operating_view_reconciliation",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "2110761ea631b4afe134605379e6d3991188b92f1a756d47b2f173120fdf038c",
+        "c943fa4f6f55bb93d4c242b6f01990abeef99d0756e83909c0124b578231c587"
+      ],
+      "available_at": [
+        "2024-03-26",
+        "2025-03-31"
+      ],
+      "restatement_versions": [
+        "original",
+        "restated_1"
+      ]
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "total_assets",
+      "role": "operating_view_reconciliation",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "0d464352b3e788362d7c5864c50d9a18c136a43374910d9526e22ededee94c30"
+      ],
+      "available_at": [
+        "2025-03-31"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "total_assets",
+      "role": "operating_view_reconciliation",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "43dac63a557127d59337a4f36380d892a79373c1f319bd8824d0f83300b68a31"
+      ],
+      "available_at": [
+        "2026-03-30"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "cash_and_cash_equivalents",
+      "role": "cash_classification",
+      "kind": "balance",
+      "required": true,
+      "status": "missing_canonical_fact",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "cash_and_cash_equivalents",
+      "role": "cash_classification",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "327c04ac2e7a04d993c12bff6238e1f5f8d7905c288450039dffa5506c6746d8"
+      ],
+      "available_at": [
+        "2022-04-01"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "cash_and_cash_equivalents",
+      "role": "cash_classification",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "ab222af786ee2cec9abf706a2fbc1581f661656b9dd34df40fba6ea986148b22"
+      ],
+      "available_at": [
+        "2023-03-30"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "cash_and_cash_equivalents",
+      "role": "cash_classification",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "d160155b0c0e6f356b584b8c3b17f9e527ca1db8219e9b3d192814f4838bae39"
+      ],
+      "available_at": [
+        "2024-03-26"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "cash_and_cash_equivalents",
+      "role": "cash_classification",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "f1c404ab7308f4b0741d131086ce7358eef0457caa9ee951439276a0d9aa2dda"
+      ],
+      "available_at": [
+        "2025-03-31"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "cash_and_cash_equivalents",
+      "role": "cash_classification",
+      "kind": "balance",
+      "required": true,
+      "status": "ready",
+      "canonical_fact_ids": [
+        "6bb9c0a3c2fae40a50a22beead27e377fdc0e3d8f187b6b9fd2679d47e1077cd"
+      ],
+      "available_at": [
+        "2026-03-30"
+      ],
+      "restatement_versions": [
+        "original"
+      ]
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "monetary_funds",
+      "role": "cash_classification",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "monetary_funds",
+      "role": "cash_classification",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "monetary_funds",
+      "role": "cash_classification",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "monetary_funds",
+      "role": "cash_classification",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "monetary_funds",
+      "role": "cash_classification",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "monetary_funds",
+      "role": "cash_classification",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "restricted_cash",
+      "role": "cash_classification",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "restricted_cash",
+      "role": "cash_classification",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "restricted_cash",
+      "role": "cash_classification",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "restricted_cash",
+      "role": "cash_classification",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "restricted_cash",
+      "role": "cash_classification",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "restricted_cash",
+      "role": "cash_classification",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "financial_assets_at_fair_value",
+      "role": "non_operating_assets",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "financial_assets_at_fair_value",
+      "role": "non_operating_assets",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "financial_assets_at_fair_value",
+      "role": "non_operating_assets",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "financial_assets_at_fair_value",
+      "role": "non_operating_assets",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "financial_assets_at_fair_value",
+      "role": "non_operating_assets",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "financial_assets_at_fair_value",
+      "role": "non_operating_assets",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "financial_assets_at_amortized_cost",
+      "role": "non_operating_assets",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "financial_assets_at_amortized_cost",
+      "role": "non_operating_assets",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "financial_assets_at_amortized_cost",
+      "role": "non_operating_assets",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "financial_assets_at_amortized_cost",
+      "role": "non_operating_assets",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "financial_assets_at_amortized_cost",
+      "role": "non_operating_assets",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "financial_assets_at_amortized_cost",
+      "role": "non_operating_assets",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "associate_investment",
+      "role": "associate_jv_scope",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "associate_investment",
+      "role": "associate_jv_scope",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "associate_investment",
+      "role": "associate_jv_scope",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "associate_investment",
+      "role": "associate_jv_scope",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "associate_investment",
+      "role": "associate_jv_scope",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "associate_investment",
+      "role": "associate_jv_scope",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "joint_venture_investment",
+      "role": "associate_jv_scope",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "joint_venture_investment",
+      "role": "associate_jv_scope",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "joint_venture_investment",
+      "role": "associate_jv_scope",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "joint_venture_investment",
+      "role": "associate_jv_scope",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "joint_venture_investment",
+      "role": "associate_jv_scope",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "joint_venture_investment",
+      "role": "associate_jv_scope",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "goodwill",
+      "role": "goodwill_scope",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "goodwill",
+      "role": "goodwill_scope",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "goodwill",
+      "role": "goodwill_scope",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "goodwill",
+      "role": "goodwill_scope",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "goodwill",
+      "role": "goodwill_scope",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "goodwill",
+      "role": "goodwill_scope",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2020,
+      "concept_id": "noninterest_bearing_operating_liabilities",
+      "role": "operating_view_reconciliation",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2021,
+      "concept_id": "noninterest_bearing_operating_liabilities",
+      "role": "operating_view_reconciliation",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2022,
+      "concept_id": "noninterest_bearing_operating_liabilities",
+      "role": "operating_view_reconciliation",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2023,
+      "concept_id": "noninterest_bearing_operating_liabilities",
+      "role": "operating_view_reconciliation",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2024,
+      "concept_id": "noninterest_bearing_operating_liabilities",
+      "role": "operating_view_reconciliation",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    },
+    {
+      "fiscal_year": 2025,
+      "concept_id": "noninterest_bearing_operating_liabilities",
+      "role": "operating_view_reconciliation",
+      "kind": "balance",
+      "required": true,
+      "status": "missing",
+      "canonical_fact_ids": [],
+      "available_at": [],
+      "restatement_versions": []
+    }
+  ],
+  "report_sha256": "8ad8554265b1a1a62e812dd1876184f3c96fc22719e4fb52c43b4ec9e90c828e"
+}

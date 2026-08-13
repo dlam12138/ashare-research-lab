@@ -1,0 +1,251 @@
+{
+  "schema": "m2_stage2k1r2_upstream_resolution_v1",
+  "version": "1.0",
+  "symbol": "601857.SH",
+  "component_count": 24,
+  "resolutions": {
+    "eq_gross_margin": {
+      "component_id": "eq_gross_margin",
+      "artifact": "acceptance/fixtures/official_facts/601857.SH/2025_annual.json",
+      "contract": "annual_bundle_schema_1.0",
+      "sha256": "1cea469542ec4293658703167e7d10cc00b7ced21c9ce6a5e13843bed6e1caab",
+      "record": "revenue, operating_cost",
+      "available_at": "2026-03-30",
+      "gap": false,
+      "resolved": true
+    },
+    "eq_operating_margin": {
+      "component_id": "eq_operating_margin",
+      "artifact": "acceptance/fixtures/official_facts/601857.SH/2025_annual.json",
+      "contract": "annual_bundle_schema_1.0",
+      "sha256": "1cea469542ec4293658703167e7d10cc00b7ced21c9ce6a5e13843bed6e1caab",
+      "record": "revenue, operating_profit",
+      "available_at": "2026-03-30",
+      "gap": false,
+      "resolved": true
+    },
+    "eq_np_yoy": {
+      "component_id": "eq_np_yoy",
+      "artifact": "acceptance/fixtures/official_facts/601857.SH/2025_annual.json",
+      "contract": "annual_bundle_schema_1.0",
+      "sha256": "1cea469542ec4293658703167e7d10cc00b7ced21c9ce6a5e13843bed6e1caab",
+      "record": "net_profit_attributable_to_parent (2025 vs 2024)",
+      "available_at": "2026-03-30",
+      "gap": false,
+      "resolved": true
+    },
+    "eq_ocf_np": {
+      "component_id": "eq_ocf_np",
+      "artifact": "acceptance/fixtures/official_facts/601857.SH/2025_annual.json",
+      "contract": "annual_bundle_schema_1.0",
+      "sha256": "1cea469542ec4293658703167e7d10cc00b7ced21c9ce6a5e13843bed6e1caab",
+      "record": "operating_cash_flow / net_profit_attributable_to_parent",
+      "available_at": "2026-03-30",
+      "gap": false,
+      "resolved": true
+    },
+    "eq_roe": {
+      "component_id": "eq_roe",
+      "artifact": "acceptance/fixtures/official_facts/601857.SH/supplemental/2025_roe_roa_denominators.json",
+      "contract": "roe_roa_denominator_official_facts_v1",
+      "sha256": "2f91f7140c6e32067037e2be4856e23a5dc559133910ff265d6a21366a99dcad",
+      "record": "equity_attributable_to_parent (2024,2025)",
+      "available_at": "2026-03-30",
+      "gap": false,
+      "resolved": true
+    },
+    "eq_roa": {
+      "component_id": "eq_roa",
+      "artifact": "acceptance/fixtures/official_facts/601857.SH/supplemental/2025_net_profit.json",
+      "contract": "net_profit_official_facts_v1",
+      "sha256": "274becc25a05f9957b71a9bcbee732b346c0b7d0157a1caf24106a3670c001d9",
+      "record": "net_profit, total_assets (2024,2025)",
+      "available_at": "2026-03-30",
+      "gap": false,
+      "resolved": true
+    },
+    "eq_asset_liability": {
+      "component_id": "eq_asset_liability",
+      "artifact": "acceptance/fixtures/official_facts/601857.SH/supplemental/2025_financial_safety.json",
+      "contract": "financial_safety_official_facts_v1",
+      "sha256": "02af318e60d1162337470acbffccc83223d28796c2693f0f11d03c5c77e3e7c7",
+      "record": "total_liabilities / total_assets",
+      "available_at": "2026-03-30",
+      "gap": false,
+      "resolved": true
+    },
+    "eq_cash_coverage": {
+      "component_id": "eq_cash_coverage",
+      "artifact": "acceptance/fixtures/official_facts/601857.SH/supplemental/2025_financial_safety.json",
+      "contract": "financial_safety_official_facts_v1",
+      "sha256": "02af318e60d1162337470acbffccc83223d28796c2693f0f11d03c5c77e3e7c7",
+      "record": "cash / gross_interest_bearing_debt",
+      "available_at": "2026-03-30",
+      "gap": false,
+      "resolved": true
+    },
+    "eq_roic": {
+      "component_id": "eq_roic",
+      "artifact": "reports/m2_explicit_gap_ledger.json",
+      "contract": "unknown",
+      "sha256": "74ff95b18690187072850a462da5dcb90b4c9482717db7b99b7a06cf9555e0d4",
+      "record": "M2G-ROIC-001..007",
+      "available_at": null,
+      "gap": true,
+      "resolved": true
+    },
+    "va_pe": {
+      "component_id": "va_pe",
+      "artifact": "reports/petrochina_value_profile.json",
+      "contract": "petrochina_value_profile_v1",
+      "sha256": "f0f492da188d8b1b2f6961f7e3c68d1cf964d9328bddcdc9fa3955e9483d788c",
+      "record": "percentile_position.a_share_price_to_latest_annual_parent_earnings",
+      "available_at": "2026-07-31",
+      "gap": false,
+      "resolved": true
+    },
+    "va_pb": {
+      "component_id": "va_pb",
+      "artifact": "reports/petrochina_value_profile.json",
+      "contract": "petrochina_value_profile_v1",
+      "sha256": "f0f492da188d8b1b2f6961f7e3c68d1cf964d9328bddcdc9fa3955e9483d788c",
+      "record": "percentile_position.a_share_price_to_latest_year_end_parent_equity",
+      "available_at": "2026-07-31",
+      "gap": false,
+      "resolved": true
+    },
+    "va_ps": {
+      "component_id": "va_ps",
+      "artifact": "reports/petrochina_value_profile.json",
+      "contract": "petrochina_value_profile_v1",
+      "sha256": "f0f492da188d8b1b2f6961f7e3c68d1cf964d9328bddcdc9fa3955e9483d788c",
+      "record": "percentile_position.a_share_price_to_latest_annual_revenue",
+      "available_at": "2026-07-31",
+      "gap": false,
+      "resolved": true
+    },
+    "va_fcf_yield": {
+      "component_id": "va_fcf_yield",
+      "artifact": "reports/petrochina_value_profile.json",
+      "contract": "petrochina_value_profile_v1",
+      "sha256": "f0f492da188d8b1b2f6961f7e3c68d1cf964d9328bddcdc9fa3955e9483d788c",
+      "record": "percentile_position.latest_annual_fcf_proxy_yield",
+      "available_at": "2026-07-31",
+      "gap": false,
+      "resolved": true
+    },
+    "va_dividend_yield": {
+      "component_id": "va_dividend_yield",
+      "artifact": "reports/petrochina_value_profile.json",
+      "contract": "petrochina_value_profile_v1",
+      "sha256": "f0f492da188d8b1b2f6961f7e3c68d1cf964d9328bddcdc9fa3955e9483d788c",
+      "record": "percentile_position.trailing_12m_announced_dividend_yield",
+      "available_at": "2026-07-31",
+      "gap": true,
+      "resolved": true
+    },
+    "vr_ocf_dividend_coverage": {
+      "component_id": "vr_ocf_dividend_coverage",
+      "artifact": "events/dividend_events_2021_2026_v2.json",
+      "contract": "dividend_event_record_v2",
+      "sha256": "937745233495833f977348ee1eaff859e15b75a7c447e6b8ae46de7b6239a835",
+      "record": "cash_dividend_total (FY2025)",
+      "available_at": "2026-03-30",
+      "gap": false,
+      "resolved": true
+    },
+    "vr_fcf_dividend_coverage": {
+      "component_id": "vr_fcf_dividend_coverage",
+      "artifact": "events/dividend_events_2021_2026_v2.json",
+      "contract": "dividend_event_record_v2",
+      "sha256": "937745233495833f977348ee1eaff859e15b75a7c447e6b8ae46de7b6239a835",
+      "record": "cash_dividend_total (FY2025)",
+      "available_at": "2026-03-30",
+      "gap": false,
+      "resolved": true
+    },
+    "vr_payout_ratio": {
+      "component_id": "vr_payout_ratio",
+      "artifact": "events/dividend_events_2021_2026_v2.json",
+      "contract": "dividend_event_record_v2",
+      "sha256": "937745233495833f977348ee1eaff859e15b75a7c447e6b8ae46de7b6239a835",
+      "record": "cash_dividend_total / net_profit_attributable_to_parent",
+      "available_at": "2026-03-30",
+      "gap": false,
+      "resolved": true
+    },
+    "vr_dps": {
+      "component_id": "vr_dps",
+      "artifact": "events/dividend_events_2021_2026_v2.json",
+      "contract": "dividend_event_record_v2",
+      "sha256": "937745233495833f977348ee1eaff859e15b75a7c447e6b8ae46de7b6239a835",
+      "record": "cash_dividend_per_share (FY2025)",
+      "available_at": "2026-03-30",
+      "gap": false,
+      "resolved": true
+    },
+    "vr_repurchase": {
+      "component_id": "vr_repurchase",
+      "artifact": "events/repurchase_event_scan_2021_2026.json",
+      "contract": "repurchase_event_scan_v1",
+      "sha256": "2e5538afe25d2af3dfb989186bc8c4515067fd78833742d886a97c7740a5e159",
+      "record": "bounded_search_no_event_found",
+      "available_at": "2026-06-30",
+      "gap": false,
+      "resolved": true
+    },
+    "rk_veto_triggered": {
+      "component_id": "rk_veto_triggered",
+      "artifact": "reports/petrochina_value_profile.json",
+      "contract": "petrochina_value_profile_v1",
+      "sha256": "f0f492da188d8b1b2f6961f7e3c68d1cf964d9328bddcdc9fa3955e9483d788c",
+      "record": "current_risk_veto_profile.observed_risk_ids",
+      "available_at": "2026-08-02",
+      "gap": false,
+      "resolved": true
+    },
+    "rk_missing_evidence_slots": {
+      "component_id": "rk_missing_evidence_slots",
+      "artifact": "reports/petrochina_value_profile.json",
+      "contract": "petrochina_value_profile_v1",
+      "sha256": "f0f492da188d8b1b2f6961f7e3c68d1cf964d9328bddcdc9fa3955e9483d788c",
+      "record": "current_risk_veto_profile.missing_evidence_risk_ids",
+      "available_at": "2026-08-02",
+      "gap": false,
+      "resolved": true
+    },
+    "rk_gap_count": {
+      "component_id": "rk_gap_count",
+      "artifact": "reports/m2_explicit_gap_ledger.json",
+      "contract": "unknown",
+      "sha256": "74ff95b18690187072850a462da5dcb90b4c9482717db7b99b7a06cf9555e0d4",
+      "record": "count_contract.current_gap_count",
+      "available_at": "2026-08-02",
+      "gap": false,
+      "resolved": true
+    },
+    "rk_pit_integrity": {
+      "component_id": "rk_pit_integrity",
+      "artifact": "reports/petrochina_value_profile.json",
+      "contract": "petrochina_value_profile_v1",
+      "sha256": "f0f492da188d8b1b2f6961f7e3c68d1cf964d9328bddcdc9fa3955e9483d788c",
+      "record": "current_risk_veto_profile.search_pit_status",
+      "available_at": "2026-08-02",
+      "gap": false,
+      "resolved": true
+    },
+    "rk_evidence_freshness": {
+      "component_id": "rk_evidence_freshness",
+      "artifact": "reports/petrochina_value_profile.json",
+      "contract": "petrochina_value_profile_v1",
+      "sha256": "f0f492da188d8b1b2f6961f7e3c68d1cf964d9328bddcdc9fa3955e9483d788c",
+      "record": "current_risk_veto_profile.as_of_date",
+      "available_at": "2026-08-02",
+      "gap": false,
+      "resolved": true
+    }
+  },
+  "missing_artifact_count": 0,
+  "missing_components": [],
+  "status": "pass"
+}

@@ -1,0 +1,1220 @@
+{
+ "samples": [
+  {
+   "observation_id": "4c298b682fa638e8148f2b4f9cf686726df419350bb0b00f80ff00bfbbf556c6",
+   "metric_id": "PB_A_MRQ",
+   "trade_date": "2021-03-26",
+   "status": "computed",
+   "exclusion_reason": "",
+   "market_close_decimal": "4.29",
+   "financial_state_value_decimal": "1210550000000.0",
+   "share_basis_decimal": "183020977818.0",
+   "per_share_denominator_decimal": "6.614269109652539273157867989",
+   "ratio_decimal": "0.6485977405635620172648796002",
+   "financial_state_id": "8642dbccca37fc78c4a55fdafbcd42d2e3d1c4b12b697956113d7a648617e59f",
+   "financial_state_effective_from": "2020-11-02",
+   "financial_state_available_at_max": "2020-10-30",
+   "input_fact_ids": [
+    "ffa8db91c2f5354bf0bbb1abf12de4840706c99b781c7645bb5847bbb48cd53a"
+   ],
+   "formula_id": "pb-a-mrq-v1"
+  },
+  {
+   "observation_id": "0e7dd9ebd24a2d1f127d7c734d0158e20e536713513e35dd760deab21d03725e",
+   "metric_id": "PB_A_MRQ",
+   "trade_date": "2021-03-29",
+   "status": "computed",
+   "exclusion_reason": "",
+   "market_close_decimal": "4.3",
+   "financial_state_value_decimal": "1215421000000.0",
+   "share_basis_decimal": "183020977818.0",
+   "per_share_denominator_decimal": "6.640883545101812346388673800",
+   "ratio_decimal": "0.6475042019328282134338636571",
+   "financial_state_id": "3561e22e03365ba1a00612605c5457ef05e72aa102b9c31a5a847dd2a9d011b6",
+   "financial_state_effective_from": "2021-03-29",
+   "financial_state_available_at_max": "2021-03-26",
+   "input_fact_ids": [
+    "b83a65483f61b802b74ff34561fa8f547f755c62936487963e0f1a8bfdd117cf"
+   ],
+   "formula_id": "pb-a-mrq-v1"
+  },
+  {
+   "observation_id": "d9fceeeb098724bab21963ca45eaeee792dc04cb8b0c6fa5d567b863ba62e291",
+   "metric_id": "PB_A_MRQ",
+   "trade_date": "2021-04-30",
+   "status": "computed",
+   "exclusion_reason": "",
+   "market_close_decimal": "4.25",
+   "financial_state_value_decimal": "1215421000000.0",
+   "share_basis_decimal": "183020977818.0",
+   "per_share_denominator_decimal": "6.640883545101812346388673800",
+   "ratio_decimal": "0.6399750833057023039753303588",
+   "financial_state_id": "3561e22e03365ba1a00612605c5457ef05e72aa102b9c31a5a847dd2a9d011b6",
+   "financial_state_effective_from": "2021-03-29",
+   "financial_state_available_at_max": "2021-03-26",
+   "input_fact_ids": [
+    "b83a65483f61b802b74ff34561fa8f547f755c62936487963e0f1a8bfdd117cf"
+   ],
+   "formula_id": "pb-a-mrq-v1"
+  },
+  {
+   "observation_id": "bb61701dc6f3fa7e9bdc53c74a362fe511b413d42292285e604953fa490070f0",
+   "metric_id": "PB_A_MRQ",
+   "trade_date": "2021-05-06",
+   "status": "computed",
+   "exclusion_reason": "",
+   "market_close_decimal": "4.38",
+   "financial_state_value_decimal": "1242029000000.0",
+   "share_basis_decimal": "183020977818.0",
+   "per_share_denominator_decimal": "6.786265786619828756268632952",
+   "ratio_decimal": "0.6454212283632990856091121866",
+   "financial_state_id": "0dbd7c8179c6945ab0378c4dd975839fa20e1cf0cb9ca62291b4666e0876caa0",
+   "financial_state_effective_from": "2021-05-06",
+   "financial_state_available_at_max": "2021-04-30",
+   "input_fact_ids": [
+    "102ff8cc8e2578e9d96f1c7e77922f577261f01b8d10075949f777f4ac449881"
+   ],
+   "formula_id": "pb-a-mrq-v1"
+  },
+  {
+   "observation_id": "15557fae571f3a8f124ebd61aa634a857bd008f0d09b926d3b8335485bae1e18",
+   "metric_id": "PB_A_MRQ",
+   "trade_date": "2021-08-02",
+   "status": "computed",
+   "exclusion_reason": "",
+   "market_close_decimal": "4.67",
+   "financial_state_value_decimal": "1242029000000.0",
+   "share_basis_decimal": "183020977818.0",
+   "per_share_denominator_decimal": "6.786265786619828756268632952",
+   "ratio_decimal": "0.6881545973645220844279803451",
+   "financial_state_id": "0dbd7c8179c6945ab0378c4dd975839fa20e1cf0cb9ca62291b4666e0876caa0",
+   "financial_state_effective_from": "2021-05-06",
+   "financial_state_available_at_max": "2021-04-30",
+   "input_fact_ids": [
+    "102ff8cc8e2578e9d96f1c7e77922f577261f01b8d10075949f777f4ac449881"
+   ],
+   "formula_id": "pb-a-mrq-v1"
+  },
+  {
+   "observation_id": "92edcea73f4808c9cc3132d01c0dbce5215cbecaa259fac194fa435928a9a8b6",
+   "metric_id": "PB_A_MRQ",
+   "trade_date": "2021-08-27",
+   "status": "computed",
+   "exclusion_reason": "",
+   "market_close_decimal": "4.73",
+   "financial_state_value_decimal": "1242029000000.0",
+   "share_basis_decimal": "183020977818.0",
+   "per_share_denominator_decimal": "6.786265786619828756268632952",
+   "ratio_decimal": "0.6969959840544302910801599641",
+   "financial_state_id": "0dbd7c8179c6945ab0378c4dd975839fa20e1cf0cb9ca62291b4666e0876caa0",
+   "financial_state_effective_from": "2021-05-06",
+   "financial_state_available_at_max": "2021-04-30",
+   "input_fact_ids": [
+    "102ff8cc8e2578e9d96f1c7e77922f577261f01b8d10075949f777f4ac449881"
+   ],
+   "formula_id": "pb-a-mrq-v1"
+  },
+  {
+   "observation_id": "5308999d943db5777a8353d5a0c276e0100ab8b1d0cc289cea645fb603407fc5",
+   "metric_id": "PB_A_MRQ",
+   "trade_date": "2021-08-30",
+   "status": "computed",
+   "exclusion_reason": "",
+   "market_close_decimal": "4.86",
+   "financial_state_value_decimal": "1251727000000.0",
+   "share_basis_decimal": "183020977818.0",
+   "per_share_denominator_decimal": "6.839254247918751003074700445",
+   "ratio_decimal": "0.7106037915579675120853029455",
+   "financial_state_id": "7cd05f9e98de4cd338aa742c4abf2339f2b92d615ad8568046132c4f3d4a646d",
+   "financial_state_effective_from": "2021-08-30",
+   "financial_state_available_at_max": "2021-08-27",
+   "input_fact_ids": [
+    "2033943e1e942e29b5115e2b78291407f00c4daeedc0815e2b8d6819e4a63d1d"
+   ],
+   "formula_id": "pb-a-mrq-v1"
+  },
+  {
+   "observation_id": "0fbcba53a72321d95287a24e9a61db1213d6df982ac67fb72df6d66fdd870e4d",
+   "metric_id": "PB_A_MRQ",
+   "trade_date": "2021-10-29",
+   "status": "computed",
+   "exclusion_reason": "",
+   "market_close_decimal": "5.48",
+   "financial_state_value_decimal": "1251727000000.0",
+   "share_basis_decimal": "183020977818.0",
+   "per_share_denominator_decimal": "6.839254247918751003074700445",
+   "ratio_decimal": "0.8012569501517822975776666957",
+   "financial_state_id": "7cd05f9e98de4cd338aa742c4abf2339f2b92d615ad8568046132c4f3d4a646d",
+   "financial_state_effective_from": "2021-08-30",
+   "financial_state_available_at_max": "2021-08-27",
+   "input_fact_ids": [
+    "2033943e1e942e29b5115e2b78291407f00c4daeedc0815e2b8d6819e4a63d1d"
+   ],
+   "formula_id": "pb-a-mrq-v1"
+  },
+  {
+   "observation_id": "a493e3c5da755ffdb1349cd3cb38354d20f3d2e0f68996019dbc67c93f0bc4dd",
+   "metric_id": "PB_A_MRQ",
+   "trade_date": "2021-11-01",
+   "status": "computed",
+   "exclusion_reason": "",
+   "market_close_decimal": "5.38",
+   "financial_state_value_decimal": "1245881000000.0",
+   "share_basis_decimal": "183020977818.0",
+   "per_share_denominator_decimal": "6.807312554295993789749450851",
+   "ratio_decimal": "0.7903265726508711506155082227",
+   "financial_state_id": "abdd023f851d58350e531db99f2f4510fa557c10ea4c5f51feda00a18bbca10c",
+   "financial_state_effective_from": "2021-11-01",
+   "financial_state_available_at_max": "2021-10-29",
+   "input_fact_ids": [
+    "300945373e6480414a17270c843b4eab096e3e8164f03999e83cce9c2ae2999d"
+   ],
+   "formula_id": "pb-a-mrq-v1"
+  },
+  {
+   "observation_id": "9a062f16db800949b9027d6f79ec202390ecc05cce0bab6e14c09290f107fafc",
+   "metric_id": "PB_A_MRQ",
+   "trade_date": "2022-04-01",
+   "status": "computed",
+   "exclusion_reason": "",
+   "market_close_decimal": "5.47",
+   "financial_state_value_decimal": "1245881000000.0",
+   "share_basis_decimal": "183020977818.0",
+   "per_share_denominator_decimal": "6.807312554295993789749450851",
+   "ratio_decimal": "0.8035476491450307051797081744",
+   "financial_state_id": "abdd023f851d58350e531db99f2f4510fa557c10ea4c5f51feda00a18bbca10c",
+   "financial_state_effective_from": "2021-11-01",
+   "financial_state_available_at_max": "2021-10-29",
+   "input_fact_ids": [
+    "300945373e6480414a17270c843b4eab096e3e8164f03999e83cce9c2ae2999d"
+   ],
+   "formula_id": "pb-a-mrq-v1"
+  },
+  {
+   "observation_id": "a1920185b5ac7b59f6944319dee6db7ac9571b843c0c94ec3e433b011b525b64",
+   "metric_id": "PB_A_MRQ",
+   "trade_date": "2022-04-06",
+   "status": "computed",
+   "exclusion_reason": "",
+   "market_close_decimal": "5.61",
+   "financial_state_value_decimal": "1263815000000.0",
+   "share_basis_decimal": "183020977818.0",
+   "per_share_denominator_decimal": "6.905301321560880526625096801",
+   "ratio_decimal": "0.8124192904491401035752859398",
+   "financial_state_id": "cd0013bce0c79b2f99e7386b10ff8a87d229680b505231d269f72c130d0048a3",
+   "financial_state_effective_from": "2022-04-06",
+   "financial_state_available_at_max": "2022-04-01",
+   "input_fact_ids": [
+    "7204099afd5fdb133831e9a97c086c89ed8e6af462e28abc6422801ce4c8e06c"
+   ],
+   "formula_id": "pb-a-mrq-v1"
+  },
+  {
+   "observation_id": "62d9b92a48144382d6d257732bfb6bd2ef5d3b493e23f287c8d2f34a314fe164",
+   "metric_id": "PB_A_MRQ",
+   "trade_date": "2022-04-29",
+   "status": "computed",
+   "exclusion_reason": "",
+   "market_close_decimal": "5.38",
+   "financial_state_value_decimal": "1263815000000.0",
+   "share_basis_decimal": "183020977818.0",
+   "per_share_denominator_decimal": "6.905301321560880526625096801",
+   "ratio_decimal": "0.7791115477034534326622171758",
+   "financial_state_id": "cd0013bce0c79b2f99e7386b10ff8a87d229680b505231d269f72c130d0048a3",
+   "financial_state_effective_from": "2022-04-06",
+   "financial_state_available_at_max": "2022-04-01",
+   "input_fact_ids": [
+    "7204099afd5fdb133831e9a97c086c89ed8e6af462e28abc6422801ce4c8e06c"
+   ],
+   "formula_id": "pb-a-mrq-v1"
+  },
+  {
+   "observation_id": "ca7e0d774cd5a646138de7ae3c280662f3bc508e4418647d9969c2cced43a981",
+   "metric_id": "PB_A_MRQ",
+   "trade_date": "2022-05-05",
+   "status": "computed",
+   "exclusion_reason": "",
+   "market_close_decimal": "5.45",
+   "financial_state_value_decimal": "1304053000000.0",
+   "share_basis_decimal": "183020977818.0",
+   "per_share_denominator_decimal": "7.125155900416936761620203399",
+   "ratio_decimal": "0.7648955442057186326015890458",
+   "financial_state_id": "ca18a55c330da3b1c112812d46fb5e3afe1524626f6fa4a10bdd25daa4f87766",
+   "financial_state_effective_from": "2022-05-05",
+   "financial_state_available_at_max": "2022-04-30",
+   "input_fact_ids": [
+    "ed74b6afa3ecba3ab1f89607b714ece0fed9631783b105728524b2105d62d66f"
+   ],
+   "formula_id": "pb-a-mrq-v1"
+  },
+  {
+   "observation_id": "5cce2c93c2db3182e78ff1132251fadd5e432105180550f1f0b0fcd0c7ae24af",
+   "metric_id": "PB_A_MRQ",
+   "trade_date": "2022-08-26",
+   "status": "computed",
+   "exclusion_reason": "",
+   "market_close_decimal": "5.44",
+   "financial_state_value_decimal": "1304053000000.0",
+   "share_basis_decimal": "183020977818.0",
+   "per_share_denominator_decimal": "7.125155900416936761620203399",
+   "ratio_decimal": "0.7634920661429558461197512678",
+   "financial_state_id": "ca18a55c330da3b1c112812d46fb5e3afe1524626f6fa4a10bdd25daa4f87766",
+   "financial_state_effective_from": "2022-05-05",
+   "financial_state_available_at_max": "2022-04-30",
+   "input_fact_ids": [
+    "ed74b6afa3ecba3ab1f89607b714ece0fed9631783b105728524b2105d62d66f"
+   ],
+   "formula_id": "pb-a-mrq-v1"
+  },
+  {
+   "observation_id": "d49140c5c4f23f11b8b34aee994fe2e1290f4a6cec1601f0e7dc22fcb78f4217",
+   "metric_id": "PB_A_MRQ",
+   "trade_date": "2022-08-29",
+   "status": "computed",
+   "exclusion_reason": "",
+   "market_close_decimal": "5.48",
+   "financial_state_value_decimal": "1334868000000.0",
+   "share_basis_decimal": "183020977818.0",
+   "per_share_denominator_decimal": "7.293524577971720122656393314",
+   "ratio_decimal": "0.7513514133552081554131194995",
+   "financial_state_id": "cda162f9b53984e546a43f641125e0ffa8a49da1a76a2a9b505d1ba496fb90f0",
+   "financial_state_effective_from": "2022-08-29",
+   "financial_state_available_at_max": "2022-08-26",
+   "input_fact_ids": [
+    "788bf1b488ba83f321ab2009f66b5f4fbe467272d5ff1f10924364e52cb1ae99"
+   ],
+   "formula_id": "pb-a-mrq-v1"
+  },
+  {
+   "observation_id": "3968881560c2d2e03219a535ffcbb96ee19141b54da43df672437d2c0e643a6e",
+   "metric_id": "PB_A_MRQ",
+   "trade_date": "2022-10-28",
+   "status": "computed",
+   "exclusion_reason": "",
+   "market_close_decimal": "5.07",
+   "financial_state_value_decimal": "1334868000000.0",
+   "share_basis_decimal": "183020977818.0",
+   "per_share_denominator_decimal": "7.293524577971720122656393314",
+   "ratio_decimal": "0.6951371652757126547344007048",
+   "financial_state_id": "cda162f9b53984e546a43f641125e0ffa8a49da1a76a2a9b505d1ba496fb90f0",
+   "financial_state_effective_from": "2022-08-29",
+   "financial_state_available_at_max": "2022-08-26",
+   "input_fact_ids": [
+    "788bf1b488ba83f321ab2009f66b5f4fbe467272d5ff1f10924364e52cb1ae99"
+   ],
+   "formula_id": "pb-a-mrq-v1"
+  },
+  {
+   "observation_id": "05ee9ff9ce21b829c3e88bc73915fc5f1fdc708d470d086e648dafb793f5f058",
+   "metric_id": "PB_A_MRQ",
+   "trade_date": "2022-10-31",
+   "status": "computed",
+   "exclusion_reason": "",
+   "market_close_decimal": "4.79",
+   "financial_state_value_decimal": "1343209000000.0",
+   "share_basis_decimal": "183020977818.0",
+   "per_share_denominator_decimal": "7.339098588664059827813065717",
+   "ratio_decimal": "0.6526687088518763647354953697",
+   "financial_state_id": "ccdd91c27ee87200d1c8aae25721f07b2f6d2e94a5f307acb880a311286dcd6c",
+   "financial_state_effective_from": "2022-10-31",
+   "financial_state_available_at_max": "2022-10-28",
+   "input_fact_ids": [
+    "b20590a14bdfdb95dcc1aec4d59807632d51b5308f6e503b0a33e2783e1a2b37"
+   ],
+   "formula_id": "pb-a-mrq-v1"
+  },
+  {
+   "observation_id": "b04ec3d8cfe9c6dea86d4fb9b86d9fdbd022c7154854f46e94e907790fd14dfd",
+   "metric_id": "PB_A_MRQ",
+   "trade_date": "2023-03-30",
+   "status": "computed",
+   "exclusion_reason": "",
+   "market_close_decimal": "6.0",
+   "financial_state_value_decimal": "1343209000000.0",
+   "share_basis_decimal": "183020977818.0",
+   "per_share_denominator_decimal": "7.339098588664059827813065717",
+   "ratio_decimal": "0.8175390925075695591676351186",
+   "financial_state_id": "ccdd91c27ee87200d1c8aae25721f07b2f6d2e94a5f307acb880a311286dcd6c",
+   "financial_state_effective_from": "2022-10-31",
+   "financial_state_available_at_max": "2022-10-28",
+   "input_fact_ids": [
+    "b20590a14bdfdb95dcc1aec4d59807632d51b5308f6e503b0a33e2783e1a2b37"
+   ],
+   "formula_id": "pb-a-mrq-v1"
+  },
+  {
+   "observation_id": "9d8dba9ce82a49ab2337951a6a8071f52afa899c6c6fb40f55f3b758140ff918",
+   "metric_id": "PB_A_MRQ",
+   "trade_date": "2023-03-31",
+   "status": "computed",
+   "exclusion_reason": "",
+   "market_close_decimal": "5.92",
+   "financial_state_value_decimal": "1369576000000.0",
+   "share_basis_decimal": "183020977818.0",
+   "per_share_denominator_decimal": "7.483164041238681696397885431",
+   "ratio_decimal": "0.7911092109401449791760369633",
+   "financial_state_id": "1e680513d8b34b3345cd1c8a65ca73705df674301342b74427d07eb3b8c8cb8f",
+   "financial_state_effective_from": "2023-03-31",
+   "financial_state_available_at_max": "2023-03-30",
+   "input_fact_ids": [
+    "dedc229cb470fed54889288a9d12c05106f70cb9f61d9918e0dcc425a21b004a"
+   ],
+   "formula_id": "pb-a-mrq-v1"
+  },
+  {
+   "observation_id": "a8d6ce2221e13a6ec9bece4d4654790fa9497622e889120389cf08f0683d44ad",
+   "metric_id": "PB_A_MRQ",
+   "trade_date": "2023-04-28",
+   "status": "computed",
+   "exclusion_reason": "",
+   "market_close_decimal": "7.89",
+   "financial_state_value_decimal": "1369576000000.0",
+   "share_basis_decimal": "183020977818.0",
+   "per_share_denominator_decimal": "7.483164041238681696397885431",
+   "ratio_decimal": "1.054366836877997277989684399",
+   "financial_state_id": "1e680513d8b34b3345cd1c8a65ca73705df674301342b74427d07eb3b8c8cb8f",
+   "financial_state_effective_from": "2023-03-31",
+   "financial_state_available_at_max": "2023-03-30",
+   "input_fact_ids": [
+    "dedc229cb470fed54889288a9d12c05106f70cb9f61d9918e0dcc425a21b004a"
+   ],
+   "formula_id": "pb-a-mrq-v1"
+  },
+  {
+   "observation_id": "eaaff40902c8f79782e3f81818762d6e0311bb6c52af915782d479b9a3e5b965",
+   "metric_id": "PB_A_MRQ",
+   "trade_date": "2023-05-04",
+   "status": "computed",
+   "exclusion_reason": "",
+   "market_close_decimal": "8.01",
+   "financial_state_value_decimal": "1408762000000.0",
+   "share_basis_decimal": "183020977818.0",
+   "per_share_denominator_decimal": "7.697270645121911966901346019",
+   "ratio_decimal": "1.040628603214865250482338394",
+   "financial_state_id": "73eacc71b7c5628f79dc84e1ddebb9848558a79af1b6e7d13fa36cad675d4019",
+   "financial_state_effective_from": "2023-05-04",
+   "financial_state_available_at_max": "2023-04-29",
+   "input_fact_ids": [
+    "6e07931cf462f077ce8e138fd2ae0a721185c7e68514bb0c7c98b828d20e140c"
+   ],
+   "formula_id": "pb-a-mrq-v1"
+  },
+  {
+   "observation_id": "2bba753270da3a82fa1cb3aa98f7cbf300316a97763a377442808ad41dd6b238",
+   "metric_id": "PB_A_MRQ",
+   "trade_date": "2023-05-05",
+   "status": "computed",
+   "exclusion_reason": "",
+   "market_close_decimal": "7.97",
+   "financial_state_value_decimal": "1408762000000.0",
+   "share_basis_decimal": "183020977818.0",
+   "per_share_denominator_decimal": "7.697270645121911966901346019",
+   "ratio_decimal": "1.035431956007799756097907241",
+   "financial_state_id": "73eacc71b7c5628f79dc84e1ddebb9848558a79af1b6e7d13fa36cad675d4019",
+   "financial_state_effective_from": "2023-05-04",
+   "financial_state_available_at_max": "2023-04-29",
+   "input_fact_ids": [
+    "6e07931cf462f077ce8e138fd2ae0a721185c7e68514bb0c7c98b828d20e140c"
+   ],
+   "formula_id": "pb-a-mrq-v1"
+  },
+  {
+   "observation_id": "e823a86264dcf1a88111e73a7068ad707e9530074f9b7f7ff8aca98ae5cb964d",
+   "metric_id": "PB_A_MRQ",
+   "trade_date": "2023-07-31",
+   "status": "computed",
+   "exclusion_reason": "",
+   "market_close_decimal": "7.92",
+   "financial_state_value_decimal": "1408762000000.0",
+   "share_basis_decimal": "183020977818.0",
+   "per_share_denominator_decimal": "7.697270645121911966901346019",
+   "ratio_decimal": "1.028936146998967888117368299",
+   "financial_state_id": "73eacc71b7c5628f79dc84e1ddebb9848558a79af1b6e7d13fa36cad675d4019",
+   "financial_state_effective_from": "2023-05-04",
+   "financial_state_available_at_max": "2023-04-29",
+   "input_fact_ids": [
+    "6e07931cf462f077ce8e138fd2ae0a721185c7e68514bb0c7c98b828d20e140c"
+   ],
+   "formula_id": "pb-a-mrq-v1"
+  },
+  {
+   "observation_id": "9aa76f00c5529ca62bcf1d8c47cf7e14716d8ee8b6c9cb4e09fb703ed7eebccc",
+   "metric_id": "PB_A_MRQ",
+   "trade_date": "2023-08-31",
+   "status": "computed",
+   "exclusion_reason": "",
+   "market_close_decimal": "7.75",
+   "financial_state_value_decimal": "1408762000000.0",
+   "share_basis_decimal": "183020977818.0",
+   "per_share_denominator_decimal": "7.697270645121911966901346019",
+   "ratio_decimal": "1.006850396368939536983535899",
+   "financial_state_id": "73eacc71b7c5628f79dc84e1ddebb9848558a79af1b6e7d13fa36cad675d4019",
+   "financial_state_effective_from": "2023-05-04",
+   "financial_state_available_at_max": "2023-04-29",
+   "input_fact_ids": [
+    "6e07931cf462f077ce8e138fd2ae0a721185c7e68514bb0c7c98b828d20e140c"
+   ],
+   "formula_id": "pb-a-mrq-v1"
+  },
+  {
+   "observation_id": "03bc875b4bedeb34d023657f9bbd0ec2171c387f5d9597b0a8cc425dec370f6e",
+   "metric_id": "PB_A_MRQ",
+   "trade_date": "2023-09-01",
+   "status": "computed",
+   "exclusion_reason": "",
+   "market_close_decimal": "7.76",
+   "financial_state_value_decimal": "1413191000000.0",
+   "share_basis_decimal": "183020977818.0",
+   "per_share_denominator_decimal": "7.721470056865872229956003983",
+   "ratio_decimal": "1.004989975076037138645802301",
+   "financial_state_id": "0c8c6d3f269154803559f73fd6ce7cf3f5806a062110359f0bfe0db711d55d84",
+   "financial_state_effective_from": "2023-09-01",
+   "financial_state_available_at_max": "2023-08-31",
+   "input_fact_ids": [
+    "4201944f6ede52c2f1a89664f32c770e7111e4501ff34b3e083c618456576c02"
+   ],
+   "formula_id": "pb-a-mrq-v1"
+  },
+  {
+   "observation_id": "0e890f6a134028ab1a2d97436005991ceed34acc699707ebe2c87df97234a273",
+   "metric_id": "PB_A_MRQ",
+   "trade_date": "2023-10-31",
+   "status": "computed",
+   "exclusion_reason": "",
+   "market_close_decimal": "7.12",
+   "financial_state_value_decimal": "1413191000000.0",
+   "share_basis_decimal": "183020977818.0",
+   "per_share_denominator_decimal": "7.721470056865872229956003983",
+   "ratio_decimal": "0.9221042039357454158708907713",
+   "financial_state_id": "0c8c6d3f269154803559f73fd6ce7cf3f5806a062110359f0bfe0db711d55d84",
+   "financial_state_effective_from": "2023-09-01",
+   "financial_state_available_at_max": "2023-08-31",
+   "input_fact_ids": [
+    "4201944f6ede52c2f1a89664f32c770e7111e4501ff34b3e083c618456576c02"
+   ],
+   "formula_id": "pb-a-mrq-v1"
+  },
+  {
+   "observation_id": "b2694bfd44409a917218eaefe8184abb5591cf60b26a29824c83fa39996f7037",
+   "metric_id": "PB_A_MRQ",
+   "trade_date": "2023-11-01",
+   "status": "computed",
+   "exclusion_reason": "",
+   "market_close_decimal": "7.16",
+   "financial_state_value_decimal": "1418839000000.0",
+   "share_basis_decimal": "183020977818.0",
+   "per_share_denominator_decimal": "7.752329907290321894831304993",
+   "ratio_decimal": "0.9235933049323284741961561530",
+   "financial_state_id": "a1ed6cd333b2c9019558755bc93448ec7cbc5b225ccf44f468bac05df0cab964",
+   "financial_state_effective_from": "2023-11-01",
+   "financial_state_available_at_max": "2023-10-31",
+   "input_fact_ids": [
+    "47e18dfcafc92ceec32bcbc46e53e5d28a32dcbaf39708c8ac2ff770c3b74ed2"
+   ],
+   "formula_id": "pb-a-mrq-v1"
+  },
+  {
+   "observation_id": "730a4caa3c51299314999422b29067a72f0051d9d0ab3c86e787bee989107a9b",
+   "metric_id": "PB_A_MRQ",
+   "trade_date": "2024-03-26",
+   "status": "computed",
+   "exclusion_reason": "",
+   "market_close_decimal": "9.21",
+   "financial_state_value_decimal": "1418839000000.0",
+   "share_basis_decimal": "183020977818.0",
+   "per_share_denominator_decimal": "7.752329907290321894831304993",
+   "ratio_decimal": "1.188029935534461626724385219",
+   "financial_state_id": "a1ed6cd333b2c9019558755bc93448ec7cbc5b225ccf44f468bac05df0cab964",
+   "financial_state_effective_from": "2023-11-01",
+   "financial_state_available_at_max": "2023-10-31",
+   "input_fact_ids": [
+    "47e18dfcafc92ceec32bcbc46e53e5d28a32dcbaf39708c8ac2ff770c3b74ed2"
+   ],
+   "formula_id": "pb-a-mrq-v1"
+  },
+  {
+   "observation_id": "9ad29b3314605efaa6fb8eef751fb587bc87697da880430e2f3e0cb216931f1a",
+   "metric_id": "PB_A_MRQ",
+   "trade_date": "2024-03-27",
+   "status": "computed",
+   "exclusion_reason": "",
+   "market_close_decimal": "9.17",
+   "financial_state_value_decimal": "1446410000000.0",
+   "share_basis_decimal": "183020977818.0",
+   "per_share_denominator_decimal": "7.902973840727379563081468620",
+   "ratio_decimal": "1.160322706971785316749745923",
+   "financial_state_id": "8b796d68a53ad3a1b4ebb9dd8f4f76ae81f8afbaf17f8ff0a67db38c531c0751",
+   "financial_state_effective_from": "2024-03-27",
+   "financial_state_available_at_max": "2024-03-26",
+   "input_fact_ids": [
+    "5d0120786f5c73274098a5f719651514476208d5bd683f4851667d84decea5ea"
+   ],
+   "formula_id": "pb-a-mrq-v1"
+  },
+  {
+   "observation_id": "e0d7cc77c7e3f3eaee42b9799b5425e9d3912852bd84dcaa23123e53943ed9a0",
+   "metric_id": "PB_A_MRQ",
+   "trade_date": "2024-04-30",
+   "status": "computed",
+   "exclusion_reason": "",
+   "market_close_decimal": "10.27",
+   "financial_state_value_decimal": "1446410000000.0",
+   "share_basis_decimal": "183020977818.0",
+   "per_share_denominator_decimal": "7.902973840727379563081468620",
+   "ratio_decimal": "1.299510817949862072303150559",
+   "financial_state_id": "8b796d68a53ad3a1b4ebb9dd8f4f76ae81f8afbaf17f8ff0a67db38c531c0751",
+   "financial_state_effective_from": "2024-03-27",
+   "financial_state_available_at_max": "2024-03-26",
+   "input_fact_ids": [
+    "5d0120786f5c73274098a5f719651514476208d5bd683f4851667d84decea5ea"
+   ],
+   "formula_id": "pb-a-mrq-v1"
+  },
+  {
+   "observation_id": "2eb633b26ac4fb1aadae1f3297c0a030fa5efc798bbc5c78fc269bef34642ce6",
+   "metric_id": "PB_A_MRQ",
+   "trade_date": "2024-05-06",
+   "status": "computed",
+   "exclusion_reason": "",
+   "market_close_decimal": "10.01",
+   "financial_state_value_decimal": "1491375000000.0",
+   "share_basis_decimal": "183020977818.0",
+   "per_share_denominator_decimal": "8.148656059979394290616509332",
+   "ratio_decimal": "1.228423426675504148855921549",
+   "financial_state_id": "96c0193683c7088e654b130c2b49b66b0611a3e627bd8818f9910959aa6b28c4",
+   "financial_state_effective_from": "2024-05-06",
+   "financial_state_available_at_max": "2024-04-30",
+   "input_fact_ids": [
+    "9c821285185dce152d820ca6249d1a83a871e7fe69a1cc0be50f25785dd98103"
+   ],
+   "formula_id": "pb-a-mrq-v1"
+  },
+  {
+   "observation_id": "54ae7ab6e2cf7b9723cbe53ddc4c417431f95aa04a2aa4311f647cf070d8d8a9",
+   "metric_id": "PB_A_MRQ",
+   "trade_date": "2024-08-27",
+   "status": "computed",
+   "exclusion_reason": "",
+   "market_close_decimal": "9.32",
+   "financial_state_value_decimal": "1491375000000.0",
+   "share_basis_decimal": "183020977818.0",
+   "per_share_denominator_decimal": "8.148656059979394290616509332",
+   "ratio_decimal": "1.143746886774795071662056827",
+   "financial_state_id": "96c0193683c7088e654b130c2b49b66b0611a3e627bd8818f9910959aa6b28c4",
+   "financial_state_effective_from": "2024-05-06",
+   "financial_state_available_at_max": "2024-04-30",
+   "input_fact_ids": [
+    "9c821285185dce152d820ca6249d1a83a871e7fe69a1cc0be50f25785dd98103"
+   ],
+   "formula_id": "pb-a-mrq-v1"
+  },
+  {
+   "observation_id": "a0014ad11d1d32bb8f3fd9ac9a6e6572067ae052c61c9140f64f0d72074476cb",
+   "metric_id": "PB_A_MRQ",
+   "trade_date": "2024-08-28",
+   "status": "computed",
+   "exclusion_reason": "",
+   "market_close_decimal": "9.18",
+   "financial_state_value_decimal": "1489904000000.0",
+   "share_basis_decimal": "183020977818.0",
+   "per_share_denominator_decimal": "8.140618729955604372586840815",
+   "ratio_decimal": "1.127678411742796851340757525",
+   "financial_state_id": "9e1a10762bd30c7059fc3c6863e9c8a25f380f1ce2f97b99d3ac0a1a418f823f",
+   "financial_state_effective_from": "2024-08-28",
+   "financial_state_available_at_max": "2024-08-27",
+   "input_fact_ids": [
+    "aa780949b677efa0739f01e117e21bbb0f86c02b6d9e85c57bfea8aecf118071"
+   ],
+   "formula_id": "pb-a-mrq-v1"
+  },
+  {
+   "observation_id": "2d348f7295f696f2267729bc3c6cd903111d85ee3baf7a5f8ecd8ef8b146b3b5",
+   "metric_id": "PB_A_MRQ",
+   "trade_date": "2024-10-30",
+   "status": "computed",
+   "exclusion_reason": "",
+   "market_close_decimal": "8.11",
+   "financial_state_value_decimal": "1489904000000.0",
+   "share_basis_decimal": "183020977818.0",
+   "per_share_denominator_decimal": "8.140618729955604372586840815",
+   "ratio_decimal": "0.9962387711583967826114971165",
+   "financial_state_id": "9e1a10762bd30c7059fc3c6863e9c8a25f380f1ce2f97b99d3ac0a1a418f823f",
+   "financial_state_effective_from": "2024-08-28",
+   "financial_state_available_at_max": "2024-08-27",
+   "input_fact_ids": [
+    "aa780949b677efa0739f01e117e21bbb0f86c02b6d9e85c57bfea8aecf118071"
+   ],
+   "formula_id": "pb-a-mrq-v1"
+  },
+  {
+   "observation_id": "87235f95c3c7166a83c8dae69f467b20c49bd9038101bbcb80164ccfcfb78805",
+   "metric_id": "PB_A_MRQ",
+   "trade_date": "2024-10-31",
+   "status": "computed",
+   "exclusion_reason": "",
+   "market_close_decimal": "8.1",
+   "financial_state_value_decimal": "1490006000000.0",
+   "share_basis_decimal": "183020977818.0",
+   "per_share_denominator_decimal": "8.141176043118368867242874933",
+   "ratio_decimal": "0.9949422487733606441853254283",
+   "financial_state_id": "d2f458b24d09b17c6b13d61bf9beb8a796c6290baff65ab79fcb0f25ab7825fb",
+   "financial_state_effective_from": "2024-10-31",
+   "financial_state_available_at_max": "2024-10-30",
+   "input_fact_ids": [
+    "5658b64f2a3eee647c82aad68a7887a9635f17df55653d980e3012eee17e9a93"
+   ],
+   "formula_id": "pb-a-mrq-v1"
+  },
+  {
+   "observation_id": "86fbf269d24c59133c5eb1cb83e34480712e2bdf725a0a45d01148d42c003bc3",
+   "metric_id": "PB_A_MRQ",
+   "trade_date": "2025-03-31",
+   "status": "computed",
+   "exclusion_reason": "",
+   "market_close_decimal": "8.22",
+   "financial_state_value_decimal": "1490006000000.0",
+   "share_basis_decimal": "183020977818.0",
+   "per_share_denominator_decimal": "8.141176043118368867242874933",
+   "ratio_decimal": "1.009682133940373394469552472",
+   "financial_state_id": "d2f458b24d09b17c6b13d61bf9beb8a796c6290baff65ab79fcb0f25ab7825fb",
+   "financial_state_effective_from": "2024-10-31",
+   "financial_state_available_at_max": "2024-10-30",
+   "input_fact_ids": [
+    "5658b64f2a3eee647c82aad68a7887a9635f17df55653d980e3012eee17e9a93"
+   ],
+   "formula_id": "pb-a-mrq-v1"
+  },
+  {
+   "observation_id": "530469ab4c4bbd9876e93a0b229df1c50217e645d8e31f6af63e36fe92508416",
+   "metric_id": "PB_A_MRQ",
+   "trade_date": "2025-04-01",
+   "status": "computed",
+   "exclusion_reason": "",
+   "market_close_decimal": "8.25",
+   "financial_state_value_decimal": "1515371000000.0",
+   "share_basis_decimal": "183020977818.0",
+   "per_share_denominator_decimal": "8.279766713447010111853712422",
+   "ratio_decimal": "0.9964048850073678326957556928",
+   "financial_state_id": "79d5aa9b5f44699f94b333442eb83cfc1386ad76d4262e9f038bd0366a2d3f0a",
+   "financial_state_effective_from": "2025-04-01",
+   "financial_state_available_at_max": "2025-03-31",
+   "input_fact_ids": [
+    "b4c277e606f9cf0e409f381c5529a4eaa7458d1b124c998fbe0e760702340b68"
+   ],
+   "formula_id": "pb-a-mrq-v1"
+  },
+  {
+   "observation_id": "1184fb62893c69812880c90036cd1e61f367ef4728447ac8234c78796a750eda",
+   "metric_id": "PB_A_MRQ",
+   "trade_date": "2025-04-30",
+   "status": "computed",
+   "exclusion_reason": "",
+   "market_close_decimal": "7.99",
+   "financial_state_value_decimal": "1515371000000.0",
+   "share_basis_decimal": "183020977818.0",
+   "per_share_denominator_decimal": "8.279766713447010111853712422",
+   "ratio_decimal": "0.9650030340859235131198894528",
+   "financial_state_id": "79d5aa9b5f44699f94b333442eb83cfc1386ad76d4262e9f038bd0366a2d3f0a",
+   "financial_state_effective_from": "2025-04-01",
+   "financial_state_available_at_max": "2025-03-31",
+   "input_fact_ids": [
+    "b4c277e606f9cf0e409f381c5529a4eaa7458d1b124c998fbe0e760702340b68"
+   ],
+   "formula_id": "pb-a-mrq-v1"
+  },
+  {
+   "observation_id": "2d1d749a37adaae8e0a1601330757ed8ed6f55caf03439dc3a5de2e6389409b7",
+   "metric_id": "PB_A_MRQ",
+   "trade_date": "2025-05-06",
+   "status": "computed",
+   "exclusion_reason": "",
+   "market_close_decimal": "7.96",
+   "financial_state_value_decimal": "1564643000000.0",
+   "share_basis_decimal": "183020977818.0",
+   "per_share_denominator_decimal": "8.548981754189482471580311465",
+   "ratio_decimal": "0.9311050402112686408337237312",
+   "financial_state_id": "45faa4f08d56211a762f610e4523524538b922ce43448dbead168c16810f1413",
+   "financial_state_effective_from": "2025-05-06",
+   "financial_state_available_at_max": "2025-04-30",
+   "input_fact_ids": [
+    "da9cefb7efd6ebf939bffa082583d068f3174a8697d427ce5bbeae1f9acce8ba"
+   ],
+   "formula_id": "pb-a-mrq-v1"
+  },
+  {
+   "observation_id": "4253f6e94a51ab8cebd1f753e578a7d1c38149c4c011f289a703f6f45f4794eb",
+   "metric_id": "PB_A_MRQ",
+   "trade_date": "2025-08-27",
+   "status": "computed",
+   "exclusion_reason": "",
+   "market_close_decimal": "8.63",
+   "financial_state_value_decimal": "1564643000000.0",
+   "share_basis_decimal": "183020977818.0",
+   "per_share_denominator_decimal": "8.548981754189482471580311465",
+   "ratio_decimal": "1.009476946862217131959175352",
+   "financial_state_id": "45faa4f08d56211a762f610e4523524538b922ce43448dbead168c16810f1413",
+   "financial_state_effective_from": "2025-05-06",
+   "financial_state_available_at_max": "2025-04-30",
+   "input_fact_ids": [
+    "da9cefb7efd6ebf939bffa082583d068f3174a8697d427ce5bbeae1f9acce8ba"
+   ],
+   "formula_id": "pb-a-mrq-v1"
+  },
+  {
+   "observation_id": "705085e203127f5aae99a9a3383dc7f682dd9f224c97517cf230da933dde717f",
+   "metric_id": "PB_A_MRQ",
+   "trade_date": "2025-08-28",
+   "status": "computed",
+   "exclusion_reason": "",
+   "market_close_decimal": "8.64",
+   "financial_state_value_decimal": "1555893000000.0",
+   "share_basis_decimal": "183020977818.0",
+   "per_share_denominator_decimal": "8.501173026991547880989149311",
+   "ratio_decimal": "1.016330331422225050180185913",
+   "financial_state_id": "4a11b01e98977970c5b0cd95fcdd235b8dcee9ab4125d63004a72df0d3d58d94",
+   "financial_state_effective_from": "2025-08-28",
+   "financial_state_available_at_max": "2025-08-27",
+   "input_fact_ids": [
+    "1a2ce5682ea7f71c22f2fa78b4013cce9759d433f789581c91ae9b04ddea2eb5"
+   ],
+   "formula_id": "pb-a-mrq-v1"
+  },
+  {
+   "observation_id": "b42bd968bd61d6fac33c41cf84681bad8e748b0330b14470aa59fbcde47fa573",
+   "metric_id": "PB_A_MRQ",
+   "trade_date": "2025-10-31",
+   "status": "computed",
+   "exclusion_reason": "",
+   "market_close_decimal": "9.15",
+   "financial_state_value_decimal": "1555893000000.0",
+   "share_basis_decimal": "183020977818.0",
+   "per_share_denominator_decimal": "8.501173026991547880989149311",
+   "ratio_decimal": "1.076322052374231389947766331",
+   "financial_state_id": "4a11b01e98977970c5b0cd95fcdd235b8dcee9ab4125d63004a72df0d3d58d94",
+   "financial_state_effective_from": "2025-08-28",
+   "financial_state_available_at_max": "2025-08-27",
+   "input_fact_ids": [
+    "1a2ce5682ea7f71c22f2fa78b4013cce9759d433f789581c91ae9b04ddea2eb5"
+   ],
+   "formula_id": "pb-a-mrq-v1"
+  },
+  {
+   "observation_id": "d5c222bbe2eb69bd69a1bc47933940ea6a93f21601ebaad731c679c049984db5",
+   "metric_id": "PB_A_MRQ",
+   "trade_date": "2025-11-03",
+   "status": "computed",
+   "exclusion_reason": "",
+   "market_close_decimal": "9.56",
+   "financial_state_value_decimal": "1558477000000.0",
+   "share_basis_decimal": "183020977818.0",
+   "per_share_denominator_decimal": "8.515291627114915078942013655",
+   "ratio_decimal": "1.122686153173951235725647539",
+   "financial_state_id": "84f32c65e6469a2c3d683b7261501eaaa9333e57483f2a15838c6724e4067381",
+   "financial_state_effective_from": "2025-11-03",
+   "financial_state_available_at_max": "2025-10-31",
+   "input_fact_ids": [
+    "e1d7bf26ce8500f0d9116caa367622c286269e328c732a3907f13ce24923e0f2"
+   ],
+   "formula_id": "pb-a-mrq-v1"
+  },
+  {
+   "observation_id": "838ca3ab7428560c64015431e18fc50806c5776c7164ac9e964063659561f7fb",
+   "metric_id": "PB_A_MRQ",
+   "trade_date": "2026-03-30",
+   "status": "computed",
+   "exclusion_reason": "",
+   "market_close_decimal": "12.44",
+   "financial_state_value_decimal": "1558477000000.0",
+   "share_basis_decimal": "183020977818.0",
+   "per_share_denominator_decimal": "8.515291627114915078942013655",
+   "ratio_decimal": "1.460901228607108093350110396",
+   "financial_state_id": "84f32c65e6469a2c3d683b7261501eaaa9333e57483f2a15838c6724e4067381",
+   "financial_state_effective_from": "2025-11-03",
+   "financial_state_available_at_max": "2025-10-31",
+   "input_fact_ids": [
+    "e1d7bf26ce8500f0d9116caa367622c286269e328c732a3907f13ce24923e0f2"
+   ],
+   "formula_id": "pb-a-mrq-v1"
+  },
+  {
+   "observation_id": "0adf67fa55b43714dde20e0e32f7e01028b04eacb150731b5657c2efe36bd5d5",
+   "metric_id": "PB_A_MRQ",
+   "trade_date": "2026-03-31",
+   "status": "computed",
+   "exclusion_reason": "",
+   "market_close_decimal": "12.19",
+   "financial_state_value_decimal": "1586061000000.0",
+   "share_basis_decimal": "183020977818.0",
+   "per_share_denominator_decimal": "8.666006590660952535726769865",
+   "ratio_decimal": "1.406645595346849837427438163",
+   "financial_state_id": "22dbcaa4cae0affbe38cf33c35686386b7d14c8eae028eac6aee8c8c037d1f2b",
+   "financial_state_effective_from": "2026-03-31",
+   "financial_state_available_at_max": "2026-03-30",
+   "input_fact_ids": [
+    "00cb0c64831e9611889aa8a461cfa3e6f0be53efacca1ef5bd89e80c7db8262b"
+   ],
+   "formula_id": "pb-a-mrq-v1"
+  },
+  {
+   "observation_id": "ecb9ee7efbf49310ea6dda6be4deb81c3f891185b2d1ac47dbb21602c5f3584c",
+   "metric_id": "PB_A_MRQ",
+   "trade_date": "2026-04-30",
+   "status": "computed",
+   "exclusion_reason": "",
+   "market_close_decimal": "12.22",
+   "financial_state_value_decimal": "1586061000000.0",
+   "share_basis_decimal": "183020977818.0",
+   "per_share_denominator_decimal": "8.666006590660952535726769865",
+   "ratio_decimal": "1.410107397468294094615528659",
+   "financial_state_id": "22dbcaa4cae0affbe38cf33c35686386b7d14c8eae028eac6aee8c8c037d1f2b",
+   "financial_state_effective_from": "2026-03-31",
+   "financial_state_available_at_max": "2026-03-30",
+   "input_fact_ids": [
+    "00cb0c64831e9611889aa8a461cfa3e6f0be53efacca1ef5bd89e80c7db8262b"
+   ],
+   "formula_id": "pb-a-mrq-v1"
+  },
+  {
+   "observation_id": "b53829c86710f457179761851daf650b35a99cc96b43516f4d1e9c41a58ae4bc",
+   "metric_id": "PB_A_MRQ",
+   "trade_date": "2026-05-06",
+   "status": "computed",
+   "exclusion_reason": "",
+   "market_close_decimal": "11.89",
+   "financial_state_value_decimal": "1624532000000.0",
+   "share_basis_decimal": "183020977818.0",
+   "per_share_denominator_decimal": "8.876206538550294436827638346",
+   "ratio_decimal": "1.339536202583894930970888847",
+   "financial_state_id": "a4c6346a2d6da5c2da6e07f3348c9a0202540ebeed44e6b74c963fa4908ee976",
+   "financial_state_effective_from": "2026-05-06",
+   "financial_state_available_at_max": "2026-04-30",
+   "input_fact_ids": [
+    "9d483639eacd7a4961655203c0fb72292df4ba1fa78769de59194e5ba3845389"
+   ],
+   "formula_id": "pb-a-mrq-v1"
+  },
+  {
+   "observation_id": "33675138ba6ddd445a1ed13f5caa221e8b19f7a1873e49877ea45d7847769924",
+   "metric_id": "PB_A_MRQ",
+   "trade_date": "2026-07-31",
+   "status": "computed",
+   "exclusion_reason": "",
+   "market_close_decimal": "11.08",
+   "financial_state_value_decimal": "1624532000000.0",
+   "share_basis_decimal": "183020977818.0",
+   "per_share_denominator_decimal": "8.876206538550294436827638346",
+   "ratio_decimal": "1.248281002912494182940071356",
+   "financial_state_id": "a4c6346a2d6da5c2da6e07f3348c9a0202540ebeed44e6b74c963fa4908ee976",
+   "financial_state_effective_from": "2026-05-06",
+   "financial_state_available_at_max": "2026-04-30",
+   "input_fact_ids": [
+    "9d483639eacd7a4961655203c0fb72292df4ba1fa78769de59194e5ba3845389"
+   ],
+   "formula_id": "pb-a-mrq-v1"
+  },
+  {
+   "observation_id": "3b07c214be58b25eddd29e49e74373897bc64c6ed5522ce078f323ee3585f4a9",
+   "metric_id": "PE_A_TTM",
+   "trade_date": "2021-01-04",
+   "status": "missing_ttm_input",
+   "exclusion_reason": "missing prior-year TTM input",
+   "market_close_decimal": "4.19",
+   "financial_state_value_decimal": null,
+   "share_basis_decimal": "183020977818",
+   "per_share_denominator_decimal": null,
+   "ratio_decimal": null,
+   "financial_state_id": "5672be9ac6a363373cfe3cd346d8be1af32a3bb29a9ffe11dc11d74d2c8d103c",
+   "financial_state_effective_from": "2020-11-02",
+   "financial_state_available_at_max": "2020-10-30",
+   "input_fact_ids": [
+    "53dacb028f282b3dd2adbc29ecf816257efe09f55a6332f6b6588d27903dddd8"
+   ],
+   "formula_id": "pe-a-ttm-v1"
+  },
+  {
+   "observation_id": "ad0b7b32b5b26191a7883d696af9c4858da535276d7e3a87bea47ad7cf94dff2",
+   "metric_id": "PE_A_TTM",
+   "trade_date": "2021-01-05",
+   "status": "missing_ttm_input",
+   "exclusion_reason": "missing prior-year TTM input",
+   "market_close_decimal": "4.18",
+   "financial_state_value_decimal": null,
+   "share_basis_decimal": "183020977818",
+   "per_share_denominator_decimal": null,
+   "ratio_decimal": null,
+   "financial_state_id": "5672be9ac6a363373cfe3cd346d8be1af32a3bb29a9ffe11dc11d74d2c8d103c",
+   "financial_state_effective_from": "2020-11-02",
+   "financial_state_available_at_max": "2020-10-30",
+   "input_fact_ids": [
+    "53dacb028f282b3dd2adbc29ecf816257efe09f55a6332f6b6588d27903dddd8"
+   ],
+   "formula_id": "pe-a-ttm-v1"
+  },
+  {
+   "observation_id": "a0113f4fde7cefa5071797287024208c97c0b056967685979188dea36c5eef42",
+   "metric_id": "PE_A_TTM",
+   "trade_date": "2021-01-06",
+   "status": "missing_ttm_input",
+   "exclusion_reason": "missing prior-year TTM input",
+   "market_close_decimal": "4.25",
+   "financial_state_value_decimal": null,
+   "share_basis_decimal": "183020977818",
+   "per_share_denominator_decimal": null,
+   "ratio_decimal": null,
+   "financial_state_id": "5672be9ac6a363373cfe3cd346d8be1af32a3bb29a9ffe11dc11d74d2c8d103c",
+   "financial_state_effective_from": "2020-11-02",
+   "financial_state_available_at_max": "2020-10-30",
+   "input_fact_ids": [
+    "53dacb028f282b3dd2adbc29ecf816257efe09f55a6332f6b6588d27903dddd8"
+   ],
+   "formula_id": "pe-a-ttm-v1"
+  },
+  {
+   "observation_id": "82ff50654a359422987997f0f5980fe023cc75a6a3a649d54c1d563ae57a3292",
+   "metric_id": "PE_A_TTM",
+   "trade_date": "2021-01-07",
+   "status": "missing_ttm_input",
+   "exclusion_reason": "missing prior-year TTM input",
+   "market_close_decimal": "4.25",
+   "financial_state_value_decimal": null,
+   "share_basis_decimal": "183020977818",
+   "per_share_denominator_decimal": null,
+   "ratio_decimal": null,
+   "financial_state_id": "5672be9ac6a363373cfe3cd346d8be1af32a3bb29a9ffe11dc11d74d2c8d103c",
+   "financial_state_effective_from": "2020-11-02",
+   "financial_state_available_at_max": "2020-10-30",
+   "input_fact_ids": [
+    "53dacb028f282b3dd2adbc29ecf816257efe09f55a6332f6b6588d27903dddd8"
+   ],
+   "formula_id": "pe-a-ttm-v1"
+  },
+  {
+   "observation_id": "34d77715aaea2a41904eae8e0466aaa2e94f97a0b2af43e20257dd340d5b895c",
+   "metric_id": "PE_A_TTM",
+   "trade_date": "2021-01-08",
+   "status": "missing_ttm_input",
+   "exclusion_reason": "missing prior-year TTM input",
+   "market_close_decimal": "4.29",
+   "financial_state_value_decimal": null,
+   "share_basis_decimal": "183020977818",
+   "per_share_denominator_decimal": null,
+   "ratio_decimal": null,
+   "financial_state_id": "5672be9ac6a363373cfe3cd346d8be1af32a3bb29a9ffe11dc11d74d2c8d103c",
+   "financial_state_effective_from": "2020-11-02",
+   "financial_state_available_at_max": "2020-10-30",
+   "input_fact_ids": [
+    "53dacb028f282b3dd2adbc29ecf816257efe09f55a6332f6b6588d27903dddd8"
+   ],
+   "formula_id": "pe-a-ttm-v1"
+  },
+  {
+   "observation_id": "72a2abb2c90f4f1c296efc95a193d0d8b7379533bd83b3f2d094631310a51ab5",
+   "metric_id": "PE_A_TTM",
+   "trade_date": "2021-01-11",
+   "status": "missing_ttm_input",
+   "exclusion_reason": "missing prior-year TTM input",
+   "market_close_decimal": "4.22",
+   "financial_state_value_decimal": null,
+   "share_basis_decimal": "183020977818",
+   "per_share_denominator_decimal": null,
+   "ratio_decimal": null,
+   "financial_state_id": "5672be9ac6a363373cfe3cd346d8be1af32a3bb29a9ffe11dc11d74d2c8d103c",
+   "financial_state_effective_from": "2020-11-02",
+   "financial_state_available_at_max": "2020-10-30",
+   "input_fact_ids": [
+    "53dacb028f282b3dd2adbc29ecf816257efe09f55a6332f6b6588d27903dddd8"
+   ],
+   "formula_id": "pe-a-ttm-v1"
+  },
+  {
+   "observation_id": "384cc4a26bd6a41093fc3ee484983d65eb5af4aa9303c2db07f8bc9ff59185d6",
+   "metric_id": "PE_A_TTM",
+   "trade_date": "2021-01-12",
+   "status": "missing_ttm_input",
+   "exclusion_reason": "missing prior-year TTM input",
+   "market_close_decimal": "4.31",
+   "financial_state_value_decimal": null,
+   "share_basis_decimal": "183020977818",
+   "per_share_denominator_decimal": null,
+   "ratio_decimal": null,
+   "financial_state_id": "5672be9ac6a363373cfe3cd346d8be1af32a3bb29a9ffe11dc11d74d2c8d103c",
+   "financial_state_effective_from": "2020-11-02",
+   "financial_state_available_at_max": "2020-10-30",
+   "input_fact_ids": [
+    "53dacb028f282b3dd2adbc29ecf816257efe09f55a6332f6b6588d27903dddd8"
+   ],
+   "formula_id": "pe-a-ttm-v1"
+  },
+  {
+   "observation_id": "e80794d14662f6858fe413c8b839e72d09ec054ee184ab9cb18b67f9672034a6",
+   "metric_id": "PE_A_TTM",
+   "trade_date": "2021-01-13",
+   "status": "missing_ttm_input",
+   "exclusion_reason": "missing prior-year TTM input",
+   "market_close_decimal": "4.36",
+   "financial_state_value_decimal": null,
+   "share_basis_decimal": "183020977818",
+   "per_share_denominator_decimal": null,
+   "ratio_decimal": null,
+   "financial_state_id": "5672be9ac6a363373cfe3cd346d8be1af32a3bb29a9ffe11dc11d74d2c8d103c",
+   "financial_state_effective_from": "2020-11-02",
+   "financial_state_available_at_max": "2020-10-30",
+   "input_fact_ids": [
+    "53dacb028f282b3dd2adbc29ecf816257efe09f55a6332f6b6588d27903dddd8"
+   ],
+   "formula_id": "pe-a-ttm-v1"
+  },
+  {
+   "observation_id": "e70fe8f62f8323461f10ce5f84e68d1543cb8993ea30830067bf895acda25bd2",
+   "metric_id": "PE_A_TTM",
+   "trade_date": "2021-01-14",
+   "status": "missing_ttm_input",
+   "exclusion_reason": "missing prior-year TTM input",
+   "market_close_decimal": "4.33",
+   "financial_state_value_decimal": null,
+   "share_basis_decimal": "183020977818",
+   "per_share_denominator_decimal": null,
+   "ratio_decimal": null,
+   "financial_state_id": "5672be9ac6a363373cfe3cd346d8be1af32a3bb29a9ffe11dc11d74d2c8d103c",
+   "financial_state_effective_from": "2020-11-02",
+   "financial_state_available_at_max": "2020-10-30",
+   "input_fact_ids": [
+    "53dacb028f282b3dd2adbc29ecf816257efe09f55a6332f6b6588d27903dddd8"
+   ],
+   "formula_id": "pe-a-ttm-v1"
+  },
+  {
+   "observation_id": "185498a3ef61061d6e15b419e7f5cb499e0f4873d936b2a4de3593e78c7559d3",
+   "metric_id": "PE_A_TTM",
+   "trade_date": "2021-01-15",
+   "status": "missing_ttm_input",
+   "exclusion_reason": "missing prior-year TTM input",
+   "market_close_decimal": "4.28",
+   "financial_state_value_decimal": null,
+   "share_basis_decimal": "183020977818",
+   "per_share_denominator_decimal": null,
+   "ratio_decimal": null,
+   "financial_state_id": "5672be9ac6a363373cfe3cd346d8be1af32a3bb29a9ffe11dc11d74d2c8d103c",
+   "financial_state_effective_from": "2020-11-02",
+   "financial_state_available_at_max": "2020-10-30",
+   "input_fact_ids": [
+    "53dacb028f282b3dd2adbc29ecf816257efe09f55a6332f6b6588d27903dddd8"
+   ],
+   "formula_id": "pe-a-ttm-v1"
+  },
+  {
+   "observation_id": "bc77fa8d29be6636075508461955e5da4dfc3b672f2fc1f6ed9fa68f09625861",
+   "metric_id": "PE_A_TTM",
+   "trade_date": "2021-01-18",
+   "status": "missing_ttm_input",
+   "exclusion_reason": "missing prior-year TTM input",
+   "market_close_decimal": "4.25",
+   "financial_state_value_decimal": null,
+   "share_basis_decimal": "183020977818",
+   "per_share_denominator_decimal": null,
+   "ratio_decimal": null,
+   "financial_state_id": "5672be9ac6a363373cfe3cd346d8be1af32a3bb29a9ffe11dc11d74d2c8d103c",
+   "financial_state_effective_from": "2020-11-02",
+   "financial_state_available_at_max": "2020-10-30",
+   "input_fact_ids": [
+    "53dacb028f282b3dd2adbc29ecf816257efe09f55a6332f6b6588d27903dddd8"
+   ],
+   "formula_id": "pe-a-ttm-v1"
+  },
+  {
+   "observation_id": "9aafd6b8a9d70ed5f4551984e2b0e2c78ac8db4a25068c70f17c0512ab411661",
+   "metric_id": "PE_A_TTM",
+   "trade_date": "2021-01-19",
+   "status": "missing_ttm_input",
+   "exclusion_reason": "missing prior-year TTM input",
+   "market_close_decimal": "4.26",
+   "financial_state_value_decimal": null,
+   "share_basis_decimal": "183020977818",
+   "per_share_denominator_decimal": null,
+   "ratio_decimal": null,
+   "financial_state_id": "5672be9ac6a363373cfe3cd346d8be1af32a3bb29a9ffe11dc11d74d2c8d103c",
+   "financial_state_effective_from": "2020-11-02",
+   "financial_state_available_at_max": "2020-10-30",
+   "input_fact_ids": [
+    "53dacb028f282b3dd2adbc29ecf816257efe09f55a6332f6b6588d27903dddd8"
+   ],
+   "formula_id": "pe-a-ttm-v1"
+  },
+  {
+   "observation_id": "daf8dacd738f1997843690dcfec0fcc614aefd699d0b3baec931c4fd4ada4cd8",
+   "metric_id": "PE_A_TTM",
+   "trade_date": "2021-01-20",
+   "status": "missing_ttm_input",
+   "exclusion_reason": "missing prior-year TTM input",
+   "market_close_decimal": "4.27",
+   "financial_state_value_decimal": null,
+   "share_basis_decimal": "183020977818",
+   "per_share_denominator_decimal": null,
+   "ratio_decimal": null,
+   "financial_state_id": "5672be9ac6a363373cfe3cd346d8be1af32a3bb29a9ffe11dc11d74d2c8d103c",
+   "financial_state_effective_from": "2020-11-02",
+   "financial_state_available_at_max": "2020-10-30",
+   "input_fact_ids": [
+    "53dacb028f282b3dd2adbc29ecf816257efe09f55a6332f6b6588d27903dddd8"
+   ],
+   "formula_id": "pe-a-ttm-v1"
+  },
+  {
+   "observation_id": "b57f87ebb8ed5bf60024fda20df4eee1a33330488c45b368727eb904a237e43a",
+   "metric_id": "PE_A_TTM",
+   "trade_date": "2021-01-21",
+   "status": "missing_ttm_input",
+   "exclusion_reason": "missing prior-year TTM input",
+   "market_close_decimal": "4.25",
+   "financial_state_value_decimal": null,
+   "share_basis_decimal": "183020977818",
+   "per_share_denominator_decimal": null,
+   "ratio_decimal": null,
+   "financial_state_id": "5672be9ac6a363373cfe3cd346d8be1af32a3bb29a9ffe11dc11d74d2c8d103c",
+   "financial_state_effective_from": "2020-11-02",
+   "financial_state_available_at_max": "2020-10-30",
+   "input_fact_ids": [
+    "53dacb028f282b3dd2adbc29ecf816257efe09f55a6332f6b6588d27903dddd8"
+   ],
+   "formula_id": "pe-a-ttm-v1"
+  },
+  {
+   "observation_id": "3adf7c3477423b01ad72e540cf7cf538c0fc853b857bc3dcf1e0335491988baf",
+   "metric_id": "PE_A_TTM",
+   "trade_date": "2021-01-22",
+   "status": "missing_ttm_input",
+   "exclusion_reason": "missing prior-year TTM input",
+   "market_close_decimal": "4.18",
+   "financial_state_value_decimal": null,
+   "share_basis_decimal": "183020977818",
+   "per_share_denominator_decimal": null,
+   "ratio_decimal": null,
+   "financial_state_id": "5672be9ac6a363373cfe3cd346d8be1af32a3bb29a9ffe11dc11d74d2c8d103c",
+   "financial_state_effective_from": "2020-11-02",
+   "financial_state_available_at_max": "2020-10-30",
+   "input_fact_ids": [
+    "53dacb028f282b3dd2adbc29ecf816257efe09f55a6332f6b6588d27903dddd8"
+   ],
+   "formula_id": "pe-a-ttm-v1"
+  },
+  {
+   "observation_id": "88485f84bc9cccbba5b468d4b9caf6c068bd7de473ed31b49ef4b63c0b10dbad",
+   "metric_id": "PE_A_TTM",
+   "trade_date": "2021-01-25",
+   "status": "missing_ttm_input",
+   "exclusion_reason": "missing prior-year TTM input",
+   "market_close_decimal": "4.15",
+   "financial_state_value_decimal": null,
+   "share_basis_decimal": "183020977818",
+   "per_share_denominator_decimal": null,
+   "ratio_decimal": null,
+   "financial_state_id": "5672be9ac6a363373cfe3cd346d8be1af32a3bb29a9ffe11dc11d74d2c8d103c",
+   "financial_state_effective_from": "2020-11-02",
+   "financial_state_available_at_max": "2020-10-30",
+   "input_fact_ids": [
+    "53dacb028f282b3dd2adbc29ecf816257efe09f55a6332f6b6588d27903dddd8"
+   ],
+   "formula_id": "pe-a-ttm-v1"
+  }
+ ]
+}

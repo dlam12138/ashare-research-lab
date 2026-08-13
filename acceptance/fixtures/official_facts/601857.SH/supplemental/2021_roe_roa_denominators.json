@@ -1,0 +1,142 @@
+{
+  "contract": "roe_roa_denominator_official_facts_v1",
+  "base_bundle_path": "acceptance/fixtures/official_facts/601857.SH/2021_annual.json",
+  "base_bundle_sha256": "0c97789044bc594dec48e95a846603b2d22a06227dce535ec855f569aeaf391b",
+  "base_bundle_git_blob": "cb85f84c3a1459f3a909e36bd6482c8d8124d1a4",
+  "symbol": "601857.SH",
+  "fiscal_year": 2021,
+  "report_type": "annual",
+  "accounting_standard": "CAS",
+  "consolidation_scope": "consolidated",
+  "language": "zh-CN",
+  "document_relationship": "results_announcement_and_full_report_share_audited_balance_sheet",
+  "period_type": "instant",
+  "period_end": "2021-12-31",
+  "reconciliation_rule_id": "RECON_OFFICIAL_NUMERIC_004",
+  "reconciliation_rule_version": "1",
+  "revision_review_status": "reviewed_unchanged",
+  "sources": {
+    "company": {
+      "facts": [
+        {
+          "concept_id": "total_assets",
+          "source_page": "PDF page 40 / printed page 40",
+          "pdf_page": 40,
+          "printed_page": 40,
+          "source_table": "2021年12月31日合并及公司资产负债表",
+          "source_label": "资产总计",
+          "column_label": "2021年12月31日合并",
+          "source_display_value": "2,502,533",
+          "raw_value": "2502533",
+          "raw_unit": "人民币百万元",
+          "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+          "expected_normalized_value": 250253300,
+          "evidence_type": "audited_consolidated_balance_sheet",
+          "manual_review_status": "visually_verified_twice"
+        },
+        {
+          "concept_id": "equity_attributable_to_parent",
+          "source_page": "PDF page 41 / printed page 41",
+          "pdf_page": 41,
+          "printed_page": 41,
+          "source_table": "2021年12月31日合并及公司资产负债表(续)",
+          "source_label": "归属于母公司股东权益合计",
+          "column_label": "2021年12月31日合并",
+          "source_display_value": "1,263,815",
+          "raw_value": "1263815",
+          "raw_unit": "人民币百万元",
+          "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+          "expected_normalized_value": 126381500,
+          "evidence_type": "audited_consolidated_balance_sheet",
+          "manual_review_status": "visually_verified_twice"
+        }
+      ]
+    },
+    "exchange": {
+      "facts": [
+        {
+          "concept_id": "total_assets",
+          "source_page": "PDF page 112 / printed page 110",
+          "pdf_page": 112,
+          "printed_page": 110,
+          "source_table": "2021年12月31日合并及公司资产负债表",
+          "source_label": "资产总计",
+          "column_label": "2021年12月31日合并",
+          "source_display_value": "2,502,533",
+          "raw_value": "2502533",
+          "raw_unit": "人民币百万元",
+          "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+          "expected_normalized_value": 250253300,
+          "evidence_type": "audited_consolidated_balance_sheet",
+          "manual_review_status": "visually_verified_twice"
+        },
+        {
+          "concept_id": "equity_attributable_to_parent",
+          "source_page": "PDF page 113 / printed page 111",
+          "pdf_page": 113,
+          "printed_page": 111,
+          "source_table": "2021年12月31日合并及公司资产负债表(续)",
+          "source_label": "归属于母公司股东权益合计",
+          "column_label": "2021年12月31日合并",
+          "source_display_value": "1,263,815",
+          "raw_value": "1263815",
+          "raw_unit": "人民币百万元",
+          "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+          "expected_normalized_value": 126381500,
+          "evidence_type": "audited_consolidated_balance_sheet",
+          "manual_review_status": "visually_verified_twice"
+        }
+      ]
+    }
+  },
+  "accounting_identity_check": {
+    "unit": "人民币百万元",
+    "total_current_assets": 480838,
+    "total_non_current_assets": 2021695,
+    "computed_total_assets": 2502533,
+    "reported_total_assets": 2502533,
+    "equity_attributable_to_parent": 1263815,
+    "minority_interest": 145309,
+    "computed_total_equity": 1409124,
+    "reported_total_equity": 1409124,
+    "total_liabilities": 1093409,
+    "computed_liabilities_plus_equity": 2502533,
+    "reported_liabilities_plus_equity": 2502533,
+    "exact_tie_out": true,
+    "scope": "consolidated_only"
+  },
+  "limitations": [
+    "资产总计和归属于母公司股东权益均为经审计合并资产负债表时点值；未使用总权益、流动资产、分部或母公司单体数据。",
+    "时点 Concept 取当年合并列，period_start=period_end=2021-12-31，不复用 duration Context。"
+  ],
+  "documents": {
+    "company": {
+      "source_tier": "company_official",
+      "source_provider": "petrochina_ir_manual_registry",
+      "source_id": "company_ir:601857.SH:2021:annual:zh-cn",
+      "source_document": "中国石油天然气股份有限公司二零二一年度业绩公告（年度报告摘要）",
+      "document_scope": "annual_results_announcement",
+      "final_pdf_url": "https://www.petrochina.com.cn/petrochina/ndyjgb/202203/aa94890bbe674250ac0e7135af5a8f86/files/d913968f2c264f4abe45f87ff1286ccb.pdf",
+      "sha256": "555a24ed0ace306ebb249faefd2d131e960cd008ad22df8929993c40183e4786",
+      "announcement_date": "2022-03-31",
+      "page_count": 44,
+      "content_length": 1195800
+    },
+    "exchange": {
+      "source_tier": "exchange_official",
+      "source_provider": "sse_disclosure_manual_registry",
+      "source_id": "sse:601857.SH:2021:annual:zh-cn",
+      "source_document": "中国石油天然气股份有限公司2021年度报告",
+      "document_scope": "full_annual_report",
+      "landing_url": "https://www.sse.com.cn/disclosure/listedinfo/regular/index.shtml?productId=601857",
+      "pdf_url": "https://www.sse.com.cn/disclosure/listedinfo/announcement/c/new/2022-04-01/601857_20220401_6_QNCbgaXu.pdf",
+      "final_pdf_url": "https://static.sse.com.cn/disclosure/listedinfo/announcement/c/new/2022-04-01/601857_20220401_6_QNCbgaXu.pdf",
+      "announcement_date": "2022-04-01",
+      "retrieved_at": "2026-07-30T08:26:28.000+08:00",
+      "sha256": "939de04e6502dc61be1a1fd3b12a4b9faaa0eb52e3996134810581391a93841f",
+      "content_type": "application/pdf",
+      "content_length": 5115948,
+      "page_count": 282
+    }
+  }
+}

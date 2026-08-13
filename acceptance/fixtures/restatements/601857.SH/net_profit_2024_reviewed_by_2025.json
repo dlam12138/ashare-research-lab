@@ -1,0 +1,27 @@
+{
+  "contract": "net_profit_restatement_evidence_v1",
+  "symbol": "601857.SH",
+  "target_fiscal_year": 2024,
+  "evidence_fiscal_year": 2025,
+  "evidence_bundle_path": "acceptance/fixtures/official_facts/601857.SH/2025_annual.json",
+  "concepts": [
+    {
+      "concept_id": "net_profit",
+      "original_raw_value": "183747",
+      "later_comparative_raw_value": "183747",
+      "later_comparative_attributable_to_parent": "164676",
+      "later_comparative_minority_interest": "19071",
+      "later_comparative_bridge_exact": true,
+      "raw_unit": "人民币百万元",
+      "changed": false,
+      "disclosed_change_reason": "none",
+      "review_status": "reviewed_unchanged",
+      "company": {
+        "manual_review_status": "visually_verified_twice"
+      },
+      "exchange": {
+        "manual_review_status": "visually_verified_twice"
+      }
+    }
+  ]
+}

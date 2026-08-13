@@ -1,0 +1,956 @@
+{
+ "schema": "pit_denominator_version_lineage_v1",
+ "symbol": "601857.SH",
+ "chains": [
+  {
+   "concept": "net_profit_attributable_to_parent",
+   "context": "601857.SH|2020|quarter_ytd|consolidated",
+   "fiscal_year": "2020",
+   "period_start": "",
+   "period_end": "2021-03-31",
+   "original_fact_id": "65f8f61d00a5c0b54cc2f3168d02d0668566906213c7815eb2b7ae3c6acc0d1c",
+   "original_value": -16234000000.0,
+   "original_available_at": "2020-04-30",
+   "later_evidence": [
+    "R4D-SSE-2021-Q1"
+   ],
+   "restatement_fact_ids": [],
+   "restated_values": [],
+   "supersession": "no_restatement",
+   "conflict_status": "consistent",
+   "conflicts": [],
+   "pit_selected_intervals": []
+  },
+  {
+   "concept": "revenue",
+   "context": "601857.SH|2020|quarter_ytd|consolidated",
+   "fiscal_year": "2020",
+   "period_start": "",
+   "period_end": "2021-03-31",
+   "original_fact_id": "fe85664e80726d2e55b8c39a9bc09605f65574d20f450c9128bbb1ef42b90974",
+   "original_value": 509098000000.0,
+   "original_available_at": "2020-04-30",
+   "later_evidence": [
+    "R4D-SSE-2021-Q1"
+   ],
+   "restatement_fact_ids": [],
+   "restated_values": [],
+   "supersession": "no_restatement",
+   "conflict_status": "consistent",
+   "conflicts": [],
+   "pit_selected_intervals": []
+  },
+  {
+   "concept": "net_profit_attributable_to_parent",
+   "context": "601857.SH|2020|half_year_ytd|consolidated",
+   "fiscal_year": "2020",
+   "period_start": "",
+   "period_end": "2021-06-30",
+   "original_fact_id": "81b6486b5b62bda7d1e7d8ce8bec74d99d3a99bc6a9f92745f8445c350e73eb7",
+   "original_value": -29986000000.0,
+   "original_available_at": "2020-08-28",
+   "later_evidence": [
+    "R4D-SSE-2021-H1"
+   ],
+   "restatement_fact_ids": [],
+   "restated_values": [],
+   "supersession": "no_restatement",
+   "conflict_status": "consistent",
+   "conflicts": [],
+   "pit_selected_intervals": []
+  },
+  {
+   "concept": "revenue",
+   "context": "601857.SH|2020|half_year_ytd|consolidated",
+   "fiscal_year": "2020",
+   "period_start": "",
+   "period_end": "2021-06-30",
+   "original_fact_id": "16cc655cde45d141ee609c120f4af4c26ca80b183255f8f087e010f839bac35e",
+   "original_value": 929045000000.0,
+   "original_available_at": "2020-08-28",
+   "later_evidence": [
+    "R4D-SSE-2021-H1"
+   ],
+   "restatement_fact_ids": [],
+   "restated_values": [],
+   "supersession": "no_restatement",
+   "conflict_status": "consistent",
+   "conflicts": [],
+   "pit_selected_intervals": []
+  },
+  {
+   "concept": "net_profit_attributable_to_parent",
+   "context": "601857.SH|2020|three_quarter_ytd|consolidated",
+   "fiscal_year": "2020",
+   "period_start": "",
+   "period_end": "2021-09-30",
+   "original_fact_id": "53dacb028f282b3dd2adbc29ecf816257efe09f55a6332f6b6588d27903dddd8",
+   "original_value": 10064000000.0,
+   "original_available_at": "2020-10-30",
+   "later_evidence": [
+    "R4D-SSE-2021-Q3"
+   ],
+   "restatement_fact_ids": [],
+   "restated_values": [],
+   "supersession": "no_restatement",
+   "conflict_status": "consistent",
+   "conflicts": [],
+   "pit_selected_intervals": []
+  },
+  {
+   "concept": "revenue",
+   "context": "601857.SH|2020|three_quarter_ytd|consolidated",
+   "fiscal_year": "2020",
+   "period_start": "",
+   "period_end": "2021-09-30",
+   "original_fact_id": "c4f2698de2ca5e18565328922e5c7d4b2a66b645809f639eb70dcf8244ba0a05",
+   "original_value": 1426170000000.0,
+   "original_available_at": "2020-10-30",
+   "later_evidence": [
+    "R4D-SSE-2021-Q3"
+   ],
+   "restatement_fact_ids": [],
+   "restated_values": [],
+   "supersession": "no_restatement",
+   "conflict_status": "consistent",
+   "conflicts": [],
+   "pit_selected_intervals": []
+  },
+  {
+   "concept": "net_profit_attributable_to_parent",
+   "context": "601857.SH|2020|annual|consolidated",
+   "fiscal_year": "2020",
+   "period_start": "",
+   "period_end": "2021-12-31",
+   "original_fact_id": "5ce2000c1ecab1745d80ee0a0e9886b444e072f0d8813d07f2f388702fa3ffc2",
+   "original_value": 19002000000.0,
+   "original_available_at": "2021-03-26",
+   "later_evidence": [
+    "R4D-SSE-2021-AR"
+   ],
+   "restatement_fact_ids": [],
+   "restated_values": [],
+   "supersession": "no_restatement",
+   "conflict_status": "consistent",
+   "conflicts": [],
+   "pit_selected_intervals": []
+  },
+  {
+   "concept": "revenue",
+   "context": "601857.SH|2020|annual|consolidated",
+   "fiscal_year": "2020",
+   "period_start": "",
+   "period_end": "2021-12-31",
+   "original_fact_id": "509199223d6ecc1791f13a6f73b6d3929dccd0df34431f43adc97f9d3cf2933a",
+   "original_value": 1933836000000.0,
+   "original_available_at": "2021-03-26",
+   "later_evidence": [
+    "R4D-SSE-2021-AR"
+   ],
+   "restatement_fact_ids": [],
+   "restated_values": [],
+   "supersession": "no_restatement",
+   "conflict_status": "consistent",
+   "conflicts": [],
+   "pit_selected_intervals": []
+  },
+  {
+   "concept": "net_profit_attributable_to_parent",
+   "context": "601857.SH|2021|quarter_ytd|consolidated",
+   "fiscal_year": "2021",
+   "period_start": "",
+   "period_end": "2022-03-31",
+   "original_fact_id": "df0f50cd04273f81dac23e7c3e84de42d13a27fa988d133e2da347f8fa162fc8",
+   "original_value": 27719000000.0,
+   "original_available_at": "2021-04-30",
+   "later_evidence": [
+    "R4D-SSE-2022-Q1"
+   ],
+   "restatement_fact_ids": [],
+   "restated_values": [],
+   "supersession": "no_restatement",
+   "conflict_status": "consistent",
+   "conflicts": [],
+   "pit_selected_intervals": []
+  },
+  {
+   "concept": "revenue",
+   "context": "601857.SH|2021|quarter_ytd|consolidated",
+   "fiscal_year": "2021",
+   "period_start": "",
+   "period_end": "2022-03-31",
+   "original_fact_id": "216016a3f605c427fc8fc28bc3c47141549a35686889e72e5eaad5a80fe0d652",
+   "original_value": 551923000000.0,
+   "original_available_at": "2021-04-30",
+   "later_evidence": [
+    "R4D-SSE-2022-Q1"
+   ],
+   "restatement_fact_ids": [],
+   "restated_values": [],
+   "supersession": "no_restatement",
+   "conflict_status": "consistent",
+   "conflicts": [],
+   "pit_selected_intervals": []
+  },
+  {
+   "concept": "net_profit_attributable_to_parent",
+   "context": "601857.SH|2021|half_year_ytd|consolidated",
+   "fiscal_year": "2021",
+   "period_start": "",
+   "period_end": "2022-06-30",
+   "original_fact_id": "13fde8161656b89a80e6f211b02abdf1713c77daaa4d04341c34420f94207b84",
+   "original_value": 53036000000.0,
+   "original_available_at": "2021-08-27",
+   "later_evidence": [
+    "R4D-SSE-2022-H1"
+   ],
+   "restatement_fact_ids": [],
+   "restated_values": [],
+   "supersession": "no_restatement",
+   "conflict_status": "consistent",
+   "conflicts": [],
+   "pit_selected_intervals": []
+  },
+  {
+   "concept": "revenue",
+   "context": "601857.SH|2021|half_year_ytd|consolidated",
+   "fiscal_year": "2021",
+   "period_start": "",
+   "period_end": "2022-06-30",
+   "original_fact_id": "20087edcca60dfd64e421d4f674b2c37d359eeba5c151584146fbf5263d18902",
+   "original_value": 1196581000000.0,
+   "original_available_at": "2021-08-27",
+   "later_evidence": [
+    "R4D-SSE-2022-H1"
+   ],
+   "restatement_fact_ids": [],
+   "restated_values": [],
+   "supersession": "no_restatement",
+   "conflict_status": "consistent",
+   "conflicts": [],
+   "pit_selected_intervals": []
+  },
+  {
+   "concept": "net_profit_attributable_to_parent",
+   "context": "601857.SH|2021|three_quarter_ytd|consolidated",
+   "fiscal_year": "2021",
+   "period_start": "",
+   "period_end": "2022-09-30",
+   "original_fact_id": "65dec25525a61bac7bab03b70b128ad89fe69d597d0235b8febfae7ca45f0d49",
+   "original_value": 75122000000.0,
+   "original_available_at": "2021-10-29",
+   "later_evidence": [
+    "R4D-SSE-2022-Q3"
+   ],
+   "restatement_fact_ids": [],
+   "restated_values": [],
+   "supersession": "no_restatement",
+   "conflict_status": "consistent",
+   "conflicts": [],
+   "pit_selected_intervals": []
+  },
+  {
+   "concept": "revenue",
+   "context": "601857.SH|2021|three_quarter_ytd|consolidated",
+   "fiscal_year": "2021",
+   "period_start": "",
+   "period_end": "2022-09-30",
+   "original_fact_id": "dc02095f6299269279d22a601dd0261019a69d28fa703254f3fead4e33346a4b",
+   "original_value": 1880341000000.0,
+   "original_available_at": "2021-10-29",
+   "later_evidence": [
+    "R4D-SSE-2022-Q3"
+   ],
+   "restatement_fact_ids": [],
+   "restated_values": [],
+   "supersession": "no_restatement",
+   "conflict_status": "consistent",
+   "conflicts": [],
+   "pit_selected_intervals": []
+  },
+  {
+   "concept": "net_profit_attributable_to_parent",
+   "context": "601857.SH|2021|annual|consolidated",
+   "fiscal_year": "2021",
+   "period_start": "",
+   "period_end": "2022-12-31",
+   "original_fact_id": "eb1a6271b4a359bda90f7bc6439ee61ff0597990457d348abd5ae451040a527e",
+   "original_value": 92161000000.0,
+   "original_available_at": "2022-04-01",
+   "later_evidence": [
+    "R4D-SSE-2022-AR"
+   ],
+   "restatement_fact_ids": [],
+   "restated_values": [],
+   "supersession": "no_restatement",
+   "conflict_status": "consistent",
+   "conflicts": [],
+   "pit_selected_intervals": []
+  },
+  {
+   "concept": "revenue",
+   "context": "601857.SH|2021|annual|consolidated",
+   "fiscal_year": "2021",
+   "period_start": "",
+   "period_end": "2022-12-31",
+   "original_fact_id": "027de9ede52314d1c13ab2836afb57b2d517fbdaaaa7c46e48e5de5a1d7d7ab2",
+   "original_value": 2614349000000.0,
+   "original_available_at": "2022-04-01",
+   "later_evidence": [
+    "R4D-SSE-2022-AR"
+   ],
+   "restatement_fact_ids": [],
+   "restated_values": [],
+   "supersession": "no_restatement",
+   "conflict_status": "consistent",
+   "conflicts": [],
+   "pit_selected_intervals": []
+  },
+  {
+   "concept": "net_profit_attributable_to_parent",
+   "context": "601857.SH|2022|quarter_ytd|consolidated",
+   "fiscal_year": "2022",
+   "period_start": "",
+   "period_end": "2023-03-31",
+   "original_fact_id": "2608838fc8bb4b9f3d1772c9edcfa1ffe7c030c0bd5c326b672815593aee55f5",
+   "original_value": 39059000000.0,
+   "original_available_at": "2022-04-30",
+   "later_evidence": [
+    "R4D-SSE-2023-Q1"
+   ],
+   "restatement_fact_ids": [
+    "896a2f045d34941d1a9db5f33047480033f5bea6eee8ba632d22a306af6ac613"
+   ],
+   "restated_values": [
+    38898000000.0
+   ],
+   "supersession": "original_visible_until_restatement",
+   "conflict_status": "consistent",
+   "conflicts": [],
+   "pit_selected_intervals": [
+    {
+     "value": "restated_1",
+     "visible_from": "2023-04-29",
+     "supersedes": "2608838fc8bb4b9f3d1772c9edcfa1ffe7c030c0bd5c326b672815593aee55f5"
+    }
+   ]
+  },
+  {
+   "concept": "revenue",
+   "context": "601857.SH|2022|quarter_ytd|consolidated",
+   "fiscal_year": "2022",
+   "period_start": "",
+   "period_end": "2023-03-31",
+   "original_fact_id": "0aa4b328e7f7d050eeedacdfdf1a070572ab10678181649e5966ab21f18db0c5",
+   "original_value": 779368000000.0,
+   "original_available_at": "2022-04-30",
+   "later_evidence": [
+    "R4D-SSE-2023-Q1"
+   ],
+   "restatement_fact_ids": [],
+   "restated_values": [],
+   "supersession": "no_restatement",
+   "conflict_status": "consistent",
+   "conflicts": [],
+   "pit_selected_intervals": []
+  },
+  {
+   "concept": "net_profit_attributable_to_parent",
+   "context": "601857.SH|2022|half_year_ytd|consolidated",
+   "fiscal_year": "2022",
+   "period_start": "",
+   "period_end": "2023-06-30",
+   "original_fact_id": "467050b93db6edc6bc40f9596557fd8946c1b1c988158a3bb5fd7509e28abc0e",
+   "original_value": 82388000000.0,
+   "original_available_at": "2022-08-26",
+   "later_evidence": [
+    "R4D-SSE-2023-H1"
+   ],
+   "restatement_fact_ids": [
+    "a2e565d27399d5fa100c699ae47bd75a5ce87eccd1cfc5d020ff8fb7914b1d8c"
+   ],
+   "restated_values": [
+    81624000000.0
+   ],
+   "supersession": "original_visible_until_restatement",
+   "conflict_status": "consistent",
+   "conflicts": [],
+   "pit_selected_intervals": [
+    {
+     "value": "restated_1",
+     "visible_from": "2023-08-31",
+     "supersedes": "467050b93db6edc6bc40f9596557fd8946c1b1c988158a3bb5fd7509e28abc0e"
+    }
+   ]
+  },
+  {
+   "concept": "revenue",
+   "context": "601857.SH|2022|half_year_ytd|consolidated",
+   "fiscal_year": "2022",
+   "period_start": "",
+   "period_end": "2023-06-30",
+   "original_fact_id": "ad473f2b3f08e9f3314847334e927260dfa62fb9088059ca30f3743e3af3c3f9",
+   "original_value": 1614621000000.0,
+   "original_available_at": "2022-08-26",
+   "later_evidence": [
+    "R4D-SSE-2023-H1"
+   ],
+   "restatement_fact_ids": [],
+   "restated_values": [],
+   "supersession": "no_restatement",
+   "conflict_status": "consistent",
+   "conflicts": [],
+   "pit_selected_intervals": []
+  },
+  {
+   "concept": "net_profit_attributable_to_parent",
+   "context": "601857.SH|2022|three_quarter_ytd|consolidated",
+   "fiscal_year": "2022",
+   "period_start": "",
+   "period_end": "2023-09-30",
+   "original_fact_id": "ce5725837f0952f584f9b3192f6137a55f83f33d1f4d615333c68647288d8d8e",
+   "original_value": 120266000000.0,
+   "original_available_at": "2022-10-28",
+   "later_evidence": [
+    "R4D-SSE-2023-Q3"
+   ],
+   "restatement_fact_ids": [
+    "c533deb4c844acab1e21f3113f5943049b622c1c50982ad9684e841e709f8fbe"
+   ],
+   "restated_values": [
+    119926000000.0
+   ],
+   "supersession": "original_visible_until_restatement",
+   "conflict_status": "consistent",
+   "conflicts": [],
+   "pit_selected_intervals": [
+    {
+     "value": "restated_1",
+     "visible_from": "2023-10-31",
+     "supersedes": "ce5725837f0952f584f9b3192f6137a55f83f33d1f4d615333c68647288d8d8e"
+    }
+   ]
+  },
+  {
+   "concept": "revenue",
+   "context": "601857.SH|2022|three_quarter_ytd|consolidated",
+   "fiscal_year": "2022",
+   "period_start": "",
+   "period_end": "2023-09-30",
+   "original_fact_id": "ccdf5f3ba528066fc76c8904f3578d6d9640aee22c94809e87c8ba1e60883bcf",
+   "original_value": 2455401000000.0,
+   "original_available_at": "2022-10-28",
+   "later_evidence": [
+    "R4D-SSE-2023-Q3"
+   ],
+   "restatement_fact_ids": [],
+   "restated_values": [],
+   "supersession": "no_restatement",
+   "conflict_status": "consistent",
+   "conflicts": [],
+   "pit_selected_intervals": []
+  },
+  {
+   "concept": "net_profit_attributable_to_parent",
+   "context": "601857.SH|2022|annual|consolidated",
+   "fiscal_year": "2022",
+   "period_start": "",
+   "period_end": "2023-12-31",
+   "original_fact_id": "1f1cc75d460a9efc57b0e48b02aec9e27107babae8723e0622d64908e6fdd9f0",
+   "original_value": 149375000000.0,
+   "original_available_at": "2023-03-30",
+   "later_evidence": [
+    "R4D-SSE-2023-AR"
+   ],
+   "restatement_fact_ids": [
+    "0e086ca894c661c8ad719d8bbe814ce6af17d9fb3d6bd6171a20566a90793874"
+   ],
+   "restated_values": [
+    148738000000.0
+   ],
+   "supersession": "original_visible_until_restatement",
+   "conflict_status": "consistent",
+   "conflicts": [],
+   "pit_selected_intervals": [
+    {
+     "value": "restated_1",
+     "visible_from": "2024-03-26",
+     "supersedes": "1f1cc75d460a9efc57b0e48b02aec9e27107babae8723e0622d64908e6fdd9f0"
+    }
+   ]
+  },
+  {
+   "concept": "revenue",
+   "context": "601857.SH|2022|annual|consolidated",
+   "fiscal_year": "2022",
+   "period_start": "",
+   "period_end": "2023-12-31",
+   "original_fact_id": "951fc8085b4a7391739090dc184bf5df62d46fed5ca12ae08b349d8c653892d2",
+   "original_value": 3239167000000.0,
+   "original_available_at": "2023-03-30",
+   "later_evidence": [
+    "R4D-SSE-2023-AR"
+   ],
+   "restatement_fact_ids": [
+    "6498989f87925c3da4981e4c6a7a48a93040d040196b6f2e852c9737d003fe4b"
+   ],
+   "restated_values": [
+    3239167000000.0
+   ],
+   "supersession": "original_visible_until_restatement",
+   "conflict_status": "consistent",
+   "conflicts": [],
+   "pit_selected_intervals": [
+    {
+     "value": "restated_1",
+     "visible_from": "2024-03-26",
+     "supersedes": "951fc8085b4a7391739090dc184bf5df62d46fed5ca12ae08b349d8c653892d2"
+    }
+   ]
+  },
+  {
+   "concept": "net_profit_attributable_to_parent",
+   "context": "601857.SH|2023|quarter_ytd|consolidated",
+   "fiscal_year": "2023",
+   "period_start": "",
+   "period_end": "2024-03-31",
+   "original_fact_id": "e03d2e80e2e600e3682afd29eecf51f480a455fda0d4f953f5cce52818ca9726",
+   "original_value": 43630000000.0,
+   "original_available_at": "2023-04-29",
+   "later_evidence": [
+    "R4D-SSE-2024-Q1"
+   ],
+   "restatement_fact_ids": [],
+   "restated_values": [],
+   "supersession": "no_restatement",
+   "conflict_status": "consistent",
+   "conflicts": [],
+   "pit_selected_intervals": []
+  },
+  {
+   "concept": "revenue",
+   "context": "601857.SH|2023|quarter_ytd|consolidated",
+   "fiscal_year": "2023",
+   "period_start": "",
+   "period_end": "2024-03-31",
+   "original_fact_id": "ee8e22faae5c2da57ef71583154bfe8288bc9267fabceddfcc8dc89327a7354d",
+   "original_value": 732471000000.0,
+   "original_available_at": "2023-04-29",
+   "later_evidence": [
+    "R4D-SSE-2024-Q1"
+   ],
+   "restatement_fact_ids": [],
+   "restated_values": [],
+   "supersession": "no_restatement",
+   "conflict_status": "consistent",
+   "conflicts": [],
+   "pit_selected_intervals": []
+  },
+  {
+   "concept": "net_profit_attributable_to_parent",
+   "context": "601857.SH|2023|half_year_ytd|consolidated",
+   "fiscal_year": "2023",
+   "period_start": "",
+   "period_end": "2024-06-30",
+   "original_fact_id": "8d7cd0147c3fc665f9f4de70d91a63852583a9a48f0d401915c504cf6ebde138",
+   "original_value": 85276000000.0,
+   "original_available_at": "2023-08-31",
+   "later_evidence": [
+    "R4D-SSE-2024-H1"
+   ],
+   "restatement_fact_ids": [],
+   "restated_values": [],
+   "supersession": "no_restatement",
+   "conflict_status": "consistent",
+   "conflicts": [],
+   "pit_selected_intervals": []
+  },
+  {
+   "concept": "revenue",
+   "context": "601857.SH|2023|half_year_ytd|consolidated",
+   "fiscal_year": "2023",
+   "period_start": "",
+   "period_end": "2024-06-30",
+   "original_fact_id": "8e969154e9c8220542c7448a30311b9631ae79936e5546281ea7dafa59a547b9",
+   "original_value": 1479871000000.0,
+   "original_available_at": "2023-08-31",
+   "later_evidence": [
+    "R4D-SSE-2024-H1"
+   ],
+   "restatement_fact_ids": [],
+   "restated_values": [],
+   "supersession": "no_restatement",
+   "conflict_status": "consistent",
+   "conflicts": [],
+   "pit_selected_intervals": []
+  },
+  {
+   "concept": "net_profit_attributable_to_parent",
+   "context": "601857.SH|2023|three_quarter_ytd|consolidated",
+   "fiscal_year": "2023",
+   "period_start": "",
+   "period_end": "2024-09-30",
+   "original_fact_id": "5efe4fcb0df80d2ad46c630ee3835e6234b8f7cd6daf424ab5eba7281cb5adbf",
+   "original_value": 131651000000.0,
+   "original_available_at": "2023-10-31",
+   "later_evidence": [
+    "R4D-SSE-2024-Q3"
+   ],
+   "restatement_fact_ids": [],
+   "restated_values": [],
+   "supersession": "no_restatement",
+   "conflict_status": "consistent",
+   "conflicts": [],
+   "pit_selected_intervals": []
+  },
+  {
+   "concept": "revenue",
+   "context": "601857.SH|2023|three_quarter_ytd|consolidated",
+   "fiscal_year": "2023",
+   "period_start": "",
+   "period_end": "2024-09-30",
+   "original_fact_id": "6a3219ce3fc875afcc9347671ba93a01564a98cb4847aa81261bf04fa17b9ffe",
+   "original_value": 2282135000000.0,
+   "original_available_at": "2023-10-31",
+   "later_evidence": [
+    "R4D-SSE-2024-Q3"
+   ],
+   "restatement_fact_ids": [],
+   "restated_values": [],
+   "supersession": "no_restatement",
+   "conflict_status": "consistent",
+   "conflicts": [],
+   "pit_selected_intervals": []
+  },
+  {
+   "concept": "net_profit_attributable_to_parent",
+   "context": "601857.SH|2023|annual|consolidated",
+   "fiscal_year": "2023",
+   "period_start": "",
+   "period_end": "2024-12-31",
+   "original_fact_id": "c954daede8684386a0709dd4d7a27a3a7997dfd71c4e9c36037da2a4ab575995",
+   "original_value": 161144000000.0,
+   "original_available_at": "2024-03-26",
+   "later_evidence": [
+    "R4D-SSE-2024-AR"
+   ],
+   "restatement_fact_ids": [
+    "c1b5a6869b209bcf1af660d7564047fe4a583aa47283d19a8c49de5ff30f0a5c"
+   ],
+   "restated_values": [
+    161414000000.0
+   ],
+   "supersession": "original_visible_until_restatement",
+   "conflict_status": "consistent",
+   "conflicts": [],
+   "pit_selected_intervals": [
+    {
+     "value": "restated_1",
+     "visible_from": "2025-03-31",
+     "supersedes": "c954daede8684386a0709dd4d7a27a3a7997dfd71c4e9c36037da2a4ab575995"
+    }
+   ]
+  },
+  {
+   "concept": "revenue",
+   "context": "601857.SH|2023|annual|consolidated",
+   "fiscal_year": "2023",
+   "period_start": "",
+   "period_end": "2024-12-31",
+   "original_fact_id": "af3bf3e17caddcc46e3f2cbda27b88d327b4afa99d0a57d30280ba81616ca975",
+   "original_value": 3011012000000.0,
+   "original_available_at": "2024-03-26",
+   "later_evidence": [
+    "R4D-SSE-2024-AR"
+   ],
+   "restatement_fact_ids": [
+    "3d1c68604bfe8ce6f984e2ec2d9559d8b0b88dca6f7084c5cd9492c04cfa9138"
+   ],
+   "restated_values": [
+    3012812000000.0
+   ],
+   "supersession": "original_visible_until_restatement",
+   "conflict_status": "consistent",
+   "conflicts": [],
+   "pit_selected_intervals": [
+    {
+     "value": "restated_1",
+     "visible_from": "2025-03-31",
+     "supersedes": "af3bf3e17caddcc46e3f2cbda27b88d327b4afa99d0a57d30280ba81616ca975"
+    }
+   ]
+  },
+  {
+   "concept": "net_profit_attributable_to_parent",
+   "context": "601857.SH|2024|quarter_ytd|consolidated",
+   "fiscal_year": "2024",
+   "period_start": "",
+   "period_end": "2025-03-31",
+   "original_fact_id": "c49f537445ac38d8effbc868162863a777ba6de2865cf1eb7cdca37d4ed49d0b",
+   "original_value": 45681000000.0,
+   "original_available_at": "2024-04-30",
+   "later_evidence": [
+    "R4D-SSE-2025-Q1"
+   ],
+   "restatement_fact_ids": [
+    "1676c4edd23a2c1f5a37e4d5a2333f4710f6935fe4b56b41ded145b9eb0f0c68"
+   ],
+   "restated_values": [
+    45766000000.0
+   ],
+   "supersession": "original_visible_until_restatement",
+   "conflict_status": "consistent",
+   "conflicts": [],
+   "pit_selected_intervals": [
+    {
+     "value": "restated_1",
+     "visible_from": "2025-04-30",
+     "supersedes": "c49f537445ac38d8effbc868162863a777ba6de2865cf1eb7cdca37d4ed49d0b"
+    }
+   ]
+  },
+  {
+   "concept": "revenue",
+   "context": "601857.SH|2024|quarter_ytd|consolidated",
+   "fiscal_year": "2024",
+   "period_start": "",
+   "period_end": "2025-03-31",
+   "original_fact_id": "c93e3ecece4fc9df0e806171dcc21e0b85a7418347f11ec2bbfe915782a8fb18",
+   "original_value": 812184000000.0,
+   "original_available_at": "2024-04-30",
+   "later_evidence": [
+    "R4D-SSE-2025-Q1"
+   ],
+   "restatement_fact_ids": [
+    "392341588879d7e26168116471ce360edf4515b5617a09ae3709912c3774d70a"
+   ],
+   "restated_values": [
+    812801000000.0
+   ],
+   "supersession": "original_visible_until_restatement",
+   "conflict_status": "consistent",
+   "conflicts": [],
+   "pit_selected_intervals": [
+    {
+     "value": "restated_1",
+     "visible_from": "2025-04-30",
+     "supersedes": "c93e3ecece4fc9df0e806171dcc21e0b85a7418347f11ec2bbfe915782a8fb18"
+    }
+   ]
+  },
+  {
+   "concept": "net_profit_attributable_to_parent",
+   "context": "601857.SH|2024|half_year_ytd|consolidated",
+   "fiscal_year": "2024",
+   "period_start": "",
+   "period_end": "2025-06-30",
+   "original_fact_id": "c0194c0663af23c649f1c73ea460e216fb2fb5d6895a32b397fb178fe49b5f51",
+   "original_value": 88607000000.0,
+   "original_available_at": "2024-08-27",
+   "later_evidence": [
+    "R4D-SSE-2025-H1"
+   ],
+   "restatement_fact_ids": [
+    "36f1e5c595412f28ee8668534cfb712f849a079dd3bf46df7d17a52439a33a78"
+   ],
+   "restated_values": [
+    88802000000.0
+   ],
+   "supersession": "original_visible_until_restatement",
+   "conflict_status": "consistent",
+   "conflicts": [],
+   "pit_selected_intervals": [
+    {
+     "value": "restated_1",
+     "visible_from": "2025-08-27",
+     "supersedes": "c0194c0663af23c649f1c73ea460e216fb2fb5d6895a32b397fb178fe49b5f51"
+    }
+   ]
+  },
+  {
+   "concept": "revenue",
+   "context": "601857.SH|2024|half_year_ytd|consolidated",
+   "fiscal_year": "2024",
+   "period_start": "",
+   "period_end": "2025-06-30",
+   "original_fact_id": "6776601941b262065de5c6fb44d25e92ac85276d7d232ad688c9903e3ad8b8eb",
+   "original_value": 1553869000000.0,
+   "original_available_at": "2024-08-27",
+   "later_evidence": [
+    "R4D-SSE-2025-H1"
+   ],
+   "restatement_fact_ids": [
+    "fdd3701474f5ff927b1e1d4251ea03192428e72d3432b2327f3442f149c9e127"
+   ],
+   "restated_values": [
+    1554973000000.0
+   ],
+   "supersession": "original_visible_until_restatement",
+   "conflict_status": "consistent",
+   "conflicts": [],
+   "pit_selected_intervals": [
+    {
+     "value": "restated_1",
+     "visible_from": "2025-08-27",
+     "supersedes": "6776601941b262065de5c6fb44d25e92ac85276d7d232ad688c9903e3ad8b8eb"
+    }
+   ]
+  },
+  {
+   "concept": "net_profit_attributable_to_parent",
+   "context": "601857.SH|2024|three_quarter_ytd|consolidated",
+   "fiscal_year": "2024",
+   "period_start": "",
+   "period_end": "2025-09-30",
+   "original_fact_id": "efd795d1a3c29449d3186b5c2d29650f049587511c8b69d18c34477bf0a9b4bf",
+   "original_value": 132518000000.0,
+   "original_available_at": "2024-10-30",
+   "later_evidence": [
+    "R4D-SSE-2025-Q3"
+   ],
+   "restatement_fact_ids": [
+    "13093008013ff30cf54577782b2cdb4f5c7f7f8fbe8f7978aab218d46e6fd871"
+   ],
+   "restated_values": [
+    132784000000.0
+   ],
+   "supersession": "original_visible_until_restatement",
+   "conflict_status": "consistent",
+   "conflicts": [],
+   "pit_selected_intervals": [
+    {
+     "value": "restated_1",
+     "visible_from": "2025-10-31",
+     "supersedes": "efd795d1a3c29449d3186b5c2d29650f049587511c8b69d18c34477bf0a9b4bf"
+    }
+   ]
+  },
+  {
+   "concept": "revenue",
+   "context": "601857.SH|2024|three_quarter_ytd|consolidated",
+   "fiscal_year": "2024",
+   "period_start": "",
+   "period_end": "2025-09-30",
+   "original_fact_id": "3aca7bbe7f2b4e6449f6fd7586e342afe7210a9c919f94b885e807989e2a28f5",
+   "original_value": 2256279000000.0,
+   "original_available_at": "2024-10-30",
+   "later_evidence": [
+    "R4D-SSE-2025-Q3"
+   ],
+   "restatement_fact_ids": [
+    "bbee0c2ed6405500ddc5783a83677b270b10eab5c86d74eb8a4ada13c5b73e76"
+   ],
+   "restated_values": [
+    2257694000000.0
+   ],
+   "supersession": "original_visible_until_restatement",
+   "conflict_status": "consistent",
+   "conflicts": [],
+   "pit_selected_intervals": [
+    {
+     "value": "restated_1",
+     "visible_from": "2025-10-31",
+     "supersedes": "3aca7bbe7f2b4e6449f6fd7586e342afe7210a9c919f94b885e807989e2a28f5"
+    }
+   ]
+  },
+  {
+   "concept": "net_profit_attributable_to_parent",
+   "context": "601857.SH|2024|annual|consolidated",
+   "fiscal_year": "2024",
+   "period_start": "",
+   "period_end": "2025-12-31",
+   "original_fact_id": "ea454577cf53f36214712ce87f0a5c993acdeab3fd08bbe2813ec2605f33d3d9",
+   "original_value": 164676000000.0,
+   "original_available_at": "2025-03-31",
+   "later_evidence": [
+    "R4D-SSE-2025-AR"
+   ],
+   "restatement_fact_ids": [],
+   "restated_values": [],
+   "supersession": "no_restatement",
+   "conflict_status": "consistent",
+   "conflicts": [],
+   "pit_selected_intervals": []
+  },
+  {
+   "concept": "revenue",
+   "context": "601857.SH|2024|annual|consolidated",
+   "fiscal_year": "2024",
+   "period_start": "",
+   "period_end": "2025-12-31",
+   "original_fact_id": "4fa6c3ad7f8aeb42e00b240a750685fe9154a0d843d3f405ffb2d6acd726914d",
+   "original_value": 2937981000000.0,
+   "original_available_at": "2025-03-31",
+   "later_evidence": [
+    "R4D-SSE-2025-AR"
+   ],
+   "restatement_fact_ids": [],
+   "restated_values": [],
+   "supersession": "no_restatement",
+   "conflict_status": "consistent",
+   "conflicts": [],
+   "pit_selected_intervals": []
+  },
+  {
+   "concept": "net_profit_attributable_to_parent",
+   "context": "601857.SH|2025|quarter_ytd|consolidated",
+   "fiscal_year": "2025",
+   "period_start": "",
+   "period_end": "2026-03-31",
+   "original_fact_id": "2f3c2d6ee370a62a629a7bd6f52475344815c54ba7d4a205c151710d96ee091e",
+   "original_value": 46807000000.0,
+   "original_available_at": "2025-04-30",
+   "later_evidence": [
+    "R4D-SSE-2026-Q1"
+   ],
+   "restatement_fact_ids": [
+    "275657b7729e858e2a1c00ffae5c84283004e60cd7cf49899316cd2cda221a4c"
+   ],
+   "restated_values": [
+    47450000000.0
+   ],
+   "supersession": "original_visible_until_restatement",
+   "conflict_status": "consistent",
+   "conflicts": [],
+   "pit_selected_intervals": [
+    {
+     "value": "restated_1",
+     "visible_from": "2026-04-30",
+     "supersedes": "2f3c2d6ee370a62a629a7bd6f52475344815c54ba7d4a205c151710d96ee091e"
+    }
+   ]
+  },
+  {
+   "concept": "revenue",
+   "context": "601857.SH|2025|quarter_ytd|consolidated",
+   "fiscal_year": "2025",
+   "period_start": "",
+   "period_end": "2026-03-31",
+   "original_fact_id": "79c8a790cc93ab7a6859a6e383ae796a20e3bbfe514bc0df3c1f39f530c17757",
+   "original_value": 753108000000.0,
+   "original_available_at": "2025-04-30",
+   "later_evidence": [
+    "R4D-SSE-2026-Q1"
+   ],
+   "restatement_fact_ids": [
+    "26db6fb3e9cc6e98e14677b2847abf14c8ae398c55608ec8cb1e85481cbf02dc"
+   ],
+   "restated_values": [
+    753056000000.0
+   ],
+   "supersession": "original_visible_until_restatement",
+   "conflict_status": "consistent",
+   "conflicts": [],
+   "pit_selected_intervals": [
+    {
+     "value": "restated_1",
+     "visible_from": "2026-04-30",
+     "supersedes": "79c8a790cc93ab7a6859a6e383ae796a20e3bbfe514bc0df3c1f39f530c17757"
+    }
+   ]
+  }
+ ],
+ "chain_count": 42,
+ "restated_fact_count": 15
+}

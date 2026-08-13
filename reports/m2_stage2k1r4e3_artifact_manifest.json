@@ -1,0 +1,31 @@
+{
+ "schema": "m2_stage2k1r4e3_artifact_manifest",
+ "version": "1.0",
+ "files": [
+  {
+   "path": "reports/m2_stage2k1r4e3_decision.json",
+   "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+   "sha256": "c92e07b1699f2ca97310cbbc538c1dc533a4e82ff7c2de012269ade5e8a4b910",
+   "byte_size": 1574
+  },
+  {
+   "path": "reports/petrochina_secondary_provider_comparison_matrix_v1.json",
+   "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+   "sha256": "3f9f62786b4efb7e7e8dfba75e0f3dd3900e9a5067ec4b8d004a7f0ed76cc352",
+   "byte_size": 5766
+  },
+  {
+   "path": "reports/petrochina_secondary_provider_mismatch_ledger_v1.json",
+   "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+   "sha256": "4eb4ad98a163a3e81992127edd5ec7b728eb658a71b63ab90a8f7783b31d323d",
+   "byte_size": 633
+  },
+  {
+   "path": "reports/petrochina_secondary_provider_probe_v1.json",
+   "digest_algorithm": "sha256_lf_normalized_bytes_v1",
+   "sha256": "b226bc214c7ebba8fcccc7104d255a415ba3da960045bef44053660daf9e0fc2",
+   "byte_size": 3021
+  }
+ ],
+ "manifest_digest": "7658ad168070d72848e109b929374550251a5af7ced448b3a977e7427cc02a51"
+}

@@ -1,0 +1,114 @@
+{
+  "contract": "roe_roa_denominator_official_facts_v1",
+  "base_bundle_path": "acceptance/fixtures/official_facts/601857.SH/2025_annual.json",
+  "base_bundle_sha256": "1cea469542ec4293658703167e7d10cc00b7ced21c9ce6a5e13843bed6e1caab",
+  "base_bundle_git_blob": "0ababb5262e6cbf1646e165ccfb3e7bfe2769670",
+  "symbol": "601857.SH",
+  "fiscal_year": 2025,
+  "report_type": "annual",
+  "accounting_standard": "CAS",
+  "consolidation_scope": "consolidated",
+  "language": "zh-CN",
+  "document_relationship": "same_report_different_bytes",
+  "period_type": "instant",
+  "period_end": "2025-12-31",
+  "reconciliation_rule_id": "RECON_OFFICIAL_NUMERIC_004",
+  "reconciliation_rule_version": "1",
+  "revision_review_status": "not_yet_reviewable",
+  "sources": {
+    "company": {
+      "facts": [
+        {
+          "concept_id": "total_assets",
+          "source_page": "PDF page 107 / printed page 105",
+          "pdf_page": 107,
+          "printed_page": 105,
+          "source_table": "2025 年 12 月 31 日合并及公司资产负债表",
+          "source_label": "资产总计",
+          "column_label": "2025 年 12 月 31 日合并",
+          "source_display_value": "2,828,017",
+          "raw_value": "2828017",
+          "raw_unit": "人民币百万元",
+          "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+          "expected_normalized_value": 282801700,
+          "evidence_type": "audited_consolidated_balance_sheet",
+          "manual_review_status": "visually_verified_twice"
+        },
+        {
+          "concept_id": "equity_attributable_to_parent",
+          "source_page": "PDF page 108 / printed page 106",
+          "pdf_page": 108,
+          "printed_page": 106,
+          "source_table": "2025 年 12 月 31 日合并及公司资产负债表(续)",
+          "source_label": "归属于母公司股东权益合计",
+          "column_label": "2025 年 12 月 31 日合并",
+          "source_display_value": "1,586,061",
+          "raw_value": "1586061",
+          "raw_unit": "人民币百万元",
+          "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+          "expected_normalized_value": 158606100,
+          "evidence_type": "audited_consolidated_balance_sheet",
+          "manual_review_status": "visually_verified_twice"
+        }
+      ]
+    },
+    "exchange": {
+      "facts": [
+        {
+          "concept_id": "total_assets",
+          "source_page": "PDF page 107 / printed page 105",
+          "pdf_page": 107,
+          "printed_page": 105,
+          "source_table": "2025 年 12 月 31 日合并及公司资产负债表",
+          "source_label": "资产总计",
+          "column_label": "2025 年 12 月 31 日合并",
+          "source_display_value": "2,828,017",
+          "raw_value": "2828017",
+          "raw_unit": "人民币百万元",
+          "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+          "expected_normalized_value": 282801700,
+          "evidence_type": "audited_consolidated_balance_sheet",
+          "manual_review_status": "visually_verified_twice"
+        },
+        {
+          "concept_id": "equity_attributable_to_parent",
+          "source_page": "PDF page 108 / printed page 106",
+          "pdf_page": 108,
+          "printed_page": 106,
+          "source_table": "2025 年 12 月 31 日合并及公司资产负债表(续)",
+          "source_label": "归属于母公司股东权益合计",
+          "column_label": "2025 年 12 月 31 日合并",
+          "source_display_value": "1,586,061",
+          "raw_value": "1586061",
+          "raw_unit": "人民币百万元",
+          "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+          "expected_normalized_value": 158606100,
+          "evidence_type": "audited_consolidated_balance_sheet",
+          "manual_review_status": "visually_verified_twice"
+        }
+      ]
+    }
+  },
+  "accounting_identity_check": {
+    "unit": "人民币百万元",
+    "total_current_assets": 595297,
+    "total_non_current_assets": 2232720,
+    "computed_total_assets": 2828017,
+    "reported_total_assets": 2828017,
+    "equity_attributable_to_parent": 1586061,
+    "minority_interest": 213487,
+    "computed_total_equity": 1799548,
+    "reported_total_equity": 1799548,
+    "total_liabilities": 1028469,
+    "computed_liabilities_plus_equity": 2828017,
+    "reported_liabilities_plus_equity": 2828017,
+    "exact_tie_out": true,
+    "scope": "consolidated_only"
+  },
+  "limitations": [
+    "两个正式发布路径承载同一份年度报告但 PDF 字节不同；标题、报告期、页数、经审计财务报表页面和两项时点值精确一致。",
+    "资产总计和归属于母公司股东权益均为经审计合并资产负债表时点值；未使用总权益、流动资产、分部或母公司单体数据。",
+    "时点 Concept 取当年合并列，period_start=period_end=2025-12-31，不复用 duration Context。",
+    "2025 年尚无后续年度报告复核，两项均标记 not_yet_reviewable。"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+ "schema": "m2_stage2k1r4e5_decision",
+ "version": "1.0",
+ "symbol": "601857.SH",
+ "as_of_trade_date": "2026-07-31",
+ "decision": "PIT_VALUATION_PERCENTILE_PROFILE_TRUSTED_NORTH_STAR_REVIEW_REQUIRED",
+ "exit_code": 0,
+ "mode": "production_like_non_production",
+ "evidence_class": "non_production_percentile_profile",
+ "rank_method": "MIDRANK_EMPIRICAL_PERCENTILE",
+ "candidate_artifact_digest": "22147118789a9dc09dbb3f625d1c4836915dae54d0afaf7d276cf3cdd735bb15",
+ "r4e4_decision_digest": "2253fe8215fa3ef9b429b548cfb46e6bd145ee859499c36ab18f4d2e417ba8cd",
+ "market_reconciliation_digest": "4fb3382b25e5889e91e1dc27b46e1ae6c080e4dc5ef23b4e47c65063603d5acc",
+ "oracle_identical": true,
+ "all_windows_ready": true,
+ "record_count": 6,
+ "non_production": true,
+ "score_eligible": false,
+ "production_eligible": false,
+ "north_star_review_required": true,
+ "message": "Non-production historical percentile profile built and trusted; scoring integration requires an independent North-Star review."
+}

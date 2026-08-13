@@ -1,0 +1,90 @@
+{
+  "schema": "pit_valuation_official_source_evidence_r4f4a1_v1",
+  "symbol": "601857.SH",
+  "purpose": "R4F4A1_EXACT_FOUR_CELL_5Y_BACKFILL_AND_RESTATEMENT_SCAN",
+  "official_announcement_metadata_source": "https://query.sse.com.cn/security/stock/queryCompanyBulletin.do",
+  "metadata_rule": "announcement_date equals SSEDATE; never infer from URL, filename, or HTTP headers",
+  "required_start": "2016-03-24",
+  "entries": [
+    {
+      "evidence_id": "R4F4A1-SSE-2015-AR",
+      "fiscal_year": 2015,
+      "reporting_period": "2015-annual",
+      "announcement_date": "2016-03-24",
+      "metadata_add_date": "2016-03-23 17:22:01",
+      "source_role": "exchange_official",
+      "evidence_role": "original_and_later_comparative_candidate",
+      "proof_url": "https://query.sse.com.cn/security/stock/queryCompanyBulletin.do",
+      "document_url": "https://static.sse.com.cn/disclosure/listedinfo/announcement/c/2016-03-24/601857_2015_n.pdf",
+      "report_title": "中国石油天然气股份有限公司2015年年度报告",
+      "target_cells": ["2015-12-31|equity_attributable_to_parent"]
+    },
+    {
+      "evidence_id": "R4F4A1-SSE-2016-AR",
+      "fiscal_year": 2016,
+      "reporting_period": "2016-annual",
+      "announcement_date": "2017-03-31",
+      "metadata_add_date": "2017-03-30 18:36:14",
+      "source_role": "exchange_official",
+      "evidence_role": "original_and_2015_comparative_scan",
+      "proof_url": "https://query.sse.com.cn/security/stock/queryCompanyBulletin.do",
+      "document_url": "https://static.sse.com.cn/disclosure/listedinfo/announcement/c/2017-03-31/601857_2016_n.pdf",
+      "report_title": "中国石油天然气股份有限公司2016年年度报告",
+      "target_cells": [
+        "2016-12-31|equity_attributable_to_parent",
+        "2016-12-31|net_profit_attributable_to_parent"
+      ]
+    },
+    {
+      "evidence_id": "R4F3A-SSE-2017-AR",
+      "fiscal_year": 2017,
+      "reporting_period": "2017-annual",
+      "announcement_date": "2018-03-23",
+      "metadata_add_date": "2018-03-22 19:32:39",
+      "source_role": "exchange_official",
+      "evidence_role": "reused_original_and_2016_comparative_scan",
+      "proof_url": "https://query.sse.com.cn/security/stock/queryCompanyBulletin.do",
+      "document_url": "https://static.sse.com.cn/disclosure/listedinfo/announcement/c/2018-03-23/601857_2017_n.pdf",
+      "report_title": "中国石油天然气股份有限公司2017年年度报告",
+      "target_cells": ["2017-12-31|net_profit_attributable_to_parent"]
+    },
+    {
+      "evidence_id": "R4F3A-SSE-2018-AR",
+      "fiscal_year": 2018,
+      "reporting_period": "2018-annual",
+      "announcement_date": "2019-03-22",
+      "source_role": "exchange_official",
+      "evidence_role": "2017_comparative_restatement_scan",
+      "proof_url": "https://query.sse.com.cn/security/stock/queryCompanyBulletin.do",
+      "document_url": "https://static.sse.com.cn/disclosure/listedinfo/announcement/c/2019-03-22/601857_2018_n.pdf",
+      "report_title": "中国石油天然气股份有限公司2018年年度报告",
+      "target_cells": []
+    },
+    {
+      "evidence_id": "R4F3A-SSE-2019-AR",
+      "fiscal_year": 2019,
+      "reporting_period": "2019-annual",
+      "announcement_date": "2020-03-27",
+      "source_role": "exchange_official",
+      "evidence_role": "bounded_later_restatement_scan",
+      "proof_url": "https://query.sse.com.cn/security/stock/queryCompanyBulletin.do",
+      "document_url": "https://static.sse.com.cn/disclosure/listedinfo/announcement/c/2020-03-27/601857_2019_n.pdf",
+      "report_title": "中国石油天然气股份有限公司2019年年度报告",
+      "target_cells": []
+    },
+    {
+      "evidence_id": "R4F3A-SSE-2020-AR-COMP",
+      "fiscal_year": 2020,
+      "reporting_period": "2020-annual",
+      "announcement_date": "2021-03-26",
+      "source_role": "exchange_official",
+      "evidence_role": "bounded_later_restatement_scan",
+      "proof_url": "https://query.sse.com.cn/security/stock/queryCompanyBulletin.do",
+      "document_url": "https://static.sse.com.cn/disclosure/listedinfo/announcement/c/new/2021-03-26/601857_20210326_14.pdf",
+      "report_title": "中国石油天然气股份有限公司2020年年度报告",
+      "target_cells": []
+    }
+  ],
+  "bounded_scan_conclusion": "2016/2017/2018 direct comparative columns equal the originals for the four target cells; 2019/2020 filings add no later version of those cells",
+  "automatic_2014_or_earlier_scan": "PROHIBITED"
+}

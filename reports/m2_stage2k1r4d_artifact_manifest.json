@@ -1,0 +1,163 @@
+{
+  "schema": "m2_stage2k1r4d_artifact_manifest_v1",
+  "stage": "M2 Stage 2K.1R4D",
+  "date": "2026-08-05",
+  "artifacts": [
+    {
+      "path": "config/pit_valuation_quarterly_fact_execution_plan_v1.json",
+      "exists": true,
+      "sha256": "8248da152b5249b96a4d9bd8a409b87650ef47275f75e17ffa127ff399a5ec24",
+      "byte_size": 3293
+    },
+    {
+      "path": "config/pit_valuation_official_source_evidence_v1.json",
+      "exists": true,
+      "sha256": "906f7727f7caf02ce2d91ae1ecd9431a37e8a706cadbfc5067920d585c8dc490",
+      "byte_size": 54169
+    },
+    {
+      "path": "config/pit_valuation_official_cache_registry_v1.json",
+      "exists": true,
+      "sha256": "085fd0f7508dc6266815b9f6ee3a3c74d07496f66e122126bf790a75c4cde5fd",
+      "byte_size": 11089
+    },
+    {
+      "path": "config/pit_valuation_quarterly_fact_role_registry_v1.json",
+      "exists": true,
+      "sha256": "19ec78fc2fb3d3846ed0c3d4fa8c75dd95a0e856112c9202b427de8c91d46319",
+      "byte_size": 4008
+    },
+    {
+      "path": "config/pit_valuation_quarterly_extraction_specs_v1.json",
+      "exists": true,
+      "sha256": "d975057b486daf0093c74c6b0929e44f850c9e88bd3c1903d9649ccede7e3a3e",
+      "byte_size": 33179
+    },
+    {
+      "path": "src/ashare_research/pit_valuation/__init__.py",
+      "exists": true,
+      "sha256": "2b57a136c1a9de18b03a55404ff2a1b317a9da9bb1c4a1d5fb63c5d0de85c213",
+      "byte_size": 210
+    },
+    {
+      "path": "src/ashare_research/pit_valuation/contracts.py",
+      "exists": true,
+      "sha256": "47401715ceac3d6450a9810a6621d76dd25cc5f59577133c9204e0f8726f1135",
+      "byte_size": 11891
+    },
+    {
+      "path": "src/ashare_research/pit_valuation/source_cache.py",
+      "exists": true,
+      "sha256": "b0d9fa9deb861ac8afe7e04810f60f66735fc3f708eaa2c36addaf874b445f7f",
+      "byte_size": 12754
+    },
+    {
+      "path": "src/ashare_research/pit_valuation/extraction.py",
+      "exists": true,
+      "sha256": "d07d15e8f31010080f5b371fcbb7878d20753b53a840f697d8e800a086c4a7fc",
+      "byte_size": 11628
+    },
+    {
+      "path": "src/ashare_research/pit_valuation/fact_builder.py",
+      "exists": true,
+      "sha256": "1aacce44d15a68a2b30a6cfc816b1a0bcae8f9c9ffeebeee9fb70fefcdca81b2",
+      "byte_size": 11135
+    },
+    {
+      "path": "src/ashare_research/pit_valuation/reconciliation.py",
+      "exists": true,
+      "sha256": "ac9d18ab37eb91eedbf2231dba3273042703651a54f7c4ab799d266f11d801bd",
+      "byte_size": 15398
+    },
+    {
+      "path": "src/ashare_research/pit_valuation/readiness.py",
+      "exists": true,
+      "sha256": "688b07230c68025b7ba1f500630d66ae78551d6276cbea3061b6295b8c89bcad",
+      "byte_size": 11169
+    },
+    {
+      "path": "src/ashare_research/tools/m2_stage2k1r4d_acquire_denominators.py",
+      "exists": true,
+      "sha256": "2bf9f9975feebd6cb4f80eb552d8d15c18a7cd0f42ccfb584c08d3f60d07af18",
+      "byte_size": 14383
+    },
+    {
+      "path": "tests/test_m2_stage2k1r4d_source_cache.py",
+      "exists": true,
+      "sha256": "4f96060e93b0f84e1b6c94c2c18c68ee4b3fb26123efc96a52f1e379aacd52ab",
+      "byte_size": 8603
+    },
+    {
+      "path": "tests/test_m2_stage2k1r4d_extraction.py",
+      "exists": true,
+      "sha256": "58b3b2a6e55f3e34f7988f4a262ac76a145dcfd461b0ea1800f02e7b4f968118",
+      "byte_size": 11009
+    },
+    {
+      "path": "tests/test_m2_stage2k1r4d_fact_identity.py",
+      "exists": true,
+      "sha256": "63d2d7ab03f7865d20196e4212b8340446594fea13a80fcc86c008826989ba4a",
+      "byte_size": 10401
+    },
+    {
+      "path": "tests/test_m2_stage2k1r4d_restatement_and_readiness.py",
+      "exists": true,
+      "sha256": "97b90be52e5dd2be57aeb190a050276b87dc057f6acb6eb0c263481cd82a2747",
+      "byte_size": 18604
+    },
+    {
+      "path": "reports/petrochina_pit_denominator_reported_fact_bundle_v1.json",
+      "exists": true,
+      "sha256": "7ba3f51f9a63669ecf277bce154f79c186649842f3ad8d027ab791721ccdf720",
+      "byte_size": 220743
+    },
+    {
+      "path": "reports/petrochina_pit_denominator_reconciled_fact_bundle_v1.json",
+      "exists": true,
+      "sha256": "c54b7ac40fa66c4849a10cb3dd237b6f241d2779964520d3cd2f1c8dba373edb",
+      "byte_size": 143
+    },
+    {
+      "path": "reports/petrochina_pit_denominator_version_lineage_v1.json",
+      "exists": true,
+      "sha256": "f0cfbaca4f3ae4a70311cf4949f729e363f064eab473619a1c45755fc481c67c",
+      "byte_size": 30025
+    },
+    {
+      "path": "reports/petrochina_pit_denominator_acquisition_coverage_v1.json",
+      "exists": true,
+      "sha256": "edbe161a2e21431ea4f425b08d374ae6dbf7f0bfc5f320ace251afa474328e32",
+      "byte_size": 82346
+    },
+    {
+      "path": "reports/petrochina_pit_denominator_gap_ledger_v1.json",
+      "exists": true,
+      "sha256": "a83daf73e7453ede4edd9ba0f368f7e8e2a8a21fe31930f688fcb9e722410679",
+      "byte_size": 15476
+    },
+    {
+      "path": "reports/petrochina_pit_denominator_readiness_v1.json",
+      "exists": true,
+      "sha256": "7c75b5001a09546e7fb1dd7cbf12e6c2d2f762919d5c80960c1ea44cbb0b24ce",
+      "byte_size": 3096
+    },
+    {
+      "path": "acceptance/m2_stage2k1r4d_official_quarterly_denominator_acquisition.md",
+      "exists": true,
+      "sha256": "bc05fb1a62265fe6ebec14322e467d058cd588599ce27967db207a087842c961",
+      "byte_size": 8546
+    },
+    {
+      "path": "agent/record/2026-08-05_Stage2K1R4D_official_quarterly_denominator_acquisition.md",
+      "exists": true,
+      "sha256": "f65bac6636961aa28771f7506abb85af51f51b8587dcc708191a03eec56b8074",
+      "byte_size": 14342
+    },
+    {
+      "path": ".github/workflows/stage2g-reproducibility.yml",
+      "exists": true,
+      "sha256": "c4a26713bc217502dd6dec22c480b68cc168bb05851a6599a5ae27a73da5c0b7",
+      "byte_size": 5301
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "contract": "supplemental_annual_official_facts_v1",
+  "base_bundle_path": "acceptance/fixtures/official_facts/601857.SH/2021_annual.json",
+  "base_bundle_sha256": "0c97789044bc594dec48e95a846603b2d22a06227dce535ec855f569aeaf391b",
+  "base_bundle_git_blob": "cb85f84c3a1459f3a909e36bd6482c8d8124d1a4",
+  "symbol": "601857.SH",
+  "fiscal_year": 2021,
+  "concept_id": "cash_paid_for_fixed_assets",
+  "restatement_review_status": "reviewed_unchanged",
+  "company": {
+    "source_page": "PDF page 11 / printed page 9",
+    "pdf_page": 11,
+    "printed_page": 9,
+    "source_table": "2021年度合并及公司现金流量表",
+    "source_label": "购建固定资产、油气资产、无形资产和其他长期资产支付的现金",
+    "column_label": "2021年度合并",
+    "source_display_value": "(265,563)",
+    "raw_value": "265563",
+    "raw_unit": "人民币百万元",
+    "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+    "expected_normalized_value": 26556300,
+    "manual_review_status": "visually_verified_twice"
+  },
+  "exchange": {
+    "source_page": "PDF page 115 / printed page 113",
+    "pdf_page": 115,
+    "printed_page": 113,
+    "source_table": "2021年度合并及公司现金流量表",
+    "source_label": "购建固定资产、油气资产、无形资产和其他长期资产支付的现金",
+    "column_label": "2021年度合并",
+    "source_display_value": "(265,563)",
+    "raw_value": "265563",
+    "raw_unit": "人民币百万元",
+    "normalization_rule": "RMB_MILLION_TO_CNY_10K_X100",
+    "expected_normalized_value": 26556300,
+    "manual_review_status": "visually_verified_twice"
+  }
+}

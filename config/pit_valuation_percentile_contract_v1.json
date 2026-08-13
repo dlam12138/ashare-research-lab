@@ -1,0 +1,48 @@
+{
+ "schema": "pit_valuation_historical_percentile_v1",
+ "version": "1.0",
+ "purpose": "frozen method contract for the M2 Stage 2K.1R4E.5 non-production historical valuation percentile profile",
+ "symbol": "601857.SH",
+ "as_of_trade_date": "2026-07-31",
+ "metrics": [
+  "PE_A_TTM",
+  "PB_A_MRQ",
+  "PS_A_TTM"
+ ],
+ "rank_method": "MIDRANK_EMPIRICAL_PERCENTILE",
+ "include_current": true,
+ "decimal_policy": "Decimal(string) only; rank by Decimal comparison; never via float",
+ "invalid_observation_policy": "only status==computed and ratio_decimal>0 enter the sample; all others stay in the exclusion ledger and never enter N; non-positive PE is never ranked as cheap",
+ "windows": {
+  "3y": {
+   "window_id": "3y",
+   "calendar_start": "2023-07-31",
+   "effective_first_trade_date": "2023-07-31",
+   "as_of_trade_date": "2026-07-31",
+   "minimum_sample_count": 500
+  },
+  "5y": {
+   "window_id": "5y",
+   "calendar_start": "2021-07-31",
+   "effective_first_trade_date": "2021-08-02",
+   "as_of_trade_date": "2026-07-31",
+   "minimum_sample_count": 900
+  }
+ },
+ "window_policy": "calendar-year window mapped to actual trade days; start <= trade_date <= as_of",
+ "sample_eligibility": {
+  "status": "computed",
+  "ratio_decimal_not_null": true,
+  "ratio_decimal_strictly_positive": true,
+  "trade_date_within_window": true,
+  "trade_date_less_equal_as_of": true
+ },
+ "future_leakage_gate": "max(sample.trade_date) <= as_of_trade_date; any trade_date > as_of fails",
+ "oracle_contract": "independent DuckDB implementation must match Python on N/L/E/G and rank_numerator/rank_denominator",
+ "scipy_reference": "percentileofscore(kind='rank') semantics borrowed for tie averaging; scipy is NOT a runtime dependency",
+ "interpretation_guard": {
+  "pe_guard_id": "low_pe_not_automatic_undervaluation_v1",
+  "interpretation": "DESCRIPTIVE_RELATIVE_VALUATION_ONLY",
+  "cycle_warning_required": true
+ }
+}
