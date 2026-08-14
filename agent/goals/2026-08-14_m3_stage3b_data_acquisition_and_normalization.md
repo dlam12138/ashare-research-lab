@@ -1,6 +1,6 @@
 # Goal Contract: M3 Stage 3B — Data Acquisition and Normalization
 
-Status: ACTIVE — fail-closed acceptance complete; documentation-tip CI pending
+Status: CLOSED — fail-closed data-gap acceptance
 
 ## Objective
 
@@ -119,3 +119,10 @@ unchanged, deterministic tests pass, and evidence is committed and pushed.
 - A fourth documentation-only CI evidence commit is permitted when needed.
 - Push normally to `feat/m3-mechanism-validation-mvp`.
 - No PR, merge, amend/force-push, or direct push to main.
+
+## Closure semantics
+
+Closure is conditional on the required GitHub checks attached to this commit reaching PASS. The
+CI run identifier is external evidence and is not required to be embedded into the same commit.
+Once those checks pass, this Goal remains closed without a follow-up CI-evidence-only commit.
+Stage 3C remains prohibited pending a separate North-Star review and authorization.

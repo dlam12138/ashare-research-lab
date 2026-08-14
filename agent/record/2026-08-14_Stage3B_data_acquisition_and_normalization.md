@@ -1,6 +1,6 @@
 # Work Record: M3 Stage 3B — Data Acquisition and Normalization
 
-Status: PASS — fail-closed data-gap acceptance; documentation-tip CI pending
+Status: CLOSED — fail-closed data-gap acceptance
 
 ## Basic information
 
@@ -148,16 +148,17 @@ SW 2014 `801016` to SW 2021 `801960` taxonomy transition instead of silently cha
 
 ## Result
 
-The authorized fail-closed path is locally implemented and locally validated. Available
-target/calendar inputs are normalized and reproducible. Required primary-proxy gaps remain, so
-Tier-1 is not trusted and Stage 3C is prohibited. Final acceptance commit, push, and CI remain.
+The authorized fail-closed path is implemented, locally validated, pushed, and remotely validated.
+Available target/calendar inputs are normalized and reproducible. Required primary-proxy gaps
+remain, so Tier-1 is not trusted and Stage 3C is prohibited.
 
 ## Outstanding issues
 
 - Complete daily official eligibility, full-market issued shares, and corporate-action/divisor
   inputs were not obtained.
 - Oil and industry were intentionally not acquired after the ordered primary-proxy hard stop.
-- Remote CI evidence is pending.
+- No implementation defect remains; the unresolved items are upstream data gaps that deliberately
+  keep the primary proxy untrusted and Stage 3C prohibited.
 
 ## Remote CI closeout
 
@@ -166,7 +167,11 @@ Tier-1 is not trusted and Stage 3C is prohibited. Final acceptance commit, push,
   including static, contract, capsule, full-suite, and identity-envelope gates.
 - The provenance-gated cross-platform identity comparison passed.
 - Only upstream GitHub Actions Node.js 20 deprecation annotations remain.
-- This CI-evidence-only documentation commit requires final-tip CI before the Goal is closed.
+- Documentation commit `df62420` passed final-tip GitHub Actions run `31765642952` on Windows,
+  Ubuntu, and the provenance-gated cross-platform identity comparison.
+- Closure is conditional on the required GitHub checks attached to this governance-closeout commit
+  reaching PASS. Its CI run identifier is external evidence and is not required to be embedded in
+  the same commit; no follow-up CI-evidence-only commit is required.
 
 ## Final file changes
 
@@ -183,12 +188,7 @@ Tier-1 is not trusted and Stage 3C is prohibited. Final acceptance commit, push,
 - Semantic commit: `2ea1538`.
 - Data implementation commit: `ffd4440`.
 - Acceptance commit `f6d1552` pushed and CI PASS (`31765256230`).
-- CI-evidence-only documentation commit and its final-tip CI: pending.
-
-## Final file changes
-
-Pending.
-
-## Final Git state
-
-Pending.
+- CI-evidence-only documentation commit `df62420` pushed and final-tip CI PASS
+  (`31765642952`).
+- Governance closeout: this document's containing commit; closed automatically when its attached
+  required GitHub checks reach PASS.

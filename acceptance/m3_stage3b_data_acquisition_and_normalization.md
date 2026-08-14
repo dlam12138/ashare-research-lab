@@ -113,5 +113,11 @@ The acquired usable subset was normalized twice with no further network access:
 - Cross-platform provenance-gated identity comparison: PASS.
 - Only upstream GitHub Actions Node.js 20 deprecation annotations remain.
 
-This CI-evidence-only documentation tip must pass the same gates. Stage 3C remains prohibited
-regardless of CI success.
+## Closure semantics
+
+Closure is conditional on the required GitHub checks attached to the governance-closeout commit
+reaching PASS. The CI run identifier is external evidence and is not required to be embedded into
+the same commit. Once those checks pass, no follow-up CI-evidence-only commit is required.
+
+Stage 3C remains prohibited regardless of CI success and requires a separate North-Star review and
+authorization.
