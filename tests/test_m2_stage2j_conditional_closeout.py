@@ -161,7 +161,9 @@ def test_closeout_wording_and_scoring_boundary_are_exact():
     current = (ROOT / "README.md").read_text(encoding="utf-8")
     assert "Milestone 2: CONDITIONALLY CLOSED; SCORING ADDENDUM CONDITIONALLY CLOSED" in current
     assert "PE_NUMERIC_SCORING_DEFERRED_FROZEN_5Y_VALIDATION_NOT_TESTABLE" in current
-    assert "M3_NORTH_STAR_PREFLIGHT_ALLOWED" in current
+    assert "M3 Stage 3A research contracts are frozen" in current
+    assert "Stage 3B data" in current
+    assert "no real mechanism inference has" in current
     packet = (ROOT / "reports/m2_stage2j_closeout_summary.md").read_text(
         encoding="utf-8"
     )

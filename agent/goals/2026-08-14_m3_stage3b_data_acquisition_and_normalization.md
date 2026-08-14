@@ -1,6 +1,6 @@
 # Goal Contract: M3 Stage 3B — Data Acquisition and Normalization
 
-Status: ACTIVE
+Status: ACTIVE — local fail-closed acceptance complete; remote CI pending
 
 ## Objective
 
@@ -119,4 +119,3 @@ unchanged, deterministic tests pass, and evidence is committed and pushed.
 - A fourth documentation-only CI evidence commit is permitted when needed.
 - Push normally to `feat/m3-mechanism-validation-mvp`.
 - No PR, merge, amend/force-push, or direct push to main.
-

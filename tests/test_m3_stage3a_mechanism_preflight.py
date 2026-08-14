@@ -137,5 +137,21 @@ def test_artifacts_have_no_local_paths_or_real_statistics():
         assert not any(token in text for token in forbidden)
 
 
-def test_no_mechanism_implementation_package_was_created():
-    assert not (ROOT / "src/ashare_research/mechanism").exists()
+def test_stage3b_package_contains_data_preparation_only():
+    package = ROOT / "src/ashare_research/mechanism"
+    assert package.is_dir()
+    allowed = {
+        "__init__.py",
+        "contracts.py",
+        "market_proxy.py",
+        "normalization.py",
+        "source_manifest.py",
+    }
+    assert {path.name for path in package.glob("*.py")} == allowed
+    prohibited = {
+        "conditional_test.py",
+        "evidence_grade.py",
+        "regression.py",
+        "robustness.py",
+    }
+    assert not any((package / name).exists() for name in prohibited)

@@ -1,6 +1,6 @@
 # Work Record: M3 Stage 3B — Data Acquisition and Normalization
 
-Status: in_progress
+Status: PASS — fail-closed data-gap acceptance; remote CI pending
 
 ## Basic information
 
@@ -96,11 +96,25 @@ acquisition; default DB writes; large raw-data commits; M1/M2 refactors; PR or m
    and Eastmoney share-structure histories; both require full coverage and share-class audits.
 9. Reviewed official EIA/FRED Brent metadata and candidate Shenwan industry-index regimes.
 10. Added the three Stage 3B semantic/source contracts and corrected only the stale README status.
+11. Implemented capability-specific provider protocols plus contract, normalization, oil-alignment,
+    primary-proxy, immutable-manifest, coverage, and canonical-digest primitives.
+12. Added a one-shot acquisition/offline-audit tool with a hard 2022-12-31 upper bound, immutable
+    raw paths, raw SHA verification, and refusal to rerun into an existing capsule.
+13. Acquired the bounded external capsule once: calendar, target qfq/unadjusted, four dated universe
+    snapshots, and three CNINFO share-history samples covering A, A/H, and B semantics.
+14. Ran offline normalization A and B. The audit plus calendar and both target outputs are exact-byte
+    identical between runs.
+15. Applied the primary fail-closed gate. The acquired sources do not establish complete daily
+    official eligibility, every eligible security's applicable issued shares, and full corporate-
+    action/divisor continuity. No primary proxy was constructed.
+16. Stopped the ordered network acquisition before oil and industry, recorded both as not acquired,
+    and generated development manifest, coverage, and acceptance artifacts without research results.
 
 ## Data and methodology notes
 
-No network acquisition or real market-data read has occurred yet. No holdout data has been read.
-No statistic or mechanism result has been computed.
+One bounded network acquisition was performed into an external root. Requests ended no later than
+2022-12-31. No holdout market outcome was acquired or read. No statistic or mechanism result was
+computed.
 
 The primary proxy contract explicitly retains the historical SSE methodology break. Oil is frozen
 to EIA Europe Brent Spot Price FOB but fails closed unless historical release/vintage timing proves
@@ -112,15 +126,54 @@ SW 2014 `801016` to SW 2021 `801960` taxonomy transition instead of silently cha
 - Stage 3B JSON parse: PASS for all three semantic/source contracts.
 - Frozen Stage 3A SHA-256 recheck: PASS, all three hashes unchanged.
 - `git diff --check`: PASS after semantic-contract changes.
+- Focused Stage 3B tests after implementation: 22 passed.
+- Focused Ruff and compileall: PASS after correcting one UP038 lint finding and one line-length
+  finding.
+- External raw manifest verification: PASS for all 10 files.
+- Offline A/B: audit, calendar, qfq target, and unadjusted target exact-byte identical.
+- Stage 3B report JSON parse and restricted-output-key gate: PASS.
+- The literal `python -m pytest -q tests/test_m3_stage3b_*.py` command did not expand its glob in
+  PowerShell and exited 4 with no tests collected. The PowerShell-resolved file-list equivalent then
+  passed all 22 focused tests.
+- First full-suite run: 1963 passed, 3 skipped, 2 failed. Both failures were stale living-status
+  assertions: README still expected preflight-only wording, and Stage 3A still required no mechanism
+  package. They were updated to assert current Stage 3B status and the exact allowed data-only module
+  set while continuing to prohibit Stage 3C modules. Targeted rerun: 45 passed.
+- Final full suite: 1965 passed, 3 skipped, 2 pre-existing pandas warnings.
+- Full `ruff check src/ tests/`, compileall, and `git diff --check`: PASS.
+- Frozen Stage 3A hashes unchanged and default DB absent after all validation.
+- Required pytest/compileall created ignored `__pycache__` directories. Two cleanup attempts were
+  rejected by the execution safety policy even after paths were inspected; no bypass was attempted.
+  No cache is tracked or included in commits.
 
 ## Result
 
-In progress.
+The authorized fail-closed path is locally implemented and locally validated. Available
+target/calendar inputs are normalized and reproducible. Required primary-proxy gaps remain, so
+Tier-1 is not trusted and Stage 3C is prohibited. Final acceptance commit, push, and CI remain.
 
 ## Outstanding issues
 
-- Official methodology and source feasibility investigation pending.
-- Tier-1 acquisition and proxy trust decision pending.
+- Complete daily official eligibility, full-market issued shares, and corporate-action/divisor
+  inputs were not obtained.
+- Oil and industry were intentionally not acquired after the ordered primary-proxy hard stop.
+- Remote CI evidence is pending.
+
+## Final file changes
+
+- Added Stage 3B Goal, work record, acceptance, three semantic/source contracts, development
+  manifest, coverage report, five mechanism data modules, capability protocols, one-shot
+  acquisition/offline-audit tool, and 22 focused tests.
+- Updated only README's stale M3 status and two living-status regression assertions.
+- Did not modify the frozen Stage 3A JSON contracts or any M2 artifact/database.
+
+## Final Git state
+
+- Branch: `feat/m3-mechanism-validation-mvp`.
+- Starting commit: `ae2225f45c984f90b00ca28b3c35b421fe030359`.
+- Semantic commit: `2ea1538`.
+- Data implementation commit: `ffd4440`.
+- Acceptance commit, push, synchronization, and CI evidence: pending.
 
 ## Final file changes
 
