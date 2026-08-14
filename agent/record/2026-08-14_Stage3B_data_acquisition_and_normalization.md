@@ -1,6 +1,6 @@
 # Work Record: M3 Stage 3B — Data Acquisition and Normalization
 
-Status: PASS — fail-closed data-gap acceptance; remote CI pending
+Status: PASS — fail-closed data-gap acceptance; documentation-tip CI pending
 
 ## Basic information
 
@@ -159,6 +159,15 @@ Tier-1 is not trusted and Stage 3C is prohibited. Final acceptance commit, push,
 - Oil and industry were intentionally not acquired after the ordered primary-proxy hard stop.
 - Remote CI evidence is pending.
 
+## Remote CI closeout
+
+- Normal push advanced origin from `ae2225f` to `f6d1552` with the three planned logical commits.
+- GitHub Actions run `31765256230` at `f6d1552` passed Windows and Ubuntu clean-clone jobs,
+  including static, contract, capsule, full-suite, and identity-envelope gates.
+- The provenance-gated cross-platform identity comparison passed.
+- Only upstream GitHub Actions Node.js 20 deprecation annotations remain.
+- This CI-evidence-only documentation commit requires final-tip CI before the Goal is closed.
+
 ## Final file changes
 
 - Added Stage 3B Goal, work record, acceptance, three semantic/source contracts, development
@@ -173,7 +182,8 @@ Tier-1 is not trusted and Stage 3C is prohibited. Final acceptance commit, push,
 - Starting commit: `ae2225f45c984f90b00ca28b3c35b421fe030359`.
 - Semantic commit: `2ea1538`.
 - Data implementation commit: `ffd4440`.
-- Acceptance commit, push, synchronization, and CI evidence: pending.
+- Acceptance commit `f6d1552` pushed and CI PASS (`31765256230`).
+- CI-evidence-only documentation commit and its final-tip CI: pending.
 
 ## Final file changes
 

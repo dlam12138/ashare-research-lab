@@ -1,6 +1,6 @@
 # Goal Contract: M3 Stage 3B — Data Acquisition and Normalization
 
-Status: ACTIVE — local fail-closed acceptance complete; remote CI pending
+Status: ACTIVE — fail-closed acceptance complete; documentation-tip CI pending
 
 ## Objective
 

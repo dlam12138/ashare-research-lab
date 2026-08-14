@@ -104,5 +104,14 @@ The acquired usable subset was normalized twice with no further network access:
 - Stage 3A exact-byte SHA gate: PASS.
 - Default `data/research.duckdb`: absent before and after.
 
-Final-tip remote CI evidence must be added after normal push; Stage 3C remains prohibited regardless
-of CI success.
+## Remote CI
+
+- Implementation/acceptance tip: `f6d155282296c61d071d15ccf5651692e9c366a4`.
+- GitHub Actions run: `31765256230`.
+- Ubuntu clean-clone, static, contract, capsule, full-suite, and identity-envelope job: PASS.
+- Windows clean-clone, static, contract, capsule, full-suite, and identity-envelope job: PASS.
+- Cross-platform provenance-gated identity comparison: PASS.
+- Only upstream GitHub Actions Node.js 20 deprecation annotations remain.
+
+This CI-evidence-only documentation tip must pass the same gates. Stage 3C remains prohibited
+regardless of CI success.
