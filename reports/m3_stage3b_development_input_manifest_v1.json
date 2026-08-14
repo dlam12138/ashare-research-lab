@@ -1,0 +1,108 @@
+{
+ "acquisition": {
+  "fetched_at": "2026-08-14T02:40:24.583469+00:00",
+  "holdout_read_performed": false,
+  "mode": "ONE_SHOT_FEASIBILITY_CAPSULE",
+  "raw_data_committed_to_git": false,
+  "requested_end": "2022-12-31",
+  "requested_start": "2014-12-01",
+  "warmup_role": "WARMUP_ONLY"
+ },
+ "datasets": [
+  {
+   "dataset_id": "trade_calendar",
+   "date_end": "2022-12-31",
+   "date_start": "2014-12-01",
+   "logical_sha256": "9bfaaaa738c539ee9847813826afeb7db35cf3e7b2151181ec465cd27fc482a8",
+   "normalization_status": "NORMALIZED",
+   "raw_file_path": "baostock/trade_calendar.csv",
+   "raw_sha256": "3fb6450581f8389de8227a5c568b283bd77e85eeaad9562a2eac732fb790e2ec",
+   "rows": 2953,
+   "source_name": "Baostock",
+   "status": "ACQUIRED"
+  },
+  {
+   "dataset_id": "target_daily_unadjusted",
+   "date_end": "2022-12-30",
+   "date_start": "2014-12-01",
+   "logical_sha256": "aefbfa513b177060543cf5ea87c3de013cebecddeafde548163455bd31496949",
+   "normalization_status": "NORMALIZED",
+   "raw_file_path": "baostock/601857_SH_unadjusted.csv",
+   "raw_sha256": "1c91831d814074ae50eb108bfdd725b246de5372dcc6a8df596c65e382517c31",
+   "rows": 1970,
+   "source_name": "Baostock",
+   "status": "ACQUIRED"
+  },
+  {
+   "dataset_id": "target_daily_qfq",
+   "date_end": "2022-12-30",
+   "date_start": "2014-12-01",
+   "logical_sha256": "c0485b55e07551a1a98c1f4cd33f3791814b6c3df6c1351d4ca634a97eebb1ab",
+   "normalization_status": "NORMALIZED",
+   "raw_file_path": "baostock/601857_SH_qfq.csv",
+   "raw_sha256": "e5700ddfa965db80efd12188b8529c3d5f6f42fdfeabe08135e0663a106b2ee2",
+   "rows": 1970,
+   "source_name": "Baostock",
+   "status": "ACQUIRED"
+  },
+  {
+   "dataset_id": "historical_shanghai_pit_universe",
+   "normalization_status": "NOT_NORMALIZED_INSUFFICIENT_FOR_PRIMARY",
+   "raw_sha256": [
+    "0f807f29c594d80ce4a521480b8654d2294781cbfb379fbeef06bbe6b70811fe",
+    "9120e0189619925c15f67085d155fbcfe764fec1be37c2cc43c76047a49b0930",
+    "a0c13735bf54f64666eeb6bd2c0df5645d4fa2491ef52420340ecfe3546b4660",
+    "a97c04b1a01103a4295008056e2c1408f088376f03f5780c2d1eb5500b88a982"
+   ],
+   "rows": 17479,
+   "source_name": "Baostock",
+   "status": "PRIMARY_PROXY_DATA_GAP"
+  },
+  {
+   "dataset_id": "historical_issued_shares",
+   "normalization_status": "NOT_NORMALIZED_INSUFFICIENT_FOR_PRIMARY",
+   "raw_sha256": [
+    "1282f4b4bb4ea809b5e046f57b316546d9ff19b646beb60a6ee1783193e20583",
+    "2a9a466a3a763ee3079d9bcb4cc48d7597301191f85a47a9a17cf5eca352a026",
+    "1662d4cc5fd11f80f0671c80f5a6bfb3d7ef868331edc7733885f8886502cee0"
+   ],
+   "rows": 171,
+   "source_name": "CNINFO via Akshare",
+   "status": "PRIMARY_PROXY_DATA_GAP"
+  },
+  {
+   "dataset_id": "market_ex_target",
+   "normalization_status": "NOT_CONSTRUCTED_FAIL_CLOSED",
+   "rows": 0,
+   "status": "PRIMARY_PROXY_DATA_GAP"
+  },
+  {
+   "dataset_id": "oil",
+   "normalization_status": "NOT_ACQUIRED",
+   "rows": 0,
+   "status": "NOT_ACQUIRED_AFTER_PRIMARY_PROXY_FAIL_CLOSED_STOP"
+  },
+  {
+   "dataset_id": "petrochemical_industry",
+   "normalization_status": "NOT_ACQUIRED",
+   "rows": 0,
+   "status": "NOT_ACQUIRED_AFTER_PRIMARY_PROXY_FAIL_CLOSED_STOP"
+  },
+  {
+   "dataset_id": "historical_target_index_weight",
+   "normalization_status": "NOT_CONSTRUCTED_FAIL_CLOSED",
+   "rows": 0,
+   "status": "NOT_TRUSTED_PRIMARY_PROXY_INPUT_GAP"
+  }
+ ],
+ "offline_reproducibility": {
+  "logical_identity": true,
+  "normalized_a_sha256": "db0b0908b80bcb0bac2654eb9e883d4fb07b2542d90296bf3e7d1a71613dbd27",
+  "normalized_b_sha256": "db0b0908b80bcb0bac2654eb9e883d4fb07b2542d90296bf3e7d1a71613dbd27"
+ },
+ "primary_proxy_status": "PRIMARY_PROXY_DATA_GAP",
+ "raw_manifest_sha256": "35d83fef930ed3a50c9e917059fb69f1ec2cd4194235ea3f753f76a88ecd774b",
+ "schema_version": "1.0.0",
+ "stage": "M3_STAGE3B",
+ "stage3c_status": "M3_STAGE3C_NOT_ALLOWED"
+}

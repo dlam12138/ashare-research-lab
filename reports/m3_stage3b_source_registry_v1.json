@@ -5,7 +5,7 @@
    "endpoint": "baostock.query_trade_dates",
    "holdout_request_allowed": false,
    "source_name": "Baostock",
-   "status": "ACQUISITION_PENDING",
+   "status": "ACQUIRED_AND_NORMALIZED",
    "tier": 1
   },
   {
@@ -13,7 +13,7 @@
    "endpoint": "baostock.query_history_k_data_plus",
    "holdout_request_allowed": false,
    "source_name": "Baostock",
-   "status": "ACQUISITION_PENDING",
+   "status": "ACQUIRED_BOTH_UNADJUSTED_AND_QFQ_AND_NORMALIZED",
    "tier": 1
   },
   {
@@ -26,7 +26,7 @@
     "STAR_AND_CDR_ELIGIBILITY"
    ],
    "source_name": "Baostock",
-   "status": "CANDIDATE_REQUIRES_COVERAGE_AUDIT",
+   "status": "CAPABILITY_AUDITED_COMPLETE_DAILY_INDEX_ELIGIBILITY_NOT_OBTAINED",
    "tier": 1
   },
   {
@@ -39,14 +39,14 @@
     "CORPORATE_ACTION_CONTINUITY"
    ],
    "source_name": "CNINFO",
-   "status": "CANDIDATE_REQUIRES_COVERAGE_AUDIT",
+   "status": "CAPABILITY_AUDITED_COMPLETE_SECURITY_LEVEL_COVERAGE_NOT_OBTAINED",
    "tier": 1
   },
   {
    "dataset_id": "market_ex_target",
    "endpoint": "LOCAL_DETERMINISTIC_CONSTRUCTION",
    "source_name": "Stage3B market_proxy",
-   "status": "BLOCKED_UNTIL_UNIVERSE_AND_SHARE_AUDITS_PASS",
+   "status": "PRIMARY_PROXY_DATA_GAP",
    "tier": 1
   },
   {
@@ -57,21 +57,21 @@
     "LATEST_OBSERVABLE_BEFORE_A_SHARE_CLOSE"
    ],
    "source_name": "U.S. Energy Information Administration",
-   "status": "ACQUISITION_PENDING",
+   "status": "NOT_ACQUIRED_AFTER_PRIMARY_PROXY_FAIL_CLOSED_STOP",
    "tier": 1
   },
   {
    "dataset_id": "petrochemical_industry",
    "endpoint": "Shenwan official index daily endpoint",
    "source_name": "Shenwan Hongyuan Research",
-   "status": "ACQUISITION_PENDING",
+   "status": "NOT_ACQUIRED_AFTER_PRIMARY_PROXY_FAIL_CLOSED_STOP",
    "tier": 1
   },
   {
    "dataset_id": "historical_target_index_weight",
    "endpoint": "REUSE_AUDITED_PRIMARY_PROXY_INPUTS",
    "source_name": "Stage3B market_proxy",
-   "status": "BLOCKED_UNTIL_UNIVERSE_AND_SHARE_AUDITS_PASS",
+   "status": "NOT_TRUSTED_PRIMARY_PROXY_INPUT_GAP",
    "tier": "CONTRIBUTION"
   },
   {
