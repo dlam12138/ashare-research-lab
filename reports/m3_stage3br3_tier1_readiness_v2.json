@@ -1,0 +1,13 @@
+{
+ "effective_trustworthy_development_inputs": "NOT_ESTABLISHED",
+ "holdout_read_performed": false,
+ "holdout_status": "SEALED",
+ "joint_outcome": "OIL_AUTH_INPUT_REQUIRED",
+ "joint_tier1_dates": "NOT_READY",
+ "market_ex_target": "TRUSTED",
+ "oil": "NOT_ACQUIRED",
+ "petrochemical_industry": "NOT_ACQUIRED",
+ "schema_version": "1.0.0",
+ "stage": "M3_STAGE3BR3",
+ "stage3c_status": "M3_STAGE3C_NOT_ALLOWED"
+}

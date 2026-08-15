@@ -1,0 +1,24 @@
+{
+ "holdout_read_performed": false,
+ "holdout_status": "SEALED",
+ "inputs": {
+  "market_proxy_v2": "SH_A_SHARE_EQUAL_WEIGHT_EX_601857_V2",
+  "oil": {
+   "logical_sha256": null,
+   "raw_rows": 0,
+   "status": "OIL_EIA_API_KEY_REQUIRED"
+  },
+  "petrochemical_industry": {
+   "raw_rows": {
+    "801016": 0,
+    "801960": 0
+   },
+   "status": "INDUSTRY_OFFICIAL_DEVELOPMENT_CAPSULE_REQUIRED"
+  }
+ },
+ "no_holdout_rows": true,
+ "readiness": "NOT_READY",
+ "schema_version": "1.0.0",
+ "stage": "M3_STAGE3BR3",
+ "stage3c_status": "M3_STAGE3C_NOT_ALLOWED"
+}

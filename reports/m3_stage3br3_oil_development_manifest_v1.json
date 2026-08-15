@@ -1,0 +1,22 @@
+{
+ "acquisition": {
+  "api_key_present": false,
+  "auth_method": "ENVIRONMENT_API_KEY",
+  "endpoint_template": "https://api.eia.gov/v2/<discovered-route>/data/?frequency=daily&start=2014-12-01&end=2022-12-31&api_key=<REDACTED>",
+  "fetched_at": "2026-08-15T10:43:24.199637+00:00",
+  "mode": "BOUNDED_EIA_V2",
+  "raw_data_committed_to_git": false,
+  "requested_development_end": "2022-12-31",
+  "requested_warmup_start": "2014-12-01"
+ },
+ "first_observation": null,
+ "holdout_read_performed": false,
+ "holdout_status": "SEALED",
+ "last_observation": null,
+ "raw_sha256": null,
+ "rows": 0,
+ "schema_version": "1.0.0",
+ "stage": "M3_STAGE3BR3",
+ "stage3c_status": "M3_STAGE3C_NOT_ALLOWED",
+ "status": "OIL_EIA_API_KEY_REQUIRED"
+}
