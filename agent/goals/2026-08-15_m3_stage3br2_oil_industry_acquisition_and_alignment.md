@@ -1,6 +1,11 @@
 # Goal Contract: M3 Stage 3B-R2 — Oil & Petrochemical Industry Acquisition, PIT Alignment & Tier-1 Closeout
 
-Status: IN_PROGRESS — PRE_OUTCOME_TIER1_DATA_CLOSEOUT
+Status: CLOSED — PRE-OUTCOME TIER-1 INPUT-GAP ACCEPTANCE
+
+Final HEAD: `2042e44` (full `2042e44e6d571e968febeb6389d93141bea389e9`)
+Final CI: `31877910646` PASS (Windows clean-clone = success, Ubuntu clean-clone = success,
+identity-compare = success). Verdict `M3_STAGE3BR2_PRE_OUTCOME_TIER1_DATA_CLOSEOUT_ACCEPTED`
+(input-gap outcome); see `acceptance/m3_stage3br2_oil_industry_acquisition_and_alignment.md`.
 
 ## Frozen stage envelope
 
