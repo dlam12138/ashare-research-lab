@@ -174,6 +174,12 @@ large raw-data commits; M1/M2 refactors; PR or merge.
 ## Final Git state
 
 - Branch: `feat/m3-mechanism-validation-mvp`
-- Commits (3, pushed to origin): contract/resolution supersession; implementation; tests/acceptance.
+- Commits (4, pushed to origin): contract/resolution supersession (`41572a1`); implementation
+  (`5bf3710`); tests/acceptance (`e1ca4bb`); README wording fix (`a49608e`).
+- The first final-tip CI(a) `31877611609` failed on the Ubuntu (and expected Windows) "Full offline
+  test suite" because the README Stage 3B-R2 rewrite split the contiguous phrase `No real mechanism
+  inference` across a line break, breaking the M2 closeout wording test
+  `test_m2_stage2j_conditional_closeout.py`. Fixed by keeping the phrase on one line; the M2 closeout
+  test passes locally (13 passed). Re-pushed as `a49608e`, new CI run `31877883936`.
 - Working tree clean; protected `stash@{0}` preserved; no `data/research.duckdb`.
 - Original M2 worktree untouched; no PR, no merge, no force push, no Stage 3C, no holdout read.
