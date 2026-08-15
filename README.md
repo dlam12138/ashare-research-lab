@@ -22,9 +22,11 @@ no proxy was substituted). Stage 3B-R1 primary-proxy resolution is current: the
 type-1 exact divisor reconstruction is superseded by a North-Star-aligned
 equal-weight ex-target Shanghai A-share proxy (v2). Stage 3B-R2 froze a pre-outcome
 oil alignment supersession (strictly-prior Brent observation-date) and the Shenwan
-industry regime control, but bounded, holdout-safe acquisition of Brent and the
-industry index was not provable in the current environment, so the two Tier-1
-controls remain NOT ACQUIRED and the joint Tier-1 date set is NOT READY. No real mechanism inference
+industry regime control. Stage 3B-R3 added a secret-redacted bounded EIA Open Data
+API v2 transport (oil) and a Shenwan official-source-resolution ladder (industry),
+but in this environment oil is blocked only by a missing EIA_API_KEY and industry by
+a missing official development capsule, so the two Tier-1 controls remain NOT ACQUIRED
+and the joint Tier-1 date set is NOT READY. No real mechanism inference
 has been executed.
 
 ---
@@ -34,7 +36,7 @@ has been executed.
 本项目围绕两个核心模块：
 
 1. **个股价值评估** — 企业质量、估值吸引力、价值兑现能力、风险否决项（M2 正在实现）
-2. **市场机制验证** — 用统计方法检验个股与市场之间的可复现关系（Stage 3A 契约已冻结；Stage 3B 已 fail-closed 完成；Stage 3B-R1 主市场代理解析为当前状态，尚未执行真实机制推断）
+2. **市场机制验证** — 用统计方法检验个股与市场之间的可复现关系（Stage 3A 契约已冻结；Stage 3B 已 fail-closed 完成；Stage 3B-R1 主市场代理解析为当前状态；Stage 3B-R2 冻结 oil 对齐 supersession（严格 prior Brent 观测日）与申万行业 regime 控制；Stage 3B-R3 增加 bounded EIA API v2 oil transport 与申万行业 source-resolution ladder，但两项 Tier-1 输入当前仍为 NOT ACQUIRED（oil 缺 EIA_API_KEY，industry 缺官方 development capsule），joint Tier-1 日期集 NOT READY；尚未执行真实机制推断）
 
 当前已完成第一阶段的**免费数据底座**：可运行、可测试、可追溯的本地数据基础设施。M2 已有 PetroChina（601857.SH）一份 PIT value profile 纵向切片；收益/现金、ROE/ROA、财务安全、股息和估值均已有阶段性能力。Stage 2G.2 增加了 clean-clone 测试胶囊、显式真实输入解析器、Rule007 严格来源配对和 artifact checksums。
 
@@ -293,7 +295,7 @@ ruff check src/ tests/
 - Stage 2I.2R 已完成捕获派生、双官方证据重协调和七个缺口的执行式版本化搜索：9/16 个事实/年度单元已取得，7 个单元保留为明确缺口；结论为 `ROIC_FACT_GAPS_REMAIN`，未运行 shadow ROIC。更正产物位于 `reports/*stage2i2r*`，原 Stage 2I.2 产物保留供审计。
 - ROIC 在严格证据合同下不可计算；不存在数值、proxy、shadow 或生产 Metric/Result
 - 评分附加项已**条件关闭**：PE 原始值与 3Y/5Y 分位保留为描述证据；冻结 5Y 内独立 cycle-context 验证不可检验，故 PE 与估值维度 numeric score 均为 `null`，不补 0、不转移权重，也没有生产 score engine、排名或推荐
-- M3 Stage 3A 研究契约已冻结；Stage 3B 已 fail-closed 完成（严格主代理输入在免费数据下未取得，未替换代理）；Stage 3B-R1 主市场代理解析为当前状态；Stage 3B-R2 已冻结 oil 对齐 supersession（严格 prior Brent 观测日）与申万行业 regime 控制，但 Brent 与行业指数的 bounded、holdout-safe 获取在当前环境无法证明，两项 Tier-1 控制仍为 NOT ACQUIRED，joint Tier-1 日期集 NOT READY；尚未执行真实机制推断
+- M3 Stage 3A 研究契约已冻结；Stage 3B 已 fail-closed 完成（严格主代理输入在免费数据下未取得，未替换代理）；Stage 3B-R1 主市场代理解析为当前状态；Stage 3B-R2 已冻结 oil 对齐 supersession（严格 prior Brent 观测日）与申万行业 regime 控制；Stage 3B-R3 已增加 bounded EIA API v2 oil transport（secret-redacted, route discovery）与申万行业 source-resolution ladder，但当前环境 oil 仅缺 EIA_API_KEY、industry 缺官方 development capsule，两项 Tier-1 控制仍为 NOT ACQUIRED，joint Tier-1 日期集 NOT READY；尚未执行真实机制推断
 - Web 界面、目标价、推荐和自动交易尚未实现
 - 当前 value profile 只覆盖 PetroChina（601857.SH）这一份 PIT 纵向切片
 - Stage 2F 仍有 9 个交易所证据缺口；股本 A/H 拆分也需继续补充登记证据
@@ -355,7 +357,7 @@ ruff check src/ tests/
 |--------|------|------|
 | Milestone 1: 免费数据底座 | 股票基础信息、交易日历、日线行情、Parquet/DuckDB 存储 | ✅ 已完成 |
 | Milestone 2: 价值评估 MVP | 企业质量、估值、现金流、安全边际、风险否决项 | 条件关闭；评分附加项已条件关闭，PE numeric scoring deferred |
-| Milestone 3: 机制验证 MVP | 假设检验、条件收益、控制变量、证据分级 | Stage 3A preflight 契约已冻结；Stage 3B fail-closed 完成；Stage 3B-R1 主市场代理解析完成；Stage 3B-R2 冻结 oil 对齐 supersession 与申万行业 regime，但两项 Tier-1 控制 bounded 获取未证明（NOT ACQUIRED）；机制分析未执行 |
+| Milestone 3: 机制验证 MVP | 假设检验、条件收益、控制变量、证据分级 | Stage 3A preflight 契约已冻结；Stage 3B fail-closed 完成；Stage 3B-R1 主市场代理解析完成；Stage 3B-R2 冻结 oil 对齐 supersession 与申万行业 regime；Stage 3B-R3 增加 bounded oil transport 与 industry source-resolution ladder，但两项 Tier-1 控制当前仍 NOT ACQUIRED（oil 缺 key，industry 缺 capsule），joint 日期集 NOT READY；机制分析未执行 |
 | Milestone 4: 通用研究器 | 可配置的假设验证框架 | 🔲 计划中 |
 | Milestone 5: 分钟级研究 | 按需分钟数据验证 | 🔲 计划中 |
 | Milestone 6: 本地 Web 界面 | Streamlit 工作台 | 🔲 计划中 |
