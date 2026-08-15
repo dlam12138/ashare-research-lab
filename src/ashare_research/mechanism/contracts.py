@@ -68,6 +68,50 @@ STAGE3BR1_FROZEN_SHA256 = {
     ),
 }
 
+# Stage 3B-R2 pre-outcome artifacts remain immutable and are never replaced by code reuse.
+STAGE3BR2_FROZEN_SHA256 = {
+    "m3_stage3br2_oil_timing_resolution_v1.json": (
+        "a5e2a247efc2f0fc3a22ee4d4b4f49fe9eca04915d0524fd8fdebef13d3f3233"
+    ),
+    "m3_stage3br2_oil_contract_v2.json": (
+        "908fc0611334816b1a6f0f531611afcf601a8625989d1dcdd0a491e4942446f1"
+    ),
+    "m3_stage3br2_source_registry_v1.json": (
+        "9a957f336c1385231be720a3640a1d9cdd06a2dbb97ea8ce9d03f9ca63831453"
+    ),
+    "m3_stage3br2_development_input_manifest_v1.json": (
+        "81ef5dde1b7a777621b48c29c99b62e96184cd08b862dc4d2edd297641ee7f78"
+    ),
+    "m3_stage3br2_data_coverage_v1.json": (
+        "30c14d7a89024c2f1d9169ad83438a7211824ef1c3f078a465132eab221a5bf2"
+    ),
+    "m3_stage3br2_tier1_readiness_v1.json": (
+        "5aca78d2f251ed9401f3dffea64482805a8ec0f69c777227dbdf4e12106cad88"
+    ),
+}
+
+# Stage 3B-R3 pre-outcome acquisition-unblock artifacts remain immutable.
+STAGE3BR3_FROZEN_SHA256 = {
+    "m3_stage3br3_source_resolution_v1.json": (
+        "e3b29c25c38c62fdd92f51aa3ca5ad0548fb705ff5406831ba582fcc2af15ff7"
+    ),
+    "m3_stage3br3_oil_development_manifest_v1.json": (
+        "d57f8fe507458c77430990286875f9eea87cbecb262461c03db04e3041966bf6"
+    ),
+    "m3_stage3br3_industry_development_manifest_v1.json": (
+        "57250cc7113c69adf1663baf7d750bdc5bc348ca00ef6d39d8b7eda42f08b148"
+    ),
+    "m3_stage3br3_data_coverage_v1.json": (
+        "cde3f4a24513571a0643282fee2c3da9b682c5e567892f30fe814a9833c6469b"
+    ),
+    "m3_stage3br3_tier1_readiness_v2.json": (
+        "cc169d130ce2d83b242ec32322bd3e173efd0443f5e26e722446d99a0ef4486d"
+    ),
+    "m3_stage3br3_joint_input_manifest_v1.json": (
+        "f950de6ebc40a1c2bd616720715590f2cf7e82c670023a9effee4fb000f120e0"
+    ),
+}
+
 RESTRICTED_RESEARCH_OUTPUT_KEYS = frozenset(
     {
         "abnormal_return",
@@ -128,6 +172,16 @@ def verify_stage3b_v1_frozen(report_dir: str | Path) -> dict[str, str]:
 def verify_stage3br1_frozen(report_dir: str | Path) -> dict[str, str]:
     """Verify all frozen Stage 3B-R1 artifacts against their accepted exact-byte hashes."""
     return verify_frozen_artifacts(report_dir, STAGE3BR1_FROZEN_SHA256)
+
+
+def verify_stage3br2_frozen(report_dir: str | Path) -> dict[str, str]:
+    """Verify all frozen Stage 3B-R2 artifacts against their accepted exact-byte hashes."""
+    return verify_frozen_artifacts(report_dir, STAGE3BR2_FROZEN_SHA256)
+
+
+def verify_stage3br3_frozen(report_dir: str | Path) -> dict[str, str]:
+    """Verify all frozen Stage 3B-R3 artifacts against their accepted exact-byte hashes."""
+    return verify_frozen_artifacts(report_dir, STAGE3BR3_FROZEN_SHA256)
 
 
 def load_contract(path: str | Path, required_keys: set[str]) -> dict[str, Any]:
