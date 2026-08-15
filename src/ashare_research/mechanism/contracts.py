@@ -30,6 +30,25 @@ STAGE3A_FROZEN_SHA256 = {
     ),
 }
 
+# Stage 3B v1 fail-closed contracts remain immutable and are never replaced by code reuse.
+STAGE3B_V1_FROZEN_SHA256 = {
+    "m3_stage3b_primary_proxy_contract_v1.json": (
+        "135fe2dbb50aaa203a9fc57648665d6f73359f2ca0662edba37e2d8cde05b4b8"
+    ),
+    "m3_stage3b_return_and_timing_contract_v1.json": (
+        "dd8c1350089cf76bc81221e1721d2515e72e76f037e57ad124c989d3432bf319"
+    ),
+    "m3_stage3b_source_registry_v1.json": (
+        "ce8f2a622c42d203369d2b2992945b5e2b948b612893c44344abd65939368e73"
+    ),
+    "m3_stage3b_data_coverage_v1.json": (
+        "983086f370c0ce5091dd6ba57326dfd3c5a9b9635b26e7fb669c55d26ae92ede"
+    ),
+    "m3_stage3b_development_input_manifest_v1.json": (
+        "b564e3432e727d829f4769179b1cf2d8a19ae1dc5371c88a3c0fee34c20bfb79"
+    ),
+}
+
 RESTRICTED_RESEARCH_OUTPUT_KEYS = frozenset(
     {
         "abnormal_return",
@@ -61,18 +80,30 @@ def sha256_file(path: str | Path) -> str:
     return digest.hexdigest()
 
 
-def verify_stage3a_frozen(report_dir: str | Path) -> dict[str, str]:
-    """Verify all frozen Stage 3A contracts against their accepted exact-byte hashes."""
+def verify_frozen_artifacts(
+    report_dir: str | Path, expected: dict[str, str]
+) -> dict[str, str]:
+    """Verify every frozen artifact against its accepted exact-byte hash."""
     root = Path(report_dir)
     actual: dict[str, str] = {}
-    for name, expected in STAGE3A_FROZEN_SHA256.items():
+    for name, wanted in expected.items():
         path = root / name
         if not path.is_file():
-            raise Stage3BContractError(f"missing frozen Stage 3A artifact: {name}")
+            raise Stage3BContractError(f"missing frozen artifact: {name}")
         actual[name] = sha256_file(path)
-        if actual[name] != expected:
-            raise Stage3BContractError(f"frozen Stage 3A artifact changed: {name}")
+        if actual[name] != wanted:
+            raise Stage3BContractError(f"frozen artifact changed: {name}")
     return actual
+
+
+def verify_stage3a_frozen(report_dir: str | Path) -> dict[str, str]:
+    """Verify all frozen Stage 3A contracts against their accepted exact-byte hashes."""
+    return verify_frozen_artifacts(report_dir, STAGE3A_FROZEN_SHA256)
+
+
+def verify_stage3b_v1_frozen(report_dir: str | Path) -> dict[str, str]:
+    """Verify all frozen Stage 3B v1 contracts against their accepted exact-byte hashes."""
+    return verify_frozen_artifacts(report_dir, STAGE3B_V1_FROZEN_SHA256)
 
 
 def load_contract(path: str | Path, required_keys: set[str]) -> dict[str, Any]:

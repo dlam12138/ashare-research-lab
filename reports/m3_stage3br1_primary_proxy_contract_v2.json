@@ -1,0 +1,95 @@
+{
+ "coverage_gate": {
+  "gate_operator": ">=",
+  "minimum_daily_input_coverage": 0.99,
+  "below_gate_row_status": "PROXY_ROW_INVALID_DATA_GAP",
+  "below_gate_action": "FAIL_CLOSED_NO_SILENT_SUBSET_COMPUTATION"
+ },
+ "exact_sse_reconstruction": {
+  "id": "OPTIONAL_HIGH_FIDELITY_RESEARCH_ENHANCEMENT",
+  "status": "DEFERRED_NON_BLOCKING_FOR_M3_PRIMARY_MECHANISM_MVP",
+  "not_required_for": "SH_A_SHARE_EQUAL_WEIGHT_EX_601857_V2"
+ },
+ "historical_target_index_weight": {
+  "label_when_not_exact": "ESTIMATED_CONTRIBUTION",
+  "pipeline": "SEPARATE_CONTRIBUTION_PIPELINE",
+  "role": "NOT_PART_OF_PRIMARY_PROXY_CONSTRUCTION"
+ },
+ "membership": {
+  "delisting_rule": "SECURITY_LEAVES_AFTER_ITS_FINAL_VALID_TRADING_OBSERVATION_UNDER_FROZEN_DELISTING_RULE",
+  "future_listing_information_allowed": false,
+  "future_delisting_information_allowed": false,
+  "membership_information_cutoff": "T_MINUS_1_CLOSE",
+  "new_listing_entry_rule": "ENTERS_ONLY_WHEN_A_VALID_PREVIOUS_CLOSE_EXISTS",
+  "suspension_action": "CARRY_LAST_VALID_CLOSE_AND_ZERO_DAILY_PRICE_RETURN"
+ },
+ "missing_input_policy": {
+  "constituent_removal_on_missing_provider_data": false,
+  "missing_provider_data_action": "FAIL_CLOSED_ROW_NEVER_SILENT_REMOVAL",
+  "status_on_gap": "PROXY_ROW_INVALID_DATA_GAP"
+ },
+ "proxy_definition": {
+  "base": "ARITHMETIC_EQUAL_WEIGHT_MEAN_OF_CONSTITUENT_RETURNS",
+  "constituent_weights": "EQUAL_1_over_N_UNIVERSAL_POOL",
+  "daily_input": "T_MINUS_1_ELIGIBLE_UNIVERSE_ALL_SECURITIES_EXCLUDING_TARGET",
+  "formula": "proxy_return_t = mean( security_return_i_t for i in eligible_universe(t-1) minus {601857.SH} )",
+  "physical_target_exclusion": "601857.SH_EXCLUDED_FROM_EVERY_UNIVERSE_AND_EVERY_PROXY_ROW_BEFORE_RETURN_CONSTRUCTION",
+  "target_symbol": "601857.SH"
+ },
+ "return_definition": {
+  "frequency": "1d",
+  "kind": "SIMPLE_CLOSE_TO_CLOSE_RETURN"
+ },
+ "schema_version": "1.0.0",
+ "source_evidence": [
+  {
+   "publisher": "National North Star",
+   "role": "EXCLUDE_TARGET_FROM_MARKET_AGGREGATE",
+   "note": "A股个股研究与市场机制验证平台-项目北极星.md section 4.3 step 3"
+  },
+  {
+   "role": "EQUAL_WEIGHT_ACCEPTED_AS_PRIMARY_FOR_M3_MVP",
+   "note": "Stage 3A data-requirements secondary proxy list includes SH_EQUAL_WEIGHT and A_SHARE_EQUAL_WEIGHT; exact SSE Composite reconstruction is separate and deferred"
+  }
+ ],
+ "stage": "M3_STAGE3BR1",
+ "supersedes": "SH_MARKET_EX_601857",
+ "supersession_semantics": {
+  "authorized_by": "NORTH_STAR_REVIEW_OF_STAGE3B_V1_FAIL_CLOSED_OUTCOME",
+  "runtime_fallback_from_v1": false,
+  "scope": "PRIMARY_MECHANISM_MARKET_PROXY_ONLY",
+  "type": "FORMAL_PRE_OUTCOME_CONTRACT_SUPERSESSION",
+  "v1_status": "FAILED_CLOSED_IMMUTABLE_AND_NOT_REPLACED_BY_CODE_REUSE"
+ },
+ "universe_definitions": [
+  {
+   "id": "V2_PRIMARY_UNIVERSE",
+   "included": [
+    "SHANGHAI_LISTED_A_SHARE_COMMON_EQUITIES",
+    "MAIN_BOARD_60X",
+    "STAR_MARKET_688X"
+   ],
+   "excluded": [
+    "601857.SH",
+    "B_SHARES_90X",
+    "CDR",
+    "ETF",
+    "FUNDS",
+    "BONDS",
+    "INDICES",
+    "NON_COMMON_EQUITY_INSTRUMENTS"
+   ],
+   "risk_warning_rule": "ST_AND_ST_STAR_NOT_EXCLUDED_MERELY_BECAUSE_OF_RISK_WARNING_STATUS"
+  }
+ ],
+ "universe_source_policy": {
+  "master_requirement": "PIT_CAPABLE_SHANGHAI_A_SHARE_SECURITY_MASTER",
+  "series_requirement": "ONE_BOUNDED_FULL_DEVELOPMENT_DAILY_SERIES_PER_EVER_ELIGIBLE_SECURITY",
+  "universe_basis_not_allowed": [
+   "CURRENT_CONSTITUENTS_ONLY",
+   "SURVIVORSHIP_ONLY",
+   "FUTURE_BACKFILL",
+   "TARGET_STRENGTHENING_SELECTION"
+  ]
+ }
+}

@@ -1,0 +1,35 @@
+{
+ "decision": "M3_STAGE3BR1_PRE_OUTCOME_PROXY_AMENDMENT_ACCEPTED",
+ "holdout_status": "SEALED",
+ "holdout_read_performed": false,
+ "primary_proxy_id_v1": "SH_MARKET_EX_601857",
+ "primary_proxy_id_v2": "SH_A_SHARE_EQUAL_WEIGHT_EX_601857_V2",
+ "primary_proxy_v1_status": "FAILED_CLOSED_IMMUTABLE",
+ "primary_proxy_v2_status": "FREEZING_SUPERSEDING_CONTRACT",
+ "rationale": [
+  "The North Star defines the primary market proxy as the market aggregate that excludes the target stock.",
+  "The exact SSE Composite equivalent divisor reconstruction is a separate research task, not a precondition for the primary mechanism MVP.",
+  "Stage 3A defines estimated_index_offset as a SEPARATE_ESTIMATION_PIPELINE, not the primary proxy.",
+  "Stage 3B v1 strengthened the primary proxy to exact SSE-Composite-equivalent divisor reconstruction requiring complete official historical index eligibility, full-market issued shares, corporate actions, and divisor continuity.",
+  "Stage 3B established that these strict inputs are not obtainable under the current free-data conditions.",
+  "Because the proxy must not be degraded at runtime, v2 is frozen as a formally superseding pre-outcome contract authorized by North-Star review, independent of any research result.",
+  "The equal-weight ex-target Shanghai A-share proxy is a reproducible, North-Star-compliant implementation for the M3 primary mechanism MVP.",
+  "The exact SSE Composite ex-601857 reconstruction remains an optional, deferred, non-blocking high-fidelity enhancement."
+ ],
+ "reconstruction": {
+  "default_duckdb_write": false,
+  "network_acquisition": "RESUMABLE_CONTENT_ADDRESSED",
+  "offline_identity": "CANONICAL_BYTE_AND_LOGICAL_COMPARISON",
+  "raw_data_committed_to_git": false
+ },
+ "restricted_conclusions": {
+  "funding_actor_or_support_market_claim": false,
+  "official_index_point_attribution_claim": false,
+  "proxy_choice_by_research_outcome": false
+ },
+ "schema_version": "1.0.0",
+ "stage": "M3_STAGE3BR1",
+ "supersession_type": "FORMAL_PRE_OUTCOME_CONTRACT_SUPERSESSION",
+ "v1_to_v2_relation": "SUPERSEDES_NOT_FALLBACK",
+ "verdict": "PASS"
+}
