@@ -1,0 +1,42 @@
+{
+ "acquisition": {
+  "fetched_at": "2026-08-15T06:09:02.931172+00:00",
+  "holdout_read_performed": false,
+  "mode": "RESUMABLE_CONTENT_ADDRESSED",
+  "raw_data_committed_to_git": false,
+  "requested_end": "2022-12-31",
+  "requested_start": "2014-01-01",
+  "warmup_role": "WARMUP_ONLY"
+ },
+ "datasets": [
+  {
+   "dataset_id": "shanghai_security_master",
+   "eligible_common_symbols": 2310,
+   "rows": 2353,
+   "source_name": "akshare",
+   "status": "ACQUIRED_AND_NORMALIZED"
+  },
+  {
+   "dataset_id": "shanghai_a_share_daily_series",
+   "rows": 2724195,
+   "source_name": "akshare (Sina)",
+   "status": "ACQUIRED_AND_NORMALIZED",
+   "symbols": 2110
+  },
+  {
+   "dataset_id": "trade_calendar",
+   "rows": 1970,
+   "source_name": "Baostock reused",
+   "status": "REUSE_IMMUTABLE_STAGE3B"
+  }
+ ],
+ "offline_reproducibility": {
+  "logical_identity": true,
+  "normalized_a_sha256": "0080536b754db8dcefe7e3615fd7f157d5a0693730612842807e3705daec3ddb"
+ },
+ "primary_proxy_status": "CONSTRUCTED",
+ "raw_manifest_sha256": "367e4dda46032d9e4a2e1b03bd6e92d20e681eb3696cc4c904f0732dc0bad902",
+ "schema_version": "1.0.0",
+ "stage": "M3_STAGE3BR1",
+ "stage3c_status": "M3_STAGE3C_NOT_ALLOWED"
+}

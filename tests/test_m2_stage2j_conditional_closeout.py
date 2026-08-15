@@ -162,8 +162,10 @@ def test_closeout_wording_and_scoring_boundary_are_exact():
     assert "Milestone 2: CONDITIONALLY CLOSED; SCORING ADDENDUM CONDITIONALLY CLOSED" in current
     assert "PE_NUMERIC_SCORING_DEFERRED_FROZEN_5Y_VALIDATION_NOT_TESTABLE" in current
     assert "M3 Stage 3A research contracts are frozen" in current
-    assert "Stage 3B data" in current
-    assert "no real mechanism inference has" in current
+    assert "Stage 3B completed" in current
+    assert "fail-closed" in current
+    assert "Stage 3B-R1 primary-proxy resolution is current" in current
+    assert "No real mechanism inference" in current
     packet = (ROOT / "reports/m2_stage2j_closeout_summary.md").read_text(
         encoding="utf-8"
     )
