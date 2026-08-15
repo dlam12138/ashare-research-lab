@@ -24,8 +24,8 @@ equal-weight ex-target Shanghai A-share proxy (v2). Stage 3B-R2 froze a pre-outc
 oil alignment supersession (strictly-prior Brent observation-date) and the Shenwan
 industry regime control, but bounded, holdout-safe acquisition of Brent and the
 industry index was not provable in the current environment, so the two Tier-1
-controls remain NOT ACQUIRED and the joint Tier-1 date set is NOT READY. No real
-mechanism inference has been executed.
+controls remain NOT ACQUIRED and the joint Tier-1 date set is NOT READY. No real mechanism inference
+has been executed.
 
 ---
 
