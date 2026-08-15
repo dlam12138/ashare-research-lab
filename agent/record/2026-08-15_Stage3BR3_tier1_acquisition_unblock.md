@@ -215,8 +215,10 @@ proxy/control design, no model implementation, and no real mechanism analysis.
 ## Final Git state
 
 - Branch: `feat/m3-mechanism-validation-mvp`
-- Commits (4, pushed to origin): close Stage 3B-R2 + authorize unblock (`aa2ba6f`); bounded Tier-1
-  acquisition transports (`ffd30e6`); validate development data + joint readiness (`d9fd980`);
-  close Stage 3B-R3 (`8991e64`).
-- Working tree clean; protected `stash@{0}` preserved; no `data/research.duckdb`.
+- 5 commits pushed to origin since `2042e44`: (1) docs close Stage 3B-R2 + authorize Tier-1
+  acquisition unblock; (2) feat add bounded Tier-1 acquisition transports; (3) test validate
+  development data + joint readiness; (4) docs close Stage 3B-R3; (5) docs correct the work-record
+  final-commit hash. Working tree clean; final tip is the pushed HEAD on
+  `feat/m3-mechanism-validation-mvp` (git log is the source of truth for exact hashes).
+- Protected `stash@{0}` preserved; no `data/research.duckdb`.
 - Original M2 worktree untouched; no PR, no merge, no force push, no Stage 3C/3C-A, no holdout read.
