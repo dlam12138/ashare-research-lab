@@ -49,6 +49,25 @@ STAGE3B_V1_FROZEN_SHA256 = {
     ),
 }
 
+# Stage 3B-R1 pre-outcome artifacts remain immutable and are never replaced by code reuse.
+STAGE3BR1_FROZEN_SHA256 = {
+    "m3_stage3br1_primary_proxy_contract_v2.json": (
+        "bab6878cf16b904eeb5bc48cb2b92350313ec503c25627bf614bd31af0a21e6a"
+    ),
+    "m3_stage3br1_primary_proxy_resolution_v1.json": (
+        "3db30142bfabec46726955b6f96a8af9b03ed82a93e749ef36376892cfe1668b"
+    ),
+    "m3_stage3br1_source_registry_v1.json": (
+        "122b84182da69826b17677a9fefe019c847e442348756e6c7c18cc08b2f694ce"
+    ),
+    "m3_stage3br1_development_proxy_manifest_v1.json": (
+        "275b6a31d733a87cd5ff9a797e173093f82e4badada608fcb79d236bcc5e6fe0"
+    ),
+    "m3_stage3br1_data_coverage_v1.json": (
+        "6437a02dd23285568666ee06a453a1332117a6cdbc79384f454ea8f96edbf31f"
+    ),
+}
+
 RESTRICTED_RESEARCH_OUTPUT_KEYS = frozenset(
     {
         "abnormal_return",
@@ -104,6 +123,11 @@ def verify_stage3a_frozen(report_dir: str | Path) -> dict[str, str]:
 def verify_stage3b_v1_frozen(report_dir: str | Path) -> dict[str, str]:
     """Verify all frozen Stage 3B v1 contracts against their accepted exact-byte hashes."""
     return verify_frozen_artifacts(report_dir, STAGE3B_V1_FROZEN_SHA256)
+
+
+def verify_stage3br1_frozen(report_dir: str | Path) -> dict[str, str]:
+    """Verify all frozen Stage 3B-R1 artifacts against their accepted exact-byte hashes."""
+    return verify_frozen_artifacts(report_dir, STAGE3BR1_FROZEN_SHA256)
 
 
 def load_contract(path: str | Path, required_keys: set[str]) -> dict[str, Any]:
