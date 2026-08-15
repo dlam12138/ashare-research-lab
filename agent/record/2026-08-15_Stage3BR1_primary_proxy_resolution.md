@@ -230,4 +230,9 @@ default DB writes; large raw-data commits; M1/M2 refactors; PR or merge.
 
 ## Final Git state
 
-(commit + push pending final pytest confirmation)
+- Branch: `feat/m3-mechanism-validation-mvp`
+- Commits (3, pushed to origin): `b9cee5b` (governance supersession + v1 frozen hashes),
+  `c773647` (v2 proxy + acquisition tool), `e890212` (reports + README closeout).
+- Remote push: `557aa0e..e890212` → `feat/m3-mechanism-validation-mvp`.
+- Working tree clean; protected `stash@{0}` preserved; no `data/research.duckdb`.
+- Original M2 worktree untouched; no PR, no merge, no force push, no Stage 3C, no holdout read.
