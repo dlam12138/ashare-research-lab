@@ -217,6 +217,6 @@ proxy/control design, no model implementation, and no real mechanism analysis.
 - Branch: `feat/m3-mechanism-validation-mvp`
 - Commits (4, pushed to origin): close Stage 3B-R2 + authorize unblock (`aa2ba6f`); bounded Tier-1
   acquisition transports (`ffd30e6`); validate development data + joint readiness (`d9fd980`);
-  close Stage 3B-R3 (`4e9d742`).
+  close Stage 3B-R3 (`8991e64`).
 - Working tree clean; protected `stash@{0}` preserved; no `data/research.duckdb`.
 - Original M2 worktree untouched; no PR, no merge, no force push, no Stage 3C/3C-A, no holdout read.
