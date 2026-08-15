@@ -146,6 +146,7 @@ def test_stage3b_package_contains_data_preparation_only():
         "market_proxy.py",
         "normalization.py",
         "source_manifest.py",
+        "proxy_v2.py",
     }
     assert {path.name for path in package.glob("*.py")} == allowed
     prohibited = {
