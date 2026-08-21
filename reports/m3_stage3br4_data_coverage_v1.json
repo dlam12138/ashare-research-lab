@@ -1,0 +1,84 @@
+{
+ "holdout_read_performed": false,
+ "holdout_status": "SEALED",
+ "industry_399439": {
+  "ab_digest": {
+   "a": "a0bb7fa659f56e5f325f09b112d62443e26391b7d961b193689cff56172a6567",
+   "b": "a0bb7fa659f56e5f325f09b112d62443e26391b7d961b193689cff56172a6567"
+  },
+  "aligned_gap_rows": 22,
+  "aligned_valid_rows": 1948,
+  "normalized_rows": 1949,
+  "raw_date_range": {
+   "first": "2014-12-30",
+   "last": "2022-12-30"
+  },
+  "raw_rows": 1949,
+  "raw_sha256": "c80a609c6dc1ff461b6010f0b1ebcd2230095f466af4f257be91d74faf9afee6",
+  "status": "TRUSTED"
+ },
+ "joint": {
+  "first_joint_valid_date": "2015-03-16",
+  "gap_dates": 68,
+  "gap_reason_counts": {
+   "INDUSTRY_INVALID": 22,
+   "MARKET_PROXY_INVALID": 68,
+   "OIL_INVALID": 2
+  },
+  "industry_valid_dates": 1948,
+  "joint_tier1_valid_dates": 1902,
+  "last_joint_valid_date": "2022-12-30",
+  "market_proxy_valid_dates": 1902,
+  "oil_valid_dates": 1968,
+  "status": "READY",
+  "total_trading_dates": 1970
+ },
+ "market_proxy": {
+  "gap_rows": 68,
+  "implementation_id": "SH_A_SHARE_EQUAL_WEIGHT_EX_601857_V2",
+  "status": "TRUSTED_REUSED",
+  "valid_rows": 1902
+ },
+ "offline_ab_digests": {
+  "industry_399439.csv": {
+   "a": "4c3b9aea6c432f6d41d3d68621dd6c0e9719781eaa3856b53284be1c6d5292ca",
+   "b": "4c3b9aea6c432f6d41d3d68621dd6c0e9719781eaa3856b53284be1c6d5292ca"
+  },
+  "industry_aligned.csv": {
+   "a": "a0bb7fa659f56e5f325f09b112d62443e26391b7d961b193689cff56172a6567",
+   "b": "a0bb7fa659f56e5f325f09b112d62443e26391b7d961b193689cff56172a6567"
+  },
+  "oil_aligned.csv": {
+   "a": "1de98bf258b2a21090b46b179485dace61fc9b3027587b61a652970e1e20e5f7",
+   "b": "1de98bf258b2a21090b46b179485dace61fc9b3027587b61a652970e1e20e5f7"
+  },
+  "oil_brent_observations.csv": {
+   "a": "61b16ae4ac40e430aff9dba2436ff3345f93697982a5b4ac0be7f64caf68a427",
+   "b": "61b16ae4ac40e430aff9dba2436ff3345f93697982a5b4ac0be7f64caf68a427"
+  },
+  "tier1_readiness.csv": {
+   "a": "801e877568d83021e71ebafe977e6b26d571155c2f61c6ca8f8ee265f90e264c",
+   "b": "801e877568d83021e71ebafe977e6b26d571155c2f61c6ca8f8ee265f90e264c"
+  }
+ },
+ "oil": {
+  "ab_digest": {
+   "a": "1de98bf258b2a21090b46b179485dace61fc9b3027587b61a652970e1e20e5f7",
+   "b": "1de98bf258b2a21090b46b179485dace61fc9b3027587b61a652970e1e20e5f7"
+  },
+  "aligned_gap_rows": 1,
+  "aligned_valid_rows": 1969,
+  "max_anchor_age_calendar_days": 6,
+  "normalized_rows": 2057,
+  "raw_date_range": {
+   "first": "2014-12-01",
+   "last": "2022-12-30"
+  },
+  "raw_rows": 2057,
+  "raw_sha256": "185080c6937d09b1dc3a2db46746a8e9bbdac5d17d8165596e9211fcc45e2d53",
+  "status": "TRUSTED"
+ },
+ "schema_version": "1.0.0",
+ "stage": "M3_STAGE3BR4",
+ "stage3c_status": "M3_STAGE3C_REAL_ANALYSIS_NOT_AUTHORIZED"
+}

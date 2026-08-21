@@ -1,0 +1,40 @@
+{
+ "schema_version": "1.0.0",
+ "stage": "M3_STAGE3BR4",
+ "holdout_status": "SEALED",
+ "holdout_read_performed": false,
+ "type": "CNI_OIL_GAS_INDUSTRY_CONTROL_V2_CONTRACT",
+ "supersedes": "m3_stage3b_return_and_timing_contract_v1.json",
+ "logical_control": "petrochemical_industry",
+ "implementation_id": "CNI_OIL_GAS_399439_PRICE_RETURN_V2",
+ "index": {
+  "code": "399439",
+  "name": "CNI Oil & Gas Index",
+  "name_zh": "国证石油天然气指数",
+  "short_name_zh": "国证油气",
+  "publisher": "Shenzhen Securities Information Co., Ltd. / CNI",
+  "publication_date": "2014-12-30",
+  "transport": "CNI official bounded endpoint",
+  "return_type": "SIMPLE_PRICE_INDEX_CLOSE_TO_CLOSE_RETURN"
+ },
+ "methodology_lineage": {
+  "weighting_basis": "adjusted free-float market capitalization",
+  "rebalancing_principle": "semiannual review with official constituent and cap rules",
+  "2015-2022_revision_policy": "record official revisions; do not manually splice or rebase levels",
+  "known_revision": "2022-11-01 announcement effective 2022-11-08"
+ },
+ "semantic_relationship": {
+  "original_sw_control": "Petroleum & Petrochemicals",
+  "new_cni_control": "Oil & Gas",
+  "semantic_equivalence": "NOT_EXACT",
+  "research_purpose_equivalence": "ACCEPTABLE_PRE_OUTCOME"
+ },
+ "quality_rules": {
+  "bounded_raw_response_required": true,
+  "missing_close": "INDUSTRY_ROW_INVALID_DATA_GAP",
+  "forward_fill": false,
+  "manual_level_splice": false
+ },
+ "status": "FIXED_PRE_OUTCOME",
+ "stage3c_status": "NOT_AUTHORIZED"
+}

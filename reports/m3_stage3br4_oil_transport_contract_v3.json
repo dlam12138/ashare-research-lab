@@ -1,0 +1,39 @@
+{
+ "schema_version": "1.0.0",
+ "stage": "M3_STAGE3BR4",
+ "holdout_status": "SEALED",
+ "holdout_read_performed": false,
+ "type": "OIL_CONTROL_V3_TRANSPORT_CONTRACT",
+ "supersedes": "m3_stage3br2_oil_contract_v2.json",
+ "economic_variable": {
+  "benchmark": "Europe Brent Spot Price FOB",
+  "fred_series": "DCOILBRENTEU",
+  "underlying_source": "U.S. Energy Information Administration",
+  "frequency": "daily",
+  "unit": "USD/barrel"
+ },
+ "transport": {
+  "publisher": "Federal Reserve Bank of St. Louis FRED",
+  "endpoint_family": "FRED graph CSV",
+  "url_template": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DCOILBRENTEU&cosd=<START>&coed=<END>",
+  "credential_required": false,
+  "server_bounded_proof": "raw_http_response_date_scan",
+  "raw_holdout_rejection": true
+ },
+ "window": {
+  "warmup_start": "2014-12-01",
+  "development_start": "2015-01-01",
+  "development_end": "2022-12-31",
+  "holdout_start": "2023-01-01"
+ },
+ "missing_value_policy": "dot_or_blank_is_missing_observation; never_numeric_zero",
+ "alignment": {
+  "definition": "STRICTLY_PRIOR_BRENT_OBSERVATION_DATE",
+  "same_calendar_day_overseas_observation_allowed": false,
+  "max_anchor_age_calendar_days": 7,
+  "return_type": "SIMPLE_RETURN",
+  "same_anchor_return": 0.0
+ },
+ "status": "FIXED_PRE_OUTCOME",
+ "stage3c_status": "NOT_AUTHORIZED"
+}

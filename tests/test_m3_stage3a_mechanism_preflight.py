@@ -152,6 +152,8 @@ def test_stage3b_package_contains_data_preparation_only():
         "alignment.py",
         "acquisition_eia.py",
         "acquisition_shenwan.py",
+        "acquisition_fred_public.py",
+        "acquisition_cni.py",
     }
     assert {path.name for path in package.glob("*.py")} == allowed
     prohibited = {

@@ -1,0 +1,28 @@
+{
+ "coverage": {
+  "first_joint_valid_date": "2015-03-16",
+  "gap_dates": 68,
+  "gap_reason_counts": {
+   "INDUSTRY_INVALID": 22,
+   "MARKET_PROXY_INVALID": 68,
+   "OIL_INVALID": 2
+  },
+  "industry_valid_dates": 1948,
+  "joint_tier1_valid_dates": 1902,
+  "last_joint_valid_date": "2022-12-30",
+  "market_proxy_valid_dates": 1902,
+  "oil_valid_dates": 1968,
+  "total_trading_dates": 1970
+ },
+ "decision": "STOP_FOR_NORTH_STAR_REVIEW",
+ "holdout_read_performed": false,
+ "holdout_status": "SEALED",
+ "industry_399439": "M3_CNI_OIL_GAS_INDUSTRY_CONTROL_V2_TRUSTED",
+ "joint_tier1": "M3_TIER1_DEVELOPMENT_INPUTS_READY",
+ "market_proxy": "TRUSTED_REUSED_R1",
+ "oil": "M3_OIL_CONTROL_V3_TRUSTED",
+ "schema_version": "1.0.0",
+ "stage": "M3_STAGE3BR4",
+ "stage3c_pipeline_lock": "M3_STAGE3CA_PIPELINE_LOCK_IMPLEMENTATION_ALLOWED",
+ "stage3c_real_analysis": "M3_STAGE3C_REAL_ANALYSIS_NOT_AUTHORIZED"
+}

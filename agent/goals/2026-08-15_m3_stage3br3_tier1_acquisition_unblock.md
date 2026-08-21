@@ -1,6 +1,9 @@
 # Goal Contract: M3 Stage 3B-R3 — Tier-1 Acquisition Unblock & Data Closeout
 
-Status: IN_PROGRESS — PRE_OUTCOME_DATA_ACQUISITION_UNBLOCK
+Status: CLOSED — USER-INPUT/SOURCE-GAP ACCEPTANCE
+
+R3 final HEAD: `8825c0e450dafa47f4b92bc4a3a83726c686b380`
+R3 final CI: `31880528110` PASS
 
 ## Frozen stage envelope
 

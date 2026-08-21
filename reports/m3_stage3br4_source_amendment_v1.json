@@ -1,0 +1,62 @@
+{
+ "schema_version": "1.0.0",
+ "stage": "M3_STAGE3BR4",
+ "type": "PRE_OUTCOME_CONTROL_VARIABLE_IMPLEMENTATION_AMENDMENT",
+ "development_end": "2022-12-31",
+ "holdout_start": "2023-01-01",
+ "holdout_status": "SEALED",
+ "holdout_read_performed": false,
+ "outcome_data_read": false,
+ "petrochina_mechanism_result_used_for_selection": false,
+ "oil": {
+  "economic_variable_changed": false,
+  "transport_changed": true,
+  "benchmark": "Europe Brent Spot Price FOB",
+  "series": "DCOILBRENTEU",
+  "economic_source": "U.S. Energy Information Administration",
+  "distribution_transport": "Federal Reserve Bank of St. Louis FRED public graph CSV"
+ },
+ "industry": {
+  "amendment_status": "PRIMARY_PRE_OUTCOME_FIXED",
+  "original_control": "Shenwan Petroleum & Petrochemicals 801016 SW2014 -> 801960 SW2021",
+  "new_control": "CNI Oil & Gas Index 399439",
+  "index_code": "399439",
+  "english_name": "CNI Oil & Gas Index",
+  "chinese_name": "国证石油天然气指数",
+  "publisher": "Shenzhen Securities Information Co., Ltd. / CNI",
+  "publication_date": "2014-12-30",
+  "semantic_equivalence": "NOT_EXACT",
+  "research_purpose_equivalence": "ACCEPTABLE_PRE_OUTCOME",
+  "selection_basis": [
+   "official industry index identity",
+   "oil and gas industry semantic match",
+   "free public transport",
+   "development-period historical coverage",
+   "bounded acquisition feasibility",
+   "reproducibility",
+   "no SW2014-to-SW2021 taxonomy splice"
+  ],
+  "selection_not_based_on": [
+   "PetroChina regression/effect result",
+   "PetroChina outcome statistic",
+   "candidate comparison by significance or effect"
+  ],
+  "secondary_candidate": {
+   "index_code": "000928",
+   "name": "中证能源",
+   "status": "SECONDARY_ROBUSTNESS_CANDIDATE_ONLY",
+   "acquired_in_r4": false
+  },
+  "target_membership": "NOT_USED_FOR_PRIMARY_CONSTRUCTION",
+  "industry_ex_target_robustness": "FUTURE_ROBUSTNESS_CANDIDATE"
+ },
+ "methodology_lineage": {
+  "current_identity": "official CNI methodology: adjusted free-float market-cap weighting; semiannual review; constituent caps per official methodology",
+  "2014-12-30": "index published in the CNI sector-index release",
+  "2015-2021": "no 399439-specific methodology revision identified in the reviewed official archive",
+  "2022-11-01": "official revision announcement; effective 2022-11-08; renamed to CNI Oil & Gas, oil-and-gas business scope clarified, selection/liquidity rules revised, and weighting caps specified",
+  "historical_level_policy": "use official continuous 399439 levels; do not manually splice or rebase"
+ },
+ "stage3c_status": "M3_STAGE3C_REAL_ANALYSIS_NOT_AUTHORIZED",
+ "decision": "R4_AMENDMENT_ACCEPTED_FOR_PRE_OUTCOME_ACQUISITION"
+}
