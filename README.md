@@ -28,7 +28,9 @@ amends only the pre-outcome source/control implementation: the unchanged
 DCOILBRENTEU Brent variable now uses no-credential bounded FRED public CSV, and the primary
 industry control is the official CNI Oil & Gas Index 399439. Both are TRUSTED through 2022-12-31;
 the frozen R1 market proxy is reused and joint Tier-1 readiness has 1,902 valid development dates.
-Stage 3C-A pipeline-lock implementation is allowed, but Stage 3C real analysis remains unauthorized.
+Stage 3C-A pipeline-lock implementation is recovered and locked on the canonical M3 baseline;
+execution remains synthetic-only. Stage 3C real analysis remains unauthorized and no real mechanism
+inference has been executed. Holdout remains sealed.
 No real mechanism inference has been executed.
 
 ---
@@ -359,7 +361,7 @@ ruff check src/ tests/
 |--------|------|------|
 | Milestone 1: 免费数据底座 | 股票基础信息、交易日历、日线行情、Parquet/DuckDB 存储 | ✅ 已完成 |
 | Milestone 2: 价值评估 MVP | 企业质量、估值、现金流、安全边际、风险否决项 | 条件关闭；评分附加项已条件关闭，PE numeric scoring deferred |
-| Milestone 3: 机制验证 MVP | 假设检验、条件收益、控制变量、证据分级 | Stage 3A preflight 契约已冻结；Stage 3B fail-closed 完成；Stage 3B-R1 主市场代理解析完成；Stage 3B-R2 冻结严格 prior Brent 与申万行业 regime；Stage 3B-R4 完成无认证 bounded FRED Brent transport 与官方 CNI 399439 industry amendment，Tier-1 inputs TRUSTED，joint 有效 development dates = 1,902；Stage 3C-A pipeline-lock implementation allowed，真实机制分析未执行 |
+| Milestone 3: 机制验证 MVP | 假设检验、条件收益、控制变量、证据分级 | Stage 3C-A recovered and locked on canonical M3 baseline；synthetic-only；real development not executed；holdout sealed |
 | Milestone 4: 通用研究器 | 可配置的假设验证框架 | 🔲 计划中 |
 | Milestone 5: 分钟级研究 | 按需分钟数据验证 | 🔲 计划中 |
 | Milestone 6: 本地 Web 界面 | Streamlit 工作台 | 🔲 计划中 |
