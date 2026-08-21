@@ -1,0 +1,62 @@
+{
+  "contract_id": "M3_STAGE3CAR_OUTPUT_SCHEMA_V2",
+  "version": "2.0.0",
+  "status": "LOCKED_ON_CANONICAL_M3",
+  "synthetic_only_outputs": [
+    "analysis_input_manifest.json",
+    "mechanism_primary_result.json",
+    "mechanism_robustness_result.json"
+  ],
+  "primary_result_required_fields": [
+    "model_id",
+    "model_digest",
+    "data_manifest_digest",
+    "sample_start",
+    "sample_end",
+    "nobs",
+    "crash_threshold",
+    "crash_count",
+    "coefficients",
+    "bootstrap",
+    "primary_decision",
+    "evidence_level",
+    "interpretation_boundary"
+  ],
+  "coefficient_fields": [
+    "alpha",
+    "beta_market",
+    "beta_oil",
+    "beta_industry",
+    "gamma"
+  ],
+  "bootstrap_fields": [
+    "method",
+    "block_length",
+    "replications",
+    "seed",
+    "rng",
+    "gamma_ci_lower",
+    "gamma_ci_upper"
+  ],
+  "forbidden_real_output": true,
+  "stage": "M3_STAGE3C-A-R",
+  "recovery": {
+    "reason": "WRONG_BASELINE_BRANCH_RECOVERY",
+    "invalid_predecessor_branch": "feat/m2-value-assessment-mvp",
+    "invalid_predecessor_commits": [
+      "724d6a4",
+      "0bc0b2e",
+      "f5ae24f",
+      "3679b1b"
+    ],
+    "canonical_branch": "feat/m3-mechanism-validation-mvp",
+    "canonical_base": "987caffe5b75fa3b0de58d0add43051cc9a55d17",
+    "semantic_method_change": false,
+    "upstream_binding_change": true,
+    "package_integration_change": true,
+    "upstream_inventory_path": "reports/m3_stage3car_effective_upstream_sha_inventory_v1.json",
+    "upstream_inventory_sha256": "f206780dcb6fd4c3b9d30a92025b75974284afd16eecd24770d2f812256f0031",
+    "real_development_execution_authorized": false,
+    "holdout_execution_authorized": false
+  }
+}

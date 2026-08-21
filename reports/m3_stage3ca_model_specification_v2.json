@@ -1,0 +1,75 @@
+{
+  "contract_id": "M3_STAGE3CAR_MODEL_SPECIFICATION_V2",
+  "version": "2.0.0",
+  "model_id": "M3_STAGE3CAR_PETROCHINA_CRASH_CONTROL_OLS_V2",
+  "target": "R_601857",
+  "target_return_definition": "ADJUSTED_CLOSE_TO_CLOSE_SIMPLE_RETURN",
+  "formula": "R_601857 = alpha + beta_market*R_market_ex_target + beta_oil*R_oil + beta_industry*R_industry + gamma*Crash + epsilon",
+  "parameter_mapping": {
+    "alpha": "const",
+    "beta_market": "market_ex_target_return",
+    "beta_oil": "oil_return",
+    "beta_industry": "industry_return",
+    "gamma": "Crash_t"
+  },
+  "abnormal_return_semantics": {
+    "control_expected_return": "alpha + beta_market*market + beta_oil*oil + beta_industry*industry",
+    "abnormal_return": "target_return - control_expected_return",
+    "crash_day_relation": "abnormal_return ~= gamma + epsilon",
+    "primary_inference": "gamma only"
+  },
+  "estimator": {
+    "library": "statsmodels",
+    "method": "OLS",
+    "version_range": ">=0.14.6,<0.15",
+    "missing": "raise",
+    "hasconst": true
+  },
+  "bootstrap": {
+    "method": "NON_CIRCULAR_OVERLAPPING_MOVING_BLOCK_BOOTSTRAP",
+    "replications": 5000,
+    "seed": 20260813,
+    "rng_algorithm": "PCG64",
+    "ci": "95% percentile"
+  },
+  "reproducibility": {
+    "contract_digests": "byte-identical",
+    "synthetic_numerical_results": {
+      "rtol": 1e-10,
+      "atol": 1e-12
+    },
+    "decision_classification": "exact-identical"
+  },
+  "stage": "M3_STAGE3C-A-R",
+  "recovery": {
+    "reason": "WRONG_BASELINE_BRANCH_RECOVERY",
+    "invalid_predecessor_branch": "feat/m2-value-assessment-mvp",
+    "invalid_predecessor_commits": [
+      "724d6a4",
+      "0bc0b2e",
+      "f5ae24f",
+      "3679b1b"
+    ],
+    "canonical_branch": "feat/m3-mechanism-validation-mvp",
+    "canonical_base": "987caffe5b75fa3b0de58d0add43051cc9a55d17",
+    "semantic_method_change": false,
+    "upstream_binding_change": true,
+    "package_integration_change": true,
+    "upstream_inventory_path": "reports/m3_stage3car_effective_upstream_sha_inventory_v1.json",
+    "upstream_inventory_sha256": "f206780dcb6fd4c3b9d30a92025b75974284afd16eecd24770d2f812256f0031",
+    "real_development_execution_authorized": false,
+    "holdout_execution_authorized": false
+  },
+  "effective_upstream_binding": {
+    "inventory_path": "reports/m3_stage3car_effective_upstream_sha_inventory_v1.json",
+    "inventory_sha256": "f206780dcb6fd4c3b9d30a92025b75974284afd16eecd24770d2f812256f0031",
+    "binding_mode": "ACTUAL_FILE_SHA256_FAIL_CLOSED"
+  },
+  "digest_exclusions": [
+    "real development coefficients",
+    "real crash count",
+    "real gamma",
+    "real result file",
+    "holdout values"
+  ]
+}
