@@ -137,7 +137,7 @@ def test_artifacts_have_no_local_paths_or_real_statistics():
         assert not any(token in text for token in forbidden)
 
 
-def test_stage3b_package_contains_data_preparation_only():
+def test_stage3b_data_layer_remains_intact_after_stage3ca_integration():
     package = ROOT / "src/ashare_research/mechanism"
     assert package.is_dir()
     allowed = {
@@ -154,12 +154,15 @@ def test_stage3b_package_contains_data_preparation_only():
         "acquisition_shenwan.py",
         "acquisition_fred_public.py",
         "acquisition_cni.py",
-    }
-    assert {path.name for path in package.glob("*.py")} == allowed
-    prohibited = {
-        "conditional_test.py",
-        "evidence_grade.py",
+        "analysis_contracts.py",
+        "analysis_dataset.py",
+        "bootstrap.py",
+        "crash.py",
+        "evidence.py",
+        "model_digest.py",
         "regression.py",
         "robustness.py",
     }
+    assert {path.name for path in package.glob("*.py")} == allowed
+    prohibited = {"conditional_test.py", "evidence_grade.py"}
     assert not any((package / name).exists() for name in prohibited)
