@@ -73,7 +73,7 @@ Industry CNI 399439:
 - raw SHA-256: `c80a609c6dc1ff461b6010f0b1ebcd2230095f466af4f257be91d74faf9afee6`;
 - raw range: `2014-12-01..2022-12-30`; valid raw/normalized rows: `1949`;
 - aligned valid/gap rows: `1948 / 22`;
-- offline A/B normalized digest: `4c3b9aea6c4322e500c94c4974291b0cd7192128541dcb7e572d83ebb89a7ff`;
+- offline A/B normalized digest: `4c3b9aea6c432f6d41d3d68621dd6c0e9719781eaa3856b53284be1c6d5292ca`;
 - raw-byte bounded proof passed; one null close was retained as a missing-data gap, never converted to
   zero; no `2023+` date token was present.
 

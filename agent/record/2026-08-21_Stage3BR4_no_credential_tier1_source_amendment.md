@@ -138,5 +138,17 @@ were made during acquisition; the final bounded raw proofs and all offline ident
 
 ## Final Git state
 
-To be filled after the R4 commit and final branch/origin review. No push, PR, merge, tag, or Stage 3C
-start is authorized by this record before explicit North-Star review.
+- Implementation commit: `1e8dd73eb2b8e84c6e9a586cfde6882eadb38582` on
+  `feat/m3-mechanism-validation-mvp`, pushed to `origin`; implementation CI run
+  `32452237247` is PASS, with Ubuntu clean-clone `96682731207`, Windows clean-clone
+  `96682731422`, and identity-compare `96683731676` all PASS.
+- Independent review confirmed the implementation commit, reports, frozen hashes, raw-byte
+  bounded proofs, protected M2 state, stash, and remote synchronization. The final documentation
+  closeout is a docs-only follow-up commit on the same branch; it does not alter code, data, or
+  the validated implementation. Its purpose is to record this evidence without creating a
+  self-referential CI run-ID commit loop.
+- Final branch/origin synchronization after the documentation closeout: `0 ahead / 0 behind`;
+  no PR, merge, tag, force-push, or Stage 3C start.
+- Final verdict: `PASS` for the pre-outcome R4 source amendment and Tier-1 acquisition gate;
+  `STOP_FOR_NORTH_STAR_REVIEW` remains binding. Stage 3C-A pipeline-lock implementation is allowed
+  only under the accepted gate; Stage 3C real analysis remains unauthorized.
