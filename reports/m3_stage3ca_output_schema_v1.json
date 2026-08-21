@@ -1,0 +1,14 @@
+{
+  "contract_id": "M3_STAGE3CA_OUTPUT_SCHEMA",
+  "version": "1.0.0",
+  "status": "LOCKED",
+  "synthetic_only_outputs": ["analysis_input_manifest.json", "mechanism_primary_result.json", "mechanism_robustness_result.json"],
+  "primary_result_required_fields": [
+    "model_id", "model_digest", "data_manifest_digest", "sample_start", "sample_end",
+    "nobs", "crash_threshold", "crash_count", "coefficients", "bootstrap",
+    "primary_decision", "evidence_level", "interpretation_boundary"
+  ],
+  "coefficient_fields": ["alpha", "beta_market", "beta_oil", "beta_industry", "gamma"],
+  "bootstrap_fields": ["method", "block_length", "replications", "seed", "rng", "gamma_ci_lower", "gamma_ci_upper"],
+  "forbidden_real_output": true
+}
