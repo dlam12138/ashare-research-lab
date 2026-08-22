@@ -75,13 +75,40 @@ holdout, outcome-driven filtering, and any post-outcome implementation change.
   acceptance, recent records, and required frozen report inventory.
 - Fast-forwarded the existing clean canonical M3 worktree to `ef1d1fa`.
 - Created this record before modifying implementation files.
+- Added and pushed the frozen execution adapter, input locator, development
+  runner, contracts, and synthetic pre-execution tests in commits `4d7c09f`,
+  `9ce5679`, `d65698c`, and `1d473f3`.
+- Fixed only the pre-execution CI identity-envelope newline serialization in
+  commit `9535997`; no real target or outcome bytes were read during that fix.
+- Pre-execution lock run `32566610112` passed on `95359971771a43f8efe57541d9270e72daf65ea4`:
+  Ubuntu clean-clone, Windows clean-clone, and identity-compare all passed.
+- M3 Stage 3C-A-R2 identity run `32566610106` passed on the same HEAD.
+- Stage 2G protected reproducibility run `32566610115` passed on the same
+  HEAD. Final pre-outcome gate confirmed local/remote parity `0 0`, frozen
+  lock identities, adapter digest, protected M2 branch/tag/stash/database,
+  and no protected-report diff from `ef1d1fa`.
 
 ## Validation and result
 
-Pending. This section will contain only commands actually executed and their
-observed results.
+REAL_OUTCOME_READ_BOUNDARY_REACHED after the exact pre-execution gates above.
+The first authorized invocation failed before target bytes were read with
+`INPUT_LOCATOR_MISSING:target_daily_qfq`. Read-only inspection showed the
+registered target capsule stores `baostock/601857_SH_qfq.csv` beneath its
+`raw` directory. No implementation was changed; the same locked invocation
+was rerun with the registered raw subroot.
+
+The rerun completed with `M3_STAGE3CB_REAL_EXECUTION_COMPLETED` and wrote
+external artifacts under `D:\\m3_stage3cb_execution_20260822_r2`. Result:
+`nobs=1902`, sample `2015-03-16` to `2022-12-30`, Crash count `330`,
+`gamma=0.0005072734676652487`, 95% CI
+`[-0.0021987423016553366, 0.0033325010311833106]`, and primary decision
+`M3_PRIMARY_DEVELOPMENT_POSITIVE_ABNORMAL_PERFORMANCE_NOT_ESTABLISHED`.
+Same-input A/B was `exact_match=true`; data manifest digest was
+`7c3070a64cc5931807a7c35c95fcff66dffa6bb84310304365544c2bda3f8be2`.
+Generated manifest/result reports and acceptance evidence were added after
+the outcome read. No implementation mutation occurred after the boundary.
 
 ## Final state
 
-Pending. Stage 3C-C, robustness, holdout, and any further research execution
-remain prohibited after this task.
+Completed — `STOP_FOR_NORTH_STAR_REVIEW`. Stage 3C-C, robustness, holdout,
+and any further research execution remain prohibited after this task.

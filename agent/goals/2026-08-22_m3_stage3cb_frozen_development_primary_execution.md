@@ -1,6 +1,6 @@
 # Goal — M3 Stage 3C-B Frozen Development Primary Execution
 
-Status: ACTIVE — PRE-EXECUTION LOCK
+Status: COMPLETED — STOP_FOR_NORTH_STAR_REVIEW
 
 ## Objective
 
@@ -26,6 +26,18 @@ rerun. Registered robustness and holdout remain outside this authorization.
 - `development_primary_execution = AUTHORIZED_ONLY_AFTER_PREEXECUTION_CI_PASS`
 - `registered_robustness = NOT_AUTHORIZED`
 - `holdout = SEALED`
+
+## Completion evidence
+
+- Pre-execution lock run `32566610112` passed on HEAD
+  `95359971771a43f8efe57541d9270e72daf65ea4` across Ubuntu, Windows, and
+  exact identity comparison.
+- One frozen development-primary result completed after the gate; same-input
+  A/B was exact-match. `nobs=1902`, gamma `0.0005072734676652487`, 95% CI
+  `[-0.0021987423016553366, 0.0033325010311833106]`.
+- Primary decision: `M3_PRIMARY_DEVELOPMENT_POSITIVE_ABNORMAL_PERFORMANCE_NOT_ESTABLISHED`.
+- No registered robustness or holdout read occurred. Stop condition is
+  `STOP_FOR_NORTH_STAR_REVIEW`.
 - Before the pre-execution CI gate: real target read, real Crash, regression,
   bootstrap, and outcome read are all `NO`.
 

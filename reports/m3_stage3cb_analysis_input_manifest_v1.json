@@ -1,0 +1,190 @@
+{
+ "canonical_matrix_digest": "2fb81183326992e270d6415f79f66bba4f2b927836cf4bed105b2ee27cc86464",
+ "data_manifest_digest": "7c3070a64cc5931807a7c35c95fcff66dffa6bb84310304365544c2bda3f8be2",
+ "digest_algorithm": "M3_REPOSITORY_RELATIVE_DIGEST_V2",
+ "execution_adapter_digest": "9b0df296d4b5d3b7bdf382bd07cf8bdb4410fb6659edfe88da68a16b419fbf78",
+ "holdout_read": false,
+ "holdout_status": "SEALED",
+ "matrix_join": "EXACT_TRADE_DATE_INNER_JOIN_ONLY",
+ "model_digest": "4958351a5c79c0eb96bbfda9ebaaca5e71ab2b07236eaa808b0a92ebc6e9756d",
+ "pipeline_digest": "ab224492ff85f391a29048dfeec740f9bbffb376de3408a5645a4552b51b9d1b",
+ "sample": {
+  "all_joined_rows": 1970,
+  "excluded_dates": [
+   "2014-12-01",
+   "2014-12-02",
+   "2014-12-03",
+   "2014-12-04",
+   "2014-12-05",
+   "2014-12-08",
+   "2014-12-09",
+   "2014-12-10",
+   "2014-12-11",
+   "2014-12-12",
+   "2014-12-15",
+   "2014-12-16",
+   "2014-12-17",
+   "2014-12-18",
+   "2014-12-19",
+   "2014-12-22",
+   "2014-12-23",
+   "2014-12-24",
+   "2014-12-25",
+   "2014-12-26",
+   "2014-12-29",
+   "2014-12-30",
+   "2014-12-31",
+   "2015-01-05",
+   "2015-01-06",
+   "2015-01-07",
+   "2015-01-08",
+   "2015-01-09",
+   "2015-01-12",
+   "2015-01-13",
+   "2015-01-14",
+   "2015-01-15",
+   "2015-01-16",
+   "2015-01-19",
+   "2015-01-20",
+   "2015-01-21",
+   "2015-01-22",
+   "2015-01-23",
+   "2015-01-26",
+   "2015-01-27",
+   "2015-01-28",
+   "2015-01-29",
+   "2015-01-30",
+   "2015-02-02",
+   "2015-02-03",
+   "2015-02-04",
+   "2015-02-05",
+   "2015-02-06",
+   "2015-02-09",
+   "2015-02-10",
+   "2015-02-11",
+   "2015-02-12",
+   "2015-02-13",
+   "2015-02-16",
+   "2015-02-17",
+   "2015-02-25",
+   "2015-02-26",
+   "2015-02-27",
+   "2015-03-02",
+   "2015-03-03",
+   "2015-03-04",
+   "2015-03-05",
+   "2015-03-06",
+   "2015-03-09",
+   "2015-03-10",
+   "2015-03-11",
+   "2015-03-12",
+   "2015-03-13"
+  ],
+  "final_nobs": 1902,
+  "sample_end": "2022-12-30",
+  "sample_start": "2015-03-16",
+  "target_invalid_count": 1,
+  "target_invalid_reason_counts": {
+   "NO_PREVIOUS_VALID_QFQ_CLOSE": 1
+  },
+  "target_valid_rows": 1969,
+  "tier1_invalid_count": 68,
+  "tier1_joint_valid_rows": 1902
+ },
+ "schema_version": "1.0.0",
+ "sources": {
+  "industry_aligned": {
+   "bounded_proof": {
+    "date_max": "2022-12-30",
+    "date_min": "2014-12-01",
+    "date_token_count": 3918,
+    "holdout_scan": "PASSED"
+   },
+   "file_sha256": "9cb789cddc6d2723ea8e1907b30b99758d99686eeef32043f25c4b733672619e",
+   "logical_sha256": "a0bb7fa659f56e5f325f09b112d62443e26391b7d961b193689cff56172a6567",
+   "rows": 1970,
+   "valid_rows": 1948
+  },
+  "industry_raw": {
+   "bounded_proof": {
+    "date_max": "2022-12-30",
+    "date_min": "2014-12-01",
+    "date_token_count": 1970,
+    "holdout_scan": "PASSED"
+   },
+   "raw_sha256": "c80a609c6dc1ff461b6010f0b1ebcd2230095f466af4f257be91d74faf9afee6"
+  },
+  "market_proxy": {
+   "bounded_proof": {
+    "date_max": "2022-12-30",
+    "date_min": "2014-12-01",
+    "date_token_count": 1970,
+    "holdout_scan": "PASSED"
+   },
+   "file_sha256": "1f965d09d50b2a37d948af0a59e96c0fbfef5ed3e02fd02971ba6835689fffd3",
+   "gap_rows": 68,
+   "implementation_id": "SH_A_SHARE_EQUAL_WEIGHT_EX_601857_V2",
+   "logical_sha256": "3ba8c00f4ad2c02abb95e9c0682f5a011f715a050160aeaf1bce54ecf7609743",
+   "rows": 1970,
+   "valid_rows": 1902
+  },
+  "oil_aligned": {
+   "bounded_proof": {
+    "date_max": "2022-12-30",
+    "date_min": "2014-12-01",
+    "date_token_count": 7876,
+    "holdout_scan": "PASSED"
+   },
+   "file_sha256": "271be2f0c40e0bcde3f023cc694349da3ef38eaa28ff43b1f3889fe1082cb6b3",
+   "logical_sha256": "1de98bf258b2a21090b46b179485dace61fc9b3027587b61a652970e1e20e5f7",
+   "rows": 1970,
+   "valid_rows": 1968
+  },
+  "oil_raw": {
+   "bounded_proof": {
+    "date_max": "2022-12-30",
+    "date_min": "2014-12-01",
+    "date_token_count": 2110,
+    "holdout_scan": "PASSED"
+   },
+   "raw_sha256": "185080c6937d09b1dc3a2db46746a8e9bbdac5d17d8165596e9211fcc45e2d53"
+  },
+  "target": {
+   "bounded_proof": {
+    "date_max": "2022-12-30",
+    "date_min": "2014-12-01",
+    "date_token_count": 1970,
+    "holdout_scan": "PASSED"
+   },
+   "dataset_id": "target_daily_qfq",
+   "date_end": "2022-12-30",
+   "date_start": "2014-12-01",
+   "logical_sha256": "c0485b55e07551a1a98c1f4cd33f3791814b6c3df6c1351d4ca634a97eebb1ab",
+   "raw_file_path": "baostock/601857_SH_qfq.csv",
+   "raw_sha256": "e5700ddfa965db80efd12188b8529c3d5f6f42fdfeabe08135e0663a106b2ee2",
+   "rows": 1970,
+   "target_return_definition": "ADJUSTED_CLOSE_TO_CLOSE_SIMPLE_RETURN"
+  },
+  "tier1_readiness": {
+   "bounded_proof": {
+    "date_max": "2022-12-30",
+    "date_min": "2014-12-01",
+    "date_token_count": 1970,
+    "holdout_scan": "PASSED"
+   },
+   "file_sha256": "4ede9a45f0ed42cf9bbea30f572e2c9c16984667557a37fbd46100579b62846f",
+   "first_joint_valid": "2015-03-16",
+   "industry_valid_rows": 1948,
+   "last_joint_valid": "2022-12-30",
+   "logical_sha256": "801e877568d83021e71ebafe977e6b26d571155c2f61c6ca8f8ee265f90e264c",
+   "market_valid_rows": 1902,
+   "oil_valid_rows": 1968,
+   "rows": 1970,
+   "tier1_joint_valid_rows": 1902
+  }
+ },
+ "stage": "M3_STAGE3CB",
+ "target_valid_count": 1969,
+ "tier1_valid_count": 1902,
+ "upstream_inventory_sha256": "f206780dcb6fd4c3b9d30a92025b75974284afd16eecd24770d2f812256f0031"
+}
