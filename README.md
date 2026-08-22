@@ -28,9 +28,10 @@ amends only the pre-outcome source/control implementation: the unchanged
 DCOILBRENTEU Brent variable now uses no-credential bounded FRED public CSV, and the primary
 industry control is the official CNI Oil & Gas Index 399439. Both are TRUSTED through 2022-12-31;
 the frozen R1 market proxy is reused and joint Tier-1 readiness has 1,902 valid development dates.
-Stage 3C-A pipeline-lock implementation is recovered and locked on the canonical M3 baseline;
-execution remains synthetic-only. Stage 3C real analysis remains unauthorized and no real mechanism
-inference has been executed. Holdout remains sealed.
+Stage 3C-A pipeline-lock implementation is recovered and method-locked on the canonical M3 baseline;
+a checkout-path digest portability defect was discovered and repaired/relocked in Stage 3C-A-R2 before
+any outcome read. Execution remains synthetic-only, Stage 3C real analysis remains unauthorized, and
+holdout remains sealed.
 No real mechanism inference has been executed.
 
 ---
@@ -40,7 +41,7 @@ No real mechanism inference has been executed.
 本项目围绕两个核心模块：
 
 1. **个股价值评估** — 企业质量、估值吸引力、价值兑现能力、风险否决项（M2 正在实现）
-2. **市场机制验证** — 用统计方法检验个股与市场之间的可复现关系（Stage 3A 契约已冻结；Stage 3B 已 fail-closed 完成；Stage 3B-R1 主市场代理解析为当前状态；Stage 3B-R2 冻结严格 prior Brent 观测日与申万行业 regime；Stage 3B-R4 在结果出现前将 oil transport 改为无认证 bounded FRED `DCOILBRENTEU`，并将行业 primary amendment 固定为官方 CNI `399439`，两项均 TRUSTED；复用 R1 market proxy 后 joint Tier-1 共有 1,902 个有效 development dates；Stage 3C-A pipeline-lock implementation allowed，但 Stage 3C real analysis 未授权，尚未执行真实机制推断）
+2. **市场机制验证** — 用统计方法检验个股与市场之间的可复现关系（Stage 3A 契约已冻结；Stage 3B 已 fail-closed 完成；Stage 3B-R1 主市场代理解析为当前状态；Stage 3B-R2 冻结严格 prior Brent 观测日与申万行业 regime；Stage 3B-R4 在结果出现前将 oil transport 改为无认证 bounded FRED `DCOILBRENTEU`，并将行业 primary amendment 固定为官方 CNI `399439`，两项均 TRUSTED；复用 R1 market proxy 后 joint Tier-1 共有 1,902 个有效 development dates；Stage 3C-A 方法锁定，Stage 3C-A-R2 已在真实 outcome 读取前完成 digest portability repair/relock；Stage 3C real analysis 未授权，尚未执行真实机制推断）
 
 当前已完成第一阶段的**免费数据底座**：可运行、可测试、可追溯的本地数据基础设施。M2 已有 PetroChina（601857.SH）一份 PIT value profile 纵向切片；收益/现金、ROE/ROA、财务安全、股息和估值均已有阶段性能力。Stage 2G.2 增加了 clean-clone 测试胶囊、显式真实输入解析器、Rule007 严格来源配对和 artifact checksums。
 
@@ -361,7 +362,7 @@ ruff check src/ tests/
 |--------|------|------|
 | Milestone 1: 免费数据底座 | 股票基础信息、交易日历、日线行情、Parquet/DuckDB 存储 | ✅ 已完成 |
 | Milestone 2: 价值评估 MVP | 企业质量、估值、现金流、安全边际、风险否决项 | 条件关闭；评分附加项已条件关闭，PE numeric scoring deferred |
-| Milestone 3: 机制验证 MVP | 假设检验、条件收益、控制变量、证据分级 | Stage 3C-A recovered and locked on canonical M3 baseline；synthetic-only；real development not executed；holdout sealed |
+| Milestone 3: 机制验证 MVP | 假设检验、条件收益、控制变量、证据分级 | Stage 3C-A method-locked；Stage 3C-A-R2 digest portability repaired/relocked pre-outcome；synthetic-only；real development not executed；holdout sealed |
 | Milestone 4: 通用研究器 | 可配置的假设验证框架 | 🔲 计划中 |
 | Milestone 5: 分钟级研究 | 按需分钟数据验证 | 🔲 计划中 |
 | Milestone 6: 本地 Web 界面 | Streamlit 工作台 | 🔲 计划中 |

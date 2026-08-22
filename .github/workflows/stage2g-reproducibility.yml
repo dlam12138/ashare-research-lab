@@ -59,6 +59,14 @@ jobs:
         run: python -m ashare_research.tools.petrochina_risk_veto_vertical_slice compare-runs --left tmp/stage2h-ci/run-a/stage2h_test_capsule --right tmp/stage2h-ci/run-b/stage2h_test_capsule
       - name: Full offline test suite
         run: pytest -q
+      - name: Build M3 Stage 3C-A-R2 digest identity envelope
+        run: python -m ashare_research.tools.m3_stage3car2_digest_probe --output tmp/stage3car2-digest-identity-${{ matrix.platform }}-${{ github.sha }}.json
+      - name: Upload M3 Stage 3C-A-R2 digest identity envelope
+        uses: actions/upload-artifact@v4
+        with:
+          name: stage3car2-digest-identity-${{ matrix.platform }}-${{ github.sha }}
+          path: tmp/stage3car2-digest-identity-${{ matrix.platform }}-${{ github.sha }}.json
+          if-no-files-found: error
       - name: Build identity fingerprint envelope
         run: python -m ashare_research.tools.m2_stage2k1r4c1_identity_diagnose fingerprint --output tmp/identity-fingerprint-${{ matrix.platform }}-${{ github.sha }}.json --matrix-platform ${{ matrix.platform }}
       - name: Upload identity fingerprint envelope
@@ -96,3 +104,16 @@ jobs:
           python -m ashare_research.tools.m2_stage2k1r4c1_identity_diagnose compare \
             tmp/fp-ubuntu/identity-fingerprint-ubuntu-${{ github.sha }}.json \
             tmp/fp-windows/identity-fingerprint-windows-${{ github.sha }}.json
+      - uses: actions/download-artifact@v4
+        with:
+          name: stage3car2-digest-identity-ubuntu-${{ github.sha }}
+          path: tmp/stage3car2-digest-ubuntu
+      - uses: actions/download-artifact@v4
+        with:
+          name: stage3car2-digest-identity-windows-${{ github.sha }}
+          path: tmp/stage3car2-digest-windows
+      - name: Compare M3 Stage 3C-A-R2 digest identity envelopes
+        run: |
+          python -m ashare_research.tools.m3_stage3car2_digest_probe --compare \
+            tmp/stage3car2-digest-ubuntu/stage3car2-digest-identity-ubuntu-${{ github.sha }}.json \
+            tmp/stage3car2-digest-windows/stage3car2-digest-identity-windows-${{ github.sha }}.json

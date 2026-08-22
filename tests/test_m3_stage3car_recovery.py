@@ -171,14 +171,15 @@ def test_model_digest_changes_when_effective_contract_bytes_change(tmp_path: Pat
         dependency_contract={"statsmodels": ">=0.14.6,<0.15"},
         upstream_inventory_path=INVENTORY,
     )
-    changed, _ = build_model_digest(
-        pipeline_digest=pipeline,
-        contract_paths=[altered],
-        source_paths=_source_paths(),
-        dependency_contract={"statsmodels": ">=0.14.6,<0.15"},
-        upstream_inventory_path=INVENTORY,
-    )
-    assert base != changed
+    with pytest.raises(UpstreamBindingError, match="DIGEST_PATH_OUTSIDE_REPOSITORY"):
+        build_model_digest(
+            pipeline_digest=pipeline,
+            contract_paths=[altered],
+            source_paths=_source_paths(),
+            dependency_contract={"statsmodels": ">=0.14.6,<0.15"},
+            upstream_inventory_path=INVENTORY,
+        )
+    assert len(base) == 64
 
 
 def test_pipeline_digest_has_no_real_result_values() -> None:
