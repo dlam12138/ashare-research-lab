@@ -1,0 +1,17 @@
+{
+  "report_id": "M3_STAGE3CAR2_CROSS_CHECKOUT_IDENTITY_V1",
+  "stage": "M3_STAGE3C-A-R2",
+  "commit": "99c64aec8ddac404f5be161558852aa855c2353d",
+  "checkout_a": "REDACTED_ROOT_A",
+  "checkout_b": "REDACTED_ROOT_B",
+  "same_git_tree": true,
+  "payload_exact_match": true,
+  "upstream_inventory_sha256": "f206780dcb6fd4c3b9d30a92025b75974284afd16eecd24770d2f812256f0031",
+  "pipeline_digest": "ab224492ff85f391a29048dfeec740f9bbffb376de3408a5645a4552b51b9d1b",
+  "model_digest": "4958351a5c79c0eb96bbfda9ebaaca5e71ab2b07236eaa808b0a92ebc6e9756d",
+  "digest_algorithm": "M3_REPOSITORY_RELATIVE_DIGEST_V2",
+  "repository_absolute_path_in_payload": false,
+  "comparison": "M3_STAGE3CAR2_DIGEST_IDENTITY_MATCH",
+  "real_development_read": false,
+  "holdout_read": false
+}
