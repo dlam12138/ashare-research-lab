@@ -15,5 +15,9 @@
   "holdout_read": false,
   "old_lock_status": "SUPERSEDED_NON_PORTABLE_LOCK",
   "blocked_recomputed_status": "NON_CANONICAL_RESULT_FROM_NON_PORTABLE_ALGORITHM",
-  "relock_status": "PRE_OUTCOME_RELOCKED_PENDING_CI"
+  "relock_status": "PRE_OUTCOME_RELOCKED_CI_VERIFIED",
+  "m3_r2_ci_run": "32553184789",
+  "stage2g_ci_run": "32553184678",
+  "ci_head_sha": "db86da9ae0781dd3681fdc7bb83c8fc25b3600e7",
+  "ci_status": "SUCCESS"
 }

@@ -28,7 +28,8 @@ pipeline digest `f667598…`. This established
   digest probe, relocked digest report, and portability tests.
 - `22b855e`: add the separate M3 Ubuntu/Windows identity workflow and exact
   cross-checkout evidence; restore the existing M2 workflow byte-for-byte.
-- Final documentation commit and final CI are pending.
+- Documentation closeout was recorded after local validation; final CI
+  evidence is recorded below.
 
 New identities:
 
@@ -46,7 +47,10 @@ New identities:
 - Full suite: `2116 passed, 4 skipped, 2 warnings`.
 - Ruff, compileall, and diff-check: passed.
 - New CI workflow: `.github/workflows/m3-stage3car2-digest-identity.yml`;
-  final remote CI pending.
+  M3 R2 run `32553184789` succeeded on headSha
+  `db86da9ae0781dd3681fdc7bb83c8fc25b3600e7` with Ubuntu/Windows
+  clean-clone and identity-compare.
+- Existing Stage 2G run `32553184678` also succeeded on the same headSha.
 
 ## Protected state and stop boundary
 

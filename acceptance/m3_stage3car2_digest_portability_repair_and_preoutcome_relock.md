@@ -1,6 +1,6 @@
 # M3 Stage 3C-A-R2 Digest Portability Repair & Pre-Outcome Relock
 
-Status: PRE-OUTCOME RELock ACCEPTED LOCALLY — FINAL CI PENDING
+Status: PRE-OUTCOME RELock ACCEPTED — CI VERIFIED ON IMPLEMENTATION TIP
 
 ## Scope and boundary
 
@@ -50,7 +50,10 @@ Evidence is recorded in
 `reports/m3_stage3car2_cross_checkout_identity_v1.json`. The new CI workflow
 `.github/workflows/m3-stage3car2-digest-identity.yml` creates Ubuntu and
 Windows clean-clone envelopes and an `identity-compare` job that compares all
-four identity fields plus both payloads. Final remote CI is pending this push.
+four identity fields plus both payloads. M3 R2 workflow `32553184789` and
+existing Stage 2G workflow `32553184678` both succeeded on headSha
+`db86da9ae0781dd3681fdc7bb83c8fc25b3600e7`, including Ubuntu/Windows
+clean-clone and identity-compare jobs.
 
 ## Validation
 
@@ -61,6 +64,8 @@ four identity fields plus both payloads. Final remote CI is pending this push.
 - Compileall: passed.
 - `git diff --check`: passed.
 - Cross-checkout probe: `M3_STAGE3CAR2_DIGEST_IDENTITY_MATCH`.
+- Final CI: M3 R2 `32553184789` and Stage 2G `32553184678`, both success on
+  headSha `db86da9ae0781dd3681fdc7bb83c8fc25b3600e7`.
 
 ## Governance state
 
@@ -72,6 +77,6 @@ four identity fields plus both payloads. Final remote CI is pending this push.
 - Real development: not read.
 - Holdout: sealed and not read.
 
-After final Ubuntu/Windows/identity-compare CI is green, this task stops for
+Final Ubuntu/Windows/identity-compare CI is green. This task stops for
 North-Star review. Stage 3C-B requires separate authorization and must use the
 new relocked digests.
