@@ -34,8 +34,10 @@ any outcome read. Stage 3C-B frozen development-primary execution completed with
 abnormal performance not established. Stage 3C-C executed the previously registered and pre-outcome-
 implemented development robustness suite; the primary decision remains unchanged, development
 evidence level remains unassigned because no descriptive relationship criterion was prelocked, and
-holdout remains sealed. Stage 3D-A froze the one-shot out-of-sample execution contract; the holdout
-has not been read and Stage 3D-B requires separate authorization. This result does not support causal, actor-intent, policy-intervention, or
+the holdout input capsule remains incomplete. Stage 3D-A froze the one-shot out-of-sample execution contract. Stage 3D-B
+crossed the unseal boundary but failed closed at the frozen market coverage gate because 148 eligible
+securities repeatedly returned empty/non-JSON responses; no regression/bootstrap/gamma was run and
+the disposition is `M3_HOLDOUT_PRIMARY_INCONCLUSIVE_TECHNICAL_OR_COVERAGE_GAP`. This result does not support causal, actor-intent, policy-intervention, or
 “护盘/国家队” inferences. The task stops at `STOP_FOR_NORTH_STAR_REVIEW`.
 No real mechanism inference beyond this frozen development-primary and
 registered robustness execution has been executed.
@@ -306,7 +308,7 @@ ruff check src/ tests/
 - Stage 2I.2R 已完成捕获派生、双官方证据重协调和七个缺口的执行式版本化搜索：9/16 个事实/年度单元已取得，7 个单元保留为明确缺口；结论为 `ROIC_FACT_GAPS_REMAIN`，未运行 shadow ROIC。更正产物位于 `reports/*stage2i2r*`，原 Stage 2I.2 产物保留供审计。
 - ROIC 在严格证据合同下不可计算；不存在数值、proxy、shadow 或生产 Metric/Result
 - 评分附加项已**条件关闭**：PE 原始值与 3Y/5Y 分位保留为描述证据；冻结 5Y 内独立 cycle-context 验证不可检验，故 PE 与估值维度 numeric score 均为 `null`，不补 0、不转移权重，也没有生产 score engine、排名或推荐
-- M3 Stage 3A 研究契约已冻结；Stage 3B 已 fail-closed 完成；Stage 3B-R1 主市场代理解析为当前状态；Stage 3B-R2 已冻结严格 prior Brent 观测日与申万行业 regime；Stage 3B-R4 在结果出现前将 oil transport 改为无认证 bounded FRED `DCOILBRENTEU`，并将行业 primary amendment 固定为官方 CNI `399439`，两项 Tier-1 控制均 TRUSTED，复用 R1 market proxy 后 joint Tier-1 共有 1,902 个有效 development dates；Stage 3C-A pipeline-lock implementation 已锁定，Stage 3C-B frozen development-primary 已完成且正的受控异常表现未建立；Stage 3C-C 已完成已注册且 pre-outcome-implemented 的 development robustness，primary decision 未改变，evidence level 未分配；Stage 3D-A 已冻结一次性 frozen primary OOS 合同，holdout sealed，Stage 3D-B 需单独授权，任务停止于 `STOP_FOR_NORTH_STAR_REVIEW`
+- M3 Stage 3A 研究契约已冻结；Stage 3B 已 fail-closed 完成；Stage 3B-R1 主市场代理解析为当前状态；Stage 3B-R2 已冻结严格 prior Brent 观测日与申万行业 regime；Stage 3B-R4 在结果出现前将 oil transport 改为无认证 bounded FRED `DCOILBRENTEU`，并将行业 primary amendment 固定为官方 CNI `399439`，两项 Tier-1 控制均 TRUSTED，复用 R1 market proxy 后 joint Tier-1 共有 1,902 个有效 development dates；Stage 3C-A pipeline-lock implementation 已锁定，Stage 3C-B frozen development-primary 已完成且正的受控异常表现未建立；Stage 3C-C 已完成已注册且 pre-outcome-implemented 的 development robustness，primary decision 未改变，evidence level 未分配；Stage 3D-A 已冻结一次性 frozen primary OOS 合同；Stage 3D-B 已越过 unseal boundary，但因 148 个 eligible securities 持续返回空/非 JSON 响应，0.99 market coverage gate fail-closed，未运行 regression/bootstrap/gamma，结论为 `M3_HOLDOUT_PRIMARY_INCONCLUSIVE_TECHNICAL_OR_COVERAGE_GAP`，任务停止于 `STOP_FOR_NORTH_STAR_REVIEW`
 - Web 界面、目标价、推荐和自动交易尚未实现
 - 当前 value profile 只覆盖 PetroChina（601857.SH）这一份 PIT 纵向切片
 - Stage 2F 仍有 9 个交易所证据缺口；股本 A/H 拆分也需继续补充登记证据
@@ -368,7 +370,7 @@ ruff check src/ tests/
 |--------|------|------|
 | Milestone 1: 免费数据底座 | 股票基础信息、交易日历、日线行情、Parquet/DuckDB 存储 | ✅ 已完成 |
 | Milestone 2: 价值评估 MVP | 企业质量、估值、现金流、安全边际、风险否决项 | 条件关闭；评分附加项已条件关闭，PE numeric scoring deferred |
-| Milestone 3: 机制验证 MVP | 假设检验、条件收益、控制变量、证据分级 | Stage 3C-A method-locked；Stage 3C-A-R2 digest portability repaired/relocked pre-outcome；Stage 3C-B frozen development-primary completed；positive controlled abnormal performance not established；Stage 3C-C registered development robustness completed；Stage 3D-A one-shot frozen primary OOS contract completed；evidence level unassigned；holdout sealed；Stage 3D-B separately authorized only |
+| Milestone 3: 机制验证 MVP | 假设检验、条件收益、控制变量、证据分级 | Stage 3C-A method-locked；Stage 3C-A-R2 digest portability repaired/relocked pre-outcome；Stage 3C-B frozen development-primary completed；positive controlled abnormal performance not established；Stage 3C-C registered development robustness completed；Stage 3D-A one-shot frozen primary OOS contract completed；Stage 3D-B technically inconclusive at the frozen market coverage gate；evidence level unassigned；stop for North-Star review |
 | Milestone 4: 通用研究器 | 可配置的假设验证框架 | 🔲 计划中 |
 | Milestone 5: 分钟级研究 | 按需分钟数据验证 | 🔲 计划中 |
 | Milestone 6: 本地 Web 界面 | Streamlit 工作台 | 🔲 计划中 |

@@ -1,0 +1,52 @@
+{
+  "stage": "M3_STAGE3DB",
+  "status": "M3_HOLDOUT_PRIMARY_INCONCLUSIVE_TECHNICAL_OR_COVERAGE_GAP",
+  "execution_head": "73630f6660528a0fbcc8868869a2e0eb955af6a4",
+  "holdout_unseal_event": "D:/m3_stage3db_holdout/holdout_unseal_event.json",
+  "actual_capsule_root": "D:/m3_stage3db_holdout_retry",
+  "window": {"warmup_start": "2022-12-01", "holdout_start": "2023-01-01", "holdout_end": "2026-08-13"},
+  "source_identities": {
+    "target": "Baostock:sh.601857:qfq:daily",
+    "market": "SH_A_SHARE_EQUAL_WEIGHT_EX_601857_V2",
+    "oil": "FRED_PUBLIC_GRAPH_CSV:DCOILBRENTEU:underlying EIA",
+    "industry": "CNI:399439:国证石油天然气指数"
+  },
+  "target_source": {
+    "transport_request_start": "2022-12-01",
+    "transport_request_end": "2026-08-13",
+    "logical_request_start_compact": "20221201",
+    "logical_request_end_compact": "20260813",
+    "adjustflag": "2",
+    "rows": 897,
+    "raw_sha256": "274f3be87992381db3a67a393b5357717d02dcbd6f11b3085b4617476c7a9bf6"
+  },
+  "market_source": {
+    "raw_capsule_manifest_sha256": "88a8b4e87dc8020fdd490130a563efa9896959d25ac87dfbac4715e79e15ab33",
+    "raw_file_count": 2316,
+    "raw_bytes": 176924705,
+    "eligible_master_plus_delist_union": 2458,
+    "daily_files_acquired": 2310,
+    "missing_daily_files": 148,
+    "coverage_gate": 0.99,
+    "coverage_status": "FAIL_CLOSED_INCOMPLETE_UNIVERSE",
+    "failure_type": "AKSHARE_STOCK_ZH_A_DAILY_JSONDECODEERROR_EMPTY_OR_NON_JSON_RESPONSE",
+    "missing_sample_first_20": ["600001", "600002", "600003", "600005", "600065", "600068", "600069", "600070", "600074", "600077", "600083", "600086", "600087", "600090", "600091", "600092", "600093", "600102", "600112", "600122"],
+    "missing_sample_last_20": ["601258", "601268", "601299", "601558", "601989", "603003", "603056", "603133", "603157", "603388", "603555", "603603", "603963", "603996", "605081", "688086", "688287", "688555", "688826", "688836"],
+    "raw_sha256": {
+      "sh_master_main_a": "883886d4de5774f437826c5b0d563a5094c94cdeffffe58284bbea041563a3f4",
+      "sh_master_star": "48d0b672d495040fe81ec302e7c5017b68eda772d1e56038f23676bc12762fb2",
+      "sh_master_main_b": "ce6f5a9fa9075fd84115d71e5c7d75562b67602cd71b11b870ec2206afa573e5",
+      "sh_delist": "72bf23f2bf0c5edc6bd585ad1434a6da010a22a1122af967e2f5d47c3ad4b0d0"
+    }
+  },
+  "oil_source": {"status": "NOT_ACQUIRED_BECAUSE_MARKET_COVERAGE_GATE_FAILED"},
+  "industry_source": {"status": "NOT_ACQUIRED_BECAUSE_MARKET_COVERAGE_GATE_FAILED"},
+  "normalized_logical_sha": null,
+  "canonical_matrix_digest": null,
+  "final_nobs": null,
+  "regression_executed": false,
+  "bootstrap_executed": false,
+  "gamma_computed": false,
+  "deterministic_ab_executed": false,
+  "final_disposition": "M3_HOLDOUT_PRIMARY_INCONCLUSIVE_TECHNICAL_OR_COVERAGE_GAP"
+}

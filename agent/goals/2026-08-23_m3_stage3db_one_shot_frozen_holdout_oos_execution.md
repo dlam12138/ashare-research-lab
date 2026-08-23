@@ -1,6 +1,6 @@
 # Goal — M3 Stage 3D-B One-Shot Frozen Holdout OOS Execution
 
-Status: ACTIVE_PRE_UNSEAL_LOCK
+Status: COMPLETED_TECHNICAL_COVERAGE_GAP_C
 
 ## Objective
 
@@ -45,6 +45,19 @@ schemas, and semantic tests are immutable. Only the real input manifest,
 aggregate result, acceptance, work record, and factual README status may be
 written. No robustness exploration, alternative source, or second execution
 is permitted.
+
+## Post-unseal factual outcome
+
+- Exact-head CI passed and the immutable marker was created.
+- Baostock required ISO transport serialization; the compact-date attempt
+  returned an empty calendar response, and the ISO retry acquired 897 qfq rows
+  in a separate external capsule without changing repository code.
+- AKShare returned 2,310 daily files but 148 of 2,458 master-plus-delist eligible
+  codes repeatedly returned empty/non-JSON responses. The 0.99 market coverage
+  gate failed closed.
+- FRED/CNI acquisition and all regression/bootstrap/gamma/A-B computation were
+  not run. Final disposition is
+  `M3_HOLDOUT_PRIMARY_INCONCLUSIVE_TECHNICAL_OR_COVERAGE_GAP`.
 
 ## Stop conditions
 
