@@ -1,0 +1,35 @@
+{
+  "causal_interpretation_allowed": false,
+  "cases": [
+    {
+      "case_id": "A",
+      "development_primary": "M3_PRIMARY_DEVELOPMENT_POSITIVE_ABNORMAL_PERFORMANCE_NOT_ESTABLISHED",
+      "final_disposition": "M3_DAILY_MECHANISM_NOT_SUPPORTED_ACROSS_DEVELOPMENT_AND_HOLDOUT",
+      "holdout_primary": "NOT_ESTABLISHED",
+      "overall_primary_established": false
+    },
+    {
+      "case_id": "B",
+      "development_primary": "M3_PRIMARY_DEVELOPMENT_POSITIVE_ABNORMAL_PERFORMANCE_NOT_ESTABLISHED",
+      "final_disposition": "M3_DEVELOPMENT_NOT_ESTABLISHED_HOLDOUT_POSITIVE_CROSS_PERIOD_INSTABILITY",
+      "holdout_primary": "POSITIVE",
+      "overall_primary_established": false,
+      "interpretation": "development 与 holdout 结果不一致，代表 cross-period instability / regime dependence candidate，不代表稳定机制成立。"
+    },
+    {
+      "case_id": "C",
+      "development_primary": "M3_PRIMARY_DEVELOPMENT_POSITIVE_ABNORMAL_PERFORMANCE_NOT_ESTABLISHED",
+      "final_disposition": "M3_HOLDOUT_PRIMARY_INCONCLUSIVE_TECHNICAL_OR_COVERAGE_GAP",
+      "holdout_primary": "INVALID_OR_INCONCLUSIVE",
+      "overall_primary_established": false
+    }
+  ],
+  "contract_id": "M3_STAGE3DA_HOLDOUT_INTERPRETATION_POLICY_V1",
+  "development_primary_reversal_allowed": false,
+  "development_rescue_by_holdout_allowed": false,
+  "funding_actor_interpretation_allowed": false,
+  "holdout_can_reverse_development_primary": false,
+  "minute_level_auto_escalation_allowed": false,
+  "stage": "M3_STAGE3DA",
+  "version": "1.0.0"
+}
