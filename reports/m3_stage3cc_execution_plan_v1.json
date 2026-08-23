@@ -1,0 +1,38 @@
+{
+ "contract_id": "M3_STAGE3CC_EXECUTION_PLAN_V1",
+ "version": "1.0.0",
+ "status": "LOCKED_PROJECTION_FROM_M3_STAGE3CAR_ROBUSTNESS_REGISTRY_V2",
+ "stage": "M3_STAGE3CC",
+ "registry_path": "reports/m3_stage3ca_robustness_registry_v2.json",
+ "registry_sha256": "8163e1c8f3a9956f3de48f824ec3199660395a662af78ec3d613fa068cf9c121",
+ "execution": {
+  "descriptive_summary": "EXECUTE_EXISTING_FUNCTION",
+  "conditional_summary": "EXECUTE_EXISTING_FUNCTION",
+  "threshold_robustness": "EXECUTE_EXISTING_FUNCTION",
+  "thresholds": [-0.005, -0.015, -0.02],
+  "benjamini_hochberg": "EXECUTE_EXISTING_FUNCTION",
+  "benjamini_hochberg_q": 0.05,
+  "remove_top_extreme_crash_days": "EXECUTE_EXISTING_FUNCTION",
+  "remove_top_extreme_crash_day_counts": [1, 3],
+  "leave_one_calendar_year_out": "EXECUTE_EXISTING_FUNCTION",
+  "year_by_year": "EXISTING_DESCRIPTIVE_OUTPUT_ONLY"
+ },
+ "not_executed": {
+  "leave_one_event_out": "NOT_EXECUTED_PREOUTCOME_IMPLEMENTATION_MISSING",
+  "alternative_market_proxies": "NOT_EXECUTED_DATA_NOT_ACQUIRED",
+  "volume_abnormality": "NOT_EXECUTED_REGISTERED_NOT_EXECUTABLE_WITH_CURRENT_TIER1_INPUTS",
+  "market_regimes": "NOT_EXECUTED_REGISTERED_NOT_EXECUTABLE_WITH_CURRENT_TIER1_INPUTS",
+  "industry_ex_target": "NOT_EXECUTED_FUTURE_CANDIDATE"
+ },
+ "primary_anchor": {
+  "decision": "M3_PRIMARY_DEVELOPMENT_POSITIVE_ABNORMAL_PERFORMANCE_NOT_ESTABLISHED",
+  "reversal_prohibited": true
+ },
+ "holdout": {
+  "start": "2023-01-01",
+  "status": "SEALED",
+  "read": false,
+  "new_data_acquisition": false
+ },
+ "digest_algorithm": "M3_REPOSITORY_RELATIVE_DIGEST_V2"
+}
