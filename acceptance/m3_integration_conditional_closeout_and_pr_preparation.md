@@ -1,6 +1,6 @@
 # M3 Integration Closeout — Conditional Closeout and PR Preparation
 
-Status: `IN_PROGRESS`
+Status: `PASS — PR_READY_FOR_SOL_REVIEW`
 
 ## Integration-only boundary
 
@@ -55,3 +55,23 @@ exact final-tip CI is green and must point to the exact final feature HEAD. A
 PR may be created from `feat/m3-mechanism-validation-mvp` to `main`, but
 `merge = NOT_PERFORMED`. Final state: `PR_READY_FOR_SOL_REVIEW` and
 `STOP_FOR_FINAL_MERGE_REVIEW`.
+
+## Final integration evidence
+
+- Integration candidate HEAD: `98e86f4e187935acf3a44945d2f75f7785a2daf5`.
+- README repair: `PASS`.
+- Frozen-artifact regression: `PASS`.
+- Exact candidate-tip CI: `PASS`.
+- Tag: `m3-mechanism-validation-conditional-closeout`.
+- Tag dereferenced candidate: `98e86f4e187935acf3a44945d2f75f7785a2daf5`.
+- PR: [#3](https://github.com/dlam12138/ashare-research-lab/pull/3).
+- PR state at integration closeout: `OPEN / UNMERGED`.
+- Candidate-tip PR CI: `PASS`.
+- This follow-up is governance-only; it is not research revalidation.
+
+## Governance-repair boundary
+
+The existing annotated tag remains immutable on the initial integration
+candidate. The governance-repair tip differs from that tag by design and is
+verified through the post-push exact-tip and PR CI reported in the final
+handoff. Merge remains `NOT_PERFORMED`.

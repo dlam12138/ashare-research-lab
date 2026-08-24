@@ -1,6 +1,6 @@
 # Goal — M3 Integration Closeout: README, Final-Tip CI, Tag, and PR Preparation
 
-Status: `IN_PROGRESS`
+Status: `COMPLETED — PR_READY_FOR_SOL_REVIEW`
 
 ## Objective
 
@@ -62,3 +62,16 @@ frozen-artifact regression passes; local tests and exact final-tip CI pass; the
 feature tip is synchronized; the annotated tag points to the exact final tip;
 the PR targets `main` from `feat/m3-mechanism-validation-mvp`; no merge occurs;
 and the final state is `PR_READY_FOR_SOL_REVIEW` / `STOP_FOR_FINAL_MERGE_REVIEW`.
+
+## Completion
+
+- Integration task completed; this status repair does not reopen M3 research.
+- Initial integration candidate tip: `98e86f4e187935acf3a44945d2f75f7785a2daf5`.
+- Candidate-tip CI passed; the conditional-closeout tag was created and remains
+  immutable at that candidate.
+- PR #3 was created and its candidate-tip CI passed; it remains open and
+  unmerged.
+- Governance-only status finalization is limited to the integration Goal,
+  acceptance, work record, and their scoped status regression.
+- The governance-repair tip and its post-push CI are verified in the final
+  handoff; the final stop remains `STOP_FOR_FINAL_MERGE_REVIEW`.

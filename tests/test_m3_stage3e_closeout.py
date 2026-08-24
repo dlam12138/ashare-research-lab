@@ -159,3 +159,31 @@ def test_readme_integration_status_has_no_confirmed_stale_m3_wording() -> None:
     assert "holdout 保持 sealed，Stage 3D-B 需单独授权" not in readme
     assert "M2 已条件关闭" in readme
     assert "M3_HOLDOUT_PRIMARY_INCONCLUSIVE_TECHNICAL_OR_COVERAGE_GAP" in readme
+
+
+def test_integration_governance_statuses_are_finalized() -> None:
+    goal_path = (
+        ROOT
+        / "agent"
+        / "goals"
+        / "2026-08-24_m3_integration_closeout_readme_ci_tag_pr.md"
+    )
+    acceptance_path = (
+        ROOT / "acceptance" / "m3_integration_conditional_closeout_and_pr_preparation.md"
+    )
+    record_path = (
+        ROOT
+        / "agent"
+        / "record"
+        / "2026-08-24_M3_integration_conditional_closeout_and_pr_preparation.md"
+    )
+    goal = goal_path.read_text(encoding="utf-8")
+    acceptance = acceptance_path.read_text(encoding="utf-8")
+    record = record_path.read_text(encoding="utf-8")
+
+    assert "Status: `IN_PROGRESS`" not in goal
+    assert "Status: `IN_PROGRESS`" not in acceptance
+    assert "Status: `IN_PROGRESS — INTEGRATION_CLOSEOUT_ONLY`" not in record
+    assert "Status: `COMPLETED — PR_READY_FOR_SOL_REVIEW`" in goal
+    assert "Status: `PASS — PR_READY_FOR_SOL_REVIEW`" in acceptance
+    assert "Status: `COMPLETED — PR_READY_FOR_SOL_REVIEW`" in record
