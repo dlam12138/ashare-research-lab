@@ -1,0 +1,171 @@
+{
+  "a_share_row_count": 146,
+  "b_share_row_count": 13,
+  "bootstrap": false,
+  "cni": false,
+  "company_code_as_security_id_count": 0,
+  "company_status": "3",
+  "crash": false,
+  "endpoint": "https://query.sse.com.cn/commonQuery.do",
+  "extra_current_sse_rows_ignored_count": 0,
+  "fred": false,
+  "frozen_compressed_row_count": 159,
+  "frozen_compressed_unique_key_count": 159,
+  "frozen_sh_delist_sha": "72bf23f2bf0c5edc6bd585ad1434a6da010a22a1122af967e2f5d47c3ad4b0d0",
+  "gamma": false,
+  "known_six_conflict_resolution": {
+    "600190": {
+      "company_code": "600190",
+      "delisting_dates": [
+        "2025-07-28"
+      ],
+      "listing_dates": [
+        "1998-05-19",
+        "1999-06-09"
+      ],
+      "matching_frozen_row_count": 2,
+      "resolved_security_codes": [
+        "600190",
+        "900952"
+      ],
+      "same_security_code_with_conflicting_dates": false,
+      "status": "RESOLVED_AT_SECURITY_LEVEL",
+      "stock_types": [
+        "A_SHARE_COMMON",
+        "B_SHARE"
+      ]
+    },
+    "600555": {
+      "company_code": "600555",
+      "delisting_dates": [
+        "2022-07-14"
+      ],
+      "listing_dates": [
+        "1999-01-18",
+        "2001-03-28"
+      ],
+      "matching_frozen_row_count": 2,
+      "resolved_security_codes": [
+        "600555",
+        "900955"
+      ],
+      "same_security_code_with_conflicting_dates": false,
+      "status": "RESOLVED_AT_SECURITY_LEVEL",
+      "stock_types": [
+        "A_SHARE_COMMON",
+        "B_SHARE"
+      ]
+    },
+    "600614": {
+      "company_code": "600614",
+      "delisting_dates": [
+        "2021-07-22"
+      ],
+      "listing_dates": [
+        "1992-07-28",
+        "1992-08-28"
+      ],
+      "matching_frozen_row_count": 2,
+      "resolved_security_codes": [
+        "600614",
+        "900907"
+      ],
+      "same_security_code_with_conflicting_dates": false,
+      "status": "RESOLVED_AT_SECURITY_LEVEL",
+      "stock_types": [
+        "A_SHARE_COMMON",
+        "B_SHARE"
+      ]
+    },
+    "600625": {
+      "company_code": "600625",
+      "delisting_dates": [
+        "2001-04-25"
+      ],
+      "listing_dates": [
+        "1993-01-06",
+        "1994-11-10"
+      ],
+      "matching_frozen_row_count": 2,
+      "resolved_security_codes": [
+        "600625",
+        "900931"
+      ],
+      "same_security_code_with_conflicting_dates": false,
+      "status": "RESOLVED_AT_SECURITY_LEVEL",
+      "stock_types": [
+        "A_SHARE_COMMON",
+        "B_SHARE"
+      ]
+    },
+    "600680": {
+      "company_code": "600680",
+      "delisting_dates": [
+        "2019-05-24"
+      ],
+      "listing_dates": [
+        "1993-10-18",
+        "1994-10-20"
+      ],
+      "matching_frozen_row_count": 2,
+      "resolved_security_codes": [
+        "600680",
+        "900930"
+      ],
+      "same_security_code_with_conflicting_dates": false,
+      "status": "RESOLVED_AT_SECURITY_LEVEL",
+      "stock_types": [
+        "A_SHARE_COMMON",
+        "B_SHARE"
+      ]
+    },
+    "600695": {
+      "company_code": "600695",
+      "delisting_dates": [
+        "2022-06-15"
+      ],
+      "listing_dates": [
+        "1993-11-22",
+        "1993-12-15"
+      ],
+      "matching_frozen_row_count": 2,
+      "resolved_security_codes": [
+        "600695",
+        "900919"
+      ],
+      "same_security_code_with_conflicting_dates": false,
+      "status": "RESOLVED_AT_SECURITY_LEVEL",
+      "stock_types": [
+        "A_SHARE_COMMON",
+        "B_SHARE"
+      ]
+    }
+  },
+  "market_proxy": false,
+  "matched_frozen_row_count": 159,
+  "normalized_logical_digest": "8a9bf3868d880ab50460e0be0633aef6d2aa48abdce81328d507d4f6a3d22153",
+  "ols": false,
+  "price_bytes_parsed_after_r2": false,
+  "raw_result_counts": {
+    "1": 143,
+    "2": 13,
+    "8": 3
+  },
+  "schema_version": "1.0.0",
+  "source_class": "SAME_OFFICIAL_SOURCE_RAW_FIELD_PRESERVATION",
+  "sql_id": "COMMON_SSE_CP_GPJCTPZ_GPLB_GP_L",
+  "stage": "M3_STAGE3DBR2",
+  "standardized_security_level_row_count": 159,
+  "status": "SSE_SECURITY_LEVEL_IDENTITY_RECOVERED",
+  "stock_type_requests": [
+    1,
+    2,
+    8
+  ],
+  "type_raw_sha256": {
+    "1": "30be9e33d772004c558e8de6ecd19508d067ba3897188eefae682cb386b9c611",
+    "2": "48419b6fe22f65f12be8e4b6e902ae742db390e6a27311d8adc6759525707d3b",
+    "8": "2df041793a2ba7369ce07d205b7ffd45357b0a77ffc4f64945da845d5971d6b1"
+  },
+  "unresolved_frozen_row_count": 0
+}

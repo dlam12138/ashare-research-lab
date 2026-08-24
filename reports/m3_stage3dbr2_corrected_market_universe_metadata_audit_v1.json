@@ -1,0 +1,38 @@
+{
+  "accepted_primary_execution_count": 0,
+  "audit_mode": "METADATA_ONLY",
+  "classification_counts": {
+    "A_SHARE_COMMON": 2459,
+    "B_SHARE": 54,
+    "OTHER": 1
+  },
+  "cni_requested": false,
+  "company_code_as_security_id_count": 0,
+  "corrected_security_master_count": 2514,
+  "corrected_security_master_logical_digest": "d4ce2cb19189e76ac3b42afbbdc4a080734be1e9ce0bbf91dfec1543d7908b4b",
+  "ever_eligible_in_holdout_count": 2367,
+  "fred_requested": false,
+  "frozen_set_expansion_count": 0,
+  "frozen_set_loss_count": 0,
+  "holdout_status": "UNSEALED_CONSUMED",
+  "market_proxy_materialized": false,
+  "metadata_insufficient_a_share_common_count": 0,
+  "metadata_insufficient_count": 0,
+  "never_eligible_in_holdout_count": 147,
+  "original_failed_148_count": 148,
+  "original_failed_classification": {
+    "ever_eligible": 57,
+    "metadata_insufficient": 0,
+    "never_eligible": 91
+  },
+  "price_bytes_parsed": false,
+  "primary_statistic_observed": false,
+  "schema_version": "1.0.0",
+  "security_level_conflict_count": 0,
+  "source_manifest": "reports/m3_stage3dbr2_sse_security_identity_manifest_v1.json",
+  "source_manifest_sha256": "759657d4beb14a92454b0721c2eb24287414733616498949ba6f3b7ff1cea66a",
+  "stage": "M3_STAGE3DBR2",
+  "statistical_outputs": false,
+  "status": "CORRECTED_R1_GATE_A_PASS",
+  "stop_condition": "STOP_FOR_NORTH_STAR_REVIEW"
+}

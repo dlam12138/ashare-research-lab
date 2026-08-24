@@ -43,6 +43,9 @@ Stage 3D-B-R1 began the authorized post-unseal technical recovery in an
 isolated metadata-only Gate A. It detected conflicting duplicate delisted-
 security metadata and stopped fail-closed before any new price parse or retry;
 no recovered holdout primary was executed.
+Stage 3D-B-R2 recovered the security-level identities lost by the prior delist
+metadata wrapper from the same official SSE metadata source. The frozen delist
+row universe and dates were preserved; no primary statistic was observed.
 No real mechanism inference beyond this frozen development-primary and
 registered robustness execution has been executed.
 
