@@ -1,0 +1,21 @@
+{
+  "contract_id": "M3_STAGE3CAR2_DIGEST_PORTABILITY_CONTRACT_V1",
+  "version": "1.0.0",
+  "stage": "M3_STAGE3C-A-R2",
+  "repair_type": "PRE_OUTCOME_DIGEST_INFRASTRUCTURE_REPAIR",
+  "trigger": "M3_STAGE3CB_LOCK_IDENTITY_MISMATCH",
+  "root_cause": "ABSOLUTE_CHECKOUT_PATH_INCLUDED_IN_MODEL_DIGEST_PAYLOAD",
+  "research_semantic_change": false,
+  "data_change": false,
+  "upstream_change": false,
+  "real_outcome_read_before_repair": false,
+  "path_identity_rule": "REPOSITORY_RELATIVE_POSIX_ONLY",
+  "outside_repository_path_policy": "FAIL_CLOSED",
+  "digest_algorithm": "M3_REPOSITORY_RELATIVE_DIGEST_V2",
+  "canonical_base": "8ad14e0981990f61969468631c18aea05d83a036",
+  "old_pipeline_digest": "f667598001e8f63734547f7da281c41cf571c70667d784e35e57b6eddd4e781b",
+  "old_model_digest": "28154ef29ac86984042c18d9d39292dd3d85ffa44450ef98d8f02add23b2ef11",
+  "blocked_recomputed_model_digest": "2b02d5a82aad0eca940f5decbce0e837086ef700dfcc3dfcba4740e82c20c85a",
+  "real_development_execution": "PROHIBITED",
+  "holdout": "SEALED"
+}

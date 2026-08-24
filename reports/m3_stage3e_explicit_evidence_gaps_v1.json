@@ -1,0 +1,19 @@
+{
+  "schema": "m3_stage3e_explicit_evidence_gaps_v1",
+  "stage": "M3_STAGE3E",
+  "canonical_base": "724322aa9b98d903cf5507302953180bf6d27f20",
+  "policy": "GAPS_ARE_REGISTERED_NOT_AUTOMATIC_TODOS",
+  "future_research_trigger": "NEW_NORTH_STAR_AUTHORIZATION_AND_NEW_PREREGISTRATION_IF_RESEARCH_IS_REOPENED",
+  "gaps": [
+    {"id": "GAP_001", "topic": "holdout_primary_inconclusive_market_coverage", "status": "OPEN_EXPLICIT_EVIDENCE_GAP", "blocking_for_full_evidence_completion": true, "blocking_for_conditional_m3_closeout": false, "reason": "Corrected identity recovery left minimum market coverage at 0.9736963544070143 below the frozen 0.99 gate, so no primary holdout statistic was accepted.", "not_automatic_todo": true},
+    {"id": "GAP_002", "topic": "development_numeric_evidence_level_unassigned", "status": "OPEN_EXPLICIT_EVIDENCE_GAP", "blocking_for_full_evidence_completion": true, "blocking_for_conditional_m3_closeout": false, "reason": "The descriptive-relationship classification criterion was not prelocked, so the numeric evidence level cannot be assigned post hoc.", "not_automatic_todo": true},
+    {"id": "GAP_003", "topic": "leave_one_event_out_not_executed", "status": "OPEN_EXPLICIT_EVIDENCE_GAP", "blocking_for_full_evidence_completion": false, "blocking_for_conditional_m3_closeout": false, "reason": "Registered pre-outcome implementation was missing.", "not_automatic_todo": true},
+    {"id": "GAP_004", "topic": "alternative_market_proxy_data_not_acquired", "status": "OPEN_EXPLICIT_EVIDENCE_GAP", "blocking_for_full_evidence_completion": false, "blocking_for_conditional_m3_closeout": false, "reason": "Alternative market-proxy data were not acquired under the frozen free-data contract.", "not_automatic_todo": true},
+    {"id": "GAP_005", "topic": "industry_ex_target_not_executed", "status": "OPEN_EXPLICIT_EVIDENCE_GAP", "blocking_for_full_evidence_completion": false, "blocking_for_conditional_m3_closeout": false, "reason": "The registered industry ex-target was a future candidate and was not executed.", "not_automatic_todo": true},
+    {"id": "GAP_006", "topic": "volume_abnormality_not_executed", "status": "OPEN_EXPLICIT_EVIDENCE_GAP", "blocking_for_full_evidence_completion": false, "blocking_for_conditional_m3_closeout": false, "reason": "Current Tier-1 inputs were insufficient for the registered volume-abnormality analysis.", "not_automatic_todo": true},
+    {"id": "GAP_007", "topic": "market_regimes_not_executed", "status": "OPEN_EXPLICIT_EVIDENCE_GAP", "blocking_for_full_evidence_completion": false, "blocking_for_conditional_m3_closeout": false, "reason": "Current Tier-1 inputs were insufficient for the registered market-regime analysis.", "not_automatic_todo": true},
+    {"id": "GAP_008", "topic": "index_contribution_not_executed", "status": "OPEN_EXPLICIT_EVIDENCE_GAP", "blocking_for_full_evidence_completion": false, "blocking_for_conditional_m3_closeout": false, "reason": "Index contribution is a separate mechanical analysis and was not part of the frozen M3 daily mechanism execution.", "not_automatic_todo": true},
+    {"id": "GAP_009", "topic": "minute_level_not_executed", "status": "OPEN_EXPLICIT_EVIDENCE_GAP", "blocking_for_full_evidence_completion": false, "blocking_for_conditional_m3_closeout": false, "reason": "The current daily hypothesis does not justify minute-level escalation.", "not_automatic_todo": true}
+  ],
+  "stop_condition": "STOP_FOR_NORTH_STAR_REVIEW"
+}

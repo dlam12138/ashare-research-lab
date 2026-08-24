@@ -1,0 +1,156 @@
+{
+  "contract_id": "M3_STAGE3CAR_EFFECTIVE_UPSTREAM_SHA_INVENTORY",
+  "version": "1.0.0",
+  "stage": "M3_STAGE3C-A-R",
+  "status": "LOCKED_TO_CANONICAL_M3_BYTES",
+  "provenance": {
+    "canonical_branch": "feat/m3-mechanism-validation-mvp",
+    "canonical_base": "987caffe5b75fa3b0de58d0add43051cc9a55d17",
+    "invalid_predecessor_branch": "feat/m2-value-assessment-mvp",
+    "invalid_predecessor_commits": [
+      "724d6a4",
+      "0bc0b2e",
+      "f5ae24f",
+      "3679b1b"
+    ],
+    "recovery_reason": "WRONG_BASELINE_BRANCH_RECOVERY"
+  },
+  "bindings": [
+    {
+      "role": "stage3a_hypothesis",
+      "path": "reports/m3_stage3a_mechanism_hypothesis_contract_v1.json",
+      "contract_id": "M3_STAGE3A_MECHANISM_HYPOTHESIS_CONTRACT_V1",
+      "version": "1.0.0",
+      "sha256": "1b5a042432a01d26ce3801a558322b6d0bc20627914ae6bb590aea0da1e7dc28",
+      "effective_status": "EFFECTIVE_CANONICAL",
+      "identity_source": "canonical_path_and_stage"
+    },
+    {
+      "role": "stage3a_statistical_protocol",
+      "path": "reports/m3_stage3a_statistical_protocol_v1.json",
+      "contract_id": "M3_STAGE3A_STATISTICAL_PROTOCOL_V1",
+      "version": "1.0.0",
+      "sha256": "f8a5b505e36725082a382d5012fdd8e004613dca124ac5bbde41f1a5029eb83e",
+      "effective_status": "EFFECTIVE_CANONICAL",
+      "identity_source": "canonical_path_and_stage"
+    },
+    {
+      "role": "stage3a_data_requirements",
+      "path": "reports/m3_stage3a_data_requirements_v1.json",
+      "contract_id": "M3_STAGE3A_DATA_REQUIREMENTS_V1",
+      "version": "1.0.0",
+      "sha256": "261d692db3ac30bb7c09249203224d9ef7c4141a5259effb92913d412542b35f",
+      "effective_status": "EFFECTIVE_CANONICAL",
+      "identity_source": "canonical_path_and_stage"
+    },
+    {
+      "role": "stage3b_target_return_timing",
+      "path": "reports/m3_stage3b_return_and_timing_contract_v1.json",
+      "contract_id": "M3_STAGE3B_RETURN_AND_TIMING_CONTRACT_V1",
+      "version": "1.0.0",
+      "sha256": "dd8c1350089cf76bc81221e1721d2515e72e76f037e57ad124c989d3432bf319",
+      "effective_status": "HISTORICAL_LINEAGE_NOT_EFFECTIVE_FOR_SUPERSEDED_CONTROLS",
+      "identity_source": "canonical_path_and_stage"
+    },
+    {
+      "role": "r1_effective_market_proxy",
+      "path": "reports/m3_stage3br1_primary_proxy_contract_v2.json",
+      "contract_id": "SH_A_SHARE_EQUAL_WEIGHT_EX_601857_V2",
+      "version": "1.0.0",
+      "sha256": "bab6878cf16b904eeb5bc48cb2b92350313ec503c25627bf614bd31af0a21e6a",
+      "effective_status": "EFFECTIVE_CANONICAL",
+      "identity_source": "proxy_definition_and_supersession"
+    },
+    {
+      "role": "r1_proxy_resolution",
+      "path": "reports/m3_stage3br1_primary_proxy_resolution_v1.json",
+      "contract_id": "M3_STAGE3BR1_PROXY_RESOLUTION_V1",
+      "version": "1.0.0",
+      "sha256": "3db30142bfabec46726955b6f96a8af9b03ed82a93e749ef36376892cfe1668b",
+      "effective_status": "EFFECTIVE_CANONICAL_LINEAGE",
+      "identity_source": "decision_and_supersession"
+    },
+    {
+      "role": "r2_oil_timing",
+      "path": "reports/m3_stage3br2_oil_timing_resolution_v1.json",
+      "contract_id": "M3_STAGE3BR2_OIL_TIMING_RESOLUTION_V1",
+      "version": "1.0.0",
+      "sha256": "a5e2a247efc2f0fc3a22ee4d4b4f49fe9eca04915d0524fd8fdebef13d3f3233",
+      "effective_status": "EFFECTIVE_CANONICAL",
+      "identity_source": "type_and_frozen_policy"
+    },
+    {
+      "role": "r2_oil_contract",
+      "path": "reports/m3_stage3br2_oil_contract_v2.json",
+      "contract_id": "M3_OIL_CONTROL_V2_FROZEN_CONTRACT",
+      "version": "1.0.0",
+      "sha256": "908fc0611334816b1a6f0f531611afcf601a8625989d1dcdd0a491e4942446f1",
+      "effective_status": "HISTORICAL_LINEAGE_SUPERSEDED_BY_R4_TRANSPORT",
+      "identity_source": "type_and_supersession"
+    },
+    {
+      "role": "r4_source_amendment",
+      "path": "reports/m3_stage3br4_source_amendment_v1.json",
+      "contract_id": "M3_STAGE3BR4_SOURCE_AMENDMENT_V1",
+      "version": "1.0.0",
+      "sha256": "5a588553aad9c15c347fb393e39059ca0ee2a926b18dd48ef6a5ca5b0922f3a2",
+      "effective_status": "EFFECTIVE_CANONICAL",
+      "identity_source": "type_and_decision"
+    },
+    {
+      "role": "r4_effective_oil_transport",
+      "path": "reports/m3_stage3br4_oil_transport_contract_v3.json",
+      "contract_id": "M3_OIL_CONTROL_V3_TRANSPORT_CONTRACT",
+      "version": "1.0.0",
+      "sha256": "2a468d4188b603062b1c947518733ead0bca1a9f6e7de8282b18f86c61f59980",
+      "effective_status": "EFFECTIVE_CANONICAL",
+      "identity_source": "type_and_status"
+    },
+    {
+      "role": "r4_effective_industry",
+      "path": "reports/m3_stage3br4_industry_contract_v2.json",
+      "contract_id": "CNI_OIL_GAS_INDUSTRY_CONTROL_V2_CONTRACT",
+      "version": "1.0.0",
+      "sha256": "9e71452cfa7d3a23c5358fea9ff78cb88fe7c61a6cf6a762cae964754a25636a",
+      "effective_status": "EFFECTIVE_CANONICAL",
+      "identity_source": "implementation_id_and_status"
+    },
+    {
+      "role": "r4_tier1_readiness",
+      "path": "reports/m3_stage3br4_tier1_readiness_v3.json",
+      "contract_id": "M3_STAGE3BR4_TIER1_READINESS_V3",
+      "version": "1.0.0",
+      "sha256": "b297be3d2137dd3e928532193388013113d8755238ee7566d8fab512d961e814",
+      "effective_status": "EFFECTIVE_CANONICAL_READINESS",
+      "identity_source": "stage_and_decision"
+    },
+    {
+      "role": "r4_source_registry",
+      "path": "reports/m3_stage3br4_source_registry_v1.json",
+      "contract_id": "M3_STAGE3BR4_SOURCE_REGISTRY_V1",
+      "version": "1.0.0",
+      "sha256": "aa231bf25fd2368a2d4a77ce0ae972faddccabaf663c99904c5249c4419c06f2",
+      "effective_status": "EFFECTIVE_CANONICAL_LINEAGE",
+      "identity_source": "canonical_path_and_stage"
+    }
+  ],
+  "effective_roles": [
+    "stage3a_hypothesis",
+    "stage3a_statistical_protocol",
+    "stage3a_data_requirements",
+    "r1_effective_market_proxy",
+    "r2_oil_timing",
+    "r4_source_amendment",
+    "r4_effective_oil_transport",
+    "r4_effective_industry",
+    "r4_tier1_readiness"
+  ],
+  "superseded_or_lineage_only_roles": [
+    "stage3b_target_return_timing",
+    "r1_proxy_resolution",
+    "r2_oil_contract",
+    "r4_source_registry"
+  ],
+  "real_outcome_binding": false,
+  "holdout_binding": false
+}

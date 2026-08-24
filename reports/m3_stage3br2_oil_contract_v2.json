@@ -1,0 +1,68 @@
+{
+ "schema_version": "1.0.0",
+ "stage": "M3_STAGE3BR2",
+ "type": "OIL_CONTROL_V2_FROZEN_CONTRACT",
+ "supersedes": {
+  "artifact_id": "m3_stage3b_return_and_timing_contract_v1.json",
+  "scope": "OIL_SECTION_ONLY",
+  "v1_status": "FROZEN_BYTE_IDENTICAL_IMMUTABLE"
+ },
+ "supersession_semantics": {
+  "type": "FORMAL_PRE_OUTCOME_TIMING_SUPERSESSION",
+  "runtime_fallback_from_v1": false,
+  "timing_resolution": "m3_stage3br2_oil_timing_resolution_v1.json"
+ },
+ "primary_benchmark": {
+  "name": "Europe Brent Spot Price FOB",
+  "eia_series": "RBRTE",
+  "fred_mirror": "DCOILBRENTEU",
+  "units": "USD_PER_BARREL",
+  "currency": "USD",
+  "frequency": "1d",
+  "source_publisher": "U.S. Energy Information Administration",
+  "secondary_distribution": "Federal Reserve Bank of St. Louis FRED DCOILBRENTEU",
+  "fred_independence_note": "FRED DCOILBRENTEU is a secondary distribution of EIA data, not an independent second economic source; FRED is used only as a numeric/coverage cross-check.",
+  "not_substitutable_with": [
+   "WTI",
+   "BRENT_FUTURES",
+   "SHANGHAI_CRUDE",
+   "YAHOO_BZ_F",
+   "ANY_OTHER_COMMODITY_PROXY"
+  ]
+ },
+ "alignment_definition": {
+  "alignment": "STRICTLY_PRIOR_BRENT_OBSERVATION_DATE",
+  "oil_anchor_date_t": "LATEST_BRENT_OBSERVATION_DATE_d_SUCH_THAT_d_is_STRICTLY_LESS_THAN_calendar_date(t)",
+  "oil_anchor_date_strictness": "STRICTLY_LESS_THAN_t",
+  "same_calendar_day_overseas_close_allowed": false,
+  "oil_anchor_price_t": "BRENT_CLOSE_ON_oil_anchor_date(t)",
+  "oil_return_t": "oil_anchor_price(t) / oil_anchor_price(t_prev) - 1",
+  "chinese_holiday_cumulative_absorbed": true,
+  "chinese_holiday_note": "When A-share markets close across a long break, the return is computed from the last A-share anchor price to the next A-share anchor price, automatically absorbing all Brent changes accumulated across the break; the single final holiday-session Brent daily change is not used.",
+  "same_anchor_zero_return": "IF_oil_anchor_date(t) == oil_anchor_date(t_prev)_THEN_R_oil_t = 0",
+  "same_anchor_note": "Zero return means no new Brent daily observation between the two A-share points, not an artificial forward-filled return."
+ },
+ "staleness_gate": {
+  "max_oil_anchor_age_calendar_days": 7,
+  "row_status_when_exceeded": "OIL_ROW_INVALID_STALE_ANCHOR",
+  "action_when_exceeded": "ROW_INVALID_NO_STALE_PRICE_CARRIED_FORWARD",
+  "override_allowed": false,
+  "mass_gate_failure_action": "OUTPUT_DATA_GAP_AND_STOP_FOR_NORTH_STAR_REVIEW_DO_NOT_CHANGE_7"
+ },
+ "source_consistency": {
+  "compare": "EIA_RBRTE_VS_FRED_DCOILBRENTEU_SAME_DATE_RANGE",
+  "checks": [
+   "DATE_AND_VALUE_COVERAGE",
+   "MISSING_OBSERVATIONS",
+   "NUMERIC_EQUALITY_OR_DOCUMENTED_PRECISION"
+  ],
+  "conflict_action": "OIL_SOURCE_CONFLICT_FAIL_CLOSED",
+  "conflict_resolution_note": "A real source conflict is fail-closed; it is never resolved by choosing whichever source is more favorable to a result."
+ },
+ "holdout": {
+  "holdout_start": "2023-01-01",
+  "holdout_status": "SEALED",
+  "bounded_request_required": true,
+  "unbounded_full_history_rejection": "REJECT_SOURCE_PATH_FOR_SEALED_HOLDOUT"
+ }
+}

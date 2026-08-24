@@ -1,0 +1,20 @@
+{
+  "stage": "M3_STAGE3DBR2",
+  "status": "PRE_METADATA_ADAPTER_FROZEN",
+  "digest_algorithm": "M3_REPOSITORY_RELATIVE_DIGEST_V2",
+  "security_identity_adapter_digest": "c2ec3a088563f23106d4869c0c5d66b5f722a71effdf57aa8f35c76c764bbf03",
+  "r1_recovery_adapter_digest": "0875afa70a54e062b3ce6a0341d2c5387b3e0f32ff700204d2767dc71eff96d8",
+  "bound_contract_sha256": "ff89e3e237932c4c2b938d18a546a9b1f96ed0c92abb3072d5c01f2c452fb3ac",
+  "frozen_sh_delist_sha256": "72bf23f2bf0c5edc6bd585ad1434a6da010a22a1122af967e2f5d47c3ad4b0d0",
+  "source_hashes": {
+    "acceptance/m3_stage3dbr2_sse_security_level_delist_identity_recovery_and_frozen_oos_resume.md": "b8ab36e35efdcd1e9c676921ae1ae19d12781bebdfc0347ac51ad6c66af8d9ec",
+    "src/ashare_research/tools/m3_stage3dbr2_resume.py": "7d7f99a83e9845d2277cdb4ecd26ccffd05379c48a035b6e5a1c7527c8c63f4c",
+    "src/ashare_research/tools/m3_stage3dbr2_sse_security_identity.py": "eb4cefa3a68db2d1bee1b009535807d0fcf50e16b865775f3e5c1f0ba8d11d28",
+    "tests/test_m3_stage3dbr2_security_identity.py": "a366ae1abb4b111db3bc05de181652c7cc1a00830d0696f8344afaa327e26aee"
+  },
+  "real_sse_values_bound": false,
+  "resolved_six_code_values_bound": false,
+  "price_data_bound": false,
+  "coverage_bound": false,
+  "gamma_bound": false
+}

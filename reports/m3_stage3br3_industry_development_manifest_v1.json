@@ -1,0 +1,29 @@
+{
+ "acquisition": {
+  "fetched_at": "2026-08-15T10:43:24.199637+00:00",
+  "mode": "SOURCE_RESOLUTION_LADDER",
+  "raw_data_committed_to_git": false,
+  "route_required": "USER_PROVIDED_OFFICIAL_DEVELOPMENT_CAPSULE"
+ },
+ "holdout_read_performed": false,
+ "holdout_status": "SEALED",
+ "regime_1": {
+  "raw_file_present": false,
+  "rows": 0,
+  "symbol": "801016",
+  "taxonomy": "SW_2014",
+  "through": "2021-12-10"
+ },
+ "regime_2": {
+  "from": "2021-12-13",
+  "raw_file_present": false,
+  "rows": 0,
+  "symbol": "801960",
+  "taxonomy": "SW_2021"
+ },
+ "schema_version": "1.0.0",
+ "stage": "M3_STAGE3BR3",
+ "stage3c_status": "M3_STAGE3C_NOT_ALLOWED",
+ "status": "INDUSTRY_OFFICIAL_DEVELOPMENT_CAPSULE_REQUIRED",
+ "transition_gap": "2021-12-13 INDUSTRY_TAXONOMY_TRANSITION_GAP"
+}

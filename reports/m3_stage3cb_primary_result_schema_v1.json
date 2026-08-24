@@ -1,0 +1,53 @@
+{
+  "contract_id": "M3_STAGE3CB_PRIMARY_RESULT_SCHEMA_V1",
+  "evidence_status": "PENDING_STAGE3CC_REGISTERED_ROBUSTNESS",
+  "forbidden_fields": [
+    "p_value",
+    "pvalue",
+    "tvalue",
+    "r_squared",
+    "robustness",
+    "holdout",
+    "evidence_level_non_null"
+  ],
+  "required_fields": [
+    "model_id",
+    "pipeline_digest",
+    "model_digest",
+    "execution_adapter_digest",
+    "data_manifest_digest",
+    "sample_start",
+    "sample_end",
+    "nobs",
+    "crash_threshold",
+    "crash_count",
+    "alpha",
+    "beta_market",
+    "beta_oil",
+    "beta_industry",
+    "gamma",
+    "bootstrap_method",
+    "block_length",
+    "replications",
+    "seed",
+    "rng",
+    "gamma_ci_lower",
+    "gamma_ci_upper",
+    "primary_decision",
+    "evidence_level",
+    "evidence_status",
+    "interpretation_boundary"
+  ],
+  "schema_version": "1.0.0",
+  "stage": "M3_STAGE3CB",
+  "status": "FROZEN_DEVELOPMENT_PRIMARY_RESULT_SCHEMA",
+  "value_constraints": {
+    "evidence_level": null,
+    "evidence_status": "PENDING_STAGE3CC_REGISTERED_ROBUSTNESS",
+    "primary_decision": [
+      "M3_PRIMARY_DEVELOPMENT_POSITIVE_ABNORMAL_PERFORMANCE_ESTABLISHED",
+      "M3_PRIMARY_DEVELOPMENT_POSITIVE_ABNORMAL_PERFORMANCE_NOT_ESTABLISHED"
+    ],
+    "result_scope": "DEVELOPMENT_PRIMARY_ONLY"
+  }
+}

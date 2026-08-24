@@ -1,0 +1,66 @@
+{
+ "development_window": {
+  "development_end": "2022-12-31",
+  "development_start": "2015-01-01",
+  "warmup_start": "2014-12-01"
+ },
+ "holdout_read_performed": false,
+ "holdout_status": "SEALED",
+ "industry": {
+  "ab_digest": "4c3b9aea6c432f6d41d3d68621dd6c0e9719781eaa3856b53284be1c6d5292ca",
+  "bounded_proof": {
+   "raw_date_scan": "PASSED",
+   "raw_date_tokens": 1970,
+   "raw_observation_date_max": "2022-12-30",
+   "raw_observation_date_min": "2014-12-01",
+   "raw_sha256": "c80a609c6dc1ff461b6010f0b1ebcd2230095f466af4f257be91d74faf9afee6"
+  },
+  "index_code": "399439",
+  "raw_sha256": "c80a609c6dc1ff461b6010f0b1ebcd2230095f466af4f257be91d74faf9afee6",
+  "status": "TRUSTED"
+ },
+ "market_proxy": {
+  "implementation_id": "SH_A_SHARE_EQUAL_WEIGHT_EX_601857_V2",
+  "status": "TRUSTED_REUSED"
+ },
+ "offline_ab_digests": {
+  "industry_399439.csv": {
+   "a": "4c3b9aea6c432f6d41d3d68621dd6c0e9719781eaa3856b53284be1c6d5292ca",
+   "b": "4c3b9aea6c432f6d41d3d68621dd6c0e9719781eaa3856b53284be1c6d5292ca"
+  },
+  "industry_aligned.csv": {
+   "a": "a0bb7fa659f56e5f325f09b112d62443e26391b7d961b193689cff56172a6567",
+   "b": "a0bb7fa659f56e5f325f09b112d62443e26391b7d961b193689cff56172a6567"
+  },
+  "oil_aligned.csv": {
+   "a": "1de98bf258b2a21090b46b179485dace61fc9b3027587b61a652970e1e20e5f7",
+   "b": "1de98bf258b2a21090b46b179485dace61fc9b3027587b61a652970e1e20e5f7"
+  },
+  "oil_brent_observations.csv": {
+   "a": "61b16ae4ac40e430aff9dba2436ff3345f93697982a5b4ac0be7f64caf68a427",
+   "b": "61b16ae4ac40e430aff9dba2436ff3345f93697982a5b4ac0be7f64caf68a427"
+  },
+  "tier1_readiness.csv": {
+   "a": "801e877568d83021e71ebafe977e6b26d571155c2f61c6ca8f8ee265f90e264c",
+   "b": "801e877568d83021e71ebafe977e6b26d571155c2f61c6ca8f8ee265f90e264c"
+  }
+ },
+ "oil": {
+  "ab_digest": "61b16ae4ac40e430aff9dba2436ff3345f93697982a5b4ac0be7f64caf68a427",
+  "bounded_proof": {
+   "raw_date_scan": "PASSED",
+   "raw_date_tokens": 2110,
+   "raw_observation_date_max": "2022-12-30",
+   "raw_observation_date_min": "2014-12-01",
+   "raw_sha256": "185080c6937d09b1dc3a2db46746a8e9bbdac5d17d8165596e9211fcc45e2d53"
+  },
+  "raw_sha256": "185080c6937d09b1dc3a2db46746a8e9bbdac5d17d8165596e9211fcc45e2d53",
+  "series": "DCOILBRENTEU",
+  "status": "TRUSTED"
+ },
+ "raw_data_committed_to_git": false,
+ "restricted_research_outputs": false,
+ "schema_version": "1.0.0",
+ "stage": "M3_STAGE3BR4",
+ "stage3c_status": "M3_STAGE3C_REAL_ANALYSIS_NOT_AUTHORIZED"
+}

@@ -1,0 +1,38 @@
+{
+  "accepted_execution_max_count": 1,
+  "analysis_end": "2026-08-13",
+  "analysis_start": "2023-01-01",
+  "canonical_base": "25424aa767e90a098ba11223191fb9e731e1ff25",
+  "contract_id": "M3_STAGE3DB_EXECUTION_AUTHORIZATION_V1",
+  "digest_algorithm": "M3_REPOSITORY_RELATIVE_DIGEST_V2",
+  "development_primary_reversal_allowed": false,
+  "execution_mode": "HOLDOUT_PRIMARY_ONLY",
+  "holdout_currently_sealed": true,
+  "holdout_download": false,
+  "holdout_read": false,
+  "holdout_start": "2023-01-01",
+  "interpretation_policy": {
+    "path": "reports/m3_stage3da_holdout_interpretation_policy_v1.json",
+    "sha256": "2381f47d0c10f9310e4d1453398410a0980c3a51e41cf1356c875ec09dac84ba"
+  },
+  "new_controls_allowed": false,
+  "new_model_allowed": false,
+  "new_proxy_allowed": false,
+  "new_threshold_allowed": false,
+  "oos_execution_adapter_digest": "9e764e1ac4790b0dfaa94fd7e9166dc168d2603daf881b9d3d5292680e43cd4e",
+  "pipeline_digest": "ab224492ff85f391a29048dfeec740f9bbffb376de3408a5645a4552b51b9d1b",
+  "robustness_search_allowed": false,
+  "stage": "M3_STAGE3DB",
+  "stage3da_decision_contract": {
+    "path": "reports/m3_stage3da_holdout_unseal_decision_v1.json",
+    "sha256": "15c71b9ca8fc91f776379daf5123c1e687c1810e98bfaddcf3d5e1378df4e8bf"
+  },
+  "stage3da_frozen_oos_contract": {
+    "path": "reports/m3_stage3da_frozen_oos_execution_contract_v1.json",
+    "sha256": "f254837059c7010507c31eb9f106fd080ff937f537f053ec4d393bda7f90db30"
+  },
+  "unseal_requires_preexecution_ci": true,
+  "upstream_inventory_sha": "f206780dcb6fd4c3b9d30a92025b75974284afd16eecd24770d2f812256f0031",
+  "warmup_start": "2022-12-01",
+  "version": "1.0.0"
+}

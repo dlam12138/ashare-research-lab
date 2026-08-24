@@ -1,0 +1,25 @@
+{
+  "stage": "M3_STAGE3DBR1",
+  "status": "GATE_A_PRE_EXECUTION_FROZEN",
+  "digest_algorithm": "M3_REPOSITORY_RELATIVE_DIGEST_V2",
+  "recovery_adapter_digest": "0875afa70a54e062b3ce6a0341d2c5387b3e0f32ff700204d2767dc71eff96d8",
+  "source_hashes": {
+    "reports/m3_stage3br1_primary_proxy_contract_v2.json": "bab6878cf16b904eeb5bc48cb2b92350313ec503c25627bf614bd31af0a21e6a",
+    "reports/m3_stage3da_frozen_oos_execution_contract_v1.json": "f254837059c7010507c31eb9f106fd080ff937f537f053ec4d393bda7f90db30",
+    "reports/m3_stage3db_oos_analysis_input_manifest_v1.json": "d35d19e3a2de4b1b132e2f2eafc148df121dd58c944309aaca55073c57cd0370",
+    "reports/m3_stage3dbr1_market_metadata_schema_binding_v1.json": "080c4af9522b635c6ddf46761fe496b6debc365599465c3672836d5990dd675c",
+    "reports/m3_stage3dbr1_market_universe_metadata_audit_v1.json": "fc9f2a92c28631c354f57a830dba7a432cdd057eb0f891e817374658101ac149",
+    "reports/m3_stage3dbr1_recovery_contract_v1.json": "8050441c21182221a0b9e3d54184d2054ce25af1140292b0ba031b779858d004",
+    "src/ashare_research/tools/m3_stage3dbr1_market_recovery.py": "efb1bde4390a359a1d138ca7fb7f53462a9b79bc0326e32546e9efc157234dd4",
+    "src/ashare_research/tools/m3_stage3dbr1_recovered_execution.py": "a5878449dc466a616c2c4defb4edd4fac8d19040a39d607876e60fd04dc05c9e",
+    "tests/test_m3_stage3dbr1_recovery.py": "527a25401925c3dc707e40b79a66422ed51e01e7388a695d1234ef1b99ef8bd1"
+  },
+  "price_parse_after_recovery": false,
+  "fred": false,
+  "cni": false,
+  "market_proxy": false,
+  "crash": false,
+  "ols": false,
+  "bootstrap": false,
+  "gamma": false
+}

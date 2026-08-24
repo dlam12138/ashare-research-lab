@@ -1,0 +1,112 @@
+{
+ "analysis_layers": {
+  "A_descriptive": [
+   "full_sample_correlation",
+   "rolling_60d_correlation",
+   "down_day_return",
+   "crash_day_return",
+   "mean",
+   "median",
+   "positive_probability",
+   "volume_abnormality",
+   "year_by_year",
+   "market_regimes"
+  ],
+  "B_conditional": [
+   "crash_vs_ordinary_mean_difference",
+   "median_difference",
+   "confidence_interval",
+   "effect_size"
+  ],
+  "C_base_regression": {
+   "formula": "R_601857_t = alpha + beta_market*R_market_ex_target_t + beta_oil*R_oil_t + beta_industry*R_industry_t + gamma*Crash_t + epsilon_t",
+   "primary_parameter": "gamma"
+  },
+  "D_robustness": [
+   "threshold_changes",
+   "alternative_market_proxies",
+   "year_splits",
+   "leave_extreme_days_out",
+   "moving_block_bootstrap",
+   "multiple_testing_correction",
+   "out_of_sample"
+  ]
+ },
+ "bootstrap": {
+  "block_length_rule": "ROUND_N_TO_ONE_THIRD_CAPPED_AT_20_TRADING_DAYS",
+  "change_after_results_allowed": false,
+  "ci_method": "PERCENTILE_TWO_SIDED_95",
+  "iid_is_primary": false,
+  "method": "MOVING_BLOCK_BOOTSTRAP",
+  "replications": 5000,
+  "seed": 20260813
+ },
+ "controls": {
+  "tier_1_required": [
+   "market_ex_target",
+   "oil",
+   "petrochemical_industry"
+  ],
+  "tier_2_main_alternatives": [
+   "dividend_style",
+   "central_soe_style",
+   "large_cap_style"
+  ],
+  "tier_3_robustness_only": [
+   "usd_cny",
+   "market_turnover",
+   "volatility",
+   "small_large_spread"
+  ]
+ },
+ "daily_mvp_max_authorized_level": 3,
+ "evidence_levels": {
+  "1": "NO_STABLE_RELATIONSHIP",
+  "2": "SURFACE_ASSOCIATION",
+  "3": "ABNORMAL_PERFORMANCE_AFTER_MAIN_CONTROLS",
+  "4": "STABLE_TIMING_AND_ABNORMAL_TRADING",
+  "5": "FUNDING_ACTOR_EVIDENCE"
+ },
+ "extreme_date_robustness": {
+  "leave_one_event_out": true,
+  "remove_top_absolute_abnormal_returns": [
+   1,
+   3
+  ],
+  "winsorization_primary_allowed": false,
+  "winsorization_role": "DESCRIPTIVE_ROBUSTNESS_ONLY"
+ },
+ "index_contribution": {
+  "formula": "historical_estimated_weight_t * R_601857_t",
+  "label_when_weight_not_exact": "ESTIMATED_CONTRIBUTION",
+  "official_point_attribution_claim_allowed": false,
+  "offset_ratio_formula": "max(estimated_index_contribution_t, 0) / abs(ex_target_market_decline_t)",
+  "separate_from_abnormal_return": true
+ },
+ "minute_data_required_for_level_4": true,
+ "multiple_testing": {
+  "fdr_q": 0.05,
+  "primary_correction": "NONE_PRE_REGISTERED_SINGLE_ENDPOINT",
+  "primary_inference_count": 1,
+  "robustness_family_correction": "BENJAMINI_HOCHBERG_FDR"
+ },
+ "out_of_sample": {
+  "development": {
+   "end": "2022-12-31",
+   "start": "2015-01-01"
+  },
+  "holdout": {
+   "end": "2026-08-13",
+   "start": "2023-01-01"
+  },
+  "holdout_read_performed": false,
+  "holdout_status": "SEALED",
+  "unseal_preconditions": [
+   "PIPELINE_LOCKED",
+   "MODEL_DIGEST_LOCKED"
+  ]
+ },
+ "real_data_execution_authorized": false,
+ "schema_version": "1.0.0",
+ "stage": "M3_STAGE3A"
+}

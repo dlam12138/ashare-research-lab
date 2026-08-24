@@ -1,0 +1,40 @@
+{
+ "holdout_read_performed": false,
+ "holdout_status": "SEALED",
+ "inputs": {
+  "industry": {
+   "index_code": "399439",
+   "raw_sha256": "c80a609c6dc1ff461b6010f0b1ebcd2230095f466af4f257be91d74faf9afee6",
+   "status": "TRUSTED"
+  },
+  "market_proxy": {
+   "implementation_id": "SH_A_SHARE_EQUAL_WEIGHT_EX_601857_V2",
+   "status": "TRUSTED_REUSED"
+  },
+  "oil": {
+   "raw_sha256": "185080c6937d09b1dc3a2db46746a8e9bbdac5d17d8165596e9211fcc45e2d53",
+   "series": "DCOILBRENTEU",
+   "status": "TRUSTED"
+  }
+ },
+ "joint_summary": {
+  "first_joint_valid_date": "2015-03-16",
+  "gap_dates": 68,
+  "gap_reason_counts": {
+   "INDUSTRY_INVALID": 22,
+   "MARKET_PROXY_INVALID": 68,
+   "OIL_INVALID": 2
+  },
+  "industry_valid_dates": 1948,
+  "joint_tier1_valid_dates": 1902,
+  "last_joint_valid_date": "2022-12-30",
+  "market_proxy_valid_dates": 1902,
+  "oil_valid_dates": 1968,
+  "total_trading_dates": 1970
+ },
+ "no_holdout_rows": true,
+ "readiness": "READY",
+ "schema_version": "1.0.0",
+ "stage": "M3_STAGE3BR4",
+ "stage3c_status": "M3_STAGE3C_REAL_ANALYSIS_NOT_AUTHORIZED"
+}

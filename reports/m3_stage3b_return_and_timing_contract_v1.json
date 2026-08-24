@@ -1,0 +1,82 @@
+{
+ "development_sample": {
+  "end": "2022-12-31",
+  "holdout_read_allowed": false,
+  "holdout_start": "2023-01-01",
+  "start": "2015-01-01",
+  "warmup_end": "2014-12-31",
+  "warmup_role": "WARMUP_ONLY_EXCLUDED_FROM_STUDY_SAMPLE",
+  "warmup_start": "2014-12-01"
+ },
+ "industry": {
+  "currency": "CNY",
+  "frequency": "1d",
+  "name": "Shenwan Petroleum and Petrochemicals Industry Price Index",
+  "publisher": "Shenwan Hongyuan Research",
+  "return_type": "SIMPLE_PRICE_RETURN",
+  "source": "SHENWAN_INDEX_OFFICIAL_DAILY_ENDPOINT",
+  "symbol_regimes": [
+   {
+    "end": "2021-12-10",
+    "name": "Shenwan Oil and Petrochemical Industry Index",
+    "symbol": "801016",
+    "taxonomy": "SW_2014"
+   },
+   {
+    "end": "2022-12-31",
+    "name": "Shenwan Petroleum and Petrochemicals Industry Index",
+    "start": "2021-12-13",
+    "symbol": "801960",
+    "taxonomy": "SW_2021"
+   }
+  ],
+  "timezone": "Asia/Shanghai",
+  "transition_policy": "EXPLICIT_OFFICIAL_TAXONOMY_REGIME_CHANGE_NO_SILENT_FALLBACK"
+ },
+ "market_proxy": {
+  "adjustment": "PRICE_INDEX_DIVISOR_CONTINUITY",
+  "return_type": "SIMPLE_PRICE_RETURN",
+  "symbol": "SH_MARKET_EX_601857"
+ },
+ "oil": {
+  "alignment": "LATEST_OBSERVATION_PROVEN_AVAILABLE_BEFORE_A_SHARE_15_00_ASIA_SHANGHAI",
+  "benchmark": "Europe Brent Spot Price FOB",
+  "currency": "USD_PER_BARREL",
+  "frequency": "1d",
+  "fallback_when_only_daily_close": "LATEST_PRIOR_OVERSEAS_OBSERVATION_WITH_PROVEN_AVAILABLE_AT",
+  "observation_source": "U.S. Energy Information Administration",
+  "observation_source_series": "RBRTE",
+  "same_day_overseas_close_allowed": false,
+  "same_yyyy_mm_dd_join_allowed": false,
+  "secondary_distribution": "Federal Reserve Bank of St. Louis FRED DCOILBRENTEU",
+  "timestamp_policy": "OBSERVATION_DATE_IS_NOT_AVAILABLE_AT_RELEASE_OR_VINTAGE_TIMESTAMP_REQUIRED",
+  "timezone": "SOURCE_OBSERVATION_TIMEZONE_OR_RELEASE_TIME_REQUIRED",
+  "unproven_release_timestamp_action": "FAIL_CLOSED"
+ },
+ "schema_version": "1.0.0",
+ "stage": "M3_STAGE3B",
+ "statistical_semantics_only": {
+  "block_length_formula": "max(1, min(20, floor(n ** (1 / 3) + 0.5)))",
+  "coefficient_estimator": "OLS",
+  "confidence_interval": "PERCENTILE_TWO_SIDED_95",
+  "execution_authorized": false,
+  "primary_decision": "gamma > 0 AND lower_bound_of_two_sided_95_ci > 0",
+  "primary_uncertainty": "MOVING_BLOCK_BOOTSTRAP",
+  "replications": 5000,
+  "seed": 20260813
+ },
+ "target": {
+  "analysis_return": {
+   "adjustment": "ADJUSTED_CLOSE_TO_CLOSE",
+   "id": "target_analysis_return",
+   "return_type": "SIMPLE_RETURN"
+  },
+  "index_contribution_return": {
+   "adjustment": "UNADJUSTED_PRICE_CLOSE_TO_CLOSE",
+   "id": "target_index_contribution_return",
+   "return_type": "SIMPLE_RETURN"
+  },
+  "mixing_series_allowed": false,
+  "symbol": "601857.SH"
+ }
+}

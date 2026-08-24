@@ -1,0 +1,16 @@
+{
+ "adapter_digest": "9b0df296d4b5d3b7bdf382bd07cf8bdb4410fb6659edfe88da68a16b419fbf78",
+ "contract_hashes": {
+  "reports/m3_stage3cb_execution_authorization_v1.json": "0c29f267421618b136c60dc40909e4ca35a5c82c7700974d376488e2147598f0",
+  "reports/m3_stage3cb_primary_result_schema_v1.json": "0c20ce73b990553e798eb2cc229fcae64d0dd2faf865cfebb7ba6f0270d4652f"
+ },
+ "digest_algorithm": "M3_REPOSITORY_RELATIVE_EXECUTION_ADAPTER_DIGEST_V1",
+ "schema_version": "1.0.0",
+ "scope": "stage3cb_authorization,primary_result_schema,known_input_locator,matrix_materializer,cli",
+ "source_hashes": {
+  "src/ashare_research/tools/m3_stage3cb_development.py": "d3194954aaa69ca9aea119fff28dc2aa818b48f50c022549b8de1adc1506c29c",
+  "src/ashare_research/tools/m3_stage3cb_inputs.py": "f25e5f61354ed8e0c52cd0ec11183238d57c19568a9e6851babd202e931e161b"
+ },
+ "stage": "M3_STAGE3CB",
+ "status": "LOCKED_PRE_EXECUTION"
+}

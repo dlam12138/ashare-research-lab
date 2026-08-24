@@ -16,8 +16,44 @@ production Metric/Result exists. Raw PE and trusted 3Y/5Y percentiles remain
 descriptive evidence, but frozen-5Y independent cycle-context validation is not
 testable, so no PE or valuation-dimension numeric score is authorized. The
 scoring addendum is conditionally closed; this is not a production engine,
-rank, or signal. Only `M3_NORTH_STAR_PREFLIGHT_ALLOWED`; M3 implementation has
-not started.
+rank, or signal. M3 Stage 3A research contracts are frozen. Stage 3B completed
+fail-closed (strict primary-proxy inputs under free data were not obtainable, so
+no proxy was substituted). Stage 3B-R1 primary-proxy resolution is current: the
+type-1 exact divisor reconstruction is superseded by a North-Star-aligned
+equal-weight ex-target Shanghai A-share proxy (v2). Stage 3B-R2 froze a pre-outcome
+oil alignment supersession (strictly-prior Brent observation-date) and the Shenwan
+  industry regime control. Stage 3B-R3 added a secret-redacted bounded EIA Open Data API v2
+transport (oil) and a Shenwan official-source-resolution ladder (industry). Stage 3B-R4 formally
+amends only the pre-outcome source/control implementation: the unchanged
+DCOILBRENTEU Brent variable now uses no-credential bounded FRED public CSV, and the primary
+industry control is the official CNI Oil & Gas Index 399439. Both are TRUSTED through 2022-12-31;
+the frozen R1 market proxy is reused and joint Tier-1 readiness has 1,902 valid development dates.
+Stage 3C-A pipeline-lock implementation is recovered and method-locked on the canonical M3 baseline;
+a checkout-path digest portability defect was discovered and repaired/relocked in Stage 3C-A-R2 before
+any outcome read. Stage 3C-B frozen development-primary execution completed with positive controlled
+abnormal performance not established. Stage 3C-C executed the previously registered and pre-outcome-
+implemented development robustness suite; the primary decision remains unchanged, development
+evidence level remains unassigned because no descriptive relationship criterion was prelocked, and
+the holdout input capsule remains incomplete. Stage 3D-A froze the one-shot out-of-sample execution contract. Stage 3D-B
+crossed the unseal boundary and failed closed at the frozen market coverage gate. Stage 3D-B-R1 repaired
+the PIT universe metadata conflict, and Stage 3D-B-R2 recovered all 159 security-level identities
+without changing the frozen delist universe or dates. Corrected minimum market coverage was
+`0.9736963544070143`, below the frozen `0.99` gate; 57 true required rows remained missing, so no
+regression/bootstrap/gamma was run and the holdout remained
+`M3_HOLDOUT_PRIMARY_INCONCLUSIVE_TECHNICAL_OR_COVERAGE_GAP`. This result does not support causal,
+actor-intent, policy-intervention, or “护盘/国家队” inferences.
+Stage 3D-B-R1 began the authorized post-unseal technical recovery in an
+isolated metadata-only Gate A. It detected conflicting duplicate delisted-
+security metadata and stopped fail-closed before any new price parse or retry;
+no recovered holdout primary was executed.
+Stage 3E records the final North-Star disposition: the development primary and
+registered robustness did not establish a stable positive daily mechanism, the
+holdout was consumed but remained inconclusive, and the final daily disposition
+is `M3_DAILY_MECHANISM_NOT_ESTABLISHED`. M3 is `CONDITIONALLY CLOSED`, with
+explicit evidence gaps preserved; further holdout recovery, minute escalation,
+index contribution, and M4 are not authorized. The task stops at
+`STOP_FOR_NORTH_STAR_REVIEW`. No real mechanism inference beyond the frozen
+development-primary and registered robustness execution has been executed.
 
 ---
 
@@ -25,8 +61,8 @@ not started.
 
 本项目围绕两个核心模块：
 
-1. **个股价值评估** — 企业质量、估值吸引力、价值兑现能力、风险否决项（M2 正在实现）
-2. **市场机制验证** — 用统计方法检验个股与市场之间的可复现关系（尚未开始）
+1. **个股价值评估** — 企业质量、估值吸引力、价值兑现能力、风险否决项（M2 已条件关闭）
+2. **市场机制验证** — 用统计方法检验个股与市场之间的可复现关系（Stage 3A 契约已冻结；Stage 3B 已 fail-closed 完成；Stage 3B-R1 主市场代理解析为当前状态；Stage 3B-R2 冻结严格 prior Brent 观测日与申万行业 regime；Stage 3B-R4 在结果出现前将 oil transport 改为无认证 bounded FRED `DCOILBRENTEU`，并将行业 primary amendment 固定为官方 CNI `399439`，两项均 TRUSTED；复用 R1 market proxy 后 joint Tier-1 共有 1,902 个有效 development dates；Stage 3C-A 方法锁定，Stage 3C-A-R2 已在真实 outcome 读取前完成 digest portability repair/relock；Stage 3C-B frozen development-primary 已完成，正的受控异常表现未建立；Stage 3C-C 已完成结果出现前注册且已实现锁定的 development robustness，primary decision 未改变，evidence level 未分配；Stage 3D-A 冻结了一次性 OOS 合同；Stage 3D-B 已跨过 unseal boundary；Stage 3D-B-R1/R2 完成 PIT universe 与 SSE security-level identity recovery，但 corrected minimum market coverage `0.9736963544070143` 未达到 frozen `0.99` gate；holdout primary 因技术/覆盖缺口保持 inconclusive，没有执行 regression/bootstrap/gamma；Stage 3E 已将 M3 条件关闭，daily mechanism 为 `M3_DAILY_MECHANISM_NOT_ESTABLISHED`）
 
 当前已完成第一阶段的**免费数据底座**：可运行、可测试、可追溯的本地数据基础设施。M2 已有 PetroChina（601857.SH）一份 PIT value profile 纵向切片；收益/现金、ROE/ROA、财务安全、股息和估值均已有阶段性能力。Stage 2G.2 增加了 clean-clone 测试胶囊、显式真实输入解析器、Rule007 严格来源配对和 artifact checksums。
 
@@ -285,7 +321,7 @@ ruff check src/ tests/
 - Stage 2I.2R 已完成捕获派生、双官方证据重协调和七个缺口的执行式版本化搜索：9/16 个事实/年度单元已取得，7 个单元保留为明确缺口；结论为 `ROIC_FACT_GAPS_REMAIN`，未运行 shadow ROIC。更正产物位于 `reports/*stage2i2r*`，原 Stage 2I.2 产物保留供审计。
 - ROIC 在严格证据合同下不可计算；不存在数值、proxy、shadow 或生产 Metric/Result
 - 评分附加项已**条件关闭**：PE 原始值与 3Y/5Y 分位保留为描述证据；冻结 5Y 内独立 cycle-context 验证不可检验，故 PE 与估值维度 numeric score 均为 `null`，不补 0、不转移权重，也没有生产 score engine、排名或推荐
-- 市场机制验证尚未开始
+- M3 Stage 3A 研究契约已冻结；Stage 3B 已 fail-closed 完成；Stage 3B-R1 主市场代理解析为当前状态；Stage 3B-R2 已冻结严格 prior Brent 观测日与申万行业 regime；Stage 3B-R4 在结果出现前将 oil transport 改为无认证 bounded FRED `DCOILBRENTEU`，并将行业 primary amendment 固定为官方 CNI `399439`，两项 Tier-1 控制均 TRUSTED，复用 R1 market proxy 后 joint Tier-1 共有 1,902 个有效 development dates；Stage 3C-A pipeline-lock implementation 已锁定，Stage 3C-B frozen development-primary 已完成且正的受控异常表现未建立；Stage 3C-C 已完成已注册且 pre-outcome-implemented 的 development robustness，primary decision 未改变，evidence level 未分配；Stage 3D-A 已冻结一次性 frozen primary OOS 合同；Stage 3D-B-R1/R2 完成 PIT universe repair 与 SSE identity recovery，但 corrected minimum market coverage `0.9736963544070143` 未达到 frozen `0.99` gate，holdout primary 仍 inconclusive；Stage 3E 将 M3 标记为 `CONDITIONALLY CLOSED`，daily mechanism `M3_DAILY_MECHANISM_NOT_ESTABLISHED`，任务停止于 `STOP_FOR_NORTH_STAR_REVIEW`
 - Web 界面、目标价、推荐和自动交易尚未实现
 - 当前 value profile 只覆盖 PetroChina（601857.SH）这一份 PIT 纵向切片
 - Stage 2F 仍有 9 个交易所证据缺口；股本 A/H 拆分也需继续补充登记证据
@@ -347,7 +383,7 @@ ruff check src/ tests/
 |--------|------|------|
 | Milestone 1: 免费数据底座 | 股票基础信息、交易日历、日线行情、Parquet/DuckDB 存储 | ✅ 已完成 |
 | Milestone 2: 价值评估 MVP | 企业质量、估值、现金流、安全边际、风险否决项 | 条件关闭；评分附加项已条件关闭，PE numeric scoring deferred |
-| Milestone 3: 机制验证 MVP | 假设检验、条件收益、控制变量、证据分级 | 仅允许 North-Star preflight；实现未开始 |
+| Milestone 3: 机制验证 MVP | 假设检验、条件收益、控制变量、证据分级 | CONDITIONALLY CLOSED；Stage 3C-A method-locked；Stage 3C-A-R2 digest portability repaired/relocked pre-outcome；Stage 3C-B frozen development-primary completed；positive controlled abnormal performance not established；Stage 3C-C registered development robustness completed；Stage 3D-A one-shot frozen primary OOS contract completed；Stage 3D-B-R1/R2 repaired identity metadata but remained below the frozen market coverage gate；holdout primary inconclusive；daily mechanism not established；explicit gaps preserved；stop for North-Star review |
 | Milestone 4: 通用研究器 | 可配置的假设验证框架 | 🔲 计划中 |
 | Milestone 5: 分钟级研究 | 按需分钟数据验证 | 🔲 计划中 |
 | Milestone 6: 本地 Web 界面 | Streamlit 工作台 | 🔲 计划中 |

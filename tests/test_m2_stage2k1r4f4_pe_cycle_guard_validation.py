@@ -138,19 +138,22 @@ def test_r4f3_state_id_unchanged():
 def test_scoring_contracts_unchanged_git():
     import subprocess
 
+    protected_paths = [
+        "config/value_dimension_scoring_registry_v2.json",
+        "config/value_dimension_scoring_policy_v2.json",
+        "config/value_dimension_scoring_shadow_inputs_v2.json",
+        "reports/petrochina_dimension_scoring_shadow_v6.json",
+        "reports/petrochina_dimension_scoring_sensitivity_v8.json",
+        "reports/petrochina_score_input_capsule_v5.json",
+    ]
     r = subprocess.run(
-        ["git", "status", "--short"], cwd=ROOT, capture_output=True, text=True
+        ["git", "status", "--short", "--", *protected_paths],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
     )
     out = r.stdout + r.stderr
-    for protected in (
-        "registry_v2",
-        "policy_v2",
-        "shadow_v6",
-        "sensitivity_v8",
-        "shadow_inputs_v2",
-        "capsule_v5",
-    ):
-        assert protected not in out, f"protected file changed: {protected}"
+    assert not out, f"protected scoring contracts changed: {out}"
 
 
 # ─────────────── Series ───────────────

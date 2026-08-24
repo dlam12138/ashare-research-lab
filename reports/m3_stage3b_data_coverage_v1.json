@@ -1,0 +1,106 @@
+{
+ "alignment_status": {
+  "oil": "NOT_RUN_PRIMARY_PROXY_FAIL_CLOSED_STOP",
+  "petrochemical_industry": "NOT_RUN_PRIMARY_PROXY_FAIL_CLOSED_STOP",
+  "target": "A_SHARE_CALENDAR_ALIGNED"
+ },
+ "datasets": [
+  {
+   "coverage_ratio": 1.0,
+   "dataset_id": "trade_calendar",
+   "date_end": "2022-12-31",
+   "date_start": "2014-12-01",
+   "duplicate_keys": 0,
+   "missing_dates": [],
+   "open_dates": 1970,
+   "rows": 2953
+  },
+  {
+   "coverage_ratio": 1.0,
+   "dataset_id": "target_daily_unadjusted",
+   "date_end": "2022-12-30",
+   "date_start": "2014-12-01",
+   "development_rows": 1947,
+   "duplicate_keys": 0,
+   "missing_dates": [],
+   "rows": 1970,
+   "warmup_rows": 23
+  },
+  {
+   "coverage_ratio": 1.0,
+   "dataset_id": "target_daily_qfq",
+   "date_end": "2022-12-30",
+   "date_start": "2014-12-01",
+   "development_rows": 1947,
+   "duplicate_keys": 0,
+   "missing_dates": [],
+   "rows": 1970,
+   "warmup_rows": 23
+  },
+  {
+   "coverage_ratio": null,
+   "dataset_id": "historical_shanghai_pit_universe",
+   "duplicate_keys": null,
+   "missing_dates": "COMPLETE_DAILY_COVERAGE_NOT_OBTAINED",
+   "rows": 17479,
+   "snapshot_dates": [
+    "2015-01-05",
+    "2020-07-21",
+    "2020-07-22",
+    "2022-12-30"
+   ],
+   "status": "PRIMARY_PROXY_DATA_GAP"
+  },
+  {
+   "coverage_ratio": null,
+   "dataset_id": "historical_issued_shares",
+   "duplicate_keys": null,
+   "missing_dates": "COMPLETE_SECURITY_LEVEL_COVERAGE_NOT_OBTAINED",
+   "rows": 171,
+   "sample_symbols": [
+    "600000.SH",
+    "601857.SH",
+    "900901.SH"
+   ],
+   "status": "PRIMARY_PROXY_DATA_GAP"
+  },
+  {
+   "constituent_count": null,
+   "coverage_ratio": 0.0,
+   "dataset_id": "market_ex_target",
+   "duplicate_keys": 0,
+   "missing_dates": "ALL_REQUIRED_DATES",
+   "rows": 0,
+   "status": "NOT_CONSTRUCTED_FAIL_CLOSED"
+  },
+  {
+   "coverage_ratio": 0.0,
+   "dataset_id": "oil",
+   "duplicate_keys": 0,
+   "missing_dates": "ALL_REQUIRED_DATES",
+   "rows": 0,
+   "status": "NOT_ACQUIRED_AFTER_PRIMARY_PROXY_FAIL_CLOSED_STOP"
+  },
+  {
+   "coverage_ratio": 0.0,
+   "dataset_id": "petrochemical_industry",
+   "duplicate_keys": 0,
+   "missing_dates": "ALL_REQUIRED_DATES",
+   "rows": 0,
+   "status": "NOT_ACQUIRED_AFTER_PRIMARY_PROXY_FAIL_CLOSED_STOP"
+  }
+ ],
+ "gap_reasons": [
+  "DATED_SNAPSHOT_ENDPOINT_MIXES_SECURITIES_WITH_INDICES_AND_DOES_NOT_IDENTIFY_OFFICIAL_INDEX_ELIGIBILITY",
+  "COMPLETE_DAILY_MEMBERSHIP_AND_SHARE_COVERAGE_WAS_NOT_OBTAINED",
+  "CANDIDATE_SHARE_HISTORY_DOES_NOT_PROVE_APPLICABLE_ISSUED_SHARES_FOR_EVERY_ELIGIBLE_SECURITY",
+  "NO_COMPLETE_OFFICIAL_CORPORATE_ACTION_AND_DIVISOR_CONTINUITY_INPUT_FOR_2015_2022"
+ ],
+ "holdout_read_performed": false,
+ "holdout_status": "SEALED",
+ "normalization_status": "AVAILABLE_SUBSET_A_B_IDENTICAL_PRIMARY_PROXY_FAIL_CLOSED",
+ "primary_proxy_status": "PRIMARY_PROXY_DATA_GAP",
+ "schema_version": "1.0.0",
+ "stage": "M3_STAGE3B",
+ "stage3c_status": "M3_STAGE3C_NOT_ALLOWED"
+}

@@ -1,0 +1,30 @@
+{
+ "acquisition": {
+  "fetched_at": "2026-08-15T09:34:08.649662+00:00",
+  "mode": "BOUNDED_OR_NONE",
+  "raw_data_committed_to_git": false,
+  "requested_development_end": "2022-12-31",
+  "requested_warmup_start": "2014-12-01"
+ },
+ "datasets": [
+  {
+   "dataset_id": "oil",
+   "rows": 0,
+   "source_name": "U.S. Energy Information Administration",
+   "status": "NOT_ACQUIRED"
+  },
+  {
+   "dataset_id": "petrochemical_industry",
+   "rows": 0,
+   "source_name": "Shenwan Hongyuan Research",
+   "status": "NOT_ACQUIRED"
+  }
+ ],
+ "holdout_read_performed": false,
+ "holdout_status": "SEALED",
+ "normalized_a_sha256": null,
+ "raw_manifest_sha256": null,
+ "schema_version": "1.0.0",
+ "stage": "M3_STAGE3BR2",
+ "stage3c_status": "M3_STAGE3C_NOT_ALLOWED"
+}

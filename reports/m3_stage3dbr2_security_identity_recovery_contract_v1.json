@@ -1,0 +1,64 @@
+{
+  "schema_version": "1.0.0",
+  "stage": "M3_STAGE3DBR2",
+  "status": "ACTIVE_PRE_STATISTIC_SECURITY_IDENTITY_RECOVERY",
+  "canonical_base": "188d255c6a827e2f8724ef83677ad0995cb51503",
+  "holdout_consumed": true,
+  "accepted_primary_execution_count": 0,
+  "primary_statistic_observed": false,
+  "research_specification_changed": false,
+  "pristine_oos_execution": false,
+  "digest_algorithm": "M3_REPOSITORY_RELATIVE_DIGEST_V2",
+  "r1_recovery_adapter_digest": "0875afa70a54e062b3ce6a0341d2c5387b3e0f32ff700204d2767dc71eff96d8",
+  "r2_security_identity_adapter_digest": "c2ec3a088563f23106d4869c0c5d66b5f722a71effdf57aa8f35c76c764bbf03",
+  "canonical_model_identities": {
+    "upstream_inventory_sha256": "f206780dcb6fd4c3b9d30a92025b75974284afd16eecd24770d2f812256f0031",
+    "pipeline_digest": "ab224492ff85f391a29048dfeec740f9bbffb376de3408a5645a4552b51b9d1b",
+    "model_digest": "4958351a5c79c0eb96bbfda9ebaaca5e71ab2b07236eaa808b0a92ebc6e9756d"
+  },
+  "frozen_delist_universe": {
+    "path": "D:/m3_stage3db_holdout_retry/raw/akshare/sh_delist.csv",
+    "sha256": "72bf23f2bf0c5edc6bd585ad1434a6da010a22a1122af967e2f5d47c3ad4b0d0",
+    "role": "FROZEN_DELIST_ROW_UNIVERSE",
+    "date_authority": "FROZEN_SNAPSHOT_DATES_ONLY"
+  },
+  "sse_source_identity": {
+    "source_class": "SAME_OFFICIAL_SOURCE_RAW_FIELD_PRESERVATION",
+    "endpoint": "https://query.sse.com.cn/commonQuery.do",
+    "sql_id": "COMMON_SSE_CP_GPJCTPZ_GPLB_GP_L",
+    "company_status": "3",
+    "request_types": [1, 2, 8],
+    "forbidden_combined_type_request": "1,2,8",
+    "identity_fields": {"1": "A_STOCK_CODE", "2": "B_STOCK_CODE", "8": "A_STOCK_CODE"},
+    "expected_classes": {"1": "A_SHARE_COMMON", "2": "B_SHARE", "8": "A_SHARE_COMMON"}
+  },
+  "bound_artifacts": {
+    "stage3br1_proxy_contract": {"path": "reports/m3_stage3br1_primary_proxy_contract_v2.json", "sha256": "bab6878cf16b904eeb5bc48cb2b92350313ec503c25627bf614bd31af0a21e6a"},
+    "stage3da_frozen_oos_contract": {"path": "reports/m3_stage3da_frozen_oos_execution_contract_v1.json", "sha256": "f254837059c7010507c31eb9f106fd080ff937f537f053ec4d393bda7f90db30"},
+    "stage3db_original_manifest": {"path": "reports/m3_stage3db_oos_analysis_input_manifest_v1.json", "sha256": "d35d19e3a2de4b1b132e2f2eafc148df121dd58c944309aaca55073c57cd0370"},
+    "stage3db_original_acceptance": {"path": "acceptance/m3_stage3db_one_shot_frozen_holdout_oos_execution.md", "sha256": "73c5dd4e21ccbed6a555f96e1dcd53afe92ce0dab9fc1ca69e5dc5719f3dc315"},
+    "stage3dbr1_recovery_contract": {"path": "reports/m3_stage3dbr1_recovery_contract_v1.json", "sha256": "8050441c21182221a0b9e3d54184d2054ce25af1140292b0ba031b779858d004"},
+    "stage3dbr1_acceptance": {"path": "acceptance/m3_stage3dbr1_post_unseal_pit_universe_repair_and_recovered_oos_execution.md", "sha256": "e3aa7a5ceae946403b94c85e9134706a9cdf4bcada14fd646f3d7cd74e580af6"},
+    "stage3dbr1_adapter_digest": {"path": "reports/m3_stage3dbr1_recovery_adapter_digest_v1.json", "sha256": "3b0b7dcda234ff0d9802774c6095c418be2e47f9037a3dcde6a71e9d8491909c"}
+  },
+  "gates": {
+    "raw_schema_failure": "M3_STAGE3DBR2_SSE_RAW_SCHEMA_FAILURE",
+    "pagination_not_proven": "M3_STAGE3DBR2_SSE_PAGINATION_NOT_PROVEN",
+    "security_type_conflict": "M3_STAGE3DBR2_SECURITY_TYPE_CONFLICT",
+    "security_level_conflict": "M3_STAGE3DBR2_SECURITY_LEVEL_CONFLICT",
+    "frozen_row_unresolved": "M3_STAGE3DBR2_FROZEN_ROW_IDENTITY_UNRESOLVED",
+    "frozen_row_ambiguous": "M3_STAGE3DBR2_FROZEN_ROW_MULTIPLICITY_AMBIGUOUS",
+    "metadata_date_drift": "M3_STAGE3DBR2_METADATA_DATE_DRIFT",
+    "success": "SSE_SECURITY_LEVEL_IDENTITY_RECOVERED"
+  },
+  "prohibitions": {
+    "new_research_source": true,
+    "new_proxy": true,
+    "new_threshold": true,
+    "new_controls": true,
+    "new_hypothesis": true,
+    "robustness": true,
+    "price_parse_before_metadata_gate": true,
+    "raw_sse_json_committed_to_git": true
+  }
+}

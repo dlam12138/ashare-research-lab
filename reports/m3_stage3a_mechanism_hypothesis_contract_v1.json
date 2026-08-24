@@ -1,0 +1,69 @@
+{
+ "canonical_question": "From 2015-01-01 through the frozen research cutoff, when the Shanghai market return excluding PetroChina reaches the pre-registered crash threshold, does 601857.SH exhibit significantly positive abnormal return after controlling for oil, the petrochemical industry, and principal market-style alternatives, and what is its estimated offset of that day's ex-target Shanghai-market decline?",
+ "falsification": [
+  "primary abnormal return is not positive",
+  "direction is unstable across pre-registered samples or thresholds",
+  "effect is explained by required controls",
+  "effect is driven by one or a few extreme dates"
+ ],
+ "frequency": "1d",
+ "interpretation_boundary": {
+  "funding_actor_intent_inference_authorized": false,
+  "public_daily_data_can_identify_actor_intent": false,
+  "statistical_relationship_only": true
+ },
+ "market_condition": {
+  "ex_post_threshold_tuning_allowed": false,
+  "operator": "<=",
+  "primary_threshold": -0.01,
+  "proxy": "SH_MARKET_EX_601857",
+  "robustness_thresholds": [
+   -0.005,
+   -0.015,
+   -0.02
+  ]
+ },
+ "outcomes": {
+  "primary": {
+   "formula": "R_601857_t - E[R_601857_t | pre_registered_controls]",
+   "id": "abnormal_return"
+  },
+  "secondary": [
+   {
+    "id": "raw_return",
+    "role": "DESCRIPTIVE"
+   },
+   {
+    "id": "positive_return_indicator",
+    "role": "DESCRIPTIVE_ONLY"
+   },
+   {
+    "id": "market_relative_return",
+    "role": "SECONDARY"
+   },
+   {
+    "id": "estimated_index_offset",
+    "role": "SEPARATE_ESTIMATION_PIPELINE"
+   }
+  ]
+ },
+ "primary_hypothesis": {
+  "direction": "GREATER_THAN_ZERO",
+  "h0": "Crash-day abnormal return is not systematically positive.",
+  "h1": "Crash-day abnormal return is positive.",
+  "outcome": "abnormal_return",
+  "raw_positive_return_is_primary_evidence": false
+ },
+ "prohibited_question": "Is PetroChina used to support the market?",
+ "requested_sample": {
+  "end": "2026-08-13",
+  "start": "2015-01-01"
+ },
+ "research_mode": "PRE_REGISTERED_DAILY_MECHANISM_RESEARCH",
+ "schema_version": "1.0.0",
+ "stage": "M3_STAGE3A",
+ "target": {
+  "name": "PetroChina",
+  "symbol": "601857.SH"
+ }
+}

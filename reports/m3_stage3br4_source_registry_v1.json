@@ -1,0 +1,67 @@
+{
+ "holdout_read_performed": false,
+ "holdout_status": "SEALED",
+ "industry": {
+  "bounded_proof": {
+   "raw_date_scan": "PASSED",
+   "raw_date_tokens": 1970,
+   "raw_observation_date_max": "2022-12-30",
+   "raw_observation_date_min": "2014-12-01",
+   "raw_sha256": "c80a609c6dc1ff461b6010f0b1ebcd2230095f466af4f257be91d74faf9afee6"
+  },
+  "index_code": "399439",
+  "publisher": "Shenzhen Securities Information Co., Ltd. / CNI",
+  "raw_date_range": {
+   "first": "2014-12-30",
+   "last": "2022-12-30"
+  },
+  "raw_sha256": "c80a609c6dc1ff461b6010f0b1ebcd2230095f466af4f257be91d74faf9afee6",
+  "source_inspection": {
+   "function": "index_hist_cni",
+   "inspection_status": "BOUNDED_ENDPOINT_PARAMETERS_CONFIRMED",
+   "local_filter_only": false,
+   "package": "akshare",
+   "pagination_behavior": "single_response",
+   "request_parameters": [
+    "indexCode",
+    "startDate",
+    "endDate",
+    "frequency"
+   ],
+   "server_bounds_reach_endpoint": true,
+   "source_inspected": true,
+   "underlying_endpoint": "http://hq.cnindex.com.cn/market/market/getIndexDailyDataWithDataFormat"
+  },
+  "source_name": "CNI Oil & Gas Index",
+  "status": "TRUSTED",
+  "transport": "CNI_OFFICIAL_BOUNDED_ENDPOINT"
+ },
+ "market_proxy": {
+  "implementation_id": "SH_A_SHARE_EQUAL_WEIGHT_EX_601857_V2",
+  "status": "TRUSTED_REUSED"
+ },
+ "oil": {
+  "bounded_proof": {
+   "raw_date_scan": "PASSED",
+   "raw_date_tokens": 2110,
+   "raw_observation_date_max": "2022-12-30",
+   "raw_observation_date_min": "2014-12-01",
+   "raw_sha256": "185080c6937d09b1dc3a2db46746a8e9bbdac5d17d8165596e9211fcc45e2d53"
+  },
+  "credential_required": false,
+  "raw_date_range": {
+   "first": "2014-12-01",
+   "last": "2022-12-30"
+  },
+  "raw_sha256": "185080c6937d09b1dc3a2db46746a8e9bbdac5d17d8165596e9211fcc45e2d53",
+  "series": "DCOILBRENTEU",
+  "source_name": "Europe Brent Spot Price FOB",
+  "status": "TRUSTED",
+  "transport": "FRED_PUBLIC_GRAPH_CSV",
+  "underlying_source": "U.S. Energy Information Administration"
+ },
+ "schema_version": "1.0.0",
+ "shenwan_status": "M3_SHENWAN_INDUSTRY_CONTROL_DEFERRED_NON_BLOCKING",
+ "stage": "M3_STAGE3BR4",
+ "stage3c_status": "M3_STAGE3C_REAL_ANALYSIS_NOT_AUTHORIZED"
+}

@@ -1,0 +1,87 @@
+{
+ "corporate_action_rule": {
+  "dividend": "NO_DIVISOR_ADJUSTMENT_PRICE_INDEX_FALLS_NATURALLY",
+  "other_non_trading_market_cap_change": "DIVISOR_ADJUSTMENT_REQUIRED",
+  "rights_or_bonus_issue": "DIVISOR_ADJUSTMENT_BEFORE_EX_RIGHT_DATE",
+  "share_change": "DIVISOR_ADJUSTMENT_BEFORE_EFFECTIVE_SHARE_CHANGE_DATE"
+ },
+ "delisting_rule": "REMOVE_BEFORE_DELISTING_EFFECTIVE_DATE_WITH_DIVISOR_CONTINUITY",
+ "exchange": "SH",
+ "fallback_policy": {
+  "fallback_to_000001": false,
+  "fallback_to_equal_weight": false,
+  "fallback_to_sse_composite": false,
+  "future_constituent_information_allowed": false,
+  "survivorship_backfill_allowed": false
+ },
+ "membership_effective_rule": "USE_ONLY_MEMBERSHIP_INFORMATION_AND_OFFICIAL_RULES_EFFECTIVE_ON_EACH_TRADE_DATE",
+ "methodology_regimes": [
+  {
+   "end": "2020-07-21",
+   "id": "SSE_COMPOSITE_PRE_20200722",
+   "new_listing_rule": "INCLUDE_FROM_ELEVENTH_TRADING_DAY_AFTER_LISTING",
+   "risk_warning_rule": "INCLUDED",
+   "sample_space": "ELIGIBLE_SSE_A_AND_B_SHARES_EXCLUDING_STAR_MARKET_AND_CDR",
+   "start": "2015-01-01"
+  },
+  {
+   "end": "2022-12-31",
+   "id": "SSE_COMPOSITE_FROM_20200722",
+   "new_listing_rule": "TOP_10_SSE_AVERAGE_TOTAL_MARKET_CAP_SINCE_LISTING_AFTER_THREE_MONTHS_OTHERWISE_AFTER_ONE_YEAR",
+   "risk_warning_rule": "REMOVE_FROM_NEXT_TRADING_DAY_AFTER_SECOND_FRIDAY_OF_FOLLOWING_MONTH_REINSTATE_ON_SAME_SCHEDULE_AFTER_WARNING_REMOVAL",
+   "sample_space": "ELIGIBLE_SSE_SECURITIES_INCLUDING_ELIGIBLE_STAR_MARKET_SECURITIES_AND_RED_CHIP_CDR",
+   "start": "2020-07-22"
+  }
+ ],
+ "missing_input_policy": {
+  "allowed_status": "PRIMARY_PROXY_DATA_GAP",
+  "forward_fill_eligibility_allowed": false,
+  "forward_fill_shares_allowed": false,
+  "missing_corporate_action_assumed_zero": false,
+  "missing_input_action": "FAIL_CLOSED",
+  "stage3c_when_gap": "M3_STAGE3C_NOT_ALLOWED"
+ },
+ "new_listing_rule": "REGIME_SPECIFIC",
+ "proxy_id": "SH_MARKET_EX_601857",
+ "return_definition": {
+  "frequency": "1d",
+  "kind": "SIMPLE_PRICE_RETURN",
+  "required_continuity": "OFFICIAL_DIVISOR_EQUIVALENT_EVENT_NEUTRAL_CONTINUITY",
+  "target_return_series_used": false
+ },
+ "schema_version": "1.0.0",
+ "source_evidence": [
+  {
+   "publisher": "Shanghai Stock Exchange",
+   "role": "PRE_20200722_NEW_LISTING_RULE",
+   "url": "https://www.sse.com.cn/market/sseindex/diclosure/c/c_20150911_3984926.shtml"
+  },
+  {
+   "publisher": "Shanghai Stock Exchange",
+   "role": "PRE_20200722_FORMULA_AND_MAINTENANCE",
+   "url": "https://www.sse.com.cn/aboutus/publication/factbook/documents/c/10170572/files/36d0635dee474838943e931bcc04c3df.pdf"
+  },
+  {
+   "publisher": "Shanghai Stock Exchange and China Securities Index Company",
+   "role": "FROM_20200722_RULE_CHANGE",
+   "url": "https://www.sse.com.cn/market/sseindex/diclosure/c/c_20200619_5130635.shtml"
+  },
+  {
+   "publisher": "Shanghai Stock Exchange and China Securities Index Company",
+   "role": "FROM_20200722_METHODOLOGY",
+   "url": "https://www.sse.com.cn/market/sseindex/diclosure/c/10077926/files/2b34d5d25e34437db3518a0d6059d7c8.pdf"
+  }
+ ],
+ "stage": "M3_STAGE3B",
+ "ST_rule": "REGIME_SPECIFIC_RISK_WARNING_RULE",
+ "suspension_rule": "USE_LAST_NORMAL_TRANSACTION_PRICE_DURING_SUSPENSION_WITH_OFFICIAL_MAINTENANCE_TREATMENT",
+ "target_exclusion_rule": "PHYSICALLY_REMOVE_601857.SH_FROM_UNIVERSE_MARKET_CAP_DIVISOR_AND_ALL_PROXY_ROWS_BEFORE_RETURN_CONSTRUCTION",
+ "target_symbol": "601857.SH",
+ "universe_definition": "POINT_IN_TIME_SSE_COMPOSITE_ELIGIBLE_SECURITIES_UNDER_THE_HISTORICALLY_APPLICABLE_REGIME_EXCLUDING_601857.SH",
+ "weight_basis": {
+  "b_share_currency_rule": "CONVERT_USD_PRICE_TO_CNY_USING_THE_HISTORICALLY_APPLICABLE_OFFICIAL_WEEKLY_FX_RULE",
+  "formula": "eligible_security_price_t * applicable_issued_share_count_t",
+  "share_semantics": "OFFICIAL_APPLICABLE_ISSUED_SHARE_COUNT_NOT_FREE_FLOAT_AND_NOT_TURNOVER_INFERENCE",
+  "type": "TOTAL_MARKET_CAP_PAASCHE_WITH_DIVISOR_CONTINUITY"
+ }
+}

@@ -1,0 +1,82 @@
+{
+ "datasets": [
+  {
+   "dataset_id": "shanghai_a_share_security_master",
+   "endpoint": "akshare stock_info_sh_name_code (主板A股/科创板/主板B股) + stock_info_sh_delist",
+   "source_name": "akshare (SSE-endorsed endpoints)",
+   "planned_source": "Baostock query_stock_basic",
+   "replacement_note": "Baostock daily-series iteration became unresponsive during acquisition; the replaceable free source akshare was used instead. Master acquired 2026-08-15.",
+   "status": "ACQUIRED_AND_NORMALIZED",
+   "tier": 1
+  },
+  {
+   "dataset_id": "shanghai_a_share_daily_series",
+   "endpoint": "akshare stock_zh_a_daily (Sina), bounded 2014-01-01..2022-12-31",
+   "source_name": "akshare (Sina)",
+   "planned_source": "Baostock query_history_k_data_plus",
+   "replacement_note": "Baostock daily-series iteration became unresponsive during acquisition; akshare (Sina) was used instead. One bounded full-development series per ever-eligible symbol; 2,110 symbol series acquired, 11 delisted-within-window symbols unavailable from Sina (documented gap).",
+   "status": "ACQUIRED_AND_NORMALIZED",
+   "tier": 1
+  },
+  {
+   "dataset_id": "trade_calendar",
+   "endpoint": "baostock.query_trade_dates",
+   "reuse_note": "reuse immutable Stage 3B capsule when raw SHA-256 matches",
+   "source_name": "Baostock",
+   "status": "REUSE_IMMUTABLE_STAGE3B",
+   "tier": 1
+  },
+  {
+   "dataset_id": "target_daily_unadjusted",
+   "endpoint": "baostock.query_history_k_data_plus",
+   "reuse_note": "reuse immutable Stage 3B capsule when raw SHA-256 matches",
+   "source_name": "Baostock",
+   "status": "REUSE_IMMUTABLE_STAGE3B",
+   "tier": 1
+  },
+  {
+   "dataset_id": "target_daily_qfq",
+   "endpoint": "baostock.query_history_k_data_plus",
+   "reuse_note": "reuse immutable Stage 3B capsule when raw SHA-256 matches",
+   "source_name": "Baostock",
+   "status": "REUSE_IMMUTABLE_STAGE3B",
+   "tier": 1
+  },
+  {
+   "dataset_id": "market_ex_target_v2",
+   "endpoint": "LOCAL_DETERMINISTIC_CONSTRUCTION",
+   "source_name": "Stage3BR1 equal-weight ex-target proxy",
+   "status": "CONSTRUCTION_REQUIRED",
+   "tier": 1
+  },
+  {
+   "dataset_id": "oil",
+   "endpoint": "https://www.eia.gov/dnav/pet/hist/RBRTED.htm",
+   "feasibility_only": true,
+   "note": "Stage 3B-R2 feasibility: PIT timestamp/release availability. Contract not altered this stage.",
+   "source_name": "U.S. Energy Information Administration",
+   "status": "FEASIBILITY_ONLY_NOT_ACQUIRED",
+   "tier": 1
+  },
+  {
+   "dataset_id": "petrochemical_industry",
+   "endpoint": "Shenwan official index daily endpoint",
+   "feasibility_only": true,
+   "note": "Stage 3B-R2 feasibility: official 801016 to 801960 historical daily series. Contract not altered this stage.",
+   "source_name": "Shenwan Hongyuan Research",
+   "status": "FEASIBILITY_ONLY_NOT_ACQUIRED",
+   "tier": 1
+  },
+  {
+   "dataset_id": "historical_target_index_weight",
+   "endpoint": "SEPARATE_CONTRIBUTION_PIPELINE",
+   "source_name": "deferred contribution pipeline",
+   "status": "NOT_PART_OF_PRIMARY_PROXY_V2",
+   "tier": "CONTRIBUTION"
+  }
+ ],
+ "network_acquisition_policy": "RESUMABLE_CONTENT_ADDRESSED_TO_EXPLICIT_EXTERNAL_IMMUTABLE_CACHE",
+ "raw_data_committed_to_git": false,
+ "schema_version": "1.0.0",
+ "stage": "M3_STAGE3BR1"
+}

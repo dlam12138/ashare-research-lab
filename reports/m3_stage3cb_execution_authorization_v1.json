@@ -1,0 +1,48 @@
+{
+  "adapter_digest_report": "reports/m3_stage3cb_execution_adapter_digest_v1.json",
+  "bootstrap": {
+    "replications": 5000,
+    "rng": "PCG64",
+    "seed": 20260813,
+    "ci": "PERCENTILE_2_5_97_5"
+  },
+  "canonical_base": "ef1d1fab4b93ed680004430d72e49c27cb5e874e",
+  "contract_id": "M3_STAGE3CB_EXECUTION_AUTHORIZATION_V1",
+  "controls": {
+    "industry": "CNI_399439",
+    "market_proxy": "SH_A_SHARE_EQUAL_WEIGHT_EX_601857_V2",
+    "oil": "DCOILBRENTEU_R4_ALIGNED_OIL_RETURN"
+  },
+  "development_end": "2022-12-30",
+  "development_primary_execution": "AUTHORIZED_ONLY_AFTER_PREEXECUTION_CI_PASS",
+  "development_start": "2015-03-16",
+  "digest_algorithm": "M3_REPOSITORY_RELATIVE_DIGEST_V2",
+  "execution_mode": "DEVELOPMENT_PRIMARY_ONLY",
+  "forbidden": [
+    "ROBUSTNESS",
+    "ALTERNATIVE_THRESHOLDS",
+    "LEAVE_ONE_YEAR_OUT",
+    "EXTREME_DAY_REMOVAL",
+    "ALTERNATIVE_PROXY",
+    "INDUSTRY_EX_TARGET",
+    "HOLDOUT",
+    "NETWORK_ACQUISITION"
+  ],
+  "holdout_allowed": false,
+  "holdout_start": "2023-01-01",
+  "model_digest": "4958351a5c79c0eb96bbfda9ebaaca5e71ab2b07236eaa808b0a92ebc6e9756d",
+  "pipeline_digest": "ab224492ff85f391a29048dfeec740f9bbffb376de3408a5645a4552b51b9d1b",
+  "primary_crash_threshold": -0.01,
+  "primary_parameter": "gamma",
+  "result_schema": "reports/m3_stage3cb_primary_result_schema_v1.json",
+  "robustness_allowed": false,
+  "schema_version": "1.0.0",
+  "stage": "M3_STAGE3CB",
+  "status": "PRE_EXECUTION_LOCK",
+  "target": {
+    "dataset_id": "target_daily_qfq",
+    "return_definition": "ADJUSTED_CLOSE_TO_CLOSE_SIMPLE_RETURN",
+    "raw_file_path": "baostock/601857_SH_qfq.csv"
+  },
+  "upstream_inventory_sha256": "f206780dcb6fd4c3b9d30a92025b75974284afd16eecd24770d2f812256f0031"
+}

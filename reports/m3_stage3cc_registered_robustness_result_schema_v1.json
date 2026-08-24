@@ -1,0 +1,65 @@
+{
+ "contract_id": "M3_STAGE3CC_REGISTERED_ROBUSTNESS_RESULT_SCHEMA_V1",
+ "version": "1.0.0",
+ "status": "LOCKED_PRE_EXECUTION",
+ "stage": "M3_STAGE3CC",
+ "required_fields": [
+  "stage",
+  "canonical_base",
+  "upstream_inventory_sha",
+  "pipeline_digest",
+  "model_digest",
+  "execution_adapter_digest",
+  "data_manifest_digest",
+  "robustness_execution_digest",
+  "primary_anchor",
+  "descriptive",
+  "conditional",
+  "threshold_robustness",
+  "extreme_day",
+  "calendar_year",
+  "registered_not_executed",
+  "development_evidence_ceiling",
+  "development_evidence_level",
+  "evidence_level_status",
+  "holdout_read",
+  "same_input_ab"
+ ],
+ "primary_anchor": {
+  "decision": "M3_PRIMARY_DEVELOPMENT_POSITIVE_ABNORMAL_PERFORMANCE_NOT_ESTABLISHED",
+  "nobs": 1902,
+  "crash_count": 330,
+  "gamma": 0.0005072734676652487,
+  "gamma_ci_lower": -0.0021987423016553366,
+  "gamma_ci_upper": 0.0033325010311833106,
+  "reversal_prohibited": true
+ },
+ "threshold_family": {
+  "thresholds": [-0.005, -0.015, -0.02],
+  "bh_q": 0.05,
+  "primary_threshold_excluded": -0.01
+ },
+ "extreme_day_counts": [1, 3],
+ "development_evidence": {
+  "ceiling": 2,
+  "level_when_descriptive_rule_not_prelocked": null,
+  "status": "NOT_ASSIGNABLE_BECAUSE_DESCRIPTIVE_RELATIONSHIP_CRITERION_NOT_PRELOCKED",
+  "level_3_prohibited": true
+ },
+ "registered_gap_statuses": {
+  "leave_one_event_out": "NOT_EXECUTED_PREOUTCOME_IMPLEMENTATION_MISSING",
+  "alternative_market_proxies": "NOT_EXECUTED_DATA_NOT_ACQUIRED",
+  "industry_ex_target": "NOT_EXECUTED_FUTURE_CANDIDATE",
+  "volume_abnormality": "NOT_EXECUTED_REGISTERED_NOT_EXECUTABLE_WITH_CURRENT_TIER1_INPUTS",
+  "market_regimes": "NOT_EXECUTED_REGISTERED_NOT_EXECUTABLE_WITH_CURRENT_TIER1_INPUTS"
+ },
+ "holdout_read": false,
+ "forbidden_fields": [
+  "holdout_data",
+  "new_data_acquisition",
+  "post_hoc_evidence_rule",
+  "leave_one_event_out_results",
+  "primary_decision_reversal"
+ ],
+ "digest_algorithm": "M3_REPOSITORY_RELATIVE_DIGEST_V2"
+}

@@ -1,0 +1,48 @@
+{
+  "schema": "m3_integration_frozen_baseline_manifest_v1",
+  "created_at": "2026-08-24",
+  "feature_head": "d38119cc033931b213fb06a9e625e72643380cd5",
+  "origin_main": "7cc6a9bc51162ee3bac3748576070eb04d4904fb",
+  "m3_frozen_scope": {
+    "patterns": [
+      "reports/m3_stage3a*",
+      "reports/m3_stage3b*",
+      "reports/m3_stage3c*",
+      "reports/m3_stage3d*",
+      "reports/m3_stage3e*",
+      "acceptance/m3_stage3*",
+      "src/ashare_research/mechanism/*",
+      ".github/workflows/m3-stage3car2-digest-identity.yml",
+      ".github/workflows/m3-stage3cb-preexecution.yml",
+      ".github/workflows/m3-stage3cc-preexecution.yml",
+      ".github/workflows/m3-stage3da-contract.yml",
+      ".github/workflows/m3-stage3db-preunseal.yml",
+      ".github/workflows/stage2g-reproducibility.yml"
+    ],
+    "file_count": 111,
+    "aggregate_sha256": "6ff405c51843a0dd64b759a252f443a8e0f20b9f347b6b3d1668b584b3e24db9"
+  },
+  "protected_workflow_identities": {
+    ".github/workflows/m3-stage3car2-digest-identity.yml": "a1d896120e6a44c6cda4265d2169f246339c53561e4d3ea75e89b095cf04541f",
+    ".github/workflows/m3-stage3cb-preexecution.yml": "dd7e1a5af0e863cd6a12a93430032b4778c3e1628d442ca16967dd06336871b2",
+    ".github/workflows/m3-stage3cc-preexecution.yml": "027002cdd0e33e5f04561e3219c83593edd0adb35b50e7b7961249828ce069b5",
+    ".github/workflows/m3-stage3da-contract.yml": "984422f118081ed8ce23599b4c9d1570235fbf14b1d6688472dae2b002ed0f7f",
+    ".github/workflows/m3-stage3db-preunseal.yml": "78edae5e2172ffee227cc9c0631e4a4accfc11eb2adad6f90b2c857f8de509f9",
+    ".github/workflows/stage2g-reproducibility.yml": "c4a26713bc217502dd6dec22c480b68cc168bb05851a6599a5ae27a73da5c0b7"
+  },
+  "m2_protected_scope": {
+    "branch": "feat/m2-value-assessment-mvp",
+    "head": "3679b1bac7a1634c6452784a4d8f6d139966f222",
+    "tree": "e0fb4913b77d918bc8f0678c91a275eb9ab39e4d",
+    "patterns": [
+      "acceptance/m2_*",
+      "reports/m2_*",
+      "reports/petrochina_*",
+      ".github/workflows/stage2g-reproducibility.yml"
+    ],
+    "tracked_file_count": 259,
+    "dirty_paths_preserved": true,
+    "stash_preserved": "stash@{0}: On feat/m2-value-assessment-mvp: protect pre-existing Stage 1B.4 record edit before Stage 1C"
+  },
+  "database_status": "NOT_READ_OR_MODIFIED_DURING_INTEGRATION_CLOSEOUT"
+}

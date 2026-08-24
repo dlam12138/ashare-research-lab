@@ -1,0 +1,37 @@
+{
+ "holdout_read_performed": false,
+ "holdout_status": "SEALED",
+ "industry": {
+  "name": "Shenwan Petroleum and Petrochemicals Industry Price Index",
+  "publisher": "Shenwan Hongyuan Research",
+  "regime_1": {
+   "symbol": "801016",
+   "taxonomy": "SW_2014",
+   "through": "2021-12-10"
+  },
+  "regime_2": {
+   "from": "2021-12-13",
+   "symbol": "801960",
+   "taxonomy": "SW_2021"
+  },
+  "route_required": "USER_PROVIDED_OFFICIAL_DEVELOPMENT_CAPSULE",
+  "status": "INDUSTRY_OFFICIAL_DEVELOPMENT_CAPSULE_REQUIRED",
+  "transition_gap": "2021-12-13 INDUSTRY_TAXONOMY_TRANSITION_GAP"
+ },
+ "oil": {
+  "api_key_present": false,
+  "auth_method": "ENVIRONMENT_API_KEY",
+  "benchmark": "Europe Brent Spot Price FOB",
+  "bounded_end": "2022-12-31",
+  "bounded_start": "2014-12-01",
+  "endpoint_template": "https://api.eia.gov/v2/<discovered-route>/data/?frequency=daily&start=2014-12-01&end=2022-12-31&api_key=<REDACTED>",
+  "fred_status": "OPTIONAL_SECONDARY_DISTRIBUTION_CROSSCHECK",
+  "series": "RBRTE",
+  "status": "OIL_EIA_API_KEY_REQUIRED",
+  "transport": "EIA_OPEN_DATA_API_V2",
+  "unit": "USD_PER_BARREL"
+ },
+ "schema_version": "1.0.0",
+ "stage": "M3_STAGE3BR3",
+ "stage3c_status": "M3_STAGE3C_NOT_ALLOWED"
+}

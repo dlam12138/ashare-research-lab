@@ -1,0 +1,117 @@
+{
+ "datasets": [
+  {
+   "dataset_id": "trade_calendar",
+   "endpoint": "baostock.query_trade_dates",
+   "holdout_request_allowed": false,
+   "source_name": "Baostock",
+   "status": "ACQUIRED_AND_NORMALIZED",
+   "tier": 1
+  },
+  {
+   "dataset_id": "target_daily",
+   "endpoint": "baostock.query_history_k_data_plus",
+   "holdout_request_allowed": false,
+   "source_name": "Baostock",
+   "status": "ACQUIRED_BOTH_UNADJUSTED_AND_QFQ_AND_NORMALIZED",
+   "tier": 1
+  },
+  {
+   "dataset_id": "historical_shanghai_pit_universe",
+   "endpoint": "baostock.query_all_stock(day)",
+   "required_cross_checks": [
+    "OFFICIAL_LIST_AND_DELIST_DATES",
+    "REGIME_SPECIFIC_NEW_LISTING_DELAY",
+    "HISTORICAL_RISK_WARNING_EFFECTIVE_DATES",
+    "STAR_AND_CDR_ELIGIBILITY"
+   ],
+   "source_name": "Baostock",
+   "status": "CAPABILITY_AUDITED_COMPLETE_DAILY_INDEX_ELIGIBILITY_NOT_OBTAINED",
+   "tier": 1
+  },
+  {
+   "dataset_id": "historical_issued_shares",
+   "endpoint": "CNINFO p_stock2215 via akshare.stock_share_change_cninfo",
+   "required_cross_checks": [
+    "EFFECTIVE_CHANGE_DATE",
+    "A_B_H_AND_CDR_SHARE_CLASS_SEMANTICS",
+    "COMPLETE_HISTORY_FOR_EVERY_ELIGIBLE_SECURITY",
+    "CORPORATE_ACTION_CONTINUITY"
+   ],
+   "source_name": "CNINFO",
+   "status": "CAPABILITY_AUDITED_COMPLETE_SECURITY_LEVEL_COVERAGE_NOT_OBTAINED",
+   "tier": 1
+  },
+  {
+   "dataset_id": "market_ex_target",
+   "endpoint": "LOCAL_DETERMINISTIC_CONSTRUCTION",
+   "source_name": "Stage3B market_proxy",
+   "status": "PRIMARY_PROXY_DATA_GAP",
+   "tier": 1
+  },
+  {
+   "dataset_id": "oil",
+   "endpoint": "https://www.eia.gov/dnav/pet/hist/RBRTED.htm",
+   "required_cross_checks": [
+    "HISTORICAL_RELEASE_OR_VINTAGE_TIMESTAMP",
+    "LATEST_OBSERVABLE_BEFORE_A_SHARE_CLOSE"
+   ],
+   "source_name": "U.S. Energy Information Administration",
+   "status": "NOT_ACQUIRED_AFTER_PRIMARY_PROXY_FAIL_CLOSED_STOP",
+   "tier": 1
+  },
+  {
+   "dataset_id": "petrochemical_industry",
+   "endpoint": "Shenwan official index daily endpoint",
+   "source_name": "Shenwan Hongyuan Research",
+   "status": "NOT_ACQUIRED_AFTER_PRIMARY_PROXY_FAIL_CLOSED_STOP",
+   "tier": 1
+  },
+  {
+   "dataset_id": "historical_target_index_weight",
+   "endpoint": "REUSE_AUDITED_PRIMARY_PROXY_INPUTS",
+   "source_name": "Stage3B market_proxy",
+   "status": "NOT_TRUSTED_PRIMARY_PROXY_INPUT_GAP",
+   "tier": "CONTRIBUTION"
+  },
+  {
+   "dataset_id": "dividend_style",
+   "status": "NOT_ACQUIRED_STAGE3B",
+   "tier": 2
+  },
+  {
+   "dataset_id": "central_soe_style",
+   "status": "NOT_ACQUIRED_STAGE3B",
+   "tier": 2
+  },
+  {
+   "dataset_id": "large_cap_style",
+   "status": "NOT_ACQUIRED_STAGE3B",
+   "tier": 2
+  },
+  {
+   "dataset_id": "usd_cny",
+   "status": "NOT_ACQUIRED_STAGE3B",
+   "tier": 3
+  },
+  {
+   "dataset_id": "market_turnover",
+   "status": "NOT_ACQUIRED_STAGE3B",
+   "tier": 3
+  },
+  {
+   "dataset_id": "volatility",
+   "status": "NOT_ACQUIRED_STAGE3B",
+   "tier": 3
+  },
+  {
+   "dataset_id": "small_large_spread",
+   "status": "NOT_ACQUIRED_STAGE3B",
+   "tier": 3
+  }
+ ],
+ "network_acquisition_policy": "ONE_ACQUISITION_TO_IMMUTABLE_EXTERNAL_RAW_CACHE_THEN_OFFLINE_ONLY",
+ "raw_data_committed_to_git": false,
+ "schema_version": "1.0.0",
+ "stage": "M3_STAGE3B"
+}

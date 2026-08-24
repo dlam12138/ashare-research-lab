@@ -1,0 +1,65 @@
+name: M3 Stage 3C-B pre-execution lock
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+jobs:
+  clean-clone:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            platform: ubuntu
+          - os: windows-latest
+            platform: windows
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install package
+        run: python -m pip install -e ".[dev]"
+      - name: Run Stage 3C-B synthetic pre-execution gates
+        run: >-
+          python -m pytest -q tests/test_m3_stage3cb_preexecution.py
+          tests/test_m3_stage3ca_pipeline.py
+          tests/test_m3_stage3car2_digest_portability.py
+      - name: Run static gates
+        run: |
+          python -m ruff check src tests
+          python -m compileall -q src tests
+      - name: Build Stage 3C-B pre-execution identity envelope
+        run: >-
+          python -c "import hashlib,json; from pathlib import Path; from ashare_research.tools.m3_stage3cb_development import verify_frozen_lock,verify_adapter_lock; root=Path.cwd(); p={'identity':verify_frozen_lock(),'execution_adapter_digest':verify_adapter_lock(),'authorization_sha256':hashlib.sha256((root/'reports/m3_stage3cb_execution_authorization_v1.json').read_bytes()).hexdigest(),'result_schema_sha256':hashlib.sha256((root/'reports/m3_stage3cb_primary_result_schema_v1.json').read_bytes()).hexdigest(),'holdout_read':False,'real_target_read':False}; (root/'tmp').mkdir(exist_ok=True); (root/'tmp'/'stage3cb-preexecution-${{ matrix.platform }}-${{ github.sha }}.json').write_text(json.dumps(p,sort_keys=True,indent=2)+'\n',encoding='utf-8')"
+      - name: Upload Stage 3C-B pre-execution identity envelope
+        uses: actions/upload-artifact@v4
+        with:
+          name: stage3cb-preexecution-${{ matrix.platform }}-${{ github.sha }}
+          path: tmp/stage3cb-preexecution-${{ matrix.platform }}-${{ github.sha }}.json
+          if-no-files-found: error
+
+  identity-compare:
+    runs-on: ubuntu-latest
+    needs: clean-clone
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install package
+        run: python -m pip install -e ".[dev]"
+      - uses: actions/download-artifact@v4
+        with:
+          name: stage3cb-preexecution-ubuntu-${{ github.sha }}
+          path: tmp/stage3cb-preexecution-ubuntu
+      - uses: actions/download-artifact@v4
+        with:
+          name: stage3cb-preexecution-windows-${{ github.sha }}
+          path: tmp/stage3cb-preexecution-windows
+      - name: Compare exact Stage 3C-B pre-execution identities
+        run: >-
+          python -c "import json; from pathlib import Path; a=json.loads(next((Path('tmp/stage3cb-preexecution-ubuntu').glob('*.json'))).read_text()); b=json.loads(next((Path('tmp/stage3cb-preexecution-windows').glob('*.json'))).read_text()); assert a==b, 'M3_STAGE3CB_PREEXECUTION_IDENTITY_MISMATCH'; assert a['holdout_read'] is False and a['real_target_read'] is False; print('M3_STAGE3CB_PREEXECUTION_IDENTITY_MATCH')"

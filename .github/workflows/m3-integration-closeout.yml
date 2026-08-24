@@ -1,0 +1,69 @@
+name: M3 Integration Closeout
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  clean-clone:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            platform: ubuntu
+          - os: windows-latest
+            platform: windows
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install package
+        run: python -m pip install -e ".[dev]"
+      - name: Run integration governance tests
+        run: >-
+          python -m pytest -q tests/test_m3_stage3e_closeout.py
+          tests/test_m3_stage3dbr1_recovery.py
+          tests/test_m3_stage3dbr2_security_identity.py
+      - name: Run Stage 3E closeout validator
+        run: python -m ashare_research.tools.m3_stage3e_closeout_check .
+      - name: Run README consistency gate
+        run: >-
+          python -c "from pathlib import Path; r=Path('README.md').read_text(encoding='utf-8'); stale=('M2 正在实现','holdout 保持 sealed，Stage 3D-B 需单独授权'); required=('M2 已条件关闭','CONDITIONALLY CLOSED','M3_DAILY_MECHANISM_NOT_ESTABLISHED','M3_HOLDOUT_PRIMARY_INCONCLUSIVE_TECHNICAL_OR_COVERAGE_GAP'); assert all(x not in r for x in stale); assert all(x in r for x in required); print('M3_README_CLOSEOUT_STATUS_CONSISTENT')"
+      - name: Run static gates
+        run: |
+          python -m ruff check src tests
+          python -m compileall -q src tests
+      - name: Build exact integration identity envelope
+        run: >-
+          python -c "import hashlib,json,os; from pathlib import Path; root=Path.cwd(); d=json.loads((root/'reports/m3_stage3e_milestone_closeout_decision_v1.json').read_text(encoding='utf-8')); p={'head_sha':os.environ.get('GITHUB_SHA'),'stage3e_decision':d['decision'],'milestone_status':d['milestone_status'],'daily_mechanism':d['daily_mechanism'],'holdout_primary':d['holdout_primary'],'frozen_stage3e_sha256':hashlib.sha256((root/'reports/m3_stage3e_milestone_closeout_decision_v1.json').read_bytes()).hexdigest(),'readme_sha256':hashlib.sha256((root/'README.md').read_bytes()).hexdigest()}; (root/'tmp').mkdir(exist_ok=True); (root/'tmp'/f'm3-integration-closeout-${{ matrix.platform }}-${{ github.sha }}.json').write_text(json.dumps(p,sort_keys=True,indent=2)+'\n',encoding='utf-8')"
+      - name: Upload integration identity envelope
+        uses: actions/upload-artifact@v4
+        with:
+          name: m3-integration-closeout-${{ matrix.platform }}-${{ github.sha }}
+          path: tmp/m3-integration-closeout-${{ matrix.platform }}-${{ github.sha }}.json
+          if-no-files-found: error
+
+  identity-compare:
+    runs-on: ubuntu-latest
+    needs: clean-clone
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: actions/download-artifact@v4
+        with:
+          name: m3-integration-closeout-ubuntu-${{ github.sha }}
+          path: tmp/m3-integration-closeout-ubuntu
+      - uses: actions/download-artifact@v4
+        with:
+          name: m3-integration-closeout-windows-${{ github.sha }}
+          path: tmp/m3-integration-closeout-windows
+      - name: Compare exact integration identities
+        run: >-
+          python -c "import json,os; from pathlib import Path; a=json.loads(next(Path('tmp/m3-integration-closeout-ubuntu').glob('*.json')).read_text()); b=json.loads(next(Path('tmp/m3-integration-closeout-windows').glob('*.json')).read_text()); assert a==b, 'M3_INTEGRATION_IDENTITY_MISMATCH'; assert a['head_sha']==os.environ['GITHUB_SHA']; assert a['stage3e_decision']=='M3_MILESTONE_CONDITIONAL_CLOSEOUT_ALLOWED'; assert a['milestone_status']=='CONDITIONALLY_CLOSED'; print('M3_INTEGRATION_IDENTITY_MATCH')"

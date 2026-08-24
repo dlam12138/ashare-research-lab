@@ -1,0 +1,47 @@
+{
+ "acquisition_status": {
+  "oil": "NOT_ACQUIRED_BOUNDED_PATH_NOT_PROVEN",
+  "petrochemical_industry": "NOT_ACQUIRED_BOUNDED_PATH_NOT_PROVEN"
+ },
+ "datasets": [
+  {
+   "bounded_path": [
+    "EIA_OPEN_DATA_API_NEEDS_KEY",
+    "FRED_UNREACHABLE"
+   ],
+   "dataset_id": "oil",
+   "fred_mirror": "DCOILBRENTEU",
+   "publisher": "U.S. Energy Information Administration",
+   "raw_rows": 0,
+   "series": "RBRTE",
+   "status": "NOT_ACQUIRED_BOUNDED_PATH_NOT_PROVEN",
+   "tier": 1
+  },
+  {
+   "dataset_id": "petrochemical_industry",
+   "publisher": "Shenwan Hongyuan Research",
+   "raw_files": {
+    "801016": false,
+    "801960": false
+   },
+   "regime_1": {
+    "symbol": "801016",
+    "taxonomy": "SW_2014",
+    "through": "2021-12-10"
+   },
+   "regime_2": {
+    "from": "2021-12-13",
+    "symbol": "801960",
+    "taxonomy": "SW_2021"
+   },
+   "status": "INDUSTRY_BOUNDED_ACQUISITION_NOT_PROVEN",
+   "tier": 1,
+   "transport_adapter": "AKShare (index_hist_sw)"
+  }
+ ],
+ "holdout_read_performed": false,
+ "holdout_status": "SEALED",
+ "raw_data_committed_to_git": false,
+ "schema_version": "1.0.0",
+ "stage": "M3_STAGE3BR2"
+}

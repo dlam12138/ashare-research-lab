@@ -1,0 +1,63 @@
+{
+ "coverage_gate": 0.99,
+ "datasets": [
+  {
+   "dataset_id": "shanghai_security_master",
+   "eligible_common_symbols": 2310,
+   "logical_sha256": "eab9a08ca669266c9396f593f8986e65757dd22921933a8051f11a8a0cf7a7de",
+   "normalization_status": "NORMALIZED",
+   "rows": 2353,
+   "schema": [
+    "classification",
+    "delisting_date",
+    "is_target",
+    "listing_date",
+    "symbol"
+   ]
+  },
+  {
+   "coverage_ratio": 1.0,
+   "dataset_id": "shanghai_a_share_daily_series",
+   "date_end": "2022-12-30",
+   "date_start": "2014-01-02",
+   "duplicate_keys": 0,
+   "logical_sha256": "0080536b754db8dcefe7e3615fd7f157d5a0693730612842807e3705daec3ddb",
+   "missing_dates": [],
+   "normalization_status": "NORMALIZED",
+   "rows": 2724195,
+   "schema": [
+    "close",
+    "symbol",
+    "trade_date"
+   ]
+  },
+  {
+   "coverage_ratio": 1.0,
+   "dataset_id": "trade_calendar",
+   "date_end": "2022-12-30",
+   "date_start": "2014-12-01",
+   "duplicate_keys": 0,
+   "logical_sha256": "21f41be0f901a14cf260c8bed2778fdeac9c538b83e3d66d94cda6c842b8eecf",
+   "missing_dates": [],
+   "normalization_status": "NORMALIZED",
+   "rows": 1970,
+   "schema": [
+    "trade_date"
+   ]
+  }
+ ],
+ "holdout_read_performed": false,
+ "holdout_status": "SEALED",
+ "market_ex_target_v2": {
+  "first_date": "2014-12-01",
+  "gap_rows": 68,
+  "instrument_id": "SH_A_SHARE_EQUAL_WEIGHT_EX_601857_V2",
+  "last_date": "2022-12-30",
+  "ok_rows": 1902,
+  "rows": 1970
+ },
+ "primary_proxy_status": "CONSTRUCTED",
+ "schema_version": "1.0.0",
+ "stage": "M3_STAGE3BR1",
+ "stage3c_status": "M3_STAGE3C_NOT_ALLOWED"
+}

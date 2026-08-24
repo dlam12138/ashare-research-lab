@@ -1,0 +1,64 @@
+{
+  "stage": "M3_STAGE3DBR1",
+  "status": "ACTIVE_METADATA_REPAIR_PRE_STATISTIC",
+  "recovery_class": "POST_UNSEAL_TECHNICAL_ADAPTER_RECOVERY",
+  "canonical_base": "6305168f5a445af2bfe579e06aec4402e9a53709",
+  "holdout_already_consumed": true,
+  "accepted_primary_execution_count": 0,
+  "primary_statistic_observed_before_repair": false,
+  "research_specification_changed": false,
+  "pristine_oos_execution": false,
+  "prohibitions": {
+    "new_hypothesis": true,
+    "new_statistical_specification": true,
+    "new_source": true,
+    "new_threshold": true,
+    "new_proxy": true,
+    "new_controls": true,
+    "robustness": true,
+    "second_oos_primary": true
+  },
+  "digest_algorithm": "M3_REPOSITORY_RELATIVE_DIGEST_V2",
+  "upstream_inventory_sha256": "f206780dcb6fd4c3b9d30a92025b75974284afd16eecd24770d2f812256f0031",
+  "pipeline_digest": "ab224492ff85f391a29048dfeec740f9bbffb376de3408a5645a4552b51b9d1b",
+  "model_digest": "4958351a5c79c0eb96bbfda9ebaaca5e71ab2b07236eaa808b0a92ebc6e9756d",
+  "bound_contracts": {
+    "stage3br1_proxy_contract": {
+      "path": "reports/m3_stage3br1_primary_proxy_contract_v2.json",
+      "sha256": "bab6878cf16b904eeb5bc48cb2b92350313ec503c25627bf614bd31af0a21e6a"
+    },
+    "stage3da_frozen_oos_contract": {
+      "path": "reports/m3_stage3da_frozen_oos_execution_contract_v1.json",
+      "sha256": "f254837059c7010507c31eb9f106fd080ff937f537f053ec4d393bda7f90db30"
+    },
+    "stage3db_original_input_manifest": {
+      "path": "reports/m3_stage3db_oos_analysis_input_manifest_v1.json",
+      "sha256": "d35d19e3a2de4b1b132e2f2eafc148df121dd58c944309aaca55073c57cd0370"
+    },
+    "stage3db_original_acceptance": {
+      "path": "acceptance/m3_stage3db_one_shot_frozen_holdout_oos_execution.md",
+      "sha256": "73c5dd4e21ccbed6a555f96e1dcd53afe92ce0dab9fc1ca69e5dc5719f3dc315"
+    }
+  },
+  "base_capsule_identity": {
+    "base_capsule": "D:/m3_stage3db_holdout_retry",
+    "market_raw_capsule_manifest_sha256": "88a8b4e87dc8020fdd490130a563efa9896959d25ac87dfbac4715e79e15ab33",
+    "sh_master_main_a_sha256": "883886d4de5774f437826c5b0d563a5094c94cdeffffe58284bbea041563a3f4",
+    "sh_master_star_sha256": "48d0b672d495040fe81ec302e7c5017b68eda772d1e56038f23676bc12762fb2",
+    "sh_master_main_b_sha256": "ce6f5a9fa9075fd84115d71e5c7d75562b67602cd71b11b870ec2206afa573e5",
+    "sh_delist_sha256": "72bf23f2bf0c5edc6bd585ad1434a6da010a22a1122af967e2f5d47c3ad4b0d0",
+    "raw_price_parse_before_gate_a": false,
+    "write_policy": "BASE_IMMUTABLE_OVERLAY_ONLY"
+  },
+  "frozen_execution": {
+    "warmup_start": "2022-12-01",
+    "holdout_start": "2023-01-01",
+    "holdout_end": "2026-08-13",
+    "coverage_gate": 0.99,
+    "market": "SH_A_SHARE_EQUAL_WEIGHT_EX_601857_V2",
+    "target": "601857.SH",
+    "market_transport": "AKShare stock_zh_a_daily",
+    "market_adjust": "",
+    "retries_allowed_only_for": "TRUE_REQUIRED_MISSING"
+  }
+}

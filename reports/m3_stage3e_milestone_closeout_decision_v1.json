@@ -1,0 +1,21 @@
+{
+  "schema": "m3_stage3e_milestone_closeout_decision_v1",
+  "stage": "M3_STAGE3E",
+  "canonical_base": "724322aa9b98d903cf5507302953180bf6d27f20",
+  "decision": "M3_MILESTONE_CONDITIONAL_CLOSEOUT_ALLOWED",
+  "milestone_status": "CONDITIONALLY_CLOSED",
+  "daily_mechanism": "M3_DAILY_MECHANISM_NOT_ESTABLISHED",
+  "development_primary": "M3_PRIMARY_DEVELOPMENT_POSITIVE_ABNORMAL_PERFORMANCE_NOT_ESTABLISHED",
+  "holdout_primary": "M3_HOLDOUT_PRIMARY_INCONCLUSIVE_TECHNICAL_OR_COVERAGE_GAP",
+  "full_evidence_completion": false,
+  "core_mvp_research_question_answered": true,
+  "new_holdout_recovery_allowed": false,
+  "minute_escalation_allowed": false,
+  "index_contribution_authorized": false,
+  "m4_authorized": false,
+  "m5_authorized": false,
+  "new_petrochina_mechanism_hypothesis_authorized": false,
+  "rationale": "The M3 research question is whether a stable reproducible positive controlled abnormal relation exists, not how to prove a predetermined actor-intent explanation. Development and registered robustness did not establish that relation. The frozen holdout remained inconclusive because corrected market coverage stayed below the 0.99 gate, so the final disposition is not established, not proven absent.",
+  "closeout_boundary": "Conditional closeout records the completed fail-closed daily MVP and explicit gaps; it is neither FULLY_COMPLETE nor FAILED.",
+  "stop_condition": "STOP_FOR_NORTH_STAR_REVIEW"
+}

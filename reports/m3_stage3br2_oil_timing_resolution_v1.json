@@ -1,0 +1,36 @@
+{
+ "schema_version": "1.0.0",
+ "stage": "M3_STAGE3BR2",
+ "type": "FORMAL_PRE_OUTCOME_TIMING_SUPERSESSION",
+ "supersedes": {
+  "artifact_id": "m3_stage3b_return_and_timing_contract_v1.json",
+  "scope": "OIL_TIMESTAMP_AND_ALIGNMENT_POLICY_ONLY",
+  "v1_status": "FROZEN_BYTE_IDENTICAL_IMMUTABLE_AND_NOT_MUTATED_BY_THIS_SUPERSESSION",
+  "supersession_authorized_by": "NORTH_STAR_REVIEW_OF_STAGE3B_V1_TIMING_OVERSPECIFICATION"
+ },
+ "holdout_status": "SEALED",
+ "holdout_read_performed": false,
+ "supersession_rationale": [
+  "Stage 3B v1 required a per-observation publication/release timestamp proven earlier than the 15:00 CST A-share close (timestamp_policy = OBSERVATION_DATE_IS_NOT_AVAILABLE_AT_RELEASE_OR_VINTAGE_TIMESTAMP_REQUIRED; unproven_release_timestamp_action = FAIL_CLOSED).",
+  "North-Star review determined this requirement conflated two distinct timing concepts: (1) the underlying Brent market observation time, and (2) a later data-distributor publication/release time.",
+  "EIA/FRED publish daily observations in batches; the batch-publication time is a distribution artifact, not evidence of when the market observation itself formed.",
+  "For a daily explanatory study the only real hazard is using Brent market changes that occurred after the A-share close on day t to explain A-share day t.",
+  "The corrected, frozen rule therefore aligns each A-share trading day t to the latest Brent observation date strictly before t and never uses the same-calendar-day overseas close.",
+  "This is a pre-outcome supersession fixed before any PetroChina result is computed; it is not a post-hoc fallback after results."
+ ],
+ "supersession_semantics": {
+  "runtime_fallback_from_v1": false,
+  "same_calendar_day_overseas_observation_still_prohibited": true,
+  "strictly_prior_observation_date_alignment": "FROZEN",
+  "v1_publication_timestamp_requirement": "SUPERSEDED_PRE_OUTCOME"
+ },
+ "frozen_policy": {
+  "alignment": "STRICTLY_PRIOR_BRENT_OBSERVATION_DATE",
+  "max_oil_anchor_age_calendar_days": 7,
+  "same_calendar_day_join_allowed": false,
+  "same_y_mm_dd_join_allowed": false,
+  "stale_anchor_row_status": "OIL_ROW_INVALID_STALE_ANCHOR",
+  "stale_gate_override_allowed": false,
+  "stale_gate_mass_failure_action": "OUTPUT_DATA_GAP_AND_STOP_FOR_NORTH_STAR_REVIEW"
+ }
+}

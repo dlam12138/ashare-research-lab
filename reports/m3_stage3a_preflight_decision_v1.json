@@ -1,0 +1,21 @@
+{
+ "daily_mvp_max_authorized_evidence_level": 3,
+ "decision": "M3_MECHANISM_RESEARCH_CONTRACT_FROZEN",
+ "holdout_read_performed": false,
+ "m3_implementation_complete": false,
+ "next_stage": "M3_STAGE3B_DATA_ACQUISITION_AND_NORMALIZATION_ALLOWED",
+ "petrochina_abnormal_support_behavior_confirmed": false,
+ "primary_proxy_status": "DATA_ACQUISITION_REQUIRED",
+ "prohibited_claims": [
+  "PETROCHINA_STABILIZES_THE_MARKET",
+  "STATE_OR_FUNDING_ACTOR_INTENT_IDENTIFIED",
+  "OFFICIAL_INDEX_POINT_ATTRIBUTION"
+ ],
+ "real_data_acquisition_performed": false,
+ "real_hypothesis_result_produced": false,
+ "regression_performed": false,
+ "schema_version": "1.0.0",
+ "stage": "M3_STAGE3A",
+ "stage3b_started": false,
+ "verdict": "PASS"
+}

@@ -1,0 +1,27 @@
+{
+  "stage": "M3_STAGE3DBR1",
+  "status": "M3_STAGE3DBR1_SECURITY_MASTER_CONFLICT",
+  "audit_mode": "METADATA_ONLY",
+  "raw_current_plus_delist_unique_symbols": 2508,
+  "classification_counts_before_master_merge": {
+    "A_SHARE_COMMON": 2459,
+    "B_SHARE": 41,
+    "CDR": 0,
+    "OTHER_INSTRUMENT": 8
+  },
+  "target_excluded_count": 1,
+  "ever_eligible_in_holdout_count": null,
+  "never_eligible_in_holdout_count": null,
+  "metadata_insufficient_count": null,
+  "original_failed_148_count": 148,
+  "original_failed_classification": null,
+  "conflict_symbols": ["600190", "600555", "600614", "600625", "600680", "600695"],
+  "conflict_detail": "The delisted-history source contains duplicate symbols with conflicting listing_date values; no current/delist precedence or earliest/latest selection was applied.",
+  "stop_code": "M3_STAGE3DBR1_SECURITY_MASTER_CONFLICT",
+  "price_bytes_parsed": false,
+  "coverage_computed": false,
+  "market_proxy_materialized": false,
+  "fred_requested": false,
+  "cni_requested": false,
+  "statistical_outputs": false
+}

@@ -1,0 +1,43 @@
+{
+  "stage": "M3_STAGE3DBR1",
+  "status": "BOUND_METADATA_ONLY",
+  "base_capsule": "D:/m3_stage3db_holdout_retry",
+  "bindings": [
+    {
+      "source_file": "akshare/sh_master_main_a.csv",
+      "source_sha256": "883886d4de5774f437826c5b0d563a5094c94cdeffffe58284bbea041563a3f4",
+      "source_kind": "current_master",
+      "actual_column_names": ["证券代码", "证券简称", "证券全称", "公司简称", "公司全称", "上市日期"],
+      "security_code_column": "证券代码",
+      "listing_date_column": "上市日期"
+    },
+    {
+      "source_file": "akshare/sh_master_star.csv",
+      "source_sha256": "48d0b672d495040fe81ec302e7c5017b68eda772d1e56038f23676bc12762fb2",
+      "source_kind": "current_master",
+      "actual_column_names": ["证券代码", "证券简称", "证券全称", "公司简称", "公司全称", "上市日期"],
+      "security_code_column": "证券代码",
+      "listing_date_column": "上市日期"
+    },
+    {
+      "source_file": "akshare/sh_master_main_b.csv",
+      "source_sha256": "ce6f5a9fa9075fd84115d71e5c7d75562b67602cd71b11b870ec2206afa573e5",
+      "source_kind": "current_master",
+      "actual_column_names": ["证券代码", "证券简称", "证券全称", "公司简称", "公司全称", "上市日期"],
+      "security_code_column": "证券代码",
+      "listing_date_column": "上市日期"
+    },
+    {
+      "source_file": "akshare/sh_delist.csv",
+      "source_sha256": "72bf23f2bf0c5edc6bd585ad1434a6da010a22a1122af967e2f5d47c3ad4b0d0",
+      "source_kind": "delisted_history",
+      "actual_column_names": ["公司代码", "公司简称", "上市日期", "暂停上市日期"],
+      "security_code_column": "公司代码",
+      "listing_date_column": "上市日期",
+      "delisting_date_column": "暂停上市日期",
+      "provider_semantic_binding": "AKShare stock_info_sh_delist suspension/delisting boundary"
+    }
+  ],
+  "position_based_column_interpretation": false,
+  "ambiguous_schema_action": "M3_STAGE3DBR1_METADATA_SCHEMA_AMBIGUOUS_STOP"
+}
