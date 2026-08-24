@@ -12,7 +12,12 @@
       "reports/m3_stage3e*",
       "acceptance/m3_stage3*",
       "src/ashare_research/mechanism/*",
-      ".github/workflows/*"
+      ".github/workflows/m3-stage3car2-digest-identity.yml",
+      ".github/workflows/m3-stage3cb-preexecution.yml",
+      ".github/workflows/m3-stage3cc-preexecution.yml",
+      ".github/workflows/m3-stage3da-contract.yml",
+      ".github/workflows/m3-stage3db-preunseal.yml",
+      ".github/workflows/stage2g-reproducibility.yml"
     ],
     "file_count": 111,
     "aggregate_sha256": "6ff405c51843a0dd64b759a252f443a8e0f20b9f347b6b3d1668b584b3e24db9"
