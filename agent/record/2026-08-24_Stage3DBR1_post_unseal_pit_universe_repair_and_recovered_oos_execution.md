@@ -110,6 +110,7 @@ execution is authorized from this state.
 ## Final Git state
 
 Final checks passed. The Gate A recovery implementation and evidence were
-committed as `518b2da` (`feat: add post-unseal market universe recovery gate`).
-No tag was created. Push/remote synchronization is recorded after the final
-push decision; no recovery execution follows this blocked Gate A.
+committed as `cc4cceac5290a4d4bdf895fbe6123771236f0f9b` (`feat: add
+post-unseal market universe recovery gate`) and pushed normally to origin.
+Final local/origin synchronization is `0/0` at that commit. No tag was
+created, and no recovery execution follows this blocked Gate A.
