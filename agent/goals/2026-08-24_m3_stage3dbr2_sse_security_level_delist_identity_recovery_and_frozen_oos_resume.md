@@ -1,6 +1,6 @@
 # M3 Stage 3D-B-R2 Goal Contract
 
-status: ACTIVE_PRE_STATISTIC_SECURITY_IDENTITY_RECOVERY
+status: STOP_FOR_NORTH_STAR_REVIEW
 
 ## Objective
 
@@ -50,6 +50,24 @@ after all metadata gates pass—resume the already-consumed frozen OOS execution
 - Frozen dates remain authoritative; SSE supplies identity only.
 - Company-to-security one-to-many rows are retained as distinct occurrences.
 - Extra current SSE rows are reported and ignored.
+
+## Final observed state
+
+- SSE recovery passed: 159/159 frozen compressed rows resolved; 146 A rows and
+  13 B rows; zero unresolved, extra, security-level conflict, or
+  company-code-as-security-id rows.
+- Corrected Gate A passed: 2,514 master rows; 2,367 ever-eligible; 147
+  never-eligible; zero metadata-insufficient rows. The original 148 failures
+  classify as 57 ever-eligible, 91 never-eligible, and 0 metadata-insufficient.
+- Exact retry of 57 true-required-missing series acquired 0; 2,310 base files
+  were reused and 91 never-eligible symbols were not retried.
+- Frozen market coverage remained below 0.99 (minimum
+  `0.9736963544070143`), so no market proxy or primary statistic was
+  materialized. FRED, CNI, Crash, OLS, bootstrap, and gamma remain
+  unrequested/unexecuted.
+- Final state:
+  `M3_STAGE3DBR2_RECOVERY_COMPLETED_HOLDOUT_PRIMARY_INCONCLUSIVE`;
+  `STOP_FOR_NORTH_STAR_REVIEW`.
 
 ## Required tests and validation
 
