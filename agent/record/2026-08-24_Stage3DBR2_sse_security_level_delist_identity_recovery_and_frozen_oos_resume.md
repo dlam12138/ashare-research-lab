@@ -6,7 +6,7 @@
 - Canonical branch: `feat/m3-mechanism-validation-mvp`
 - Pre-metadata implementation HEAD / CI: `a2e93d685e0e9a839610c17c8381c89d7a038306` / PASS
 - Post-metadata corrected-universe HEAD / CI: `c445028a0219e9d3e73f0f56371e43081913f434` / PASS
-- Final HEAD: `FINAL_HEAD_RECORDED_BY_COMMIT`
+- Full-suite CI HEAD: `8378f7dc96da8cae4f277edb92b1e393e19f23d8`; final documentation evidence commit before this record self-update: `e49d24db0a8b5e002fb08234a7a76963cc9ae09b`.
 - Holdout was `UNSEALED_CONSUMED`; accepted primary execution count remained `0`.
 - No primary statistic was observed before or during identity recovery.
 
