@@ -151,3 +151,11 @@ def test_readme_has_current_closeout_facts_and_no_stale_148_claim() -> None:
     assert "M3_DAILY_MECHANISM_NOT_ESTABLISHED" in readme
     assert "0.9736963544070143" in readme
     assert "148 eligible securities" not in readme
+
+
+def test_readme_integration_status_has_no_confirmed_stale_m3_wording() -> None:
+    readme = (ROOT / "README.md").read_text(encoding="utf-8")
+    assert "M2 正在实现" not in readme
+    assert "holdout 保持 sealed，Stage 3D-B 需单独授权" not in readme
+    assert "M2 已条件关闭" in readme
+    assert "M3_HOLDOUT_PRIMARY_INCONCLUSIVE_TECHNICAL_OR_COVERAGE_GAP" in readme
