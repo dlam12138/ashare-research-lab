@@ -1,0 +1,115 @@
+{
+  "schema": "m3_stage3e_daily_mechanism_final_disposition_v1",
+  "stage": "M3_STAGE3E",
+  "canonical_base": "724322aa9b98d903cf5507302953180bf6d27f20",
+  "disposition_code": "M3_STAGE3E_DAILY_MECHANISM_FINAL_DISPOSITION_ACCEPTED",
+  "north_star_alignment": {
+    "module": "mechanism_validation",
+    "hypothesis": "frozen PetroChina daily controlled abnormal-performance relation",
+    "sample_frequency": "daily",
+    "minute_level": "NOT_TESTED_AT_MINUTE_LEVEL",
+    "index_contribution": "NOT_EXECUTED",
+    "causal_or_actor_intent_inference": "NOT_AUTHORIZED"
+  },
+  "identity_anchors": {
+    "upstream_inventory_sha256": "f206780dcb6fd4c3b9d30a92025b75974284afd16eecd24770d2f812256f0031",
+    "pipeline_sha256": "ab224492ff85f391a29048dfeec740f9bbffb376de3408a5645a4552b51b9d1b",
+    "model_sha256": "4958351a5c79c0eb96bbfda9ebaaca5e71ab2b07236eaa808b0a92ebc6e9756d",
+    "stage3cb_adapter_sha256": "9b0df296d4b5d3b7bdf382bd07cf8bdb4410fb6659edfe88da68a16b419fbf78",
+    "stage3cb_manifest_sha256": "7c3070a64cc5931807a7c35c95fcff66dffa6bb84310304365544c2bda3f8be2",
+    "stage3cc_robustness_sha256": "8b870ed2b4fe8b52110fbdbf9b6412498939421f018c337ecf3955678c30a527",
+    "stage3dbr1_adapter_sha256": "0875afa70a54e062b3ce6a0341d2c5387b3e0f32ff700204d2767dc71eff96d8",
+    "stage3dbr2_adapter_sha256": "c2ec3a088563f23106d4869c0c5d66b5f722a71effdf57aa8f35c76c764bbf03"
+  },
+  "development": {
+    "sample_start": "2015-03-16",
+    "sample_end": "2022-12-30",
+    "nobs": 1902,
+    "crash_count": 330,
+    "gamma": 0.0005072734676652487,
+    "bootstrap_ci": [-0.0021987423016553366, 0.0033325010311833106],
+    "primary_decision": "M3_PRIMARY_DEVELOPMENT_POSITIVE_ABNORMAL_PERFORMANCE_NOT_ESTABLISHED"
+  },
+  "development_robustness": {
+    "status": "M3_REGISTERED_EXECUTABLE_DEVELOPMENT_ROBUSTNESS_COMPLETED",
+    "all_threshold_bh_reject": false,
+    "threshold_gamma_direction": "MIXED",
+    "leave_one_year_out_direction": "MIXED",
+    "registered_not_executed": {
+      "leave_one_event_out": "NOT_EXECUTED_PREOUTCOME_IMPLEMENTATION_MISSING",
+      "alternative_market_proxies": "NOT_EXECUTED_DATA_NOT_ACQUIRED",
+      "industry_ex_target": "NOT_EXECUTED_FUTURE_CANDIDATE",
+      "volume_abnormality": "NOT_EXECUTED_REGISTERED_NOT_EXECUTABLE_WITH_CURRENT_TIER1_INPUTS",
+      "market_regimes": "NOT_EXECUTED_REGISTERED_NOT_EXECUTABLE_WITH_CURRENT_TIER1_INPUTS"
+    },
+    "qualitative_status": "ROBUSTNESS_DOES_NOT_ESTABLISH_A_STABLE_POSITIVE_PRIMARY_EFFECT"
+  },
+  "identity_recovery": {
+    "resolution_total": 159,
+    "resolved_total": 159,
+    "resolved_a": 146,
+    "resolved_b": 13,
+    "unresolved_total": 0,
+    "extra_expansion_total": 0,
+    "conflicts_resolved": 6,
+    "corrected_master_rows": 2514,
+    "ever_eligible_rows": 2367,
+    "never_rows": 147,
+    "metadata_insufficient_rows": 0,
+    "true_required_missing": 57,
+    "retry_success": 0,
+    "minimum_market_coverage": 0.9736963544070143,
+    "coverage_gate": 0.99,
+    "invalid_proxy_rows": 535,
+    "provider_missing_retained_in_denominator": true
+  },
+  "holdout": {
+    "status": "UNSEALED_CONSUMED",
+    "consumed": true,
+    "primary_statistic_observed": false,
+    "accepted_primary_execution_count": 0,
+    "final_status": "M3_HOLDOUT_PRIMARY_INCONCLUSIVE_TECHNICAL_OR_COVERAGE_GAP",
+    "coverage_gate": 0.99,
+    "minimum_market_coverage": 0.9736963544070143,
+    "invalid_proxy_rows": 535,
+    "true_required_missing": 57,
+    "retry_success": 0,
+    "market_proxy_materialized": false,
+    "FRED_requested": false,
+    "CNI_requested": false,
+    "Crash_computed": false,
+    "OLS_executed": false,
+    "bootstrap_executed": false,
+    "gamma_computed": false,
+    "holdout_gamma": null,
+    "recovery_history": [
+      "M3_STAGE3DA_ONE_SHOT_OOS_CONTRACT_FROZEN",
+      "M3_STAGE3DB_HOLDOUT_UNSEALED_CONSUMED_INITIAL_TECHNICAL_BLOCKER",
+      "M3_STAGE3DBR1_COMPANY_CODE_SECURITY_MASTER_CONFLICT",
+      "M3_STAGE3DBR2_SECURITY_LEVEL_IDENTITY_RECOVERED_COVERAGE_GAP_REMAINS"
+    ]
+  },
+  "daily_mechanism_disposition": "M3_DAILY_MECHANISM_NOT_ESTABLISHED",
+  "evidence": {
+    "ceiling": "M3_DEVELOPMENT_EVIDENCE_CEILING_LEVEL_2",
+    "numeric_level": null,
+    "level_status": "M3_FINAL_NUMERIC_EVIDENCE_LEVEL_UNASSIGNED"
+  },
+  "minute_level": {
+    "authorized": false,
+    "status": "M3_MINUTE_LEVEL_ESCALATION_NOT_JUSTIFIED",
+    "justification": "CURRENT_M3_PETROCHINA_HYPOTHESIS_DOES_NOT_JUSTIFY_MINUTE_ESCALATION"
+  },
+  "index_contribution": {
+    "authorized": false,
+    "status": "M3_INDEX_CONTRIBUTION_DEFERRED_SEPARATE_MECHANICAL_ANALYSIS"
+  },
+  "further_holdout_recovery": {
+    "authorized": false,
+    "status": "M3_FURTHER_HOLDOUT_RECOVERY_NOT_AUTHORIZED",
+    "reason": "R2 repaired the uniquely determinable identity defect; remaining missing data would require a specification, provider, coverage, universe, imputation, or window change"
+  },
+  "milestone_closeout_decision": "M3_MILESTONE_CONDITIONAL_CLOSEOUT_ALLOWED",
+  "milestone_status": "CONDITIONALLY_CLOSED",
+  "stop_condition": "STOP_FOR_NORTH_STAR_REVIEW"
+}
