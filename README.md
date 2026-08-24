@@ -39,6 +39,10 @@ crossed the unseal boundary but failed closed at the frozen market coverage gate
 securities repeatedly returned empty/non-JSON responses; no regression/bootstrap/gamma was run and
 the disposition is `M3_HOLDOUT_PRIMARY_INCONCLUSIVE_TECHNICAL_OR_COVERAGE_GAP`. This result does not support causal, actor-intent, policy-intervention, or
 “护盘/国家队” inferences. The task stops at `STOP_FOR_NORTH_STAR_REVIEW`.
+Stage 3D-B-R1 began the authorized post-unseal technical recovery in an
+isolated metadata-only Gate A. It detected conflicting duplicate delisted-
+security metadata and stopped fail-closed before any new price parse or retry;
+no recovered holdout primary was executed.
 No real mechanism inference beyond this frozen development-primary and
 registered robustness execution has been executed.
 
