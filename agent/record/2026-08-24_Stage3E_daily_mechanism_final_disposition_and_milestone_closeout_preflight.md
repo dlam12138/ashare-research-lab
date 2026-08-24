@@ -1,6 +1,6 @@
 # Work Record — M3 Stage 3E Daily Mechanism Final Disposition & Milestone Closeout Preflight
 
-Status: IN_PROGRESS — PURE GOVERNANCE / NO DATA READ
+Status: CONDITIONAL_PASS — PURE GOVERNANCE / NO DATA READ / STOP FOR NORTH-STAR REVIEW
 
 ## Basic information
 
@@ -129,3 +129,29 @@ state, and any deviations before task completion.
   `CONDITIONALLY_CLOSED`, neither fully complete nor failed.
 - Next stage: M4/M5/index/new hypothesis not authorized.
 - Final stop: `STOP_FOR_NORTH_STAR_REVIEW`.
+
+## Git and synchronization before final closeout
+
+- Base branch and starting HEAD: `feat/m3-mechanism-validation-mvp` at
+  `724322aa9b98d903cf5507302953180bf6d27f20`.
+- Implementation commits:
+  - `ffcdcc6` — `docs: record M3 daily mechanism final disposition`.
+  - `4595e3f` — `test: enforce M3 closeout boundaries`.
+- Pre-final-record HEAD: `4595e3f2dc8ddf2463640694858a617b2a533371`.
+- Pre-push worktree was clean; local was ahead of origin by `2`, behind `0`.
+- No tags, merge, PR, force-push, stash mutation, database mutation, or M2
+  worktree access occurred.
+
+## Deviations and unresolved risks
+
+- The first full-suite run exposed one existing exact-wording assertion after
+  the required README factual replacement. The factual sentence
+  `No real mechanism inference` was restored; the affected test then passed and
+  the final full suite passed.
+- Full evidence completion remains blocked by the explicitly registered
+  holdout coverage gap and unassigned numeric evidence level. This is expected
+  and is the reason the milestone is conditionally closed rather than fully
+  complete.
+- Final verdict for this implementation task: `PASS`.
+- Proceeding to M4, M5/minute, index contribution, or new hypothesis is not
+  allowed. Final stop remains `STOP_FOR_NORTH_STAR_REVIEW`.
