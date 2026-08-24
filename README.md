@@ -61,8 +61,8 @@ development-primary and registered robustness execution has been executed.
 
 本项目围绕两个核心模块：
 
-1. **个股价值评估** — 企业质量、估值吸引力、价值兑现能力、风险否决项（M2 正在实现）
-2. **市场机制验证** — 用统计方法检验个股与市场之间的可复现关系（Stage 3A 契约已冻结；Stage 3B 已 fail-closed 完成；Stage 3B-R1 主市场代理解析为当前状态；Stage 3B-R2 冻结严格 prior Brent 观测日与申万行业 regime；Stage 3B-R4 在结果出现前将 oil transport 改为无认证 bounded FRED `DCOILBRENTEU`，并将行业 primary amendment 固定为官方 CNI `399439`，两项均 TRUSTED；复用 R1 market proxy 后 joint Tier-1 共有 1,902 个有效 development dates；Stage 3C-A 方法锁定，Stage 3C-A-R2 已在真实 outcome 读取前完成 digest portability repair/relock；Stage 3C-B frozen development-primary 已完成，正的受控异常表现未建立；Stage 3C-C 已完成结果出现前注册且已实现锁定的 development robustness，primary decision 未改变，evidence level 未分配；Stage 3D-A 已冻结一次性 frozen primary OOS 合同，holdout 保持 sealed，Stage 3D-B 需单独授权）
+1. **个股价值评估** — 企业质量、估值吸引力、价值兑现能力、风险否决项（M2 已条件关闭）
+2. **市场机制验证** — 用统计方法检验个股与市场之间的可复现关系（Stage 3A 契约已冻结；Stage 3B 已 fail-closed 完成；Stage 3B-R1 主市场代理解析为当前状态；Stage 3B-R2 冻结严格 prior Brent 观测日与申万行业 regime；Stage 3B-R4 在结果出现前将 oil transport 改为无认证 bounded FRED `DCOILBRENTEU`，并将行业 primary amendment 固定为官方 CNI `399439`，两项均 TRUSTED；复用 R1 market proxy 后 joint Tier-1 共有 1,902 个有效 development dates；Stage 3C-A 方法锁定，Stage 3C-A-R2 已在真实 outcome 读取前完成 digest portability repair/relock；Stage 3C-B frozen development-primary 已完成，正的受控异常表现未建立；Stage 3C-C 已完成结果出现前注册且已实现锁定的 development robustness，primary decision 未改变，evidence level 未分配；Stage 3D-A 冻结了一次性 OOS 合同；Stage 3D-B 已跨过 unseal boundary；Stage 3D-B-R1/R2 完成 PIT universe 与 SSE security-level identity recovery，但 corrected minimum market coverage `0.9736963544070143` 未达到 frozen `0.99` gate；holdout primary 因技术/覆盖缺口保持 inconclusive，没有执行 regression/bootstrap/gamma；Stage 3E 已将 M3 条件关闭，daily mechanism 为 `M3_DAILY_MECHANISM_NOT_ESTABLISHED`）
 
 当前已完成第一阶段的**免费数据底座**：可运行、可测试、可追溯的本地数据基础设施。M2 已有 PetroChina（601857.SH）一份 PIT value profile 纵向切片；收益/现金、ROE/ROA、财务安全、股息和估值均已有阶段性能力。Stage 2G.2 增加了 clean-clone 测试胶囊、显式真实输入解析器、Rule007 严格来源配对和 artifact checksums。
 
