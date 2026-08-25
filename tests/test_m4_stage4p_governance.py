@@ -50,13 +50,23 @@ def test_north_star_v2_governance_markers_are_present() -> None:
         assert marker in text
 
 
-def test_readme_m4_is_preflight_only() -> None:
+def test_readme_current_m4_status_and_m3_history_are_canonical() -> None:
     text = (ROOT / "README.md").read_text(encoding="utf-8")
     assert "Generic Mechanism Research Engine + Theory / Hypothesis Registry" in text
-    assert "PREFLIGHT ONLY; IMPLEMENTATION NOT STARTED" in text
+    roadmap = text.split("| Milestone 4:", 1)[1].split("| Milestone 5:", 1)[0]
+    assert "IN PROGRESS" in roadmap
+    assert "Stage4P COMPLETE" in roadmap
+    assert "M4-A.1" in roadmap and "CANONICAL ON MAIN" in roadmap
+    assert "M4-A.2 NOT STARTED" in roadmap
+    assert "M4-B NOT STARTED" in roadmap
+    assert "real hypothesis execution NOT AUTHORIZED" in roadmap
+    assert "PREFLIGHT ONLY; IMPLEMENTATION NOT STARTED" not in roadmap
     assert "M3_DAILY_MECHANISM_NOT_ESTABLISHED" in text
     assert "holdout primary inconclusive" in text
-    assert "M4 are not authorized" in text
+    assert "At M3 closeout, further holdout recovery," in text
+    assert "minute escalation, index contribution, and M4 were not authorized." in text
+    assert "Historical M3 closeout stop: `STOP_FOR_NORTH_STAR_REVIEW`." in text
+    assert "M4-A.1 has since been implemented and canonicalized on main" in text
 
 
 def test_v1_v2_audit_passes_without_scope_expansion() -> None:
