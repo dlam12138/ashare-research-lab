@@ -2,7 +2,11 @@
 
 ## Decision
 
-`M4_STAGE4P_NORTH_STAR_V2_ADOPTION_PASS` is attainable only when every gate below is true. This document records preflight acceptance criteria; it does not authorize M4 implementation or real research execution.
+`PASS — READY_FOR_NORTH_STAR_V2_MERGE_REVIEW`
+
+Canonical machine status: `M4_STAGE4P_NORTH_STAR_V2_ADOPTION_PASS`.
+
+Stage4P acceptance is complete. This acceptance authorizes only North-Star v2 merge review. It does not authorize M4-A/M4-B implementation, real research execution, literature acquisition, anomaly research, alpha research, M5, or M6.
 
 ## Gates
 
@@ -35,4 +39,4 @@ Acceptance does not authorize `M4-A` implementation, `M4-B` schema implementatio
 
 ## Stop
 
-`STOP_FOR_NORTH_STAR_V2_MERGE_REVIEW`
+`STOP_FOR_NORTH_STAR_V2_FINAL_MERGE_REVIEW`

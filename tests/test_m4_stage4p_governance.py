@@ -184,3 +184,21 @@ def test_no_m4_production_surface_was_created() -> None:
     assert not (ROOT / "src" / "ashare_research" / "m4").exists()
     assert not (ROOT / "src" / "ashare_research" / "engine.py").exists()
     assert not (ROOT / "knowledge").exists()
+
+
+def test_final_governance_status_is_frozen() -> None:
+    governance_paths = [
+        ROOT
+        / "agent/goals/2026-08-24_m4_stage4p_north_star_v2_adoption_and_architecture_preflight.md",
+        ROOT / "acceptance/m4_stage4p_north_star_v2_adoption_and_architecture_preflight.md",
+        ROOT
+        / "agent/record/2026-08-24_Stage4P_north_star_v2_adoption_and_architecture_preflight.md",
+    ]
+    governance_text = [path.read_text(encoding="utf-8") for path in governance_paths]
+    assert "COMPLETED — READY_FOR_NORTH_STAR_V2_MERGE_REVIEW" in governance_text[0]
+    assert "COMPLETED — READY_FOR_NORTH_STAR_V2_MERGE_REVIEW" in governance_text[2]
+    for text in governance_text:
+        assert "ACTIVE_GOVERNANCE_PREFLIGHT" not in text
+        assert "STOP_FOR_NORTH_STAR_V2_FINAL_MERGE_REVIEW" in text
+    assert "`PASS — READY_FOR_NORTH_STAR_V2_MERGE_REVIEW`" in governance_text[1]
+    assert "M4_STAGE4P_NORTH_STAR_V2_ADOPTION_PASS" in governance_text[1]

@@ -1,5 +1,9 @@
 # Stage4P Work Record — North-Star v2 Adoption & Architecture Preflight
 
+## Status
+
+`COMPLETED — READY_FOR_NORTH_STAR_V2_MERGE_REVIEW`
+
 ## Scope
 
 Governance and architecture preflight only. No M4 production implementation, real outcome read, real data acquisition, literature acquisition, or alpha/trading research.
@@ -45,6 +49,18 @@ Governance and architecture preflight only. No M4 production implementation, rea
 - `knowledge/`, `engine.py`, DB schema change, and real data are not required in Stage4P.
 - Future economic significance/tradability: `CURRENTLY_NOT_AUTHORIZED`.
 
+## Final governance disposition
+
+- Machine status: `M4_STAGE4P_NORTH_STAR_V2_ADOPTION_PASS`.
+- North-Star v2 SHA-256: `f411235a94396443c6ffabdc6501c096d5d4163d6fb54b41678109fb3fc6a307`.
+- Architecture: `THIN_GENERIC_LAYER_OVER_PROVEN_M3_CORE`.
+- M4-A preflight: `COMPLETE`; M4-B preflight: `COMPLETE`.
+- Production implementation: `NOT_STARTED`.
+- Real outcome read: `NO`; real research data acquisition: `NO`; literature acquisition: `NO`; real registry dataset: `NO`.
+- PR #4: `OPEN / UNMERGED`.
+- M4 implementation authorization: `REQUIRES POST-MERGE REVIEW`.
+- Final stop: `STOP_FOR_NORTH_STAR_V2_FINAL_MERGE_REVIEW`.
+
 ## Changed files
 
 - Canonical North-Star file (exact v2 replacement)
@@ -72,4 +88,4 @@ Full-test warnings are the existing pandas `to_datetime` format-inference warnin
 
 ## Final stop
 
-`STOP_FOR_NORTH_STAR_V2_MERGE_REVIEW`
+`STOP_FOR_NORTH_STAR_V2_FINAL_MERGE_REVIEW`

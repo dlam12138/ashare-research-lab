@@ -2,7 +2,7 @@
 
 ## Status
 
-`ACTIVE_GOVERNANCE_PREFLIGHT`
+`COMPLETED — READY_FOR_NORTH_STAR_V2_MERGE_REVIEW`
 
 ## Objective
 
@@ -66,7 +66,7 @@ Adopt the user-supplied North-Star v2 as the single canonical North-Star documen
 - M3 mechanism package and frozen M3 artifacts have zero diff from baseline.
 - No real outcome/data acquisition or production M4 implementation occurred.
 - Branch is committed and pushed; CI/PR evidence is recorded if the available GitHub workflow permits it.
-- Final decision is `M4_STAGE4P_NORTH_STAR_V2_ADOPTION_PASS` only if all checks pass, followed by `STOP_FOR_NORTH_STAR_V2_MERGE_REVIEW`.
+- Final decision is `M4_STAGE4P_NORTH_STAR_V2_ADOPTION_PASS` only if all checks pass, followed by `STOP_FOR_NORTH_STAR_V2_FINAL_MERGE_REVIEW`.
 
 ## Stop conditions
 
@@ -85,3 +85,12 @@ Adopt the user-supplied North-Star v2 as the single canonical North-Star documen
   2. `test: lock M4 preflight governance boundaries`
 - Push the feature branch only; never push directly to `main`, force-push, or merge.
 - Create a PR targeting `main` only when credentials/tooling are available; do not merge it.
+
+## Completion
+
+- Stage4P governance preflight is complete and all required acceptance gates passed.
+- North-Star v2 SHA-256 remains `f411235a94396443c6ffabdc6501c096d5d4163d6fb54b41678109fb3fc6a307`.
+- Architecture remains `THIN_GENERIC_LAYER_OVER_PROVEN_M3_CORE`.
+- M4-A and M4-B preflights are complete; production implementation and real research execution remain not started and not authorized.
+- Final disposition is `M4_STAGE4P_NORTH_STAR_V2_ADOPTION_PASS`.
+- `STOP_FOR_NORTH_STAR_V2_FINAL_MERGE_REVIEW`.
