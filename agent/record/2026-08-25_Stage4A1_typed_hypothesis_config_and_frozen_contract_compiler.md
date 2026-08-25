@@ -2,7 +2,7 @@
 
 ## Status
 
-`ACTIVE_IMPLEMENTATION`
+`COMPLETED — READY_FOR_M4A1_MERGE_REVIEW`
 
 ## Basic information
 
@@ -125,22 +125,60 @@ and stop at `STOP_FOR_M4A1_MERGE_REVIEW`; do not merge.
 
 ## Validation
 
-To be updated with exact commands and actual results during implementation.
+- `PYTHONPATH=src pytest -q tests/test_m4_stage4a1_typed_contract.py` — PASS,
+  50 passed.
+- `PYTHONPATH=src pytest -q tests/test_m4_stage4a1_typed_contract.py
+  tests/test_m4_stage4p_governance.py` — PASS, 63 passed.
+- `PYTHONPATH=src pytest -q tests/test_m4_stage4a1_typed_contract.py
+  tests/test_m4_stage4p_governance.py tests/test_m3_stage3a_mechanism_preflight.py`
+  — PASS, 73 passed.
+- `PYTHONPATH=src python -m pytest -q` — PASS, 2309 passed, 4 skipped, 2
+  existing pandas date-format warnings.
+- `ruff check .` — PASS.
+- `python -m compileall -q src tests` — PASS.
+- `git diff --check` — PASS.
+- PowerShell JSON parsing of both Stage4A.1 reports — PASS.
+- Synthetic proof — PASS: A/B semantic config digest, contract digest,
+  canonical dict, serialized bytes, and output SHA were exactly equal; six
+  meaningful mutation cases changed the digest.
+- Stage4P/M3 protected identity — PASS: all pre-existing M3 mechanism files
+  remain byte-identical; only the two approved additive A.1 modules are new.
+
+The first full-suite run found the expected stale file-count assertion in the
+M3 preflight boundary. It was corrected additively to allow exactly
+`hypothesis_config.py` and `contract_compiler.py`; the rerun passed in full.
 
 ## Result
 
-To be updated after implementation and validation.
+Typed config, strict parser, compiler, immutable frozen contract, canonical
+serialization, semantic config digest, contract digest, focused tests, and
+synthetic evidence are complete. The implementation is compile-only and
+synthetic-only. M4-A dataset/plan/executor and M4-B remain not started.
 
 ## Remaining issues
 
-To be updated with actual failures, warnings, or unresolved risks.
+- GitHub CI/PR status was not yet checked at the time of this record update.
+- Existing full-suite pandas date-format warnings remain unchanged.
 
 ## Final file changes
 
-To be updated from the final diff.
+- `src/ashare_research/mechanism/hypothesis_config.py` — added.
+- `src/ashare_research/mechanism/contract_compiler.py` — added.
+- `tests/test_m4_stage4a1_typed_contract.py` — added.
+- `tests/test_m4_stage4p_governance.py` — additive A.1 allowed-file boundary.
+- `tests/test_m3_stage3a_mechanism_preflight.py` — additive A.1 allowed-file boundary.
+- `reports/m4_stage4a1_typed_config_and_compiler_contract_v1.json` — added.
+- `reports/m4_stage4a1_synthetic_compile_identity_v1.json` — added.
+- `acceptance/m4_stage4a1_typed_hypothesis_config_and_frozen_contract_compiler.md` — added.
+- This Goal and work record — updated.
+- No README update was needed; existing M4 preflight wording remains consistent
+  with the explicit no-execution boundary.
 
 ## Final Git state
 
-To be updated with final branch, commit, worktree, remote synchronization,
-stash preservation, and PR status.
-
+- Final branch before push: `feat/m4a1-typed-hypothesis-contract`.
+- Final local commit before push: `7088ce4`.
+- Three local commits are ahead of `origin/main`.
+- Worktree was clean after the final commit.
+- Protected M2 worktree and its stash were not touched.
+- Push and PR status will be recorded after synchronization checks.

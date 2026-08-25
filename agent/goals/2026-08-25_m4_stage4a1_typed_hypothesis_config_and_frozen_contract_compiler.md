@@ -2,7 +2,7 @@
 
 ## Status
 
-`ACTIVE_IMPLEMENTATION`
+`COMPLETED — READY_FOR_M4A1_MERGE_REVIEW`
 
 ## Objective
 
@@ -99,3 +99,14 @@ and must not execute research.
 - `REAL_HYPOTHESIS_EXECUTION = NO`
 - `M4B = NOT_STARTED`
 
+## Completion evidence
+
+- Focused A.1 tests: `50 passed`.
+- Focused A.1 + Stage4P + M3 preflight: `73 passed`.
+- Full suite: `2309 passed, 4 skipped, 2 warnings`.
+- `ruff check .`: passed.
+- `python -m compileall -q src tests`: passed.
+- `git diff --check`: passed.
+- Synthetic A/B semantic identity and six mutation cases: passed.
+- No real data, outcome, network, provider, or execution surface was used.
+- Final stop: `STOP_FOR_M4A1_MERGE_REVIEW`.
