@@ -163,6 +163,7 @@ def test_stage3b_data_layer_remains_intact_after_stage3ca_integration():
         "regression.py",
         "robustness.py",
     }
+    allowed |= {"hypothesis_config.py", "contract_compiler.py"}
     assert {path.name for path in package.glob("*.py")} == allowed
     prohibited = {"conditional_test.py", "evidence_grade.py"}
     assert not any((package / name).exists() for name in prohibited)

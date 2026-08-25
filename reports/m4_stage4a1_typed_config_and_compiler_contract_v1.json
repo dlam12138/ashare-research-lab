@@ -1,0 +1,41 @@
+{
+  "schema_version": "M4_STAGE4A1_TYPED_CONFIG_AND_COMPILER_CONTRACT_V1",
+  "status": "IMPLEMENTED_SYNTHETIC_ONLY",
+  "base_commit": "7a6668d8a683d02eabd9a860d19546fd163a20c1",
+  "north_star_sha256": "f411235a94396443c6ffabdc6501c096d5d4163d6fb54b41678109fb3fc6a307",
+  "stage4p_m4a_contract_sha256": "71f88afc0b1b0c88ab4bf2905f717c98915d0b54bd9e66a624fabc3c9022381a",
+  "architecture": "THIN_GENERIC_LAYER_OVER_PROVEN_M3_CORE",
+  "config_schema_version": "M4_HYPOTHESIS_CONFIG_V1",
+  "frozen_contract_schema_version": "M4_FROZEN_MECHANISM_CONTRACT_V1",
+  "supported_paradigm": "daily_conditional_controlled_mechanism_research",
+  "allowed_condition_operators": ["LT", "LTE", "GT", "GTE"],
+  "allowed_analysis_methods": ["DAILY_CONDITIONAL_CONTROLLED_OLS_V1"],
+  "canonical_numeric_policy": {
+    "conversion": "Decimal(str(value))",
+    "finite_only": true,
+    "notation": "plain_decimal",
+    "insignificant_trailing_zeros_removed": true,
+    "negative_zero": "0",
+    "binary_float_serialization": "FORBIDDEN"
+  },
+  "unknown_field_policy": "FAIL_CLOSED_UNKNOWN_CONFIG_FIELD_AT_EVERY_MAPPING_BOUNDARY",
+  "config_digest_policy": "validated_canonical_semantics_only_not_source_file_bytes",
+  "config_digest_algorithm": "M3 canonical_digest reused over canonical config dict",
+  "contract_digest_policy": "canonical_contract_envelope_excluding_contract_digest_self_reference",
+  "contract_digest_algorithm": "M3 canonical_digest reused over canonical contract dict",
+  "canonical_serialization": {
+    "encoding": "UTF-8",
+    "json": "sort_keys=true,separators=(,,:),ensure_ascii=false",
+    "final_newline": true
+  },
+  "real_data_read": false,
+  "real_outcome_read": false,
+  "network_acquisition": false,
+  "real_hypothesis_execution": false,
+  "real_execution_authorized": false,
+  "m4b": "NOT_STARTED",
+  "executor": "NOT_IMPLEMENTED",
+  "dataset_adapter": "NOT_IMPLEMENTED",
+  "analysis_plan": "NOT_IMPLEMENTED",
+  "m3_behavior_mutation": false
+}

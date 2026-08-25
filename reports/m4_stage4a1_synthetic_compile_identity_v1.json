@@ -1,0 +1,53 @@
+{
+  "schema_version": "M4_STAGE4A1_SYNTHETIC_COMPILE_IDENTITY_V1",
+  "status": "PASS_SYNTHETIC_ONLY",
+  "fixture_identities": {
+    "hypothesis_id": "SYNTH_DAILY_CONTROLLED_001",
+    "target": "SYNTH_TARGET_A",
+    "universe": "SYNTH_UNIVERSE_A",
+    "factor": "SYNTH_FACTOR_A",
+    "controls": ["SYNTH_CONTROL_1", "SYNTH_CONTROL_2"],
+    "outcome": "SYNTH_DAILY_RETURN"
+  },
+  "fixture_a_semantic_digest": "411d4788485308d4d24d133f8a573f3d8b7c0f968f28116892d19456acb51776",
+  "fixture_b_semantic_digest": "411d4788485308d4d24d133f8a573f3d8b7c0f968f28116892d19456acb51776",
+  "contract_digest_a": "ee450d1f23cc68fb88718f3aa607cdda0c5e0d2b3fe951eddcb6e9b7b007f457",
+  "contract_digest_b": "ee450d1f23cc68fb88718f3aa607cdda0c5e0d2b3fe951eddcb6e9b7b007f457",
+  "canonical_output_sha256_a": "1d9cccccabdc8453579f060768f2247daf89ff9fca81203fac89a820cc9f5c10",
+  "canonical_output_sha256_b": "1d9cccccabdc8453579f060768f2247daf89ff9fca81203fac89a820cc9f5c10",
+  "a_b_exact_equality": {
+    "semantic_digest": true,
+    "contract_digest": true,
+    "canonical_contract_dict": true,
+    "serialized_bytes": true
+  },
+  "semantic_mutation_cases": {
+    "threshold": {
+      "changed": true,
+      "contract_digest": "46b3945c889aaa5cd5936876f3cd45e491202dee1b753d36f2116b0e0a170fab"
+    },
+    "control_order": {
+      "changed": true,
+      "contract_digest": "91468509f54724eb61877baad116f1e67fa992eb22f6a5d4a2aea7b622145f1e"
+    },
+    "date": {
+      "changed": true,
+      "contract_digest": "b66d9a9f7a676a582da93e91cd3108c3b1b801477c089bb68495ebf52edc7824"
+    },
+    "coverage": {
+      "changed": true,
+      "contract_digest": "eb2fe65c70d4f1f408c111a25142fe170aabf7099c8d485f2deb0e8a5c4dc641"
+    },
+    "seed": {
+      "changed": true,
+      "contract_digest": "323194cbcc74b8c8d431d2f6b07ed143e71eb5a8611326a0f2c65344ca52eea4"
+    },
+    "robustness_parameter": {
+      "changed": true,
+      "contract_digest": "f4c193cbbc9a32e9bc7d17bf9ba494c7702fc46acd3c723102d025e8084eed9f"
+    }
+  },
+  "real_data_read": false,
+  "real_outcome_read": false,
+  "network_acquisition": false
+}
