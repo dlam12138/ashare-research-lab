@@ -86,10 +86,11 @@ def test_m3_protected_aggregates_are_byte_identical() -> None:
         if path.is_file() and path.name.startswith(("m1_", "m2_", "m3_"))
     ]
     m3_artifacts = [path for path in stage_artifacts if path.name.startswith("m3_")]
+    allowed_new_m4a1 = {"hypothesis_config.py", "contract_compiler.py"}
     mechanism = [
         path
         for path in (ROOT / "src" / "ashare_research" / "mechanism").iterdir()
-        if path.is_file() and path.suffix == ".py"
+        if path.is_file() and path.suffix == ".py" and path.name not in allowed_new_m4a1
     ]
     stage_scope = identity["protected_scopes"]["m1_m2_m3_reports_and_acceptance"]
     m3_scope = identity["protected_scopes"]["m3_reports_and_acceptance"]
