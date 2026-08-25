@@ -177,8 +177,11 @@ synthetic-only. M4-A dataset/plan/executor and M4-B remain not started.
 ## Final Git state
 
 - Final branch before push: `feat/m4a1-typed-hypothesis-contract`.
-- Final local commit before push: `7088ce4`.
-- Three local commits are ahead of `origin/main`.
-- Worktree was clean after the final commit.
+- Last validation commit: `7088ce4`.
+- Governance evidence commit: `d0098fe`.
+- The final metadata commit contains this record update; its exact HEAD is
+  captured in the final handoff after commit.
+- Four local commits were ahead of `origin/main` before this metadata update.
+- Worktree was clean after `d0098fe` before this metadata update.
 - Protected M2 worktree and its stash were not touched.
 - Push and PR status will be recorded after synchronization checks.
