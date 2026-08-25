@@ -157,8 +157,49 @@ synthetic-only. M4-A dataset/plan/executor and M4-B remain not started.
 
 ## Remaining issues
 
-- GitHub CI/PR status was not yet checked at the time of this record update.
-- Existing full-suite pandas date-format warnings remain unchanged.
+- No implementation blocker remains.
+- PR #5 is open and unmerged.
+- Merge requires separate final merge review.
+- Existing pandas date-format warnings remain unchanged and are outside this stage.
+
+## Final remote evidence
+
+- Feature branch: `feat/m4a1-typed-hypothesis-contract`.
+- Implementation candidate HEAD: `3f5ef9891369c686d98ef3bc66f92da3c1fad97a`.
+- Origin synchronization: `0 / 0` (`HEAD...origin/feat/m4a1-typed-hypothesis-contract`).
+- PR: [#5](https://github.com/dlam12138/ashare-research-lab/pull/5).
+- PR state: `OPEN`; merged: `NO`; draft: `NO`.
+- PR base: `main`.
+- PR head: `feat/m4a1-typed-hypothesis-contract`.
+- PR head SHA: `3f5ef9891369c686d98ef3bc66f92da3c1fad97a`.
+- Mergeability: `MERGEABLE`; merge state: `CLEAN`.
+- Exact-tip CI: `PASS`; required checks: `42 / 42 SUCCESS`.
+
+Candidate-tip workflow runs, all at the implementation candidate HEAD and all
+successful:
+
+| Run ID | Workflow | Event | Head SHA | Conclusion |
+| --- | --- | --- | --- | --- |
+| `32818118234` | M3 Integration Closeout | `push` | `3f5ef9891369c686d98ef3bc66f92da3c1fad97a` | `success` |
+| `32818118192` | M3 Stage 3C-A-R2 digest identity | `push` | `3f5ef9891369c686d98ef3bc66f92da3c1fad97a` | `success` |
+| `32818118128` | M3 Stage 3C-B pre-execution lock | `push` | `3f5ef9891369c686d98ef3bc66f92da3c1fad97a` | `success` |
+| `32818118197` | M3 Stage 3C-C pre-robustness lock | `push` | `3f5ef9891369c686d98ef3bc66f92da3c1fad97a` | `success` |
+| `32818118200` | M3 Stage 3D-A frozen OOS contract | `push` | `3f5ef9891369c686d98ef3bc66f92da3c1fad97a` | `success` |
+| `32818118136` | M3 Stage 3D-B pre-unseal holdout lock | `push` | `3f5ef9891369c686d98ef3bc66f92da3c1fad97a` | `success` |
+| `32818118289` | Stage 2G reproducibility | `push` | `3f5ef9891369c686d98ef3bc66f92da3c1fad97a` | `success` |
+| `32818144433` | M3 Integration Closeout | `pull_request` | `3f5ef9891369c686d98ef3bc66f92da3c1fad97a` | `success` |
+| `32818144439` | M3 Stage 3C-A-R2 digest identity | `pull_request` | `3f5ef9891369c686d98ef3bc66f92da3c1fad97a` | `success` |
+| `32818144425` | M3 Stage 3C-B pre-execution lock | `pull_request` | `3f5ef9891369c686d98ef3bc66f92da3c1fad97a` | `success` |
+| `32818144492` | M3 Stage 3C-C pre-robustness lock | `pull_request` | `3f5ef9891369c686d98ef3bc66f92da3c1fad97a` | `success` |
+| `32818144443` | M3 Stage 3D-A frozen OOS contract | `pull_request` | `3f5ef9891369c686d98ef3bc66f92da3c1fad97a` | `success` |
+| `32818144367` | M3 Stage 3D-B pre-unseal holdout lock | `pull_request` | `3f5ef9891369c686d98ef3bc66f92da3c1fad97a` | `success` |
+| `32818144495` | Stage 2G reproducibility | `pull_request` | `3f5ef9891369c686d98ef3bc66f92da3c1fad97a` | `success` |
+
+The seven workflow runs above produced the Windows, Ubuntu, and
+`identity-compare` jobs; all 42 reported checks were successful. Cross-platform
+identity: `PASS`; Windows: `PASS`; Ubuntu: `PASS`; `identity-compare`: `PASS`.
+This section records the original candidate-tip evidence; a governance repair
+tip will require a new exact-tip CI confirmation after the ordinary push.
 
 ## Final file changes
 
@@ -184,4 +225,23 @@ synthetic-only. M4-A dataset/plan/executor and M4-B remain not started.
 - Four local commits were ahead of `origin/main` before this metadata update.
 - Worktree was clean after `d0098fe` before this metadata update.
 - Protected M2 worktree and its stash were not touched.
-- Push and PR status will be recorded after synchronization checks.
+- Implementation candidate HEAD is `3f5ef9891369c686d98ef3bc66f92da3c1fad97a`.
+- Final governance repair is verified against the current branch tip after the
+  documentation-only change; the repair tip is reported in the final handoff
+  to avoid a self-referential record update.
+
+## Final boundary
+
+- `M4A1_TYPED_HYPOTHESIS_CONFIG = IMPLEMENTED`
+- `M4A1_FROZEN_CONTRACT_COMPILER = IMPLEMENTED`
+- `M4_DATASET_ADAPTER = NOT_STARTED`
+- `M4_ANALYSIS_PLAN = NOT_STARTED`
+- `M4_EXECUTOR = NOT_STARTED`
+- `M4B = NOT_STARTED`
+- `REAL_DATA_READ = NO`
+- `REAL_OUTCOME_READ = NO`
+- `NETWORK_ACQUISITION = NO`
+- `REAL_HYPOTHESIS_EXECUTION = NO`
+- `REAL_ANOMALY_RESEARCH = NOT_AUTHORIZED`
+- `ALPHA / PORTFOLIO = NOT_AUTHORIZED`
+- `final stop = STOP_FOR_M4A1_FINAL_MERGE_REVIEW`
