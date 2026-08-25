@@ -1,54 +1,125 @@
 # A股个股研究与市场机制验证平台
 
-> 项目北极星文档  
-> 目的：防止项目在开发过程中滑向“自动荐股”“短线预测”或“大而全量化平台”，始终围绕 **价值评估** 与 **机制验证** 两个核心问题推进。
+> 项目北极星文档 v2.0  
+> 更新日期：2026-08-24  
+> 目的：防止项目在开发过程中滑向“自动荐股”“短线预测”“参数挖掘”或“大而全量化平台”，始终围绕 **价值评估、机制验证与可证伪研究** 推进。  
+> v2.0 在原北极星基础上吸收 M1–M3 的实际研究经验，并为 M4 增加 **Theory / Hypothesis Registry（理论 / 假设注册层）**。  
+> 本文档是长期治理约束；阶段性的 commit、CI、缺口与验收事实仍以仓库 README、reports、acceptance 与 agent/record 中的 canonical evidence 为准。
 
 ---
 
-## 1. 项目定位
+# 0. 当前项目状态与本版决策
 
-本项目是一个面向个人研究的本地A股分析平台，不执行自动交易，也不直接输出“买入/卖出”指令。
+截至 v2.0：
 
-平台主要回答两个问题：
+- **Milestone 1：免费数据底座 — 已完成**
+- **Milestone 2：价值评估 MVP — CONDITIONALLY CLOSED**
+- **Milestone 3：机制验证 MVP — CONDITIONALLY CLOSED**
+- M3 首个中国石油日线机制研究的最终 disposition：
+  - development primary：正的受控异常表现 **NOT ESTABLISHED**
+  - registered executable development robustness：已完成，未建立稳定正效应
+  - holdout：已解封并消费，但因 frozen market coverage gate 未满足而 **INCONCLUSIVE**
+  - holdout accepted primary execution count：`0`
+  - 最终日线结论：`M3_DAILY_MECHANISM_NOT_ESTABLISHED`
+- **Milestone 4 尚未启动。**
+- 分钟级研究、指数贡献扩展、进一步 holdout recovery、经济显著性/可交易性研究、组合与实盘均未因本文件自动授权。
+
+当前最优下一步：
+
+> **M4 North-Star Preflight → M4-A 通用机制研究器 → M4-B Theory / Hypothesis Registry。**
+
+M3 的 explicit evidence gaps 不自动成为 M4 TODO。任何延续都必须重新说明为什么服务于当前北极星目标。
+
+---
+
+# 1. 项目定位
+
+本项目是一个面向个人研究、本地运行、免费数据优先的 A 股可解释研究平台。
+
+平台当前主要回答两个问题：
 
 1. **价值评估**  
-   一家公司是否值得长期研究？当前价格是否合理？价值通过什么方式兑现？存在哪些不可忽视的风险？
+   一家公司是否值得长期研究？当前价格处于什么估值环境？价值通过什么方式兑现？存在哪些不可忽视的风险？
 
 2. **机制验证**  
-   个股与大盘、行业、商品、汇率、市场风格、政策事件或其他股票之间，是否存在稳定、可复现、可证伪的关系？
+   个股与大盘、行业、商品、汇率、市场风格、政策事件、财务事件或其他股票之间，是否存在稳定、可复现、可证伪的关系？
 
-项目最终定位：
+项目进一步允许：
 
-> **以免费数据为基础，对A股个股形成可解释的价值档案，并用统计方法验证个人观察到的市场机制。**
+3. **研究假设发现与整理**  
+   从个人观察、经济金融理论、教材、学术论文、经典实证 anomaly 和官方制度机制中提取候选假设，并将其转化为可计算、可预注册、可反证的研究规格。
+
+项目最终定位仍然是：
+
+> **以免费或低成本可审计数据为基础，对 A 股个股形成可解释的价值档案，并用预注册、可复现的统计方法验证市场机制与候选规律。**
+
+## 1.1 长期投资研究方向
+
+项目允许把“最终希望获得投资研究优势”作为长期动机，但当前不把“盈利”写成软件功能承诺。
+
+长期可以逐步研究：
+
+- 统计关系是否存在；
+- 关系是否具有经济显著性；
+- 扣除交易成本、滑点和不可成交约束后是否仍有价值；
+- 多个经过独立验证的规律能否形成稳定的风险调整收益。
+
+但是：
+
+> **统计显著 ≠ 可交易；历史可交易 ≠ 未来盈利；文献 anomaly ≠ A 股 alpha。**
+
+在进入系统化 alpha、组合构建、仓位管理或实盘之前，必须单独修订北极星并重新授权。
 
 ---
 
-## 2. 不做什么
+# 2. 不做什么
 
-为了避免失焦，第一阶段明确不做：
+为了避免失焦，当前明确不做：
 
 - 自动买卖和券商下单；
 - 明日涨跌预测；
 - 精确目标价预测；
-- 黑箱式“综合得分超过80就买入”；
-- LLM直接判断股票好坏；
+- 黑箱式“综合得分超过 80 就买入”；
+- LLM 直接判断股票好坏；
+- LLM 直接生成未经验证的交易信号；
 - 新闻情绪自动荐股；
+- 为追求回测收益自动穷举大量参数；
+- “技术指标大全”式特征堆积；
 - 全市场长期分钟级数据仓库；
-- 深度学习价格预测；
+- 深度学习价格预测作为当前主线；
 - 多智能体自动交易平台；
-- 加密货币、外汇、期权等非A股扩展；
-- 为追求功能数量而堆积技术指标。
+- 加密货币、外汇、期权等非 A 股扩展；
+- 为追求功能数量而引入复杂基础设施；
+- 把已发表论文或教材结论直接当成本项目 evidence；
+- 因 development 或 holdout 结果不理想而事后修改冻结研究规格；
+- 为了得到可估计结果而静默降低数据质量门槛。
 
-LLM只用于：
+## 2.1 LLM 的允许角色
+
+LLM 可以用于：
 
 - 整理程序计算结果；
 - 生成自然语言报告；
 - 解释指标；
 - 总结风险；
 - 辅助把个人观察改写成可检验假设；
-- 检查报告是否前后矛盾。
+- 从教材、论文和公开研究中发现候选假设；
+- 建立理论、文献、replication 与候选机制之间的索引；
+- 检查报告是否前后矛盾；
+- 审查研究设计是否存在未来数据泄漏、幸存者偏差、机械相关、p-hacking 等风险；
+- 帮助设计反证与稳健性测试。
 
-所有关键数字和结论依据必须由确定性程序生成。
+LLM 不可以：
+
+- 把文献原结论自动升级为 A 股证据；
+- 用语言模型记忆替代数据来源；
+- 直接填写缺失关键数字；
+- 为了得到“好看结果”挑选参数；
+- 直接改变冻结的 research contract；
+- 把 `missing_evidence` 改写成“没有风险”；
+- 把 `NOT_ESTABLISHED` 改写成“证明不存在”。
+
+所有关键数字、样本、结果、统计判定和 canonical status 必须由确定性程序或明确的人工治理合同生成。
 
 ---
 
@@ -80,7 +151,7 @@ LLM只用于：
 
 > 这是不是一家值得长期研究的企业？
 
-建议拆分为独立评分，而不是只给总分。
+建议拆分为独立维度，而不是只给总分。
 
 ### 盈利质量
 
@@ -105,7 +176,7 @@ LLM只用于：
 现金利润质量 = 经营活动现金流净额 / 净利润
 ```
 
-不能机械认为小于1一定有问题，需要结合行业和企业发展阶段判断。
+不能机械认为小于 1 一定有问题，需要结合行业和企业发展阶段判断。
 
 ### 资本回报
 
@@ -113,8 +184,12 @@ LLM只用于：
 - ROA；
 - ROIC；
 - 投入资本回报趋势；
-- 高ROE是否由高杠杆形成；
+- 高 ROE 是否由高杠杆形成；
 - 留存利润是否创造新增价值。
+
+关键规则：
+
+> 如果严格证据合同不能唯一确定 ROIC 等指标，不得使用未经授权的 proxy、plug、残差分配或弱化口径来强行生成数值。
 
 ### 财务安全
 
@@ -162,17 +237,25 @@ LLM只用于：
 - 股息率；
 - 自由现金流收益率；
 - EV/EBITDA（适用行业）；
-- 历史3年、5年估值分位；
+- 历史 3 年、5 年估值分位；
 - 行业横向估值分位；
 - 市值相近企业比较；
 - 盈利下滑后的压力估值。
 
-必须进行情景分析：
+必须区分：
+
+- **原始指标可计算**
+- **历史位置可描述**
+- **评分是否经过独立验证**
+
+如果 scoring contract 的验证条件不可满足：
+
+> 数值评分应保持 `null`，不得补 0，不得把权重自动转移到其他维度。
 
 ### 悲观情景
 
-- 利润下降20%；
-- 利润下降30%；
+- 利润下降 20%；
+- 利润下降 30%；
 - 毛利率下降；
 - 行业景气回落；
 - 估值分位回到历史低位。
@@ -191,7 +274,7 @@ LLM只用于：
 
 重要原则：
 
-> 低PE不自动等于低估，特别是周期股利润顶部可能对应最低PE。
+> 低 PE 不自动等于低估，特别是周期股利润顶部可能对应最低 PE。
 
 ---
 
@@ -217,17 +300,7 @@ LLM只用于：
 - 资产重组；
 - 市场风格是否转向有利。
 
-价值兑现分必须与企业质量分、估值分分开。
-
-例如：
-
-```text
-企业质量：85
-估值吸引力：82
-价值兑现能力：30
-```
-
-这意味着公司可能值得研究，但低估可能持续很久。
+价值兑现必须与企业质量、估值分开。
 
 ---
 
@@ -249,39 +322,31 @@ LLM只用于：
 - 分红依赖新增负债；
 - 股本持续大幅稀释；
 - 关键财务数据来源或公告日期缺失；
-- 周期顶部仍按当期低PE判断便宜。
+- 周期顶部仍按当期低 PE 判断便宜。
+
+规则：
+
+> `missing_evidence` 是证据缺口，不是“未发现风险”。
 
 ---
 
 ## 3.6 价值评估输出
 
-推荐输出一张“价值档案”：
+推荐输出“价值档案”，包含：
 
-```text
-企业质量：78/100
-估值吸引力：65/100
-价值兑现能力：72/100
-风险水平：34/100
-
-核心优势：
-- 现金流覆盖净利润
-- 负债水平较低
-- 分红稳定
-
-主要风险：
-- 行业周期处于较高位置
-- 收入增长放缓
-- 应收账款增速高于营收
-
-当前结论：
-值得持续研究，但尚未出现明显安全边际
-```
+- 企业质量；
+- 估值吸引力；
+- 价值兑现能力；
+- 风险；
+- canonical evidence；
+- explicit gaps；
+- 可追溯的指标来源。
 
 结论必须避免：
 
 - “建议买入”；
-- “目标价XX元”；
-- “上涨概率XX%”；
+- “目标价 XX 元”；
+- “上涨概率 XX%”；
 - “综合分高所以值得买”。
 
 ---
@@ -290,22 +355,71 @@ LLM只用于：
 
 ## 4.1 模块目标
 
-机制验证用于检验个人观察，例如：
+机制验证用于检验可明确表达的市场观察、经济理论或文献规律。
 
-> A股大盘下跌时，中国石油是否更容易逆势上涨，并对上证指数产生稳定作用？
-
-重点不在于证明某种阴谋或交易主体意图，而在于验证：
+重点不是证明某种阴谋或交易主体意图，而是验证：
 
 - 现象是否真实；
 - 是否稳定；
 - 是否具有时间顺序；
 - 是否能被其他因素解释；
 - 实际影响有多大；
-- 在不同市场阶段是否仍成立。
+- 在不同市场阶段是否仍成立；
+- 哪些证据会推翻当前解释。
+
+机制验证必须允许得到：
+
+- `ESTABLISHED`
+- `NOT_ESTABLISHED`
+- `INCONCLUSIVE`
+
+而不是要求所有研究最终都得到“存在规律”。
 
 ---
 
-## 4.2 假设必须可计算
+## 4.2 假设来源与 provenance
+
+候选假设可以来自：
+
+1. `USER_OBSERVATION` — 用户个人市场观察；
+2. `TEXTBOOK_THEORY` — 经济学、金融学、行为金融、市场微观结构等教材理论；
+3. `ACADEMIC_PAPER` — 学术论文与工作论文；
+4. `KNOWN_ANOMALY` — 已知资产定价 anomaly / factor；
+5. `OFFICIAL_MECHANISM` — 交易所、监管、指数编制、制度安排等官方机制；
+6. `REPLICATION_EXTENSION` — 对已完成研究的预先定义、可解释扩展。
+
+每条候选假设必须尽可能记录：
+
+```text
+hypothesis_id
+source_type
+source_title
+authors_or_issuer
+publication_or_version_date
+citation_or_document_identity
+theory
+original_market
+original_sample
+expected_direction
+candidate_signal
+target_horizon
+known_controls
+known_alternative_explanations
+known_replications
+known_failures_or_decay
+a_share_data_feasibility
+free_data_feasibility
+current_project_status
+```
+
+关键规则：
+
+> 文献、教材和经典 anomaly 只提供 **research prior / hypothesis source**。  
+> 它们不自动构成本项目 A 股 evidence。
+
+---
+
+## 4.3 假设必须可计算
 
 不能写：
 
@@ -316,49 +430,76 @@ LLM只用于：
 应改写为：
 
 ```text
-当剔除中国石油后的沪市收益率低于-1%时，
-中国石油的异常收益是否显著高于普通交易日？
+当剔除中国石油后的沪市收益率低于 -1% 时，
+控制市场、原油和行业后，
+中国石油是否存在显著正异常收益？
 ```
 
-假设应包含：
+假设至少应包含：
 
-- 目标股票；
+- 目标股票或股票集合；
 - 目标因素；
-- 条件阈值；
+- 条件阈值或信号定义；
 - 观察窗口；
 - 控制变量；
-- 样本期；
+- development 样本；
+- holdout / OOS 设计；
 - 预期方向；
 - 反证条件；
 - 数据频率；
-- 统计方法。
+- 统计方法；
+- 数据质量门槛；
+- 是否允许分钟级升级；
+- 明确停止规则。
 
 ---
 
-## 4.3 机制验证标准流程
+## 4.4 研究必须先冻结，再读取 outcome
 
-### 第一步：定义假设
+机制研究原则：
 
-示例：
+> **先定义研究合同，再读取研究结果。**
 
-```text
-目标股票：中国石油
-市场条件：剔除中国石油后的沪市收益率低于-1%
-待验证结果：中国石油是否上涨或产生正异常收益
-控制变量：原油、石油行业、高股息、央企风格
-样本期：2015年至今
-数据频率：日线
-```
+冻结内容应视研究类型包含：
 
-### 第二步：描述性统计
+- 样本区间；
+- universe；
+- factor / condition；
+- control；
+- threshold；
+- return definition；
+- 缺失值处理；
+- coverage gate；
+- regression specification；
+- bootstrap / resampling；
+- multiple-testing correction；
+- robustness registry；
+- holdout policy；
+- success / failure / inconclusive rule。
 
-先计算：
+在冻结后的真实 outcome 被读取后：
+
+- 不得因结果不显著而修改 threshold；
+- 不得增加“刚好显著”的新 controls；
+- 不得静默改数据源；
+- 不得降低覆盖门；
+- 不得把未注册的新测试写成 confirmatory evidence。
+
+任何 post-outcome 变化必须被明确标记为：
+
+> exploratory / new hypothesis / new stage
+
+而不是回写原研究。
+
+---
+
+## 4.5 描述性统计
+
+正式模型前可以计算：
 
 - 全样本相关系数；
-- 60日滚动相关性；
-- 市场上涨日表现；
-- 市场下跌日表现；
-- 市场大跌日表现；
+- 滚动相关性；
+- 条件日表现；
 - 上涨概率；
 - 平均收益；
 - 中位数收益；
@@ -366,113 +507,142 @@ LLM只用于：
 - 分年度结果；
 - 不同市场阶段结果。
 
-### 第三步：排除机械相关
+描述性结果不能替代控制模型，也不能自动升级为高等级证据。
 
-研究中国石油与上证指数时，不能直接比较，因为上证指数本身包含中国石油。
+---
 
-应使用：
+## 4.6 排除机械相关
 
-- 剔除目标股票后的市场指数；
-- 全A等权收益率；
-- 全A收益率中位数；
+例如研究中国石油与上证指数时，不能直接忽略目标股本身包含在指数中的机械相关。
+
+优先考虑：
+
+- 剔除目标股票后的市场代理；
+- PIT-aware 等权市场收益；
+- 全 A 收益率中位数；
 - 上涨家数比例；
-- 沪市等权收益率；
-- 剔除目标行业后的市场指标。
+- 剔除目标行业后的市场指标；
+- 其他能够降低机械包含关系的代理。
 
-### 第四步：控制其他解释
+市场 universe 必须考虑：
 
-研究中国石油时至少考虑：
+- 上市日期；
+- 退市日期；
+- 证券级身份；
+- A/B 股等证券类型；
+- 股票代码变化；
+- t-1 membership；
+- 幸存者偏差。
 
-- 布伦特原油；
-- WTI原油；
-- 上海原油；
-- 石油石化行业指数；
-- 高股息指数；
-- 央企指数；
-- 上证50；
-- 沪深300；
-- 中证1000；
-- 人民币汇率；
-- 市场成交额；
-- 市场波动率；
-- 大盘与小盘风格。
+---
 
-否则可能只是：
+## 4.7 控制替代解释
 
-```text
-原油上涨
-→ 石油板块上涨
-→ 中国石油上涨
-```
+研究某个异常现象时，应优先问：
 
-而非特殊市场机制。
+> 它是否只是市场、行业、商品、风格、流动性或制度因素的普通结果？
 
-### 第五步：条件检验与回归
+可能的 controls 包括：
 
-逐级测试：
+- 市场；
+- 行业；
+- 商品；
+- 汇率；
+- size；
+- value；
+- momentum；
+- volatility；
+- liquidity；
+- dividend style；
+- central-SOE style；
+- market turnover；
+- macro variables。
 
-- 市场跌0.5%；
-- 市场跌1%；
-- 市场跌1.5%；
-- 市场跌2%；
-- 高波动状态；
-- 低波动状态；
-- 牛市；
-- 熊市；
-- 震荡市。
+控制变量不能为了提高显著性无限增加。
+
+---
+
+## 4.8 条件检验、回归与稳健性
+
+按照预注册合同逐级执行：
+
+- primary specification；
+- 已注册阈值变化；
+- 样本敏感性；
+- leave-period-out；
+- 极端日期影响；
+- Bootstrap；
+- multiple-testing correction；
+- alternative proxy（仅在 pre-outcome 注册且数据可信时）；
+- OOS。
 
 核心问题：
 
-> 控制市场、行业、商品和风格后，大跌日是否仍存在显著异常收益？
+> 控制主要替代解释后，目标关系是否仍稳定存在？
 
-### 第六步：稳健性检验
+### 多重检验
 
-至少包括：
+如果一次研究测试多个 threshold、factor、horizon 或信号：
 
-- 改变阈值；
-- 改变样本期；
-- 使用不同市场代理；
-- 使用均值和中位数；
-- 分年度计算；
-- 排除极端日期；
-- Bootstrap置信区间；
-- 多重检验校正；
-- 样本外验证；
-- 检查结果是否只由少数极端日驱动。
+- 必须记录测试族；
+- 必须考虑 FDR / family-wise error 等校正；
+- 不得只汇报最显著的一项。
 
 ---
 
-## 4.4 分钟级研究
+## 4.9 Holdout / OOS 治理
 
-日线发现初步关系后，再下载少量目标数据做分钟研究。
+Holdout 是反证工具，不是“第二次调参区”。
 
-例如验证中国石油：
+必须明确：
 
-- 中国石油；
-- 中国石化；
-- 工商银行；
-- 农业银行；
-- 中国移动；
-- 上证指数或ETF代理；
-- 石油行业指数或ETF代理。
+- 什么时候 sealed；
+- 什么时候 unsealed；
+- accepted primary execution count；
+- 是否已经观察 primary statistic；
+- post-unseal 是否发生技术修复；
+- 是否仍能称为 pristine OOS。
 
-研究：
+如果 frozen data-quality gate 未满足：
 
-- 上午市场下跌后，尾盘是否出现异常上涨；
-- 14:00以后是否更明显；
-- 是否集中在集合竞价；
-- 是否异常放量；
-- 多只权重央企是否同步；
-- 次日是否回吐；
-- 先后关系是否稳定。
+> 正确状态可以是 `INCONCLUSIVE`。
 
-时间顺序比普通相关性更接近机制判断。
+不得为了得到回归结果而：
+
+- 更换 provider；
+- 降低 coverage；
+- 删除缺失证券；
+- 改 window；
+- 插值关键 outcome；
+- 修改 proxy。
+
+如果这些变化确有研究价值，应重新注册为新研究。
 
 ---
 
-## 4.5 指数贡献估算
+## 4.10 分钟级研究
 
-可以估算目标股票对指数的贡献：
+只有日线层面出现足够的、预先定义的升级理由后，才允许下载有限分钟数据。
+
+研究可包括：
+
+- 上午与下午；
+- 14:00 以后；
+- 尾盘成交量；
+- 集合竞价；
+- 多只权重股同步；
+- 次日回吐；
+- lead-lag。
+
+时间顺序比普通相关性更接近机制判断，但仍不等于主体意图或因果。
+
+分钟级不是 M3/M4 缺口的自动补偿手段。
+
+---
+
+## 4.11 指数贡献估算
+
+可以估算：
 
 ```text
 股票指数贡献 ≈ 估算权重 × 股票收益率
@@ -480,21 +650,20 @@ LLM只用于：
 
 进一步计算：
 
-- 正向贡献出现概率；
+- 正向贡献概率；
 - 平均抵消市场跌幅比例；
 - 最大单日抵消比例；
-- 多只权重股共同贡献；
-- 实际影响是否足以被称为“稳定指数”。
+- 多只权重股共同贡献。
 
-第一版缺少精确历史权重时，应明确标注为：
+缺少精确历史权重时，应明确：
 
 > 估算贡献，而非官方指数点位归因。
 
+指数贡献是独立的 mechanical analysis，不得被用来证明主体意图。
+
 ---
 
-## 4.6 证据分级
-
-建议统一使用证据等级：
+## 4.12 证据分级
 
 ### 一级：未发现稳定关系
 
@@ -509,16 +678,16 @@ LLM只用于：
 
 ### 三级：控制主要因素后仍存在异常表现
 
-- 控制变量后仍有统计显著性；
-- 多种阈值下较稳定。
+- 控制变量后仍有统计证据；
+- 预注册的多种检验下较稳定。
 
 ### 四级：存在稳定时间顺序和异常成交
 
-- 市场先跌；
-- 权重股随后上涨；
-- 尾盘或集合竞价集中；
+- 市场先变化；
+- 目标证券随后异常表现；
+- 特定时段集中；
 - 伴随异常成交量；
-- 多只权重股同步。
+- 关系跨样本较稳定。
 
 ### 五级：存在资金主体证据
 
@@ -528,27 +697,123 @@ LLM只用于：
 - 资金来源；
 - 官方或可靠公开证据。
 
-公开日线和普通分钟数据通常只能做到二至四级。
+重要限制：
 
-结论应写：
-
-```text
-该现象与权重股稳定指数的行为特征一致。
-```
-
-避免写：
-
-```text
-已经证明某类资金在护盘。
-```
+> 如果 evidence level 的机器判定规则没有在 outcome 前冻结，不得事后根据结果创建规则并回填 canonical 数字等级。
 
 ---
 
-# 5. 两个模块的关系
+# 5. Theory / Hypothesis Registry
 
-价值评估和机制验证必须分开。
+## 5.1 目的
 
-## 价值评估回答
+M4 新增一个轻量的理论 / 假设注册层，用于回答：
+
+> 我们下一步值得研究什么，以及为什么值得研究？
+
+它不是：
+
+- alpha 自动生成器；
+- 回测排名榜；
+- 自动选股池；
+- “论文显著所以 A 股也显著”的证据库。
+
+它是：
+
+> **Candidate Research Registry。**
+
+---
+
+## 5.2 候选来源
+
+首期允许收录：
+
+- 经典经济金融理论；
+- 行为金融机制；
+- 市场微观结构机制；
+- 资产定价 anomaly；
+- 公司金融与会计信号；
+- 事件型规律；
+- 用户真实观察。
+
+优先来源：
+
+1. 原始论文 / 作者公开稿；
+2. 高质量 replication；
+3. 教材；
+4. 官方制度与数据方法文档；
+5. 成熟公开研究项目。
+
+---
+
+## 5.3 Registry 状态
+
+候选项至少区分：
+
+```text
+DISCOVERED
+LITERATURE_REVIEWED
+A_SHARE_FEASIBILITY_REVIEWED
+NOT_TESTED
+PRE_REGISTERED
+DEVELOPMENT_EXECUTED
+ROBUSTNESS_EXECUTED
+OOS_EXECUTED
+NOT_ESTABLISHED
+ESTABLISHED
+INCONCLUSIVE
+DEFERRED
+```
+
+规则：
+
+- `DISCOVERED` 不代表有效；
+- `LITERATURE_REVIEWED` 不代表 A 股成立；
+- `DEVELOPMENT_EXECUTED` 不代表 OOS 成立；
+- `ESTABLISHED` 必须符合该研究预先冻结的 evidence rule；
+- explicit gap 不自动成为 future task。
+
+---
+
+## 5.4 初始种子规模
+
+M4 不应一开始收集 100 个 anomaly 并批量挖掘。
+
+首期最多选择 3 个结构差异明显的代表性候选，用于验证通用框架的表达能力，例如：
+
+1. 中期 momentum 类；
+2. value / profitability 类；
+3. behavioral / event 类（如 PEAD 类）。
+
+初始目标不是证明它们能赚钱，而是验证：
+
+> 通用研究器能否在不修改核心引擎的情况下表达不同研究类型。
+
+任何真实 A 股 outcome 执行仍需单独授权。
+
+---
+
+# 6. 两个核心模块与 Registry 的关系
+
+推荐流程：
+
+```text
+Theory / Literature / Observation
+              ↓
+       Candidate Registry
+              ↓
+       Feasibility Review
+              ↓
+     Frozen Research Contract
+              ↓
+        Mechanism Engine
+              ↓
+ Development → Robustness → OOS
+              ↓
+       Evidence Disposition
+```
+
+价值评估回答：
 
 - 公司质量怎么样；
 - 当前估值怎么样；
@@ -556,41 +821,34 @@ LLM只用于：
 - 价值能否兑现；
 - 长期风险是什么。
 
-## 机制验证回答
+机制验证回答：
 
-- 为什么近期这样涨跌；
-- 与哪些因素相关；
-- 某种关系是否稳定；
-- 是否存在异常收益；
-- 市场环境是否改变了个股表现。
+- 某种关系是否存在；
+- 是否稳定；
+- 是否能排除替代解释；
+- 是否跨样本；
+- 证据强度到什么程度。
 
-例如中国石油某天上涨：
+Registry 回答：
 
-```text
-价值评估：
-企业质量中上，分红较强，周期风险中等。
+- 值得验证的 hypothesis 从哪里来；
+- 理论为什么认为它可能存在；
+- 已知文献是否已经存在反证或衰减；
+- A 股数据是否值得投入研究成本。
 
-机制分析：
-当日上涨可能与原油、高股息风格、央企联动和尾盘资金有关。
-```
-
-当天上涨不等于企业内在价值突然提高。
-
-最终产品原则：
-
-> 先用价值评估找到值得研究的公司，再用机制验证解释它为什么在当前市场环境下这样表现。
+三者不能混用。
 
 ---
 
-# 6. 免费优先的数据方案
+# 7. 免费优先的数据方案
 
-## 6.1 数据源
+## 7.1 数据源
 
 ### Baostock
 
 用于：
 
-- A股历史日线；
+- A 股历史日线；
 - 交易日历；
 - 股票基本信息；
 - 部分财务数据；
@@ -624,20 +882,26 @@ LLM只用于：
 - 期货交易所；
 - 指数公司公开资料。
 
-### 可选备用
+### 国际公开来源
 
-- mootdx；
-- qstock部分接口；
-- Tushare免费权限；
-- ETF作为难以获取指数的代理。
+当研究明确需要时，可在 contract 中授权：
+
+- 官方商品 / 宏观数据；
+- 公开研究数据库；
+- 作者维护的可复现研究数据。
 
 原则：
 
 > 不把核心功能绑死在任何一个免费网页接口上。
 
+但是：
+
+> “可替换”不等于在 outcome 出现后可以随意换源。  
+> 研究运行中的 source replacement 必须遵守 pre-outcome / post-outcome 治理。
+
 ---
 
-## 6.2 本地存储
+## 7.2 本地存储
 
 推荐：
 
@@ -645,18 +909,19 @@ LLM只用于：
 DuckDB + Parquet
 ```
 
-### DuckDB保存
+DuckDB 保存：
 
 - 股票基本信息；
 - 数据任务；
 - 数据血缘；
 - 假设配置；
-- 评分结果；
-- 研究结果；
-- 报告索引；
-- 表之间的关联。
+- candidate registry；
+- value results；
+- research results；
+- report index；
+- artifact identity。
 
-### Parquet保存
+Parquet 保存：
 
 - 个股日线；
 - 指数日线；
@@ -666,42 +931,21 @@ DuckDB + Parquet
 - 分钟行情；
 - 因子结果。
 
-无需部署MySQL或PostgreSQL。
-
 ---
 
-## 6.3 数据目录
+# 8. 数据质量与研究完整性原则
 
-```text
-a-share-research-lab/
-├── data/
-│   ├── research.duckdb
-│   ├── raw/
-│   │   ├── baostock/
-│   │   ├── akshare/
-│   │   └── official/
-│   ├── parquet/
-│   │   ├── stock_daily/
-│   │   ├── stock_minute/
-│   │   ├── index_daily/
-│   │   ├── industry_daily/
-│   │   ├── financial/
-│   │   ├── valuation/
-│   │   ├── macro/
-│   │   └── factors/
-│   └── reports/
-├── src/
-├── tests/
-└── app.py
-```
+免费数据的主要风险不是费用，而是：
 
----
+- 稳定性；
+- schema 变化；
+- PIT；
+- identity；
+- survivorship；
+- coverage；
+- source revision。
 
-# 7. 数据质量原则
-
-免费数据的主要风险不是费用，而是稳定性和一致性。
-
-每条或每批数据应记录：
+每条或每批数据应尽可能记录：
 
 ```text
 source_name
@@ -711,7 +955,9 @@ source_version
 schema_version
 adjustment
 raw_file_path
+content_hash
 quality_status
+research_role
 ```
 
 必须检查：
@@ -721,31 +967,128 @@ quality_status
 - 前复权和不复权；
 - 停牌日；
 - 上市和退市日期；
+- security identity 与 company identity；
 - 股票代码变化；
 - 交易日对齐；
 - 财报公告日期；
 - 股本变动；
 - 分红实施日期；
-- 主力连续期货换月方式；
+- 期货换月方式；
 - 接口字段变化；
-- 历史数据是否被上游修订。
+- 历史数据是否被上游修订；
+- universe membership 是否 PIT-aware；
+- 缺失数据是否仍保留在 denominator；
+- coverage gate 是否按冻结规则执行。
 
 重要规则：
 
-> 财务数据必须按照实际公告日期生效，不能按报告期直接回填，否则会产生未来数据泄漏。
+> 财务数据必须按照实际公告日期生效，不能按报告期直接回填。
+
+重要规则：
+
+> company code 不等于 security code。涉及 A/B/H、多证券类别、退市或代码变化时，必须在证券级 identity 上建立可审计映射。
+
+重要规则：
+
+> 不能为了让研究“可跑”而把真实 required missing 从 universe 或 coverage denominator 中静默删除。
 
 ---
 
-# 8. 代码结构建议
+# 9. 研究工程治理
+
+M1–M3 的实际经验形成以下长期规则。
+
+## 9.1 Fail closed
+
+遇到以下情况应允许停止：
+
+- source 不可信；
+- schema 不明确；
+- identity 冲突；
+- PIT 无法证明；
+- data coverage 未达到冻结门槛；
+- research digest 不一致；
+- required evidence 缺失。
+
+停止是一种合法研究结果。
+
+---
+
+## 9.2 Pre-registration
+
+正式 confirmatory research 必须先冻结：
+
+- hypothesis；
+- inputs；
+- method；
+- thresholds；
+- success rule；
+- robustness；
+- OOS policy。
+
+---
+
+## 9.3 Artifact identity
+
+重要研究输入、方法和输出应拥有稳定、路径无关的 identity：
+
+- content hash；
+- repository-relative digest；
+- manifest；
+- upstream refs。
+
+禁止把绝对 checkout path 作为研究 identity 的有效组成部分。
+
+---
+
+## 9.4 Deterministic reproduction
+
+正式研究核心应尽可能支持：
+
+- A/B exact reproduction；
+- clean clone；
+- Windows / Ubuntu 一致性；
+- fixed RNG / seed；
+- frozen dependency contract。
+
+---
+
+## 9.5 Explicit evidence gaps
+
+每个阶段应区分：
+
+- 已建立事实；
+- 未建立结论；
+- 技术性 inconclusive；
+- missing evidence；
+- deferred future work。
+
+`gap register` 不是自动 backlog。
+
+---
+
+## 9.6 Protected historical artifacts
+
+已关闭阶段的 canonical artifact 默认不可重写。
+
+修复应：
+
+- 保留原失败证据；
+- 新增 repair / supersession；
+- 明确旧状态和新状态的关系。
+
+不能为了让历史“看起来干净”而删除 blocker。
+
+---
+
+# 10. 代码结构建议
+
+M4 之后建议逐步形成：
 
 ```text
 src/
 ├── data/
 │   ├── providers/
-│   │   ├── baostock_provider.py
-│   │   ├── akshare_provider.py
-│   │   ├── official_provider.py
-│   │   └── fallback.py
 │   ├── normalize.py
 │   ├── point_in_time.py
 │   ├── quality_check.py
@@ -764,6 +1107,8 @@ src/
 │
 ├── mechanism/
 │   ├── hypothesis.py
+│   ├── contract.py
+│   ├── engine.py
 │   ├── market_proxy.py
 │   ├── conditional_test.py
 │   ├── event_study.py
@@ -771,340 +1116,449 @@ src/
 │   ├── lead_lag.py
 │   ├── contribution.py
 │   ├── robustness.py
+│   ├── holdout.py
 │   └── evidence_grade.py
+│
+├── knowledge/
+│   ├── registry.py
+│   ├── provenance.py
+│   └── feasibility.py
 │
 ├── reports/
 │   ├── renderer.py
 │   └── templates/
 │
 └── web/
-    ├── value_page.py
-    ├── valuation_page.py
-    ├── factor_page.py
-    └── hypothesis_page.py
 ```
+
+这只是方向，不要求为了目录整齐而重构已有稳定代码。
+
+原则：
+
+> M4 优先抽象 M3 已验证的最小公共接口，不进行无收益的大重构。
 
 ---
 
-# 9. 可参考的开源项目
+# 11. 可参考的成熟项目与研究设计
 
-原则：组合参考，不直接把大型项目整体Fork后删除功能。
+原则：组合参考，不直接 Fork 大型项目后删除功能。
+
+## Open Source Asset Pricing（Chen & Zimmermann）
+
+参考：
+
+- 系统整理大量已发表 cross-sectional predictors；
+- 将 predictor definition、数据与 replication 连接起来；
+- 强调 original evidence 与 reproduction 的区别；
+- 适合作为 Theory / Anomaly Registry 的 provenance 设计参考。
+
+不直接采用：
+
+- 不把美股 predictor 收益复制成 A 股结论；
+- 不把其 predictor 全量导入后进行海量回测；
+- 不把其原始样本显著性当成本项目 evidence。
+
+## Alphalens
+
+参考：
+
+- factor / forward return 的标准化研究接口；
+- grouped analysis；
+- information coefficient；
+- factor return；
+- turnover / decay 等分析思想。
+
+不直接采用：
+
+- 当前不把它当生产策略引擎；
+- 不因为 Alphalens 能生成 tear sheet 就自动进入 alpha/portfolio 层。
+
+## Qlib
+
+参考：
+
+- config-driven research workflow；
+- task / dataset / record 的模块化；
+- 可替换的 workflow 组件；
+- 研究任务与产物管理。
+
+不直接采用：
+
+- 第一阶段不接入自动 ML workflow；
+- 不采用“批量模型 → 自动选最优回测”的方式替代研究合同；
+- 不进入自动交易。
 
 ## Vibe-Trading
 
 参考：
 
 - 多数据源回退；
-- DuckDB和Parquet；
+- DuckDB / Parquet；
 - 假设注册；
-- 研究任务结构；
-- 相关性和证据报告；
-- 点时财务数据思想。
+- research task 结构；
+- PIT 思想。
 
 不直接采用：
 
 - 自动交易；
-- 多Agent；
-- 加密货币、外汇和期权；
-- 大量复杂策略。
+- 多 Agent 交易；
+- 非 A 股扩展。
 
-## ZBS-Stock-Screener
+## ZBS-Stock-Screener / daily_stock_analysis
 
-参考：
+继续只参考：
 
-- 个股价值报告结构；
-- 多维评分展示；
-- HTML报告；
-- 估值和风险页面。
+- 报告结构；
+- 本地工作台；
+- 数据源管理；
+- 历史报告。
 
-不直接采用：
+不采用：
 
-- 黑箱评分；
-- AI买卖建议；
-- 目标价；
-- 未经验证的评分公式。
-
-## daily_stock_analysis
-
-参考：
-
-- 本地Web工作台；
-- 多数据源；
-- 任务进度；
-- 历史报告；
-- 股票搜索；
-- 配置管理。
-
-不直接采用：
-
-- 每日买入、卖出、观望结论；
-- 自动消息推送作为项目核心。
-
-## Alphalens
-
-用于后期：
-
-- 因子分组收益；
-- 信息系数；
-- 因子衰减；
-- 事件分析；
-- 风格暴露。
-
-## Qlib
-
-用于后期：
-
-- 全市场横截面因子研究；
-- 机器学习；
-- 组合和风险模型。
-
-第一版不接入。
-
-## eventstudy / statsmodels / scipy
-
-用于：
-
-- 异常收益；
-- 累计异常收益；
-- 回归；
-- 显著性；
-- Bootstrap；
-- 稳健性检验。
+- 黑箱荐股；
+- AI 目标价；
+- 每日买卖建议。
 
 ---
 
-# 10. 推荐实施路线
+# 12. 推荐实施路线
 
 ## Milestone 0：项目骨架与研究契约
 
-目标：
+状态：
 
-- 建立项目目录；
-- 明确数据字段；
-- 定义假设配置格式；
-- 定义价值评分输出格式；
-- 定义数据血缘；
-- 建立基础测试。
+> 历史能力已由 M1–M3 实际工程吸收。
 
-交付：
+核心内容：
 
-- 项目README；
-- 数据字典；
-- 假设JSON/YAML样例；
-- 价值报告样例；
-- DuckDB初始化。
+- 项目目录；
+- 数据字段；
+- 假设配置；
+- value 输出；
+- data lineage；
+- testing baseline。
 
 ---
 
 ## Milestone 1：免费数据底座
 
+状态：
+
+> ✅ COMPLETED
+
 完成：
 
 - 股票列表；
 - 交易日历；
-- A股日线；
+- A 股日线；
 - 指数日线；
-- 行业数据；
-- 商品和汇率；
-- 基础财务；
 - 原始数据留存；
-- Parquet缓存；
-- DuckDB元数据；
-- 数据质量检查；
-- 增量更新。
-
-验收：
-
-- 不重复下载；
-- 能按股票和日期查询；
-- 能切换数据源；
-- 能发现字段和单位异常；
-- 所有结果标注来源和下载时间。
+- Parquet；
+- DuckDB；
+- 数据质量；
+- provider abstraction；
+- reproducibility baseline。
 
 ---
 
-## Milestone 2：价值评估MVP
+## Milestone 2：价值评估 MVP
 
-完成：
+状态：
 
-- 盈利质量；
-- 现金流质量；
-- ROE与ROIC；
+> **CONDITIONALLY CLOSED**
+
+已建立：
+
+- PetroChina PIT value-profile vertical slice；
+- 盈利 / 现金；
+- ROE / ROA；
 - 财务安全；
-- 估值历史分位；
-- 分红与回购；
-- 价值兑现；
-- 风险否决项；
-- 一页价值档案。
+- 分红兑现；
+- 风险 veto；
+- 历史估值 descriptive evidence。
 
-验收：
+明确缺口：
 
-- 选定一家示范公司；
-- 手工核对关键财务数据；
-- 每个分数都能追溯到指标；
-- 不输出买卖建议；
-- 缺失数据不会被默认为零。
+- ROIC 在 strict evidence contract 下不可计算；
+- PE / valuation numeric scoring 因 frozen validation 条件不可测试而保持 `null`；
+- 不是生产评分、排名或交易信号。
 
 ---
 
-## Milestone 3：机制验证MVP
+## Milestone 3：机制验证 MVP
+
+状态：
+
+> **CONDITIONALLY CLOSED**
 
 首个案例：
 
-> 2015年至今，当沪市明显下跌时，中国石油是否存在异常逆势表现，以及它实际抵消了多少上证指数跌幅。
+> 当剔除中国石油后的沪市明显下跌时，控制市场、原油与行业后，中国石油是否存在稳定正异常表现？
 
-完成：
+实际完成：
 
-- 假设定义；
-- 市场大跌条件；
-- 剔除目标股的市场代理；
-- 条件收益；
-- 上涨概率；
-- 滚动相关性；
-- 分年度结果；
-- 控制原油和行业；
-- 基础回归；
-- 置信区间；
-- 证据等级；
-- 指数贡献估算。
+- preregistration；
+- ex-target market proxy；
+- PIT-aware universe；
+- oil / industry controls；
+- regression；
+- bootstrap；
+- registered robustness；
+- holdout contract；
+- post-unseal fail-closed recovery；
+- security-level identity repair；
+- explicit evidence-gap closeout。
 
-验收：
+最终结论：
 
-- 改变阈值后能自动重跑；
-- 结果不是由单一日期驱动；
-- 明确区分相关性和意图；
-- 报告列出支持证据和反证证据。
+> **M3_DAILY_MECHANISM_NOT_ESTABLISHED**
+
+必须保留的边界：
+
+- development primary 未建立稳定正效应；
+- holdout 因 frozen coverage gate 未满足而 inconclusive；
+- holdout accepted primary execution count = 0；
+- 不能写成“证明护盘”；
+- 也不能写成“holdout 已经证明不存在”。
+
+M3 的价值之一是证明：
+
+> 项目能够在结果不支持原观察时，保持冻结规则并接受 NOT_ESTABLISHED / INCONCLUSIVE。
 
 ---
 
-## Milestone 4：通用机制研究器
+## Milestone 4：通用研究器与假设注册层
 
-把中国石油案例抽象为通用配置：
+状态：
+
+> 🔲 NOT STARTED — 需先完成 M4 North-Star Preflight
+
+### M4-A：Generic Mechanism Research Engine
+
+目标：
+
+把 M3 的单案例实现抽象为可配置研究框架。
+
+示例：
 
 ```yaml
+hypothesis_id: "example"
 target: "601857.SH"
-factor: "market_ex_target"
+
+factor:
+  type: "market_ex_target"
+
 condition:
-  operator: "<"
+  operator: "<="
   threshold: -0.01
-outcome: "abnormal_return"
+
+outcome:
+  type: "abnormal_return"
+
 controls:
   - "oil"
   - "industry"
-  - "dividend_style"
-start_date: "2015-01-01"
-frequency: "1d"
+
+development:
+  start: "2015-01-01"
+  end: "2022-12-31"
+
+holdout:
+  policy: "frozen"
+
+robustness:
+  bootstrap: true
 ```
 
-自动输出：
+通用引擎应能表达：
 
-- 条件样本数；
-- 平均收益；
-- 中位数收益；
-- 上涨概率；
-- 置信区间；
-- 滚动关系；
-- 回归；
-- 稳健性；
-- 证据等级；
-- 研究报告。
+- target / universe；
+- factor；
+- condition；
+- outcome；
+- controls；
+- development / holdout；
+- data-quality gate；
+- regression；
+- bootstrap；
+- robustness；
+- evidence disposition。
+
+### M4-A 验收
+
+- 不修改核心引擎代码即可装载不同合法 hypothesis；
+- 数据和方法缺失时 fail closed；
+- 配置本身可 hash / version；
+- research result 可追溯到 hypothesis + inputs + code；
+- synthetic / test capsule 可以 cross-platform reproduction；
+- 不因为“通用”而放宽 M3 建立的 PIT、coverage、identity、holdout 规则。
+
+---
+
+### M4-B：Theory / Hypothesis Registry
+
+目标：
+
+让项目能系统接收：
+
+- 用户观察；
+- 教材理论；
+- 学术论文；
+- anomaly；
+- replication；
+- 官方制度机制。
+
+但候选项只能进入 `NOT_TESTED` 等状态，不自动执行真实研究。
+
+M4-B 首期建议：
+
+- registry schema；
+- provenance；
+- source / citation identity；
+- A 股数据 feasibility；
+- known replication / failure notes；
+- 最多 3 个结构差异明显的示范 candidate。
+
+### M4-B 验收
+
+- registry 与 research outcome 完全分离；
+- literature evidence 不自动变成 project evidence；
+- candidate 可以明确保持 `NOT_TESTED`；
+- 同一 hypothesis 的 source / version / theory 可追溯；
+- 不实现 100-anomaly 自动扫描；
+- 不按历史收益自动排序 candidate。
 
 ---
 
 ## Milestone 5：按需分钟研究
 
-只对日线发现初步证据的假设增加：
+状态：
 
-- 5分钟数据；
-- 上午与下午拆分；
-- 14:00以后表现；
-- 尾盘成交量异常；
+> 🔲 NOT AUTHORIZED
+
+只对满足预先定义升级条件的日线机制研究：
+
+- 5 分钟；
+- 上午 / 下午；
+- 尾盘；
 - 集合竞价；
-- 多只权重股同步性；
+- volume；
+- lead-lag；
 - 次日回吐。
 
-不下载全A长期分钟数据。
+不下载全 A 长期分钟数据。
 
 ---
 
-## Milestone 6：本地Web界面
+## Milestone 6：本地 Web 界面
+
+状态：
+
+> 🔲 NOT AUTHORIZED
 
 页面建议：
 
 1. 价值档案；
 2. 估值与风险；
 3. 因素关系；
-4. 假设验证；
-5. 数据质量；
-6. 历史报告。
+4. 假设 / Theory Registry；
+5. research contract；
+6. 数据质量；
+7. 历史报告。
 
-技术选择：
+界面不能先于研究语义稳定。
+
+---
+
+# 13. 未来研究方向：Economic Significance & Tradability
+
+这不是 M4、M5、M6 的默认验收内容。
+
+只有一个规律已经通过足够严格的：
 
 ```text
-Python
-DuckDB
-Parquet
-Pandas或Polars
-Statsmodels
-Scipy
-Plotly
-Streamlit
+Development
+→ Robustness
+→ Independent OOS
 ```
 
----
+之后，才允许另开 North-Star 授权研究：
 
-# 11. 第一版示范案例
+- transaction cost；
+- slippage；
+- turnover；
+- bid-ask；
+- 涨跌停 / 停牌不可成交；
+- capacity；
+- factor exposure；
+- beta；
+- industry exposure；
+- tail risk；
+- Sharpe；
+- Sortino；
+- max drawdown；
+- Calmar；
+- strategy decay。
 
-## 价值评估案例
+核心问题从：
 
-选择一家用户熟悉的A股公司，生成：
+> “规律存在吗？”
 
-- 企业质量；
-- 财务安全；
-- 现金流；
-- 历史估值；
-- 分红；
-- 价值兑现；
-- 风险否决项；
-- 一页研究结论。
+变为：
 
-## 机制验证案例
+> “规律扣除现实摩擦后还有经济价值吗？”
 
-固定为：
-
-> 中国石油在A股下跌期间是否存在异常逆势表现，以及对上证指数跌幅的估算抵消程度。
-
-选择这个案例的原因：
-
-- 来源于真实观察；
-- 假设明确；
-- 容易解释机械相关；
-- 可以逐步加入原油、行业和风格因素；
-- 后期适合扩展到分钟级；
-- 能展示项目区别于普通选股软件的特色。
+这一阶段依然不等于自动交易。
 
 ---
 
-# 12. 防失焦原则
+# 14. 更远期方向：Portfolio / Alpha Research
 
-每增加一个功能前，必须回答：
+只有多个 hypothesis 已独立通过前述研究，才可以评估：
 
-1. 它服务于价值评估还是机制验证？
+- signal combination；
+- factor redundancy；
+- diversification；
+- portfolio construction；
+- risk budget；
+- capacity；
+- live paper evaluation。
+
+正式进入这一阶段前：
+
+> **必须重新修订北极星。**
+
+不得在 M4 中通过“批量跑 anomaly”偷偷实现这一目标。
+
+---
+
+# 15. 防失焦原则
+
+每增加一个功能、数据源、假设或研究前，必须回答：
+
+1. 它服务于价值评估、机制验证还是 hypothesis discovery？
 2. 它解决了什么明确研究问题？
 3. 它是否能改变研究结论？
 4. 数据能否免费或低成本稳定获得？
 5. 结果能否解释和复现？
 6. 是否会引入未来数据泄漏？
-7. 是否只是为了让页面看起来更复杂？
-8. 是否把研究工具变成了荐股工具？
-9. 是否存在更简单的实现？
-10. 是否应该推迟到日线MVP完成以后？
+7. 是否存在幸存者偏差或 identity 问题？
+8. 是否只是为了让页面看起来更复杂？
+9. 是否把研究工具变成了荐股 / 参数挖掘工具？
+10. 是否存在更简单的实现？
+11. hypothesis 是在 outcome 之前定义的吗？
+12. 是否因为看到了结果才增加本测试？
+13. 是否存在 multiple testing / p-hacking 风险？
+14. 缺口是真 blocker，还是只是“想把功能做全”？
+15. 本阶段是否真的需要真实 outcome？
+16. 如果结果是 NOT_ESTABLISHED，项目是否仍愿意接受？
+17. 该功能是否会拖慢当前 milestone 的核心交付？
 
 如果无法回答，应暂缓开发。
 
 ---
 
-# 13. 项目核心原则
+# 16. 项目核心原则
 
 ## 原则一：先研究，后展示
 
@@ -1112,11 +1566,11 @@ Streamlit
 
 ## 原则二：先日线，后分钟
 
-只有日线发现稳定关系后，才做分钟级验证。
+只有达到预定义升级条件后，才做分钟级验证。
 
 ## 原则三：先解释，后预测
 
-先解释历史规律，不追求短期价格预测。
+当前首先研究关系为何存在以及是否稳定。
 
 ## 原则四：先分项，后总分
 
@@ -1126,16 +1580,17 @@ Streamlit
 
 发现关系后，优先寻找它为何可能是错的。
 
-## 原则六：免费数据可替换
+## 原则六：免费数据可替换，但研究合同不可静默漂移
 
-任何免费接口都可能失效，数据源必须可替换。
+provider 可以被替换；已经读取 outcome 的研究不能为了结果而换源。
 
 ## 原则七：保存原始数据和研究版本
 
-每次结果都能追溯到：
+每次结果都应能追溯到：
 
 - 数据来源；
 - 下载时间；
+- content hash；
 - 数据版本；
 - 参数；
 - 代码版本；
@@ -1146,25 +1601,96 @@ Streamlit
 
 公开数据支持到什么程度，就写到什么程度。
 
+## 原则九：先预注册，后看 outcome
+
+Confirmatory research 必须冻结核心规格。
+
+## 原则十：Fail closed 优于伪完整
+
+没有可信数据时，宁可 `INCONCLUSIVE`，也不自动 fallback。
+
+## 原则十一：文献是 hypothesis source，不是本地 evidence
+
+经典规律必须重新在 A 股验证。
+
+## 原则十二：NOT_ESTABLISHED 是有效研究结果
+
+研究目的不是证明原观察正确。
+
+## 原则十三：显著性不是盈利
+
+必须把 statistical significance、economic significance 和 tradability 分开。
+
+## 原则十四：少量高质量 hypothesis 优于 anomaly zoo 扫描
+
+M4 不做大规模参数与因子挖掘。
+
+## 原则十五：Explicit gap 不自动成为 TODO
+
+是否继续取决于 North-Star review，而不是“有缺口就必须补”。
+
 ---
 
-# 14. 一句话项目说明
+# 17. 一句话项目说明
 
-> 一个使用免费数据、本地运行、面向A股的可解释研究平台：通过价值评估寻找值得研究的公司，通过机制验证检验个股与市场因素之间的真实关系。
+> **一个使用免费数据、本地运行、面向 A 股的可解释研究平台：通过价值评估形成可追溯的企业档案，通过预注册机制研究检验市场关系，并把经济金融理论、论文与市场观察转化为可证伪的候选假设，而不是直接生成荐股或交易信号。**
 
 ---
 
-# 15. 当前最优下一步
+# 18. 当前最优下一步
 
-立即推进以下顺序：
+从已经合并并通过 CI 的 canonical main 开始：
 
-1. 新建仓库；
-2. 建立DuckDB和Parquet数据层；
-3. 接入Baostock与AKShare；
-4. 完成一只股票的价值档案；
-5. 完成中国石油日线机制验证；
-6. 固化报告和数据质量检查；
-7. 最后再开发Web界面；
-8. 日线结论成立后再做分钟线。
+1. **M4 North-Star Preflight**
+   - 审查现有 M3 哪些组件值得抽象；
+   - 明确哪些 PetroChina-specific 逻辑不能进入 generic core；
+   - 冻结 M4-A / M4-B 的边界；
+   - 不读取新的真实研究 outcome。
 
-在前两个示范案例完成前，不扩展自动交易、新闻Agent、全市场分钟数据和深度学习预测。
+2. **M4-A Generic Mechanism Research Engine**
+   - 配置 schema；
+   - contract；
+   - deterministic runner；
+   - generic artifact identity；
+   - synthetic / bounded test cases。
+
+3. **M4-B Theory / Hypothesis Registry**
+   - source provenance；
+   - literature / theory metadata；
+   - candidate status；
+   - feasibility；
+   - 最多 3 个代表性候选。
+
+4. M4 完成后再进行一次 North-Star review：
+   - 是否授权新的真实 A 股 hypothesis；
+   - 是否有任何日线结果达到分钟级升级条件；
+   - 是否值得设计 Economic Significance & Tradability 的独立 future milestone。
+
+在 M4 核心能力完成前，不扩展：
+
+- 自动交易；
+- 100-anomaly 批量筛选；
+- 自动 alpha 排名；
+- portfolio optimization；
+- 全市场分钟数据库；
+- 深度学习预测；
+- 大规模 Web UI。
+
+---
+
+# 19. v2.0 的核心变化摘要
+
+相对于原北极星，v2.0：
+
+1. 保留“价值评估 + 机制验证”双核心定位；
+2. 把 M1–M3 的实际 fail-closed / preregistration / PIT / OOS 治理经验固化为长期规则；
+3. 将教材、论文、经典 anomaly 正式纳入 **hypothesis source**；
+4. 新增 **Theory / Hypothesis Registry**；
+5. 将 M4 明确拆为：
+   - M4-A 通用机制研究器；
+   - M4-B 理论 / 假设注册层；
+6. 明确不在 M4 做 anomaly zoo 自动挖掘；
+7. 明确“文献规律 ≠ A 股证据”；
+8. 明确“统计显著 ≠ 可交易 ≠ 盈利”；
+9. 把 Economic Significance & Tradability、Portfolio / Alpha Research 放在未来独立授权边界；
+10. 更新当前项目状态：M2、M3 均为条件关闭，下一步是 M4 North-Star Preflight。

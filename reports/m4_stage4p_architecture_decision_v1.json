@@ -1,0 +1,27 @@
+{
+  "schema_version": "M4_STAGE4P_ARCHITECTURE_DECISION_V1",
+  "decision_status": "PREFLIGHT_COMPLETE",
+  "architecture": "THIN_GENERIC_LAYER_OVER_PROVEN_M3_CORE",
+  "answers": {
+    "existing_M3_core_sufficient_as_M4_foundation": "YES_FOR_FIRST_DAILY_CONTROLLED_SLICE_WITH_BOUNDED_EXTRACTION",
+    "modules_reuse_as_is": ["model_digest.py", "normalization.py", "source_manifest.py", "mechanism/__init__.py"],
+    "modules_requiring_small_generalization": ["alignment.py", "analysis_contracts.py", "analysis_dataset.py", "bootstrap.py", "contracts.py", "evidence.py", "regression.py", "robustness.py"],
+    "modules_kept_as_case_evidence": ["acquisition_cni.py", "acquisition_eia.py", "acquisition_fred_public.py", "acquisition_shenwan.py", "crash.py", "industry.py", "market_proxy.py", "oil.py", "proxy_v2.py"],
+    "new_package_knowledge_required_now": false,
+    "engine_py_required_now": false,
+    "database_schema_change_required_now": false,
+    "real_data_required_now": false,
+    "M4A_minimum_implementation_slice": "typed config validation and compiler to a frozen daily conditional/controlled mechanism contract, using M3 identity/data-quality/OLS/bootstrap/robustness/evidence primitives",
+    "M4B_minimum_implementation_slice": "provenance-aware candidate registry schema and state validation only; no full-text acquisition and no real registry dataset",
+    "M3_gaps_become_M4_todo": false
+  },
+  "bounded_extraction": {
+    "required": true,
+    "decision": "M4A_GENERALIZATION_REQUIRES_BOUNDED_EXTRACTION",
+    "interfaces_to_extract": ["HypothesisConfig", "FrozenMechanismContract", "DataQualityPolicy", "ConditionOperator", "OrderedDesignSpec", "BootstrapPolicy", "RobustnessRegistry", "EvidenceRule", "ContractDigest"]
+  },
+  "explicit_not_now": ["M3 holdout coverage gap", "M3 minute-level gap", "M3 index contribution gap", "M3 evidence numeric-level gap", "M2 ROIC gap", "M2 PE scoring gap", "knowledge/ package", "automatic provider search", "automatic anomaly scan", "portfolio optimization", "Web UI"],
+  "implementation_authorization": "ALLOWED_ONLY_AFTER_V2_GOVERNANCE_MERGE_AND_MERGE_REVIEW",
+  "real_hypothesis_execution": "NOT_AUTHORIZED",
+  "m4_stage4p_stop": "STOP_FOR_M4_IMPLEMENTATION_REVIEW"
+}

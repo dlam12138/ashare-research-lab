@@ -1,0 +1,26 @@
+{
+  "schema_version": "M4_STAGE4P_FROZEN_M1_M3_IDENTITY_V1",
+  "baseline_commit": "a72b923256a483f2a8d5faefe657ae844dbace19",
+  "aggregate_algorithm": "sha256(utf8(join(sorted(repository_relative_path + tab + file_sha256), newline) + newline))",
+  "protected_scopes": {
+    "m1_m2_m3_reports_and_acceptance": {
+      "selection": "reports/* and acceptance/* whose basename begins m1_, m2_, or m3_",
+      "file_count": 194,
+      "aggregate_sha256": "7a147f62224732a31b35a545c5286c235e1702aff63d9baddcf17dcdd7b4e46a"
+    },
+    "m3_reports_and_acceptance": {
+      "selection": "reports/* and acceptance/* whose basename begins m3_",
+      "file_count": 85,
+      "aggregate_sha256": "c4c9d52fc14a2dcb53efc7f59bc01824dbaf58c5ce3891ed5abe5f0c0768eb48"
+    },
+    "m3_mechanism_package": {
+      "selection": "src/ashare_research/mechanism/*",
+      "file_count": 21,
+      "aggregate_sha256": "733f14bf7b060b6e1b1131f1219708b1ca7d6a0e46764fe9b763b6fb651dd625"
+    }
+  },
+  "post_stage4p_requirement": "all protected scope counts and aggregate SHA-256 values remain byte-identical",
+  "mutation_response": "M4_STAGE4P_RESEARCH_CODE_MUTATION",
+  "real_outcome_read": false,
+  "real_data_acquisition": false
+}

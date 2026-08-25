@@ -1,0 +1,54 @@
+{
+  "schema_version": "M4_STAGE4P_M4B_HYPOTHESIS_REGISTRY_CONTRACT_V1",
+  "status": "FROZEN_PREFLIGHT_ONLY",
+  "implementation_status": "NOT_STARTED",
+  "real_registry_dataset_authorized": false,
+  "purpose": "Store candidate research provenance and feasibility metadata without treating literature or discovery as A-share evidence.",
+  "minimum_fields": [
+    "hypothesis_id",
+    "source_type",
+    "source_title",
+    "authors_or_issuer",
+    "source_date",
+    "citation_or_source_identity",
+    "theory",
+    "original_market",
+    "original_sample",
+    "expected_direction",
+    "candidate_signal",
+    "target_horizon",
+    "known_controls",
+    "known_alternative_explanations",
+    "known_replications",
+    "known_failures_or_decay",
+    "a_share_data_feasibility",
+    "free_data_feasibility",
+    "status"
+  ],
+  "allowed_source_types": ["PERSONAL_OBSERVATION", "TEXTBOOK_THEORY", "ACADEMIC_PAPER", "KNOWN_ANOMALY", "OFFICIAL_MECHANISM", "REPLICATION_EXTENSION"],
+  "literature_provenance": {
+    "full_text_download_in_M4B": false,
+    "required_identity": ["source identity", "citation", "version", "source type", "notes"],
+    "preferred_sources_later": ["original paper", "author manuscript", "replication", "official source", "high-quality textbook"],
+    "forbidden_canonical_sources": ["pirated textbook source", "random blog", "LLM memory as citation"],
+    "literature_is_hypothesis_source_not_local_evidence": true
+  },
+  "state_machine": {
+    "states": ["DISCOVERED", "LITERATURE_REVIEWED", "A_SHARE_FEASIBILITY_REVIEWED", "NOT_TESTED", "PRE_REGISTERED", "DEVELOPMENT_EXECUTED", "ROBUSTNESS_EXECUTED", "OOS_EXECUTED", "NOT_ESTABLISHED", "ESTABLISHED", "INCONCLUSIVE", "DEFERRED"],
+    "invariants": ["DISCOVERED != evidence", "LITERATURE_REVIEWED != A-share validation", "NOT_TESTED cannot enter recommendation system", "registry metadata is separate from research outcome artifacts"],
+    "execution_boundary": "Only a separately frozen M4-A research contract may move a candidate into execution states.",
+    "evidence_boundary": "ESTABLISHED is unavailable without the applicable frozen development, robustness, and independent OOS evidence policy."
+  },
+  "initial_candidate_classes": [
+    {"class_id": "CANDIDATE_CLASS_1", "category": "MOMENTUM", "status": "NOT_TESTED", "real_A_share_outcome_read": false, "parameters_defined": false, "effectiveness_claim": false},
+    {"class_id": "CANDIDATE_CLASS_2", "category": "VALUE_OR_PROFITABILITY", "status": "NOT_TESTED", "real_A_share_outcome_read": false, "parameters_defined": false, "effectiveness_claim": false},
+    {"class_id": "CANDIDATE_CLASS_3", "category": "BEHAVIORAL_OR_EVENT", "status": "NOT_TESTED", "real_A_share_outcome_read": false, "parameters_defined": false, "effectiveness_claim": false}
+  ],
+  "scale_boundary": {
+    "MAX_REAL_DEMO_CANDIDATES": 3,
+    "AUTOMATED_ANOMALY_SCAN": "PROHIBITED",
+    "BACKTEST_RANKING": "PROHIBITED",
+    "real_candidate_dataset_in_preflight": false
+  },
+  "not_implementation": true
+}
