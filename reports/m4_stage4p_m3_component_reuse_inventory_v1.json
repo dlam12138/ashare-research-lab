@@ -1,0 +1,222 @@
+{
+  "schema_version": "M4_STAGE4P_M3_COMPONENT_REUSE_INVENTORY_V1",
+  "inventory_status": "COMPLETE",
+  "reviewed_from": "origin/main:a72b923256a483f2a8d5faefe657ae844dbace19",
+  "review_scope": [
+    "src/ashare_research/mechanism/*.py",
+    "src/ashare_research/tools/m3_*.py",
+    "tests/test_m3_*.py"
+  ],
+  "principle": "THIN_GENERIC_LAYER_OVER_PROVEN_M3_CORE",
+  "classification_legend": ["REUSE_AS_IS", "GENERALIZE_SMALL", "PETROCHINA_SPECIFIC_KEEP_OUTSIDE_CORE", "DEFER", "DO_NOT_REUSE"],
+  "components": [
+    {
+      "path": "src/ashare_research/mechanism/__init__.py",
+      "current_responsibility": "Package marker and public namespace boundary.",
+      "current_M3_dependency": "Imported by M3 tools and tests as the mechanism package.",
+      "generic_suitability": "generic",
+      "required_abstraction": "None beyond preserving the package boundary.",
+      "risk": "Accidental public API expansion during M4.",
+      "recommended_action": "REUSE_AS_IS"
+    },
+    {
+      "path": "src/ashare_research/mechanism/acquisition_cni.py",
+      "current_responsibility": "Bounded official CNI transport for the CNI 399439 industry control.",
+      "current_M3_dependency": "Stage 3B-R4 PetroChina industry-control acquisition and source manifest.",
+      "generic_suitability": "case-specific",
+      "required_abstraction": "Provider adapter interface only; keep CNI identity in CASE_EVIDENCE.",
+      "risk": "CNI 399439 could become an invalid generic default.",
+      "recommended_action": "PETROCHINA_SPECIFIC_KEEP_OUTSIDE_CORE"
+    },
+    {
+      "path": "src/ashare_research/mechanism/acquisition_eia.py",
+      "current_responsibility": "Bounded EIA RBRTE Brent transport with secret-redacted routing.",
+      "current_M3_dependency": "Stage 3B-R3/R4 oil control acquisition.",
+      "generic_suitability": "case-specific",
+      "required_abstraction": "Generic bounded provider contract; no Brent assumption in core.",
+      "risk": "Brent timing and source identity are not universal factor semantics.",
+      "recommended_action": "PETROCHINA_SPECIFIC_KEEP_OUTSIDE_CORE"
+    },
+    {
+      "path": "src/ashare_research/mechanism/acquisition_fred_public.py",
+      "current_responsibility": "No-credential bounded FRED DCOILBRENTEU transport.",
+      "current_M3_dependency": "Stage 3B-R4 replacement oil source.",
+      "generic_suitability": "case-specific",
+      "required_abstraction": "Provider-neutral bounded acquisition seam.",
+      "risk": "A provider route could be mistaken for a generic factor definition.",
+      "recommended_action": "PETROCHINA_SPECIFIC_KEEP_OUTSIDE_CORE"
+    },
+    {
+      "path": "src/ashare_research/mechanism/acquisition_shenwan.py",
+      "current_responsibility": "Bounded official Shenwan industry index transport.",
+      "current_M3_dependency": "Stage 3B-R3/R4 industry control acquisition.",
+      "generic_suitability": "case-specific",
+      "required_abstraction": "Industry-provider adapter with explicit identity and version.",
+      "risk": "Industry taxonomy and regime semantics are case evidence, not defaults.",
+      "recommended_action": "PETROCHINA_SPECIFIC_KEEP_OUTSIDE_CORE"
+    },
+    {
+      "path": "src/ashare_research/mechanism/alignment.py",
+      "current_responsibility": "Tier-1 input readiness, date intersection, and coverage summaries.",
+      "current_M3_dependency": "Stage 3B alignment and frozen coverage gates.",
+      "generic_suitability": "high after schema parameterization",
+      "required_abstraction": "Named dataset roles, join keys, and contract-provided coverage policy.",
+      "risk": "Silent outer joins or denominator changes can weaken fail-closed behavior.",
+      "recommended_action": "GENERALIZE_SMALL"
+    },
+    {
+      "path": "src/ashare_research/mechanism/analysis_contracts.py",
+      "current_responsibility": "Stage 3C-A constants, execution modes, dates, and upstream bindings.",
+      "current_M3_dependency": "Frozen M3 daily contract and M3 report names/identities.",
+      "generic_suitability": "medium",
+      "required_abstraction": "Extract generic contract gates while retaining M3 constants in a case adapter.",
+      "risk": "M3 threshold, dates, and effective IDs could leak into every M4 hypothesis.",
+      "recommended_action": "GENERALIZE_SMALL"
+    },
+    {
+      "path": "src/ashare_research/mechanism/analysis_dataset.py",
+      "current_responsibility": "Normalize the M3 analysis frame and select development dates.",
+      "current_M3_dependency": "Stage 3C-A daily target/control columns and development boundary.",
+      "generic_suitability": "medium-high",
+      "required_abstraction": "Contract-provided required columns, date bounds, and outcome validity rules.",
+      "risk": "Hard-coded column names or M3 date limits could invalidate another hypothesis.",
+      "recommended_action": "GENERALIZE_SMALL"
+    },
+    {
+      "path": "src/ashare_research/mechanism/bootstrap.py",
+      "current_responsibility": "PCG64 moving-block bootstrap around the M3 primary OLS estimator.",
+      "current_M3_dependency": "Stage 3C-A gamma confidence interval and fixed RNG identity.",
+      "generic_suitability": "high for the first daily OLS slice",
+      "required_abstraction": "Frozen RNG policy and estimator callback supplied by contract.",
+      "risk": "Estimator or block rules could be silently changed by a generic wrapper.",
+      "recommended_action": "GENERALIZE_SMALL"
+    },
+    {
+      "path": "src/ashare_research/mechanism/contracts.py",
+      "current_responsibility": "Stage 3B schema gates, frozen artifact verification, path safety, and restricted output keys.",
+      "current_M3_dependency": "All M3 acquisition/manifests and frozen artifact checks.",
+      "generic_suitability": "high for identity/path/fail-closed primitives",
+      "required_abstraction": "Separate generic contract envelope from Stage 3B-specific envelope and keys.",
+      "risk": "Permissive generic loading could bypass frozen M3 gates.",
+      "recommended_action": "GENERALIZE_SMALL"
+    },
+    {
+      "path": "src/ashare_research/mechanism/crash.py",
+      "current_responsibility": "Builds Crash_t from the ex-target Shanghai market return.",
+      "current_M3_dependency": "China Petroleum case condition: frozen -1% threshold and SH proxy.",
+      "generic_suitability": "case-specific",
+      "required_abstraction": "Condition operator interface with threshold and source identity in config.",
+      "risk": "Frozen -1% crash threshold could become an automatic threshold-search default.",
+      "recommended_action": "PETROCHINA_SPECIFIC_KEEP_OUTSIDE_CORE"
+    },
+    {
+      "path": "src/ashare_research/mechanism/evidence.py",
+      "current_responsibility": "Maps primary gamma evidence to decision and interpretation boundary.",
+      "current_M3_dependency": "M3 gamma and evidence-level semantics.",
+      "generic_suitability": "medium-high",
+      "required_abstraction": "Contract-defined evidence rule and disposition vocabulary.",
+      "risk": "A gamma-specific positive rule could be reused for unrelated outcomes.",
+      "recommended_action": "GENERALIZE_SMALL"
+    },
+    {
+      "path": "src/ashare_research/mechanism/industry.py",
+      "current_responsibility": "Constructs the frozen Shenwan petroleum/petrochemicals regime and return control.",
+      "current_M3_dependency": "China Petroleum case control and CNI regime contract.",
+      "generic_suitability": "case-specific",
+      "required_abstraction": "Explicit industry-control provider and regime contract.",
+      "risk": "CNI/sector identity and regime dates can contaminate generic controls.",
+      "recommended_action": "PETROCHINA_SPECIFIC_KEEP_OUTSIDE_CORE"
+    },
+    {
+      "path": "src/ashare_research/mechanism/market_proxy.py",
+      "current_responsibility": "Builds the ex-target Shanghai A-share market proxy.",
+      "current_M3_dependency": "Stage 3B-R1 and M3 case target exclusion for 601857.",
+      "generic_suitability": "medium",
+      "required_abstraction": "Universe provider, target exclusion, PIT membership, and market aggregation policy.",
+      "risk": "601857 exclusion or Shanghai identity could become hidden generic behavior.",
+      "recommended_action": "PETROCHINA_SPECIFIC_KEEP_OUTSIDE_CORE"
+    },
+    {
+      "path": "src/ashare_research/mechanism/model_digest.py",
+      "current_responsibility": "Repository-relative content digests for pipeline, model, contracts, and upstream identities.",
+      "current_M3_dependency": "Stage 3C-A-R2 digest portability and M3 upstream inventory.",
+      "generic_suitability": "high",
+      "required_abstraction": "Accept generic contract identity fields while preserving relative-key and content-based hashing.",
+      "risk": "Absolute checkout paths or identity-only fallback would break reproducibility.",
+      "recommended_action": "REUSE_AS_IS"
+    },
+    {
+      "path": "src/ashare_research/mechanism/normalization.py",
+      "current_responsibility": "Normalizes daily observations and aligns latest observable values before A-share close.",
+      "current_M3_dependency": "M3 daily source normalization and PIT timing.",
+      "generic_suitability": "high for daily data",
+      "required_abstraction": "Provider-neutral schema mapping and explicit timezone/calendar contract.",
+      "risk": "PIT timing can be weakened by an implicit fallback.",
+      "recommended_action": "REUSE_AS_IS"
+    },
+    {
+      "path": "src/ashare_research/mechanism/oil.py",
+      "current_responsibility": "Strictly-prior Brent alignment and oil source comparison.",
+      "current_M3_dependency": "China Petroleum commodity control and Stage 3B-R2 timing resolution.",
+      "generic_suitability": "case-specific",
+      "required_abstraction": "Generic prior-observation alignment utility; Brent semantics remain case evidence.",
+      "risk": "Brent-specific source/timing assumptions could be treated as universal controls.",
+      "recommended_action": "PETROCHINA_SPECIFIC_KEEP_OUTSIDE_CORE"
+    },
+    {
+      "path": "src/ashare_research/mechanism/proxy_v2.py",
+      "current_responsibility": "Builds the revised Shanghai A-share ex-target market proxy with carried closes and identity rules.",
+      "current_M3_dependency": "Stage 3B-R1/R2 frozen market proxy and security identity behavior.",
+      "generic_suitability": "case-specific",
+      "required_abstraction": "Universe and target-identity interfaces before any reuse.",
+      "risk": "SSE/601857-specific identity repair and historical missing-security behavior could be generalized incorrectly.",
+      "recommended_action": "PETROCHINA_SPECIFIC_KEEP_OUTSIDE_CORE"
+    },
+    {
+      "path": "src/ashare_research/mechanism/regression.py",
+      "current_responsibility": "Fits the M3 OLS design with market, oil, industry, crash, and gamma semantics.",
+      "current_M3_dependency": "Stage 3C-A primary estimator and gamma decision rule.",
+      "generic_suitability": "high for first supported daily controlled OLS paradigm",
+      "required_abstraction": "Contract-owned ordered design matrix and named outcome/factor columns.",
+      "risk": "Generic config could silently add controls or alter estimator identity.",
+      "recommended_action": "GENERALIZE_SMALL"
+    },
+    {
+      "path": "src/ashare_research/mechanism/robustness.py",
+      "current_responsibility": "Registered conditional/descriptive summaries, leave-one-year-out, threshold, extreme-day, and BH transforms.",
+      "current_M3_dependency": "Stage 3C-C registered robustness around the PetroChina primary.",
+      "generic_suitability": "medium for registered daily robustness only",
+      "required_abstraction": "Robustness registry with immutable method IDs and contract-owned inputs.",
+      "risk": "Threshold or method enumeration could become a search engine.",
+      "recommended_action": "GENERALIZE_SMALL"
+    },
+    {
+      "path": "src/ashare_research/mechanism/source_manifest.py",
+      "current_responsibility": "Content-based frame identity, raw manifest path/SHA verification, coverage metadata, and atomic JSON output.",
+      "current_M3_dependency": "Stage 3B raw source manifests and data-quality gates.",
+      "generic_suitability": "high for provenance and data-quality primitives",
+      "required_abstraction": "Generic artifact/output envelope separated from restricted M3 research-output keys.",
+      "risk": "Path or coverage fallback could turn an inconclusive study into a result.",
+      "recommended_action": "REUSE_AS_IS"
+    }
+  ],
+  "petrochina_case_evidence_keep_outside_core": [
+    "China Petroleum-specific factor identities",
+    "Brent-specific assumptions",
+    "CNI 399439-specific industry selection",
+    "frozen -1% crash threshold",
+    "PetroChina-specific holdout dates",
+    "Stage3DB recovery history",
+    "SSE identity repair artifacts",
+    "historical 57 missing securities"
+  ],
+  "summary": {
+    "reuse_as_is": 3,
+    "generalize_small": 9,
+    "petrochina_specific_keep_outside_core": 9,
+    "defer": 0,
+    "do_not_reuse": 0,
+    "decision": "M3_PROVEN_CORE_REUSE_PREFERRED",
+    "bounded_extraction_required": true
+  }
+}

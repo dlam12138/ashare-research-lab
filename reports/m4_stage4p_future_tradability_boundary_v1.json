@@ -1,0 +1,14 @@
+{
+  "schema_version": "M4_STAGE4P_FUTURE_TRADABILITY_BOUNDARY_V1",
+  "status": "FROZEN_BOUNDARY",
+  "CURRENTLY_NOT_AUTHORIZED": true,
+  "applies_to": ["M4-A", "M4-B", "Stage4P"],
+  "future_prerequisites": ["development", "registered robustness", "independent OOS"],
+  "future_separate_review_may_consider": ["transaction cost", "slippage", "turnover", "capacity", "factor exposure", "risk", "Sharpe", "drawdown"],
+  "direct_M4A_M4B_implementation": "PROHIBITED",
+  "portfolio_alpha_research": "NOT_AUTHORIZED",
+  "automatic_trading": "NOT_AUTHORIZED",
+  "automatic_recommendation": "NOT_AUTHORIZED",
+  "economic_significance_research": "NOT_AUTHORIZED",
+  "required_future_governance": "separate North-Star revision and explicit milestone authorization after evidence review"
+}

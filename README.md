@@ -384,7 +384,7 @@ ruff check src/ tests/
 | Milestone 1: 免费数据底座 | 股票基础信息、交易日历、日线行情、Parquet/DuckDB 存储 | ✅ 已完成 |
 | Milestone 2: 价值评估 MVP | 企业质量、估值、现金流、安全边际、风险否决项 | 条件关闭；评分附加项已条件关闭，PE numeric scoring deferred |
 | Milestone 3: 机制验证 MVP | 假设检验、条件收益、控制变量、证据分级 | CONDITIONALLY CLOSED；Stage 3C-A method-locked；Stage 3C-A-R2 digest portability repaired/relocked pre-outcome；Stage 3C-B frozen development-primary completed；positive controlled abnormal performance not established；Stage 3C-C registered development robustness completed；Stage 3D-A one-shot frozen primary OOS contract completed；Stage 3D-B-R1/R2 repaired identity metadata but remained below the frozen market coverage gate；holdout primary inconclusive；daily mechanism not established；explicit gaps preserved；stop for North-Star review |
-| Milestone 4: 通用研究器 | 可配置的假设验证框架 | 🔲 计划中 |
+| Milestone 4: Generic Mechanism Research Engine + Theory / Hypothesis Registry | 通用机制研究契约与理论/假设注册边界 | PREFLIGHT ONLY; IMPLEMENTATION NOT STARTED |
 | Milestone 5: 分钟级研究 | 按需分钟数据验证 | 🔲 计划中 |
 | Milestone 6: 本地 Web 界面 | Streamlit 工作台 | 🔲 计划中 |
 

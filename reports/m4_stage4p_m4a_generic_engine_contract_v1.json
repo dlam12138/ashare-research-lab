@@ -1,0 +1,75 @@
+{
+  "schema_version": "M4_STAGE4P_M4A_GENERIC_ENGINE_CONTRACT_V1",
+  "status": "FROZEN_PREFLIGHT_ONLY",
+  "implementation_status": "NOT_STARTED",
+  "real_execution_authorized": false,
+  "purpose": "Define the smallest future boundary for converting one frozen hypothesis configuration into a validated research contract, deterministic analysis plan, bounded execution, reproducible artifacts, and evidence disposition.",
+  "architecture": {
+    "config_is_user_or_registry_description": true,
+    "config_is_not_arbitrary_python_dsl": true,
+    "config_and_frozen_research_contract_are_separate": true,
+    "execution_accepts_only_frozen_research_contract": true,
+    "pipeline": ["Hypothesis Config", "Validation / Compilation", "Frozen Research Contract", "Deterministic Analysis Plan", "Bounded Execution", "Reproducible Artifacts", "Evidence Disposition"]
+  },
+  "supported_first_slice": {
+    "paradigm": "daily_conditional_controlled_mechanism_research",
+    "inherits_from_M3": ["target", "factor", "condition", "controls", "OLS", "conditional_comparison", "bootstrap", "registered_robustness", "OOS_policy"],
+    "explicitly_not_supported_in_first_slice": ["panel_factor_model", "cross_sectional_ranking", "event_study", "machine_learning", "minute_order_flow", "portfolio_backtest"]
+  },
+  "minimum_hypothesis_config": {
+    "required": {
+      "hypothesis_id": "stable registry/config identifier",
+      "target": "named target series and identity policy",
+      "universe": "explicit universe definition and PIT policy",
+      "factor": "registered factor identity and direction",
+      "condition": "registered condition operator and fixed parameters",
+      "outcome": "named outcome, horizon, and observation timing",
+      "controls": "explicit ordered control identities",
+      "development": "frozen development window and sample policy",
+      "data_quality_gates": "coverage, PIT, identity, missingness, and duplicate policies",
+      "analysis_method": "allow-listed method ID and ordered design semantics",
+      "robustness_registry": "pre-registered robustness method IDs and parameters",
+      "evidence_rule": "disposition rule separating established/not-established/inconclusive"
+    },
+    "optional": {
+      "holdout_policy": "one-shot frozen OOS policy; absent means no holdout execution"
+    },
+    "forbidden_config_features": ["automatic provider searching", "automatic control selection", "automatic threshold search", "automatic factor discovery", "automatic feature engineering", "automatic hyperparameter optimization", "automatic best-backtest selection", "automatic model selection", "automatic portfolio construction", "automatic recommendation"]
+  },
+  "future_typed_interfaces": {
+    "compile_hypothesis_config": "HypothesisConfig -> FrozenMechanismContract",
+    "validate_contract": "FrozenMechanismContract -> ValidationResult",
+    "build_analysis_plan": "FrozenMechanismContract -> DeterministicAnalysisPlan",
+    "compute_contract_digest": "FrozenMechanismContract -> repository-independent content digest"
+  },
+  "deterministic_identity": {
+    "required": ["repository-relative keys", "content-based identity", "fixed RNG identity", "input manifest identity", "contract identity"],
+    "forbidden": ["absolute checkout paths", "path-dependent digest", "identity-only fallback"]
+  },
+  "fail_closed_rules": [
+    {"condition": "unsupported factor", "disposition": "FAIL"},
+    {"condition": "unsupported condition", "disposition": "FAIL"},
+    {"condition": "missing control", "disposition": "FAIL"},
+    {"condition": "PIT not proven", "disposition": "FAIL"},
+    {"condition": "coverage below contract gate", "disposition": "INCONCLUSIVE_OR_FAIL_AS_FROZEN"},
+    {"condition": "invalid identity", "disposition": "FAIL"},
+    {"condition": "contract mutation after outcome read", "disposition": "PROHIBITED"}
+  ],
+  "bounded_execution_rules": {
+    "provider_search": "PROHIBITED",
+    "real_outcome_read_in_preflight": "PROHIBITED",
+    "automatic_search_or_optimization": "PROHIBITED",
+    "portfolio_or_trading_output": "PROHIBITED",
+    "synthetic_or_test_capsule_future_use": "ALLOWED_AFTER_IMPLEMENTATION_REVIEW"
+  },
+  "minimum_implementation_slice_after_governance_merge": [
+    "typed hypothesis config validation",
+    "allow-listed compiler to frozen contract",
+    "contract digest and identity binding",
+    "daily dataset/plan adapter over M3 proven primitives",
+    "bounded executor with no provider or parameter search",
+    "artifact and evidence disposition schema",
+    "synthetic cross-platform tests"
+  ],
+  "not_implementation": true
+}

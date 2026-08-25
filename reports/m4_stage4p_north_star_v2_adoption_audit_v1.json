@@ -1,0 +1,92 @@
+{
+  "schema_version": "M4_STAGE4P_NORTH_STAR_V2_ADOPTION_AUDIT_V1",
+  "audit_status": "PASS",
+  "base": {
+    "branch": "main",
+    "commit": "a72b923256a483f2a8d5faefe657ae844dbace19",
+    "origin_main_verified": true,
+    "worktree": "D:/量化分析-m4-preflight",
+    "protected_dirty_worktree_not_used": true
+  },
+  "north_star_sources": {
+    "canonical_v1_path": "A股个股研究与市场机制验证平台-项目北极星.md",
+    "v1_sha256": "ad297e609b49bc6f76421ae6b50d213a003f6cec11c964d7da27f20127bd570f",
+    "v1_byte_size": 23086,
+    "v1_line_count": 1170,
+    "user_v2_source_path": "D:/量化分析/A股个股研究与市场机制验证平台-项目北极星-v2.md",
+    "requested_external_v2_source_path": "D:/量化分析-inputs/A股个股研究与市场机制验证平台-项目北极星-v2.md",
+    "requested_external_v2_source_present": false,
+    "actual_user_v2_source_present": true,
+    "actual_user_v2_source_is_untracked_input": true,
+    "new_input_sha256": "f411235a94396443c6ffabdc6501c096d5d4163d6fb54b41678109fb3fc6a307",
+    "new_input_byte_size": 38843,
+    "new_input_line_count": 1696,
+    "source_adopted_byte_for_byte": true,
+    "source_path_deviation_recorded": true
+  },
+  "preserved_core_boundaries": {
+    "no_auto_trading": true,
+    "no_direct_buy_sell": true,
+    "no_black_box_recommendation": true,
+    "explain_before_predict": true,
+    "daily_before_minute": true,
+    "deterministic_numbers": true,
+    "free_data_first": true,
+    "PIT": true,
+    "fail_closed": true,
+    "no_causality_overclaim": true
+  },
+  "new_governance": {
+    "preregistration": true,
+    "holdout_governance": true,
+    "explicit_evidence_gaps": true,
+    "theory_hypothesis_registry": true,
+    "literature_is_not_local_evidence": true,
+    "statistical_significance_not_profitability": true,
+    "economic_significance_future_boundary": true,
+    "alpha_portfolio_future_boundary": true
+  },
+  "milestone_changes": {
+    "M1": "retained_as_completed",
+    "M2": "retained_as_conditionally_closed",
+    "M3": "retained_as_conditionally_closed_with_daily_mechanism_not_established_and_holdout_inconclusive",
+    "M4A_generic_engine": "new_preflight_boundary_only_implementation_not_started",
+    "M4B_theory_registry": "new_preflight_boundary_only_schema_implementation_not_started",
+    "M5": "not_authorized",
+    "M6": "not_authorized"
+  },
+  "structured_diff": {
+    "project_positioning": {
+      "v1": "local free-data A-share value assessment and mechanism validation platform",
+      "v2": "retains the two core modules and adds hypothesis discovery/registration as a governed research-source layer"
+    },
+    "not_doing": {
+      "preserved": ["automatic trading", "direct buy/sell output", "black-box recommendation", "minute-first expansion"],
+      "strengthened": ["automatic parameter search", "automatic feature/model selection", "automatic alpha ranking", "large anomaly scanning", "portfolio optimization"]
+    },
+    "value_assessment": "retained as a long-term research module; no new value result or M2 gap is authorized",
+    "mechanism_validation": "upgraded with preregistration, explicit controls, holdout/OOS policy, evidence disposition, and fail-closed data gates",
+    "data_sources_and_quality": "retains free/low-cost auditable sources and strengthens PIT, identity, survivorship, coverage, source-version, and digest requirements",
+    "milestones": "M1/M2/M3 status and evidence are preserved; M4 is split into M4-A and M4-B preflight boundaries; M5/M6 remain future and unauthorized",
+    "core_principles": "adds literature-as-hypothesis-source, statistical-significance-versus-profitability separation, explicit gaps, and anomaly-zoo prohibition"
+  },
+  "scope_conflict_checks": {
+    "automatic_trading_scope_expanded": false,
+    "automatic_recommendation_scope_expanded": false,
+    "large_anomaly_mining_authorized": false,
+    "automatic_pnl_optimization_authorized": false,
+    "research_scope_expanded": false,
+    "alpha_optimization_authorized": false,
+    "conflict_status": "NONE"
+  },
+  "adoption_decision": {
+    "canonical_candidate": "NORTH_STAR_V2",
+    "audit_pass": true,
+    "replace_canonical_v1_with_exact_v2_bytes": true,
+    "retain_second_canonical_v2_copy": false,
+    "real_outcome_read": "NO",
+    "real_data_acquisition": "NO",
+    "M4_implementation": "NO",
+    "decision": "M4_NORTH_STAR_V2_CANONICAL_CANDIDATE_READY"
+  }
+}
