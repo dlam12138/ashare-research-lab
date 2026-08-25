@@ -1,0 +1,253 @@
+{
+  "schema_version": "M4_DETERMINISTIC_ANALYSIS_PLAN_DESIGN_V1",
+  "design_status": "FROZEN_FOR_IMPLEMENTATION_REVIEW",
+  "plan_state": "DETERMINISTIC_PRE_EXECUTION_PLAN",
+  "architecture": "DECLARATIVE_PLAN_OVER_ROLE_BASED_SEMANTICS",
+  "m4_architecture": "THIN_GENERIC_LAYER_OVER_PROVEN_M3_CORE",
+  "supported_paradigm": "daily_conditional_controlled_mechanism_research",
+  "supported_analysis_method": "DAILY_CONDITIONAL_CONTROLLED_OLS_V1",
+  "plan_envelope": {
+    "required_fields_in_ordered_schema": [
+      "schema_version",
+      "plan_state",
+      "hypothesis_id",
+      "source_contract_digest",
+      "source_contract_schema_version",
+      "analysis_method_id",
+      "dataset_requirements",
+      "sample_plan",
+      "transform_plan",
+      "design_plan",
+      "conditional_summary_plan",
+      "bootstrap_plan",
+      "robustness_plan",
+      "evidence_plan",
+      "holdout_boundary",
+      "plan_digest_algorithm",
+      "plan_digest"
+    ],
+    "immutable": true,
+    "content_addressed": true,
+    "repository_independent": true,
+    "pre_execution_only": true
+  },
+  "dataset_requirements": {
+    "representation": "role_based_requirements_only",
+    "requirements": [
+      {
+        "role": "TARGET_OUTCOME",
+        "series_id_source": "contract.target.series_id",
+        "transform_semantics": "OUTCOME_AS_DECLARED_BY_CONTRACT",
+        "observation_timing_source": "contract.outcome.observation_timing",
+        "required_for_primary": true,
+        "validity_requirement": "PIT_AND_IDENTITY_AND_FINITE"
+      },
+      {
+        "role": "FACTOR",
+        "series_id_source": "contract.factor.factor_id",
+        "transform_semantics_source": "contract.factor.transform_semantics",
+        "observation_timing_source": "contract.outcome.observation_timing",
+        "required_for_primary": true,
+        "validity_requirement": "PIT_AND_IDENTITY_AND_FINITE"
+      },
+      {
+        "role": "ORDERED_CONTROL",
+        "role_instance_format": "CONTROL_0001, CONTROL_0002, ...",
+        "series_id_source": "contract.controls[index]",
+        "transform_semantics": "DAILY_RETURN",
+        "observation_timing_source": "contract.outcome.observation_timing",
+        "required_for_primary": true,
+        "validity_requirement": "PIT_AND_IDENTITY_AND_FINITE",
+        "ordering": "contract tuple order; never sort"
+      }
+    ],
+    "universe_requirement": {
+      "universe_id_source": "contract.universe.universe_id",
+      "membership_policy_source": "contract.universe.membership_policy",
+      "pit_policy_source": "contract.universe.pit_policy",
+      "plan_responsibility": "declare requirement only",
+      "forbidden_responsibilities": ["build universe", "load security master", "resolve provider"]
+    }
+  },
+  "sample_plan": {
+    "window": {
+      "start_source": "contract.development.start",
+      "end_source": "contract.development.end",
+      "mutation_policy": "copy exactly; no plan-side adjustment"
+    },
+    "coverage_gate_source": "contract.data_quality_gates.coverage_gate",
+    "pit_requirement_source": "contract.data_quality_gates.pit_required",
+    "identity_requirement_source": "contract.data_quality_gates.identity_required",
+    "missingness_policy_source": "contract.data_quality_gates.missingness_policy",
+    "duplicate_policy_source": "contract.data_quality_gates.duplicate_policy",
+    "selection_semantics": "evaluate the frozen date and data-quality boundary before declaring a primary execution eligible; use complete primary rows for estimation",
+    "coverage_denominator_policy": "never change the contract denominator by silently dropping roles, dates, or securities"
+  },
+  "transform_plan": {
+    "condition": {
+      "source_role": "FACTOR",
+      "operator_source": "contract.condition.operator",
+      "allowed_operators": ["LT", "LTE", "GT", "GTE"],
+      "threshold_source": "contract.condition.threshold",
+      "threshold_representation": "canonical_decimal",
+      "output_role": "CONDITION_INDICATOR",
+      "coding": "predicate true=1, false=0",
+      "mutation_policy": "no threshold expansion, clipping, or sign reinterpretation"
+    },
+    "transform_scope": "declare role transforms only; do not acquire, clean, impute, or execute data"
+  },
+  "design_plan": {
+    "model_family": "OLS",
+    "ordered_terms": [
+      {
+        "position": 1,
+        "term_role": "INTERCEPT",
+        "source_series_role": null,
+        "coefficient_role": "alpha"
+      },
+      {
+        "position": 2,
+        "term_role": "FACTOR_CONTINUOUS",
+        "source_series_role": "FACTOR",
+        "coefficient_role": "beta_factor"
+      },
+      {
+        "position": 3,
+        "term_role": "ORDERED_CONTROLS",
+        "expansion": "one term per contract.controls item in tuple order",
+        "source_series_role": "CONTROL_NNNN",
+        "coefficient_role": "beta_control_NNNN"
+      },
+      {
+        "position": 4,
+        "term_role": "CONDITION_INDICATOR",
+        "source_series_role": "CONDITION_INDICATOR",
+        "coefficient_role": "gamma_condition"
+      }
+    ],
+    "response_role": "TARGET_OUTCOME",
+    "generic_names_only": true,
+    "forbidden_names": ["const", "Crash_t", "market_ex_target_return", "oil_return", "industry_return", "gamma"]
+  },
+  "conditional_summary_plan": {
+    "dispatch_only": true,
+    "condition_labels": ["CONDITION", "ORDINARY"],
+    "required_statistic_roles": [
+      "CONDITION_COUNT",
+      "ORDINARY_COUNT",
+      "CONDITION_MEAN",
+      "ORDINARY_MEAN",
+      "CONDITION_MEDIAN",
+      "ORDINARY_MEDIAN",
+      "CONDITION_MINUS_ORDINARY_MEAN",
+      "CONDITION_MINUS_ORDINARY_MEDIAN"
+    ],
+    "source_roles": {
+      "condition": "CONDITION_INDICATOR",
+      "outcome": "TARGET_OUTCOME"
+    },
+    "execution": "not performed by plan compilation"
+  },
+  "bootstrap_plan": {
+    "enabled_source": "contract.bootstrap_policy.enabled",
+    "method_id_source": "contract.bootstrap_policy.method_id",
+    "replications_source": "contract.bootstrap_policy.replications",
+    "seed_source": "contract.bootstrap_policy.seed",
+    "rng_source": "contract.bootstrap_policy.rng",
+    "confidence_level_source": "contract.bootstrap_policy.confidence_level",
+    "moving_block_semantics": {
+      "method_id": "MOVING_BLOCK_BOOTSTRAP_V1",
+      "block_length_policy_id": "N_CUBERT_ROUNDED_CLAMP_1_20_V1",
+      "block_length_materialization": "depends on execution sample n; do not store a sample-derived length in the pre-data plan",
+      "sampling": "non-circular overlapping moving blocks",
+      "row_policy": "complete-row resampling",
+      "estimator_binding": "future bounded executor binds the plan design; compilation does not call fit_primary_ols"
+    }
+  },
+  "robustness_plan": {
+    "dispatch_only": true,
+    "registry_source": "contract.robustness_registry.entries",
+    "order_policy": "preserve frozen registration order",
+    "entry_schema": ["robustness_id", "method_id", "parameters"],
+    "automatic_expansion": false,
+    "automatic_selection": false,
+    "execution": "future bounded executor only"
+  },
+  "evidence_plan": {
+    "dispatch_only": true,
+    "rule_id_source": "contract.evidence_rule.rule_id",
+    "expected_direction_source": "contract.evidence_rule.expected_direction",
+    "confidence_requirement_source": "contract.evidence_rule.confidence_requirement",
+    "data_quality_failure_disposition_source": "contract.evidence_rule.data_quality_failure_disposition",
+    "required_statistic_roles": [
+      "PRIMARY_EFFECT_ESTIMATE",
+      "PRIMARY_EFFECT_CI_LOWER",
+      "PRIMARY_EFFECT_CI_UPPER",
+      "CONDITIONAL_MEAN_DIFFERENCE",
+      "CONDITIONAL_MEDIAN_DIFFERENCE",
+      "PRIMARY_SAMPLE_COVERAGE"
+    ],
+    "statistic_role_bindings": {
+      "PRIMARY_EFFECT_ESTIMATE": "CONDITION_INDICATOR coefficient role gamma_condition",
+      "PRIMARY_EFFECT_CI_LOWER": "frozen bootstrap confidence interval lower bound for gamma_condition",
+      "PRIMARY_EFFECT_CI_UPPER": "frozen bootstrap confidence interval upper bound for gamma_condition"
+    },
+    "outcome_read": false
+  },
+  "holdout_boundary": {
+    "absent_contract_policy": "NO_HOLDOUT_AUTHORIZED",
+    "present_contract_mapping": ["window", "policy_id", "max_accepted_primary_executions"],
+    "execution_authorized": false,
+    "state_machine": "not part of A.2 plan design"
+  },
+  "plan_identity": {
+    "plan_digest_algorithm": "M4_CANONICAL_ANALYSIS_PLAN_DIGEST_V1",
+    "digest_implementation": "reuse model_digest.canonical_digest over the canonical semantic plan payload",
+    "payload_rule": "exclude plan_digest self-reference, serialize UTF-8 JSON with ensure_ascii=false, sort_keys=true, separators=(,,:) and one final newline for the envelope",
+    "bound_identity": ["source_contract_digest", "source_contract_schema_version", "analysis_method_id"],
+    "forbidden_identity_inputs": [
+      "timestamp",
+      "hostname",
+      "absolute path",
+      "checkout root",
+      "UUID",
+      "provider URL",
+      "runtime result"
+    ],
+    "identity_requirement": "same semantic frozen contract compiled in any checkout or OS produces byte-identical plan serialization and digest"
+  },
+  "builder_responsibility": "COMPILE",
+  "builder_forbidden_behaviors": [
+    "OPTIMIZE",
+    "DISCOVER",
+    "REPAIR",
+    "automatic control selection",
+    "automatic provider selection",
+    "automatic proxy selection",
+    "automatic threshold expansion",
+    "automatic robustness expansion",
+    "automatic model selection",
+    "auto-drop missing controls",
+    "auto-adjust coverage gate"
+  ],
+  "next_implementation_slice": {
+    "stage": "M4_STAGE4A2I",
+    "scope": [
+      "immutable dataclasses",
+      "FrozenMechanismContract to DeterministicAnalysisPlan compiler",
+      "canonical serialization",
+      "plan digest",
+      "synthetic A/B identity tests"
+    ],
+    "excluded": [
+      "dataset adapter",
+      "DataFrame",
+      "regression execution",
+      "bootstrap execution",
+      "real data",
+      "real hypothesis outcome",
+      "M4-B"
+    ],
+    "status": "NOT_STARTED"
+  }
+}
