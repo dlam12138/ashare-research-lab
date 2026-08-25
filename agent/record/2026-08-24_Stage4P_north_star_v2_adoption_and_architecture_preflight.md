@@ -65,8 +65,8 @@ Governance and architecture preflight only. No M4 production implementation, rea
 - `git diff --check` → passed; canonical Markdown intentional hard-break whitespace is covered by a path-level `.gitattributes` exception without changing bytes
 - JSON validation: all 7 `reports/m4_stage4p_*.json` parsed successfully
 - frozen identity comparison: Stage4P governance test passed; protected aggregates remain byte-identical
-- CI Windows/Ubuntu: pending remote CI result
-- PR: pending; never merge automatically
+- CI Windows/Ubuntu: PR #4 remote checks all passed, including clean-clone and cross-platform `identity-compare` jobs; GitHub reported only existing Node.js 20 deprecation annotations.
+- PR: [#4](https://github.com/dlam12138/ashare-research-lab/pull/4), base `main`, head `feat/m4-generic-research-preflight`, `OPEN`, not merged.
 
 Full-test warnings are the existing pandas `to_datetime` format-inference warnings in `tests/test_quality.py`; no test failure or new research execution occurred.
 
