@@ -72,3 +72,13 @@ Implementation in progress. Actual commands and results will be appended as exec
 - Commits created: 676c973 (dates), 34b6e3e (TTM), 396a905 (entry), e94f285
   (documented source-protection amendment and stronger negative-earnings fixture).
 - Local evidence is ready for the ordinary feature push and PR. No merge authorized.
+
+### Remote handoff
+- Committed local acceptance as af6ac41 and pushed only the approved feature branch.
+- Created https://github.com/dlam12138/ashare-research-lab/pull/8 targeting main.
+- Verified OPEN/non-draft PR, matching head af6ac41, clean feature worktree, local/origin
+  synchronization, original dirty-worktree state and protected stash/DB hash.
+- Existing seven workflows started on push and PR; early Linux M3 lock checks passed.
+  Final-head CI outcomes remain to be inspected and will be appended to the PR body,
+  without repeatedly changing tracked evidence and restarting the workflow cycle.
+- No main push, force push, merge, branch cleanup or new research stage was performed.

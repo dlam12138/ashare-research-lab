@@ -1,6 +1,9 @@
 # PIT/TTM correctness and project entry acceptance
 
-Status: local implementation and validation complete; remote CI evidence pending.
+Local implementation verdict: **PASS**. Remote delivery evidence is attached to
+[PR #8](https://github.com/dlam12138/ashare-research-lab/pull/8) and its final-head checks.
+This file records completed local validation; CI conclusions must be read from the
+actual PR checks, not inferred from this verdict.
 
 Goal: `agent/goals/2026-09-06_pit_ttm_correctness_and_project_entry.md`.
 Base: `origin/main` at `a0a7c13ee47057abf5e40a96a616baf78451774e`.
@@ -94,3 +97,20 @@ verify it in the actual fresh CI checkout. No workaround or gate change was made
   `cb568efd7eaa6f0fca4b3bb5a1e2200b9341985f`.
 - Original dirty worktree, other worktree HEADs and all pre-existing files are preserved.
 - Stop before merge. This task does not authorize any next research stage.
+
+## Remote delivery
+
+- PR: https://github.com/dlam12138/ashare-research-lab/pull/8, OPEN, not draft,
+  base main, head codex/pit-ttm-correctness-and-project-entry.
+- First push and PR head: `af6ac41fbd758ca00043eef14b23e27fbe6f78ec`;
+  local HEAD and origin tracking ref matched exactly at that handoff.
+- Main remained `a0a7c13ee47057abf5e40a96a616baf78451774e`.
+- Subsequent evidence-only commit records this handoff. Its final SHA and CI
+  conclusions are recorded in the PR body/final response after the ordinary push,
+  avoiding a self-referential commit hash in this file.
+- All seven existing workflows are unchanged. Windows/Linux Stage2G clean-clone
+  full tests and cross-platform identity, plus M3 lock/identity workflows, are
+  required delivery evidence. No merge was requested or performed.
+- Final changes are limited to four source files (as_of, dates, repository, ttm),
+  three new test files, seven existing test files (six source-hash entries and one
+  strengthened fixture), README/history/record index, and this task's Goal/record/acceptance.
