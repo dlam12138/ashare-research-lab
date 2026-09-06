@@ -58,3 +58,17 @@ Implementation in progress. Actual commands and results will be appended as exec
   Applied the scoped PIT_DATE_GATE_V2 exception in the Goal: six as_of.py entries
   advance to its new exact blob, with old blob and rationale preserved. Equality
   assertions and all other expected hashes remain untouched. Full suite rerun required.
+
+### Local acceptance complete
+- Amended protection + new boundary/entry/valuation suites: **208 passed**, 54.89 s.
+- Final `.venv/Scripts/python.exe -m pytest -q -rs`: **2419 passed, 4 skipped,
+  2 warnings**, 327.59 s. Skips: three unavailable external Baostock snapshot cases,
+  one Windows symlink case; warnings: existing pandas date inference.
+- Existing fixture states remain byte-equivalent as dictionaries including digest fields.
+  Ruff, compileall, diff check and source-protection map comparison passed.
+- `verify-contracts`: pass_with_explicit_gaps, no network. A post-test invocation of
+  `verify-clean-clone` rejected generated output/untracked acceptance as expected;
+  its fresh-checkout validation will be obtained from CI without deleting runtime data.
+- Commits created: 676c973 (dates), 34b6e3e (TTM), 396a905 (entry), e94f285
+  (documented source-protection amendment and stronger negative-earnings fixture).
+- Local evidence is ready for the ordinary feature push and PR. No merge authorized.
