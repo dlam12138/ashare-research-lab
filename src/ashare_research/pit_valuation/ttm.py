@@ -60,19 +60,53 @@ def _versions_for_period(
     """Sort the facts for a ``(year, report_type)`` by effective_from."""
     period_end = f"{year}-{PERIOD_END_BY_REPORT[report_type]}"
     versions = [f for f in facts if f.get("period_end") == period_end]
-    versions.sort(key=lambda f: (f.get("effective_from") or "", f.get("fact_id", "")))
+    versions.sort(key=lambda f: f.get("effective_from") or "")
     return versions
 
 
 def _primary_start(versions: list[dict[str, Any]]) -> str:
     """The earliest effective_from among the versions of a report period."""
-    return versions[0]["effective_from"]
+    return min(version["effective_from"] for version in versions)
 
 
 def _latest_visible(versions: list[dict[str, Any]], at: str) -> dict[str, Any] | None:
-    """Latest version with ``effective_from <= at`` (backward only)."""
+    """Latest visible version, resolving equal effective dates by supersession.
+
+    Fact IDs are identities, not an economic ranking. A tied candidate must
+    descend from every other tied candidate to be selected. Only visible
+    versions can establish that relationship; incomplete unrelated chains
+    cannot silently break ties.
+    """
     visible = [f for f in versions if f.get("effective_from", "") <= at]
-    return visible[-1] if visible else None
+    if not visible:
+        return None
+    by_id: dict[str, dict[str, Any]] = {}
+    for version in visible:
+        fid = version["fact_id"]
+        if fid in by_id and by_id[fid] != version:
+            raise ValueError(f"conflicting TTM fact_id at {at}: {fid}")
+        by_id[fid] = version
+    latest = max(f["effective_from"] for f in visible)
+    candidates = {fid for fid, f in by_id.items() if f["effective_from"] == latest}
+    ancestors: dict[str, set[str]] = {}
+    for fid in by_id:
+        chain: set[str] = set()
+        cursor = fid
+        while cursor in by_id:
+            if cursor in chain:
+                raise ValueError(f"cyclic TTM supersession at {at}: {sorted(chain)}")
+            chain.add(cursor)
+            previous = by_id[cursor].get("supersedes_fact_id", "")
+            if previous in by_id and (
+                by_id[previous]["effective_from"] > by_id[cursor]["effective_from"]
+            ):
+                raise ValueError(f"backward TTM supersession at {at}: {cursor}, {previous}")
+            cursor = previous
+        ancestors[fid] = chain
+    winners = [fid for fid in candidates if candidates <= ancestors[fid]]
+    if len(winners) != 1:
+        raise ValueError(f"ambiguous TTM supersession at {at}: {sorted(candidates)}")
+    return by_id[winners[0]]
 
 
 def _fact_value(fact: dict[str, Any] | None) -> Decimal | None:
@@ -183,10 +217,9 @@ def _annual_states(
 ) -> list[dict[str, Any]]:
     """TTM states for an annual period: TTM = latest visible annual value."""
     out: list[dict[str, Any]] = []
-    for version in current_versions:
-        eff = version.get("effective_from", "")
-        if not (start <= eff < end):
-            continue
+    for eff in sorted({v["effective_from"] for v in current_versions
+                       if start <= v["effective_from"] < end}):
+        version = _latest_visible(current_versions, eff)
         value = _fact_value(version)
         out.append(
             _make_ttm_state(
@@ -224,26 +257,6 @@ def _interim_states(
     prior_cum_versions = _versions_for_period(facts, year - 1, report_type)
     prior_annual_versions = _versions_for_period(facts, year - 1, "annual")
 
-    # A missing prior input forms a single explicit missing_ttm_input state.
-    if not prior_cum_versions or not prior_annual_versions:
-        return [
-            _make_ttm_state(
-                metric_id=metric_id,
-                formula_id=formula_id,
-                formula_version=formula_version,
-                year=year,
-                report_type=report_type,
-                period_end=f"{year}-{PERIOD_END_BY_REPORT[report_type]}",
-                effective_from=start,
-                value=None,
-                status=STATUS_MISSING_TTM_INPUT,
-                current_fact=_latest_visible(current_versions, start),
-                prior_cum=None,
-                prior_annual=None,
-                available_at_max=_latest_visible(current_versions, start).get("available_at", ""),
-            )
-        ]
-
     # Transition points: every slot effective_from within [start, end).
     transition_points = {
         v.get("effective_from", "")
@@ -260,9 +273,8 @@ def _interim_states(
             continue
         value = _ttm_value(current, prior_cum, prior_annual)
         available_at_max = max(
-            current.get("available_at", ""),
-            prior_cum.get("available_at", ""),
-            prior_annual.get("available_at", ""),
+            f.get("available_at", "")
+            for f in (current, prior_cum, prior_annual) if f is not None
         )
         out.append(
             _make_ttm_state(
