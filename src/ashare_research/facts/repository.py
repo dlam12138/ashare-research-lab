@@ -26,6 +26,7 @@ from ashare_research.exceptions import (
     FactSchemaMigrationError,
     FactVersionConflictError,
 )
+from ashare_research.facts.dates import validate_pit_date
 from ashare_research.facts.identity import (
     build_fact_id,
     diff_fact_semantic_payloads,
@@ -910,6 +911,8 @@ class FactRepository:
         PIT 查询：仅返回 available_at 非空且 <= as_of_date 的事实。
         默认过滤未核验事实（include_unverified=True 仅用于审计）。
         """
+        if as_of_date is not None:
+            validate_pit_date(as_of_date, "as_of_date")
         conn = self.store.connect()
         query = "SELECT * FROM financial_facts WHERE symbol = ?"
         params: list = [symbol]
@@ -931,7 +934,7 @@ class FactRepository:
             )
             params.append(end_year)
 
-        if as_of_date:
+        if as_of_date is not None:
             # PIT 门禁：available_at 必须非空且非空字符串且 <= as_of_date
             query += (
                 " AND available_at IS NOT NULL"
@@ -963,6 +966,7 @@ class FactRepository:
         使用 ROW_NUMBER() 窗口函数选择最新版本。
         PIT 门禁：available_at 必须非空且非空字符串且 <= as_of_date。
         """
+        validate_pit_date(as_of_date, "as_of_date")
         conn = self.store.connect()
 
         concept_filter = ""
