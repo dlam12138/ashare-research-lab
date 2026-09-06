@@ -46,3 +46,15 @@ Implementation in progress. Actual commands and results will be appended as exec
 - Ruff over src/tests and compileall passed. Full suite is running.
 - An oversized shell documentation-edit command was rejected by execution policy;
   no files changed from that command. Applied the documentation through apply_patch.
+
+### Full-suite findings and scoped amendment
+- First full suite: **7 failed, 2412 passed, 4 skipped, 2 warnings**, 379.43 s.
+  Six failures pin the old as_of.py source in historical tests; one was a malformed
+  negative-earnings test fixture. No research-artifact or output baseline failed.
+- Negative fixture previously kept two unrelated same-day versions and used a Q1
+  lacking prior inputs. Replaced an actual annual input and strengthened assertions:
+  require observations, nonpositive_earnings status and null ratio. All 8 series tests pass.
+- Presented the conflict with the no-hash-update plan; user answered "继续".
+  Applied the scoped PIT_DATE_GATE_V2 exception in the Goal: six as_of.py entries
+  advance to its new exact blob, with old blob and rationale preserved. Equality
+  assertions and all other expected hashes remain untouched. Full suite rerun required.

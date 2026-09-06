@@ -66,7 +66,10 @@ PROTECTED_BLOBS = {
     "src/ashare_research/facts/identity.py":
         "85c84b4ee970a32e878d2945eb45b9f070cfb443",
     "src/ashare_research/facts/as_of.py":
-        "d707ec3a9ee161d42f9951e52b946c6f2a569085",
+        # PIT_DATE_GATE_V2: authorized correctness repair, 2026-09-06.
+        # Historical blob: d707ec3a9ee161d42f9951e52b946c6f2a569085.
+        # See acceptance/2026-09-06_pit_ttm_correctness_and_project_entry.md.
+        "8e50d151732e4e7eb2e63456f6ed990dc11d15a6",
     "src/ashare_research/validation/version_chain.py":
         "292442c314df46379865cdefd1ab311ec7176c91",
     "src/ashare_research/reconciliation/engine.py":

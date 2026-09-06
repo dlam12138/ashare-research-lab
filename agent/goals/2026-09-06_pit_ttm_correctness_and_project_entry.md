@@ -17,7 +17,16 @@ Allowed: facts query-date validation, PIT valuation TTM logic, focused regressio
 README/history/index documentation, this Goal, one work record and dated acceptance.
 Forbidden: default DB or existing worktree mutations, frozen research artifacts,
 M3/M4 implementation changes, M4-A.2 design integration, real research, branch cleanup,
-test weakening, baseline hash updates, direct main push, force push, merge.
+test weakening, unrelated baseline hash updates, direct main push, force push, merge.
+
+## Authorized PIT_DATE_GATE_V2 amendment
+The first full run revealed six legacy tests pinning the buggy as_of.py source blob.
+After the scoped exception was presented, the user instructed "继续". Only that source
+expectation may advance from d707ec3a9ee161d42f9951e52b946c6f2a569085 to
+8e50d151732e4e7eb2e63456f6ed990dc11d15a6. Preserve the original value in comments
+and acceptance, retain exact equality assertions, and leave all other protected hashes
+and frozen research artifacts unchanged. This supersedes the original blanket ban
+only for the identified source repair; no research baseline is relocked.
 
 ## Required behavior
 - YYYY-MM-DD only; PointInTimeError on other explicit cutoffs; omitted repository
