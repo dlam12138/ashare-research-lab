@@ -2,79 +2,38 @@
 
 > A股价值评估与市场机制验证实验室
 
-一个使用免费数据、本地运行、面向A股的可解释研究平台：通过价值评估寻找值得研究的公司，通过机制验证检验个股与市场因素之间的真实关系。
+本地运行、免费数据优先的可解释研究平台。当前主线提供数据底座、中石油价值评估切片、日频机制研究记录，以及通用假设合同编译能力。
+仅用于数据分析、统计研究和软件工程学习，不构成投资建议，也不提供自动交易能力。
 
-> [!IMPORTANT]
-> 本项目仅用于数据分析、统计研究和软件工程学习，不构成任何投资建议，也不提供自动交易能力。
+## 当前可用能力
 
-**Milestone 2: CONDITIONALLY CLOSED; SCORING ADDENDUM CONDITIONALLY CLOSED**
+以 `main` 已合入的实现和验收为准；设计分支不等于已发布能力。
 
-Stage 2K.1R4F.4B decision:
-`PE_NUMERIC_SCORING_DEFERRED_FROZEN_5Y_VALIDATION_NOT_TESTABLE`. ROIC is
-`not_computable_under_strict_evidence_contract`; no numeric ROIC, shadow, or
-production Metric/Result exists. Raw PE and trusted 3Y/5Y percentiles remain
-descriptive evidence, but frozen-5Y independent cycle-context validation is not
-testable, so no PE or valuation-dimension numeric score is authorized. The
-scoring addendum is conditionally closed; this is not a production engine,
-rank, or signal. M3 Stage 3A research contracts are frozen. Stage 3B completed
-fail-closed (strict primary-proxy inputs under free data were not obtainable, so
-no proxy was substituted). Stage 3B-R1 primary-proxy resolution is current: the
-type-1 exact divisor reconstruction is superseded by a North-Star-aligned
-equal-weight ex-target Shanghai A-share proxy (v2). Stage 3B-R2 froze a pre-outcome
-oil alignment supersession (strictly-prior Brent observation-date) and the Shenwan
-  industry regime control. Stage 3B-R3 added a secret-redacted bounded EIA Open Data API v2
-transport (oil) and a Shenwan official-source-resolution ladder (industry). Stage 3B-R4 formally
-amends only the pre-outcome source/control implementation: the unchanged
-DCOILBRENTEU Brent variable now uses no-credential bounded FRED public CSV, and the primary
-industry control is the official CNI Oil & Gas Index 399439. Both are TRUSTED through 2022-12-31;
-the frozen R1 market proxy is reused and joint Tier-1 readiness has 1,902 valid development dates.
-Stage 3C-A pipeline-lock implementation is recovered and method-locked on the canonical M3 baseline;
-a checkout-path digest portability defect was discovered and repaired/relocked in Stage 3C-A-R2 before
-any outcome read. Stage 3C-B frozen development-primary execution completed with positive controlled
-abnormal performance not established. Stage 3C-C executed the previously registered and pre-outcome-
-implemented development robustness suite; the primary decision remains unchanged, development
-evidence level remains unassigned because no descriptive relationship criterion was prelocked, and
-the holdout input capsule remains incomplete. Stage 3D-A froze the one-shot out-of-sample execution contract. Stage 3D-B
-crossed the unseal boundary and failed closed at the frozen market coverage gate. Stage 3D-B-R1 repaired
-the PIT universe metadata conflict, and Stage 3D-B-R2 recovered all 159 security-level identities
-without changing the frozen delist universe or dates. Corrected minimum market coverage was
-`0.9736963544070143`, below the frozen `0.99` gate; 57 true required rows remained missing, so no
-regression/bootstrap/gamma was run and the holdout remained
-`M3_HOLDOUT_PRIMARY_INCONCLUSIVE_TECHNICAL_OR_COVERAGE_GAP`. This result does not support causal,
-actor-intent, policy-intervention, or “护盘/国家队” inferences.
-Stage 3D-B-R1 began the authorized post-unseal technical recovery in an
-isolated metadata-only Gate A. It detected conflicting duplicate delisted-
-security metadata and stopped fail-closed before any new price parse or retry;
-no recovered holdout primary was executed.
-Stage 3E records the final North-Star disposition: the development primary and
-registered robustness did not establish a stable positive daily mechanism, the
-holdout was consumed but remained inconclusive, and the final daily disposition
-is `M3_DAILY_MECHANISM_NOT_ESTABLISHED`. M3 is `CONDITIONALLY CLOSED`, with
-explicit evidence gaps preserved. At M3 closeout, further holdout recovery,
-minute escalation, index contribution, and M4 were not authorized.
-Historical M3 closeout stop: `STOP_FOR_NORTH_STAR_REVIEW`.
+| 能力 | 当前状态 | 如何使用 | 限制 | 证据 |
+| --- | --- | --- | --- | --- |
+| M1 数据底座 | 已实现 | 下方数据获取 CLI；Parquet/DuckDB 存储 | 获取需网络，免费源可能失效 | [数据服务测试](tests/test_data_service.py) |
+| M2 价值评估 | M2 已条件关闭；中石油 PIT 切片 | 下方离线胶囊；真实输入需显式提供 | ROIC 证据不足；PE 数值评分暂缓，无生产排名 | [完成矩阵](reports/m2_value_assessment_completion_matrix.md)、[缺口台账](reports/m2_explicit_gap_ledger.md) |
+| M3 机制验证 | CONDITIONALLY CLOSED；日频机制未建立 | 阅读开发期研究与最终处置 | holdout primary inconclusive；不支持因果或行为主体推断 | [最终验收](acceptance/m3_stage3e_daily_mechanism_final_disposition_and_milestone_closeout_preflight.md) |
+| M4-A.1 假设合同 | CANONICAL ON MAIN | 下方 Python 编译接口与合成测试 | 仅配置校验、合同冻结和摘要，没有通用研究执行器 | [编译验收](acceptance/m4_stage4a1_typed_hypothesis_config_and_frozen_contract_compiler.md) |
+| M4-A.2 分析计划 | 主线实现 NOT STARTED；独立分支仅有设计 | [设计分支](https://github.com/dlam12138/ashare-research-lab/tree/docs/m4a2-deterministic-analysis-plan-design) | 本次未整合设计，也未授权实现 | 设计分支中的 Goal 与验收 |
+| M4-B 与后续研究 | NOT STARTED | 参见路线图 | 真实假设执行、M5/M6 仍未授权 | [Stage4P](acceptance/m4_stage4p_north_star_v2_adoption_and_architecture_preflight.md) |
 
-Subsequently, North-Star v2 / Stage4P separately authorized M4 preflight, and
-M4-A.1 has since been implemented and canonicalized on main. M4-A.2, M4-B,
-real hypothesis execution, anomaly research, economic-significance work,
-portfolio/alpha research, M5, and M6 remain separately unauthorized. No real mechanism inference beyond the frozen development-primary and registered robustness execution has been executed.
+### 研究结论与边界
 
----
+**Milestone 2: CONDITIONALLY CLOSED; SCORING ADDENDUM CONDITIONALLY CLOSED**。
+PE 决定为 `PE_NUMERIC_SCORING_DEFERRED_FROZEN_5Y_VALIDATION_NOT_TESTABLE`；原始 PE 和 3Y/5Y 分位仅作描述证据。ROIC 保持 `not_computable_under_strict_evidence_contract`，没有替代数值。
 
-## 项目定位
+M3 最终处置为 `M3_DAILY_MECHANISM_NOT_ESTABLISHED`。Holdout 已使用一次性解封机会，但覆盖率 `0.9736963544070143` 低于冻结门槛 `0.99`，状态为 `M3_HOLDOUT_PRIMARY_INCONCLUSIVE_TECHNICAL_OR_COVERAGE_GAP`，未运行 holdout 回归/bootstrap。
 
-本项目围绕两个核心模块：
+### 历史停止与当前授权
 
-1. **个股价值评估** — 企业质量、估值吸引力、价值兑现能力、风险否决项（M2 已条件关闭）
-2. **市场机制验证** — 用统计方法检验个股与市场之间的可复现关系（Stage 3A 契约已冻结；Stage 3B 已 fail-closed 完成；Stage 3B-R1 主市场代理解析为当前状态；Stage 3B-R2 冻结严格 prior Brent 观测日与申万行业 regime；Stage 3B-R4 在结果出现前将 oil transport 改为无认证 bounded FRED `DCOILBRENTEU`，并将行业 primary amendment 固定为官方 CNI `399439`，两项均 TRUSTED；复用 R1 market proxy 后 joint Tier-1 共有 1,902 个有效 development dates；Stage 3C-A 方法锁定，Stage 3C-A-R2 已在真实 outcome 读取前完成 digest portability repair/relock；Stage 3C-B frozen development-primary 已完成，正的受控异常表现未建立；Stage 3C-C 已完成结果出现前注册且已实现锁定的 development robustness，primary decision 未改变，evidence level 未分配；Stage 3D-A 冻结了一次性 OOS 合同；Stage 3D-B 已跨过 unseal boundary；Stage 3D-B-R1/R2 完成 PIT universe 与 SSE security-level identity recovery，但 corrected minimum market coverage `0.9736963544070143` 未达到 frozen `0.99` gate；holdout primary 因技术/覆盖缺口保持 inconclusive，没有执行 regression/bootstrap/gamma；Stage 3E 已将 M3 条件关闭，daily mechanism 为 `M3_DAILY_MECHANISM_NOT_ESTABLISHED`）
+历史脉络见 [阶段历史](docs/project-history.md)。为区分当时与当前，保留以下验收声明：
 
-当前已完成第一阶段的**免费数据底座**：可运行、可测试、可追溯的本地数据基础设施。M2 已有 PetroChina（601857.SH）一份 PIT value profile 纵向切片；收益/现金、ROE/ROA、财务安全、股息和估值均已有阶段性能力。Stage 2G.2 增加了 clean-clone 测试胶囊、显式真实输入解析器、Rule007 严格来源配对和 artifact checksums。
-
-M2 当前切片的正式验收见：[Stage 2G.1 trusted-lineage closeout](acceptance/m2_stage2g1_trusted_lineage_closeout.md)、[Stage 2H risk-veto evidence](acceptance/m2_stage2h_petrochina_risk_veto_evidence.md)、[Stage 2H.1R historical/profile closeout](acceptance/m2_stage2h1r_historical_risk_completeness_and_profile_canonicalization.md) 和 [PetroChina value profile](reports/petrochina_value_profile_2021_2026.md)。Stage 2F 仍保留 9 个交易所股息证据缺口；Stage 2H 的监管/纪律与相关资金占用搜索缺口保持为 `missing_evidence`，不会被改写为负面结论。
-
-ROIC 的当前决定见 [strict-evidence non-computability ADR](docs/decisions/ADR-ROIC-001-strict-evidence-non-computability.md)。Plan v3 与 Stage 2I.2R 保留 9 个已取得单元和 7 个明确事实/年度缺口；没有使用税率代理、联营/合营残差分配、无依据非经营资产扣除、手工 plug 或弱化 scope matching。当前 M2 模块状态见 [completion matrix](reports/m2_value_assessment_completion_matrix.md)，全部当前缺口见 [canonical gap ledger](reports/m2_explicit_gap_ledger.md)，条件关闭验收见 [Stage 2J closeout](acceptance/m2_value_assessment_mvp_conditional_closeout.md)。
-
----
+- M3 Stage 3A research contracts are frozen. Stage 3B completed fail-closed. Stage 3B-R1 primary-proxy resolution is current within the frozen M3 market-proxy lineage.
+- At M3 closeout, further holdout recovery, minute escalation, index contribution, and M4 were not authorized.
+- Historical M3 closeout stop: `STOP_FOR_NORTH_STAR_REVIEW`.
+- Subsequently, M4-A.1 has since been implemented and canonicalized on main. M4-A.2 implementation, M4-B and real hypothesis execution remain separately unauthorized.
+- No real mechanism inference beyond the frozen development-primary and registered robustness execution has been executed.
 
 ## 系统要求
 
@@ -95,7 +54,24 @@ pip install -e ".[dev]"
 
 ---
 
-## 快速开始
+## M4-A.1 Python 接口
+
+接口位于 `ashare_research.mechanism.hypothesis_config` 与 `ashare_research.mechanism.contract_compiler`：
+`load_hypothesis_config(path)` / `parse_hypothesis_config(document)` → `compile_hypothesis_config(config)` → `serialize_frozen_contract(contract)`。
+返回 `FrozenMechanismContract`；通过 `validate_contract` 验证，以 `compute_contract_digest` 计算摘要。
+只编译合同，不获取数据或执行统计研究；目前没有 M4 执行 CLI。
+
+完整合成配置与用法见 [类型化合同测试](tests/test_m4_stage4a1_typed_contract.py)。安装后可离线运行：
+
+```powershell
+python -m pytest -q tests/test_m4_stage4a1_typed_contract.py
+```
+
+## 数据获取与离线复现
+
+步骤 1–5 写入本地数据，其中 2–5 访问外部数据源。步骤 6 查询已有本地数据。
+步骤 7 的胶囊构建/比较和步骤 8 的 test-capsule 模式使用固定测试输入，不需要默认数据库或外部行情。
+真实验收命令另需显式的数据库、行情或 PDF 缓存；缺失时失败，不回退到合成数据。
 
 ### 1. 初始化
 
@@ -178,9 +154,7 @@ Stage 2H.1R 的当前风险状态唯一 canonical 路径是
 `legacy_risk_veto_checks` 中保留，且 `current=false`、`do_not_use_for_current_profile=true`；
 消费者不得把它们当作当前结论。
 
-Stage 2H stops at evidence status and veto eligibility. It does not start ROIC,
-scoring, web search, target price, recommendation, automatic trading, or
-market-mechanism work.
+Stage 2H 的历史范围停在风险证据状态与否决资格；该阶段记录不代表当前整个主线的进度。
 
 测试胶囊中的 Fact 是由 canonical Fact 仓库导出的有界 read model；行情是固定算法生成的
 `synthetic_test_only` CSV。它们只用于显式 `test_capsule` 模式，不是 PetroChina 真实输入，
@@ -316,83 +290,32 @@ ruff check src/ tests/
 
 ---
 
-## 当前限制
-
-当前阶段的已知限制：
-
-- 仅支持日线数据，不支持分钟数据
-- M2 是有明确证据缺口的条件关闭，不是完全完成
-- Stage 2I.2R 已完成捕获派生、双官方证据重协调和七个缺口的执行式版本化搜索：9/16 个事实/年度单元已取得，7 个单元保留为明确缺口；结论为 `ROIC_FACT_GAPS_REMAIN`，未运行 shadow ROIC。更正产物位于 `reports/*stage2i2r*`，原 Stage 2I.2 产物保留供审计。
-- ROIC 在严格证据合同下不可计算；不存在数值、proxy、shadow 或生产 Metric/Result
-- 评分附加项已**条件关闭**：PE 原始值与 3Y/5Y 分位保留为描述证据；冻结 5Y 内独立 cycle-context 验证不可检验，故 PE 与估值维度 numeric score 均为 `null`，不补 0、不转移权重，也没有生产 score engine、排名或推荐
-- M3 Stage 3A 研究契约已冻结；Stage 3B 已 fail-closed 完成；Stage 3B-R1 主市场代理解析为当前状态；Stage 3B-R2 已冻结严格 prior Brent 观测日与申万行业 regime；Stage 3B-R4 在结果出现前将 oil transport 改为无认证 bounded FRED `DCOILBRENTEU`，并将行业 primary amendment 固定为官方 CNI `399439`，两项 Tier-1 控制均 TRUSTED，复用 R1 market proxy 后 joint Tier-1 共有 1,902 个有效 development dates；Stage 3C-A pipeline-lock implementation 已锁定，Stage 3C-B frozen development-primary 已完成且正的受控异常表现未建立；Stage 3C-C 已完成已注册且 pre-outcome-implemented 的 development robustness，primary decision 未改变，evidence level 未分配；Stage 3D-A 已冻结一次性 frozen primary OOS 合同；Stage 3D-B-R1/R2 完成 PIT universe repair 与 SSE identity recovery，但 corrected minimum market coverage `0.9736963544070143` 未达到 frozen `0.99` gate，holdout primary 仍 inconclusive；Stage 3E 将 M3 标记为 `CONDITIONALLY CLOSED`，daily mechanism `M3_DAILY_MECHANISM_NOT_ESTABLISHED`，任务停止于 `STOP_FOR_NORTH_STAR_REVIEW`
-- Web 界面、目标价、推荐和自动交易尚未实现
-- 当前 value profile 只覆盖 PetroChina（601857.SH）这一份 PIT 纵向切片
-- Stage 2F 仍有 9 个交易所证据缺口；股本 A/H 拆分也需继续补充登记证据
-- 当前严格 Rule007 只有 1 个 issuer-official + exchange-official eligible event；指定披露平台不计为 exchange side
-- 真实行情缓存是外部输入，仓库只提交 path-independent registry；clean-clone 只使用 synthetic test capsule
-- 数据日期间隔较小时，免费接口可能返回空结果
-- 不同数据源的成交量单位可能不一致（已在标准化层转换）
-- AKShare 接口字段可能随版本变化（已做字段检查，缺失时明确报错）
-
----
-
 ## 项目结构
 
-```text
-.
-├── CLAUDE.md
-├── README.md
-├── pyproject.toml
-├── .gitignore
-├── config/
-│   └── data_sources.example.yaml
-├── data/
-│   ├── raw/           # 原始数据（不提交）
-│   ├── parquet/       # 标准化数据（不提交）
-│   └── reports/
-├── src/
-│   └── ashare_research/
-│       ├── cli.py              # 命令行入口
-│       ├── config.py           # 配置加载
-│       ├── exceptions.py       # 自定义异常
-│       ├── models.py           # 数据模型与代码转换
-│       ├── providers/
-│       │   ├── base.py         # 提供方抽象接口
-│       │   ├── baostock_provider.py
-│       │   └── akshare_provider.py
-│       ├── storage/
-│       │   ├── duckdb_store.py # DuckDB 元数据
-│       │   └── parquet_store.py # Parquet 存储
-│       ├── quality/
-│       │   └── validators.py   # 数据质量检查
-│       └── services/
-│           └── data_service.py # 编排层
-├── tests/
-│   ├── test_models.py
-│   ├── test_quality.py
-│   ├── test_parquet_store.py
-│   ├── test_duckdb_store.py
-│   └── test_data_service.py
-└── agent/
-    ├── agent.md
-    └── record/
-```
+以下模块目录位于 `src/ashare_research/`：
 
----
+| 目录 | 职责 |
+| --- | --- |
+| `providers`, `services`, `storage`, `quality` | 数据获取、编排、存储和质量检查 |
+| `facts`, `validation`, `reconciliation`, `lineage` | PIT 事实、版本校验、协调和溯源 |
+| `metrics`, `pit_valuation`, `risk_veto`, `scoring` | 指标、估值时间线、风险证据与受限评分实验 |
+| `mechanism` | 已冻结 M3 方法和 M4-A.1 合同编译 |
+| `tools` | 阶段命令行工具；运行前查阅对应合同 |
+
+仓库根目录的 `tests`、`reports`、`acceptance` 保存测试和研究验收证据；
+`agent/goals`、`agent/record` 保存任务契约与记录；`docs` 保存方法说明、复现指南与阶段历史。
+当前能力以本页为准；历史记录不自动授权新阶段。
 
 ## 路线图
 
 | 里程碑 | 内容 | 状态 |
-|--------|------|------|
-| Milestone 1: 免费数据底座 | 股票基础信息、交易日历、日线行情、Parquet/DuckDB 存储 | ✅ 已完成 |
-| Milestone 2: 价值评估 MVP | 企业质量、估值、现金流、安全边际、风险否决项 | 条件关闭；评分附加项已条件关闭，PE numeric scoring deferred |
-| Milestone 3: 机制验证 MVP | 假设检验、条件收益、控制变量、证据分级 | CONDITIONALLY CLOSED；Stage 3C-A method-locked；Stage 3C-A-R2 digest portability repaired/relocked pre-outcome；Stage 3C-B frozen development-primary completed；positive controlled abnormal performance not established；Stage 3C-C registered development robustness completed；Stage 3D-A one-shot frozen primary OOS contract completed；Stage 3D-B-R1/R2 repaired identity metadata but remained below the frozen market coverage gate；holdout primary inconclusive；daily mechanism not established；explicit gaps preserved；stop for North-Star review |
-| Milestone 4: Generic Mechanism Research Engine + Theory / Hypothesis Registry | 通用机制研究契约与理论/假设注册边界 | IN PROGRESS; Stage4P COMPLETE; M4-A.1 typed hypothesis config + frozen contract compiler CANONICAL ON MAIN; M4-A.2 NOT STARTED; M4-B NOT STARTED; real hypothesis execution NOT AUTHORIZED |
-| Milestone 5: 分钟级研究 | 按需分钟数据验证 | 🔲 计划中 |
-| Milestone 6: 本地 Web 界面 | Streamlit 工作台 | 🔲 计划中 |
-
----
+| --- | --- | --- |
+| Milestone 1: 免费数据底座 | 数据获取与存储 | 已实现 |
+| Milestone 2: 价值评估 MVP | 中石油 PIT 切片 | CONDITIONALLY CLOSED；评分附加项条件关闭 |
+| Milestone 3: 机制验证 MVP | 日频机制验证 | CONDITIONALLY CLOSED；daily mechanism not established；holdout primary inconclusive |
+| Milestone 4: Generic Mechanism Research Engine + Theory / Hypothesis Registry | 通用机制研究契约与理论/假设注册 | IN PROGRESS; Stage4P COMPLETE; M4-A.1 CANONICAL ON MAIN; M4-A.2 NOT STARTED（实现；设计见独立分支）; M4-B NOT STARTED; real hypothesis execution NOT AUTHORIZED |
+| Milestone 5: 分钟级研究 | 按需验证 | 未开始、未授权 |
+| Milestone 6: 本地 Web 界面 | 研究工作台 | 未开始、未授权 |
 
 ## 许可
 
