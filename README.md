@@ -2,12 +2,12 @@
 
 > A股价值评估与市场机制验证实验室
 
-本地运行、免费数据优先的可解释研究平台。当前主线提供数据底座、中石油价值评估切片、日频机制研究记录，以及通用假设合同编译能力。
+本地运行、免费数据优先的可解释研究平台。提供数据底座、中石油价值评估切片、日频机制研究记录，以及通用假设合同与分析计划编译能力。
 仅用于数据分析、统计研究和软件工程学习，不构成投资建议，也不提供自动交易能力。
 
 ## 当前可用能力
 
-以 `main` 已合入的实现和验收为准；设计分支不等于已发布能力。
+主线已包含 PIT/TTM 修复与 A.2 冻结设计。下表中的 A.2I 是本实现 PR 提供的能力，待合并；设计和计划编译均不代表统计执行已实现。
 
 | 能力 | 当前状态 | 如何使用 | 限制 | 证据 |
 | --- | --- | --- | --- | --- |
@@ -15,7 +15,7 @@
 | M2 价值评估 | M2 已条件关闭；中石油 PIT 切片 | 下方离线胶囊；真实输入需显式提供 | ROIC 证据不足；PE 数值评分暂缓，无生产排名 | [完成矩阵](reports/m2_value_assessment_completion_matrix.md)、[缺口台账](reports/m2_explicit_gap_ledger.md) |
 | M3 机制验证 | CONDITIONALLY CLOSED；日频机制未建立 | 阅读开发期研究与最终处置 | holdout primary inconclusive；不支持因果或行为主体推断 | [最终验收](acceptance/m3_stage3e_daily_mechanism_final_disposition_and_milestone_closeout_preflight.md) |
 | M4-A.1 假设合同 | CANONICAL ON MAIN | 下方 Python 编译接口与合成测试 | 仅配置校验、合同冻结和摘要，没有通用研究执行器 | [编译验收](acceptance/m4_stage4a1_typed_hypothesis_config_and_frozen_contract_compiler.md) |
-| M4-A.2 分析计划 | 主线实现 NOT STARTED；独立分支仅有设计 | [设计分支](https://github.com/dlam12138/ashare-research-lab/tree/docs/m4a2-deterministic-analysis-plan-design) | 本次未整合设计，也未授权实现 | 设计分支中的 Goal 与验收 |
+| M4-A.2 分析计划 | 设计已在主线；A.2I 计划编译已实现（本 PR，待合并） | 下方 `build_analysis_plan(contract)` Python 入口与合成测试 | compile-only；数据适配、执行尚未实现；holdout 始终不授权执行 | [冻结设计](reports/m4_stage4a2_deterministic_analysis_plan_design_v1.json)、[实现验收](acceptance/2026-09-07_m4a2i_analysis_plan_compiler.md) |
 | M4-B 与后续研究 | NOT STARTED | 参见路线图 | 真实假设执行、M5/M6 仍未授权 | [Stage4P](acceptance/m4_stage4p_north_star_v2_adoption_and_architecture_preflight.md) |
 
 ### 研究结论与边界
@@ -32,7 +32,7 @@ M3 最终处置为 `M3_DAILY_MECHANISM_NOT_ESTABLISHED`。Holdout 已使用一�
 - M3 Stage 3A research contracts are frozen. Stage 3B completed fail-closed. Stage 3B-R1 primary-proxy resolution is current within the frozen M3 market-proxy lineage.
 - At M3 closeout, further holdout recovery, minute escalation, index contribution, and M4 were not authorized.
 - Historical M3 closeout stop: `STOP_FOR_NORTH_STAR_REVIEW`.
-- Subsequently, M4-A.1 has since been implemented and canonicalized on main. M4-A.2 implementation, M4-B and real hypothesis execution remain separately unauthorized.
+- Subsequently, M4-A.1 has since been implemented and canonicalized on main. M4-A.2 design is now on main; A.2I compile-only implementation is authorized in this PR. Dataset adapters, executors, M4-B and real hypothesis execution remain separately unauthorized.
 - No real mechanism inference beyond the frozen development-primary and registered robustness execution has been executed.
 
 ## 系统要求
@@ -65,6 +65,35 @@ pip install -e ".[dev]"
 
 ```powershell
 python -m pytest -q tests/test_m4_stage4a1_typed_contract.py
+```
+
+## M4-A.2I Python 接口
+
+在已有 `FrozenMechanismContract` 上编译不可变的 `DeterministicAnalysisPlan`：
+
+```python
+from ashare_research.mechanism.planning import (
+    build_analysis_plan,
+    plan_to_canonical_dict,
+    serialize_analysis_plan,
+    compute_plan_digest,
+    validate_analysis_plan,
+)
+
+plan = build_analysis_plan(contract)
+validate_analysis_plan(plan)
+payload = plan_to_canonical_dict(plan)  # 独立副本
+encoded = serialize_analysis_plan(plan)  # UTF-8、排序键、紧凑 JSON、结尾换行
+digest = compute_plan_digest(plan)
+```
+
+计划声明语义角色、有序控制项、条件、窗口、质量门槛和调度规则。
+Bootstrap 只声明块长策略；稳健性及证据规则只保存调度说明。
+编译不读取数据、不计算回归或 bootstrap，也不授权 holdout。数据适配、执行尚未实现。
+仅需安装依赖即可运行 [合成计划测试](tests/test_m4_stage4a2i_analysis_plan.py)：
+
+```powershell
+python -m pytest -q tests/test_m4_stage4a2i_analysis_plan.py
 ```
 
 ## 数据获取与离线复现
@@ -313,7 +342,7 @@ ruff check src/ tests/
 | Milestone 1: 免费数据底座 | 数据获取与存储 | 已实现 |
 | Milestone 2: 价值评估 MVP | 中石油 PIT 切片 | CONDITIONALLY CLOSED；评分附加项条件关闭 |
 | Milestone 3: 机制验证 MVP | 日频机制验证 | CONDITIONALLY CLOSED；daily mechanism not established；holdout primary inconclusive |
-| Milestone 4: Generic Mechanism Research Engine + Theory / Hypothesis Registry | 通用机制研究契约与理论/假设注册 | IN PROGRESS; Stage4P COMPLETE; M4-A.1 CANONICAL ON MAIN; M4-A.2 NOT STARTED（实现；设计见独立分支）; M4-B NOT STARTED; real hypothesis execution NOT AUTHORIZED |
+| Milestone 4: Generic Mechanism Research Engine + Theory / Hypothesis Registry | 通用机制研究契约与理论/假设注册 | IN PROGRESS; Stage4P COMPLETE; M4-A.1 CANONICAL ON MAIN; M4-A.2 DESIGN ON MAIN; M4-A.2I COMPILE-ONLY IMPLEMENTED（本 PR，待合并）; dataset adapter / executor NOT STARTED; M4-B NOT STARTED; real hypothesis execution NOT AUTHORIZED |
 | Milestone 5: 分钟级研究 | 按需验证 | 未开始、未授权 |
 | Milestone 6: 本地 Web 界面 | 研究工作台 | 未开始、未授权 |
 
