@@ -45,8 +45,13 @@ def test_negative_earnings_never_produce_negative_pe():
     # negative PE ratio is emitted.
     from ashare_research.pit_valuation.series_contract import canonical_digest
 
-    neg = dict(REPORTED[0])
-    neg["concept_id"] = "net_profit_attributable_to_parent"
+    # Replace a computable annual input. The former first-row Q1 input had
+    # no prior-year dependencies, so it could not exercise negative earnings;
+    # retaining its old ID also introduced an unrelated same-day candidate.
+    original = next(f for f in REPORTED
+                    if f["concept_id"] == "net_profit_attributable_to_parent"
+                    and f["period_end"] == "2024-12-31")
+    neg = dict(original)
     neg["value"] = -5000000000.0
     payload = {
         "concept_id": neg["concept_id"],
@@ -60,9 +65,16 @@ def test_negative_earnings_never_produce_negative_pe():
         "source_id": "r4d:SYN-NEG",
     }
     neg["fact_id"] = canonical_digest(payload)
-    facts = [neg] + [f for f in REPORTED if f["fact_id"] != neg["fact_id"]]
+    facts = [neg] + [f for f in REPORTED if f["fact_id"] != original["fact_id"]]
     timelines = financial_state.build_financial_state_timelines(facts, RECONCILED)
     series = valuation_series.build_valuation_series(MARKET, MARKET_META, timelines)
+    negative_state_ids = {s["financial_state_id"] for s in timelines[METRIC_PE]
+                          if s["period_end"] == "2024-12-31"}
+    negative_observations = [obs for obs in series["observations"]
+                             if obs.get("financial_state_id") in negative_state_ids]
+    assert negative_observations
+    assert all(obs["status"] == "nonpositive_earnings" for obs in negative_observations)
+    assert all(obs["ratio_decimal"] is None for obs in negative_observations)
     for obs in series["observations"]:
         if obs["metric_id"] == METRIC_PE and obs["status"] == "computed":
             assert float(obs["ratio_decimal"]) > 0

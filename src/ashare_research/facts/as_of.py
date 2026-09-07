@@ -12,27 +12,10 @@ from typing import Any
 
 import pandas as pd
 
-from ashare_research.exceptions import PointInTimeError
+from ashare_research.facts.dates import validate_pit_date as _validate_date_format
 from ashare_research.facts.repository import FactRepository
 
 logger = logging.getLogger(__name__)
-
-
-def _validate_date_format(date_str: str, param_name: str) -> None:
-    """Raise PointInTimeError if *date_str* is not a valid calendar date."""
-    if not date_str:
-        raise PointInTimeError(
-            f"{param_name} must be a non-empty YYYY-MM-DD date string, "
-            f"got: {date_str!r}"
-        )
-    try:
-        from datetime import date
-        date.fromisoformat(date_str)
-    except (ValueError, TypeError) as e:
-        raise PointInTimeError(
-            f"{param_name} must be a valid YYYY-MM-DD date, "
-            f"got: {date_str!r} — {e}"
-        ) from e
 
 
 class AsOfQuery:
@@ -202,7 +185,7 @@ class AsOfQuery:
         """
         _validate_date_format(date1, "date1")
         _validate_date_format(date2, "date2")
-        if period_end:
+        if period_end != "":
             _validate_date_format(period_end, "period_end")
 
         # Snapshot at each PIT date — use latest-available so we get
