@@ -1,0 +1,111 @@
+{
+  "schema_version": "M4_STAGE4A2_CONTRACT_SUFFICIENCY_REVIEW_V1",
+  "review_status": "PASS",
+  "verdict": "A1_CONTRACT_SUFFICIENT_FOR_FIRST_SLICE",
+  "architecture": "THIN_GENERIC_LAYER_OVER_PROVEN_M3_CORE",
+  "supported_paradigm": "daily_conditional_controlled_mechanism_research",
+  "analysis_method_id": "DAILY_CONDITIONAL_CONTROLLED_OLS_V1",
+  "source_contract": {
+    "schema_version": "M4_FROZEN_MECHANISM_CONTRACT_V1",
+    "source_fields_reviewed": [
+      "target",
+      "universe",
+      "factor",
+      "condition",
+      "outcome",
+      "ordered controls",
+      "development",
+      "data quality",
+      "analysis method",
+      "bootstrap",
+      "robustness",
+      "evidence rule",
+      "optional holdout",
+      "contract digest"
+    ],
+    "source_implementation": "src/ashare_research/mechanism/contract_compiler.py",
+    "source_schema": "src/ashare_research/mechanism/hypothesis_config.py"
+  },
+  "sufficiency_findings": [
+    {
+      "semantic": "hypothesis identity and source binding",
+      "contract_fields": ["hypothesis_id", "contract_digest", "schema_version"],
+      "status": "SUFFICIENT",
+      "plan_mapping": "hypothesis_id, source_contract_digest, source_contract_schema_version"
+    },
+    {
+      "semantic": "target and outcome",
+      "contract_fields": ["target", "outcome"],
+      "status": "SUFFICIENT",
+      "plan_mapping": "TARGET_OUTCOME dataset role and outcome design response"
+    },
+    {
+      "semantic": "factor and condition",
+      "contract_fields": ["factor", "condition"],
+      "status": "SUFFICIENT",
+      "plan_mapping": "FACTOR continuous term plus CONDITION_INDICATOR derived from the same factor, frozen operator, and canonical threshold"
+    },
+    {
+      "semantic": "ordered controls",
+      "contract_fields": ["controls"],
+      "status": "SUFFICIENT",
+      "plan_mapping": "preserve tuple order and expand to CONTROL_0001, CONTROL_0002, ... without sorting"
+    },
+    {
+      "semantic": "daily controlled OLS design",
+      "contract_fields": ["analysis_method.method_id", "target", "factor", "controls", "condition", "outcome"],
+      "status": "SUFFICIENT_BY_ALLOW_LIST",
+      "plan_mapping": "method-owned ordered terms: INTERCEPT, FACTOR_CONTINUOUS, ordered controls, CONDITION_INDICATOR"
+    },
+    {
+      "semantic": "sample and data quality boundary",
+      "contract_fields": ["development", "data_quality_gates", "universe"],
+      "status": "SUFFICIENT",
+      "plan_mapping": "sample window, coverage, PIT, identity, missingness, duplicate, and universe requirements"
+    },
+    {
+      "semantic": "bootstrap, robustness, evidence, and holdout policy",
+      "contract_fields": ["bootstrap_policy", "robustness_registry", "evidence_rule", "holdout_policy"],
+      "status": "SUFFICIENT",
+      "plan_mapping": "mechanical plan sections with no execution or result fields"
+    }
+  ],
+  "method_owned_semantics": {
+    "method_id": "DAILY_CONDITIONAL_CONTROLLED_OLS_V1",
+    "design_identity": "one intercept, one continuous factor term, the contract-ordered controls, and one binary condition indicator",
+    "term_order": [
+      "INTERCEPT",
+      "FACTOR_CONTINUOUS",
+      "ORDERED_CONTROLS",
+      "CONDITION_INDICATOR"
+    ],
+    "control_transform": "DAILY_RETURN",
+    "condition_transform": "binary predicate on the transformed FACTOR role; true=1, false=0",
+    "primary_validity": "all primary dataset roles must be PIT-valid, identity-valid, finite, and present in the execution row",
+    "complete_row_semantics": "primary OLS and bootstrap operate on complete rows after the frozen coverage gate is evaluated",
+    "coefficient_roles": {
+      "INTERCEPT": "alpha",
+      "FACTOR_CONTINUOUS": "beta_factor",
+      "CONTROL_0001_AND_ONWARD": "beta_control_NNNN",
+      "CONDITION_INDICATOR": "gamma_condition"
+    }
+  },
+  "schema_revision": {
+    "required": false,
+    "decision": "DO_NOT_CHANGE_M4_FROZEN_MECHANISM_CONTRACT_V1",
+    "reason": "The missing-looking design details are closed by the allow-listed method contract and the existing ordered control tuple; adding fields would broaden A.1 without evidence of an actual ambiguity in the first supported slice."
+  },
+  "explicit_non_goals": [
+    "no provider identity is inferred",
+    "no universe is constructed",
+    "no control is selected, sorted, proxied, or dropped automatically",
+    "no threshold is searched or expanded",
+    "no outcome, data, regression, bootstrap, robustness, or evidence result is read"
+  ],
+  "review_evidence": {
+    "canonical_base": "origin/main:a0a7c13ee47057abf5e40a96a616baf78451774e",
+    "a1_contract_report": "reports/m4_stage4a1_typed_config_and_compiler_contract_v1.json",
+    "a1_identity_report": "reports/m4_stage4a1_synthetic_compile_identity_v1.json",
+    "m3_reuse_inventory": "reports/m4_stage4p_m3_component_reuse_inventory_v1.json"
+  }
+}

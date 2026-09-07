@@ -1,0 +1,76 @@
+{
+  "schema_version": "M4_STAGE4A2_M3_BOUNDED_REUSE_MAP_V1",
+  "map_status": "FROZEN_FOR_IMPLEMENTATION_REVIEW",
+  "architecture": "THIN_GENERIC_LAYER_OVER_PROVEN_M3_CORE",
+  "classification_values": [
+    "REUSE_AS_IS",
+    "REUSE_SEMANTICS_ONLY",
+    "BOUNDED_GENERALIZATION_REQUIRED",
+    "CASE_SPECIFIC_KEEP_OUTSIDE_GENERIC_CORE"
+  ],
+  "components": [
+    {
+      "path": "src/ashare_research/mechanism/analysis_contracts.py",
+      "classification": "BOUNDED_GENERALIZATION_REQUIRED",
+      "reusable_semantics": ["fail-closed execution gate", "coverage and PIT/identity boundary concepts"],
+      "case_coupled_bindings": ["M3 columns", "M3 development dates", "M3 effective upstream IDs", "PetroChina threshold constants"],
+      "bounded_action": "extract role-neutral contract gates; keep M3 constants in the M3 case adapter; do not modify in A.2"
+    },
+    {
+      "path": "src/ashare_research/mechanism/analysis_dataset.py",
+      "classification": "BOUNDED_GENERALIZATION_REQUIRED",
+      "reusable_semantics": ["defensive copy", "date normalization", "duplicate rejection", "finite numeric validation", "validity-flag validation", "development selection concept"],
+      "case_coupled_bindings": ["target_analysis_return", "market_ex_target_return", "oil_return", "industry_return", "M3 validity flags", "M3 development dates"],
+      "bounded_action": "future materialize_analysis_dataset(plan, bound_inputs) maps semantic roles to canonical execution columns; no provider acquisition"
+    },
+    {
+      "path": "src/ashare_research/mechanism/regression.py",
+      "classification": "BOUNDED_GENERALIZATION_REQUIRED",
+      "reusable_semantics": ["explicit-intercept OLS", "controlled outcome versus factor/control terms", "abnormal-return decomposition"],
+      "case_coupled_bindings": ["M3 column names", "M3 design order", "gamma property and PetroChina coefficient labels"],
+      "bounded_action": "future executor accepts plan-owned ordered design terms and binds generic coefficient roles; do not change current implementation in A.2"
+    },
+    {
+      "path": "src/ashare_research/mechanism/bootstrap.py",
+      "classification": "REUSE_SEMANTICS_ONLY",
+      "reusable_semantics": ["non-circular overlapping moving blocks", "PCG64", "complete-row resampling", "N-cuberoot rounded length clamped to 1..20", "percentile interval"],
+      "case_coupled_bindings": ["direct fit_primary_ols call", "M3 gamma result surface"],
+      "bounded_action": "future generic execution adapter supplies plan-bound estimator and effect role; no bootstrap execution in A.2"
+    },
+    {
+      "path": "src/ashare_research/mechanism/robustness.py",
+      "classification": "BOUNDED_GENERALIZATION_REQUIRED",
+      "reusable_semantics": ["condition versus ordinary descriptive summary", "leave-one-period-out dispatch concept", "extreme-date analysis concept", "Benjamini-Hochberg calculation"],
+      "case_coupled_bindings": ["Crash_t", "M3 target columns", "threshold_robustness using add_crash_indicator and M3 regression"],
+      "bounded_action": "plan only dispatches the frozen registry in order; method adapters must distinguish generic semantics from M3 case coupling"
+    },
+    {
+      "path": "src/ashare_research/mechanism/evidence.py",
+      "classification": "BOUNDED_GENERALIZATION_REQUIRED",
+      "reusable_semantics": ["pre-declared direction and confidence rule", "fail-closed disposition boundary"],
+      "case_coupled_bindings": ["gamma-specific primary_positive_evidence", "M3 numeric evidence-level ceiling and wording"],
+      "bounded_action": "future evidence adapter binds plan statistic roles such as PRIMARY_EFFECT_ESTIMATE and PRIMARY_EFFECT_CI_LOWER; A.2 only freezes inputs"
+    },
+    {
+      "path": "src/ashare_research/mechanism/model_digest.py",
+      "classification": "REUSE_AS_IS",
+      "reusable_semantics": ["canonical_digest", "UTF-8 sorted-key compact JSON SHA-256"],
+      "case_coupled_bindings": ["repository-relative pipeline/model digest inventory and M3 upstream bindings are not plan payload fields"],
+      "bounded_action": "reuse canonical_digest for the plan semantic payload; do not include repository-relative paths or M3 inventory in plan identity"
+    }
+  ],
+  "decisions": {
+    "m3_regression_semantics_reusable": true,
+    "m3_bootstrap_semantics_reusable": true,
+    "m3_case_specific_bindings_not_genericized": true,
+    "generic_execution_adapter_required": true,
+    "analysis_dataset_adapter_in_a2": false,
+    "production_source_changes_in_a2": false
+  },
+  "future_boundary": {
+    "plan_to_dataset": "materialize_analysis_dataset(plan, bound_inputs)",
+    "dataset_responsibility": "semantic roles to canonical execution columns",
+    "dataset_forbidden_responsibility": "provider to data acquisition",
+    "executor_responsibility": "execute only the already frozen plan and bound dataset"
+  }
+}
