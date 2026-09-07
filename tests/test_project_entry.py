@@ -12,7 +12,11 @@ def test_current_capabilities_explain_entrypoints_and_limits():
     for capability in ("M1", "M2", "M3", "M4-A.1", "M4-A.2", "M4-B"):
         assert f"| {capability} " in summary
     assert "如何使用" in summary and "限制" in summary and "证据" in summary
-    assert "独立分支仅有设计" in summary
+    assert "计划编译已实现" in summary
+    assert "数据适配、执行尚未实现" in summary
+    assert "build_analysis_plan(contract)" in text
+    assert "ashare_research.mechanism.planning" in text
+    assert "python -m pytest -q tests/test_m4_stage4a2i_analysis_plan.py" in text
     assert "没有通用研究执行器" in summary
     assert "parse_hypothesis_config(document)" in text
     assert "compile_hypothesis_config(config)" in text

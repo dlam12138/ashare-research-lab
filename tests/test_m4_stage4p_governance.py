@@ -57,7 +57,9 @@ def test_readme_current_m4_status_and_m3_history_are_canonical() -> None:
     assert "IN PROGRESS" in roadmap
     assert "Stage4P COMPLETE" in roadmap
     assert "M4-A.1" in roadmap and "CANONICAL ON MAIN" in roadmap
-    assert "M4-A.2 NOT STARTED" in roadmap
+    assert "M4-A.2 DESIGN ON MAIN" in roadmap
+    assert "M4-A.2I COMPILE-ONLY IMPLEMENTED" in roadmap
+    assert "dataset adapter / executor NOT STARTED" in roadmap
     assert "M4-B NOT STARTED" in roadmap
     assert "real hypothesis execution NOT AUTHORIZED" in roadmap
     assert "PREFLIGHT ONLY; IMPLEMENTATION NOT STARTED" not in roadmap
