@@ -70,3 +70,16 @@ repair attempts or a semantic/protection conflict escalates to parent. Parent au
 diff, tests, HEAD, untracked files, protections and live remote. Scoped local commit(s)
 after acceptance; no push or merge authorized. Stop after local implementation delivery,
 before real data/executor or next stage. Verdict PASS / CHANGES_REQUIRED / BLOCKED.
+
+## 2026-09-09 delivery continuation
+User requested continuation after local acceptance. Scope now includes ordinary push
+of codex/m4-synthetic-dataset-adapter and one PR to main containing its design and
+implementation. Still no merge, executor/real data, PR #10 integration or main push.
+Verified implementation HEAD 22c27546bb229d495aff98f60ce3c006015d4581, clean tree;
+live main remains bab24f9 and network access has recovered. Existing DB/stash unchanged.
+One Luna/medium fresh-context worker performs a bounded read-only delivery review while
+parent audits persisted full-test evidence, Git protections and remote delivery.
+Run focused adapter/A.1/A.2/protection tests, Ruff, compileall and diff checks; do not
+repeat the full local suite unless new code changes/failures require it. Inspect actual
+remote CI at final delivery HEAD. Add delivery evidence to this Goal/work record and
+the PR body; avoid evidence-only CI commit loops. Stop at reviewed, green PR delivery.
