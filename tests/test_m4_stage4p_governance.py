@@ -59,7 +59,11 @@ def test_readme_current_m4_status_and_m3_history_are_canonical() -> None:
     assert "M4-A.1" in roadmap and "CANONICAL ON MAIN" in roadmap
     assert "M4-A.2 DESIGN ON MAIN" in roadmap
     assert "M4-A.2I COMPILE-ONLY IMPLEMENTED" in roadmap
-    assert "dataset adapter / executor NOT STARTED" in roadmap
+    assert "M4-A.2D SYNTHETIC DATASET ADAPTER IMPLEMENTED" in roadmap
+    assert "M4-A.2M ANALYSIS MATRIX IMPLEMENTED" in roadmap
+    assert "M4-A.2E BOUNDED EXECUTION DESIGN DELIVERED, DESIGN ONLY" in roadmap
+    assert "bounded executor NOT STARTED" in roadmap
+    assert "dataset adapter / executor NOT STARTED" not in roadmap
     assert "M4-B NOT STARTED" in roadmap
     assert "real hypothesis execution NOT AUTHORIZED" in roadmap
     assert "PREFLIGHT ONLY; IMPLEMENTATION NOT STARTED" not in roadmap

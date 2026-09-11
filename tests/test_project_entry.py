@@ -9,11 +9,23 @@ ROOT = Path(__file__).resolve().parents[1]
 def test_current_capabilities_explain_entrypoints_and_limits():
     text = (ROOT / "README.md").read_text(encoding="utf-8")
     summary = text.split("## 当前可用能力", 1)[1].split("### 研究结论", 1)[0]
-    for capability in ("M1", "M2", "M3", "M4-A.1", "M4-A.2", "M4-B"):
+    for capability in (
+        "M1",
+        "M2",
+        "M3",
+        "M4-A.1",
+        "M4-A.2",
+        "M4-A.2D",
+        "M4-A.2M",
+        "M4-A.2E",
+        "M4-B",
+    ):
         assert f"| {capability} " in summary
     assert "如何使用" in summary and "限制" in summary and "证据" in summary
     assert "计划编译已实现" in summary
-    assert "数据适配、执行尚未实现" in summary
+    assert "有界执行器尚未实现" in summary
+    assert "统计执行尚未实现" in summary
+    assert "holdout 始终不授权执行" in summary
     assert "build_analysis_plan(contract)" in text
     assert "ashare_research.mechanism.planning" in text
     assert "python -m pytest -q tests/test_m4_stage4a2i_analysis_plan.py" in text
