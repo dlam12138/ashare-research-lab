@@ -316,8 +316,20 @@ data、events、fixture、依赖、workflow、`pyproject.toml`。
 - 是否创建提交或 Tag：**否**（沙箱拒绝写 Git index；升级审批不可用）
 - 是否执行推送：**否**（Goal 明确禁止；本次也未创建 PR、未合并、未进入实现/下一阶段）
 
+## Codex 宿主复核
+
+DSH 结束后，Codex 在宿主环境完成其遗留动作：
+
+- 按 4 条显式白名单路径创建成果提交
+  `f997b95d2e4e35345b92757b29b6c9a36018231a`；未使用 `git add -A`。
+- 独立可写 `--basetemp` 下重跑治理组：`15 passed in 0.10s`，exit 0。
+- 独立可写 `--basetemp` 下重跑完整上游组：`187 passed in 31.91s`，exit 0；DSH 的两个
+  `tmp_path` error 已确认为沙箱问题。
+- 重跑全库 Ruff：`All checks passed!`，exit 0。
+- 独立复核实际 diff、白名单、stash、数据库哈希、保护 blob、origin/live main 和开放 PR；均与
+  Goal 基线及授权边界一致。
+
 ## 状态
 
-`conditional_pass`（内容层面全部完成并已自验，且经独立对抗性复核确认七项更正有据、未越界；
-因沙箱不能创建 scoped 提交且 2 个 `tmp_path` 用例需宿主重跑，最终提交与验收由 Codex 在宿主
-环境完成；复核期间文档仍在修正，宿主提交时以实际字节为准）。
+`pass`（七项设计更正与对抗审查 D1–D4 均已闭环，宿主测试全绿，成果已显式提交；允许进入
+推送/PR/CI/合并流程。实现阶段仍须等待本修正 PR 合并并同步 main 后另立新 Goal。）

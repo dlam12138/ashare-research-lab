@@ -5,7 +5,8 @@
 - 分支：`codex/m4-synthetic-pipeline-design-correction`
 - 起始 HEAD：`d69ba05fb35fb076f7f10e1e84c29bc1e9cff0a2`（Goal 契约提交）
 - 基线 `origin/main` / live main：`d3fcb1967e9e7f6d3caac3e3f08ea874646f3098`（PR #16 合并点）
-- 本次成果提交：**未创建**（沙箱拒绝写工作区外的 Git index；见第 6 节）
+- DSH 内容成果提交：`f997b95d2e4e35345b92757b29b6c9a36018231a`（由 Codex 在宿主环境按
+  4 条显式白名单路径创建；DSH 沙箱阻塞的原始证据保留在第 6 节）
 - 证据等级：本次是**设计/文档更正**，不含任何编排器实现、统计执行或真实数据证据。
   全部"实测"结论来自只读源码阅读与保全分支 `codex/m4-synthetic-pipeline-implementation`
   （成果提交 `8a71fb9ba80701099be7c5df6e0c81ac13233ebb`）的源码、测试与记录；本次未重跑其测试。
@@ -318,3 +319,24 @@ available"——审批通道不可用，失败关闭。Goal 的停止条件明�
 
 除上述两项外，本次任务的内容与证据已就绪，等待 Codex 的独立仓库证据复核与最终裁决。
 
+---
+
+## 8. Codex 宿主独立复核与最终裁决
+
+Codex 未采信 DSH 的完成摘要作为通过依据，而是在宿主环境独立完成以下复核：
+
+- 按 4 条显式白名单路径创建成果提交
+  `f997b95d2e4e35345b92757b29b6c9a36018231a`；未使用 `git add -A`，未推送。
+- 使用独立可写 `--basetemp` 重跑治理组：`15 passed in 0.10s`，exit 0。
+- 使用独立可写 `--basetemp` 重跑第 2 条完整上游组：`187 passed in 31.91s`，exit 0。
+  因而 DSH 的 `185 passed, 2 errors` 已确认仅由沙箱 `tmp_path` 权限造成，不再是验收缺口。
+- 重跑 `python -m ruff check src tests`：`All checks passed!`，exit 0。
+- 独立检查实际分支/HEAD、提交和差异、changed/untracked、stash、数据库哈希、保护 blob、
+  `origin/main`、live main、开放 PR 与 Goal 白名单；未发现非白名单或受保护面变化。
+- DSH 遗留的 `.dsh-pytest-tmp/` 是 Git 不跟踪的测试临时目录，不进入提交；不影响仓库验收。
+
+内容层七项必改全部有据，第四路对抗审查的 D1–D4 已全部闭环；没有 API、能力、错误码、摘要、
+阶段、上游契约或授权边界扩张。允许推送本设计修正分支、创建 PR 并等待 CI；只有 PR 合并且 main
+同步后，才允许另立新 Goal 恢复实现阶段。
+
+**最终裁决：`PASS`**
