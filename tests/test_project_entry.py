@@ -29,6 +29,9 @@ def test_current_capabilities_explain_entrypoints_and_limits():
     assert "只在已验证合成 fixture 上计算 OLS/bootstrap/处置" in summary
     assert "没有通用研究执行器" in summary
     assert "holdout 始终不授权执行" in summary
+    assert "parse_hypothesis_record(document)" in summary
+    assert "仅合成/schema 校验" in summary
+    assert "真实注册表数据" in summary
     assert "有界执行器尚未实现" not in summary
     assert "统计执行尚未实现" not in summary
     assert "build_analysis_plan(contract)" in text
