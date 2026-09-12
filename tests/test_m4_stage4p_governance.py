@@ -64,7 +64,9 @@ def test_readme_current_m4_status_and_m3_history_are_canonical() -> None:
     assert "M4-A.2E BOUNDED EXECUTION IMPLEMENTED ON SYNTHETIC FIXTURES ONLY" in roadmap
     assert "real-data executor NOT STARTED" in roadmap
     assert "dataset adapter / executor NOT STARTED" not in roadmap
-    assert "M4-B NOT STARTED" in roadmap
+    assert "M4-B MINIMUM METADATA REGISTRY IMPLEMENTED" in roadmap
+    assert "real registry dataset NOT AUTHORIZED" in roadmap
+    assert "real-research M4-B NOT STARTED" in roadmap
     assert "real hypothesis execution NOT AUTHORIZED" in roadmap
     assert "PREFLIGHT ONLY; IMPLEMENTATION NOT STARTED" not in roadmap
     assert "M3_DAILY_MECHANISM_NOT_ESTABLISHED" in text
