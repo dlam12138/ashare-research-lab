@@ -1,6 +1,15 @@
 # M4 合成端到端流水线设计 v1
 
-状态：DESIGN_ONLY / READY_FOR_IMPLEMENTATION_REVIEW。本文是 M4-A 阶段
+状态：DESIGN_ONLY / READY_FOR_IMPLEMENTATION_REVIEW。**2026-09-12 设计更正**：第 4.4 节 `J4`、
+第 5.5 节 `D6`、第 6.1 节 `S0` 行与第 6.2 节 `P3`、第 7.1 节 `G14` 与 S0 扫描面、
+第 8.3/8.4/8.5 节（复制上界行、透传面说明、可达性分类）、第 9.5 节 `V3`/`V4`/`V5` 失败码、
+第 10.3 节绑定失败码、第 11.3 节调用次数上界与 `§11.3.1 R17.2` 求值条件、
+第 14 节 `R2`/`R11`/`R17`/`R19` 已按实现评审的
+**实测证据**更正（依据：实现保全提交 `8a71fb9` 的源码、测试与记录；契约见
+`agent/goals/2026-09-12_m4_synthetic_end_to_end_pipeline_design_correction.md`；逐项变更清单见
+`acceptance/2026-09-12_m4_synthetic_end_to_end_pipeline_design_correction.md`）。本次更正**只**修正
+与实测不符或自相矛盾的事实陈述：公开 20 符号面、14 码封闭表、常量值、字段、签名、`L1`–`L14`、
+`S0`–`S8`、`V1`–`V6`、授权边界与全部上游契约**均未改变**。本文是 M4-A 阶段
 `Typed Contract -> Plan -> Synthetic Dataset -> Immutable Matrix -> Bounded Execution`
 五个**已实现且已冻结**阶段的单一编排入口设计规范与**拟议接口契约**，尚未实现。
 文中全部类名、函数名、字段名、常量名与错误码都标记为**拟议（proposed）**，不冒充现有实现，
@@ -333,8 +342,14 @@ class RegistryMetadataBindingV1:
   因此不会触发既有禁止内容检查。
 - **J3**：它是**编码**而非重新序列化：`bytes.fromhex(record_bytes_hex)` 必须逐字节等于
   `serialize_hypothesis_record(record)`；实现**不得**美化解码或重新序列化。
-- **J4**：为控制信封规模，`record_bytes_hex` 的长度上界 = `2 × (既有 M4-B 记录各文本字段
-  上限之和 + 固定键与结构开销)`；实现评审须实测该上界并写入实现测试（第 14 节 R11）。
+- **J4**：任何**具体的**合法记录都必然序列化为**有限**字节，因此 `record_bytes_hex` 对每条实际
+  绑定的记录都有限，长度恰为 `2 × len(serialize_hypothesis_record(record))`。但**上游 schema
+  不对全体合法记录施加一致的有限上界**（修正一处不可成立的早期表述）：既有 M4-B 记录的
+  `known_controls`、`known_alternative_explanations`、`known_replications`、`known_failures_or_decay`
+  等**元组基数无上界**，`state_history` 长度无上界，`authorization_ref` 与 `schema_version` 也**没有**
+  长度上限——逐字段文本上限（如 `NOTES_MAX_LEN = 4000`）只约束单个字段，不足以给出总上界。
+  因此本设计**不冻结**任何"总字节上限"，也**不新增**任何编排器层尺寸门；实现评审只能把
+  "有界文本骨架"的实测值记录为证据，**不得**把它表述为 schema 保证（第 14 节 R11）。
 
 `pipeline/__init__.py` 拟议 `__all__`（**恰为**下列 20 个符号；本清单是唯一权威来源，
 其计数与逐项枚举见下）：
@@ -591,11 +606,20 @@ ExpectedDomainV1(domain_id, universe_id=contract.universe.universe_id,
   `"x y/z"` 都算命中；而 `"2015-03-16"`、`"SYNTH_ROBUSTNESS_1"`、`"A-B"` 不命中。
   该检查对**字符串值**递归生效，因此信封中不得出现任何含斜杠的字符串
   （含标签、说明、外部引用、参数值）。
-- **D6**：编排器**不得**引入任何含 `/` 的字符串字段值。特别地，**既有合同声明的稳健性参数值**
-  （`robustness_registry` 的 parameters）会随计划进入执行产物 payload 并被
-  `_check_forbidden_content` 递归扫描（实测：参数键 `"path"` 或参数值 `"A/B"` 会使派生动作以
-  `FORBIDDEN_ARTIFACT_CONTENT` 失败；`{"trim":"0.0100"}` 通过）。这属于**既有**行为，
-  编排器不新增也不放宽该检查；但验收必须覆盖该路径，以免被误判为编排器引入的缺陷（AC-22d）。
+- **D6**：编排器**不得**引入任何含 `/` 的字符串字段值。特别地，**既有合同声明的稳健性参数**
+  （`robustness_registry` 的 parameters）被**逐字**转发进计划的 `robustness_plan.entries`，因而进入
+  信封的 `plan` 权威投影，并被编排器 **V5** 的整信封禁止内容检查拒绝（实测：参数键 `"path"` 或
+  参数值 `"A/B"` 使 `run_synthetic_pipeline` 在 S1–S6 **完整执行之后**以既有码
+  `FORBIDDEN_ARTIFACT_CONTENT` 失败；`{"trim":"0.0100"}` 通过）。
+  **修正一处与实测不符的表述**：既有**有界执行产物 payload 并不含稳健性块**——`_execution_payload`
+  只有 `method_configuration`、`sample`、`estimator`、`bootstrap`、`conditional_descriptives`、
+  `evidence` 等字段，因此 `execute_bounded_analysis` 在 `parameters={"trim":"A/B"}` /
+  `{"path":"0.0100"}` 下**会成功**；本设计**不得**声称执行产物携带稳健性参数，也不得把该拒绝
+  描述成执行器内部的扫描结果。稳健性派遣入口 `prepare_registered_robustness_dispatch` 有**自己的**
+  既有扫描（`_check_robustness_artifact` → `_robustness_payload` → `_check_forbidden_content`，
+  参数被逐字转发后受检），但该入口**不在**本设计的组合链上（第 6.2 节 P7、AC-23），
+  其独立探针是 AC-17f。这属于**既有**行为，编排器不新增也不放宽该检查；验收必须分别覆盖
+  这两条路径，以免把组合链上的 V5 拒绝误判为编排器引入的缺陷（AC-22d）。
 - **D7**：注册表记录的**字节**（编码为 `registry_binding.record_bytes_hex`）是十六进制字符串，
   不参与字符串值扫描的"路径样式"命中（`[0-9a-f]` 不含 `/`、`\`、`:`）；
   但记录内**已解析**的文本字段若被编排器提升为信封字符串字段，就会重新进入扫描面。
@@ -615,7 +639,7 @@ ExpectedDomainV1(domain_id, universe_id=contract.universe.universe_id,
 
 | 步 | 名称 | 动作（精确） | 该步之前的验证 | 该步之后的验证 |
 | --- | --- | --- | --- | --- |
-| S0 | INTAKE | 校验 `request` 类型、`schema_version`、`orchestrator_version`、`registry_record` 类型，并检查禁止内容 | 无（入口） | 无 |
+| S0 | INTAKE | 校验 `request` 类型、`schema_version`、`orchestrator_version`、`registry_record` 类型，并对**入口可得投影**（可选注册表记录投影）检查禁止内容（G14） | 无（入口） | 无 |
 | S1 | CONTRACT | `contract = compile_hypothesis_config(request.config)` | S0 已通过 | `validate_contract(contract)`（其内部已重算并比对 `contract_digest`） |
 | S2 | PLAN | `plan = build_analysis_plan(contract)` | S1 已通过 | `validate_analysis_plan(plan)`；再比对 `compute_plan_digest(plan) == plan.plan_digest` 且 `plan.source_contract_digest == contract.contract_digest` |
 | S3 | SYNTHETIC_INPUT | 对 `request.bound_inputs` 做机械门禁（第 5.3 节四项相等） | S2 已通过 | G7–G11 按第 7.1 节表序通过；失败使用第 8.3 节对应稳定码 |
@@ -637,7 +661,9 @@ ExpectedDomainV1(domain_id, universe_id=contract.universe.universe_id,
 - **P3**：S4 的 `validate_dataset` 会再次完整重算适配器输出。这意味着一次成功调用中
   `materialize_analysis_dataset` 至少被调用 2 次、`build_analysis_plan` 至少被调用 3 次、
   矩阵投影至少被调用 3 次、`_execute` 至少被调用 2 次（V3 重执行）——全部由既有验证器触发，
-  不是本设计新增。资源边界见第 11.3 节。
+  不是本设计新增。实测总计数（含编排器 S2/S4 直调与全部链式重算，且计入 S7
+  `validate_pipeline_result` V2 重跑的额外一轮）见第 11.3 节：`build_analysis_plan = 12`、
+  `materialize_analysis_dataset = 11`、`_execute = 3`。
 - **P4**：`preparation.status != "READY_SYNTHETIC"` 时必须在 S4 之后、S5 之前终止，
   不得进入矩阵与执行。**这条编排器自判不是冗余，而是必需**：实测显示，若把质量拒绝的
   preparation 交给下游，`validate_design_matrix` 会在 `X2` 内先抛既有的
@@ -665,7 +691,9 @@ ExpectedDomainV1(domain_id, universe_id=contract.universe.universe_id,
 
 - 编排器**不得**直接调用 `_project_validated_matrix`、`_validated_source`、`_execute`、
   `_with_digest`、`_with_matrix_digest`、`_input_payload`、`_domain_dict` 等任何私有函数。
-  它们是 `_` 前缀私有实现，不是 acceptance 入口。
+  它们是 `_` 前缀私有实现，不是**编排器**的 acceptance 入口。**唯一例外是验收测试的显式探针**：
+  配套验收文档第 1.2 节允许测试在显式标注 `INTERNAL_PROJECTION_PROBE` 后直接调用
+  `_project_validated_matrix` 来证明下游项角色防御（AC-17e）；编排器本身**仍不得**调用它。
 - 编排器**不得**用 `dataclasses.replace` 改写任何上游产物后继续传递。上游产物一旦产出即不可变；
   唯一允许的 `replace` 在既有模块内部。
 - 编排器**不得**自行实现质量门、覆盖门、秩门或处置逻辑；这些全部由既有适配器与执行器给出。
@@ -700,28 +728,32 @@ S0–S3 构成"计算之前"的门禁区。下面每一条都在**任何统计�
 | G8 | 输入 schema | `bound_inputs.schema_version` 与既有 `SCHEMA` 不符 | `PIPELINE_INPUT_SCHEMA_UNSUPPORTED` |
 | G9 | 合同绑定 | `bound_inputs.source_contract_digest != contract.contract_digest` | `PIPELINE_INPUT_BINDING_MISMATCH` |
 | G10 | 计划绑定 | `bound_inputs.plan_digest != plan.plan_digest` | `PIPELINE_INPUT_BINDING_MISMATCH` |
-| G11 | 资源上界 | 计划声明的 `bootstrap_plan.replications > MAX_BOOTSTRAP_REPLICATIONS`（S3 内、G10 之后求值，第 11.3.1 节） | `PIPELINE_REPLICATIONS_EXCEED_LIMIT` |
+| G11 | 资源上界 | 计划声明 `bootstrap_plan.enabled is True` **且** `bootstrap_plan.replications > MAX_BOOTSTRAP_REPLICATIONS`（S3 内、G10 之后求值，第 11.3.1 节）；`enabled is False` 时本条**不求值**（禁用 bootstrap 没有重采样工作，其惰性 `replications` 声明不被拒绝，与 AC-28d 一致） | `PIPELINE_REPLICATIONS_EXCEED_LIMIT` |
 | G12 | 注册表身份 | 记录 `hypothesis_id` 与计划 `hypothesis_id` 不等（S7 求值，第 14 节 R15 的分工） | `PIPELINE_REGISTRY_IDENTITY_MISMATCH` |
 | G13 | 注册表状态 | 记录 `status` 不在第 10.4 节允许表内（S7 求值） | `PIPELINE_REGISTRY_STATUS_NOT_BINDABLE` |
-| G14 | 禁止内容 | S0 或 S7 的禁止内容检查命中 | `FORBIDDEN_ARTIFACT_CONTENT`（复用既有码） |
+| G14 | 禁止内容 | S0（仅扫入口可得投影）或 V5/S7（整信封规范字典）的禁止内容检查命中 | 既有 `ExecutionError("FORBIDDEN_ARTIFACT_CONTENT")`（**既有类型 + 既有码**；不新增第 15 个编排器码） |
 
-门禁求值时机（`S0` / `S3` / `S7`）是**冻结**的：S0 只做形态与类型；S3 按 G7–G11
-依次做 mode、schema、输入绑定与资源上界；S7 做注册表身份与状态。实现**不得**把 S7 的检查提前到 S0，
-否则会改变首错归属（第 14 节 R15）。
+门禁求值时机（`S0` / `S3` / `S7`）是**冻结**的：S0 只做形态、类型与**入口可得投影**的禁止内容
+检查；S3 按 G7–G11 依次做 mode、schema、输入绑定与资源上界；S7 做注册表身份与状态。
+实现**不得**把 S7 的检查提前到 S0，否则会改变首错归属（第 14 节 R15）。
 
-**S0 禁止内容检查的精确扫描目标（修正一处"等价语义"的模糊表述）**：既有
+**S0 禁止内容检查的精确扫描目标（修正一处不可实现的早期表述）**：既有
 `_check_forbidden_content` 只作用于**执行/稳健性产物 payload**，且它是私有函数。
-因此 S0 的扫描面被精确冻结为下列三个**公开可投影**的对象：
+早期草案把 `contract_to_canonical_dict(contract)` 与 `plan_to_canonical_dict(plan)` 列为 S0 的扫描面，
+这与第 6.1 节的步骤序**矛盾**：**S0 早于 S1/S2，contract 与 plan 在 S0 尚不存在**（它们分别在
+S1/S2 才由编排器编译出来）。因此 S0 的扫描面被精确冻结为**入口处已存在的请求投影**：
 
-1. `contract_to_canonical_dict(contract)`（公开）；
-2. `plan_to_canonical_dict(plan)`（公开）；
-3. `registry_record` 经 `hypothesis_record_to_canonical_dict(record)`（公开，仅当提供）。
+1. `registry_record` 经 `hypothesis_record_to_canonical_dict(record)`（公开，仅当提供记录时）。
 
-`bound_inputs` **不在** S0 的扫描面内——既有 `datasets/synthetic.py` 没有公开的字典投影，
+`contract_to_canonical_dict(contract)` 与 `plan_to_canonical_dict(plan)` **不在** S0 扫描面内；
+它们的投影——连同 `preparation`/`matrix`/`execution` 的权威投影——由 **V5 在 S7 对完整规范信封
+字典**一次性扫描（第 9.5 节 V5；实测该字典逐字包含 contract 与 plan 的投影）。`bound_inputs`
+同样**不在**任何扫描面内——既有 `datasets/synthetic.py` 没有公开的字典投影，
 而本设计禁止调用私有 `_input_payload`/`_domain_dict`（第 6.3 节）。`bound_inputs` 的字段合法性
 完全由既有适配器的 fail-closed 校验负责（`_shape`/`_identifier`/`_hash`/`_date`/`_dec`），
 其字符串值也是 `_identifier` 约束的 `[A-Za-z0-9][A-Za-z0-9_.-]*`，**结构上不可能**含 `/`。
-S7 的扫描面是信封规范字典整体（第 9.5 节 V5）。
+S0 与 V5 命中时都以**既有** `ExecutionError("FORBIDDEN_ARTIFACT_CONTENT")` 终止
+（既有类型 + 既有码），因此 G14 **不**引入第 15 个编排器错误码，也不改变 AC-16 的首错归属。
 
 ### 7.2 门禁的排序（首错确定性）
 
@@ -790,7 +822,7 @@ class PipelineError(ValueError):
 | `PIPELINE_UNSUPPORTED_MODE` | S3 | `bound_inputs.mode != "SYNTHETIC"` |
 | `PIPELINE_INPUT_BINDING_MISMATCH` | S3 | 合同摘要或计划摘要不符 |
 | `PIPELINE_QUALITY_NOT_READY` | S4 | `preparation.status != "READY_SYNTHETIC"`（第 6.2 节 P4） |
-| `PIPELINE_REPLICATIONS_EXCEED_LIMIT` | S3（G10 之后） | 计划声明的 `bootstrap_plan.replications > MAX_BOOTSTRAP_REPLICATIONS`（第 11.3.1 节 R17.2） |
+| `PIPELINE_REPLICATIONS_EXCEED_LIMIT` | S3（G10 之后） | 计划声明 `bootstrap_plan.enabled is True` 且 `bootstrap_plan.replications > MAX_BOOTSTRAP_REPLICATIONS`（第 11.3.1 节 R17.2）；`enabled is False` 时本条不适用 |
 | `PIPELINE_REGISTRY_STATUS_NOT_BINDABLE` | S7 | 记录 `status` 不在第 10.4 节的**可绑定状态允许表**内 |
 | `PIPELINE_REGISTRY_IDENTITY_MISMATCH` | S7 | 记录 `hypothesis_id` 与计划不等 |
 | `PIPELINE_DIGEST_MISMATCH` | V6 | 信封自摘要与按 L14 重算值不符 |
@@ -809,38 +841,43 @@ class PipelineError(ValueError):
 
 ### 8.4 既有错误码的透传（不得改写）
 
-以下是编排链上会被触发的既有码，**必须原样透传**。编排器不得把它们改写成
-`PIPELINE_*`，也不得改变其类型：
+以下是编排链上**可能**出现的既有码（含只在阶段级探针上可达者，可达面以第 8.5 节为准），
+**必须原样透传**。编排器不得把它们改写成 `PIPELINE_*`，也不得改变其类型：
 
 | 步骤 | 既有错误类型 | 代表性既有码（非穷举，实现以既有模块为准） |
 | --- | --- | --- |
 | S1 | `ContractCompilationError` / `HypothesisConfigError` | `INVALID_CONTRACT_TYPE`、`INVALID_CONTRACT_SCHEMA_VERSION`、`INVALID_CONTRACT_STATE`、`CONTRACT_DIGEST_MISMATCH`、`DEVELOPMENT_HOLDOUT_OVERLAP`、`INVALID_IDENTITY_POLICY`、`UNSUPPORTED_FACTOR_KIND` |
 | S2 | `ValueError`（`_require`） | `INVALID_PLAN_VERSION`、`INVALID_PLAN_STATE`、`UNSUPPORTED_ANALYSIS_METHOD`、`INVALID_PLAN_DIGEST_ALGORITHM`、`INVALID_SOURCE_SCHEMA`、`INVALID_SOURCE_IDENTITY`、`INVALID_HYPOTHESIS_ID`、`PLAN_DIGEST_MISMATCH`、`INVALID_DATASET_ROLES`、`INVALID_SECTION_FIELDS` |
-| S3/S4 | `AdapterError` | `INVALID_INPUT_STRUCTURE`、`INVALID_DATE`、`INVALID_VALUE`、`UNSUPPORTED_MODE`、`CONTRACT_PLAN_MISMATCH`、`ROLE_BINDING_MISMATCH`、`UNSUPPORTED_BINDING_POLICY`、`UNSUPPORTED_OUTCOME`、`EMPTY_EXPECTED_DOMAIN`、`EVIDENCE_DIGEST_MISMATCH`、`DUPLICATE_OBSERVATION`、`OUT_OF_DOMAIN`、`IDENTITY_CONFLICT`、`INPUT_DIGEST_MISMATCH` |
-| S5 | `AdapterError` / `MatrixError` | 上游全部 + `UNSUPPORTED_PLAN_SCHEMA`、`PLAN_TERM_ROLE_MISMATCH`、`DATASET_NOT_READY`、`MATRIX_DIGEST_MISMATCH`、`IDENTITY_CONFLICT` |
+| S3/S4 | `AdapterError` | `INVALID_INPUT_STRUCTURE`、`INVALID_DATE`、`INVALID_VALUE`、`UNSUPPORTED_MODE`、`CONTRACT_PLAN_MISMATCH`（其中 `UNSUPPORTED_MODE` 与 `CONTRACT_PLAN_MISMATCH` 在组合入口上不可达，实际可达面见第 8.5 节）、`ROLE_BINDING_MISMATCH`、`UNSUPPORTED_BINDING_POLICY`、`UNSUPPORTED_OUTCOME`、`EMPTY_EXPECTED_DOMAIN`、`EVIDENCE_DIGEST_MISMATCH`、`DUPLICATE_OBSERVATION`、`OUT_OF_DOMAIN`、`IDENTITY_CONFLICT`、`INPUT_DIGEST_MISMATCH` |
+| S5 | `AdapterError` / `MatrixError` | 上游全部 + `UNSUPPORTED_PLAN_SCHEMA`、`PLAN_TERM_ROLE_MISMATCH`（其实际可达面见第 8.5.2 节：只在内部投影探针上命中，组合入口不可达）、`DATASET_NOT_READY`、`MATRIX_DIGEST_MISMATCH`、`IDENTITY_CONFLICT` |
 | S6 | `ExecutionError`（含上游透传） | `UNSUPPORTED_ANALYSIS_METHOD`、`UNSUPPORTED_MODEL_FAMILY`、`ARTIFACT_DIGEST_MISMATCH`、`FORBIDDEN_ARTIFACT_CONTENT`、`IDENTITY_CONFLICT`，以及第 8.5 节的不可达码 |
 
 ### 8.5 组合链上**可达**与**不可达**的既有码
 
-#### 8.5.1 可达的既有码（可作为预期首错）
+本节的分类是**入口级**的：只有能由 `run_synthetic_pipeline(request=...)` 触发的码才算
+"组合入口可达"；需要把调用者伪造的**上游对象**直接交给阶段函数的码属于"仅阶段级探针可达"；
+更早的上游步骤拦截同一条件的码属于"不可达（纵深防御）"。**任何码都不得被描述成组合入口的
+预期首错，除非它能由请求类型实际表达**（请求类型只有 `config`/`bound_inputs`/`registry_record`）。
+
+#### 8.5.1 组合入口可达的既有码（可作为预期首错）
 
 实测（只读探针 + 既有控制流）确认下列既有码**可以**成为组合入口的首错：
 
 | 步骤 | 既有码 | 触发条件 |
 | --- | --- | --- |
 | S1 | `HypothesisConfigError` 全部 30 个码（经 `compile_hypothesis_config` 的动态透传）、`NON_CANONICALIZABLE_VALUE`、`INVALID_CONFIG_TYPE` | 配置层不合法 |
-| S1 | `CONTRACT_DIGEST_MISMATCH`、`INVALID_CONTRACT_SCHEMA_VERSION`、`INVALID_CONTRACT_STATE`、`INVALID_CONTRACT_TYPE`、`DEVELOPMENT_HOLDOUT_OVERLAP` | 合同自摘要/状态/开发-holdout 重叠 |
+| S1 | `CONTRACT_DIGEST_MISMATCH`、`INVALID_CONTRACT_SCHEMA_VERSION`、`INVALID_CONTRACT_STATE`、`INVALID_CONTRACT_TYPE`、`DEVELOPMENT_HOLDOUT_OVERLAP` | 合同自摘要/状态/开发-holdout 重叠（由调用者提供的 `config` 驱动） |
 | S2 | `NON_CANONICAL_CONTRACT`、`UNSUPPORTED_ANALYSIS_METHOD`（计划层）、`INVALID_PLAN_STATE`、`INVALID_PLAN_VERSION`、`INVALID_FIELD_TYPE`、`PLAN_DIGEST_MISMATCH`、`INVALID_SOURCE_IDENTITY`、`INVALID_HYPOTHESIS_ID` 等计划层裸 `ValueError` 码 | 合同被重写摘要后仍不自洽、或计划层结构问题 |
-| S4 | `CONTRACT_PLAN_MISMATCH` | 合同/计划不一致（适配器重编译比对） |
 | S4 | `ROLE_BINDING_MISMATCH`、`UNSUPPORTED_BINDING_POLICY`、`UNSUPPORTED_OUTCOME`、`EMPTY_EXPECTED_DOMAIN`、`DUPLICATE_OBSERVATION`、`OUT_OF_DOMAIN`、`IDENTITY_CONFLICT`（适配器）、`EVIDENCE_DIGEST_MISMATCH`、`INPUT_DIGEST_MISMATCH`、`INVALID_DATE`、`INVALID_VALUE` | 合成输入不合法（**不含** `UNSUPPORTED_MODE`——那被编排器 S3 门禁抢先） |
-| S5 | `MATRIX_DIGEST_MISMATCH`、`PLAN_TERM_ROLE_MISMATCH`、`UNSUPPORTED_PLAN_SCHEMA`、`UNSUPPORTED_TERM_ROLE`、`INVALID_INPUT_STRUCTURE`（矩阵层） | 矩阵不合法 |
+| S5 | `MATRIX_DIGEST_MISMATCH`、`UNSUPPORTED_PLAN_SCHEMA`、`UNSUPPORTED_TERM_ROLE`、`INVALID_INPUT_STRUCTURE`（矩阵层） | 矩阵不合法 |
 | S6 | `INSUFFICIENT_REPLICATIONS`（实测可达：`replications=1` + `enabled=true`）、`CELL_OUT_OF_RANGE`、`NON_FINITE_CELL`、`SINGULAR_DESIGN`、`SINGULAR_RESAMPLE`、`BOOTSTRAP_FAILURE`、`NON_FINITE_ESTIMATE`、`ESTIMATOR_FAILURE`、`INVALID_INTERVAL_ORDER`、`FORBIDDEN_ARTIFACT_CONTENT`、`IDENTITY_CONFLICT`（执行层） | 数值/资源/内容问题 |
 
 #### 8.5.2 不可达的既有码（纵深防御，**不得**作为预期首错）
 
-实测表明，下列码在**组合入口**上永远不会成为首错，因为更早的上游步骤已经拦截同一条件：
+实测表明，下列码在**组合入口**上永远不会成为首错：或者更早的上游步骤已经拦截同一条件，
+或者该条件需要调用者伪造上游对象、而请求类型无法表达它。
 
-| 既有码 | 被谁抢先 | 抢先点 |
+| 既有码 | 被谁抢先 / 为何不可达 | 抢先点或可达面 |
 | --- | --- | --- |
 | `AdapterError("UNSUPPORTED_MODE")` | 编排器 `PIPELINE_UNSUPPORTED_MODE` | 本设计 S3 门禁（G7）前置于适配器 |
 | `ExecutionError("UNSUPPORTED_DATASET_MODE")` | 同上（更深一层：`X2` 也先于 `X5`） | 执行层 `X2` → `validate_design_matrix` → 适配器 |
@@ -854,7 +891,9 @@ class PipelineError(ValueError):
 | `MISSING_REQUIRED_STATISTIC_ROLE`、`INVALID_CONDITION_INDICATOR` | 计划层 `INVALID_EVIDENCE_STATISTICS` / `INVALID_CONDITION_*` | 计划阶段已固定统计角色与条件编码 |
 | `ARTIFACT_DIGEST_MISMATCH` | — | **注意**：它在 `validate_execution_artifact` 的 V1 内求值，位于 S6 的**后验**验证中，因此**可以**在调用者提交被篡改的 `result` 经 V2 时出现（见 AC-15a）；它**不**是 `run_synthetic_pipeline` 的首错，但**是** `validate_pipeline_result` 的合法错误 |
 | `MatrixError("DATASET_NOT_READY")` | 编排器 `PIPELINE_QUALITY_NOT_READY` | 第 6.2 节 P4 |
-| `EMPTY_ROBUSTNESS_DISPATCH`、`DUPLICATE_ROBUSTNESS_ID`、`UNREGISTERED_ROBUSTNESS_ID`、`UNSUPPORTED_ROBUSTNESS_METHOD` | 不适用 | 稳健性派遣**不在**本设计的组合链上（第 6.2 节 P7），因此其全部码都不可达 |
+| `CONTRACT_PLAN_MISMATCH` | 组合入口上该条件**不成立**：合同与计划都由编排器在 S1/S2 自行编译，适配器在 S4 的重编译比对不可能发现不一致（同一条件若由调用者制造，早在 S3 就被 G9/G10 以编排器自有码拦下） | **信封层**可达：把伪造的 `result`（其 `contract`/`plan` 互不一致）交给公开的 `validate_pipeline_result`，V2 的 `validate_dataset` 会命中它；此外公开阶段验证器（把伪造计划交给 `validate_design_matrix`）也命中。它同时是 `PLAN_TERM_ROLE_MISMATCH` 的抢先者 |
+| `PLAN_TERM_ROLE_MISMATCH` | `CONTRACT_PLAN_MISMATCH`（适配器 `_validate_inputs` 的重编译比对，S4） | 早于矩阵项角色投影（S5）。组合入口**不可达**（请求类型不能提交伪造的 `plan`/`preparation`/`matrix`）；只能由显式标注的**内部/阶段投影探针**证明——即直接调用矩阵投影助手 `_project_validated_matrix`（第 6.3 节禁止编排器调用任何私有助手，但验收测试可以显式标注并使用它）。AC-17e 按此标注 |
+| `EMPTY_ROBUSTNESS_DISPATCH`、`DUPLICATE_ROBUSTNESS_ID`、`UNREGISTERED_ROBUSTNESS_ID`、`UNSUPPORTED_ROBUSTNESS_METHOD` | 不适用 | 稳健性派遣**不在**本设计的组合链上（第 6.2 节 P7），因此其全部码都不可达；其内容扫描只在该独立入口自己的探针上出现（AC-17f） |
 
 唯一例外：`ExecutionError.disposition` 字段只在 `DATA_QUALITY_REJECTED` 上被填充，因此本设计在
 `PIPELINE_QUALITY_NOT_READY` 的消息中**显式携带**同一个处置词（第 8.3 节消息模板），
@@ -971,10 +1010,16 @@ V2  五个阶段对象自洽：调用既有 validate_contract / validate_analysi
 V3  摘要链一致：execution.source_chain 六个字段必须逐项等于
       (contract.contract_digest, plan.plan_digest, request.bound_inputs.input_digest,
        preparation.domain_digest, preparation.dataset_digest, matrix.matrix_digest)
+      不符 => PIPELINE_DIGEST_MISMATCH（封闭码；V3 在结构上被 V2 的逐字节比对抢先，见第 9.4 节 T1）
 V4  元数据绑定：pipeline_state == PIPELINE_STATE；stages_completed == REQUIRED_STAGES_COMPLETED；
       registry_binding_digest 重算相符；registry_binding 与 request.registry_record 相符
       （第 10.3 节 RB1–RB6）
-V5  禁止内容：对规范字典执行既有等价的禁止内容检查（第 5.5 节）
+      V4 的**结构失败**（pipeline_state 或 stages_completed 不符）=> 既有封闭码
+      PIPELINE_DIGEST_MISMATCH（同一伪造在 V6 也得到该码，因此不引入新的可观察错误）；
+      **绑定条款**失败 => 第 10.3 节的 PIPELINE_REGISTRY_RECORD_INVALID /
+      PIPELINE_REGISTRY_IDENTITY_MISMATCH
+V5  禁止内容：对规范字典执行既有等价的禁止内容检查（第 5.5 节）；命中 => 既有
+      ExecutionError("FORBIDDEN_ARTIFACT_CONTENT")（既有类型 + 既有码，不新增编排器码）
 V6  信封自摘要：重算 L14 并比对，否则 PIPELINE_DIGEST_MISMATCH
 ```
 
@@ -1049,8 +1094,13 @@ RB5  PRESENT 时：parse_hypothesis_record(bytes.fromhex(binding.record_bytes_he
 RB6  注册表记录内容不参与 PIPELINE_STATE、stages_completed 或任何执行字段
 ```
 
-- 任一不符 => `PIPELINE_REGISTRY_RECORD_INVALID`（结构）或
-  `PIPELINE_REGISTRY_IDENTITY_MISMATCH`（身份），按 V4 内部固定顺序取首错。
+- **绑定条款**任一不符 => `PIPELINE_REGISTRY_RECORD_INVALID`（结构/字节/摘要）或
+  `PIPELINE_REGISTRY_IDENTITY_MISMATCH`（身份），按 V4 内部固定顺序取首错。**RB4 的映射保留**：
+  `binding.record_bytes_hex` 是 `bytes.fromhex` 可解码的小写十六进制，其字节的 SHA-256 即
+  `record_bytes_sha256`（第 10.2 节载荷字段），据此与 RB2 的重算值比对。
+  V4 中**不**属于绑定块的**结构**失败（`pipeline_state` / `stages_completed` 不符）用封闭码
+  `PIPELINE_DIGEST_MISMATCH`（第 9.5 节 V4），**不**使用本节的注册表码——这样 V4 的每条失败
+  都有唯一的既有封闭码，不新增第 15 个编排器码。
 - **RB6**：注册表记录的内容**不**参与 `PIPELINE_STATE`、`stages_completed` 或任何执行字段。
   改动注册表记录只会改变 L13/L14 与本块，不会改变任何统计量——验收 AC-16 必须断言这一点。
 
@@ -1145,24 +1195,29 @@ BINDABLE_REGISTRY_STATUSES = (
 
 ### 11.3 有界资源行为
 
-既有链在一次成功调用中会触发多次重算（第 6.2 节 P3）。本设计冻结以下**上界声明**，
+既有链在一次成功调用中会触发多次重算（第 6.2 节 P3）。本设计冻结以下上界，
 并把它作为验收项（AC-28）：
 
 | 界 | 依据 |
 | --- | --- |
 | 阶段函数调用次数是**常量级**，与输入规模无关（不含随数据增长的循环） | 既有验证器的固定 4 步/5 步结构 |
-| `build_analysis_plan` 调用次数 ≤ 6 | `_validate_inputs` 1 次 + 计划阶段 1 次 + `validate_design_matrix` 链内 ≤ 2 次 + `validate_execution_artifact` V2/V3 各 ≤ 1 次 |
-| `materialize_analysis_dataset` 调用次数 ≤ 8 | `materialize` 1 + `validate_dataset` 1 + `validate_design_matrix` 内 1 + `validate_execution_artifact` V2/V3 各 1 + 编排器 S4 前验 1 + `validate_pipeline_result` V2 内 1 |
-| `_execute` 调用次数 ≤ 3 | `execute_bounded_analysis` 1 + V3 重执行 1（重执行内部对 bootstrap 的循环由计划声明界定量） |
-| **bootstrap `replications` 绝对上界 = `MAX_BOOTSTRAP_REPLICATIONS`**（新增 pipeline 策略门） | 见下方 R17 说明 |
+| `build_analysis_plan` 调用次数 ≤ 12（**实测值**，非估计） | 编排器 S2 直调 1 次 + 经适配器模块内引用的链式重算 11 次（每次 `materialize_analysis_dataset` 都经 `_validate_inputs` 重编译 1 次；该链共调用 `validate_dataset` 10 次、`validate_design_matrix` 7 次）。S7 的 `validate_pipeline_result` V2 单独贡献 +4 |
+| `materialize_analysis_dataset` 调用次数 ≤ 11（**实测值**，非估计） | 编排器 S4 直调 1 次 + 经适配器模块内引用的链式重算 10 次（每次 `validate_dataset` 都会"重算 + 逐字节比对"，共 10 次调用）。S7 的 `validate_pipeline_result` V2 单独贡献 +4 |
+| `_execute` 调用次数 ≤ 3（**实测值**，非估计） | S6 `execute_bounded_analysis` 1 次 + `validate_execution_artifact` 的 V3 重执行 1 次 + S7 `validate_pipeline_result` V2 内 V3 重执行 1 次（重执行内部对 bootstrap 的循环由计划声明界定量；因此工作量约为 `3 × replications`） |
+| **bootstrap `replications` 绝对上界 = `MAX_BOOTSTRAP_REPLICATIONS`**（新增 pipeline 策略门；**仅当 `bootstrap_plan.enabled is True` 时求值**） | 见下方 R17 说明；禁用 bootstrap 时无重采样工作，惰性声明不被拒绝（AC-28d） |
 | 矩阵行数上界 = `domain.expected_dates` 长度 | 适配器按域逐日投影 |
 | 单元格绝对值上界 = 既有 `MAX_ABS_CELL_DECIMAL = "1000000"` | 既有执行层常量 |
 | 观测条数上界 = `len(roles) × len(expected_dates)` | 适配器 `_validate_inputs` 的域内唯一性 |
 | 递归深度上界 = 输入的 JSON 嵌套深度 | 编排器不新增递归；不得调用 `sys.setrecursionlimit` |
 | 线程/进程/协程：0 | 编排器不得导入 `threading`、`multiprocessing`、`asyncio`、`concurrent.futures` |
 
-> 上表"≤ N"是**设计声明的上界**，不是实测计数。实现评审可用既有 fixture 实测计数并收紧，
-> 但不得放宽。计数若超出上界，属于设计缺陷，按第 14 节 R1 上报。
+> 上表**前三行**已按实现评审的**实测**改定（其中原 ≤6/≤8 两项不成立，`_execute <= 3` 经实测确认，
+> 见第 14 节 R2）；其余各行仍是设计声明。**为什么公开产出者计数包含验证重算**：计数打在
+> **公共产出者符号**上，既统计编排器 S2/S4 的直调，也统计既有验证器触发的每一次链式重算，
+> 因此它必然包含验证重算；早期草案的 ≤6/≤8 只估到链路的一部分，漏掉了
+> `validate_pipeline_result` V2 会**再跑一遍** S1–S6 的验证链（该重跑由第 9.5 节 V2 与
+> 第 6.1 节 S7 强制）。实现评审**不得放宽**这三个上界；实测若超出，属于设计缺陷，
+> 按第 14 节 R1 上报。这三项是**与输入规模无关**的拓扑常量。
 
 #### 11.3.1 R17：为什么必须有绝对上界，以及它是什么
 
@@ -1182,9 +1237,12 @@ MAX_BOOTSTRAP_REPLICATIONS = 100000
   **不**修改任何既有 `__all__`、**不**改变既有执行器行为。直接调用既有
   `execute_bounded_analysis` 的调用者不受它约束（既有行为一字不变）。
 - **R17.2**：编排器在 S0 门禁中读取合同/计划声明前的**配置层**值不可行（尚未编译），
-  因此该门在 **S3 内 G10 之后**求值：若计划声明的
+  因此该门在 **S3 内 G10 之后**求值：若计划声明 `bootstrap_plan.enabled is True` **且**
   `bootstrap_plan.replications > MAX_BOOTSTRAP_REPLICATIONS`，抛
   `PipelineError("PIPELINE_REPLICATIONS_EXCEED_LIMIT")`，**在 S4 之前**终止，不做任何重采样。
+  **求值条件含 `enabled is True`（与 AC-28d 一致，修正 G11 与 AC-28d 的冲突）**：
+  `enabled is False` 的计划**没有**重采样工作，其 `replications` 声明是惰性的，
+  **不**被本门拒绝；本门约束的是重采样工作量，不是声明值的形状。
 - **R17.3**：该码加入第 8.3 节，成为编排器自有码之一（第 8.3 节给出唯一权威计数）。
 - **R17.4**：本设计**不**声称该上界是"统计上合适"的——它只是资源界的机械上限；
   它**不**构成对任何重复次数的充分性、有效性或显著性的主张。
@@ -1339,7 +1397,7 @@ reports/m4_stage4p_m4b_hypothesis_registry_contract_v1.json dfd41eaafc099e774849
 | # | 风险/未决项 | 处理 |
 | --- | --- | --- |
 | R1 | 既有模块中可能存在未映射的裸异常点（`KeyError`/`IndexError`/`AssertionError`），编排器按 `M3` 只能以 `PIPELINE_INTERNAL_SOURCE_UNMAPPED` 终止 | 实现评审时用恶意合成输入探测；若发现，属既有模块缺陷，另行按独立 Goal 修复，**不得**在本设计内扩大兜底 |
-| R2 | 第 11.3 节的调用次数上界是**设计声明**而非实测 | 实现评审须用既有 fixture 实测并收紧；超出即设计缺陷 |
+| R2 | 第 11.3 节的三项调用次数上界原为**设计声明**（≤6/≤8/≤3），实现评审实测证明其中两项不成立：`build_analysis_plan = 12`、`materialize_analysis_dataset = 11` | **已按实测更正**为 ≤12/≤11/≤3（第 11.3 节）；计数打在公共产出者符号上，因此包含既有验证器的链式重算与 S7 `validate_pipeline_result` V2 的额外一轮（+4/+4/+1）。其余行仍为设计声明；实现评审**不得放宽**这三项 |
 | R3 | 合同自摘要与重编译一致性（第 9.4 节 T3）由**既有**上游两级检测覆盖（`validate_contract` + 重编译比对） | 编排器在 S1 只调用 `validate_contract` 以固定首错**归属**；AC-11 必须覆盖"字段被改且摘要被重写"并断言失败归属 S2 |
 | R4 | `BoundDatasetInputsV1` 由调用者构造，其合成观测的"研究含义"不受本设计约束 | 本设计只冻结归属与摘要一致性；合成数值的语义由既有适配器设计与验收 fixture 决定 |
 | R5 | 稳健性派遣入口（`prepare_registered_robustness_dispatch`）未接入端到端链 | 有意为之（第 6.2 节 P7）；若后续需要，须另行授权并重新评估证据形状 |
@@ -1348,15 +1406,15 @@ reports/m4_stage4p_m4b_hypothesis_registry_contract_v1.json dfd41eaafc099e774849
 | R8 | "无副作用"的断言依赖三层检查（AST 直接导入 + 目录快照 + 运行时 monkeypatch），而非运行时隔离 | 见第 11.4 节 N4；本设计接受该强度，并明确不承诺沙箱级隔离 |
 | R9 | 本设计**没有**实现任何函数；第 4、5、10 节全部为拟议 API | 第 1.2 节第 1 条已声明；实现审查不得把本文读成已实现 |
 | R10 | **跨环境字节相等的边界**：既有 `MethodConfigurationV1.numeric_runtime` 绑定 `numpy.__version__`（`execution/bounded.py:212`、`:814`、`:1493`），该字符串进入 `_execution_payload` 因而进入 `artifact_digest` | 第 11.1 节 C1 的"字节相等"只承诺**同一解释器与同一 numpy 版本**；跨 numpy 版本的字节相等**不在本设计的保证范围内**。验收 AC-03 必须固定同一环境执行，跨版本差异按 AC-03d 显式记录为已知差异而**不是**失败 |
-| R11 | `record_bytes_hex` 的长度不受本设计直接约束（受既有 M4-B 记录各文本字段上限间接约束） | 既有 M4-B 记录字段上限（`NOTES_MAX_LEN = 4000` 等）给出有限上界；实现评审须实测该上界并写入实现测试（第 J4 条） |
+| R11 | `record_bytes_hex` 的长度对**具体**记录必然有限，但**没有一致的有限上界**：既有 M4-B schema 的四个知识元组基数、`state_history` 长度、`authorization_ref` 与 `schema_version` 均无上限，逐字段文本上限（`NOTES_MAX_LEN = 4000` 等）只约束单个字段 | 第 J4 条已按此更正：**不**冻结总上限、**不**新增尺寸门（也不得把测试里的"有界文本骨架"实测值表述为 schema 保证）。绑定语义（J1–J3、RB4/RB5、小写十六进制与逐字节往返）保持不变 |
 | R12 | `numeric_runtime` 只钉住 numpy 的**版本字符串**，不钉住 BLAS/LAPACK 构建；`numpy.linalg.lstsq` 的位级输出可能随 BLAS 构建而变 | 与 R10 同属"跨环境"边界：同一环境内字节相等成立（既有测试已验证），跨 BLAS 构建的一致性**不**在本设计保证内。实现评审若需更强保证，须另行授权并把 BLAS 身份纳入身份链（属 schema 变更，须停下报告） |
 | R13 | 编排器新增的 `metadata.interpretation_boundary` 与既有 `registry.snapshot.INTERPRETATION_BOUNDARY` **同名不同值** | 第 4.1 节 I6 已冻结处理：信封必须取执行层字面量，禁止同模块同时顶层导入两者 |
 | R14 | 编排器新增的 mode/quality 拒绝面与既有执行层同类码**并存**，存在"两处判同一件事"的维护风险 | 第 6.2 节 P4/P4b 与第 8.5 节已冻结可达性划分；编排器负责"可达首错"，执行层同类码保留为纵深防御且**不得**被写成预期首错 |
 | R15 | 第 7.1 节 G12/G13（注册表身份与状态）与第 10.3 节 R5（绑定重解析）都涉及注册表记录，且跨 S0 与 S7 两个时刻 | 明确分工：S0 只做**类型与自洽**（G5/G6），S7 才做**身份、状态与字节重解析**（G12/G13/R5）。实现不得把它们提前到 S0，否则会改变首错归属（AC-16 的确定性依赖这一划分） |
 | R16 | 第 11.1 节 C5 只固定 `decimal` 的 `prec`，**不**固定 traps/flags | 字节相等以"宿主保持 `decimal` 默认陷阱设置"为前提；宿主改动陷阱设置属于已知边界，实现评审须在实现测试中显式记录该前提 |
-| R17 | 既有配置层对 `replications` 无上界（接受 `10**9`），第 11.3 节早期措辞等价于"没有绝对上界"，与 Goal 第 6 条"bounded resource behavior"不符 | 第 11.3.1 节新增编排器层 `MAX_BOOTSTRAP_REPLICATIONS` 与 `PIPELINE_REPLICATIONS_EXCEED_LIMIT`；**不**修改既有层。该上界只是资源界，**不**构成任何统计充分性主张 |
+| R17 | 既有配置层对 `replications` 无上界（接受 `10**9`），第 11.3 节早期措辞等价于"没有绝对上界"，与 Goal 第 6 条"bounded resource behavior"不符；且早期 G11 未写启用条件，与 AC-28d 冲突 | 第 11.3.1 节新增编排器层 `MAX_BOOTSTRAP_REPLICATIONS` 与 `PIPELINE_REPLICATIONS_EXCEED_LIMIT`；**不**修改既有层。该门**仅在 `bootstrap_plan.enabled is True` 时求值**（第 7.1 节 G11、第 11.3.1 节 R17.2），禁用 bootstrap 的惰性声明不被拒绝。该上界只是资源界，**不**构成任何统计充分性主张 |
 | R18 | 第 4.5.1 节的公开 `bound_inputs_identity_payload` 必须与既有**私有** `_input_payload` 保持深度相等 | 这是对既有私有实现的**语义镜像**：若既有实现未来修改排序或键集，本函数必须同步。实现评审须加等价性测试（第 A2 条）；该同步义务记入实现 Goal |
-| R19 | 请求类型只接受 `config`/`bound_inputs`/`registry_record`，调用者**无法**提交合同/计划/准备数据/矩阵/执行产物 | 验收场景文档已按此重新分类：篡改案例分为"信封层（`validate_pipeline_result` 可达）"与"阶段层（显式标注的阶段级探针）"；"上游对象不可提交"本身被列为最强的结构性保证（AC-30） |
+| R19 | 请求类型只接受 `config`/`bound_inputs`/`registry_record`，调用者**无法**提交合同/计划/准备数据/矩阵/执行产物 | 验收场景文档已按此重新分类，且分类必须与第 8.5 节一致：**组合入口可达** = AC-12b、AC-13、AC-16、AC-17a、AC-17c、AC-17d、AC-22d；**信封层**（公开 `validate_pipeline_result`）= AC-15e/f；**阶段级探针**（显式标注 `STAGE_LEVEL_PROBE`，直接调用既有阶段验证器）= AC-10、AC-11、AC-12a、AC-12c、AC-14、AC-15a–d、AC-17b、AC-17f；**内部投影探针**（显式标注，直接调用私有投影助手）= AC-17e；"上游对象不可提交"本身被列为最强的结构性保证（AC-30）。**不得**把任何探针案例写成组合入口行为 |
 | R20 | 若宿主环境改变了 `decimal` 陷阱或 numpy/BLAS，第 C1/C5 的字节相等不再成立 | 见 R10/R12/R16；AC-03d 与 AC-29c 负责把这类差异**显式记录**为环境差异，而不是静默通过 |
 
 ### 14.1 明确不在本设计内的事情
