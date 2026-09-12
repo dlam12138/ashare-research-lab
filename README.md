@@ -7,7 +7,7 @@
 
 ## 当前可用能力
 
-主线已包含 PIT/TTM 修复与 A.2 冻结设计。下表中的 A.2I 是本实现 PR 提供的能力，待合并；设计和计划编译均不代表统计执行已实现。
+主线已包含 PIT/TTM 修复、A.2 冻结设计、A.2I 计划编译、合成数据适配器、不可变设计矩阵与仅限合成 fixture 的有界执行器（PR #9、#11、#12 均已合并）。有界执行器只在合成 fixture 上计算系数、bootstrap 区间与证据处置；没有通用研究执行器，真实数据执行、holdout 与 M4-B 仍未授权。
 
 | 能力 | 当前状态 | 如何使用 | 限制 | 证据 |
 | --- | --- | --- | --- | --- |
@@ -15,8 +15,11 @@
 | M2 价值评估 | M2 已条件关闭；中石油 PIT 切片 | 下方离线胶囊；真实输入需显式提供 | ROIC 证据不足；PE 数值评分暂缓，无生产排名 | [完成矩阵](reports/m2_value_assessment_completion_matrix.md)、[缺口台账](reports/m2_explicit_gap_ledger.md) |
 | M3 机制验证 | CONDITIONALLY CLOSED；日频机制未建立 | 阅读开发期研究与最终处置 | holdout primary inconclusive；不支持因果或行为主体推断 | [最终验收](acceptance/m3_stage3e_daily_mechanism_final_disposition_and_milestone_closeout_preflight.md) |
 | M4-A.1 假设合同 | CANONICAL ON MAIN | 下方 Python 编译接口与合成测试 | 仅配置校验、合同冻结和摘要，没有通用研究执行器 | [编译验收](acceptance/m4_stage4a1_typed_hypothesis_config_and_frozen_contract_compiler.md) |
-| M4-A.2 分析计划 | 设计已在主线；A.2I 计划编译已实现（本 PR，待合并） | 下方 `build_analysis_plan(contract)` Python 入口与合成测试 | compile-only；数据适配、执行尚未实现；holdout 始终不授权执行 | [冻结设计](reports/m4_stage4a2_deterministic_analysis_plan_design_v1.json)、[实现验收](acceptance/2026-09-07_m4a2i_analysis_plan_compiler.md) |
-| M4-B 与后续研究 | NOT STARTED | 参见路线图 | 真实假设执行、M5/M6 仍未授权 | [Stage4P](acceptance/m4_stage4p_north_star_v2_adoption_and_architecture_preflight.md) |
+| M4-A.2 分析计划 | 已在主线（冻结设计 + A.2I 计划编译实现） | 下方 `build_analysis_plan(contract)` Python 入口与合成测试 | 计划编译已实现；统计执行仅限合成 fixture；没有通用研究执行器；holdout 始终不授权执行 | [冻结设计](reports/m4_stage4a2_deterministic_analysis_plan_design_v1.json)、[实现验收](acceptance/2026-09-07_m4a2i_analysis_plan_compiler.md) |
+| M4-A.2D 合成数据适配器 | 已在主线（PR #11） | `materialize_analysis_dataset(contract, plan, bound_inputs)` 与合成测试 | 仅合成模式；不读取真实数据、provider、数据库或行情 | [适配器设计](docs/m4_dataset_adapter_design_v1.md)、[适配器测试](tests/test_m4_synthetic_dataset_adapter.py) |
+| M4-A.2M 设计矩阵 | 已在主线（PR #12） | `materialize_design_matrix(preparation, contract, plan, bound_inputs)` 与合成测试 | 质量边界内的投影；本身不含回归、bootstrap、稳健性或证据判定 | [矩阵设计](docs/m4_analysis_matrix_design_v1.md)、[矩阵测试](tests/test_m4_analysis_matrix.py) |
+| M4-A.2E 有界执行 | 已实现（仅合成 fixture）；真实执行未授权 | 下方 `execute_bounded_analysis(matrix, preparation, contract, plan, bound_inputs)` 与合成测试 | 只在已验证合成 fixture 上计算 OLS/bootstrap/处置；无 provider、数据库、holdout 或 M4-B；注册稳健性只派遣不计算 | [设计](docs/m4_bounded_execution_and_evidence_design_v1.md)、[验收案例](docs/m4_bounded_execution_acceptance_cases_v1.md)、[执行测试](tests/test_m4_bounded_execution.py)、[实现验收](acceptance/2026-09-12_m4_bounded_execution_implementation.md) |
+| M4-B 与后续研究 | NOT STARTED | 参见路线图 | 真实假设执行、真实数据有界执行、M5/M6 仍未授权 | [Stage4P](acceptance/m4_stage4p_north_star_v2_adoption_and_architecture_preflight.md) |
 
 ### 研究结论与边界
 
@@ -32,7 +35,7 @@ M3 最终处置为 `M3_DAILY_MECHANISM_NOT_ESTABLISHED`。Holdout 已使用一�
 - M3 Stage 3A research contracts are frozen. Stage 3B completed fail-closed. Stage 3B-R1 primary-proxy resolution is current within the frozen M3 market-proxy lineage.
 - At M3 closeout, further holdout recovery, minute escalation, index contribution, and M4 were not authorized.
 - Historical M3 closeout stop: `STOP_FOR_NORTH_STAR_REVIEW`.
-- Subsequently, M4-A.1 has since been implemented and canonicalized on main. M4-A.2 design is now on main; A.2I compile-only implementation is authorized in this PR. Dataset adapters, executors, M4-B and real hypothesis execution remain separately unauthorized.
+- Subsequently, M4-A.1 has since been implemented and canonicalized on main. M4-A.2 design, A.2I compile-only plan compilation, the synthetic dataset adapter, the immutable design matrix and the synthetic-fixture-only bounded executor are merged or delivered on the implementation branch. Statistical execution is authorized only on validated synthetic fixtures; a generic research executor, real-data execution, holdout and M4-B remain separately unauthorized and NOT STARTED.
 - No real mechanism inference beyond the frozen development-primary and registered robustness execution has been executed.
 
 ## 系统要求
@@ -89,11 +92,61 @@ digest = compute_plan_digest(plan)
 
 计划声明语义角色、有序控制项、条件、窗口、质量门槛和调度规则。
 Bootstrap 只声明块长策略；稳健性及证据规则只保存调度说明。
-编译不读取数据、不计算回归或 bootstrap，也不授权 holdout。数据适配、执行尚未实现。
+编译不读取数据、不计算回归或 bootstrap，也不授权 holdout。
+合成数据适配（`ashare_research.mechanism.datasets`）与不可变设计矩阵
+（`ashare_research.mechanism.planning.matrix`）已在主线；
+有界执行器（`ashare_research.mechanism.execution`）已按
+[有界执行与证据处置设计 v1](docs/m4_bounded_execution_and_evidence_design_v1.md)
+实现，但只处理已验证的合成 fixture。
 仅需安装依赖即可运行 [合成计划测试](tests/test_m4_stage4a2i_analysis_plan.py)：
 
 ```powershell
 python -m pytest -q tests/test_m4_stage4a2i_analysis_plan.py
+```
+
+## M4-A.2E Python 接口（仅合成 fixture）
+
+在已验证的五元组 `(matrix, preparation, contract, plan, bound_inputs)` 上运行冻结的
+OLS / moving-block bootstrap / 证据处置，或只绑定注册稳健性派遣：
+
+```python
+from ashare_research.mechanism.execution import (
+    execute_bounded_analysis,
+    execution_artifact_to_canonical_dict,
+    serialize_execution_artifact,
+    validate_execution_artifact,
+    prepare_registered_robustness_dispatch,
+    robustness_artifact_to_canonical_dict,
+    serialize_robustness_artifact,
+    validate_robustness_artifact,
+)
+
+artifact = execute_bounded_analysis(matrix, preparation, contract, plan, bound_inputs)
+validate_execution_artifact(artifact, matrix, preparation, contract, plan, bound_inputs)
+encoded = serialize_execution_artifact(artifact)  # UTF-8、排序键、紧凑 JSON、结尾换行
+
+dispatch = prepare_registered_robustness_dispatch(
+    matrix, preparation, contract, plan, bound_inputs, ("SYNTH_ROBUSTNESS_1",)
+)
+```
+
+八个入口都必须接收完整五元组，没有只吃 `matrix` 的路径，也没有 `**kwargs`：
+任何未声明关键字（`holdout=`、`window=`、`split=`、`real_data=`）都是 `TypeError`。
+每个入口都先用既有 `validate_design_matrix` 重新验证来源链，再读取任何取值。
+`execute_bounded_analysis` 是唯一的**统计执行**入口；`prepare_registered_robustness_dispatch`
+只验证请求、绑定注册项并完整转发既有 canonical parameters，
+其产物 `statistics_computed` / `outcome_read` 恒为 `False`，
+不计算任何稳健性统计量，也不含选择、排序或聚合字段。
+产物是显式 `SYNTHETIC_TEST_ONLY` 来源、不可变、可复算摘要；
+`execution_authorized` 恒为 `False`。
+
+限制与授权边界：这些入口只在合成 fixture 上就绪，不读取真实数据、provider、数据库或行情，
+不访问 holdout，也不授权 M4-B；合成执行就绪**不等于**真实研究授权，也不是统计显著、
+经济有效、可交易或任何 A 股机制结论。可运行
+[有界执行验收测试](tests/test_m4_bounded_execution.py)：
+
+```powershell
+python -m pytest -q tests/test_m4_bounded_execution.py
 ```
 
 ## 数据获取与离线复现
@@ -342,7 +395,7 @@ ruff check src/ tests/
 | Milestone 1: 免费数据底座 | 数据获取与存储 | 已实现 |
 | Milestone 2: 价值评估 MVP | 中石油 PIT 切片 | CONDITIONALLY CLOSED；评分附加项条件关闭 |
 | Milestone 3: 机制验证 MVP | 日频机制验证 | CONDITIONALLY CLOSED；daily mechanism not established；holdout primary inconclusive |
-| Milestone 4: Generic Mechanism Research Engine + Theory / Hypothesis Registry | 通用机制研究契约与理论/假设注册 | IN PROGRESS; Stage4P COMPLETE; M4-A.1 CANONICAL ON MAIN; M4-A.2 DESIGN ON MAIN; M4-A.2I COMPILE-ONLY IMPLEMENTED（本 PR，待合并）; dataset adapter / executor NOT STARTED; M4-B NOT STARTED; real hypothesis execution NOT AUTHORIZED |
+| Milestone 4: Generic Mechanism Research Engine + Theory / Hypothesis Registry | 通用机制研究契约与理论/假设注册 | IN PROGRESS; Stage4P COMPLETE; M4-A.1 CANONICAL ON MAIN; M4-A.2 DESIGN ON MAIN; M4-A.2I COMPILE-ONLY IMPLEMENTED; M4-A.2D SYNTHETIC DATASET ADAPTER IMPLEMENTED; M4-A.2M ANALYSIS MATRIX IMPLEMENTED; M4-A.2E BOUNDED EXECUTION IMPLEMENTED ON SYNTHETIC FIXTURES ONLY; real-data executor NOT STARTED; M4-B NOT STARTED; real hypothesis execution NOT AUTHORIZED |
 | Milestone 5: 分钟级研究 | 按需验证 | 未开始、未授权 |
 | Milestone 6: 本地 Web 界面 | 研究工作台 | 未开始、未授权 |
 
