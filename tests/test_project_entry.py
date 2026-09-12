@@ -23,9 +23,14 @@ def test_current_capabilities_explain_entrypoints_and_limits():
         assert f"| {capability} " in summary
     assert "如何使用" in summary and "限制" in summary and "证据" in summary
     assert "计划编译已实现" in summary
-    assert "有界执行器尚未实现" in summary
-    assert "统计执行尚未实现" in summary
+    assert "统计执行仅限合成 fixture" in summary
+    assert "已实现（仅合成 fixture）" in summary
+    assert "真实执行未授权" in summary
+    assert "只在已验证合成 fixture 上计算 OLS/bootstrap/处置" in summary
+    assert "没有通用研究执行器" in summary
     assert "holdout 始终不授权执行" in summary
+    assert "有界执行器尚未实现" not in summary
+    assert "统计执行尚未实现" not in summary
     assert "build_analysis_plan(contract)" in text
     assert "ashare_research.mechanism.planning" in text
     assert "python -m pytest -q tests/test_m4_stage4a2i_analysis_plan.py" in text
