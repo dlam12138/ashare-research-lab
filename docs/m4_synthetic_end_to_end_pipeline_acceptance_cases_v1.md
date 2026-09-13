@@ -12,6 +12,10 @@
 与设计文档同为**规范性**文件。编排入口**尚未实现**，因此本文不含任何真实运行结果、
 系数、区间、p 值或处置；本文也**不声称**任何编排器测试已通过。
 
+**2026-09-13 AC-05 澄清**：最小可物化域通过适配器与矩阵后，仍可能被既有 S6 满秩门
+以 `ExecutionError("SINGULAR_DESIGN")` 拒绝；该错误已列在配套设计 §8.5.1 的组合入口可达表。
+本次仅补齐阶段归属与预期错误类型，不改变门禁或允许部分信封。
+
 每个案例都写明五件事：**输入变化**、**预期结果 / 错误**、**验证阶段**（设计第 6.1 节 `S0`–`S8`
 编号与第 9.5 节 `V1`–`V6` 编号）、**授权解释**（该案例证明了哪一条授权边界），
 需要时另有**关键断言**。
@@ -309,9 +313,13 @@ fail-closed"的回归证据。实现阶段必须把它们写成显式命名的�
 **输入变化**：把 `domain.expected_dates` 缩到既有适配器与矩阵仍能物化的最小长度，
 并相应调整观测与 `input_digest`。
 
-**预期结果**：要么成功返回且 `stages_completed` 完整，要么以既有 `AdapterError` /
-`MatrixError` 稳定错误终止；两种结果都**不得**产生部分信封。若 `expected_dates` 为空元组，
-`ExpectedDomainV1` 的 `__post_init__` 抛 `EMPTY_EXPECTED_DOMAIN`。
+**预期结果**：若适配器或矩阵在各自阶段拒绝输入，原样透传既有 `AdapterError` / `MatrixError`；
+若两者成功，组合入口要么返回完整的 `stages_completed`，要么在 S6 设计矩阵不满秩时原样透传既有
+`ExecutionError("SINGULAR_DESIGN")`。以上失败均**不得**产生部分信封；不得用伪逆、删列或
+放宽满秩门使最小样本通过。若 `expected_dates` 为空元组，`ExpectedDomainV1` 的
+`__post_init__` 抛 `AdapterError("EMPTY_EXPECTED_DOMAIN")`。三行可物化样本的冻结估计器实测
+命中 `SINGULAR_DESIGN`；该具体数值探针见
+[本次验收记录](../acceptance/2026-09-13_m4_pipeline_ac05_design_correction.md)。这不表示所有三行输入都必然同码。
 
 **验证阶段**：S3–S6。
 
