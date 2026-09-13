@@ -30,12 +30,22 @@
 
 ## 实际操作与验证
 
-待执行；后续只能填写实际命令和输出，不预填通过结果。
+已新增聚焦验收测试与验收文件。两个请求分别使用 LTE/两个控制/启用 bootstrap 和 GTE/一个控制/禁用 bootstrap；固定 pre-execution fingerprint 分别为 `f7873a6fae2992f148ad3118fdbe139d418cdb2475205b586a80d12a225e1329` 与 `0a9e300b9ee2c5953b524d83fce7b6a473a7adb6ed1ae5887a3a9521ede151bb`。交换绑定输入按预期以 `PIPELINE_INPUT_BINDING_MISMATCH` 失败。
+
+## 验证
+
+- `$env:PYTHONPATH=(Join-Path (Get-Location) 'src'); & 'D:/量化分析-m4a2i/.venv/Scripts/python.exe' -m pytest -q -p no:cacheprovider tests/test_m4_multi_hypothesis_portability.py`：exit 0，3 passed。
+- `$env:PYTHONPATH=(Join-Path (Get-Location) 'src'); & 'D:/量化分析-m4a2i/.venv/Scripts/python.exe' -m pytest -q -p no:cacheprovider tests/test_m4_synthetic_pipeline_orchestrator.py tests/test_m4_bounded_execution.py tests/test_m4_analysis_matrix.py tests/test_m4_synthetic_dataset_adapter.py tests/test_m4_stage4a2i_analysis_plan.py tests/test_m4_stage4a1_typed_contract.py tests/test_m4b_hypothesis_registry.py tests/test_project_entry.py tests/test_m4_stage4p_governance.py`：exit 0，370 passed。
+- `$env:PYTHONPATH=(Join-Path (Get-Location) 'src'); & 'D:/量化分析-m4a2i/.venv/Scripts/python.exe' -m ruff check tests/test_m4_multi_hypothesis_portability.py`：exit 0。
+- `git diff --check`、`git diff --cached --check`：通过。
+- 子进程从临时其他 CWD 重建请求并复现两个 fingerprint：通过。
+
+本地 Windows 和跨进程/CWD 验证通过；Ubuntu CI 尚未执行，完整 envelope 跨 OS 字节一致性不作声明。
 
 ## 结果、遗留问题与下一步建议
 
-待独立验收。真实数据适配、真实候选、holdout 与跨 OS CI 实际结果不属于本地交付；不据此声称 M4 完成。
+已完成本地合成多假设验收。真实数据适配、真实候选、holdout 与跨 OS CI 实际结果不属于本地交付；不据此声称 M4 完成。
 
 ## 最终文件变更与 Git 状态
 
-待执行后更新。默认只本地提交，不推送、不建 PR、不合并。
+新增 `tests/test_m4_multi_hypothesis_portability.py` 与 `acceptance/2026-09-13_m4_multi_hypothesis_synthetic_acceptance.md`，更新本记录。默认只本地提交，不推送、不建 PR、不合并。
