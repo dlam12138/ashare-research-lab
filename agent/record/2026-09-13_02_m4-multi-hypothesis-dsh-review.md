@@ -38,3 +38,7 @@ DSH 在被 Git 忽略的 `tmp/dsh-temp/tmpqb9tc2rv` 留下空目录。Codex 只�
 ## 最终文件变更与 Git 状态
 
 本次新增本契约和记录，Codex 在 DSH 中断后更新本记录并新增 `acceptance/2026-09-13_m4_multi_hypothesis_dsh_review.md`。未修改 `src/**` 或既有测试，未推送、未建 PR、未合并。最终提交与工作树状态由 Codex 独立核查并在最终证据包报告；被 Git 忽略的空目录仍在磁盘上。
+
+## 用户授权的限缩恢复（待执行）
+
+用户要求继续，但本次仅推进到一个小阶段。Codex 先在同一[任务契约](../goals/2026-09-13_m4_multi_hypothesis_dsh_review.md)追加限缩恢复条款：DSH 不再创建或清理临时目录，只跑两个不使用该 fixture 的测试，并从现有不同 CWD 的子进程重算两个固定指纹。历史 `BLOCKED` 验收不改写；恢复结果另写 `acceptance/2026-09-13_m4_multi_hypothesis_dsh_resume.md`。本段为执行前记录，不预填验证结果。
