@@ -16,6 +16,11 @@
 也不表示本阶段获得任何实现、统计执行、真实数据、真实候选数据集、文献获取、provider、
 数据库内容或 holdout 授权。
 
+**2026-09-13 AC-05 澄清**：最小可物化域只保证适配器与矩阵能够生成对象，不保证 S6 设计矩阵
+满秩。S6 的既有 `ExecutionError("SINGULAR_DESIGN")` 是合法的组合入口首错，按第 8.4/8.5.1 节
+原样透传；对应验收场景见 [AC-05](m4_synthetic_end_to_end_pipeline_acceptance_cases_v1.md#ac-05-边界最小可物化域)。
+此澄清不改变估计器、门禁、公开错误码或授权范围。
+
 基线：工作树 `D:/量化分析-m4-synthetic-pipeline-design`，分支
 `codex/m4-synthetic-pipeline-design`，任务起始 HEAD
 `f6ec598ac819c2d8db14f7a2e8c910a6ed85b301`（仅含 Goal 文件），基线 `origin/main`
@@ -850,7 +855,7 @@ class PipelineError(ValueError):
 | S2 | `ValueError`（`_require`） | `INVALID_PLAN_VERSION`、`INVALID_PLAN_STATE`、`UNSUPPORTED_ANALYSIS_METHOD`、`INVALID_PLAN_DIGEST_ALGORITHM`、`INVALID_SOURCE_SCHEMA`、`INVALID_SOURCE_IDENTITY`、`INVALID_HYPOTHESIS_ID`、`PLAN_DIGEST_MISMATCH`、`INVALID_DATASET_ROLES`、`INVALID_SECTION_FIELDS` |
 | S3/S4 | `AdapterError` | `INVALID_INPUT_STRUCTURE`、`INVALID_DATE`、`INVALID_VALUE`、`UNSUPPORTED_MODE`、`CONTRACT_PLAN_MISMATCH`（其中 `UNSUPPORTED_MODE` 与 `CONTRACT_PLAN_MISMATCH` 在组合入口上不可达，实际可达面见第 8.5 节）、`ROLE_BINDING_MISMATCH`、`UNSUPPORTED_BINDING_POLICY`、`UNSUPPORTED_OUTCOME`、`EMPTY_EXPECTED_DOMAIN`、`EVIDENCE_DIGEST_MISMATCH`、`DUPLICATE_OBSERVATION`、`OUT_OF_DOMAIN`、`IDENTITY_CONFLICT`、`INPUT_DIGEST_MISMATCH` |
 | S5 | `AdapterError` / `MatrixError` | 上游全部 + `UNSUPPORTED_PLAN_SCHEMA`、`PLAN_TERM_ROLE_MISMATCH`（其实际可达面见第 8.5.2 节：只在内部投影探针上命中，组合入口不可达）、`DATASET_NOT_READY`、`MATRIX_DIGEST_MISMATCH`、`IDENTITY_CONFLICT` |
-| S6 | `ExecutionError`（含上游透传） | `UNSUPPORTED_ANALYSIS_METHOD`、`UNSUPPORTED_MODEL_FAMILY`、`ARTIFACT_DIGEST_MISMATCH`、`FORBIDDEN_ARTIFACT_CONTENT`、`IDENTITY_CONFLICT`，以及第 8.5 节的不可达码 |
+| S6 | `ExecutionError`（含上游透传） | `SINGULAR_DESIGN`（满秩门失败）、`UNSUPPORTED_ANALYSIS_METHOD`、`UNSUPPORTED_MODEL_FAMILY`、`ARTIFACT_DIGEST_MISMATCH`、`FORBIDDEN_ARTIFACT_CONTENT`、`IDENTITY_CONFLICT`，以及第 8.5 节的不可达码 |
 
 ### 8.5 组合链上**可达**与**不可达**的既有码
 
