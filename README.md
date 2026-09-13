@@ -7,7 +7,7 @@
 
 ## 当前可用能力
 
-主线已包含 PIT/TTM 修复、A.2 冻结设计、A.2I 计划编译、合成数据适配器、不可变设计矩阵与仅限合成 fixture 的有界执行器（PR #9、#11、#12、#13 均已合并）。有界执行器只在合成 fixture 上计算系数、bootstrap 区间与证据处置；没有通用研究执行器，真实数据执行与 holdout 仍未授权。M4-B 最小元数据注册表 API 已实现，仅用于合成/schema 校验；真实注册表数据、文献采集与真实假设执行仍未授权。五个合成阶段（合同 → 计划 → 合成数据集 → 设计矩阵 → 有界执行）的单一端到端编排入口已完成**设计冻结**，编排器**尚未实现**；该设计不新增真实数据能力，也不改变任何既有冻结契约。
+主线已包含 PIT/TTM 修复、A.2 冻结设计、A.2I 计划编译、合成数据适配器、不可变设计矩阵与仅限合成 fixture 的有界执行器（PR #9、#11、#12、#13 均已合并）。有界执行器只在合成 fixture 上计算系数、bootstrap 区间与证据处置；没有通用研究执行器，真实数据执行与 holdout 仍未授权。M4-B 最小元数据注册表 API 已实现，仅用于合成/schema 校验；真实注册表数据、文献采集与真实假设执行仍未授权。五个合成阶段（合同 → 计划 → 合成数据集 → 设计矩阵 → 有界执行）的单一端到端编排入口已按冻结设计实现为**仅合成、纯内存**的编排器 `run_synthetic_pipeline(request=...)`。该编排器只接收调用者提供的合成策略输入，自己编译合同/计划/准备数据/矩阵/执行产物，输出不可变、规范序列化、摘要绑定的结果信封；它不新增真实数据能力，不改变任何既有冻结契约，也不产生任何研究、显著性、可交易性或 A 股机制结论。
 
 | 能力 | 当前状态 | 如何使用 | 限制 | 证据 |
 | --- | --- | --- | --- | --- |
@@ -19,7 +19,7 @@
 | M4-A.2D 合成数据适配器 | 已在主线（PR #11） | `materialize_analysis_dataset(contract, plan, bound_inputs)` 与合成测试 | 仅合成模式；不读取真实数据、provider、数据库或行情 | [适配器设计](docs/m4_dataset_adapter_design_v1.md)、[适配器测试](tests/test_m4_synthetic_dataset_adapter.py) |
 | M4-A.2M 设计矩阵 | 已在主线（PR #12） | `materialize_design_matrix(preparation, contract, plan, bound_inputs)` 与合成测试 | 质量边界内的投影；本身不含回归、bootstrap、稳健性或证据判定 | [矩阵设计](docs/m4_analysis_matrix_design_v1.md)、[矩阵测试](tests/test_m4_analysis_matrix.py) |
 | M4-A.2E 有界执行 | 已实现（仅合成 fixture）；真实执行未授权 | 下方 `execute_bounded_analysis(matrix, preparation, contract, plan, bound_inputs)` 与合成测试 | 只在已验证合成 fixture 上计算 OLS/bootstrap/处置；无 provider、数据库、holdout 或 M4-B；注册稳健性只派遣不计算 | [设计](docs/m4_bounded_execution_and_evidence_design_v1.md)、[验收案例](docs/m4_bounded_execution_acceptance_cases_v1.md)、[执行测试](tests/test_m4_bounded_execution.py)、[实现验收](acceptance/2026-09-12_m4_bounded_execution_implementation.md) |
-| M4-A.2P 端到端编排 | 仅设计已交付（DESIGN ONLY）；编排器尚未实现 | 阅读 [设计](docs/m4_synthetic_end_to_end_pipeline_design_v1.md) 与 [验收场景](docs/m4_synthetic_end_to_end_pipeline_acceptance_cases_v1.md)；拟议入口 `run_synthetic_pipeline(request=...)` 尚不存在 | 只编排已验证合成输入；仅合成模式；不读取真实数据、provider、数据库或行情，不访问 holdout，不采集文献，不创建真实注册数据集；设计就绪不等于实现或执行授权 | [设计验收](acceptance/2026-09-12_m4_synthetic_end_to_end_pipeline_design.md) |
+| M4-A.2P 端到端编排 | 已实现（仅合成、纯内存）；真实执行未授权 | 下方 `run_synthetic_pipeline(request=...)` 与 [合成测试](tests/test_m4_synthetic_pipeline_orchestrator.py)；调用者按两遍协议提供 `config` 与 `bound_inputs` | 只编排已验证合成输入；请求类型无 holdout、真实数据、provider、数据库、路径或 seed 字段；不做质量修补、排序、选择、注册表状态转换或真实研究结论；跑通合成链**不等于**研究授权 | [设计](docs/m4_synthetic_end_to_end_pipeline_design_v1.md)、[验收案例](docs/m4_synthetic_end_to_end_pipeline_acceptance_cases_v1.md)、[实现验收](acceptance/2026-09-13_m4_synthetic_pipeline_post_ac05_acceptance.md) |
 | M4-B 理论/假设注册表 | 最小元数据 API 已实现（仅合成/schema 校验） | `ashare_research.mechanism.registry` 的 `parse_hypothesis_record(document)`、显式状态转换与有界快照入口 | 不创建或加载真实候选数据集，不采集文献，不访问 provider、数据库、真实行情或 holdout；真实假设执行仍未授权 | [设计](docs/m4b_hypothesis_registry_design_v1.md)、[验收场景](docs/m4b_hypothesis_registry_acceptance_cases_v1.md)、[实现测试](tests/test_m4b_hypothesis_registry.py)、[实现验收](acceptance/2026-09-12_m4b_hypothesis_registry_implementation.md)、[冻结前置合同](reports/m4_stage4p_m4b_hypothesis_registry_contract_v1.json) |
 
 ### 研究结论与边界
@@ -36,7 +36,7 @@ M3 最终处置为 `M3_DAILY_MECHANISM_NOT_ESTABLISHED`。Holdout 已使用一�
 - M3 Stage 3A research contracts are frozen. Stage 3B completed fail-closed. Stage 3B-R1 primary-proxy resolution is current within the frozen M3 market-proxy lineage.
 - At M3 closeout, further holdout recovery, minute escalation, index contribution, and M4 were not authorized.
 - Historical M3 closeout stop: `STOP_FOR_NORTH_STAR_REVIEW`.
-- Subsequently, M4-A.1 has since been implemented and canonicalized on main. M4-A.2 design, A.2I compile-only plan compilation, the synthetic dataset adapter, the immutable design matrix and the synthetic-fixture-only bounded executor are merged on main. The M4-B minimum metadata registry is implemented for synthetic/schema validation only. The M4-A.2P synthetic end-to-end pipeline orchestration design is delivered as DESIGN ONLY; the orchestrator is NOT IMPLEMENTED. A generic research executor, real-data execution and holdout remain unauthorized; a real M4-B registry dataset and literature acquisition remain NOT AUTHORIZED, real hypothesis execution remains NOT AUTHORIZED, and real-research M4-B NOT STARTED.
+- Subsequently, M4-A.1 has since been implemented and canonicalized on main. M4-A.2 design, A.2I compile-only plan compilation, the synthetic dataset adapter, the immutable design matrix and the synthetic-fixture-only bounded executor are merged on main. The M4-B minimum metadata registry is implemented for synthetic/schema validation only. The M4-A.2P synthetic end-to-end pipeline orchestration design is IMPLEMENTED as a synthetic-only, in-memory composed entry (`run_synthetic_pipeline`); the design is no longer design-only, and its orchestrator is no longer missing. A generic research executor, real-data execution and holdout remain unauthorized; a real M4-B registry dataset and literature acquisition remain NOT AUTHORIZED, real hypothesis execution remains NOT AUTHORIZED, and real-research M4-B NOT STARTED.
 - No real mechanism inference beyond the frozen development-primary and registered robustness execution has been executed.
 
 ## 系统要求
@@ -148,6 +148,73 @@ dispatch = prepare_registered_robustness_dispatch(
 
 ```powershell
 python -m pytest -q tests/test_m4_bounded_execution.py
+```
+
+## M4-A.2P Python 接口（仅合成、纯内存编排）
+
+单一公共入口把五个已冻结阶段串成一条确定性链，并输出不可变结果信封：
+
+```python
+from ashare_research.mechanism.contract_compiler import compile_hypothesis_config
+from ashare_research.mechanism.datasets import BoundDatasetInputsV1
+from ashare_research.mechanism.model_digest import canonical_digest
+from ashare_research.mechanism.planning import build_analysis_plan
+from ashare_research.mechanism.pipeline import (
+    ORCHESTRATOR_VERSION,
+    PIPELINE_SCHEMA_VERSION,
+    SyntheticPipelineRequestV1,
+    bound_inputs_identity_payload,
+    run_synthetic_pipeline,
+    serialize_pipeline_result,
+    validate_pipeline_result,
+)
+
+# 第一遍：先编译合同与计划，学到两个摘要（调用者缓存它们）
+contract = compile_hypothesis_config(config)
+plan = build_analysis_plan(contract)
+
+# 第二遍：用**公开**负载函数计算 input_digest，再构造请求
+input_digest = canonical_digest(
+    bound_inputs_identity_payload(contract, plan, domain, bindings, observations)
+)
+bound_inputs = BoundDatasetInputsV1(
+    "M4_BOUND_SYNTHETIC_DATASET_V1", "SYNTHETIC",
+    contract.contract_digest, plan.plan_digest,
+    domain, bindings, observations, input_digest,
+)
+
+request = SyntheticPipelineRequestV1(
+    schema_version=PIPELINE_SCHEMA_VERSION,
+    orchestrator_version=ORCHESTRATOR_VERSION,
+    config=config,               # 已解析的 HypothesisConfig
+    bound_inputs=bound_inputs,   # 调用者声明的合成输入
+    registry_record=None,        # 显式 None => REGISTRY_BINDING_ABSENT（一等形态）
+)
+result = run_synthetic_pipeline(request=request)
+validate_pipeline_result(result, request)
+encoded = serialize_pipeline_result(result)  # UTF-8、排序键、紧凑 JSON、恰一个结尾换行
+```
+
+只做门禁、转发与组合：合同、计划、准备数据、矩阵与执行产物全部由编排器自己编译，
+调用者**无法**提交它们（请求类型只有 5 个字段）。`run_synthetic_pipeline` 只有一个关键字专用参数 `request`，
+因此 `holdout=`、`real_data=`、`provider=`、`db=`、`path=`、`seed=` 在语法层就是 `TypeError`。
+整条 S0–S7 在固定的 `decimal.localcontext(prec=28)` 内求值，宿主全局上下文不被改写。
+编排器不定义任何统计、数值、质量判定或摘要算法：统计量只来自 `execute_bounded_analysis`，
+摘要只来自既有 `canonical_digest` 与既有 `compute_*_digest`；它不做文件、网络、环境、
+数据库、holdout 或文献访问，也不做质量修补、排序、选择、推荐或注册表状态转换。
+
+可选的 M4-B 记录只作为**只读、非证据**元数据绑定：绑定不改变记录状态、不进入执行产物、
+不参与 `PIPELINE_STATE`，且只允许执行前状态（`DISCOVERED`、`LITERATURE_REVIEWED`、
+`A_SHARE_FEASIBILITY_REVIEWED`、`NOT_TESTED`、`PRE_REGISTERED`、`DEFERRED`）；
+处于执行态的记录一律以 `PIPELINE_REGISTRY_STATUS_NOT_BINDABLE` 拒绝。
+
+限制与授权边界：该入口只在调用者提供的**合成**策略输入上就绪；它没有真实数据、provider、
+数据库、行情或 holdout 的可表达位置，也不创建真实候选数据集或采集文献。合成流水线就绪
+**不等于**真实研究授权，也不是统计显著、经济有效、可交易或任何 A 股机制结论。
+可运行 [编排器验收测试](tests/test_m4_synthetic_pipeline_orchestrator.py)：
+
+```powershell
+python -m pytest -q tests/test_m4_synthetic_pipeline_orchestrator.py
 ```
 
 ## 数据获取与离线复现
@@ -396,7 +463,7 @@ ruff check src/ tests/
 | Milestone 1: 免费数据底座 | 数据获取与存储 | 已实现 |
 | Milestone 2: 价值评估 MVP | 中石油 PIT 切片 | CONDITIONALLY CLOSED；评分附加项条件关闭 |
 | Milestone 3: 机制验证 MVP | 日频机制验证 | CONDITIONALLY CLOSED；daily mechanism not established；holdout primary inconclusive |
-| Milestone 4: Generic Mechanism Research Engine + Theory / Hypothesis Registry | 通用机制研究契约与理论/假设注册 | IN PROGRESS; Stage4P COMPLETE; M4-A.1 CANONICAL ON MAIN; M4-A.2 DESIGN ON MAIN; M4-A.2I COMPILE-ONLY IMPLEMENTED; M4-A.2D SYNTHETIC DATASET ADAPTER IMPLEMENTED; M4-A.2M ANALYSIS MATRIX IMPLEMENTED; M4-A.2E BOUNDED EXECUTION IMPLEMENTED ON SYNTHETIC FIXTURES ONLY; M4-A.2P SYNTHETIC END-TO-END ORCHESTRATION DESIGN DELIVERED, DESIGN ONLY; orchestrator NOT IMPLEMENTED; real-data executor NOT STARTED; M4-B DESIGN FROZEN; M4-B MINIMUM METADATA REGISTRY IMPLEMENTED FOR SYNTHETIC/SCHEMA VALIDATION ONLY; real registry dataset NOT AUTHORIZED; real-research M4-B NOT STARTED; real hypothesis execution NOT AUTHORIZED |
+| Milestone 4: Generic Mechanism Research Engine + Theory / Hypothesis Registry | 通用机制研究契约与理论/假设注册 | IN PROGRESS; Stage4P COMPLETE; M4-A.1 CANONICAL ON MAIN; M4-A.2 DESIGN ON MAIN; M4-A.2I COMPILE-ONLY IMPLEMENTED; M4-A.2D SYNTHETIC DATASET ADAPTER IMPLEMENTED; M4-A.2M ANALYSIS MATRIX IMPLEMENTED; M4-A.2E BOUNDED EXECUTION IMPLEMENTED ON SYNTHETIC FIXTURES ONLY; M4-A.2P SYNTHETIC END-TO-END ORCHESTRATION IMPLEMENTED AS A SYNTHETIC-ONLY IN-MEMORY COMPOSED ENTRY; real-data executor NOT STARTED; M4-B DESIGN FROZEN; M4-B MINIMUM METADATA REGISTRY IMPLEMENTED FOR SYNTHETIC/SCHEMA VALIDATION ONLY; real registry dataset NOT AUTHORIZED; real-research M4-B NOT STARTED; real hypothesis execution NOT AUTHORIZED |
 | Milestone 5: 分钟级研究 | 按需验证 | 未开始、未授权 |
 | Milestone 6: 本地 Web 界面 | 研究工作台 | 未开始、未授权 |
 
