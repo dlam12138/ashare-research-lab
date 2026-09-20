@@ -1,5 +1,13 @@
 # M4 真实日频适配器：设计准入评审 v1
 
+## 2026-09-20 post-PR21 integration reconciliation
+
+以下正文保留 2026-09-14 的历史基线。此后 PR #20 已合并为
+`main@966206f06262e43f40c1c7aadbfb8596839eac91`，PR #21 又把核心就绪评审
+合并为 `main@2bacfd7f7f5a51e168f1d386bfe8a93227fa78e7`。因此“PR #20 仍开放、
+未进入主线”不再是当前事实，也不再构成 blocker；但其证据仍只覆盖合成输入，
+不能替代真实来源、日历、成员、PIT 或 holdout 证据。本文件的设计准入结论保持不变。
+
 日期：2026-09-14。决策：**DESIGN_CONTRACT_STAGE_ELIGIBLE**。此结论只说明可以另立一项纯文档设计任务；不实现适配器，不获取或读取真实数据，不运行真实假设。任务契约见[本轮 Goal](../agent/goals/2026-09-14_m4_real_daily_adapter_design_gate.md)。
 
 ## 证据边界

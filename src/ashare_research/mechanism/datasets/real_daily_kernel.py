@@ -151,15 +151,6 @@ def _decimal(value: Any, locator: str) -> None:
         _fail("REAL_INVALID_VALUE", 6, locator)
     if not number.is_finite() or ("." in value and value.endswith(".")):
         _fail("REAL_INVALID_VALUE", 6, locator)
-    canonical = (
-        "0"
-        if number == 0
-        else format(number, "f").rstrip("0").rstrip(".")
-        if "." in format(number, "f")
-        else format(number, "f")
-    )
-    if value != canonical:
-        _fail("REAL_INVALID_VALUE", 6, locator)
 
 
 def _canonical(value: Any) -> bytes:
@@ -343,6 +334,8 @@ def _pre_read(b: dict, c: dict, d: dict, sealed_lock: dict, trusted_lock_digest:
         for x in d["expected_dates"]
     ):
         _fail("REAL_HOLDOUT_INJECTION", 1, "domain.expected_dates")
+    if any(x >= c["holdout_start"] for x in d["calendar_dates"]):
+        _fail("REAL_HOLDOUT_INJECTION", 1, "domain.calendar_dates")
     if any(row["trade_date"] >= c["holdout_start"] for row in b["observations"]):
         _fail("REAL_HOLDOUT_INJECTION", 1, "bundle.observations")
     runs = b["source_runs"]
@@ -564,13 +557,14 @@ def verify_real_daily_source_proof_k1(
             _fail("REAL_INGESTED_AT_AS_PIT", 5, "observation.available_at_basis")
         if not (observed <= published <= available <= ingested):
             _fail("REAL_INVALID_INPUT_STRUCTURE", 5, "observation.available_at")
+        if row["value"] is not None:
+            _decimal(row["value"], "observation.value")
         cutoff = datetime.combine(date.fromisoformat(row["trade_date"]), cutoff_time, tz)
         if available > cutoff:
             reasons[cell] = "PIT_UNPROVEN"
         elif row["value"] is None:
             reasons[cell] = "MISSING_OBSERVATION"
         else:
-            _decimal(row["value"], "observation.value")
             valid_cells.add(cell)
     if b["input_digest"] != input_digest(b):
         _fail("REAL_DIGEST_MISMATCH", 6, "bundle.input_digest")

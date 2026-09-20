@@ -293,6 +293,19 @@ def test_ingestion_is_not_pit_and_late_availability_is_a_gap():
     assert result.outcome_bytes_examined is True
 
 
+def test_decimal_strings_accept_design_values_and_validate_late_rows():
+    rows = _rows()
+    rows[0]["value"] = "0.00"
+    rows[1]["value"] = "-0.002"
+    rows[2]["value"] = "1.50"
+    assert type(_verify(_case(rows))) is RealSourceAuditProofK1
+
+    rows[-1]["value"] = "not-a-decimal"
+    rows[-1]["available_at"] = "2022-01-07T09:00:00+08:00"
+    rows[-1]["ingested_at"] = "2022-01-07T09:30:00+08:00"
+    _error(_case(rows), "REAL_INVALID_VALUE", 6)
+
+
 def test_inverted_event_publication_or_ingestion_times_fail():
     rows = _rows()
     rows[0]["observation_at"] = "2022-01-04T19:00:00+08:00"
@@ -327,6 +340,19 @@ def test_nontrading_date_and_input_digest_tamper():
     case[0] = copy.deepcopy(case[0])
     case[0]["input_digest"] = "0" * 64
     _error(case, "REAL_DIGEST_MISMATCH", 6)
+
+
+def test_holdout_date_in_calendar_domain_fails_before_raw_read():
+    bundle, contract, domain, lock, trusted, raw = _case()
+    domain["calendar_dates"].append(contract["holdout_start"])
+    lock["domain_digest"] = _sha(domain)
+    trusted = _sha(lock)
+
+    class NoRead(dict):
+        def __contains__(self, key):
+            raise AssertionError("raw bytes touched before holdout-domain rejection")
+
+    _error((bundle, contract, domain, lock, trusted, NoRead(raw)), "REAL_HOLDOUT_INJECTION", 1)
 
 
 def test_reordering_and_host_directory_do_not_change_identity():

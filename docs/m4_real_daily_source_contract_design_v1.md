@@ -1,5 +1,13 @@
 # M4 真实日频来源合同与适配器设计 v1
 
+## 2026-09-20 post-PR21 integration reconciliation
+
+本文件正文是 2026-09-14 的历史设计快照。PR #20 与 PR #21 现已合并；正文第 8 节
+所列“PR #20 未合并”已解除，不再是当前 blocker。合并没有提供真实日历、成员、
+来源 revision、PIT、目标收益语义或执行授权，因此其余 blocker 与
+`DESIGN_ONLY / NOT_AUTHORIZED` 边界不变。后续 K1 仅为缩小版离线证明内核，
+不等同于本文件拟议的完整 `M4_REAL_SOURCE_BUNDLE_V1` 适配器。
+
 日期：2026-09-14。状态：**DESIGN_ONLY / NOT_IMPLEMENTED / NOT_AUTHORIZED**。执行者：DSH；独立验收：Codex。
 
 本文件是[本轮 Goal](../agent/goals/2026-09-14_m4_real_daily_source_contract_design.md)的设计交付之一，上游决策见[设计准入评审 v1](m4_real_daily_adapter_design_gate_v1.md)。本文只冻结拟议接口与验证语义：**不实现**适配器、**不获取或读取**任何真实数据、**不授权**真实研究执行。基于本文件的任何实现都必须另立 Goal 并取得用户单独授权。
