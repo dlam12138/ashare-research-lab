@@ -1,6 +1,8 @@
 # Goal: M4 provider-evidence acquisition design v1
 
-Date: 2026-09-20. Executor and Git operator: Codex. Design analyst and independent reviewer: DSH.
+Date: 2026-09-20. Author, executor and Git operator: Codex. DSH supplies
+read-only design analysis and a final independent review; it does not author or
+write repository artifacts.
 
 ## Objective and verified baseline
 
@@ -24,6 +26,15 @@ Allowed: tracked repository evidence only; this Goal; one design document, one
 record and one acceptance file; Markdown/link/Git validation; commit, push and
 one documentation-only PR.
 
+The only new delivery paths are:
+
+- `docs/m4_provider_evidence_acquisition_design_v1.md`;
+- `agent/record/2026-09-20_01_m4-provider-evidence-acquisition-design.md`;
+- `acceptance/2026-09-20_m4_provider_evidence_acquisition_design.md`.
+
+Codex is authorized to write and commit these paths after this Goal amendment;
+DSH remains read-only. The stage stops after one open PR with reported checks.
+
 Forbidden: network/browser/provider/API access, credentials, downloads,
 database open/query/write, real observations, holdout, provider selection,
 adapter/source/test/config/CI/frozen-contract changes, implementation,
@@ -46,6 +57,33 @@ not be inferred.
 - Separate later phases: evidence acquisition, provider adapter implementation,
   real-data validation and execution. This design authorizes none of them.
 - DSH must remain read-only.
+
+State is per provider-evidence dossier. Initial state is
+`UNVERIFIED_CANDIDATE`. The only forward transitions are
+`UNVERIFIED_CANDIDATE -> EVIDENCE_COMPLETE` after every mandatory check, or
+`UNVERIFIED_CANDIDATE -> REJECTED` with a stable reason code.
+`EVIDENCE_COMPLETE -> REJECTED` is allowed when later verification detects
+tampering, expiry, revocation or contradiction. `REJECTED` is terminal and no
+state is reversible in place; reconsideration requires a new dossier identity.
+`UNVERIFIED_CANDIDATE` is never selectable or executable.
+
+The design must adopt, not rename, applicable `REAL_*` codes and RDC-E01–E28
+from the accepted source design/cases. New evidence-only failures are frozen as
+`REAL_LICENSE_EVIDENCE_MISSING`, `REAL_LICENSE_SCOPE_FORBIDDEN`,
+`REAL_REDACTION_UNPROVEN` and `REAL_CALENDAR_VERSION_MISSING`. Any later code
+addition or semantic change requires a versioned contract amendment.
+
+The named license artifact is mandatory and must contain provider/publisher,
+artifact identifier, version/effective date, content SHA256, permitted-use and
+redistribution scope, retention/display constraints, credential constraints,
+and reviewer identity/date. Absence, expiry or incompatible scope forces
+`REJECTED` independently of data quality.
+
+The original acquired bytes are immutable and must be retained under their
+content SHA. Redaction must never replace or alter the bytes whose source SHA
+is verified. A redacted derivative is a separate artifact with its own SHA,
+redaction manifest, field-level reason and back-reference; inability to retain
+the original forces `REAL_REDACTION_UNPROVEN` and `REJECTED`.
 
 ## Validation and acceptance
 
