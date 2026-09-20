@@ -37,13 +37,17 @@ Exactly four `M4_PROVIDER_EVIDENCE_DOSSIER_V1` records are in scope:
    transport `stock_share_change_cninfo`, tracked endpoint
    `CNINFO p_stock2215 via akshare.stock_share_change_cninfo`, dataset
    `historical_issued_shares`, role `MEMBERSHIP_EVIDENCE`;
-4. `eia_brent_oil`: U.S. EIA publisher, tracked endpoint
-   `https://www.eia.gov/dnav/pet/hist/RBRTED.htm`, dataset `oil` / series
-   `RBRTE`, role `FACTOR`.
+4. `eia_brent_oil_transport`: U.S. EIA underlying/economic source with Federal
+   Reserve Bank of St. Louis FRED as the tracked distribution transport,
+   endpoint family `FRED_PUBLIC_GRAPH_CSV`, series `DCOILBRENTEU`, dataset
+   `oil`, role `FACTOR`.
 
-Their identities come only from
-`reports/m3_stage3b_source_registry_v1.json`. The EIA semantics may also cite
-`reports/m3_stage3br2_oil_contract_v2.json`. No FRED, CNI, Shenwan, alternate
+The first three identities come from
+`reports/m3_stage3b_source_registry_v1.json`. The oil identity comes from
+`reports/m3_stage3br4_source_registry_v1.json` and
+`reports/m3_stage3br4_oil_transport_contract_v3.json`; the superseded
+`reports/m3_stage3br2_oil_contract_v2.json` is historical context only. FRED is
+in scope only as that tracked oil transport. No CNI, Shenwan, alternate
 endpoint, dataset or role is in scope.
 
 ## Scope, artifacts and authority
@@ -58,7 +62,8 @@ For CNINFO, CNINFO first-party material alone can prove publisher facts.
 AkShare project material is third-party-declared transport metadata only; it
 cannot prove CNINFO identity, data semantics, PIT timing, rights or official
 support. Search snippets and all other third-party summaries are discovery
-only. BaoStock and EIA facts require their respective first-party sources.
+only. BaoStock and EIA facts require their respective first-party sources;
+FRED transport facts require FRED first-party sources.
 
 Original HTTP response bytes may be written only below the already ignored
 `data/quarantine/m4_provider_evidence_v1/` root in this worktree. Each file is
@@ -151,7 +156,7 @@ No test suite applies and no test file may change. Run exactly:
 2. `python -c "import hashlib,json,pathlib; p=pathlib.Path('evidence/m4/provider_evidence_manifest_v1.json'); x=json.loads(p.read_text(encoding='utf-8')); e=x.pop('manifest_digest'); a=hashlib.sha256(json.dumps(x,ensure_ascii=False,sort_keys=True,separators=(',',':')).encode()).hexdigest(); assert e==a,(e,a)"`
 3. `python -c "import json,pathlib; x=json.loads(pathlib.Path('evidence/m4/provider_evidence_manifest_v1.json').read_text(encoding='utf-8')); ds=x['dossiers']; assert len(ds)==4; ids=[d['dossier_id'] for d in ds]; assert len(ids)==len(set(ids)); assert all(d['state'] in {'UNVERIFIED_CANDIDATE','EVIDENCE_COMPLETE','REJECTED'} for d in ds)"`
 4. `python -c "import json,pathlib; x=json.loads(pathlib.Path('evidence/m4/provider_evidence_manifest_v1.json').read_text(encoding='utf-8')); r=pathlib.Path('docs/m4_provider_evidence_acquisition_report_v1.md').read_text(encoding='utf-8'); assert all(d['dossier_id'] in r for d in x['dossiers']); assert all(e['final_url'] in r for d in x['dossiers'] for e in d['retrieval_evidence'])"`
-5. `rg -n -i "api[_-]?key|authorization:|bearer |cookie:|set-cookie:|[A-Za-z]:\\\\|/Users/|/home/" docs/m4_provider_evidence_acquisition_report_v1.md evidence/m4/provider_evidence_manifest_v1.json agent/record/2026-09-20_01_m4-provider-evidence-acquisition.md acceptance/2026-09-20_m4_provider_evidence_acquisition.md` (expected: no matches / exit 1)
+5. `rg -n -i "api[_-]?key|authorization:|bearer |cookie:|set-cookie:|[A-Za-z]:\\|/Users/|/home/" docs/m4_provider_evidence_acquisition_report_v1.md evidence/m4/provider_evidence_manifest_v1.json` (expected: no matches / exit 1)
 6. `git diff --check`
 7. `git diff --cached --check`
 8. `git status --short --branch`
