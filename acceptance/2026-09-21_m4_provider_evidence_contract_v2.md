@@ -1,6 +1,6 @@
 # M4 provider-evidence contract v2 acceptance
 
-Verdict: pending final DSH and parent review.
+Verdict: `PASS` — final DSH handoff review and parent verification complete.
 
 Goal: `agent/goals/2026-09-21_m4_provider_evidence_contract_v2.md`.
 Base: `origin/main@8ecc2e7e35b9bea1f11d4fe5caee6ce2088a2dd2`.
@@ -79,6 +79,20 @@ to be recorded below.
 - Deviation: the unsafe inherited `origin/main` upstream was removed before
   implementation; explicit-refspec-only push is mandatory.
 - Unresolved authorization: `ACQUISITION_V2_NOT_AUTHORIZED`.
-- Artifact commit, handoff commit, remote synchronization and PR URL: pending
-  the explicitly authorized two-commit parent Git handoff.
+- Artifact commit:
+  `546c6cfaa3cf11ae78a705213be7d1c0996dde52`, whose only parent is the verified
+  base `8ecc2e7e35b9bea1f11d4fe5caee6ce2088a2dd2`.
+- Remote branch after artifact push:
+  `origin/codex/m4-provider-evidence-contract-v2@546c6cfaa3cf11ae78a705213be7d1c0996dde52`.
+- Pull request: <https://github.com/dlam12138/ashare-research-lab/pull/26>.
+- `origin/main` remained
+  `8ecc2e7e35b9bea1f11d4fe5caee6ce2088a2dd2`; no direct-main push or merge
+  occurred.
+- Handoff commit: this documentation-only commit; it is identified after commit
+  by the PR head and `git rev-parse HEAD`, avoiding an impossible self-hash.
+- Final DSH handoff recheck: `PASS`; it independently matched the corrected
+  full artifact SHA, parent/base, local remote-tracking ref, contract digest,
+  two-file handoff scope and authorization boundary.
+- Acquisition v2 remains `ACQUISITION_V2_NOT_AUTHORIZED`; no later stage is
+  allowed without a new explicit user authorization.
 - Proceeding to acquisition v2 or any provider/adapter work: not allowed.

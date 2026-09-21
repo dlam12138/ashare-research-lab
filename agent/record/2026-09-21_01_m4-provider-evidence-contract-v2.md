@@ -33,3 +33,13 @@ baseline checks.
 Validation results and final Git/PR state are recorded in the acceptance file.
 Remaining authorization boundary: no acquisition-v2 probe may run without a
 new explicit user decision containing every frozen authorization field.
+
+Parent Git handoff created artifact commit
+`546c6cfaa3cf11ae78a705213be7d1c0996dde52`, pushed only the v2 feature branch,
+and opened PR #26. `origin/main` remained at the verified PR #25 merge commit.
+This record and the acceptance file are the only paths authorized for the
+second and final documentation-only handoff commit.
+
+Final DSH handoff recheck returned `PASS` after the full artifact commit SHA
+was corrected and independently matched against HEAD, its parent and the local
+remote-tracking ref.
