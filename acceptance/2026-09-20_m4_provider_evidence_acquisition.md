@@ -58,3 +58,12 @@ allowed without a new authorized stage.
 The sixth retained raw file is a discovery-only GitHub 404 recorded in the work
 record by repository-relative locator, SHA256, length, URL and timestamp. It is
 not cited as provider evidence and is excluded from dossier and manifest digests.
+
+Parent Git handoff:
+
+- Evidence commit: `c10e25af02d20b596bc44b43a654588c68f5b9c9`.
+- Remote branch: `origin/codex/m4-provider-evidence-acquisition`.
+- Pull request: <https://github.com/dlam12138/ashare-research-lab/pull/25>.
+- `origin/main` remained `781f7fb035eb3fdebc3b2c03ed5f642f2094d29e`
+  at push time; no direct main push or merge occurred.
+- Later-stage work remains unauthorized pending explicit review/approval.

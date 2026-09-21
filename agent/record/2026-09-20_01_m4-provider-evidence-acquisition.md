@@ -46,3 +46,8 @@ the manifest and dossier digests, raw inventory/hash/length/ignore checks,
 timestamps, frozen rejection codes, protected M2 HEAD/stash/database hash and
 all Goal validation commands. The reviewer confirmed that the discovery-only
 GitHub 404 is fully accounted for and excluded from evidence gates.
+
+Parent committed the four authorized tracked artifacts as
+`c10e25af02d20b596bc44b43a654588c68f5b9c9`, pushed only
+`codex/m4-provider-evidence-acquisition`, and opened PR #25. No merge or later
+stage was initiated.
