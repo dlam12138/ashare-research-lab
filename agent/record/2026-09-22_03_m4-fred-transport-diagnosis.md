@@ -154,3 +154,36 @@ passed: one consumed attempt, TELEMETRY_ERROR, unknown byte count, no body file;
 both previous evidence JSON files are unchanged. DSH's bounded read-only review
 returned PASS for evidence honesty/reconciliation only, not acquisition success.
 The changed-node evidence and record are delivered on the existing PR #29.
+
+## Explicitly approved repaired-tool verification
+
+User confirmed one further 15-second terms request after the parser repair.
+Baseline `833b965` is clean and synchronized. Protected stash, M2 HEAD and
+database byte hash match the Goal. Run 02 has separate ledger/output paths,
+one endpoint only, no retries, and preserves stdout/stderr before parsing.
+
+Run 02 completed with valid telemetry: started 2026-09-22T11:59:37.935735Z,
+curl/process exit 28, HTTP code 0, proxy_used=1, verified TLS at 770399 us,
+total 15008501 us, body bytes 0, header bytes 39 (including proxy CONNECT),
+redirects/retries=0. The wrapper returned 0 because it successfully recorded
+the failure; that is not acquisition success. No raw body file was created.
+Saved metrics SHA256 is
+`c17f627f48f7c4813fed027eaa4323b27abbd3ef42dac4fec0d506d2a1db317b`;
+saved stderr SHA256 is
+`ea19e8bd94c7252a82b81a35a17f04ed5451d3ca7f827f2ee46c69df4c80ce8f`.
+Both remain in ignored tmp storage and are referenced by the new ledger.
+
+The fixed parser passed three offline regression tests before execution and
+parsed real no-response telemetry correctly. The user-reported changed node
+still did not return a terms response within the authorized deadline. Public
+exit identity and the upstream cause remain unproven; no global FRED outage
+or licence refusal is inferred. One authorized request was consumed; no
+legal/series/CSV or further request followed. Acquisition remains BLOCKED.
+
+Parent independently verified both retained output digests, metric/ledger
+equality and unchanged historical JSON files. DSH reviewed all three run-02
+files read-only and returned PASS for failure-evidence consistency; it did
+not independently recompute digests. Its phrase "within 15000 ms" is imprecise:
+curl was configured to 15000 ms, while observed elapsed was 15008.501 ms.
+Database hash was rechecked unchanged. `git diff --check` passed. Exact scoped
+delivery comprises this Goal/record and the new run-02 JSON on existing PR #29.
