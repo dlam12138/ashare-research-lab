@@ -124,3 +124,33 @@ This review does not supersede the historical helper review or accept a
 production fetcher. Parent independently verified the new evidence assertions,
 unchanged old ledger, stash/M2 refs and database hash. Delivery is an update
 to https://github.com/dlam12138/ashare-research-lab/pull/29 on the same branch.
+
+## User-reported node change
+
+User reported changing the Clash node after the route comparison. A new run
+will first test the same terms path through the existing local proxy, keeping
+the request parameters and 15-second timeout unchanged. Continue to legal and
+series only if terms returns HTTP 200. Prior ledgers remain immutable.
+
+The terms attempt started at 2026-09-22T11:55:14.217302+00:00. The wrapper
+failed at JSON parsing (Expecting comma delimiter, column 29) after curl
+returned. The custom format emitted the HTTP code as a bare number; curl's
+no-response token 000 is invalid JSON. This is reproduced offline. Original
+stdout was not persisted, so exact curl status/timings are unrecoverable and
+must not be asserted for this attempt. No body output file exists. The initial
+STARTED ledger was reconciled to TELEMETRY_ERROR with unknown body_bytes,
+rather than leaving a false active request or asserting measured zero bytes.
+Legal/series/CSV were not requested and the terms request was not repeated.
+
+Fixed the ignored wrapper to quote the HTTP status, normalize it after JSON
+parsing, save stdout metrics before parsing, and persist a telemetry error if
+parsing fails. `python tmp/m4-provider-evidence-v2/test_changed_node.py` checks
+invalid bare 000, quoted 000, success 200 and corrupt JSON without networking.
+This corrects instrumentation only; it does not establish changed-node
+availability. The changed-node outcome remains inconclusive.
+
+All three offline regression tests passed. Parent reconciliation assertions
+passed: one consumed attempt, TELEMETRY_ERROR, unknown byte count, no body file;
+both previous evidence JSON files are unchanged. DSH's bounded read-only review
+returned PASS for evidence honesty/reconciliation only, not acquisition success.
+The changed-node evidence and record are delivered on the existing PR #29.

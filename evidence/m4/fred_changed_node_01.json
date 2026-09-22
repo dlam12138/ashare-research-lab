@@ -1,0 +1,1 @@
+{"attempts":[{"error_type":"JSONDecodeError","metrics_recoverable":false,"path":"/docs/api/terms_of_use.html","started_at":"2026-09-22T11:55:14.217302+00:00","status":"TELEMETRY_ERROR"}],"body_bytes":null,"body_file_present_after_failure":false,"max_total_body_bytes":1048576,"node_change":"user_reported","retry_count":0,"schema_id":"M4_FRED_CHANGED_NODE_01","timeout_ms":15000}

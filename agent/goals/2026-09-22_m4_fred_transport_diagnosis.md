@@ -60,3 +60,15 @@ explicit-proxy-bypassed, not asserted to be a physically independent exit.
 Add `evidence/m4/fred_route_comparison_01.json`, preserve bounded output under
 ignored tmp/quarantine, update this Goal and the existing record in PR #29.
 Validate curl exit/status/timings and body sizes; stop after the two conditions.
+
+## User-switched proxy node continuation
+
+User explicitly reported switching to another proxy node. Authorize a fresh
+conditional three-request run through the existing local proxy: terms first;
+legal and series only if terms returns HTTP 200. Each endpoint once, no retry,
+15-second curl wall-clock timeout, >=15-second start spacing, HTTPS verified,
+no redirects or credentials, 1048576-byte total body budget. Preserve previous
+evidence. Add `evidence/m4/fred_changed_node_01.json`; use ignored temporary
+output and SHA-addressed quarantine for complete successful responses. Stop
+on terms failure. No CSV or global network configuration edits. Record node
+change as user-reported, not as proof of a distinct public IP.
