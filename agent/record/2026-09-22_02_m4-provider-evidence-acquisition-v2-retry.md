@@ -92,4 +92,7 @@ FRED 第一方条款与系列页面在当前 15 秒、零重试传输条件下�
 
 ## 最终Git状态
 
-DSH 最终复核已通过；等待精确提交、推送和 PR/CI 证据回填。
+- 证据提交：`7b65bb5`（`docs: record blocked FRED evidence retry`）。
+- 已精确推送至 `origin/codex/m4-provider-evidence-acquisition-v2-retry`。
+- PR：https://github.com/dlam12138/ashare-research-lab/pull/28
+- PR/CI 交接证据由后续仅文档提交回填；未合并。

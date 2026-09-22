@@ -120,7 +120,13 @@ was not requested, and rechecked the protected M2 HEAD, stash, database hash,
 EIA raw identity and absence of conditional artifacts. The reviewer made no
 file or network changes and confirmed the fail-closed `BLOCKED` outcome.
 
-Commit/push/PR evidence will be appended after the exact scoped commit.
+The exact four scoped paths were committed as `7b65bb5` (`docs: record blocked
+FRED evidence retry`) and pushed to
+`origin/codex/m4-provider-evidence-acquisition-v2-retry`. PR #28 was opened at
+https://github.com/dlam12138/ashare-research-lab/pull/28. A documentation-only
+handoff commit records this delivery evidence; the PR remains unmerged while CI
+is monitored.
+
 Merge, another network run, adapter work and research execution are not
 authorized. Further progress requires a new explicit authorization or a change
 in the external FRED transport condition.
