@@ -71,3 +71,56 @@ acquisition run must change or establish the failing transport condition;
 blindly repeating the same requests adds no diagnosis. System proxy settings
 were not modified. PR #28 is merged; this diagnostic change is committed and
 pushed separately for review, with concrete commit/PR status in the handoff.
+
+## Continued route comparison
+
+Baseline `c2765d44ead8ea65609f2439edf4494af0b0238b` is synchronized with origin;
+PR #29 is draft, with 42/42 checks successful. User instructed continuation
+after the proposed exit comparison. Compare the approved terms endpoint with
+explicit proxy bypassed and with the current local proxy, using curl's total
+15-second deadline and 512 KiB per response. This changes no system settings.
+The preceding Goal section defines the two-condition budget before requests.
+
+Both conditions failed identically after verified TLS, with curl exit code 28
+and no origin HTTP status or body. Explicit-proxy bypass: TLS 406380 us,
+total 15015307 us, response header bytes 0, proxy_used=0. Existing proxy:
+TLS 771446 us, total 15006322 us, proxy_used=1; 39 header bytes include the
+CONNECT response and are not evidence of an origin response. Each sent 161
+request bytes; redirects/retries=0; ssl_verify_result=0. The second command
+started after the first 15.015-second command completed. Timing overruns of
+6-15 ms reflect observed curl termination/scheduling, not an increased timeout.
+No body output files were created. Structured metadata is parent-transcribed
+from tool output in `evidence/m4/fred_route_comparison_01.json`; exact start
+timestamps were not captured and are not invented.
+
+Common command options: `curl.exe -q --proto '=https' --max-time 15
+--connect-timeout 15 --retry 0 --max-filesize 524288 --max-redirs 0
+--header 'Accept-Encoding: identity'
+--user-agent 'ashare-research-lab-evidence-probe/2' --silent --show-error`.
+Both URLs were `https://fred.stlouisfed.org/docs/api/terms_of_use.html`.
+Bypass used `--noproxy '*'`; proxy used `--proxy http://127.0.0.1:10808
+--noproxy ''`. Each used its distinct ignored `route_*_01.body` output path
+and curl write-out metrics. No certificate verification was disabled.
+
+`Find-NetRoute -RemoteIPAddress '96.7.98.197'` and source-address lookup
+resolved the bypass condition to WLAN. This does not establish distinct public
+egress IPs, nor exclude transparent upstream routing. The result rules out an
+explanation confined to Python urllib or the explicit localhost proxy setting;
+it does not identify the failing upstream component or prove global FRED outage.
+The local request settings alone have not restored access. Further diagnosis
+needs an independently reachable exit; no system proxy configuration was changed.
+
+Continuation validation: JSON parsing, two distinct routes, exact shared URL,
+zero body bytes, no retries/redirects and successful TLS assertions; byte-level
+database hash and protected Git refs; `git diff --cached --check`. The old
+diagnostic JSON remains unchanged. The tracked delta is the Goal, work record
+and new comparison JSON. Continue delivery on the same PR #29; no new PR or
+automatic merge. Acquisition remains BLOCKED, and CSV remains unrequested.
+
+DSH's bounded read-only review of the new comparison returned PASS: metrics
+match the record, proxy CONNECT headers are distinguished from origin headers,
+and the diagnosis does not overstate independent exits or global outage.
+This review does not supersede the historical helper review or accept a
+production fetcher. Parent independently verified the new evidence assertions,
+unchanged old ledger, stash/M2 refs and database hash. Delivery is an update
+to https://github.com/dlam12138/ashare-research-lab/pull/29 on the same branch.

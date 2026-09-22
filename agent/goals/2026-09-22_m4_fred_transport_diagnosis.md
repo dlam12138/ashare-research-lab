@@ -44,3 +44,19 @@ from hypotheses; successful data acquisition is a separate gate.
 
 Commit the Goal, work record and diagnostic JSON; push only the named topic
 branch and open a reviewable PR. No automatic merge of the new PR.
+
+## Authorized continuation: route comparison
+
+The user's subsequent instruction to continue follows the proposed comparison
+of network exits. Preserve run 01. Permit one diagnostic comparison with two
+GET requests to the already approved `/docs/api/terms_of_use.html`: one with
+the explicit application proxy disabled, one through the existing localhost
+proxy. Each is a distinct test condition, not an automatic retry. Use curl
+with default config disabled, verified TLS, no redirects, no credentials,
+15-second wall-clock max-time, 524288-byte per-response ceiling (1048576 total),
+and >=15 seconds between starts. Do not change global proxy settings or nodes.
+The direct condition may still traverse system/TUN routing and must be named
+explicit-proxy-bypassed, not asserted to be a physically independent exit.
+Add `evidence/m4/fred_route_comparison_01.json`, preserve bounded output under
+ignored tmp/quarantine, update this Goal and the existing record in PR #29.
+Validate curl exit/status/timings and body sizes; stop after the two conditions.
