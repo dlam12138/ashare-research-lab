@@ -102,4 +102,12 @@ FRED 第一方许可和系列身份仍未取得。当前零重试授权已消耗
 
 ## 最终Git状态
 
-最终 DSH 复核已通过；等待父代理暂存、提交、推送和创建 PR。
+最终 DSH 复核通过后，父代理只暂存四个授权路径并完成：
+
+- 制品提交：`6f8d8e1`（`docs: record blocked M4 provider evidence probe v2`）；
+- 使用显式 refspec 推送至
+  `origin/codex/m4-provider-evidence-acquisition-v2`；
+- 创建 PR #27：`https://github.com/dlam12138/ashare-research-lab/pull/27`。
+
+本交接更新仅修改本记录与验收文件。未合并 PR，未启动重试、CSV 探针、
+adapter 或其它下一阶段。

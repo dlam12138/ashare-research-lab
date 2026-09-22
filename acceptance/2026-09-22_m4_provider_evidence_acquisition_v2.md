@@ -95,8 +95,11 @@ acceptance file. There is no product, test, CI, dependency, configuration,
 database, v1 evidence or frozen-contract change. The ignored quarantine file
 and ignored temporary fetch helper are not eligible for staging or commit.
 
-Final commit, push, PR and post-push synchronization evidence will be appended
-only if the parent review and final DSH review confirm this `BLOCKED` outcome.
+Final DSH review returned `PASS` for the correctly enforced `BLOCKED` outcome.
+The four scoped paths were committed as `6f8d8e1`, pushed with the explicit
+branch refspec, and opened as PR #27:
+`https://github.com/dlam12138/ashare-research-lab/pull/27`.
+This handoff update changes only this acceptance file and the task record.
 
 ## Deviations, blocker and next-stage authority
 
