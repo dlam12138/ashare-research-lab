@@ -206,13 +206,13 @@ def build_temp_fact_db(
     snapshot_dir: Path | str,
     output_path: Path | str,
 ) -> Path:
-    """Build an isolated DuckDB using repository schema and snapshot rows."""
+    """Build an isolated DuckDB at a fresh path; never replace caller outputs."""
 
-    snapshot = validate_snapshot(snapshot_dir)
     target = Path(output_path)
+    if target.exists() or target.is_symlink():
+        raise FileExistsError(f"refusing to overwrite existing temporary fact DB: {target}")
+    snapshot = validate_snapshot(snapshot_dir)
     target.parent.mkdir(parents=True, exist_ok=True)
-    if target.exists():
-        target.unlink()
     store = DuckDBStore(str(target))
     repository = FactRepository(store)
     repository.ensure_schema_v2(git_commit="stage2g-test-capsule")
