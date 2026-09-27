@@ -189,6 +189,28 @@ def validate_snapshot(snapshot_dir: Path | str) -> dict[str, Any]:
     )
     if missing_contexts:
         raise ValueError(f"canonical Fact snapshot missing contexts: {missing_contexts}")
+    if len(lineage) != manifest.get("lineage_count"):
+        raise ValueError("canonical Fact snapshot lineage count mismatch")
+    lineage_by_fact = {str(fact["fact_id"]): set() for fact in facts}
+    seen_lineage_ids: set[int] = set()
+    for row in lineage:
+        lineage_id = row.get("lineage_id")
+        fact_id = str(row.get("fact_id", ""))
+        if type(lineage_id) is not int or lineage_id in seen_lineage_ids:
+            raise ValueError("canonical Fact snapshot invalid or duplicate lineage ID")
+        if fact_id not in lineage_by_fact:
+            raise ValueError("canonical Fact snapshot orphan lineage row")
+        seen_lineage_ids.add(lineage_id)
+        lineage_by_fact[fact_id].add(lineage_id)
+    for fact in facts:
+        declared = fact.get("lineage_ids")
+        if (
+            not isinstance(declared, list)
+            or any(type(value) is not int for value in declared)
+            or len(set(declared)) != len(declared)
+            or set(declared) != lineage_by_fact[str(fact["fact_id"])]
+        ):
+            raise ValueError("canonical Fact snapshot lineage binding mismatch")
     return {
         "status": "pass",
         "row_count": len(facts),
