@@ -183,12 +183,22 @@ def validate_snapshot(snapshot_dir: Path | str) -> dict[str, Any]:
     if any("value_decimal" not in fact for fact in facts):
         raise ValueError("canonical Fact snapshot is missing lossless decimal values")
     validate_canonical_fact_ids(facts)
-    context_ids = {str(row["context_id"]) for row in contexts}
+    context_ids: set[str] = set()
+    for row in contexts:
+        context_id = row.get("context_id")
+        if not isinstance(context_id, str) or not context_id.strip():
+            raise ValueError("canonical Fact snapshot invalid context ID")
+        if context_id in context_ids:
+            raise ValueError("canonical Fact snapshot duplicate context ID")
+        context_ids.add(context_id)
+    referenced_context_ids = {str(fact["context_id"]) for fact in facts}
     missing_contexts = sorted(
-        {str(fact["context_id"]) for fact in facts} - context_ids
+        referenced_context_ids - context_ids
     )
     if missing_contexts:
         raise ValueError(f"canonical Fact snapshot missing contexts: {missing_contexts}")
+    if context_ids - referenced_context_ids:
+        raise ValueError("canonical Fact snapshot unreferenced contexts")
     if len(lineage) != manifest.get("lineage_count"):
         raise ValueError("canonical Fact snapshot lineage count mismatch")
     lineage_by_fact = {str(fact["fact_id"]): set() for fact in facts}
