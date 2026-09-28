@@ -5,7 +5,9 @@ from __future__ import annotations
 import csv
 import hashlib
 import json
+import os
 import shutil
+import tempfile
 from datetime import date
 from decimal import Decimal
 from pathlib import Path
@@ -245,54 +247,71 @@ def build_temp_fact_db(
         raise FileExistsError(f"refusing to overwrite existing temporary fact DB: {target}")
     snapshot = validate_snapshot(snapshot_dir)
     target.parent.mkdir(parents=True, exist_ok=True)
-    store = DuckDBStore(str(target))
-    repository = FactRepository(store)
-    repository.ensure_schema_v2(git_commit="stage2g-test-capsule")
-    connection = store.connect()
-    connection.execute(
-        "UPDATE fact_schema_meta SET applied_at = ? WHERE schema_name = 'financial_facts'",
-        [DETERMINISTIC_BUILD_TIME],
-    )
-    repository.store_contexts(snapshot["contexts"], conn=connection)
-    fact_columns = set(repository._FACT_COLS)
-    rows = []
-    for fact in snapshot["facts"]:
-        row = {key: fact.get(key, "") for key in fact_columns}
-        row["value"] = float(Decimal(str(fact["value_decimal"])))
-        rows.append(row)
-    repository.store_facts(rows, conn=connection)
-    for lineage in snapshot["lineage"]:
-        connection.execute(
-            """INSERT INTO fact_lineage
-               (lineage_id, fact_id, run_id, source_provider, source_tier,
-                source_method, raw_file_path, staging_file_path, fetch_run_id,
-                parent_fact_ids, role, reconciliation_rule_id,
-                reconciliation_rule_version, recorded_at)
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
-            [
-                lineage.get("lineage_id"),
-                lineage.get("fact_id", ""),
-                lineage.get("run_id", ""),
-                lineage.get("source_provider", ""),
-                lineage.get("source_tier", ""),
-                lineage.get("source_method", ""),
-                lineage.get("raw_file_path", ""),
-                lineage.get("staging_file_path", ""),
-                lineage.get("fetch_run_id", ""),
-                lineage.get("parent_fact_ids", ""),
-                lineage.get("role", ""),
-                lineage.get("reconciliation_rule_id", ""),
-                lineage.get("reconciliation_rule_version", ""),
-                lineage.get("recorded_at", ""),
-            ],
-        )
-    validate_canonical_fact_ids(rows)
-    results = VersionChainValidator(repository).validate(rows, conn=connection)
-    failed = [result.target_id for result in results if not result.passed]
-    if failed:
-        raise ValueError(f"temporary canonical version chain failed: {failed}")
-    connection.close()
-    store._conn = None
+    with tempfile.TemporaryDirectory(
+        dir=target.parent,
+        prefix=f".{target.name}.staging-",
+    ) as staging_dir:
+        staged_db = Path(staging_dir) / target.name
+        store = DuckDBStore(str(staged_db))
+        try:
+            repository = FactRepository(store)
+            repository.ensure_schema_v2(git_commit="stage2g-test-capsule")
+            connection = store.connect()
+            connection.execute(
+                "UPDATE fact_schema_meta SET applied_at = ? WHERE schema_name = 'financial_facts'",
+                [DETERMINISTIC_BUILD_TIME],
+            )
+            repository.store_contexts(snapshot["contexts"], conn=connection)
+            fact_columns = set(repository._FACT_COLS)
+            rows = []
+            for fact in snapshot["facts"]:
+                row = {key: fact.get(key, "") for key in fact_columns}
+                row["value"] = float(Decimal(str(fact["value_decimal"])))
+                rows.append(row)
+            repository.store_facts(rows, conn=connection)
+            for lineage in snapshot["lineage"]:
+                connection.execute(
+                    """INSERT INTO fact_lineage
+                       (lineage_id, fact_id, run_id, source_provider, source_tier,
+                        source_method, raw_file_path, staging_file_path, fetch_run_id,
+                        parent_fact_ids, role, reconciliation_rule_id,
+                        reconciliation_rule_version, recorded_at)
+                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                    [
+                        lineage.get("lineage_id"),
+                        lineage.get("fact_id", ""),
+                        lineage.get("run_id", ""),
+                        lineage.get("source_provider", ""),
+                        lineage.get("source_tier", ""),
+                        lineage.get("source_method", ""),
+                        lineage.get("raw_file_path", ""),
+                        lineage.get("staging_file_path", ""),
+                        lineage.get("fetch_run_id", ""),
+                        lineage.get("parent_fact_ids", ""),
+                        lineage.get("role", ""),
+                        lineage.get("reconciliation_rule_id", ""),
+                        lineage.get("reconciliation_rule_version", ""),
+                        lineage.get("recorded_at", ""),
+                    ],
+                )
+            validate_canonical_fact_ids(rows)
+            results = VersionChainValidator(repository).validate(rows, conn=connection)
+            failed = [result.target_id for result in results if not result.passed]
+            if failed:
+                raise ValueError(f"temporary canonical version chain failed: {failed}")
+        finally:
+            store.close()
+
+        try:
+            os.link(staged_db, target)
+        except FileExistsError as exc:
+            raise FileExistsError(
+                f"refusing to overwrite existing temporary fact DB: {target}"
+            ) from exc
+        except OSError as exc:
+            raise OSError(
+                f"unable to publish temporary fact DB without overwrite: {target}"
+            ) from exc
     return target
 
 
