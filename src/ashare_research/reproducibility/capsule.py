@@ -183,12 +183,44 @@ def validate_snapshot(snapshot_dir: Path | str) -> dict[str, Any]:
     if any("value_decimal" not in fact for fact in facts):
         raise ValueError("canonical Fact snapshot is missing lossless decimal values")
     validate_canonical_fact_ids(facts)
-    context_ids = {str(row["context_id"]) for row in contexts}
+    context_ids: set[str] = set()
+    for row in contexts:
+        context_id = row.get("context_id")
+        if not isinstance(context_id, str) or not context_id.strip():
+            raise ValueError("canonical Fact snapshot invalid context ID")
+        if context_id in context_ids:
+            raise ValueError("canonical Fact snapshot duplicate context ID")
+        context_ids.add(context_id)
+    referenced_context_ids = {str(fact["context_id"]) for fact in facts}
     missing_contexts = sorted(
-        {str(fact["context_id"]) for fact in facts} - context_ids
+        referenced_context_ids - context_ids
     )
     if missing_contexts:
         raise ValueError(f"canonical Fact snapshot missing contexts: {missing_contexts}")
+    if context_ids - referenced_context_ids:
+        raise ValueError("canonical Fact snapshot unreferenced contexts")
+    if len(lineage) != manifest.get("lineage_count"):
+        raise ValueError("canonical Fact snapshot lineage count mismatch")
+    lineage_by_fact = {str(fact["fact_id"]): set() for fact in facts}
+    seen_lineage_ids: set[int] = set()
+    for row in lineage:
+        lineage_id = row.get("lineage_id")
+        fact_id = str(row.get("fact_id", ""))
+        if type(lineage_id) is not int or lineage_id in seen_lineage_ids:
+            raise ValueError("canonical Fact snapshot invalid or duplicate lineage ID")
+        if fact_id not in lineage_by_fact:
+            raise ValueError("canonical Fact snapshot orphan lineage row")
+        seen_lineage_ids.add(lineage_id)
+        lineage_by_fact[fact_id].add(lineage_id)
+    for fact in facts:
+        declared = fact.get("lineage_ids")
+        if (
+            not isinstance(declared, list)
+            or any(type(value) is not int for value in declared)
+            or len(set(declared)) != len(declared)
+            or set(declared) != lineage_by_fact[str(fact["fact_id"])]
+        ):
+            raise ValueError("canonical Fact snapshot lineage binding mismatch")
     return {
         "status": "pass",
         "row_count": len(facts),
@@ -206,13 +238,13 @@ def build_temp_fact_db(
     snapshot_dir: Path | str,
     output_path: Path | str,
 ) -> Path:
-    """Build an isolated DuckDB using repository schema and snapshot rows."""
+    """Build an isolated DuckDB at a fresh path; never replace caller outputs."""
 
-    snapshot = validate_snapshot(snapshot_dir)
     target = Path(output_path)
+    if target.exists() or target.is_symlink():
+        raise FileExistsError(f"refusing to overwrite existing temporary fact DB: {target}")
+    snapshot = validate_snapshot(snapshot_dir)
     target.parent.mkdir(parents=True, exist_ok=True)
-    if target.exists():
-        target.unlink()
     store = DuckDBStore(str(target))
     repository = FactRepository(store)
     repository.ensure_schema_v2(git_commit="stage2g-test-capsule")
