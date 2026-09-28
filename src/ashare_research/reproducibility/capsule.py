@@ -11,7 +11,7 @@ import tempfile
 from datetime import date
 from decimal import Decimal
 from pathlib import Path
-from typing import Any
+from typing import Any, Final
 
 import duckdb
 
@@ -32,6 +32,14 @@ MARKET_FILE = "market_rows.csv"
 CAPSULE_MANIFEST = "capsule_manifest.json"
 CAPSULE_SCHEMA_VERSION = "stage2g_test_capsule_v1"
 DETERMINISTIC_BUILD_TIME = "2026-08-02T00:00:00+08:00"
+CANONICAL_PORTABLE_OUTPUT_PATHS: Final[tuple[str, ...]] = (
+    f"canonical_fact_snapshot_v1/{CONTEXTS_FILE}",
+    f"canonical_fact_snapshot_v1/{FACTS_FILE}",
+    f"canonical_fact_snapshot_v1/{LINEAGE_FILE}",
+    f"canonical_fact_snapshot_v1/{SNAPSHOT_MANIFEST}",
+    f"{MARKET_FIXTURE_DIR}/{MARKET_FILE}",
+    "market_data_snapshot_registry_v2.json",
+)
 
 
 def _json_default(value: Any) -> Any:
@@ -455,14 +463,6 @@ def build_test_capsule(
     _write_stable(registry_path, market["registry"])
     temp_db = out / "temporary_fact.duckdb"
     build_temp_fact_db(snapshot_out, temp_db)
-    capsule_files = [
-        snapshot_out / FACTS_FILE,
-        snapshot_out / CONTEXTS_FILE,
-        snapshot_out / LINEAGE_FILE,
-        snapshot_out / SNAPSHOT_MANIFEST,
-        market_out / MARKET_FILE,
-        registry_path,
-    ]
     manifest = {
         "contract": CAPSULE_SCHEMA_VERSION,
         "generated_at": DETERMINISTIC_BUILD_TIME,
@@ -487,10 +487,10 @@ def build_test_capsule(
         },
         "outputs": [
             {
-                "relative_path": str(path.relative_to(out)).replace("\\", "/"),
-                "sha256": sha256_file(path),
+                "relative_path": relative_path,
+                "sha256": sha256_file(out / relative_path),
             }
-            for path in sorted(capsule_files, key=lambda item: str(item.relative_to(out)))
+            for relative_path in sorted(CANONICAL_PORTABLE_OUTPUT_PATHS)
         ],
         "real_input_separation": (
             "test-only synthetic and canonical export/read-model inputs; "
@@ -508,15 +508,36 @@ def build_test_capsule(
 def verify_capsule_manifest(capsule_dir: Path | str) -> dict[str, Any]:
     root = Path(capsule_dir)
     manifest = _read_json(root / CAPSULE_MANIFEST)
-    if manifest.get("contract") != CAPSULE_SCHEMA_VERSION:
+    if not isinstance(manifest, dict) or manifest.get("contract") != CAPSULE_SCHEMA_VERSION:
         raise ValueError("unsupported test capsule manifest")
-    for output in manifest.get("outputs", []):
-        relative = Path(output["relative_path"])
-        if relative.is_absolute() or ".." in relative.parts:
-            raise ValueError("capsule manifest contains an unsafe path")
-        path = root / relative
-        if not path.is_file() or sha256_file(path) != output["sha256"]:
-            raise ValueError(f"capsule artifact mismatch: {output['relative_path']}")
+    outputs = manifest.get("outputs")
+    if not isinstance(outputs, list) or len(outputs) != len(CANONICAL_PORTABLE_OUTPUT_PATHS):
+        raise ValueError("capsule manifest outputs must contain the complete inventory")
+    inventory: dict[str, str] = {}
+    for output in outputs:
+        if not isinstance(output, dict) or set(output) != {"relative_path", "sha256"}:
+            raise ValueError("capsule manifest output entry has an invalid shape")
+        relative_path = output["relative_path"]
+        digest = output["sha256"]
+        if (
+            not isinstance(relative_path, str)
+            or relative_path in inventory
+            or relative_path not in CANONICAL_PORTABLE_OUTPUT_PATHS
+        ):
+            raise ValueError("capsule manifest contains an invalid or unexpected path")
+        if (
+            not isinstance(digest, str)
+            or len(digest) != 64
+            or any(character not in "0123456789abcdef" for character in digest)
+        ):
+            raise ValueError("capsule manifest output has an invalid SHA256")
+        inventory[relative_path] = digest
+    if set(inventory) != set(CANONICAL_PORTABLE_OUTPUT_PATHS):
+        raise ValueError("capsule manifest outputs are incomplete")
+    for relative_path, digest in inventory.items():
+        path = root / Path(relative_path)
+        if not path.is_file() or sha256_file(path) != digest:
+            raise ValueError(f"capsule artifact mismatch: {relative_path}")
     validate_snapshot(root / "canonical_fact_snapshot_v1")
     expected_digest = hashlib.sha256(
         json.dumps(
