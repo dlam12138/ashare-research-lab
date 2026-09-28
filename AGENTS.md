@@ -44,7 +44,18 @@ The final verdict must be exactly one of:
 - CHANGES_REQUIRED
 - BLOCKED
 
-Do not automatically merge or start the next stage without explicit authorization.
+Standing user authorization (2026-09-28): automatically merge task-scoped PRs
+after independent review, successful required checks and verification of the
+expected head and mergeability. Do not request per-PR confirmation. This applies
+to engineering, evidence and governance PRs within the user's authorized scope,
+including the PR recording this rule. It supersedes historical per-PR approval
+stop points, but not their data, research or safety restrictions. Stop on failed
+checks, conflicts or scope expansion; never bypass protections to merge.
+
+Starting the next stage still requires authorization; existing continuing
+authorization applies only within its stated scope. Automatic merging does not
+authorize new data acquisition, real backtests, holdout use, force pushes or
+destructive operations.
 
 ### Git and Safety Rules
 
