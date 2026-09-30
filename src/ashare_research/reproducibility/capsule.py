@@ -460,13 +460,18 @@ def build_test_capsule(
     *,
     committed_snapshot_dir: Path | str,
 ) -> dict[str, Any]:
-    """Build a complete portable capsule in a caller-owned directory."""
+    """Build a complete portable capsule in a caller-owned directory.
+
+    The supplied snapshot is validated before any output or parent directory is
+    created, and the output directory is then claimed with an exclusive
+    ``mkdir`` so a caller entry appearing at that boundary is never adopted.
+    """
 
     out = Path(output_dir)
-    if out.exists():
+    if out.exists() or out.is_symlink():
         raise FileExistsError(f"refusing to overwrite existing test capsule: {out}")
-    out.mkdir(parents=True, exist_ok=True)
     snapshot = validate_snapshot(committed_snapshot_dir)
+    out.mkdir(parents=True, exist_ok=False)
     snapshot_out = out / "canonical_fact_snapshot_v1"
     snapshot_out.mkdir(parents=True, exist_ok=True)
     for filename in (FACTS_FILE, CONTEXTS_FILE, LINEAGE_FILE, SNAPSHOT_MANIFEST):
