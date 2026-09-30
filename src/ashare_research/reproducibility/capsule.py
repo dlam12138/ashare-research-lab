@@ -5,6 +5,7 @@ from __future__ import annotations
 import csv
 import hashlib
 import json
+import logging
 import os
 import shutil
 import tempfile
@@ -40,6 +41,8 @@ CANONICAL_PORTABLE_OUTPUT_PATHS: Final[tuple[str, ...]] = (
     f"{MARKET_FIXTURE_DIR}/{MARKET_FILE}",
     "market_data_snapshot_registry_v2.json",
 )
+
+logger = logging.getLogger(__name__)
 
 
 def _json_default(value: Any) -> Any:
@@ -255,11 +258,12 @@ def build_temp_fact_db(
         raise FileExistsError(f"refusing to overwrite existing temporary fact DB: {target}")
     snapshot = validate_snapshot(snapshot_dir)
     target.parent.mkdir(parents=True, exist_ok=True)
-    with tempfile.TemporaryDirectory(
+    staging = tempfile.TemporaryDirectory(
         dir=target.parent,
         prefix=f".{target.name}.staging-",
-    ) as staging_dir:
-        staged_db = Path(staging_dir) / target.name
+    )
+    try:
+        staged_db = Path(staging.name) / target.name
         store = DuckDBStore(str(staged_db))
         try:
             repository = FactRepository(store)
@@ -320,6 +324,16 @@ def build_temp_fact_db(
             raise OSError(
                 f"unable to publish temporary fact DB without overwrite: {target}"
             ) from exc
+    finally:
+        try:
+            staging.cleanup()
+        except OSError as exc:
+            logger.warning(
+                "temporary fact DB staging cleanup failed; retained owned staging "
+                "directory %s: %s",
+                staging.name,
+                exc,
+            )
     return target
 
 
