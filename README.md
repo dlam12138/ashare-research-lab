@@ -20,6 +20,7 @@
 | M4-A.2M 设计矩阵 | 已在主线（PR #12） | `materialize_design_matrix(preparation, contract, plan, bound_inputs)` 与合成测试 | 质量边界内的投影；本身不含回归、bootstrap、稳健性或证据判定 | [矩阵设计](docs/m4_analysis_matrix_design_v1.md)、[矩阵测试](tests/test_m4_analysis_matrix.py) |
 | M4-A.2E 有界执行 | 已实现（仅合成 fixture）；真实执行未授权 | 下方 `execute_bounded_analysis(matrix, preparation, contract, plan, bound_inputs)` 与合成测试 | 只在已验证合成 fixture 上计算 OLS/bootstrap/处置；无 provider、数据库、holdout 或 M4-B；注册稳健性只派遣不计算 | [设计](docs/m4_bounded_execution_and_evidence_design_v1.md)、[验收案例](docs/m4_bounded_execution_acceptance_cases_v1.md)、[执行测试](tests/test_m4_bounded_execution.py)、[实现验收](acceptance/2026-09-12_m4_bounded_execution_implementation.md) |
 | M4-A.2P 端到端编排 | 已实现（仅合成、纯内存）；真实执行未授权 | 下方 `run_synthetic_pipeline(request=...)` 与 [合成测试](tests/test_m4_synthetic_pipeline_orchestrator.py)；调用者按两遍协议提供 `config` 与 `bound_inputs` | 只编排已验证合成输入；请求类型无 holdout、真实数据、provider、数据库、路径或 seed 字段；不做质量修补、排序、选择、注册表状态转换或真实研究结论；跑通合成链**不等于**研究授权 | [设计](docs/m4_synthetic_end_to_end_pipeline_design_v1.md)、[验收案例](docs/m4_synthetic_end_to_end_pipeline_acceptance_cases_v1.md)、[实现验收](acceptance/2026-09-13_m4_synthetic_pipeline_post_ac05_acceptance.md) |
+| M4-EIA-PIT 离线进度检查 | 已实现（只读、离线、固定路径诊断） | `python agent/tools/check_m4_progress.py`（`--json` 可选） | 只复核冻结的 EIA 传输/PIT 元数据证据；不联网、不写文件、不读取原始观测值或凭据；不构成完整 K2 或全项目就绪结论，也不授权研究或执行 | [工具](agent/tools/check_m4_progress.py)、[测试](tests/test_m4_progress_check.py) |
 | M4-B 理论/假设注册表 | 最小元数据 API 已实现（仅合成/schema 校验） | `ashare_research.mechanism.registry` 的 `parse_hypothesis_record(document)`、显式状态转换与有界快照入口 | 不创建或加载真实候选数据集，不采集文献，不访问 provider、数据库、真实行情或 holdout；真实假设执行仍未授权 | [设计](docs/m4b_hypothesis_registry_design_v1.md)、[验收场景](docs/m4b_hypothesis_registry_acceptance_cases_v1.md)、[实现测试](tests/test_m4b_hypothesis_registry.py)、[实现验收](acceptance/2026-09-12_m4b_hypothesis_registry_implementation.md)、[冻结前置合同](reports/m4_stage4p_m4b_hypothesis_registry_contract_v1.json) |
 
 ### 研究结论与边界
@@ -38,6 +39,22 @@ M3 最终处置为 `M3_DAILY_MECHANISM_NOT_ESTABLISHED`。Holdout 已使用一�
 - Historical M3 closeout stop: `STOP_FOR_NORTH_STAR_REVIEW`.
 - Subsequently, M4-A.1 has since been implemented and canonicalized on main. M4-A.2 design, A.2I compile-only plan compilation, the synthetic dataset adapter, the immutable design matrix and the synthetic-fixture-only bounded executor are merged on main. The M4-B minimum metadata registry is implemented for synthetic/schema validation only. The M4-A.2P synthetic end-to-end pipeline orchestration design is IMPLEMENTED as a synthetic-only, in-memory composed entry (`run_synthetic_pipeline`); the design is no longer design-only, and its orchestrator is no longer missing. A generic research executor, real-data execution and holdout remain unauthorized; a real M4-B registry dataset and literature acquisition remain NOT AUTHORIZED, real hypothesis execution remains NOT AUTHORIZED, and real-research M4-B NOT STARTED.
 - No real mechanism inference beyond the frozen development-primary and registered robustness execution has been executed.
+
+## M4 离线进度检查（只读，无网络）
+
+一条命令复核已冻结的 EIA 传输/PIT 元数据证据，输出确定性的当前研究阻塞与最小下一步；不需要参数选择根目录、路径或来源：
+
+```powershell
+python agent/tools/check_m4_progress.py
+python agent/tools/check_m4_progress.py --json
+```
+
+工具只读取固定的仓库内元数据（dossier、allowlist 授权的 authorization/goal/ledger 链接、保留的 PIT 评估），校验链接摘要与冻结身份，重算评估并与保留字节逐字比对，不信任旧的 readiness 标记。它不联网、不写文件、不读取原始观测值、密文、凭据或数据库。
+
+- 退出码 0：诊断完成，证据校验通过，研究仍被历史 PIT 证据缺失阻塞（`research_ready=false`、`execution_authorized=false`、三个 `REAL_*_MISSING` 原因码）。
+- 退出码 2：证据校验失败（摘要/链接/重复键/保留评估不一致等），只输出净化后的错误码，不输出原始值或 traceback。
+
+范围仅为 `FROZEN_EIA_TRANSPORT_DOSSIER_ONLY`：这不是完整 K2 或全项目就绪评估。下一步是单独授权的第一方历史 PIT 证据审查（publication/availability/revision-vintage），之后才考虑任何新采集或执行。
 
 ## 系统要求
 
