@@ -4,19 +4,26 @@ The CLI has deliberately explicit modes.  Test-capsule mode consumes only
 committed snapshot contracts and generated synthetic market rows.  Real mode
 requires an explicit canonical Fact DB and an explicit external market-cache
 root; it never falls back to either test or default local data.
+
+Test-capsule runs never read a capsule's pre-built ``temporary_fact.duckdb``
+cache: the runtime database is always rebuilt from the verified snapshot in an
+owned temporary directory outside the capsule.
 """
 
 from __future__ import annotations
 
 import argparse
 import json
+import logging
 import subprocess
+import tempfile
 from pathlib import Path
 from typing import Any
 
 from ashare_research.reproducibility.artifacts import compare_artifact_runs, verify_artifacts
 from ashare_research.reproducibility.capsule import (
     MARKET_FIXTURE_DIR,
+    SNAPSHOT_CONTRACT,
     build_temp_fact_db,
     build_test_capsule,
     compare_capsules,
@@ -49,6 +56,8 @@ REQUIRED_RULE007_STATUSES = {
     "conflicting_official_sources",
     "incomplete_or_invalid_evidence",
 }
+
+logger = logging.getLogger(__name__)
 
 
 def _json(value: Any) -> str:
@@ -114,31 +123,50 @@ def run_test_capsule(
     output_root: Path | str | None = None,
     run_id: str = "stage2g2_test_capsule",
 ) -> dict[str, Any]:
+    """Run the formal slice against a database rebuilt from the verified snapshot.
+
+    The capsule manifest is verified before any runtime input or output is
+    created.  The runtime database is always built from the verified snapshot
+    inside a task-owned temporary directory outside the capsule; the capsule's
+    own ``temporary_fact.duckdb`` cache is never opened, replaced or removed,
+    whatever state it is in.  Formal processing and artifact verification both
+    run while the owned database exists; only the owned directory is removed
+    afterwards.
+    """
+
     root = Path(capsule_dir)
     manifest = verify_capsule_manifest(root)
     snapshot_dir = root / "canonical_fact_snapshot_v1"
-    temp_db = root / "temporary_fact.duckdb"
-    if not temp_db.is_file():
-        build_temp_fact_db(snapshot_dir, temp_db)
+    fact_input = manifest["inputs"]["canonical_fact_snapshot"]
     run_root = Path(output_root) if output_root is not None else root / "runs"
-    result = run_formal(
-        output_root=run_root,
-        run_id=run_id,
-        fact_db=temp_db,
-        registry_path=root / "market_data_snapshot_registry_v2.json",
-        market_mode="test_capsule",
-        market_fixture_root=root / MARKET_FIXTURE_DIR,
-        publish_reports=False,
-        fact_input_contract={
-            "logical_name": "canonical_fact_snapshot_v1/facts.json",
-            "schema_version": manifest["inputs"]["canonical_fact_snapshot"].get(
-                "contract_version", "stage2g_canonical_fact_snapshot_v1"
-            ),
-            "sha256": manifest["inputs"]["canonical_fact_snapshot"]["sha256"],
-            "row_count": manifest["inputs"]["canonical_fact_snapshot"]["row_count"],
-        },
-    )
-    artifact = verify_artifacts(Path(result["run_dir"]))
+    runtime = tempfile.TemporaryDirectory(prefix="stage2g2-test-capsule-runtime-")
+    try:
+        runtime_db = build_temp_fact_db(snapshot_dir, Path(runtime.name) / "temporary_fact.duckdb")
+        result = run_formal(
+            output_root=run_root,
+            run_id=run_id,
+            fact_db=runtime_db,
+            registry_path=root / "market_data_snapshot_registry_v2.json",
+            market_mode="test_capsule",
+            market_fixture_root=root / MARKET_FIXTURE_DIR,
+            publish_reports=False,
+            fact_input_contract={
+                "logical_name": "canonical_fact_snapshot_v1/facts.json",
+                "schema_version": fact_input.get("contract_version", SNAPSHOT_CONTRACT),
+                "sha256": fact_input["sha256"],
+                "row_count": fact_input["row_count"],
+            },
+        )
+        artifact = verify_artifacts(Path(result["run_dir"]))
+    finally:
+        try:
+            runtime.cleanup()
+        except OSError as exc:
+            logger.warning(
+                "capsule runtime database cleanup failed; retained owned directory %s: %s",
+                runtime.name,
+                exc,
+            )
     return {
         "status": "pass",
         "mode": "test_capsule",

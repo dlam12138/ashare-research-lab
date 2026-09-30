@@ -392,9 +392,12 @@ def test_valid_capsule_reaches_runner_with_declared_fact_contract(
     captured: dict[str, Any] = {}
     stub_run_dir = tmp_path / "stub_run"
     stub_run_dir.mkdir()
+    capsule_cache = capsule_dir / "temporary_fact.duckdb"
+    cache_digest = _sha_of(capsule_cache)
 
     def fake_run_formal(**kwargs: Any) -> dict[str, Any]:
         captured.update(kwargs)
+        captured["runtime_db_present"] = Path(kwargs["fact_db"]).is_file()
         return {
             "run_dir": str(stub_run_dir),
             "manifest": {
@@ -415,7 +418,14 @@ def test_valid_capsule_reaches_runner_with_declared_fact_contract(
         "sha256": manifest["inputs"]["canonical_fact_snapshot"]["sha256"],
         "row_count": manifest["inputs"]["canonical_fact_snapshot"]["row_count"],
     }
-    assert captured["fact_db"] == capsule_dir / "temporary_fact.duckdb"
+    runtime_db = Path(captured["fact_db"])
+    assert runtime_db.name == capsule_cache.name
+    assert runtime_db != capsule_cache
+    assert capsule_dir not in runtime_db.parents
+    assert captured["runtime_db_present"] is True
+    assert not runtime_db.exists()
+    assert not runtime_db.parent.exists()
+    assert _sha_of(capsule_cache) == cache_digest
     assert captured["market_mode"] == "test_capsule"
     assert captured["publish_reports"] is False
 
