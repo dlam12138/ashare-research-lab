@@ -81,12 +81,11 @@ Every completed implementation task must report:
 - local/origin/remote synchronization
 - deviations, blockers, and unresolved risks
 - whether proceeding to the next stage is allowed
-## Astra/Luna 路由入口
+## 默认子任务执行器：DSH
 
 - 入口协议：[agent/agent.md](agent/agent.md)；路由说明：[agent/model-routing.md](agent/model-routing.md)。
-- Astra 负责规划、约束审查和独立验收；默认由一个 Luna worker 以 medium 执行有界实现。worker 不得递归派工。
-- 委派时显式指定 `gpt-5.6-luna` 与 `medium`，使用最小 fresh context；可用工具时传 `model=gpt-5.6-luna`、`reasoning_effort=medium`、`fork_turns=none`。命名 agent 不支持这些字段时，明确写出等价参数。
-- 同一问题连续两次修复失败，或出现语义/保护边界冲突，升级给父代理。验收依赖实际工具证据，不重复全量测试，也不只采信 worker 报告。
-- 交接与结果必须包含基线、写入路径、行为、测试、授权停止点、实际提交和证据；父代理完成规划审查与独立验收后再决定下一步。
-- 保持本文件原治理、用户授权和运行时权限；禁止静默回退到更昂贵模型。配置仅作用于后续委派：主任务须由用户在界面选择 Astra，配置不会热切当前任务；主线合并后新工作树继承，旧会话/工作树不会自动更新。
-- 本机制只提供规则与配置，不承诺硬权限隔离或真实 token 节省。
+- 按用户明确要求，默认子任务执行器为 DSH；父代理负责规划、确定 Goal、约束审查和独立验收，并在目标工作树通过 `dsh --profile headless` 委派一个有界 DSH 任务。
+- 交接必须包含分支与提交、Goal、允许与禁止范围、验证命令、授权停止点及回报格式，并使用最小充分上下文。DSH 不得递归派工；只有任务明确授权时才可修改指定文件，否则只读。
+- DSH 不可用、执行失败或同一问题连续两次修复失败时，向父代理报告；禁止静默改用 Luna 或其他模型替代。
+- 验收依赖实际工具证据，父代理保留 Git 操作与独立验收职责，不重复全量测试，也不只采信 DSH 的完成报告。
+- 保持本文件原有治理、用户授权（含长期合并授权）与运行时权限；路由规则仅作用于后续委派，不追溯改写历史执行记录，也不承诺硬权限隔离或真实 token 节省。

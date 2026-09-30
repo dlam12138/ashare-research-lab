@@ -5,11 +5,13 @@ from __future__ import annotations
 import csv
 import hashlib
 import json
+import os
 import shutil
+import tempfile
 from datetime import date
 from decimal import Decimal
 from pathlib import Path
-from typing import Any
+from typing import Any, Final
 
 import duckdb
 
@@ -30,6 +32,14 @@ MARKET_FILE = "market_rows.csv"
 CAPSULE_MANIFEST = "capsule_manifest.json"
 CAPSULE_SCHEMA_VERSION = "stage2g_test_capsule_v1"
 DETERMINISTIC_BUILD_TIME = "2026-08-02T00:00:00+08:00"
+CANONICAL_PORTABLE_OUTPUT_PATHS: Final[tuple[str, ...]] = (
+    f"canonical_fact_snapshot_v1/{CONTEXTS_FILE}",
+    f"canonical_fact_snapshot_v1/{FACTS_FILE}",
+    f"canonical_fact_snapshot_v1/{LINEAGE_FILE}",
+    f"canonical_fact_snapshot_v1/{SNAPSHOT_MANIFEST}",
+    f"{MARKET_FIXTURE_DIR}/{MARKET_FILE}",
+    "market_data_snapshot_registry_v2.json",
+)
 
 
 def _json_default(value: Any) -> Any:
@@ -245,54 +255,71 @@ def build_temp_fact_db(
         raise FileExistsError(f"refusing to overwrite existing temporary fact DB: {target}")
     snapshot = validate_snapshot(snapshot_dir)
     target.parent.mkdir(parents=True, exist_ok=True)
-    store = DuckDBStore(str(target))
-    repository = FactRepository(store)
-    repository.ensure_schema_v2(git_commit="stage2g-test-capsule")
-    connection = store.connect()
-    connection.execute(
-        "UPDATE fact_schema_meta SET applied_at = ? WHERE schema_name = 'financial_facts'",
-        [DETERMINISTIC_BUILD_TIME],
-    )
-    repository.store_contexts(snapshot["contexts"], conn=connection)
-    fact_columns = set(repository._FACT_COLS)
-    rows = []
-    for fact in snapshot["facts"]:
-        row = {key: fact.get(key, "") for key in fact_columns}
-        row["value"] = float(Decimal(str(fact["value_decimal"])))
-        rows.append(row)
-    repository.store_facts(rows, conn=connection)
-    for lineage in snapshot["lineage"]:
-        connection.execute(
-            """INSERT INTO fact_lineage
-               (lineage_id, fact_id, run_id, source_provider, source_tier,
-                source_method, raw_file_path, staging_file_path, fetch_run_id,
-                parent_fact_ids, role, reconciliation_rule_id,
-                reconciliation_rule_version, recorded_at)
-               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
-            [
-                lineage.get("lineage_id"),
-                lineage.get("fact_id", ""),
-                lineage.get("run_id", ""),
-                lineage.get("source_provider", ""),
-                lineage.get("source_tier", ""),
-                lineage.get("source_method", ""),
-                lineage.get("raw_file_path", ""),
-                lineage.get("staging_file_path", ""),
-                lineage.get("fetch_run_id", ""),
-                lineage.get("parent_fact_ids", ""),
-                lineage.get("role", ""),
-                lineage.get("reconciliation_rule_id", ""),
-                lineage.get("reconciliation_rule_version", ""),
-                lineage.get("recorded_at", ""),
-            ],
-        )
-    validate_canonical_fact_ids(rows)
-    results = VersionChainValidator(repository).validate(rows, conn=connection)
-    failed = [result.target_id for result in results if not result.passed]
-    if failed:
-        raise ValueError(f"temporary canonical version chain failed: {failed}")
-    connection.close()
-    store._conn = None
+    with tempfile.TemporaryDirectory(
+        dir=target.parent,
+        prefix=f".{target.name}.staging-",
+    ) as staging_dir:
+        staged_db = Path(staging_dir) / target.name
+        store = DuckDBStore(str(staged_db))
+        try:
+            repository = FactRepository(store)
+            repository.ensure_schema_v2(git_commit="stage2g-test-capsule")
+            connection = store.connect()
+            connection.execute(
+                "UPDATE fact_schema_meta SET applied_at = ? WHERE schema_name = 'financial_facts'",
+                [DETERMINISTIC_BUILD_TIME],
+            )
+            repository.store_contexts(snapshot["contexts"], conn=connection)
+            fact_columns = set(repository._FACT_COLS)
+            rows = []
+            for fact in snapshot["facts"]:
+                row = {key: fact.get(key, "") for key in fact_columns}
+                row["value"] = float(Decimal(str(fact["value_decimal"])))
+                rows.append(row)
+            repository.store_facts(rows, conn=connection)
+            for lineage in snapshot["lineage"]:
+                connection.execute(
+                    """INSERT INTO fact_lineage
+                       (lineage_id, fact_id, run_id, source_provider, source_tier,
+                        source_method, raw_file_path, staging_file_path, fetch_run_id,
+                        parent_fact_ids, role, reconciliation_rule_id,
+                        reconciliation_rule_version, recorded_at)
+                       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                    [
+                        lineage.get("lineage_id"),
+                        lineage.get("fact_id", ""),
+                        lineage.get("run_id", ""),
+                        lineage.get("source_provider", ""),
+                        lineage.get("source_tier", ""),
+                        lineage.get("source_method", ""),
+                        lineage.get("raw_file_path", ""),
+                        lineage.get("staging_file_path", ""),
+                        lineage.get("fetch_run_id", ""),
+                        lineage.get("parent_fact_ids", ""),
+                        lineage.get("role", ""),
+                        lineage.get("reconciliation_rule_id", ""),
+                        lineage.get("reconciliation_rule_version", ""),
+                        lineage.get("recorded_at", ""),
+                    ],
+                )
+            validate_canonical_fact_ids(rows)
+            results = VersionChainValidator(repository).validate(rows, conn=connection)
+            failed = [result.target_id for result in results if not result.passed]
+            if failed:
+                raise ValueError(f"temporary canonical version chain failed: {failed}")
+        finally:
+            store.close()
+
+        try:
+            os.link(staged_db, target)
+        except FileExistsError as exc:
+            raise FileExistsError(
+                f"refusing to overwrite existing temporary fact DB: {target}"
+            ) from exc
+        except OSError as exc:
+            raise OSError(
+                f"unable to publish temporary fact DB without overwrite: {target}"
+            ) from exc
     return target
 
 
@@ -436,14 +463,6 @@ def build_test_capsule(
     _write_stable(registry_path, market["registry"])
     temp_db = out / "temporary_fact.duckdb"
     build_temp_fact_db(snapshot_out, temp_db)
-    capsule_files = [
-        snapshot_out / FACTS_FILE,
-        snapshot_out / CONTEXTS_FILE,
-        snapshot_out / LINEAGE_FILE,
-        snapshot_out / SNAPSHOT_MANIFEST,
-        market_out / MARKET_FILE,
-        registry_path,
-    ]
     manifest = {
         "contract": CAPSULE_SCHEMA_VERSION,
         "generated_at": DETERMINISTIC_BUILD_TIME,
@@ -468,10 +487,10 @@ def build_test_capsule(
         },
         "outputs": [
             {
-                "relative_path": str(path.relative_to(out)).replace("\\", "/"),
-                "sha256": sha256_file(path),
+                "relative_path": relative_path,
+                "sha256": sha256_file(out / relative_path),
             }
-            for path in sorted(capsule_files, key=lambda item: str(item.relative_to(out)))
+            for relative_path in sorted(CANONICAL_PORTABLE_OUTPUT_PATHS)
         ],
         "real_input_separation": (
             "test-only synthetic and canonical export/read-model inputs; "
@@ -489,16 +508,38 @@ def build_test_capsule(
 def verify_capsule_manifest(capsule_dir: Path | str) -> dict[str, Any]:
     root = Path(capsule_dir)
     manifest = _read_json(root / CAPSULE_MANIFEST)
-    if manifest.get("contract") != CAPSULE_SCHEMA_VERSION:
+    if not isinstance(manifest, dict) or manifest.get("contract") != CAPSULE_SCHEMA_VERSION:
         raise ValueError("unsupported test capsule manifest")
-    for output in manifest.get("outputs", []):
-        relative = Path(output["relative_path"])
-        if relative.is_absolute() or ".." in relative.parts:
-            raise ValueError("capsule manifest contains an unsafe path")
-        path = root / relative
-        if not path.is_file() or sha256_file(path) != output["sha256"]:
-            raise ValueError(f"capsule artifact mismatch: {output['relative_path']}")
-    validate_snapshot(root / "canonical_fact_snapshot_v1")
+    outputs = manifest.get("outputs")
+    if not isinstance(outputs, list) or len(outputs) != len(CANONICAL_PORTABLE_OUTPUT_PATHS):
+        raise ValueError("capsule manifest outputs must contain the complete inventory")
+    inventory: dict[str, str] = {}
+    for output in outputs:
+        if not isinstance(output, dict) or set(output) != {"relative_path", "sha256"}:
+            raise ValueError("capsule manifest output entry has an invalid shape")
+        relative_path = output["relative_path"]
+        digest = output["sha256"]
+        if (
+            not isinstance(relative_path, str)
+            or relative_path in inventory
+            or relative_path not in CANONICAL_PORTABLE_OUTPUT_PATHS
+        ):
+            raise ValueError("capsule manifest contains an invalid or unexpected path")
+        if (
+            not isinstance(digest, str)
+            or len(digest) != 64
+            or any(character not in "0123456789abcdef" for character in digest)
+        ):
+            raise ValueError("capsule manifest output has an invalid SHA256")
+        inventory[relative_path] = digest
+    if set(inventory) != set(CANONICAL_PORTABLE_OUTPUT_PATHS):
+        raise ValueError("capsule manifest outputs are incomplete")
+    for relative_path, digest in inventory.items():
+        path = root / Path(relative_path)
+        if not path.is_file() or sha256_file(path) != digest:
+            raise ValueError(f"capsule artifact mismatch: {relative_path}")
+    snapshot = validate_snapshot(root / "canonical_fact_snapshot_v1")
+    _validate_capsule_inputs(root, manifest, snapshot)
     expected_digest = hashlib.sha256(
         json.dumps(
             {key: value for key, value in manifest.items() if key != "logical_digest"},
@@ -510,6 +551,88 @@ def verify_capsule_manifest(capsule_dir: Path | str) -> dict[str, Any]:
     if manifest.get("logical_digest") != expected_digest:
         raise ValueError("capsule manifest logical digest mismatch")
     return manifest
+
+
+def _validate_capsule_inputs(
+    root: Path, manifest: dict[str, Any], snapshot: dict[str, Any]
+) -> None:
+    if manifest.get("mode") != "test_capsule":
+        raise ValueError("capsule manifest mode must be test_capsule")
+    if manifest.get("network_used") is not False:
+        raise ValueError("capsule manifest network_used must be false")
+    if manifest.get("default_db_mutated") is not False:
+        raise ValueError("capsule manifest default_db_mutated must be false")
+
+    inputs = manifest.get("inputs")
+    if not isinstance(inputs, dict) or set(inputs) != {
+        "canonical_fact_snapshot",
+        "market_snapshot",
+    }:
+        raise ValueError("capsule manifest inputs must contain exactly the declared snapshots")
+
+    fact_input = inputs["canonical_fact_snapshot"]
+    market_input = inputs["market_snapshot"]
+    if not isinstance(fact_input, dict) or set(fact_input) not in (
+        {
+            "relative_path",
+            "sha256",
+            "row_count",
+            "authoritative",
+            "test_only",
+        },
+        {
+            "relative_path",
+            "sha256",
+            "row_count",
+            "authoritative",
+            "test_only",
+            "contract_version",
+        },
+    ):
+        raise ValueError("canonical fact input declaration has an invalid shape")
+    if not isinstance(market_input, dict) or set(market_input) != {
+        "relative_path",
+        "sha256",
+        "row_count",
+        "authoritative",
+        "test_only",
+    }:
+        raise ValueError("market input declaration has an invalid shape")
+
+    if fact_input["relative_path"] != "canonical_fact_snapshot_v1":
+        raise ValueError("canonical fact input declaration has an invalid path")
+    if market_input["relative_path"] != f"{MARKET_FIXTURE_DIR}/{MARKET_FILE}":
+        raise ValueError("market input declaration has an invalid path")
+    for name, declaration in (("canonical fact", fact_input), ("market", market_input)):
+        if declaration["authoritative"] is not False or declaration["test_only"] is not True:
+            raise ValueError(f"{name} input declaration has invalid test labels")
+        digest = declaration["sha256"]
+        if (
+            not isinstance(digest, str)
+            or len(digest) != 64
+            or any(character not in "0123456789abcdef" for character in digest)
+        ):
+            raise ValueError(f"{name} input declaration has an invalid SHA256")
+        if type(declaration["row_count"]) is not int or declaration["row_count"] < 0:
+            raise ValueError(f"{name} input declaration has an invalid row count")
+
+    if fact_input["sha256"] != snapshot["facts_sha256"]:
+        raise ValueError("canonical fact input hash does not match validated snapshot")
+    if fact_input["row_count"] != snapshot["row_count"]:
+        raise ValueError("canonical fact input row count does not match validated snapshot")
+    if "contract_version" in fact_input and fact_input["contract_version"] != SNAPSHOT_CONTRACT:
+        raise ValueError("canonical fact input contract version does not match snapshot")
+
+    market_path = root / MARKET_FIXTURE_DIR / MARKET_FILE
+    if market_input["sha256"] != sha256_file(market_path):
+        raise ValueError("market input hash does not match verified CSV")
+    try:
+        with market_path.open("r", encoding="utf-8", newline="") as handle:
+            market_count = sum(1 for _ in csv.DictReader(handle))
+    except (OSError, csv.Error) as exc:
+        raise ValueError("market input CSV cannot be read") from exc
+    if market_input["row_count"] != market_count:
+        raise ValueError("market input row count does not match verified CSV")
 
 
 def compare_capsules(left_dir: Path | str, right_dir: Path | str) -> dict[str, Any]:
