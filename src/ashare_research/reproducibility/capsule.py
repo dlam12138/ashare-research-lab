@@ -538,7 +538,8 @@ def verify_capsule_manifest(capsule_dir: Path | str) -> dict[str, Any]:
         path = root / Path(relative_path)
         if not path.is_file() or sha256_file(path) != digest:
             raise ValueError(f"capsule artifact mismatch: {relative_path}")
-    validate_snapshot(root / "canonical_fact_snapshot_v1")
+    snapshot = validate_snapshot(root / "canonical_fact_snapshot_v1")
+    _validate_capsule_inputs(root, manifest, snapshot)
     expected_digest = hashlib.sha256(
         json.dumps(
             {key: value for key, value in manifest.items() if key != "logical_digest"},
@@ -550,6 +551,88 @@ def verify_capsule_manifest(capsule_dir: Path | str) -> dict[str, Any]:
     if manifest.get("logical_digest") != expected_digest:
         raise ValueError("capsule manifest logical digest mismatch")
     return manifest
+
+
+def _validate_capsule_inputs(
+    root: Path, manifest: dict[str, Any], snapshot: dict[str, Any]
+) -> None:
+    if manifest.get("mode") != "test_capsule":
+        raise ValueError("capsule manifest mode must be test_capsule")
+    if manifest.get("network_used") is not False:
+        raise ValueError("capsule manifest network_used must be false")
+    if manifest.get("default_db_mutated") is not False:
+        raise ValueError("capsule manifest default_db_mutated must be false")
+
+    inputs = manifest.get("inputs")
+    if not isinstance(inputs, dict) or set(inputs) != {
+        "canonical_fact_snapshot",
+        "market_snapshot",
+    }:
+        raise ValueError("capsule manifest inputs must contain exactly the declared snapshots")
+
+    fact_input = inputs["canonical_fact_snapshot"]
+    market_input = inputs["market_snapshot"]
+    if not isinstance(fact_input, dict) or set(fact_input) not in (
+        {
+            "relative_path",
+            "sha256",
+            "row_count",
+            "authoritative",
+            "test_only",
+        },
+        {
+            "relative_path",
+            "sha256",
+            "row_count",
+            "authoritative",
+            "test_only",
+            "contract_version",
+        },
+    ):
+        raise ValueError("canonical fact input declaration has an invalid shape")
+    if not isinstance(market_input, dict) or set(market_input) != {
+        "relative_path",
+        "sha256",
+        "row_count",
+        "authoritative",
+        "test_only",
+    }:
+        raise ValueError("market input declaration has an invalid shape")
+
+    if fact_input["relative_path"] != "canonical_fact_snapshot_v1":
+        raise ValueError("canonical fact input declaration has an invalid path")
+    if market_input["relative_path"] != f"{MARKET_FIXTURE_DIR}/{MARKET_FILE}":
+        raise ValueError("market input declaration has an invalid path")
+    for name, declaration in (("canonical fact", fact_input), ("market", market_input)):
+        if declaration["authoritative"] is not False or declaration["test_only"] is not True:
+            raise ValueError(f"{name} input declaration has invalid test labels")
+        digest = declaration["sha256"]
+        if (
+            not isinstance(digest, str)
+            or len(digest) != 64
+            or any(character not in "0123456789abcdef" for character in digest)
+        ):
+            raise ValueError(f"{name} input declaration has an invalid SHA256")
+        if type(declaration["row_count"]) is not int or declaration["row_count"] < 0:
+            raise ValueError(f"{name} input declaration has an invalid row count")
+
+    if fact_input["sha256"] != snapshot["facts_sha256"]:
+        raise ValueError("canonical fact input hash does not match validated snapshot")
+    if fact_input["row_count"] != snapshot["row_count"]:
+        raise ValueError("canonical fact input row count does not match validated snapshot")
+    if "contract_version" in fact_input and fact_input["contract_version"] != SNAPSHOT_CONTRACT:
+        raise ValueError("canonical fact input contract version does not match snapshot")
+
+    market_path = root / MARKET_FIXTURE_DIR / MARKET_FILE
+    if market_input["sha256"] != sha256_file(market_path):
+        raise ValueError("market input hash does not match verified CSV")
+    try:
+        with market_path.open("r", encoding="utf-8", newline="") as handle:
+            market_count = sum(1 for _ in csv.DictReader(handle))
+    except (OSError, csv.Error) as exc:
+        raise ValueError("market input CSV cannot be read") from exc
+    if market_input["row_count"] != market_count:
+        raise ValueError("market input row count does not match verified CSV")
 
 
 def compare_capsules(left_dir: Path | str, right_dir: Path | str) -> dict[str, Any]:
