@@ -7,6 +7,7 @@
     ashare-research fetch-stock-daily     获取个股日线
     ashare-research fetch-index-daily     获取指数日线
     ashare-research inspect               查看已保存数据信息
+    ashare-research research              统一离线研究入口（report/facts/metrics/demo）
 """
 
 from __future__ import annotations
@@ -562,6 +563,62 @@ def cmd_query_value_facts(args: argparse.Namespace) -> int:
         store.close()
 
 
+# ── 统一离线研究入口 ──────────────────────────────────────────
+
+
+def cmd_research(args: argparse.Namespace) -> int:
+    """把旧解析器上的 research 路径转交给统一离线入口。"""
+    from ashare_research.tools import research_entry
+
+    arguments = list(getattr(args, "research_arguments", []) or [])
+    if arguments[:1] == ["--"]:
+        arguments = arguments[1:]
+    return research_entry.main(arguments)
+
+
+def _config_option(token: str) -> bool:
+    """全局 ``--config``（含 argparse 允许的无歧义缩写）会消费一个取值。"""
+    if token == "--" or not token.startswith("--"):
+        return False
+    return "--config".startswith(token.split("=", 1)[0])
+
+
+def _research_command_index(arguments: list[str]) -> int | None:
+    """返回 ``research`` 命令词的位置；不是研究调用时返回 ``None``。
+
+    只检查第一个位置参数：其它命令或 ``--`` 结束符都留给旧解析器。全局
+    ``--config`` 会消费一个取值，所以 ``--config research`` 不会被误判为研究调用。
+    """
+    position = 0
+    while position < len(arguments):
+        token = arguments[position]
+        if token == "--":
+            return None
+        if token == "research":
+            return position
+        if _config_option(token):
+            position += 1 if "=" in token else 2
+            continue
+        if token.startswith("-"):
+            position += 1
+            continue
+        return None
+    return None
+
+
+def _dispatch_research(position: int, arguments: list[str]) -> int:
+    """在旧配置、日志与服务初始化之前分派统一离线研究入口。
+
+    全局 ``--config``/``--debug`` 对离线入口没有作用，组合出现时按用法错误拒绝，
+    而不是静默忽略。
+    """
+    from ashare_research.tools import research_entry
+
+    if position:
+        return research_entry.reject_global_options(arguments[:position])
+    return research_entry.main(arguments[1:])
+
+
 def main(
     argv: list[str] | None = None,
     *,
@@ -575,7 +632,16 @@ def main(
     calls pass ``None`` and the default :func:`create_fact_service` is
     used; the validator, repository transaction, manifest, and
     exit-code logic are never replaced.
+
+    The ``research`` command is dispatched before the legacy parser,
+    config loading, logging setup and service creation run, so the
+    offline entry never initializes the legacy data stack.
     """
+    arguments = list(sys.argv[1:] if argv is None else argv)
+    research_position = _research_command_index(arguments)
+    if research_position is not None:
+        return _dispatch_research(research_position, arguments)
+
     parser = argparse.ArgumentParser(
         prog="ashare-research",
         description="A股研究平台 — 免费数据底座",
@@ -713,7 +779,24 @@ def main(
     )
     p_qvf.set_defaults(func=cmd_query_value_facts)
 
-    args = parser.parse_args(argv)
+    # research（可发现条目；真实分派在解析全局参数之前完成）
+    p_research = subparsers.add_parser(
+        "research",
+        help="统一离线研究入口 (report/facts/metrics/demo)",
+        description=(
+            "统一离线研究入口：report、facts、metrics、demo 四个既有离线工作流。"
+            "真实分派在解析全局参数之前完成，不加载配置、不初始化日志或数据服务；"
+            "全局 --config/--debug 与 research 组合会以退出码 2 拒绝。"
+        ),
+    )
+    p_research.add_argument(
+        "research_arguments",
+        nargs=argparse.REMAINDER,
+        help="子命令与对应工具的原始参数（原样转发）",
+    )
+    p_research.set_defaults(func=cmd_research)
+
+    args = parser.parse_args(arguments)
 
     if service_factory is not None:
         args._service_factory = service_factory
