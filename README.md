@@ -23,6 +23,7 @@
 | M4-EIA-PIT 离线进度检查 | 已实现（只读、离线、固定路径诊断） | `python agent/tools/check_m4_progress.py`（`--json` 可选） | 只复核冻结的 EIA 传输/PIT 元数据证据；不联网、不写文件、不读取原始观测值或凭据；不构成完整 K2 或全项目就绪结论，也不授权研究或执行 | [工具](agent/tools/check_m4_progress.py)、[测试](tests/test_m4_progress_check.py) |
 | M4 合成演示 CLI | 已实现（离线、仅合成、固定样例） | `python -m ashare_research.synthetic_demo`（`--json` 可选） | 只跑固定的虚构 24 行示例；没有输入/配置/seed/provider/数据库/输出路径/注册表参数；合成演示不等于真实研究授权 | [模块](src/ashare_research/synthetic_demo.py)、[测试](tests/test_m4_synthetic_demo_cli.py) |
 | M2 离线研究包 | 已实现（固定来源汇编、离线、无新计算） | `python -m ashare_research.tools.value_research_bundle`（`--json`、`--output NEW_DIR`、`--verify DIR`） | 只汇编九个固定基线报告：混合日期历史汇编，不是统一 PIT 查询或研究刷新；无总体评分、排名、资格或建议；缺失证据不视为 0 或负面结论 | [模块](src/ashare_research/tools/value_research_bundle.py)、[测试](tests/test_value_research_bundle.py) |
+| M2 既有指标 PIT 重放 | 已实现（离线只读、内存重放既有七个指标） | 下方 `python -m ashare_research.tools.pit_metric_replay` | 只用既有已批准定义，无新公式/评分/排名/建议；缺失保持缺失；重放不是发布 | [模块](src/ashare_research/tools/pit_metric_replay.py)、[测试](tests/test_pit_metric_replay.py) |
 | M4-B 理论/假设注册表 | 最小元数据 API 已实现（仅合成/schema 校验） | `ashare_research.mechanism.registry` 的 `parse_hypothesis_record(document)`、显式状态转换与有界快照入口 | 不创建或加载真实候选数据集，不采集文献，不访问 provider、数据库、真实行情或 holdout；真实假设执行仍未授权 | [设计](docs/m4b_hypothesis_registry_design_v1.md)、[验收场景](docs/m4b_hypothesis_registry_acceptance_cases_v1.md)、[实现测试](tests/test_m4b_hypothesis_registry.py)、[实现验收](acceptance/2026-09-12_m4b_hypothesis_registry_implementation.md)、[冻结前置合同](reports/m4_stage4p_m4b_hypothesis_registry_contract_v1.json) |
 
 ### 研究结论与边界
@@ -334,6 +335,57 @@ python -m ashare_research.tools.pit_fact_explorer --as-of 2024-03-31 --compare-w
   工具自己创建的部分目录；工具会报错并保留现场，不删除用户目录。
 - 该快照只有 `601857.SH`、5 个概念，且只有 `consolidated` 口径；`--scope parent_company`
   会如实返回空结果，不回退到合并口径或更晚时点。
+
+## M2 既有指标 PIT 重放（离线、内存、不发布）
+
+用仓库中**既有已批准**的七个指标定义与既有内存引擎，在两个查询时点各自独立通过公开 PIT
+门禁的规范事实上重放年度指标，给出输入角色追踪与两时点对比：
+
+```powershell
+python -m ashare_research.tools.pit_metric_replay --as-of 2024-03-31
+python -m ashare_research.tools.pit_metric_replay --as-of 2024-03-31 --compare-with 2025-03-31 --year 2023 --json
+python -m ashare_research.tools.pit_metric_replay --as-of 2024-03-31 --compare-with 2025-03-31 --year 2023 --output tmp/m2-pit-metric-replay
+python -m pytest -q tests/test_pit_metric_replay.py
+```
+
+- 七个指标全部来自既有注册表，没有新公式：`MetricDefinitionRegistry` 4 个
+  （`revenue_yoy`、`net_profit_attributable_to_parent_yoy`、`operating_cash_flow_yoy`、
+  `operating_cash_flow_to_attributable_net_profit`）、`CashFlowMetricDefinitionRegistry` 2 个
+  （`cash_based_free_cash_flow_proxy`、`cash_paid_for_fixed_assets_to_revenue`）、
+  `CapitalReturnMetricDefinitionRegistry` 1 个
+  （`return_on_average_equity_attributable_to_parent`）；`metric_id` 是既有引擎身份，
+  不是新版本准入。
+- `--as-of` 必填；`--compare-with` 可选且不得早于 `--as-of`；`--year 2021..2025` 与
+  `--metric`（仅上述七个）可重复；`--scope consolidated|parent_company`；默认 Markdown，
+  `--json` 与 `--output NEW_DIR` 互斥。默认年度 2021–2025、默认全部七个指标，结果确定性排序，
+  不含运行时刻或隐式今天。
+- 事实选择完全走公开 PIT 门禁（`available_at` 非空且 `<= as-of`、verification 通过、
+  `eligible_for_metrics`），金额按选中 `fact_id` 还原 `value_decimal` 为 `Decimal`；
+  指标只在内存中经既有 `MetricEngine.compute` 重放，不写 MetricRepository 或任何数据库，
+  不联网、不读调用方数据库、不修改既有文件。
+- **缺失保持缺失**：缺失角色按角色/概念/年度逐条给出 `missing_roles` 与
+  `missing_fiscal_years`；2021 年三个同比指标的 FY2020 期初缺失记为
+  `insufficient_history`，其 `input_available_at_bound` 仍是已知输入可得性上界
+  `2022-04-01`；最早可得日 `2022-04-01` 之前没有任何输入时上界为 `null`；
+  `--scope parent_company` 如实返回空选择与 missing_input，不回退到合并口径或更晚时点；
+  未来事实永不进入选择。
+- **这不是发布**：`created_at` 只收到固定标记 `offline-replay-not-a-publication-time`；
+  `revision_review_status` 恒为 `offline_replay_unreviewed`；`result_version=1` 表示本读取模型，
+  不是已存储历史指标版本；`input_available_at_bound` 是输入可得性上界，**不是**指标发布时间。
+  七个指标都不评分、不排名、不给建议；现金口径自由现金流代理只是**现金代理**，
+  ROE 沿用既有年度平均归母权益约定，二者都不是估值、TTM 或 ROIC 结论。
+- **保留快照缺口**：输入只有 `tests/fixtures/stage2g/canonical_fact_snapshot_v1`
+  （33 条事实、5 个概念、`601857.SH`、只有 `consolidated` 口径）；lineage 的 66 个
+  `parent_fact_ids` 全部不在快照内，公司/交易所原始披露证据无法复原；`available_at` 取自
+  固定快照本身，不重新证明原始可得性；`created_at`/`recorded_at` 是本地存储元数据，
+  不是可得性证据；期间上下文日期不一定对应当前重述版本。
+- `--output NEW_DIR` 只写入**新目录**的 `report.md`、`report.json`、`manifest.json`
+  （清单含渲染文件哈希、四个来源摘要、选择集与对比状态）。工具在自有的临时目录内重建临时
+  DuckDB 并在清理前关闭连接，不写默认数据库；读取、校验与渲染全部完成后才用排他 `mkdir`
+  认领输出根，已存在的文件/目录/符号链接一律拒绝且保持原样。晚期磁盘写入失败可能留下工具
+  自己创建的部分目录：工具报错并保留现场，不删除用户目录。
+- 已知失败（来源缺失/摘要不符、快照契约不符、非法日期/对比顺序/年度/指标/口径、输出已存在、
+  写入失败）退出码 **2**，只向 stderr 输出净化后的稳定错误码，stdout 为空。
 
 ## 数据获取与离线复现
 
