@@ -22,6 +22,7 @@
 | M4-A.2P 端到端编排 | 已实现（仅合成、纯内存）；真实执行未授权 | 下方 `run_synthetic_pipeline(request=...)` 与 [合成测试](tests/test_m4_synthetic_pipeline_orchestrator.py)；调用者按两遍协议提供 `config` 与 `bound_inputs` | 只编排已验证合成输入；请求类型无 holdout、真实数据、provider、数据库、路径或 seed 字段；不做质量修补、排序、选择、注册表状态转换或真实研究结论；跑通合成链**不等于**研究授权 | [设计](docs/m4_synthetic_end_to_end_pipeline_design_v1.md)、[验收案例](docs/m4_synthetic_end_to_end_pipeline_acceptance_cases_v1.md)、[实现验收](acceptance/2026-09-13_m4_synthetic_pipeline_post_ac05_acceptance.md) |
 | M4-EIA-PIT 离线进度检查 | 已实现（只读、离线、固定路径诊断） | `python agent/tools/check_m4_progress.py`（`--json` 可选） | 只复核冻结的 EIA 传输/PIT 元数据证据；不联网、不写文件、不读取原始观测值或凭据；不构成完整 K2 或全项目就绪结论，也不授权研究或执行 | [工具](agent/tools/check_m4_progress.py)、[测试](tests/test_m4_progress_check.py) |
 | M4 合成演示 CLI | 已实现（离线、仅合成、固定样例） | `python -m ashare_research.synthetic_demo`（`--json` 可选） | 只跑固定的虚构 24 行示例；没有输入/配置/seed/provider/数据库/输出路径/注册表参数；合成演示不等于真实研究授权 | [模块](src/ashare_research/synthetic_demo.py)、[测试](tests/test_m4_synthetic_demo_cli.py) |
+| M2 离线研究包 | 已实现（固定来源汇编、离线、无新计算） | `python -m ashare_research.tools.value_research_bundle`（`--json`、`--output NEW_DIR`、`--verify DIR`） | 只汇编九个固定基线报告：混合日期历史汇编，不是统一 PIT 查询或研究刷新；无总体评分、排名、资格或建议；缺失证据不视为 0 或负面结论 | [模块](src/ashare_research/tools/value_research_bundle.py)、[测试](tests/test_value_research_bundle.py) |
 | M4-B 理论/假设注册表 | 最小元数据 API 已实现（仅合成/schema 校验） | `ashare_research.mechanism.registry` 的 `parse_hypothesis_record(document)`、显式状态转换与有界快照入口 | 不创建或加载真实候选数据集，不采集文献，不访问 provider、数据库、真实行情或 holdout；真实假设执行仍未授权 | [设计](docs/m4b_hypothesis_registry_design_v1.md)、[验收场景](docs/m4b_hypothesis_registry_acceptance_cases_v1.md)、[实现测试](tests/test_m4b_hypothesis_registry.py)、[实现验收](acceptance/2026-09-12_m4b_hypothesis_registry_implementation.md)、[冻结前置合同](reports/m4_stage4p_m4b_hypothesis_registry_contract_v1.json) |
 
 ### 研究结论与边界
@@ -253,6 +254,32 @@ python -m ashare_research.synthetic_demo --json
 为空，也不绑定任何 M4-B 注册记录。解析错误退出码 2；已知校验失败只输出净化后的错误码
 （退出码 1），不输出结果、原始值或 traceback。合成演示只是软件演示：跑通合成链不等于真实
 研究授权，也不构成统计显著、经济有效、可交易或任何 A 股机制结论。
+
+## M2 离线研究包（固定来源汇编、离线、无新计算）
+
+把中石油（`601857.SH`）已冻结的九个基线报告汇编为一份可读 Markdown 与规范 JSON，
+并可导出带源附件与校验清单的离线包：
+
+```powershell
+python -m ashare_research.tools.value_research_bundle
+python -m ashare_research.tools.value_research_bundle --json
+python -m ashare_research.tools.value_research_bundle --output tmp/m2-research-bundle
+python -m ashare_research.tools.value_research_bundle --verify tmp/m2-research-bundle
+```
+
+- 默认输出中文 Markdown（来源日期、价值画像、PIT 财务状态时间线、TTM/MRQ 估值分位、
+  非生产影子维度、PE 暂缓决定、风险观测、全部 18 条缺口、非生产边界，附原报告叙事）；
+  `--json` 输出规范 JSON。
+- `--output NEW_DIR` 只写入**新目录**：`report.md`、`report.json`、
+  `sources/reports/<九个原始报告>`、`manifest.json`。源附件是原报告的逐字字节副本；
+  已存在的路径（含符号链接）一律拒绝，导出前先完成全部读取与渲染。
+- `--verify DIR` 只依据包内保留的源附件重新渲染并逐字节比对报告与清单，
+  不信任清单里记录的哈希，也不依赖当前仓库中的报告文件。
+- 这是**混合日期的历史汇编**：原始日期与十进制原样保留，日期字段分别按来源列示，
+  既不是统一 as-of 时点的 PIT 查询，也不是研究刷新。没有总体评分、排名、资格判定或建议，
+  不产生任何新指标；源哈希只证明附件完整性。
+- 已知失败（缺来源、哈希不符、输出已存在、包被篡改等）退出码 1，只向 stderr 输出净化后的
+  错误码，stdout 为空；本工具不联网、不读数据库、不读凭据、不修改任何既有报告。
 
 ## 数据获取与离线复现
 
