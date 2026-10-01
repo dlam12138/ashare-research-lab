@@ -21,6 +21,7 @@
 | M4-A.2E 有界执行 | 已实现（仅合成 fixture）；真实执行未授权 | 下方 `execute_bounded_analysis(matrix, preparation, contract, plan, bound_inputs)` 与合成测试 | 只在已验证合成 fixture 上计算 OLS/bootstrap/处置；无 provider、数据库、holdout 或 M4-B；注册稳健性只派遣不计算 | [设计](docs/m4_bounded_execution_and_evidence_design_v1.md)、[验收案例](docs/m4_bounded_execution_acceptance_cases_v1.md)、[执行测试](tests/test_m4_bounded_execution.py)、[实现验收](acceptance/2026-09-12_m4_bounded_execution_implementation.md) |
 | M4-A.2P 端到端编排 | 已实现（仅合成、纯内存）；真实执行未授权 | 下方 `run_synthetic_pipeline(request=...)` 与 [合成测试](tests/test_m4_synthetic_pipeline_orchestrator.py)；调用者按两遍协议提供 `config` 与 `bound_inputs` | 只编排已验证合成输入；请求类型无 holdout、真实数据、provider、数据库、路径或 seed 字段；不做质量修补、排序、选择、注册表状态转换或真实研究结论；跑通合成链**不等于**研究授权 | [设计](docs/m4_synthetic_end_to_end_pipeline_design_v1.md)、[验收案例](docs/m4_synthetic_end_to_end_pipeline_acceptance_cases_v1.md)、[实现验收](acceptance/2026-09-13_m4_synthetic_pipeline_post_ac05_acceptance.md) |
 | M4-EIA-PIT 离线进度检查 | 已实现（只读、离线、固定路径诊断） | `python agent/tools/check_m4_progress.py`（`--json` 可选） | 只复核冻结的 EIA 传输/PIT 元数据证据；不联网、不写文件、不读取原始观测值或凭据；不构成完整 K2 或全项目就绪结论，也不授权研究或执行 | [工具](agent/tools/check_m4_progress.py)、[测试](tests/test_m4_progress_check.py) |
+| M4 合成演示 CLI | 已实现（离线、仅合成、固定样例） | `python -m ashare_research.synthetic_demo`（`--json` 可选） | 只跑固定的虚构 24 行示例；没有输入/配置/seed/provider/数据库/输出路径/注册表参数；合成演示不等于真实研究授权 | [模块](src/ashare_research/synthetic_demo.py)、[测试](tests/test_m4_synthetic_demo_cli.py) |
 | M4-B 理论/假设注册表 | 最小元数据 API 已实现（仅合成/schema 校验） | `ashare_research.mechanism.registry` 的 `parse_hypothesis_record(document)`、显式状态转换与有界快照入口 | 不创建或加载真实候选数据集，不采集文献，不访问 provider、数据库、真实行情或 holdout；真实假设执行仍未授权 | [设计](docs/m4b_hypothesis_registry_design_v1.md)、[验收场景](docs/m4b_hypothesis_registry_acceptance_cases_v1.md)、[实现测试](tests/test_m4b_hypothesis_registry.py)、[实现验收](acceptance/2026-09-12_m4b_hypothesis_registry_implementation.md)、[冻结前置合同](reports/m4_stage4p_m4b_hypothesis_registry_contract_v1.json) |
 
 ### 研究结论与边界
@@ -233,6 +234,25 @@ encoded = serialize_pipeline_result(result)  # UTF-8、排序键、紧凑 JSON�
 ```powershell
 python -m pytest -q tests/test_m4_synthetic_pipeline_orchestrator.py
 ```
+
+## M4 合成演示 CLI（离线、固定样例）
+
+不写任何调用代码即可跑通五个已冻结合成阶段；命令固定使用一个明确虚构的 24 行日频示例：
+
+```powershell
+python -m ashare_research.synthetic_demo
+python -m ashare_research.synthetic_demo --json
+```
+
+默认输出可读摘要：模式、行数与观测数、已完成阶段、`pipeline_digest`，以及执行器逐字的
+`SYNTHETIC_TEST_ONLY` 解释边界。`--json` 原样写出既有 `serialize_pipeline_result` 的规范
+序列化字节（排序键、紧凑 JSON、恰一个结尾换行）。
+
+命令只有 `--json` 与帮助参数：没有输入、配置、种子、provider、数据库、输出路径或注册表
+参数；模块自身不访问文件、网络、数据库或环境，固定配置显式关闭 bootstrap 且稳健性注册表
+为空，也不绑定任何 M4-B 注册记录。解析错误退出码 2；已知校验失败只输出净化后的错误码
+（退出码 1），不输出结果、原始值或 traceback。合成演示只是软件演示：跑通合成链不等于真实
+研究授权，也不构成统计显著、经济有效、可交易或任何 A 股机制结论。
 
 ## 数据获取与离线复现
 
