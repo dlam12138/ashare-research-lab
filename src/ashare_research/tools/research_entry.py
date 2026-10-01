@@ -1,11 +1,12 @@
 """统一离线研究入口。
 
-四个既有离线工作流通过同一个顶层命令暴露：
+既有离线工作流及完整研究档案通过同一个顶层命令暴露：
 
     ashare-research research report   固定来源价值研究包 (value_research_bundle)
     ashare-research research facts    指定时点财务事实浏览器 (pit_fact_explorer)
     ashare-research research metrics  既有指标 PIT 重放 (pit_metric_replay)
     ashare-research research demo     冻结的合成机制演示 (synthetic_demo)
+    ashare-research research session  完整研究档案及复核 (research_session)
 
 本模块只做命令选择、帮助与惰性转发：每个子命令的参数列表原样交给对应模块既有的
 ``main(argv)``。参数校验、渲染、输出路径保护与错误码全部由既有工具实现负责；这里不复制
@@ -41,6 +42,15 @@ class ResearchCommand:
 
 
 COMMANDS: tuple[ResearchCommand, ...] = (
+    ResearchCommand(
+        "session",
+        "ashare_research.tools.research_session",
+        "完整研究档案及复核",
+        (
+            "--as-of YYYY-MM-DD [查询参数] --output NEW_DIR",
+            "--verify DIR（使用已安装的兼容固定基线与代码复核）",
+        ),
+    ),
     ResearchCommand(
         "report",
         "ashare_research.tools.value_research_bundle",
@@ -81,7 +91,7 @@ def _usage_text() -> str:
     lines = [
         f"usage: {PROG} <command> [tool arguments...]",
         "",
-        "统一离线研究入口：四个既有离线工作流，参数原样转发给各自工具的 main(argv)。",
+        "统一离线研究入口：既有工作流与完整档案，参数原样转发给各自工具的 main(argv)。",
         "",
         "commands:",
     ]
@@ -97,9 +107,10 @@ def _usage_text() -> str:
             f"  {PROG} facts --help",
             f"  {PROG} metrics --help",
             f"  {PROG} demo --help",
+            f"  {PROG} session --help",
             "",
             "离线边界：入口不加载配置、不初始化日志或数据服务、不联网、不写默认数据库；",
-            "四个子命令只读取仓库内固定报告、固定规范快照或纯合成输入，不获取新数据，",
+            "子命令只读取仓库内固定报告、固定规范快照或纯合成输入，不获取新数据，",
             "也不产生评分、排名、建议或研究结论。",
             "全局 --config/--debug 与 research 组合会以退出码 2 拒绝，而不是静默忽略。",
         ]

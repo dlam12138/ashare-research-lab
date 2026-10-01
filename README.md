@@ -239,7 +239,7 @@ python -m pytest -q tests/test_m4_synthetic_pipeline_orchestrator.py
 
 ## 统一离线研究入口（`ashare-research research`）
 
-四个既有离线工作流通过同一个顶层入口暴露，参数原样转发给各自工具的 `main(argv)`：
+既有离线工作流与完整研究档案通过同一个顶层入口暴露，参数原样转发给各自工具的 `main(argv)`：
 `report` → `value_research_bundle`、`facts` → `pit_fact_explorer`、`metrics` →
 `pit_metric_replay`、`demo` → `synthetic_demo`：
 
@@ -253,6 +253,9 @@ ashare-research research metrics --as-of 2024-03-31 --compare-with 2025-03-31 --
 ashare-research research metrics --as-of 2024-03-31 --compare-with 2025-03-31 --year 2023 `
   --output tmp/m2-unified-research-entry
 ashare-research research demo --json
+ashare-research research session --as-of 2024-03-31 --compare-with 2025-03-31 --year 2023 `
+  --output tmp/m2-research-session
+ashare-research research session --verify tmp/m2-research-session
 ```
 
 - 入口自身不加载配置、不初始化日志或数据服务，也不联网；真实分派发生在旧全局参数解析
@@ -266,6 +269,28 @@ ashare-research research demo --json
   `tests/fixtures/stage2g/canonical_fact_snapshot_v1`（`601857.SH`、33 条事实、只有
   `consolidated` 口径，未来事实永不入选）；`demo` 只运行固定的虚构 24 行合成示例。
   四个子命令都不获取新数据、不写默认数据库，也不产生评分、排名、建议或研究结论。
+
+## 一次生成完整研究档案
+
+`research session` 将价值报告、历史事实查询与指标重放组合为一个新目录，共 24 个文件。
+`index.md` 是阅读入口，链接到 `value/` 的固定报告与九个原始附件、`facts/` 的时点事实和
+对比、`metrics/` 的既有指标重放。`snapshot/` 保留四个字节不变的规范快照文件，根清单记录
+23 个文件的长度与 SHA256，各子工具清单也保留。使用相同参数会生成相同文件字节。
+
+导出需显式提供 `--as-of` 和 `--output NEW_DIR`，可选 `--compare-with`、重复 `--year`、
+重复 `--metric` 和 `--scope`；这些指标选择沿用原有七个指标。事实部分保留该口径全部
+可用事实，年度或指标筛选只作用于指标部分。已存在的目录、文件或符号链接会被拒绝；
+输入或来源校验失败不创建输出目录，写盘阶段的 IO 失败可能留下本工具已经创建的部分输出。
+
+`--verify DIR` 不接受查询参数。它从档案清单读取并验证查询条件，使用已安装的兼容固定
+仓库基线和指标定义重新生成整份档案，逐字节比较全部文件和完整清单；因此仅修改报告后
+重算清单校验和仍会失败。复核拒绝缺失、额外文件和符号链接，移动档案目录后仍可复核。
+它证明固定基线下的完整性与可复现性，不提供数字签名或历史发布时间证明。
+
+价值部分仍是混合日期历史汇编，不能当作统一时点结论；事实和指标才按查询日期分别选择。
+快照仍只有中石油 33 条事实，66 个原始父记录缺失；留存的可用日期未重新证明。指标重放
+不是已发布的历史指标版本，现金自由流仍为代理指标，ROE 沿用既有年度平均权益约定。
+档案不补齐上述证据缺口，也不新增数据采集、评分、建议或真实研究执行。
 
 ## M4 合成演示 CLI（离线、固定样例）
 
