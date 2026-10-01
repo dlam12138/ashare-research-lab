@@ -292,6 +292,24 @@ ashare-research research session --verify tmp/m2-research-session
 不是已发布的历史指标版本，现金自由流仍为代理指标，ROE 沿用既有年度平均权益约定。
 档案不补齐上述证据缺口，也不新增数据采集、评分、建议或真实研究执行。
 
+## 已复核档案的研究速览
+
+```powershell
+ashare-research research review --session tmp/m2-research-session
+ashare-research research review --session tmp/m2-research-session --json
+ashare-research research review --session tmp/m2-research-session --output tmp/m2-research-review
+ashare-research research session --verify tmp/m2-research-review/session
+```
+
+`review` 先复核完整档案，再整理各时点的年度指标表、原有重述对比状态和缺失角色年度。
+小数文本、单位、状态、输入事实 ID、引擎结果 ID 和输入日期上界全部原样保留，不舍入、
+不换算百分数、不产生新公式或研究结论。Markdown 默认输出，`--json` 与 `--output` 互斥。
+导出目录包含 `review.md`、`review.json`、完整不变的 `session/` 及外层完整性清单，共27文件；
+速览相对链接指向随附证据，移动目录后嵌套档案仍可按原命令复核。外层清单仅为文件完整性
+目录，不提供新的真实性证明。已有路径拒绝覆盖，输入损坏不创建最终输出目录；写盘失败
+可能保留工具已创建的部分输出。默认终端输出只列证据文件名，完整可点击证据使用导出模式。
+价值汇编的混合日期、历史发布未证明、33事实/66缺失父记录等边界继续保留。
+
 ## M4 合成演示 CLI（离线、固定样例）
 
 不写任何调用代码即可跑通五个已冻结合成阶段；命令固定使用一个明确虚构的 24 行日频示例：
