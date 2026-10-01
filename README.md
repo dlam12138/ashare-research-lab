@@ -281,6 +281,60 @@ python -m ashare_research.tools.value_research_bundle --verify tmp/m2-research-b
 - 已知失败（缺来源、哈希不符、输出已存在、包被篡改等）退出码 1，只向 stderr 输出净化后的
   错误码，stdout 为空；本工具不联网、不读数据库、不读凭据、不修改任何既有报告。
 
+## M2 指定时点财务事实浏览器（离线、固定快照）
+
+按指定 as-of 日期选择**最新可得**财务事实，并可对比两个时点的版本/重述差异：
+
+```powershell
+python -m ashare_research.tools.pit_fact_explorer --as-of 2024-03-31
+python -m ashare_research.tools.pit_fact_explorer --as-of 2024-03-31 --json
+python -m ashare_research.tools.pit_fact_explorer --as-of 2024-03-31 --compare-with 2025-03-31 `
+  --concept net_profit_attributable_to_parent --period-end 2023-12-31
+python -m ashare_research.tools.pit_fact_explorer --as-of 2024-03-31 --compare-with 2025-03-31 `
+  --concept net_profit_attributable_to_parent --period-end 2023-12-31 --output tmp/m2-pit-fact-comparison
+```
+
+- 输入只有仓库内已提交的固定规范快照 `tests/fixtures/stage2g/canonical_fact_snapshot_v1`
+  （33 条事实、5 个概念、`601857.SH`，四个来源文件 SHA256 固定 pin）。不读调用方数据库、
+  不联网、不获取新数据、不修改默认数据库或任何既有文件。
+- `--as-of` 必填（`YYYY-MM-DD`）；`--compare-with` 可选且不得早于 `--as-of`；`--concept`
+  可重复（未知概念一律拒绝）；`--period-end` 与 `--scope consolidated|parent_company` 可选。
+  默认输出中文 Markdown，`--json` 输出规范 JSON，二者与 `--output NEW_DIR` 互斥。
+- 选择完全走公开 PIT 门禁（`validate_snapshot` / `build_temp_fact_db` 在工具自有的临时
+  目录中重建临时 DuckDB，清理前先关闭连接，再用 `FactRepository` /
+  `AsOfQuery.get_latest_available`）：`available_at` 非空且 `<= as-of`、verification 通过、
+  `eligible_for_metrics`，未来事实永不进入选择，也不会静默默认为今天。
+- 金额一律按选中的 `fact_id` 从快照还原原始 `value_decimal` 精确十进制字符串；比较使用
+  `Decimal` 数值相等，不经过引擎 DOUBLE，也不做任何浮点财务算术。对比状态区分
+  新增/移除/数值变更（重述）/版本变更（值未变）/未变，并给出前后 `fact_id`。
+- 报告如实给出请求、四个来源摘要、PIT 选择表、两时点对比表与来源追踪（原始单位/日期、
+  上下文、lineage、父事实 ID）。输出稳定、不含运行时刻或当前日期。
+- `--output NEW_DIR` 只写入**新目录**：`report.md`、`report.json`、`manifest.json`。
+  全部读取、校验与渲染都在创建输出根之前完成；输出根用排他 `mkdir` 认领，已存在路径
+  （含符号链接与普通文件）一律拒绝且保持原样。`manifest.json` 记录渲染文件哈希、
+  四个来源摘要与被选中的请求/事实 ID。
+- 已知失败（来源缺失/摘要不符、快照契约不符、非法日期、非法口径、未知概念、
+  `--compare-with` 早于 `--as-of`、输出已存在、写入失败）退出码 **2**，只向 stderr 输出
+  净化后的稳定错误码，stdout 为空；不产生新指标、评分、排名、资格或研究阶段结论。
+
+### 来源与证据限制
+
+- 快照只保留 33 条已对账事实及其直接 lineage；lineage 里的 66 个 `parent_fact_ids`
+  **全部不在快照内**，公司/交易所原始披露证据无法在本工具内复原。工具对每个父事实显式
+  标记"未解决"，不伪造完整原始证据，也不声称重新证明了原始可得性。
+- 两个查询时点分别追踪各自选中事实的父事实；父事实只有在快照内保留、且在对应时点
+  通过公开 PIT 门禁时才算解决，未来父事实保持未解决。JSON 同时保留 `selections`
+  和 `compare_selections`，以及原始事实级来源字段、缺失的 URL/摘要/页码/表名。
+- 上下文是期间级元数据，其中披露日期和文档不一定对应当前重述版本，不能替代事实级来源。
+- `available_at` 取自固定快照本身，工具只按门禁使用它、不重新验证该日期；`created_at` /
+  `recorded_at` 是本地存储元数据（本快照为 2026 年），**不是可得性证据**。
+- 快照是规范导出/读取模型（"canonical export/read model; not a new source of truth"），
+  不是新的真值来源；本工具不做数据获取、来源准入或默认数据库读写。
+- 导出清单供核对文件字节与来源摘要；未附原始披露文件。晚期磁盘写入失败可能留下
+  工具自己创建的部分目录；工具会报错并保留现场，不删除用户目录。
+- 该快照只有 `601857.SH`、5 个概念，且只有 `consolidated` 口径；`--scope parent_company`
+  会如实返回空结果，不回退到合并口径或更晚时点。
+
 ## 数据获取与离线复现
 
 步骤 1–5 写入本地数据，其中 2–5 访问外部数据源。步骤 6 查询已有本地数据。
