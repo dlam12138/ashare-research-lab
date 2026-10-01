@@ -43,6 +43,12 @@ class ResearchCommand:
 
 COMMANDS: tuple[ResearchCommand, ...] = (
     ResearchCommand(
+        "review",
+        "ashare_research.tools.research_review",
+        "已复核档案研究速览",
+        ("--session DIR [--json | --output NEW_DIR]",),
+    ),
+    ResearchCommand(
         "session",
         "ashare_research.tools.research_session",
         "完整研究档案及复核",
@@ -108,6 +114,7 @@ def _usage_text() -> str:
             f"  {PROG} metrics --help",
             f"  {PROG} demo --help",
             f"  {PROG} session --help",
+            f"  {PROG} review --help",
             "",
             "离线边界：入口不加载配置、不初始化日志或数据服务、不联网、不写默认数据库；",
             "子命令只读取仓库内固定报告、固定规范快照或纯合成输入，不获取新数据，",
