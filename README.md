@@ -237,6 +237,36 @@ encoded = serialize_pipeline_result(result)  # UTF-8、排序键、紧凑 JSON�
 python -m pytest -q tests/test_m4_synthetic_pipeline_orchestrator.py
 ```
 
+## 统一离线研究入口（`ashare-research research`）
+
+四个既有离线工作流通过同一个顶层入口暴露，参数原样转发给各自工具的 `main(argv)`：
+`report` → `value_research_bundle`、`facts` → `pit_fact_explorer`、`metrics` →
+`pit_metric_replay`、`demo` → `synthetic_demo`：
+
+```powershell
+ashare-research research --help
+ashare-research research report
+ashare-research research report --json
+ashare-research research facts --as-of 2024-03-31 --compare-with 2025-03-31 `
+  --concept net_profit_attributable_to_parent --period-end 2023-12-31
+ashare-research research metrics --as-of 2024-03-31 --compare-with 2025-03-31 --year 2023
+ashare-research research metrics --as-of 2024-03-31 --compare-with 2025-03-31 --year 2023 `
+  --output tmp/m2-unified-research-entry
+ashare-research research demo --json
+```
+
+- 入口自身不加载配置、不初始化日志或数据服务，也不联网；真实分派发生在旧全局参数解析
+  之前，因此 `ashare-research --config x research report` 与
+  `ashare-research research --config x report` 都以退出码 2 拒绝，而不是静默忽略。
+- 子命令帮助（如 `ashare-research research facts --help`）、参数校验、渲染、输出路径保护
+  与错误码全部由既有工具负责：`report` 已知失败退出码 1，`facts`/`metrics` 已知失败退出码
+  2，未知子命令退出码 2；本入口不复制任何解析器或报告计算。
+- 离线与来源限制与各工具一致：`report` 只汇编九个固定基线报告（混合日期历史汇编，不是
+  统一 PIT 查询）；`facts`/`metrics` 只读取仓库内固定快照
+  `tests/fixtures/stage2g/canonical_fact_snapshot_v1`（`601857.SH`、33 条事实、只有
+  `consolidated` 口径，未来事实永不入选）；`demo` 只运行固定的虚构 24 行合成示例。
+  四个子命令都不获取新数据、不写默认数据库，也不产生评分、排名、建议或研究结论。
+
 ## M4 合成演示 CLI（离线、固定样例）
 
 不写任何调用代码即可跑通五个已冻结合成阶段；命令固定使用一个明确虚构的 24 行日频示例：
