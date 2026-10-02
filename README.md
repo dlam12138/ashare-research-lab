@@ -310,6 +310,27 @@ ashare-research research session --verify tmp/m2-research-review/session
 可能保留工具已创建的部分输出。默认终端输出只列证据文件名，完整可点击证据使用导出模式。
 价值汇编的混合日期、历史发布未证明、33事实/66缺失父记录等边界继续保留。
 
+## 指标输入的证据缺口台账
+
+```powershell
+ashare-research research audit --session tmp/m2-research-session
+ashare-research research audit --session tmp/m2-research-session --json
+ashare-research research audit --session tmp/m2-research-session --output tmp/m2-evidence-audit
+ashare-research research session --verify tmp/m2-evidence-audit/session
+```
+
+`audit` 先复核完整档案，再把指标输入按“查询日期 + 事实 ID”汇总，列出每条事实被哪些
+指标、年度和输入角色引用。JSON保留原始小数值、来源字段、上下文、父记录ID和指标结果ID；
+Markdown集中显示缺失来源字段、未解决父记录与受影响指标。不同日期的引用分开保留，
+相同日期的重复引用不会重复计数；缺失角色单独列出原有预期年度、概念及缺失原因。
+计数区分按时点事实行、跨时点唯一事实ID与所用事实涉及的唯一未解决父记录ID，不能把
+所选指标的局部统计当作整个规范快照的覆盖率。空口径有缺失角色，不表示证据齐全。
+
+台账只描述已留存证据缺口，不判断财务质量、研究就绪或生产资格；缺失来源字段不等于
+来源不存在，缺失父记录不等于事实数值错误。`--json`与`--output`互斥；导出27文件，包含
+完整不变的嵌套档案及相对证据链接，外层清单仅为完整性目录。已有路径拒绝覆盖，损坏输入
+不创建输出目录；写盘阶段失败可能留下本工具已创建的部分输出。历史发布/可得性缺口保留。
+
 ## M4 合成演示 CLI（离线、固定样例）
 
 不写任何调用代码即可跑通五个已冻结合成阶段；命令固定使用一个明确虚构的 24 行日频示例：
