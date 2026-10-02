@@ -331,6 +331,29 @@ Markdown集中显示缺失来源字段、未解决父记录与受影响指标。
 完整不变的嵌套档案及相对证据链接，外层清单仅为完整性目录。已有路径拒绝覆盖，损坏输入
 不创建输出目录；写盘阶段失败可能留下本工具已创建的部分输出。历史发布/可得性缺口保留。
 
+## 两份已复核研究档案的对比
+
+```powershell
+ashare-research research compare --left tmp/m2-research-session --right tmp/m2-research-session --right-view compare_with
+ashare-research research compare --left tmp/session-a --right tmp/session-b --json
+ashare-research research compare --left tmp/m2-research-session --right tmp/m2-research-session --right-view compare_with --output tmp/m2-session-compare
+ashare-research research session --verify tmp/m2-session-compare/left
+ashare-research research session --verify tmp/m2-session-compare/right
+```
+
+`compare` 先完整复核两份档案，按指标ID与年度对齐选定视图。`--left-view`与`--right-view`
+默认`as_of`，可明确选择已请求的`compare_with`；缺少该视图或不同合并口径会拒绝比较。
+日期可以正向、逆向或相同；两份档案可以选不同年度/指标，但新增/移除选择独立列出，
+不当作财务事实新增/消失。共同选择沿用既有指标比较规则，区分状态、原值、输入变化与
+相同；不计算差额、百分比或收益，也不推断变化原因。页面展示两边完整选择条件，JSON
+保留完整原始结果、输入小数值、缺失角色、来源字段和未留存父记录。
+
+`--json`与`--output`互斥；导出51文件，包括`compare.md/json`、两份完整不变的24文件
+档案`left/`与`right/`及外层完整性清单。相对证据链接随目录移动；嵌套档案仍用原验证命令。
+外层清单只为文件目录，未提供新的签名或真实性证明。已有路径拒绝覆盖，输入损坏不创建
+最终输出目录；写盘失败可能留下工具已创建的部分输出。固定基线、混合日期汇编、缺失父
+记录与历史发布/可得性限制继续保留；缺失不是零，同日相同不是历史发布证明。
+
 ## M4 合成演示 CLI（离线、固定样例）
 
 不写任何调用代码即可跑通五个已冻结合成阶段；命令固定使用一个明确虚构的 24 行日频示例：
