@@ -50,8 +50,7 @@ def _json_bytes(value: Any) -> bytes:
 
 def _build(directory: Path) -> tuple[dict[str, Any], dict[str, bytes]]:
     try:
-        verification = research_session.verify_session(directory)
-        files = research_session.build_session(verification["request"])
+        verification, files = research_session.load_verified_session(directory)
     except research_session.SessionError as error:
         raise ReviewError(error.code) from error
     metrics = json.loads(files["metrics/report.json"])

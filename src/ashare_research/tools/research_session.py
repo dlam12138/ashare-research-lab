@@ -483,8 +483,14 @@ def _verify_layout(root: Path, canonical: dict[str, bytes]) -> None:
         raise SessionError("VERIFY_LAYOUT_INVALID")
 
 
-def verify_session(directory: Path) -> dict[str, Any]:
-    """Regenerate the canonical archive from the recorded request and compare every byte."""
+def load_verified_session(directory: Path) -> tuple[dict[str, Any], dict[str, bytes]]:
+    """Verify every byte, then return metadata and that exact canonical archive.
+
+    Each call freshly regenerates and verifies the complete retained archive.
+    Returned dictionaries belong to this caller; no cache or shared result is kept.
+    Consumers can use the already-verified immutable byte payloads without a second
+    build or reopening retained files after verification.
+    """
     if directory.is_symlink() or not directory.is_dir():
         raise SessionError("VERIFY_DIRECTORY_MISSING")
     root = directory.resolve()
@@ -526,7 +532,7 @@ def verify_session(directory: Path) -> dict[str, Any]:
             if name == MANIFEST_NAME:
                 raise SessionError("VERIFY_MANIFEST_MISMATCH")
             raise SessionError("VERIFY_FILE_MISMATCH")
-    return {
+    verification = {
         "schema": SESSION_SCHEMA,
         "status": "verified",
         "request": canonical_manifest["request"],
@@ -543,6 +549,12 @@ def verify_session(directory: Path) -> dict[str, Any]:
         "requires_installed_pinned_baseline": True,
         "proves_historical_publication_or_authenticity": False,
     }
+    return verification, canonical
+
+
+def verify_session(directory: Path) -> dict[str, Any]:
+    """Return the original metadata-only verification result and error behavior."""
+    return load_verified_session(directory)[0]
 
 
 # --------------------------------------------------------------------------------------

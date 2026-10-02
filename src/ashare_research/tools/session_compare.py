@@ -39,8 +39,7 @@ def _load(directory: Path, view_name: str) -> tuple[dict[str, Any], dict[str, by
     if view_name not in VIEWS:
         raise CompareError("INVALID_VIEW")
     try:
-        verified = research_session.verify_session(directory)
-        archive = research_session.build_session(verified["request"])
+        verified, archive = research_session.load_verified_session(directory)
     except research_session.SessionError as error:
         raise CompareError(error.code) from error
     metrics = json.loads(archive["metrics/report.json"])
