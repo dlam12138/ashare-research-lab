@@ -43,6 +43,12 @@ class ResearchCommand:
 
 COMMANDS: tuple[ResearchCommand, ...] = (
     ResearchCommand(
+        "verify",
+        "ashare_research.tools.package_verification",
+        "完整导出包复核（含外层报告）",
+        ("--package DIR [--json]",),
+    ),
+    ResearchCommand(
         "compare",
         "ashare_research.tools.session_compare",
         "两份已复核档案的指标对比",
@@ -129,6 +135,7 @@ def _usage_text() -> str:
             f"  {PROG} review --help",
             f"  {PROG} audit --help",
             f"  {PROG} compare --help",
+            f"  {PROG} verify --help",
             "",
             "离线边界：入口不加载配置、不初始化日志或数据服务、不联网、不写默认数据库；",
             "子命令只读取仓库内固定报告、固定规范快照或纯合成输入，不获取新数据，",
