@@ -43,6 +43,12 @@ class ResearchCommand:
 
 COMMANDS: tuple[ResearchCommand, ...] = (
     ResearchCommand(
+        "compare",
+        "ashare_research.tools.session_compare",
+        "两份已复核档案的指标对比",
+        ("--left DIR --right DIR [--left-view / --right-view] [--json | --output NEW_DIR]",),
+    ),
+    ResearchCommand(
         "audit",
         "ashare_research.tools.evidence_audit",
         "指标输入证据缺口台账",
@@ -122,6 +128,7 @@ def _usage_text() -> str:
             f"  {PROG} session --help",
             f"  {PROG} review --help",
             f"  {PROG} audit --help",
+            f"  {PROG} compare --help",
             "",
             "离线边界：入口不加载配置、不初始化日志或数据服务、不联网、不写默认数据库；",
             "子命令只读取仓库内固定报告、固定规范快照或纯合成输入，不获取新数据，",
