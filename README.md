@@ -257,6 +257,26 @@ ashare-research research verify --package tmp/m2-offline-workflow --json
 这不是原子目录发布。内容沿用固定来源、原有计算与证据限制；价值资料的混合日期不
 变成统一 PIT 证据，缺失原始父记录不会被补造，验证不授予真实研究或生产资格。
 
+### 将完整研究资料作为一个文件交付
+
+```powershell
+ashare-research research archive --package tmp/m2-offline-workflow --output tmp/m2-offline-workflow.zip --json
+ashare-research research archive --restore tmp/m2-offline-workflow.zip --output tmp/m2-offline-workflow-restored --json
+```
+
+支持价值包、档案、速览、缺口台账、对比及完整工作流六类目录。打包前完整复核，
+只使用本次验证返回的规范字节，不在验证后重新读取源文件。ZIP 使用排序的文件名、
+固定日期与权限、不压缩存储；相同包在不同目录打包得到相同 ZIP 字节和 SHA256。
+解包先在自有临时目录中检查成员并逐字节验证整包，再创建新目标目录；根索引和
+嵌套包的原有格式保持不变。ZIP 的 CRC 或清单哈希相符不能替代内容复核。
+
+只接受新输出路径，拒绝符号链接祖先和源包内部的 ZIP 输出。恢复拒绝路径穿越、
+重复或大小写冲突、Windows 设备名、链接及非普通文件、加密或不支持的压缩方法、
+损坏 ZIP 和超限成员。上限为 256 文件、单文件 32 MiB、解包总量 128 MiB、ZIP
+129 MiB；恢复不调用 `extractall`。错误不会覆盖或清理调用方路径；迟到的写入
+失败保留自有部分输出并返回错误，不承诺原子发布。恢复需要兼容的已安装固定基线，
+不证明真实性、历史可得性，也不改变研究或生产资格。
+
 ## 统一离线研究入口（`ashare-research research`）
 
 既有离线工作流与完整研究档案通过同一个顶层入口暴露，参数原样转发给各自工具的 `main(argv)`：
