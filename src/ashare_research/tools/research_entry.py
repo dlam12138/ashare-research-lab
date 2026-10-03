@@ -43,6 +43,12 @@ class ResearchCommand:
 
 COMMANDS: tuple[ResearchCommand, ...] = (
     ResearchCommand(
+        "deliver",
+        "ashare_research.tools.research_delivery",
+        "一次生成完整复核的研究 ZIP 交付文件",
+        ("--as-of DATE --output NEW_ZIP [--compare-with DATE] [查询参数] [--json]",),
+    ),
+    ResearchCommand(
         "archive",
         "ashare_research.tools.package_archive",
         "研究包 ZIP 交付、完整复核与恢复",
