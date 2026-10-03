@@ -259,6 +259,21 @@ ashare-research research verify --package tmp/m2-offline-workflow --json
 
 ### 将完整研究资料作为一个文件交付
 
+直接从请求生成已完整复核的 ZIP，无需创建中间目录：
+
+```powershell
+ashare-research research deliver --as-of 2024-03-31 --compare-with 2025-03-31 --year 2023 --output tmp/m2-direct-delivery.zip --json
+```
+
+支持与 `workflow` 相同的日期、重复 `--year` / `--metric` 和 `--scope` 查询条件；
+`--as-of` 必填，未请求对比时包含 80 个文件，请求对比时包含 131 个文件。
+命令在自有临时目录组装原有工作流，再完整复核并生成相同格式的确定性 ZIP。
+只写指定的新 ZIP，成功返回既有打包回执；失败不输出成功结果。输出存在或经过
+符号链接时在组装前拒绝；迟到的写入失败保留自有部分 ZIP，不覆盖或清理调用方
+文件，也不承诺原子发布。该入口沿用固定来源及原有研究、证据限制。
+
+已经有研究目录时，仍可分别打包、复核和恢复：
+
 ```powershell
 ashare-research research archive --package tmp/m2-offline-workflow --output tmp/m2-offline-workflow.zip --json
 ashare-research research archive --verify tmp/m2-offline-workflow.zip --json
