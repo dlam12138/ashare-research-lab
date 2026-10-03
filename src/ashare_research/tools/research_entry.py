@@ -45,8 +45,11 @@ COMMANDS: tuple[ResearchCommand, ...] = (
     ResearchCommand(
         "archive",
         "ashare_research.tools.package_archive",
-        "已复核研究包 ZIP 交付与恢复",
-        ("(--package DIR | --restore ZIP) --output NEW_PATH [--json]",),
+        "研究包 ZIP 交付、完整复核与恢复",
+        (
+            "(--package DIR | --restore ZIP) --output NEW_PATH [--json]",
+            "--verify ZIP [--json]（不创建恢复目录）",
+        ),
     ),
     ResearchCommand(
         "workflow",

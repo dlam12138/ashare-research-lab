@@ -1,4 +1,4 @@
-"""Deterministic ZIP delivery and verified restoration of existing research packages."""
+"""Deterministic ZIP delivery, verification and restoration of research packages."""
 
 from __future__ import annotations
 
@@ -168,13 +168,10 @@ def _decode_verified(raw: bytes) -> tuple[dict[str, Any], dict[str, bytes]]:
         raise ArchiveError("ARCHIVE_INVALID") from error
 
 
-def restore_archive(source: Path, output: Path) -> dict[str, Any]:
-    """Decode/verify before creating destination, and publish only canonical bytes.
-
-    Late output failure retains owned partial output. Neither file nor directory
-    publication is claimed atomic, and caller paths are never cleaned up.
-    """
-    _check_output(output)
+def _load_verified_archive(
+    source: Path,
+) -> tuple[bytes, dict[str, Any], dict[str, bytes]]:
+    """Read one bounded snapshot and share complete decoding across both modes."""
     if source.is_symlink() or not source.is_file():
         raise ArchiveError("ARCHIVE_SOURCE_INVALID")
     try:
@@ -185,6 +182,23 @@ def restore_archive(source: Path, output: Path) -> dict[str, Any]:
     if len(raw) > MAX_ARCHIVE_BYTES:
         raise ArchiveError("ARCHIVE_LIMIT_EXCEEDED")
     verified, files = _decode_verified(raw)
+    return raw, verified, files
+
+
+def verify_archive(source: Path) -> dict[str, Any]:
+    """Fully verify a ZIP using owned temporary storage, without a destination."""
+    raw, verified, _ = _load_verified_archive(source)
+    return _receipt(raw, verified, "verified")
+
+
+def restore_archive(source: Path, output: Path) -> dict[str, Any]:
+    """Decode/verify before creating destination, and publish only canonical bytes.
+
+    Late output failure retains owned partial output. Neither file nor directory
+    publication is claimed atomic, and caller paths are never cleaned up.
+    """
+    _check_output(output)
+    raw, verified, files = _load_verified_archive(source)
     _check_output(output)
     try:
         output.mkdir(parents=True, exist_ok=False)
@@ -208,19 +222,27 @@ class _Parser(argparse.ArgumentParser):
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = _Parser(description="已复核研究包 ZIP 交付或恢复", allow_abbrev=False)
+    parser = _Parser(description="研究包 ZIP 交付、完整复核或恢复", allow_abbrev=False)
     mode = parser.add_mutually_exclusive_group(required=True)
     mode.add_argument("--package", metavar="DIR")
     mode.add_argument("--restore", metavar="ZIP")
-    parser.add_argument("--output", required=True, metavar="NEW_PATH")
+    mode.add_argument("--verify", metavar="ZIP")
+    parser.add_argument("--output", metavar="NEW_PATH")
     parser.add_argument("--json", action="store_true")
     try:
         args = parser.parse_args(argv)
-        result = (
-            export_archive(Path(args.package), Path(args.output))
-            if args.package is not None
-            else restore_archive(Path(args.restore), Path(args.output))
-        )
+        if args.verify is not None:
+            if args.output is not None:
+                raise ArchiveError("INVALID_ARGUMENTS")
+            result = verify_archive(Path(args.verify))
+        else:
+            if args.output is None:
+                raise ArchiveError("INVALID_ARGUMENTS")
+            result = (
+                export_archive(Path(args.package), Path(args.output))
+                if args.package is not None
+                else restore_archive(Path(args.restore), Path(args.output))
+            )
         text = (
             json.dumps(result, ensure_ascii=False, sort_keys=True, indent=2) + "\n"
             if args.json

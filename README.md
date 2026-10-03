@@ -261,6 +261,7 @@ ashare-research research verify --package tmp/m2-offline-workflow --json
 
 ```powershell
 ashare-research research archive --package tmp/m2-offline-workflow --output tmp/m2-offline-workflow.zip --json
+ashare-research research archive --verify tmp/m2-offline-workflow.zip --json
 ashare-research research archive --restore tmp/m2-offline-workflow.zip --output tmp/m2-offline-workflow-restored --json
 ```
 
@@ -269,6 +270,12 @@ ashare-research research archive --restore tmp/m2-offline-workflow.zip --output 
 固定日期与权限、不压缩存储；相同包在不同目录打包得到相同 ZIP 字节和 SHA256。
 解包先在自有临时目录中检查成员并逐字节验证整包，再创建新目标目录；根索引和
 嵌套包的原有格式保持不变。ZIP 的 CRC 或清单哈希相符不能替代内容复核。
+
+接收方可以用 `--verify ZIP` 直接完整复核，无需指定或创建恢复目录。该模式与恢复
+共用有界读取、安全成员检查和整包内容复核，临时解码仅写入自有临时目录。
+成功返回 `status: verified`、原 ZIP 的 SHA256、文件数量、清单摘要与完整验证说明；
+失败返回退出码 2，不输出成功结果。`--verify` 不接受 `--output`，打包和恢复仍
+必须提供新输出路径。复核不会修改原 ZIP，也不生成附加文件。
 
 只接受新输出路径，拒绝符号链接祖先和源包内部的 ZIP 输出。恢复拒绝路径穿越、
 重复或大小写冲突、Windows 设备名、链接及非普通文件、加密或不支持的压缩方法、
