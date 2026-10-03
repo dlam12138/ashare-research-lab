@@ -237,6 +237,26 @@ encoded = serialize_pipeline_result(result)  # UTF-8、排序键、紧凑 JSON�
 python -m pytest -q tests/test_m4_synthetic_pipeline_orchestrator.py
 ```
 
+## 一次生成完整离线研究交付
+
+将档案、指标速览、证据缺口台账与可选两时点对比放到一个带导航的新目录：
+
+```powershell
+ashare-research research workflow --as-of 2024-03-31 --compare-with 2025-03-31 --year 2023 --output tmp/m2-offline-workflow
+ashare-research research verify --package tmp/m2-offline-workflow --json
+```
+
+打开 `tmp/m2-offline-workflow/index.md` 即可浏览。指定 `--compare-with` 时包含
+`session/`、`review/`、`audit/`、`compare/` 共 131 个文件；未指定时包含前三类包，
+共 80 个文件。各子目录保留原有完整包格式，可以单独复核；根目录复核还检查导航、
+完整清单及全部嵌套文件。年度、指标和口径选择器与既有档案一致，支持重复 `--year`
+和 `--metric`，不请求日期则不会使用当前日期补齐。
+
+生成前先组装全部字节，只接受不存在且不经过符号链接的输出路径。失败不覆盖或清理
+调用方已有路径；迟到的写入失败会保留自有的部分目录用于检查，返回错误而非成功。
+这不是原子目录发布。内容沿用固定来源、原有计算与证据限制；价值资料的混合日期不
+变成统一 PIT 证据，缺失原始父记录不会被补造，验证不授予真实研究或生产资格。
+
 ## 统一离线研究入口（`ashare-research research`）
 
 既有离线工作流与完整研究档案通过同一个顶层入口暴露，参数原样转发给各自工具的 `main(argv)`：
