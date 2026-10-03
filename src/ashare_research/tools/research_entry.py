@@ -43,6 +43,12 @@ class ResearchCommand:
 
 COMMANDS: tuple[ResearchCommand, ...] = (
     ResearchCommand(
+        "diff",
+        "ashare_research.tools.package_byte_diff",
+        "两份已复核目录或 ZIP 的文件内容差异",
+        ("(--left DIR | --left-archive ZIP) (--right DIR | --right-archive ZIP) [--json]",),
+    ),
+    ResearchCommand(
         "deliver",
         "ashare_research.tools.research_delivery",
         "一次生成完整复核的研究 ZIP 交付文件",
