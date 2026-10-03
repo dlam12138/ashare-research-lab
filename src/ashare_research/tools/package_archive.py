@@ -22,6 +22,8 @@ MAX_MEMBERS = 256
 MAX_MEMBER_BYTES = 32 * 1024 * 1024
 MAX_TOTAL_BYTES = 128 * 1024 * 1024
 MAX_ARCHIVE_BYTES = 129 * 1024 * 1024
+MAX_NAME_BYTES = 512
+MAX_PATH_PARTS = 32
 FIXED_DATE = (1980, 1, 1, 0, 0, 0)
 _DEVICES = {"CON", "PRN", "AUX", "NUL"} | {
     prefix + str(number) for prefix in ("COM", "LPT") for number in range(1, 10)
@@ -49,6 +51,8 @@ def _check_members(entries: list[zipfile.ZipInfo]) -> None:
     total = 0
     for entry in entries:
         name = entry.filename
+        if len(name.encode("utf-8")) > MAX_NAME_BYTES or name.count("/") >= MAX_PATH_PARTS:
+            raise ArchiveError("ARCHIVE_LIMIT_EXCEEDED")
         if name != entry.orig_filename or not re.fullmatch(r"[A-Za-z0-9_./-]+", name):
             raise ArchiveError("ARCHIVE_LAYOUT_INVALID")
         parts = name.split("/")

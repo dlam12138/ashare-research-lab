@@ -17,7 +17,9 @@ bytes to a new caller root. No extract/extractall or recorded-path filesystem
 reads. Original nested formats/bytes preserved; no acquisition/formulas/admission,
 database/cache/research/holdout changes or previous builder/test modifications.
 
-Bounds256members/32MiB member/128MiB unpacked/129MiB ZIP. Reject raw traversal,
+Bounds256members/32MiB member/128MiB unpacked/129MiB ZIP; member metadata512bytes/
+32components bounded before prefix allocation. Final review correction adds exact
+early rejection tests; only unsafe case rerun:1passed2.21s. Reject raw traversal,
 absolute/drive/backslash/NUL/dot/empty/Windows device/trailing-dot-space names,
 case/prefix collisions, duplicate entries, file/directory conflicts, symlinks and
 Unix/DOS directory or nonregular types, encrypted/unsupported compression,

@@ -112,6 +112,8 @@ def test_unsafe_members_limits_malformed_and_crc_fail_before_destination(
         _zip({"manifest.json": manifest, "a": b"a", "a/b": b"b"}),
         "ARCHIVE_LAYOUT_INVALID",
     ))
+    for name in ("a" * (package_archive.MAX_NAME_BYTES + 1), "a/" * package_archive.MAX_PATH_PARTS):
+        raws.append((_zip({"manifest.json": manifest, name: b"bad"}), "ARCHIVE_LIMIT_EXCEEDED"))
     with pytest.warns(UserWarning, match="Duplicate name"):
         buffer = io.BytesIO()
         with zipfile.ZipFile(buffer, "w") as archive:

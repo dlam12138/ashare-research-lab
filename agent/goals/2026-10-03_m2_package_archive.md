@@ -35,6 +35,9 @@ absolute/drive/backslash/empty/dot/Windows-device/trailing-dot-or-space names,
 case collisions, duplicates, links/nonregular/directory members, encrypted or
 unsupported methods, malformed/truncated/CRC failures and size/count overlimits.
 Bounds:256members/32MiB per member/128MiB uncompressed total/129MiB archive.
+Member metadata is also bounded before prefix inspection:512namebytes and32path
+components, fitting all six current fixed package kinds. Add an exact early-rejection
+case; rerun only unsafe archive acceptance locally after this review correction.
 CRC passes or rehashed inventories alone never suffice: actual complete package
 verification required. No writes to caller destination on invalid archive,
 tampering or source failure. Late writes preserve owned partial outputs with

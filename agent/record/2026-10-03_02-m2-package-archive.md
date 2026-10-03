@@ -22,3 +22,8 @@ tests; final scoped Ruff/diff checks passed. Protected427file saved map and comp
 primary status/diff/refs/stash/database snapshot unchanged. Exact commands and
 acceptance evidence in acceptance/2026-10-03_m2_package_archive.md; hosted gates
 and actual commit/PR/merge final evidence recorded after reviewed HEAD is fixed.
+Independent final review additionally bounded member metadata (512namebytes /
+32pathcomponents) before prefix checks, preventing excessive intermediate prefix
+allocation. Added exact early-rejection fixture; unsafe case only rerun locally:1passed2.21s.
+Earlier head a08161d Ubuntu full CI3004passed3skipped is intermediate evidence;
+all hosted gates must succeed again on the final fix commit before merge.
