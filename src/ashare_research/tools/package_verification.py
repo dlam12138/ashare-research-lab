@@ -116,8 +116,12 @@ def _regenerate(root: Path, kind: str, manifest: dict[str, Any]) -> dict[str, by
         raise PackageError("VERIFY_REBUILD_FAILED") from error
 
 
-def verify_package(directory: Path) -> dict[str, Any]:
-    """Verify a whole package freshly, including its outer rendered reports."""
+def load_verified_package(directory: Path) -> tuple[dict[str, Any], dict[str, bytes]]:
+    """Freshly verify a complete package and return its exact canonical bytes.
+
+    Each call owns a new byte map; callers need not reread retained files after
+    verification. This is not a cache or an archive-only authenticity check.
+    """
     if directory.is_symlink() or not directory.is_dir():
         raise PackageError("VERIFY_DIRECTORY_MISSING")
     root = directory.resolve()
@@ -154,7 +158,7 @@ def verify_package(directory: Path) -> dict[str, Any]:
             code = "VERIFY_MANIFEST_MISMATCH" if name == "manifest.json" else "VERIFY_FILE_MISMATCH"
             raise PackageError(code)
     canonical_manifest = json.loads(canonical["manifest.json"])
-    return {
+    result = {
         "schema": SCHEMA,
         "status": "verified",
         "package_kind": kind,
@@ -172,6 +176,12 @@ def verify_package(directory: Path) -> dict[str, Any]:
         "proves_historical_publication_or_authenticity": False,
         "notes": list(NOTES),
     }
+    return result, canonical
+
+
+def verify_package(directory: Path) -> dict[str, Any]:
+    """Keep the existing metadata-only result and error behavior."""
+    return load_verified_package(directory)[0]
 
 
 def render_summary(result: dict[str, Any]) -> str:
