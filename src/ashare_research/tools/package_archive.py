@@ -185,10 +185,15 @@ def _load_verified_archive(
     return raw, verified, files
 
 
+def load_verified_archive(source: Path) -> tuple[dict[str, Any], dict[str, bytes]]:
+    """Freshly verify a ZIP and return its receipt and exact canonical byte map."""
+    raw, verified, files = _load_verified_archive(source)
+    return _receipt(raw, verified, "verified"), files
+
+
 def verify_archive(source: Path) -> dict[str, Any]:
-    """Fully verify a ZIP using owned temporary storage, without a destination."""
-    raw, verified, _ = _load_verified_archive(source)
-    return _receipt(raw, verified, "verified")
+    """Keep the existing metadata-only receipt and complete verification behavior."""
+    return load_verified_archive(source)[0]
 
 
 def restore_archive(source: Path, output: Path) -> dict[str, Any]:

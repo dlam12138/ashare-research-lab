@@ -300,6 +300,21 @@ ashare-research research archive --restore tmp/m2-offline-workflow.zip --output 
 失败保留自有部分输出并返回错误，不承诺原子发布。恢复需要兼容的已安装固定基线，
 不证明真实性、历史可得性，也不改变研究或生产资格。
 
+### 对比两次交付的文件变化
+
+```powershell
+ashare-research research diff --left-archive old.zip --right-archive new.zip --json
+ashare-research research diff --left tmp/m2-offline-workflow --right-archive tmp/m2-direct-delivery.zip
+```
+
+每侧明确选择目录或 ZIP，支持六类研究包和混合输入；两边必须是相同包类型。
+先完整复核两边内容，再按相对路径比较规范字节，列出新增、移除、内容变化和相同
+文件，以及前后字节数和 SHA256。ZIP 压缩方式不同但文件字节相同，会报告内容相同。
+默认输出可读摘要和变化文件，`--json` 返回全部排序条目、计数及两侧完整复核说明。
+该命令不修改源文件或创建调用方目录，ZIP 临时解码使用自有临时目录。
+文件差异不表示财务事实或历史发布版本变化；既有财务指标 `compare` 入口保持原样。
+验证仍依赖兼容固定基线，不证明真实性、历史可得性或研究资格。
+
 ## 统一离线研究入口（`ashare-research research`）
 
 既有离线工作流与完整研究档案通过同一个顶层入口暴露，参数原样转发给各自工具的 `main(argv)`：
