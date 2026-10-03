@@ -360,6 +360,24 @@ ashare-research research session --verify tmp/m2-session-compare/right
 `research_session.load_verified_session(directory)`返回验证元数据和本次已验证的规范字节；
 原`verify_session(directory)`继续只返回相同元数据。返回字典属于调用者，各次调用独立。
 
+## 完整研究导出包的统一复核
+
+```powershell
+ashare-research research verify --package tmp/m2-research-review
+ashare-research research verify --package tmp/m2-evidence-audit
+ashare-research research verify --package tmp/m2-session-compare-reused --json
+```
+
+`verify` 从根清单识别五种既有包：价值汇编、完整档案、速览、证据台账和档案对比。
+速览/台账/对比包会重新生成外层报告，连同完整嵌套证据和根清单逐字节比较；因此即使
+修改报告后重新填写哈希，也不能通过。它还拒绝缺失/多余文件或目录、符号链接、未知
+类型及无效选择器；清单中记录的任意路径不会被用于读取文件。移动完整目录后仍可复核。
+
+命令不修改输入包，不缓存结果；重建只使用工具自己的临时目录。成功输出类型、文件数、
+清单摘要和验证边界；`--json`保留请求/对比视图等完整元数据。失败退出码2，错误已净化，
+stdout保持为空。原清单本身仍只是完整性目录，本命令另行证明整个包与兼容的已安装
+固定基线/代码一致；不证明签名、真实性、历史发布/可得性或研究资格，也不补齐证据缺口。
+
 ## M4 合成演示 CLI（离线、固定样例）
 
 不写任何调用代码即可跑通五个已冻结合成阶段；命令固定使用一个明确虚构的 24 行日频示例：
