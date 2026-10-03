@@ -15,6 +15,7 @@ from ashare_research.tools import (
     evidence_audit,
     research_review,
     research_session,
+    research_workflow,
     session_compare,
     value_research_bundle,
 )
@@ -26,6 +27,7 @@ KINDS = {
     research_review.SCHEMA: "review",
     evidence_audit.SCHEMA: "audit",
     session_compare.SCHEMA: "compare",
+    research_workflow.MANIFEST_SCHEMA: "workflow",
 }
 NOTES = (
     "验证依赖已安装的兼容固定基线与代码，证明完整包的可重现性和字节一致性。",
@@ -80,6 +82,11 @@ def _regenerate(root: Path, kind: str, manifest: dict[str, Any]) -> dict[str, by
     try:
         if kind == "session":
             return research_session.load_verified_session(root)[1]
+        if kind == "workflow":
+            request = manifest.get("request")
+            if not isinstance(request, dict):
+                raise PackageError("VERIFY_MANIFEST_INVALID")
+            return research_workflow.build_workflow(request)
         with tempfile.TemporaryDirectory(prefix="m2-package-verification-") as runtime:
             output = Path(runtime) / "canonical"
             if kind == "value":
@@ -102,6 +109,7 @@ def _regenerate(root: Path, kind: str, manifest: dict[str, Any]) -> dict[str, by
         evidence_audit.AuditError,
         session_compare.CompareError,
         value_research_bundle.BundleError,
+        research_workflow.WorkflowError,
     ) as error:
         raise PackageError(error.code) from error
     except OSError as error:
@@ -184,7 +192,7 @@ class _Parser(argparse.ArgumentParser):
 
 def main(argv: list[str] | None = None) -> int:
     parser = _Parser(
-        description="完整复核价值包、研究档案、速览、证据台账或对比包", allow_abbrev=False
+        description="完整复核价值包、研究档案、速览、证据台账、对比包或工作流", allow_abbrev=False
     )
     parser.add_argument("--package", required=True, metavar="DIR")
     parser.add_argument("--json", action="store_true")

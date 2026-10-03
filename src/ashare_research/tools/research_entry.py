@@ -43,6 +43,12 @@ class ResearchCommand:
 
 COMMANDS: tuple[ResearchCommand, ...] = (
     ResearchCommand(
+        "workflow",
+        "ashare_research.tools.research_workflow",
+        "一次生成档案、速览、缺口台账与可选对比",
+        ("--as-of DATE --output NEW_DIR [--compare-with DATE] [查询参数]",),
+    ),
+    ResearchCommand(
         "verify",
         "ashare_research.tools.package_verification",
         "完整导出包复核（含外层报告）",
@@ -136,6 +142,7 @@ def _usage_text() -> str:
             f"  {PROG} audit --help",
             f"  {PROG} compare --help",
             f"  {PROG} verify --help",
+            f"  {PROG} workflow --help",
             "",
             "离线边界：入口不加载配置、不初始化日志或数据服务、不联网、不写默认数据库；",
             "子命令只读取仓库内固定报告、固定规范快照或纯合成输入，不获取新数据，",
