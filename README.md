@@ -239,6 +239,9 @@ python -m pytest -q tests/test_m4_synthetic_pipeline_orchestrator.py
 
 ## 一次生成完整离线研究交付
 
+首次使用可按 [交付指南](docs/m2_delivery_handoff.md) 走通“生成 ZIP → 接收复核 →
+恢复浏览 → 比较内容”，其中包含可执行命令、回执解读与失败后的处理方法。
+
 将档案、指标速览、证据缺口台账与可选两时点对比放到一个带导航的新目录：
 
 ```powershell
