@@ -43,6 +43,12 @@ class ResearchCommand:
 
 COMMANDS: tuple[ResearchCommand, ...] = (
     ResearchCommand(
+        "read",
+        "ashare_research.tools.delivered_research",
+        "直接阅读交付包内的指标速览、证据台账和指标对比",
+        ("(--package DIR | --archive ZIP) --section review|audit|compare [--json]",),
+    ),
+    ResearchCommand(
         "diff",
         "ashare_research.tools.package_byte_diff",
         "两份已复核目录或 ZIP 的文件内容差异",
@@ -79,7 +85,11 @@ COMMANDS: tuple[ResearchCommand, ...] = (
         "compare",
         "ashare_research.tools.session_compare",
         "两份已复核档案的指标对比",
-        ("--left DIR --right DIR [--left-view / --right-view] [--json | --output NEW_DIR]",),
+        (
+            "(--left SESSION_DIR | --left-archive ZIP)",
+            "(--right SESSION_DIR | --right-archive ZIP)",
+            "[--left-view / --right-view] [--json | --output NEW_DIR]",
+        ),
     ),
     ResearchCommand(
         "audit",
