@@ -98,6 +98,7 @@ COMMANDS: tuple[ResearchCommand, ...] = (
             "[--metric ID（可重复）] [--year YEAR（可重复）] [--changes-only]"
             "（不可与 --output 混用）",
             "[--fact ID（可重复，匹配原始输入及直接父引用，可组合上述筛选）]",
+            "[--summary [--json]（值、分类、证据角色与直接引用速览，不与 --output 混用）]",
         ),
     ),
     ResearchCommand(

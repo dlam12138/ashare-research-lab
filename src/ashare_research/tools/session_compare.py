@@ -270,6 +270,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--year", action="append", type=int, metavar="YEAR",
                         help="筛选年度，可重复")
     parser.add_argument("--changes-only", action="store_true", help="仅显示变化项")
+    parser.add_argument("--summary", action="store_true", help="速览原指标值、角色与直接引用")
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--json", action="store_true")
     mode.add_argument("--output", metavar="NEW_DIR")
@@ -277,7 +278,7 @@ def main(argv: list[str] | None = None) -> int:
         args = parser.parse_args(argv)
         focused = (args.metric is not None or args.year is not None
                    or args.changes_only or args.fact is not None)
-        if (args.evidence or focused) and args.output is not None:
+        if (args.evidence or focused or args.summary) and args.output is not None:
             raise CompareError("INVALID_ARGUMENTS")
         if focused:
             from ashare_research.tools import comparison_focus
@@ -313,6 +314,11 @@ def main(argv: list[str] | None = None) -> int:
             if args.fact is not None:
                 report = fact_comparison.build_report(report, args.fact)
                 renderer = fact_comparison.render_markdown
+            if args.summary:
+                from ashare_research.tools import comparison_summary
+
+                report = comparison_summary.build_report(report)
+                renderer = comparison_summary.render_markdown
             raw = _json_bytes(report) if args.json else renderer(report).encode()
         sys.stdout.buffer.write(raw)
         sys.stdout.buffer.flush()
