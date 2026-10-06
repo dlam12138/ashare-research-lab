@@ -35,11 +35,34 @@ def _json_bytes(value: Any) -> bytes:
     return (json.dumps(value, ensure_ascii=False, sort_keys=True, indent=2) + "\n").encode()
 
 
-def _load(directory: Path, view_name: str) -> tuple[dict[str, Any], dict[str, bytes]]:
+def _load_zip(source: Path) -> tuple[dict[str, Any], dict[str, bytes]]:
+    # Lazy import avoids the package verifier -> comparison builder import cycle.
+    from ashare_research.tools import package_archive
+
+    try:
+        receipt, files = package_archive.load_verified_archive(source)
+    except package_archive.ArchiveError as error:
+        raise CompareError(error.code) from error
+    kind = receipt["package_kind"]
+    if kind not in ("session", "workflow"):
+        raise CompareError("SESSION_PACKAGE_REQUIRED")
+    if kind == "workflow":
+        files = {name[len("session/"):]: raw for name, raw in files.items()
+                 if name.startswith("session/")}
+    # The whole parent has already been verified; never reopen retained members.
+    return json.loads(files["manifest.json"]), files
+
+
+def _load(
+    directory: Path, view_name: str, *, archive_input: bool = False
+) -> tuple[dict[str, Any], dict[str, bytes]]:
     if view_name not in VIEWS:
         raise CompareError("INVALID_VIEW")
     try:
-        verified, archive = research_session.load_verified_session(directory)
+        verified, archive = (
+            _load_zip(directory) if archive_input
+            else research_session.load_verified_session(directory)
+        )
     except research_session.SessionError as error:
         raise CompareError(error.code) from error
     metrics = json.loads(archive["metrics/report.json"])
@@ -60,10 +83,11 @@ def _load(directory: Path, view_name: str) -> tuple[dict[str, Any], dict[str, by
 
 
 def _build(
-    left: Path, right: Path, left_view: str, right_view: str
+    left: Path, right: Path, left_view: str, right_view: str,
+    *, left_archive: bool = False, right_archive: bool = False,
 ) -> tuple[dict[str, Any], dict[str, dict[str, bytes]]]:
-    before, left_files = _load(left, left_view)
-    after, right_files = _load(right, right_view)
+    before, left_files = _load(left, left_view, archive_input=left_archive)
+    after, right_files = _load(right, right_view, archive_input=right_archive)
     if before["symbol"] != after["symbol"]:
         raise CompareError("SYMBOL_MISMATCH")
     if before["scope"] != after["scope"]:
@@ -108,9 +132,13 @@ def _build(
 
 
 def build_comparison(
-    left: Path, right: Path, *, left_view: str = "as_of", right_view: str = "as_of"
+    left: Path, right: Path, *, left_view: str = "as_of", right_view: str = "as_of",
+    left_archive: bool = False, right_archive: bool = False,
 ) -> dict[str, Any]:
-    return _build(left, right, left_view, right_view)[0]
+    return _build(
+        left, right, left_view, right_view,
+        left_archive=left_archive, right_archive=right_archive,
+    )[0]
 
 
 def _cell(value: Any) -> str:
@@ -172,10 +200,15 @@ def export_comparison(
     *,
     left_view: str = "as_of",
     right_view: str = "as_of",
+    left_archive: bool = False,
+    right_archive: bool = False,
 ) -> dict[str, Any]:
     if output.is_symlink() or output.exists():
         raise CompareError("OUTPUT_PATH_EXISTS")
-    report, archives = _build(left, right, left_view, right_view)
+    report, archives = _build(
+        left, right, left_view, right_view,
+        left_archive=left_archive, right_archive=right_archive,
+    )
     files = {
         f"{side}/{name}": raw for side, archive in archives.items() for name, raw in archive.items()
     }
@@ -223,8 +256,12 @@ class _Parser(argparse.ArgumentParser):
 
 def main(argv: list[str] | None = None) -> int:
     parser = _Parser(description="对比两个完整复核档案的原始指标视图", allow_abbrev=False)
-    parser.add_argument("--left", required=True, metavar="DIR")
-    parser.add_argument("--right", required=True, metavar="DIR")
+    left_source = parser.add_mutually_exclusive_group(required=True)
+    left_source.add_argument("--left", metavar="SESSION_DIR")
+    left_source.add_argument("--left-archive", metavar="ZIP")
+    right_source = parser.add_mutually_exclusive_group(required=True)
+    right_source.add_argument("--right", metavar="SESSION_DIR")
+    right_source.add_argument("--right-archive", metavar="ZIP")
     parser.add_argument("--left-view", choices=VIEWS, default="as_of")
     parser.add_argument("--right-view", choices=VIEWS, default="as_of")
     mode = parser.add_mutually_exclusive_group()
@@ -232,8 +269,13 @@ def main(argv: list[str] | None = None) -> int:
     mode.add_argument("--output", metavar="NEW_DIR")
     try:
         args = parser.parse_args(argv)
-        options = {"left_view": args.left_view, "right_view": args.right_view}
-        left, right = Path(args.left), Path(args.right)
+        options = {
+            "left_view": args.left_view, "right_view": args.right_view,
+            "left_archive": args.left_archive is not None,
+            "right_archive": args.right_archive is not None,
+        }
+        left = Path(args.left_archive if args.left_archive is not None else args.left)
+        right = Path(args.right_archive if args.right_archive is not None else args.right)
         if args.output is not None:
             manifest = export_comparison(left, right, Path(args.output), **options)
             raw = f"exported {manifest['managed_file_count']} managed files\n".encode()

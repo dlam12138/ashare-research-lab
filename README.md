@@ -303,6 +303,33 @@ ashare-research research archive --restore tmp/m2-offline-workflow.zip --output 
 失败保留自有部分输出并返回错误，不承诺原子发布。恢复需要兼容的已安装固定基线，
 不证明真实性、历史可得性，也不改变研究或生产资格。
 
+### 直接阅读交付包中的指标与证据
+
+不必先恢复目录，即可阅读已完整复核 ZIP 中的速览、缺口台账或既有两时点对比：
+
+```powershell
+ashare-research research read --archive tmp/m2-direct-delivery.zip --section review
+ashare-research research read --archive tmp/m2-direct-delivery.zip --section audit --json
+ashare-research research read --archive tmp/m2-direct-delivery.zip --section compare
+```
+
+也可用 `--package DIR` 读取工作流目录或对应的独立速览／台账／对比包。
+`--json` 返回完整原报告和整包复核说明；默认沿用原报告的可读格式。未生成对比
+部分的工作流会返回 `SECTION_NOT_PRESENT`。读取只使用本次完整验证返回的规范
+字节，不在验证后重新读取源文件，也不创建调用方恢复目录。
+
+要比较两次交付中的财务指标，而非文件字节，可直接使用档案或完整工作流 ZIP：
+
+```powershell
+ashare-research research compare --left-archive old.zip --right-archive new.zip --json
+ashare-research research compare --left-archive tmp/m2-direct-delivery.zip --right-archive tmp/m2-direct-delivery.zip --right-view compare_with
+```
+
+每侧可改为原有的 `--left SESSION_DIR`／`--right SESSION_DIR`。ZIP 会完整验证
+外层报告和嵌套档案，再取其中的原始指标记录；视图选择、比较规则和可选
+`--output NEW_DIR` 的独立可复核导出格式保持不变。数值、单位、输入事实与证据
+缺口原样保留；这些功能不重新证明历史发布，也不补齐来源或授予研究资格。
+
 ### 对比两次交付的文件变化
 
 ```powershell
