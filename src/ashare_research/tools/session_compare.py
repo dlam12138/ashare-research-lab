@@ -264,11 +264,14 @@ def main(argv: list[str] | None = None) -> int:
     right_source.add_argument("--right-archive", metavar="ZIP")
     parser.add_argument("--left-view", choices=VIEWS, default="as_of")
     parser.add_argument("--right-view", choices=VIEWS, default="as_of")
+    parser.add_argument("--evidence", action="store_true", help="同时比较原始输入及来源证据")
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--json", action="store_true")
     mode.add_argument("--output", metavar="NEW_DIR")
     try:
         args = parser.parse_args(argv)
+        if args.evidence and args.output is not None:
+            raise CompareError("INVALID_ARGUMENTS")
         options = {
             "left_view": args.left_view, "right_view": args.right_view,
             "left_archive": args.left_archive is not None,
@@ -281,7 +284,14 @@ def main(argv: list[str] | None = None) -> int:
             raw = f"exported {manifest['managed_file_count']} managed files\n".encode()
         else:
             report = build_comparison(left, right, **options)
-            raw = _json_bytes(report) if args.json else render_markdown(report).encode()
+            if args.evidence:
+                from ashare_research.tools import evidence_comparison
+
+                report = evidence_comparison.build_report(report)
+                raw = (_json_bytes(report) if args.json else
+                       evidence_comparison.render_markdown(report).encode())
+            else:
+                raw = _json_bytes(report) if args.json else render_markdown(report).encode()
         sys.stdout.buffer.write(raw)
         sys.stdout.buffer.flush()
         return 0

@@ -357,6 +357,21 @@ ashare-research research trace --package tmp/m2-offline-workflow --fact FACT_ID 
 间接依赖或因果影响。查询范围限于包内请求的指标和时点；没有引用时返回
 `FACT_NOT_REFERENCED`。`--fact` 不与 `--metric` 或 `--year` 混用。
 
+### 同时比较指标与输入证据
+
+要把指标差异与输入证据一起比较，在既有指标比较命令加上 `--evidence`：
+
+```powershell
+ashare-research research compare --left-archive old.zip --right-archive new.zip --evidence
+ashare-research research compare --left SESSION_DIR --right-archive new.zip --right-view compare_with --evidence --json
+```
+
+原指标分类和值保持不变；逐输入角色展示左右事实 ID、原始值、状态，以及
+实际变化的原始字段，包括来源引用和父记录。JSON 保留完整原比较与输入，并
+区分未记录字段和空值。未变化角色也保留，输入缺失与指标未选择分别显示。
+只报告字段差异，不推断变化原因或证据质量。`--evidence` 不与 `--output` 混用；
+未加该标志的显示和交付格式保持原样。
+
 ### 对比两次交付的文件变化
 
 ```powershell
