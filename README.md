@@ -405,6 +405,23 @@ ashare-research research compare --left SESSION_DIR --right-archive new.zip --ri
 或与 `--output` 混用会在读取来源前拒绝。未留存的父记录仍未解决，不推断间接
 影响或重新计算指标；未指定事实时原显示、筛选和交付格式保持原样。
 
+### 一页对比速览
+
+在任何指标比较上加 `--summary`，集中显示左右请求视图、日期、原值／单位／
+状态、原比较分类，以及选中的证据角色和直接事实引用：
+
+```powershell
+ashare-research research compare --left-archive old.zip --right-archive new.zip --summary
+ashare-research research compare --left SESSION_DIR --right-archive new.zip --right-view compare_with --fact FACT_ID --evidence --changes-only --summary
+ashare-research research compare --left-archive old.zip --right-archive new.zip --evidence --metric cash_based_free_cash_flow_proxy --year 2023 --summary --json
+```
+
+速览保留缺失／未选择的区别，明确显示空结果和原始限制，不展开证据字段 JSON。
+`--summary --json` 使用 `m2_verified_comparison_summary_v1`，保留完整 `source_report`、
+原始指标行、已选证据角色和匹配引用。金额与 ratio 均不换算，也不计算差额或排名。
+速览沿用已完成的完整复核及筛选，不重新读取来源；不可与 `--output` 混用。
+未加 `--summary` 时原有完整显示、JSON 和交付格式保持原样。
+
 ### 对比两次交付的文件变化
 
 ```powershell
