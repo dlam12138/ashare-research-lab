@@ -11,6 +11,7 @@ from typing import Any
 from ashare_research.tools import package_archive, package_verification
 
 SCHEMA = "m2_verified_metric_evidence_trace_v1"
+FACT_SCHEMA = "m2_verified_fact_evidence_trace_v1"
 NOTES = (
     "仅筛选已复核档案中的原始指标及输入，没有重新计算或推断变化原因。",
     "缺失保持缺失；来源字段和未留存父记录按原档案展示，不代表已补齐证据。",
@@ -24,11 +25,7 @@ class TraceError(Exception):
         self.code = code
 
 
-def trace_metric(
-    source: Path, metric_id: str, fiscal_year: int, *, archive: bool = False,
-) -> dict[str, Any]:
-    if not metric_id or fiscal_year < 1:
-        raise TraceError("INVALID_ARGUMENTS")
+def _load(source: Path, archive: bool) -> tuple[dict, dict | None, dict]:
     try:
         if archive:
             receipt, files = package_archive.load_verified_archive(source)
@@ -43,6 +40,15 @@ def trace_metric(
         raise TraceError("SESSION_PACKAGE_REQUIRED")
     name = "session/metrics/report.json" if kind == "workflow" else "metrics/report.json"
     metrics = json.loads(files[name])
+    return verification, receipt, metrics
+
+
+def trace_metric(
+    source: Path, metric_id: str, fiscal_year: int, *, archive: bool = False,
+) -> dict[str, Any]:
+    if not metric_id or fiscal_year < 1:
+        raise TraceError("INVALID_ARGUMENTS")
+    verification, receipt, metrics = _load(source, archive)
     views = []
     for view_name in ("as_of", "compare_with"):
         view = metrics[view_name]
@@ -69,11 +75,47 @@ def trace_metric(
     }
 
 
+def trace_fact(source: Path, fact_id: str, *, archive: bool = False) -> dict[str, Any]:
+    if not fact_id or not fact_id.strip():
+        raise TraceError("INVALID_ARGUMENTS")
+    verification, receipt, metrics = _load(source, archive)
+    references = []
+    for view_name in ("as_of", "compare_with"):
+        view = metrics[view_name]
+        if view is None:
+            continue
+        for row in view["records"]:
+            for binding in row["inputs"]:
+                parents = [entry for entry in binding.get("parents", {}).get("entries", [])
+                           if entry["fact_id"] == fact_id]
+                kinds = []
+                if binding.get("fact_id") == fact_id:
+                    kinds.append("input_fact")
+                if parents:
+                    kinds.append("direct_parent")
+                if kinds:
+                    references.append({
+                        "view": view_name, "date": view["date"], "record": row,
+                        "input": binding, "reference_kinds": kinds, "matched_parents": parents,
+                    })
+    if not references:
+        raise TraceError("FACT_NOT_REFERENCED")
+    return {
+        "schema": FACT_SCHEMA, "status": "traced", "symbol": metrics["symbol"],
+        "fact_id": fact_id, "request": metrics["request"], "references": references,
+        "boundary": metrics["boundary"], "metric_limitations": metrics["limitations_zh"],
+        "notes": [*NOTES, "仅列出原始输入及直接父记录引用，不推断间接依赖或因果影响。"],
+        "verification": verification, "archive_receipt": receipt,
+    }
+
+
 def _cell(value: Any) -> str:
     return str(value).replace("|", "\\|").replace("\n", " ")
 
 
 def render_markdown(report: dict[str, Any]) -> str:
+    if report["schema"] == FACT_SCHEMA:
+        return _render_fact(report)
     lines = [f"# 指标证据追溯：{report['fiscal_year']} / {report['metric_id']}", ""]
     comparison = report["comparison"]
     if comparison is not None:
@@ -120,6 +162,35 @@ def render_markdown(report: dict[str, Any]) -> str:
     return "\n".join(lines) + "\n"
 
 
+def _render_fact(report: dict[str, Any]) -> str:
+    lines = [f"# 事实引用追溯：{_cell(report['fact_id'])}", "",
+             "以下为交付包所选指标中的原始直接引用。", "",
+             "| 时点 / 视图 | 指标 / 年份 | 输入角色 | 引用类型 | 原指标值 |",
+             "| --- | --- | --- | --- | --- |"]
+    for ref in report["references"]:
+        row = ref["record"]
+        kinds = ["指标输入" if kind == "input_fact" else "直接父记录"
+                 for kind in ref["reference_kinds"]]
+        cells = (f"{ref['date']} / {ref['view']}",
+                 f"{row['metric_id']} / {row['fiscal_year']}", ref["input"]["role"],
+                 ", ".join(kinds), row["value"] if row["value"] is not None else "缺失")
+        lines.append("| " + " | ".join(map(_cell, cells)) + " |")
+    for ref in report["references"]:
+        binding, row = ref["input"], ref["record"]
+        missing = ", ".join(binding.get("missing_source_reference_fields", [])) or "未列出"
+        lines.extend(["", f"## {ref['date']} / {row['metric_id']} / {binding['role']}", "",
+                      f"原指标状态：{row['status']}；单位：{row['unit']}；"
+                      f"结果 ID：`{row['metric_result_id']}`。",
+                      f"输入事实 ID：`{binding.get('fact_id', '未选择')}`。",
+                      f"未留存来源字段：{missing}。"])
+        for parent in ref["matched_parents"]:
+            lines.append(f"直接父引用 `{parent['fact_id']}`：{parent['status']}。")
+        lines.extend(["", "原始输入证据：", "```json",
+                      json.dumps(binding, ensure_ascii=False, sort_keys=True, indent=2), "```"])
+    lines.extend(["", "## 阅读边界", "", *(f"- {note}" for note in report["notes"])])
+    return "\n".join(lines) + "\n"
+
+
 class _Parser(argparse.ArgumentParser):
     def error(self, message: str) -> None:
         raise TraceError("INVALID_ARGUMENTS")
@@ -130,15 +201,20 @@ def main(argv: list[str] | None = None) -> int:
     source = parser.add_mutually_exclusive_group(required=True)
     source.add_argument("--package", metavar="DIR")
     source.add_argument("--archive", metavar="ZIP")
-    parser.add_argument("--metric", required=True, metavar="ID")
-    parser.add_argument("--year", required=True, type=int)
+    selector = parser.add_mutually_exclusive_group(required=True)
+    selector.add_argument("--metric", metavar="ID")
+    selector.add_argument("--fact", metavar="ID")
+    parser.add_argument("--year", type=int)
     parser.add_argument("--json", action="store_true")
     try:
         args = parser.parse_args(argv)
-        result = trace_metric(
-            Path(args.archive if args.archive is not None else args.package),
-            args.metric, args.year, archive=args.archive is not None,
-        )
+        if (args.fact is not None and args.year is not None
+                or args.metric is not None and args.year is None):
+            raise TraceError("INVALID_ARGUMENTS")
+        path = Path(args.archive if args.archive is not None else args.package)
+        result = (trace_fact(path, args.fact, archive=args.archive is not None)
+                  if args.fact is not None else
+                  trace_metric(path, args.metric, args.year, archive=args.archive is not None))
         text = (json.dumps(result, ensure_ascii=False, sort_keys=True, indent=2) + "\n"
                 if args.json else render_markdown(result))
         sys.stdout.buffer.write(text.encode("utf-8"))

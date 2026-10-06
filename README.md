@@ -345,6 +345,18 @@ ashare-research research trace --package tmp/m2-offline-workflow/session --metri
 时点时只显示该时点。未选择的指标或年度返回 `METRIC_NOT_SELECTED`，缺失值
 保持缺失。读取前完整复核整包，只消费本次返回的规范字节，无需恢复目录。
 
+拿到事实 ID 后，使用反向查询查看交付包内引用它的全部所选指标、年份和时点：
+
+```powershell
+ashare-research research trace --archive tmp/m2-direct-delivery.zip --fact FACT_ID
+ashare-research research trace --package tmp/m2-offline-workflow --fact FACT_ID --json
+```
+
+结果区分原始指标输入与直接父记录引用，保留完整指标记录和输入证据。查询未
+留存的父记录只会展示已有引用及其原始状态，不表示已取得该父记录，也不推断
+间接依赖或因果影响。查询范围限于包内请求的指标和时点；没有引用时返回
+`FACT_NOT_REFERENCED`。`--fact` 不与 `--metric` 或 `--year` 混用。
+
 ### 对比两次交付的文件变化
 
 ```powershell
