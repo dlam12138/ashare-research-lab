@@ -72,15 +72,34 @@ def main(argv: list[str] | None = None) -> int:
     source.add_argument("--archive", metavar="ZIP")
     parser.add_argument("--section", required=True, choices=tuple(RENDERERS))
     parser.add_argument("--json", action="store_true")
+    parser.add_argument("--metric", action="append", metavar="ID")
+    parser.add_argument("--year", action="append", type=int, metavar="YEAR")
+    parser.add_argument("--fact", action="append", metavar="ID")
+    parser.add_argument("--gaps-only", action="store_true", help="仅显示原台账缺口，限 audit")
     try:
         args = parser.parse_args(argv)
+        focused = (args.metric is not None or args.year is not None
+                   or args.fact is not None or args.gaps_only)
+        if focused:
+            from ashare_research.tools import audit_focus
+
+            if args.section != "audit":
+                raise ReadError("INVALID_ARGUMENTS")
+            audit_focus.validate_selectors(args.metric, args.year, args.fact)
         result = read_report(
             Path(args.archive if args.archive is not None else args.package),
             args.section, archive=args.archive is not None,
         )
+        renderer = RENDERERS[args.section]
+        if focused:
+            result = audit_focus.build_report(
+                result, metrics=args.metric, years=args.year, facts=args.fact,
+                gaps_only=args.gaps_only,
+            )
+            renderer = audit_focus.render_markdown
         text = (
             json.dumps(result, ensure_ascii=False, sort_keys=True, indent=2) + "\n"
-            if args.json else RENDERERS[args.section](result["report"])
+            if args.json else renderer(result if focused else result["report"])
         )
         sys.stdout.buffer.write(text.encode("utf-8"))
         sys.stdout.buffer.flush()
