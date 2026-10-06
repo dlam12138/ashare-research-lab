@@ -330,6 +330,26 @@ ashare-research research compare --left-archive tmp/m2-direct-delivery.zip --rig
 `--output NEW_DIR` 的独立可复核导出格式保持不变。数值、单位、输入事实与证据
 缺口原样保留；这些功能不重新证明历史发布，也不补齐来源或授予研究资格。
 
+### 按研究问题聚焦缺口台账
+
+读取 `audit` 时可按指标、指标年度或事实 ID 筛选，三个参数均可重复。
+`--gaps-only` 只保留原台账有 gap 代码的事实及原有缺失输入：
+
+```powershell
+ashare-research research read --archive delivery.zip --section audit --metric cash_based_free_cash_flow_proxy --year 2023 --gaps-only
+ashare-research research read --package WORKFLOW_DIR --section audit --fact FACT_ID --json
+```
+
+年度按指标的原引用用途匹配，例如 2023 年同比仍包含其 2022 年输入事实。
+事实 ID 匹配已选输入或直接父引用；多个事实取并集，再与指标／年度条件取交集。
+事实筛选不包含缺失输入，因为缺失角色没有已选事实 ID。显示保留来源缺失字段、
+未解决父数、原 gap 代码、匹配用途和原缺失原因；父引用保留原状态。
+JSON 使用 `m2_verified_focused_audit_view_v1`，在 `source_read` 留存完整原台账及
+整包复核说明。未知指标／年度／事实分别返回 `METRIC_NOT_SELECTED`、
+`YEAR_NOT_SELECTED`、`FACT_NOT_REFERENCED`；已知条件无交集时明确返回空结果，
+不表示证据齐全。这些筛选仅用于 `audit`，无效参数会在读取来源前拒绝。
+没有筛选时原报告显示和 JSON 保持原样；筛选不补齐证据、计算指标或判断质量。
+
 ### 逐项追溯指标的原始证据
 
 指定指标和年度，可直接从完整工作流或研究档案的 ZIP／目录查看两个请求时点
