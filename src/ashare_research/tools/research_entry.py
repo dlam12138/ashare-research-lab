@@ -45,8 +45,8 @@ COMMANDS: tuple[ResearchCommand, ...] = (
     ResearchCommand(
         "trace",
         "ashare_research.tools.metric_evidence_trace",
-        "逐项追溯指标原始输入、来源与缺失父记录",
-        ("(--package DIR | --archive ZIP) --metric ID --year YEAR [--json]",),
+        "追溯指标输入，或按事实 ID 反查指标及直接父引用",
+        ("(--package DIR | --archive ZIP) (--metric ID --year YEAR | --fact ID) [--json]",),
     ),
     ResearchCommand(
         "read",
