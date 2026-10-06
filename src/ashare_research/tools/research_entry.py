@@ -53,7 +53,8 @@ COMMANDS: tuple[ResearchCommand, ...] = (
         "ashare_research.tools.delivered_research",
         "直接阅读交付包内的指标速览、证据台账和指标对比",
         ("(--package DIR | --archive ZIP) --section review|audit|compare [--json]",
-         "audit 可用 [--metric ID] [--year YEAR] [--fact ID]（可重复）[--gaps-only]"),
+         "audit 可用 [--metric ID] [--year YEAR] [--fact ID]（可重复）[--gaps-only]\n"
+         "review 可用 [--metric ID] [--year YEAR]（可重复）[--missing-only]"),
     ),
     ResearchCommand(
         "diff",

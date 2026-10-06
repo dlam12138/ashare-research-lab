@@ -347,8 +347,27 @@ ashare-research research read --package WORKFLOW_DIR --section audit --fact FACT
 JSON 使用 `m2_verified_focused_audit_view_v1`，在 `source_read` 留存完整原台账及
 整包复核说明。未知指标／年度／事实分别返回 `METRIC_NOT_SELECTED`、
 `YEAR_NOT_SELECTED`、`FACT_NOT_REFERENCED`；已知条件无交集时明确返回空结果，
-不表示证据齐全。这些筛选仅用于 `audit`，无效参数会在读取来源前拒绝。
+不表示证据齐全。`--fact` 和 `--gaps-only` 仅用于 `audit`；
+无效参数会在读取来源前拒绝。
 没有筛选时原报告显示和 JSON 保持原样；筛选不补齐证据、计算指标或判断质量。
+
+### 按指标和年度阅读速览或缺失结果
+
+读取 `review` 时也支持可重复的 `--metric` 和 `--year`，可加
+`--missing-only` 只看原值为 null 的结果：
+
+```powershell
+ashare-research research read --archive delivery.zip --section review --metric cash_based_free_cash_flow_proxy --year 2023
+ashare-research research read --package WORKFLOW_DIR --section review --year 2025 --missing-only --json
+```
+
+选择条件取交集；原值、单位、状态、输入日期上界、缺失角色和历史年度原样保留。
+两时点对比保留任一选中行对应的完整原条目，因此缺失结果的另一个时点可能有值。
+零值不会被当作缺失；各时点事实条数仍是原速览总数，并非筛选后的输入数量。
+JSON 使用 `m2_verified_focused_review_view_v1`，`source_read` 保留完整复核源，
+`review` 包含选中行和对应原始对比。未知指标／年度返回上述错误码；
+已知条件没有匹配时明确显示空结果。`--missing-only` 仅用于 `review`。
+没有筛选时保持原输出；选择不会重新计算指标或补齐证据。
 
 ### 逐项追溯指标的原始证据
 

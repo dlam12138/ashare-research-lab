@@ -76,27 +76,34 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--year", action="append", type=int, metavar="YEAR")
     parser.add_argument("--fact", action="append", metavar="ID")
     parser.add_argument("--gaps-only", action="store_true", help="仅显示原台账缺口，限 audit")
+    parser.add_argument(
+        "--missing-only", action="store_true", help="仅显示原值为 null 的指标，限 review",
+    )
     try:
         args = parser.parse_args(argv)
         focused = (args.metric is not None or args.year is not None
-                   or args.fact is not None or args.gaps_only)
+                   or args.fact is not None or args.gaps_only or args.missing_only)
         if focused:
-            from ashare_research.tools import audit_focus
+            if args.section == "audit" and not args.missing_only:
+                from ashare_research.tools import audit_focus as focus
 
-            if args.section != "audit":
+                focus.validate_selectors(args.metric, args.year, args.fact)
+            elif args.section == "review" and args.fact is None and not args.gaps_only:
+                from ashare_research.tools import review_focus as focus
+
+                focus.validate_selectors(args.metric, args.year)
+            else:
                 raise ReadError("INVALID_ARGUMENTS")
-            audit_focus.validate_selectors(args.metric, args.year, args.fact)
         result = read_report(
             Path(args.archive if args.archive is not None else args.package),
             args.section, archive=args.archive is not None,
         )
         renderer = RENDERERS[args.section]
         if focused:
-            result = audit_focus.build_report(
-                result, metrics=args.metric, years=args.year, facts=args.fact,
-                gaps_only=args.gaps_only,
-            )
-            renderer = audit_focus.render_markdown
+            options = ({"facts": args.fact, "gaps_only": args.gaps_only}
+                       if args.section == "audit" else {"missing_only": args.missing_only})
+            result = focus.build_report(result, metrics=args.metric, years=args.year, **options)
+            renderer = focus.render_markdown
         text = (
             json.dumps(result, ensure_ascii=False, sort_keys=True, indent=2) + "\n"
             if args.json else renderer(result if focused else result["report"])
