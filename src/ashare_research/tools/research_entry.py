@@ -95,6 +95,8 @@ COMMANDS: tuple[ResearchCommand, ...] = (
             "(--left SESSION_DIR | --left-archive ZIP)",
             "(--right SESSION_DIR | --right-archive ZIP)",
             "[--left-view / --right-view] [--json | --output NEW_DIR | --evidence [--json]]",
+            "[--metric ID（可重复）] [--year YEAR（可重复）] [--changes-only]"
+            "（不可与 --output 混用）",
         ),
     ),
     ResearchCommand(

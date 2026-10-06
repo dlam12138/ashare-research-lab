@@ -372,6 +372,21 @@ ashare-research research compare --left SESSION_DIR --right-archive new.zip --ri
 只报告字段差异，不推断变化原因或证据质量。`--evidence` 不与 `--output` 混用；
 未加该标志的显示和交付格式保持原样。
 
+### 聚焦指标、年度与变化项
+
+普通比较或证据比较都可按原比较中的指标／年度筛选，两者均可重复指定：
+
+```powershell
+ashare-research research compare --left-archive old.zip --right-archive new.zip --metric cash_based_free_cash_flow_proxy --year 2023 --changes-only
+ashare-research research compare --left SESSION_DIR --right-archive new.zip --right-view compare_with --evidence --metric cash_based_free_cash_flow_proxy --year 2023 --changes-only --json
+```
+
+普通“只看变化”沿用原指标分类；证据模式还包含输入字段变化，并只展开变化
+角色。JSON 使用明确的聚焦格式，保留完整原报告、筛选条件和匹配项；未加
+筛选的原输出保持原样。已知选择没有匹配项时成功返回空结果；未知指标或
+年度分别报 `METRIC_NOT_COMPARED`／`YEAR_NOT_COMPARED`。筛选不与 `--output`
+混用，也不重新计算指标、补齐缺失或推断变化原因。
+
 ### 对比两次交付的文件变化
 
 ```powershell
