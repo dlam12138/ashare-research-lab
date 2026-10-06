@@ -266,6 +266,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--right-view", choices=VIEWS, default="as_of")
     parser.add_argument("--evidence", action="store_true", help="同时比较原始输入及来源证据")
     parser.add_argument("--metric", action="append", metavar="ID", help="筛选指标，可重复")
+    parser.add_argument("--fact", action="append", metavar="ID", help="按直接事实引用筛选，可重复")
     parser.add_argument("--year", action="append", type=int, metavar="YEAR",
                         help="筛选年度，可重复")
     parser.add_argument("--changes-only", action="store_true", help="仅显示变化项")
@@ -274,13 +275,18 @@ def main(argv: list[str] | None = None) -> int:
     mode.add_argument("--output", metavar="NEW_DIR")
     try:
         args = parser.parse_args(argv)
-        focused = args.metric is not None or args.year is not None or args.changes_only
+        focused = (args.metric is not None or args.year is not None
+                   or args.changes_only or args.fact is not None)
         if (args.evidence or focused) and args.output is not None:
             raise CompareError("INVALID_ARGUMENTS")
         if focused:
             from ashare_research.tools import comparison_focus
 
             comparison_focus.validate_selectors(args.metric, args.year)
+        if args.fact is not None:
+            from ashare_research.tools import fact_comparison
+
+            fact_comparison.validate_facts(args.fact)
         options = {
             "left_view": args.left_view, "right_view": args.right_view,
             "left_archive": args.left_archive is not None,
@@ -304,6 +310,9 @@ def main(argv: list[str] | None = None) -> int:
                     report, metrics=args.metric, years=args.year, changes_only=args.changes_only,
                 )
                 renderer = comparison_focus.render_markdown
+            if args.fact is not None:
+                report = fact_comparison.build_report(report, args.fact)
+                renderer = fact_comparison.render_markdown
             raw = _json_bytes(report) if args.json else renderer(report).encode()
         sys.stdout.buffer.write(raw)
         sys.stdout.buffer.flush()

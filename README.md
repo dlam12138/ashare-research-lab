@@ -387,6 +387,24 @@ ashare-research research compare --left SESSION_DIR --right-archive new.zip --ri
 年度分别报 `METRIC_NOT_COMPARED`／`YEAR_NOT_COMPARED`。筛选不与 `--output`
 混用，也不重新计算指标、补齐缺失或推断变化原因。
 
+### 从事实引用定位相关指标比较
+
+把 `trace --fact` 查到的事实 ID 用于两份档案比较，直接查看原始输入或直接父
+引用它的指标；`--fact` 可重复，多个事实取并集，再与指标、年份及变化筛选取交集：
+
+```powershell
+ashare-research research compare --left-archive old.zip --right-archive new.zip --fact FACT_ID
+ashare-research research compare --left SESSION_DIR --right-archive new.zip --right-view compare_with --fact FACT_ID --evidence --year 2023 --changes-only --json
+```
+
+引用表标明左／右、指标、角色、输入／直接父引用及父记录原状态。JSON 使用
+`m2_verified_fact_comparison_v1`，在 `comparison.source_report` 保留完整原报告，
+同时保留匹配引用的原始输入和父记录。引用表描述匹配指标的原始引用；“只看变化”
+仍可列出这些指标中未变化角色的引用，不表示该事实造成变化。任何未知事实返回
+`FACT_NOT_REFERENCED`；已知事实与其他条件没有交集时成功返回空结果。空事实 ID
+或与 `--output` 混用会在读取来源前拒绝。未留存的父记录仍未解决，不推断间接
+影响或重新计算指标；未指定事实时原显示、筛选和交付格式保持原样。
+
 ### 对比两次交付的文件变化
 
 ```powershell

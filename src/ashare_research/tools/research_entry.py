@@ -97,6 +97,7 @@ COMMANDS: tuple[ResearchCommand, ...] = (
             "[--left-view / --right-view] [--json | --output NEW_DIR | --evidence [--json]]",
             "[--metric ID（可重复）] [--year YEAR（可重复）] [--changes-only]"
             "（不可与 --output 混用）",
+            "[--fact ID（可重复，匹配原始输入及直接父引用，可组合上述筛选）]",
         ),
     ),
     ResearchCommand(
