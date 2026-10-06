@@ -265,13 +265,22 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--left-view", choices=VIEWS, default="as_of")
     parser.add_argument("--right-view", choices=VIEWS, default="as_of")
     parser.add_argument("--evidence", action="store_true", help="同时比较原始输入及来源证据")
+    parser.add_argument("--metric", action="append", metavar="ID", help="筛选指标，可重复")
+    parser.add_argument("--year", action="append", type=int, metavar="YEAR",
+                        help="筛选年度，可重复")
+    parser.add_argument("--changes-only", action="store_true", help="仅显示变化项")
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--json", action="store_true")
     mode.add_argument("--output", metavar="NEW_DIR")
     try:
         args = parser.parse_args(argv)
-        if args.evidence and args.output is not None:
+        focused = args.metric is not None or args.year is not None or args.changes_only
+        if (args.evidence or focused) and args.output is not None:
             raise CompareError("INVALID_ARGUMENTS")
+        if focused:
+            from ashare_research.tools import comparison_focus
+
+            comparison_focus.validate_selectors(args.metric, args.year)
         options = {
             "left_view": args.left_view, "right_view": args.right_view,
             "left_archive": args.left_archive is not None,
@@ -284,14 +293,18 @@ def main(argv: list[str] | None = None) -> int:
             raw = f"exported {manifest['managed_file_count']} managed files\n".encode()
         else:
             report = build_comparison(left, right, **options)
+            renderer = render_markdown
             if args.evidence:
                 from ashare_research.tools import evidence_comparison
 
                 report = evidence_comparison.build_report(report)
-                raw = (_json_bytes(report) if args.json else
-                       evidence_comparison.render_markdown(report).encode())
-            else:
-                raw = _json_bytes(report) if args.json else render_markdown(report).encode()
+                renderer = evidence_comparison.render_markdown
+            if focused:
+                report = comparison_focus.build_report(
+                    report, metrics=args.metric, years=args.year, changes_only=args.changes_only,
+                )
+                renderer = comparison_focus.render_markdown
+            raw = _json_bytes(report) if args.json else renderer(report).encode()
         sys.stdout.buffer.write(raw)
         sys.stdout.buffer.flush()
         return 0
