@@ -330,6 +330,21 @@ ashare-research research compare --left-archive tmp/m2-direct-delivery.zip --rig
 `--output NEW_DIR` 的独立可复核导出格式保持不变。数值、单位、输入事实与证据
 缺口原样保留；这些功能不重新证明历史发布，也不补齐来源或授予研究资格。
 
+### 逐项追溯指标的原始证据
+
+指定指标和年度，可直接从完整工作流或研究档案的 ZIP／目录查看两个请求时点
+的原始指标记录、输入角色、事实 ID、来源字段和未解决父记录：
+
+```powershell
+ashare-research research trace --archive tmp/m2-direct-delivery.zip --metric cash_based_free_cash_flow_proxy --year 2023
+ashare-research research trace --package tmp/m2-offline-workflow/session --metric cash_based_free_cash_flow_proxy --year 2023 --json
+```
+
+输出沿用档案中原有的指标比较类别，不重新计算或解释变化原因。JSON 保留完整
+输入、上下文、溯源和来源引用；可读输出突出原始值与证据缺口。仅有一个请求
+时点时只显示该时点。未选择的指标或年度返回 `METRIC_NOT_SELECTED`，缺失值
+保持缺失。读取前完整复核整包，只消费本次返回的规范字节，无需恢复目录。
+
 ### 对比两次交付的文件变化
 
 ```powershell
