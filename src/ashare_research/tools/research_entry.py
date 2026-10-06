@@ -94,7 +94,7 @@ COMMANDS: tuple[ResearchCommand, ...] = (
         (
             "(--left SESSION_DIR | --left-archive ZIP)",
             "(--right SESSION_DIR | --right-archive ZIP)",
-            "[--left-view / --right-view] [--json | --output NEW_DIR]",
+            "[--left-view / --right-view] [--json | --output NEW_DIR | --evidence [--json]]",
         ),
     ),
     ResearchCommand(
