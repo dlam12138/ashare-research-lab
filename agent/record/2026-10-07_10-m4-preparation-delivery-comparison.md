@@ -37,7 +37,12 @@ Latest pre-publication PR76 state OPEN/MERGEABLE,36SUCCESS/4pending.
 Exact validation commands/cases/limits:
 acceptance/2026-10-07_m4_preparation_delivery_comparison.md.
 
-Nine-file scoped normal feature commit/push and PR stacked on76.
+Eight-file scoped normal feature commit/push and PR stacked on76.
 Final actual committed scope/head, clean tree, refs/protections and exact-head
 hosted state retained in tmp/preparation-delivery-comparison/final-evidence.json.
 No main/force push, automatic merge or following stage.
+
+Initial scoped implementation commit c871bbd contains eight files. Post-commit
+scope review found the contract prose counted nine despite listing the same
+eight allowed paths; corrected Goal/acceptance/record counts in a separate
+documentation commit before publication, without amending the implementation.

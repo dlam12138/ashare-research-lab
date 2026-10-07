@@ -69,10 +69,13 @@ primary database unchanged. Original preparation/projector/plan directory and
 ZIP verifiers/preparation directory and ZIP verifiers byte-equal to base.
 No comprehensive ignored-runtime hash claim.
 
-Nine-file scoped feature commit/push and stacked PR against76; exact committed
+Eight-file scoped feature commit/push and stacked PR against76; exact committed
 scope/head, clean owned tree, local/origin/live refs, protections and hosted
 state independently reviewed after publication and retained in
 tmp/preparation-delivery-comparison/final-evidence.json.
 Local acceptance PASS subject to final publication review. No full hosted-success
 claim while pending; dependencies76->75->74->73->71->70->69->68 remain unmerged.
 No automatic merge or following stage. Real research/statistics/holdout sealed.
+
+Committed scope review corrected the written file count from nine to eight;
+the explicit allowed path list and implementation scope were unchanged.

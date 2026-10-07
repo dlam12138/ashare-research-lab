@@ -19,7 +19,7 @@ primary3679b1b/localmain966206f/stashcb568efd and database SHA256
 4a71d3c7b88c0b16ae46ffb4f9bfbd006d91e0537e559235c9b5a1f919e2fce6.
 
 ## Allowed scope
-Nine files: this Goal, matching acceptance/record, README.md,
+Eight files: this Goal, matching acceptance/record, README.md,
 src/ashare_research/tools/{preparation_delivery_compare,preparation_compare,research_entry}.py,
 tests/test_preparation_delivery_compare.py. Ignored demo/validation artifacts allowed.
 Extract existing comparison-from-reports helper and configurable fixed Markdown
@@ -62,7 +62,7 @@ captured-read handoff, forged/corrupt sides and stale evidence, plan/domain drif
 invalid flags before IO, alias/junction rejection, immutable sources/offline guards.
 
 ## Acceptance criteria
-Nine-file scope; meaningful targeted tests/Ruff/diff/actual CLI demo pass.
+Eight-file scope; meaningful targeted tests/Ruff/diff/actual CLI demo pass.
 42foreign registrations/HEAD/branches/statuses,27dirty hashes,427protected hashes,
 primary database/localmain/stash unchanged; original verifiers/projector/preparation
 byte-equal to base. Owned clean; local/origin/live feature/dependency agree.
