@@ -142,10 +142,17 @@ def test_corruption_rehashed_inventory_and_package_structure(tmp_path, monkeypat
 
     for linked in (good, good / "plan.json", good.parent):
         with monkeypatch.context() as scoped:
+            scoped.chdir(good.parent)
             scoped.setattr(Path, "lstat", lambda path, linked=linked, **kw: (
                 Reparse() if path == linked else original_lstat(path, **kw)
             ))
-            rejected(good, "LINKED_PACKAGE_PATH")
+            rejected(Path("good"), "LINKED_PACKAGE_PATH")
+            if linked == good.parent:
+                assert cli.main(["research", "plan", "--hypothesis", str(EXAMPLE),
+                                 "--output", "linked-parent-output"]) == 2
+                captured = capsys.readouterr()
+                assert captured.out == "" and captured.err == "error: LINKED_PACKAGE_PATH\n"
+                assert not Path("linked-parent-output").exists()
     assert research_plan_package.verify_package(good)["report"]["boundary"][
         "research_ready"
     ] is False

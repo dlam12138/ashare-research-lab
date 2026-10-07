@@ -50,6 +50,7 @@ def _files(payload: bytes) -> tuple[dict[str, bytes], dict[str, Any], dict[str, 
 
 def _check_path(path: Path) -> None:
     """Reject symlinks and Windows reparse points, including ancestor paths."""
+    path = path.absolute()
     for candidate in (path, *path.parents):
         try:
             info = candidate.lstat()

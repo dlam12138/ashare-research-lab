@@ -25,7 +25,7 @@ concurrent hostile filesystem changes are outside the security contract.
 Exact local commands, PYTHONPATH=src, Python D:/量化分析/.venv/Scripts/python.exe:
 ```powershell
 python -m pytest -q tests/test_research_plan.py tests/test_research_plan_package.py
-# 5 passed in 1.08s, one run; no existing tests rewritten.
+# 5 passed in 1.08s; no existing tests rewritten.
 python -m ruff check src/ashare_research/tools/research_plan.py src/ashare_research/tools/research_plan_package.py src/ashare_research/tools/research_entry.py tests/test_research_plan_package.py
 # All checks passed; one loop-closure lint finding fixed before test execution.
 git diff --check
@@ -38,6 +38,10 @@ extra/nested/oversized/reparse root/file/ancestor entries, invalid combinations,
 existing file/directory preservation, malformed source before mkdir, absent parent,
 and injected write failure preserving partial output without success receipt.
 Windows reparse rejection exercised via portable injected lstat attributes.
+Independent code review found relative paths must expand to absolute paths before
+ancestor inspection; corrected and added relative verify/export coverage. The
+affected new test file rerun: python -m pytest -q tests/test_research_plan_package.py,
+3 passed; Ruff/diff rechecked. No full local suite or unrelated repeat.
 
 Actual public CLI subprocess demo, exit0/no stderr:
 ```powershell
