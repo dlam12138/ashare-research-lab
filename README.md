@@ -43,6 +43,27 @@ M3 最终处置为 `M3_DAILY_MECHANISM_NOT_ESTABLISHED`。Holdout 已使用一�
 - Subsequently, M4-A.1 has since been implemented and canonicalized on main. M4-A.2 design, A.2I compile-only plan compilation, the synthetic dataset adapter, the immutable design matrix and the synthetic-fixture-only bounded executor are merged on main. The M4-B minimum metadata registry is implemented for synthetic/schema validation only. The M4-A.2P synthetic end-to-end pipeline orchestration design is IMPLEMENTED as a synthetic-only, in-memory composed entry (`run_synthetic_pipeline`); the design is no longer design-only, and its orchestrator is no longer missing. A generic research executor, real-data execution and holdout remain unauthorized; a real M4-B registry dataset and literature acquisition remain NOT AUTHORIZED, real hypothesis execution remains NOT AUTHORIZED, and real-research M4-B NOT STARTED.
 - No real mechanism inference beyond the frozen development-primary and registered robustness execution has been executed.
 
+## M4 假设配置与研究计划入口
+
+将自己的假设配置交给现有 M4 编译器，直接查看冻结合同、分析计划和所需数据：
+
+```powershell
+ashare-research research plan --hypothesis docs/examples/m4_hypothesis.json
+ashare-research research plan --hypothesis MY_HYPOTHESIS.json --json
+```
+
+可复制并编辑 [示范配置](docs/examples/m4_hypothesis.json) 的条件、窗口、控制项等。
+当前 V1 仅支持既有合成身份与词汇；真实身份策略会拒绝，未新增真实研究能力。
+Markdown 显示数据角色、序列、观测时序、样本窗口、质量门槛、模型项、bootstrap、
+稳健性注册和 holdout 边界。JSON 保留原编译器的规范配置、冻结合同、完整分析计划
+及其摘要，并记录实际加载源文件的 SHA256。格式变化只改变源文件摘要；
+研究语义变化按原编译器改变合同和计划身份。
+
+仅读取显式 UTF-8 JSON（最多 1MiB），拒绝重复键、非有限常量、非对象根和无效配置；
+错误时无部分结果。无需配置数据库，不联网、不获取数据、不运行统计或访问 holdout。
+`FROZEN` 和摘要只是编译结果的内容身份，不代表独立封存、历史证据审查或执行授权；
+`research_ready` 与各执行状态保持 false。输出到 stdout，文件留存由调用者选择。
+
 ## M4 离线进度检查（只读，无网络）
 
 一条命令复核已冻结的 EIA 传输/PIT 元数据证据，输出确定性的当前研究阻塞与最小下一步；不需要参数选择根目录、路径或来源：
