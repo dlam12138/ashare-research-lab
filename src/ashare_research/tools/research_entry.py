@@ -78,7 +78,8 @@ COMMANDS: tuple[ResearchCommand, ...] = (
         "plan-compare",
         "ashare_research.tools.research_plan_compare",
         "对比已复核研究计划的配置、合同与数据／方法要求（不执行）",
-        ("(--left DIR | --left-archive ZIP) (--right DIR | --right-archive ZIP) [--json]",),
+        ("(--left DIR | --left-archive ZIP) (--right DIR | --right-archive ZIP) [--json]",
+         "对比可用 [--summary [--section config|contract|plan（可重复）]]（按分区查看变更）"),
     ),
     ResearchCommand(
         "plan",

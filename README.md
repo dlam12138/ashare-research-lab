@@ -94,6 +94,20 @@ ashare-research research plan-compare --left-archive old-plan.zip --right-archiv
 列表按原始索引比较。比较只读，不推断对象对齐、方案优劣或执行授权；任一输入复核失败
 即返回错误，不输出部分对比。目录与原生 ZIP 可混用，现有 ZIP 格式限制继续适用。
 
+对比也可只附加分区速览：
+
+```powershell
+ashare-research research plan-compare --left old-plan-package --right-archive new-plan.zip --summary --section config --json
+```
+
+速览在完整复核后汇总两个身份、五项摘要的相同状态、规范内容变化总数和
+`config`／`contract`／`plan` 各分区变化项数，并只展示所选分区的 JSON Pointer 前后值。
+重复的 `--section` 按原分区顺序去重；所选分区没有变化时明确提示。
+身份、相等性、全局计数、执行边界与限制保持完整对比原值，筛选只影响展示的变更行。
+没有 `--summary` 的 `--section` 与非法分区在读取前拒绝；速览不重新读取或解压、
+不重新计算差异，也不评价方案优劣或授权执行。省略参数时原有 JSON 与默认 Markdown
+输出保持不变。
+
 已复核计划可与显式虚构输入一起做数据及矩阵准备检查：
 
 ```powershell
