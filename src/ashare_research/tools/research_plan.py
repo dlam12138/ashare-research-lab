@@ -50,12 +50,18 @@ def _constant(value: str) -> None:
     raise PlanError("NONFINITE_JSON_NUMBER")
 
 
-def _load(source: Path) -> tuple[dict[str, Any], str]:
+def read_hypothesis_bytes(source: Path) -> bytes:
     try:
         with source.open("rb") as stream:
             payload = stream.read(MAX_INPUT_BYTES + 1)
     except OSError as error:
         raise PlanError("HYPOTHESIS_READ_FAILED") from error
+    if len(payload) > MAX_INPUT_BYTES:
+        raise PlanError("HYPOTHESIS_TOO_LARGE")
+    return payload
+
+
+def _decode(payload: bytes) -> tuple[dict[str, Any], str]:
     if len(payload) > MAX_INPUT_BYTES:
         raise PlanError("HYPOTHESIS_TOO_LARGE")
     try:
@@ -70,7 +76,11 @@ def _load(source: Path) -> tuple[dict[str, Any], str]:
 
 
 def build_report(source: Path) -> dict[str, Any]:
-    document, source_sha = _load(source)
+    return build_report_from_bytes(read_hypothesis_bytes(source))
+
+
+def build_report_from_bytes(payload: bytes) -> dict[str, Any]:
+    document, source_sha = _decode(payload)
     config = parse_hypothesis_config(document)
     contract = compile_hypothesis_config(config)
     plan = build_analysis_plan(contract)
@@ -140,10 +150,30 @@ class _Parser(argparse.ArgumentParser):
 
 def main(argv: list[str] | None = None) -> int:
     parser = _Parser(description="从显式假设 JSON 编译冻结合同及研究要求", allow_abbrev=False)
-    parser.add_argument("--hypothesis", required=True, metavar="JSON")
+    source = parser.add_mutually_exclusive_group(required=True)
+    source.add_argument("--hypothesis", metavar="JSON")
+    source.add_argument("--verify", metavar="DIR")
+    parser.add_argument("--output", metavar="NEW_DIR")
     parser.add_argument("--json", action="store_true")
     try:
         args = parser.parse_args(argv)
+        if args.verify is not None or args.output is not None:
+            from ashare_research.tools import research_plan_package
+
+            if args.verify is not None:
+                if args.output is not None:
+                    raise PlanError("INVALID_ARGUMENTS")
+                receipt = research_plan_package.verify_package(Path(args.verify))
+                message = "verified compile-only plan package\n"
+            else:
+                receipt = research_plan_package.export_package(
+                    Path(args.hypothesis), Path(args.output),
+                )
+                message = "exported compile-only plan package (4 files)\n"
+            text = _json(receipt) + "\n" if args.json else message
+            sys.stdout.buffer.write(text.encode("utf-8"))
+            sys.stdout.buffer.flush()
+            return 0
         report = build_report(Path(args.hypothesis))
         text = _json(report) + "\n" if args.json else render_markdown(report)
         sys.stdout.buffer.write(text.encode("utf-8"))

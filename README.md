@@ -50,6 +50,8 @@ M3 最终处置为 `M3_DAILY_MECHANISM_NOT_ESTABLISHED`。Holdout 已使用一�
 ```powershell
 ashare-research research plan --hypothesis docs/examples/m4_hypothesis.json
 ashare-research research plan --hypothesis MY_HYPOTHESIS.json --json
+ashare-research research plan --hypothesis MY_HYPOTHESIS.json --output new-plan-package
+ashare-research research plan --verify new-plan-package --json
 ```
 
 可复制并编辑 [示范配置](docs/examples/m4_hypothesis.json) 的条件、窗口、控制项等。
@@ -63,6 +65,14 @@ Markdown 显示数据角色、序列、观测时序、样本窗口、质量门�
 错误时无部分结果。无需配置数据库，不联网、不获取数据、不运行统计或访问 holdout。
 `FROZEN` 和摘要只是编译结果的内容身份，不代表独立封存、历史证据审查或执行授权；
 `research_ready` 与各执行状态保持 false。输出到 stdout，文件留存由调用者选择。
+
+计划包包含原始 `hypothesis.json`、完整 `plan.json`、可读 `plan.md` 和
+`manifest.json` 字节清单。可将整个目录移到其他位置再复核；复核使用当前安装的编译器
+重新编译包内假设，逐字节检查全部文件，不联网或执行统计研究。原始假设只读取一次。
+输出必须是现有父目录下的新目录，已有文件或目录、符号链接及 Windows 重解析路径均拒绝。
+写入失败返回错误，保留部分输出供检查；不会覆盖、删除或自动重试该目录。
+复核要求恰好四个普通文件，缺失、额外文件或任意内容改动均拒绝。清单和编译摘要只证明
+一致性；不验证作者、独立封存、历史来源或真实研究就绪，也不构成执行授权。
 
 ## M4 离线进度检查（只读，无网络）
 
