@@ -191,6 +191,23 @@ added/removed/changed/unchanged 计数与 `ID@版本` 紧凑清单。摘要校�
 不构成证据、研究结论或执行授权；省略 `--summary` 时原有 JSON 与默认 Markdown 输出
 保持不变。
 
+一条显式规范记录也可以直接核对是否已登记在某个显式规范快照中，不写入、不修复、不提升：
+
+```powershell
+ashare-research research registry-membership --record MY_RECORD.json --snapshot MY_SNAPSHOT.json
+ashare-research research registry-membership --record MY_RECORD.json --snapshot MY_SNAPSHOT.json --json
+```
+
+两侧文件各自经与 `research registry` 相同的严格字节解码与冻结入口复核，单侧失败保持
+既有稳定错误码。接受时输出 `m4_registry_snapshot_membership_v1`，只回答机械成员关系：
+快照中是否存在同 `(hypothesis_id, hypothesis_version)` 的登记项，以及该登记项的规范记录
+字节是否与显式记录一致。三种状态为 `registered_identical`（已登记且规范字节一致）、
+`registered_different`（同键但字节不同，附按字段排序的机械差异与身份/摘要/状态等价性）
+与 `not_registered`（键不存在，附该假设 ID 在快照中的版本清单）；键不存在时所有等价性
+布尔一律为 false，不代表任何一侧有误。检查只做只读机械判断，不判断哪一侧正确，不构成
+证据、研究结论或执行授权；不加载默认或真实候选数据集，不访问数据库、provider、网络或
+holdout。失败同样以退出码 2、空 stdout 与 `error: CODE` 净化收尾。
+
 已复核计划可与显式虚构输入一起做数据及矩阵准备检查：
 
 ```powershell
