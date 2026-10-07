@@ -47,7 +47,9 @@ COMMANDS: tuple[ResearchCommand, ...] = (
         "ashare_research.tools.preparation_package",
         "交付原计划与合成输入准备结果，并从保存字节复算核对",
         ("--package PLAN_DIR --inputs JSON --output NEW_DIR [--json]",
-         "--verify DIR [--json]（当前编译器与适配器复算，不授权统计执行）"),
+         "--verify DIR [--json]（当前编译器与适配器复算，不授权统计执行）",
+         "--archive PREPARATION_DIR --output NEW_ZIP [--json]",
+         "--verify-archive ZIP [--json]（直接复核原生 ZIP，无需解压）"),
     ),
     ResearchCommand(
         "prepare-compare",
