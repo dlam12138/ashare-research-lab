@@ -30,4 +30,6 @@ Final committed/hosted/protection evidence tmp/m4-synthetic-prepare-final-review
 Independent committed review corrected read flags for empty observations: both
 false, with complete0/4quality diagnostic and16missing observations. Added assertion
 to the new test and reran affected checks before normal follow-up commit/push.
+Affected rerun3passed1.93s, Ruff/diff passed; aligned notes/README with conditional
+read flags and asserted empty reports never claim values were read.
 No automatic merge or following stage.

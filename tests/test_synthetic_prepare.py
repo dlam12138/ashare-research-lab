@@ -144,6 +144,7 @@ def test_quality_rejection_preserves_denominator_and_invalid_bindings_fail_close
     assert report["dataset"]["quality"]["coverage_denominator"] == 4
     assert report["dataset"]["quality"]["reason_counts"] == {"MISSING_OBSERVATION": 16}
     assert not any(report["boundary"].values())
+    assert "已读取" not in prepare.render_markdown(report)
     cases = []
     for key, value, code in (("mode", "REAL", "UNSUPPORTED_MODE"),
                              ("source_contract_digest", "0" * 64, "CONTRACT_PLAN_MISMATCH"),

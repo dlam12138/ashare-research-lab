@@ -39,7 +39,7 @@ SCHEMA = "m4_explicit_synthetic_preparation_view_v1"
 MAX_INPUT_BYTES = 1_048_576
 NOTES = (
     "仅检查调用者显式提供的虚构合成观测；SYNTHETIC 标签和行摘要不证明真实来源。",
-    "已读取合成目标值；未访问真实结果或 holdout，未执行回归、秩检查或 bootstrap。",
+    "仅读取显式提供的合成观测；未访问真实结果或 holdout，未执行回归、秩检查或 bootstrap。",
     "沿用原数据与矩阵适配器；不填补缺失、修补摘要、转换单位或裁剪窗口外观测。",
     "质量拒绝保留完整诊断且不生成矩阵；退出码 0 仅表示诊断报告成功生成。",
     "READY_SYNTHETIC 仅表示合成输入准备通过，不表示可估计、研究就绪或执行授权。",

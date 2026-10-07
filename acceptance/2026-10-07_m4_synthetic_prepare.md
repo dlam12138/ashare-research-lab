@@ -34,6 +34,8 @@ Independent committed review found empty observation input needs truthful read
 flags; derived observation/outcome flags from actually supplied rows, added empty
 input rejection diagnostics (0/4,16missing observations,null matrix,read flagsfalse),
 and reran affected checks before an ordinary follow-up commit.
+Affected rerun3passed1.93s, Ruff/diff passed. Also aligned prose/README with
+conditional read flags and asserted empty report never claims values were read.
 
 Cases: public directory/ZIP equivalence and exact direct-API dataset/matrix output;
 input byte identities, unchanged input files, service/network/database/pipeline/

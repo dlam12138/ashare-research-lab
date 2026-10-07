@@ -106,7 +106,7 @@ ashare-research research prepare --archive new-plan.zip --inputs docs/examples/m
 摘要必须显式提供并相互一致；修改假设或数据后应通过既有 API 重新绑定摘要，工具不会修补。
 仅读取显式 UTF-8 JSON（最多 1MiB），不获取数据、不写文件。输出完整质量诊断和矩阵；
 质量拒绝保留缺口且矩阵为 `null`。退出码 0 只表示诊断生成，`READY_SYNTHETIC` 不代表
-可估计或执行授权。检查会读取合成目标值，但不运行回归、秩检查、bootstrap 或 holdout，
+可估计或执行授权。检查仅读取显式提供的合成观测，不运行回归、秩检查、bootstrap 或 holdout，
 也不把合成模式或摘要解释为真实来源证据。
 
 ## M4 离线进度检查（只读，无网络）
