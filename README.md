@@ -24,7 +24,7 @@
 | M4 合成演示 CLI | 已实现（离线、仅合成、固定样例） | `python -m ashare_research.synthetic_demo`（`--json` 可选） | 只跑固定的虚构 24 行示例；没有输入/配置/seed/provider/数据库/输出路径/注册表参数；合成演示不等于真实研究授权 | [模块](src/ashare_research/synthetic_demo.py)、[测试](tests/test_m4_synthetic_demo_cli.py) |
 | M2 离线研究包 | 已实现（固定来源汇编、离线、无新计算） | `python -m ashare_research.tools.value_research_bundle`（`--json`、`--output NEW_DIR`、`--verify DIR`） | 只汇编九个固定基线报告：混合日期历史汇编，不是统一 PIT 查询或研究刷新；无总体评分、排名、资格或建议；缺失证据不视为 0 或负面结论 | [模块](src/ashare_research/tools/value_research_bundle.py)、[测试](tests/test_value_research_bundle.py) |
 | M2 既有指标 PIT 重放 | 已实现（离线只读、内存重放既有七个指标） | 下方 `python -m ashare_research.tools.pit_metric_replay` | 只用既有已批准定义，无新公式/评分/排名/建议；缺失保持缺失；重放不是发布 | [模块](src/ashare_research/tools/pit_metric_replay.py)、[测试](tests/test_pit_metric_replay.py) |
-| M4-B 理论/假设注册表 | 最小元数据 API 已实现（仅合成/schema 校验） | `ashare_research.mechanism.registry` 的 `parse_hypothesis_record(document)`、显式状态转换与有界快照入口 | 不创建或加载真实候选数据集，不采集文献，不访问 provider、数据库、真实行情或 holdout；真实假设执行仍未授权 | [设计](docs/m4b_hypothesis_registry_design_v1.md)、[验收场景](docs/m4b_hypothesis_registry_acceptance_cases_v1.md)、[实现测试](tests/test_m4b_hypothesis_registry.py)、[实现验收](acceptance/2026-09-12_m4b_hypothesis_registry_implementation.md)、[冻结前置合同](reports/m4_stage4p_m4b_hypothesis_registry_contract_v1.json) |
+| M4-B 理论/假设注册表 | 最小元数据 API 已实现（仅合成/schema 校验）；显式规范 JSON 可只读复核 | `ashare_research.mechanism.registry` 的 `parse_hypothesis_record(document)`、显式状态转换与有界快照入口，或 `ashare-research research registry --record/--snapshot` | 不创建或加载真实候选数据集，不采集文献，不访问 provider、数据库、真实行情或 holdout；CLI 只读，不写入或提升记录；真实假设执行仍未授权 | [设计](docs/m4b_hypothesis_registry_design_v1.md)、[验收场景](docs/m4b_hypothesis_registry_acceptance_cases_v1.md)、[实现测试](tests/test_m4b_hypothesis_registry.py)、[实现验收](acceptance/2026-09-12_m4b_hypothesis_registry_implementation.md)、[冻结前置合同](reports/m4_stage4p_m4b_hypothesis_registry_contract_v1.json) |
 
 ### 研究结论与边界
 
@@ -126,6 +126,22 @@ ashare-research research plan-compare --left old-plan-package --right-archive ne
 没有 `--summary` 的 `--section` 与非法分区在读取前拒绝；速览不重新读取或解压、
 不重新计算差异，也不评价方案优劣或授权执行。省略参数时原有 JSON 与默认 Markdown
 输出保持不变。
+
+M4-B 假设记录与 registry 快照也可以直接做只读复核，不写入任何注册表：
+
+```powershell
+ashare-research research registry --record MY_RECORD.json
+ashare-research research registry --record MY_RECORD.json --json
+ashare-research research registry --snapshot MY_SNAPSHOT.json --json
+```
+
+仅接受显式规范 JSON（UTF-8 无 BOM、恰好一个结尾 LF、无浮点 token，最多 1MiB）：
+记录按冻结的注册表入口复算规范字节、身份摘要、记录摘要与状态历史；快照额外复算
+`registry_digest`、记录规范顺序与规模上限（最多 3 条记录、3 条 real-demo）。
+缺键、多余键、摘要不一致或非规范字节一律 fail-closed：退出码 2、无部分输出，
+`error: CODE` 只含稳定错误码。本视图只读，不写入、不修正、不提升状态，也不加载
+默认或真实候选数据集；`DISCOVERED`、`LITERATURE_REVIEWED` 等来源状态与 registry
+元数据不是证据，也不构成研究结论或执行授权。
 
 已复核计划可与显式虚构输入一起做数据及矩阵准备检查：
 
