@@ -1,0 +1,56 @@
+{
+  "schema_version": "M4_HYPOTHESIS_CONFIG_V1",
+  "hypothesis_id": "SYNTH_DAILY_CONTROLLED_001",
+  "target": {
+    "series_id": "SYNTH_TARGET_A",
+    "identity_policy": "SYNTHETIC_FIXED_IDENTITY"
+  },
+  "universe": {
+    "universe_id": "SYNTH_UNIVERSE_A",
+    "membership_policy": "SYNTHETIC_FIXED_UNIVERSE",
+    "pit_policy": "EXPLICIT_PIT"
+  },
+  "factor": {
+    "factor_id": "SYNTH_FACTOR_A",
+    "factor_kind": "SYNTHETIC_REGISTERED",
+    "direction": "POSITIVE",
+    "transform_semantics": "RETURN"
+  },
+  "condition": {"operator": "LTE", "threshold": "-0.01"},
+  "outcome": {
+    "outcome_id": "SYNTH_DAILY_RETURN",
+    "horizon": "1D",
+    "observation_timing": "CLOSE_TO_CLOSE"
+  },
+  "controls": ["SYNTH_CONTROL_1", "SYNTH_CONTROL_2"],
+  "development": {"start": "2020-01-01", "end": "2022-12-31"},
+  "data_quality_gates": {
+    "coverage_gate": "0.99",
+    "pit_required": true,
+    "identity_required": true,
+    "missingness_policy": "FAIL_CLOSED",
+    "duplicate_policy": "FAIL_CLOSED"
+  },
+  "analysis_method": {"method_id": "DAILY_CONDITIONAL_CONTROLLED_OLS_V1"},
+  "bootstrap_policy": {
+    "enabled": true,
+    "method_id": "MOVING_BLOCK_BOOTSTRAP_V1",
+    "replications": 1000,
+    "seed": 42,
+    "rng": "PCG64",
+    "confidence_level": "0.95"
+  },
+  "robustness_registry": [
+    {
+      "robustness_id": "SYNTH_ROBUSTNESS_1",
+      "method_id": "CONDITIONAL_DESCRIPTIVES_V1",
+      "parameters": {"trim": "0.01", "window": [1, 2, 3]}
+    }
+  ],
+  "evidence_rule": {
+    "rule_id": "SYNTH_EVIDENCE_RULE_1",
+    "expected_direction": "POSITIVE",
+    "confidence_requirement": "0.95",
+    "data_quality_failure_disposition": "INCONCLUSIVE"
+  }
+}

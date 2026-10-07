@@ -43,6 +43,12 @@ class ResearchCommand:
 
 COMMANDS: tuple[ResearchCommand, ...] = (
     ResearchCommand(
+        "plan",
+        "ashare_research.tools.research_plan",
+        "从显式假设配置编译冻结合同、分析计划和数据要求（不执行）",
+        ("--hypothesis JSON [--json]（V1 合成身份，不授权真实执行）",),
+    ),
+    ResearchCommand(
         "trace",
         "ashare_research.tools.metric_evidence_trace",
         "追溯指标输入，或按事实 ID 反查指标及直接父引用",
@@ -185,7 +191,7 @@ def _usage_text() -> str:
             *(f"  {PROG} {item.name} --help" for item in COMMANDS),
             "",
             "离线边界：入口不加载配置、不初始化日志或数据服务、不联网、不写默认数据库；",
-            "子命令只读取仓库内固定报告、固定规范快照或纯合成输入，不获取新数据，",
+            "子命令只读取固定报告、规范快照、纯合成输入或显式假设配置，不获取新数据，",
             "也不产生评分、排名、建议或研究结论。",
             "全局 --config/--debug 与 research 组合会以退出码 2 拒绝，而不是静默忽略。",
         ]
