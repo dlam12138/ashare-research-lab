@@ -109,13 +109,35 @@ def _files(
     return files, manifest, report
 
 
-def export_package(plan: Path, inputs: Path, output: Path) -> dict[str, Any]:
+def _read_plan_files(plan: Path, *, archive: bool) -> dict[str, bytes]:
+    if archive:
+        from ashare_research.tools import research_plan_archive
+
+        return research_plan_archive.read_archive_files(plan)
+    return _read_files(plan, research_plan_package.NAMES)
+
+
+def build_package_files(
+    plan: Path, inputs: Path, *, plan_archive: bool = False,
+) -> dict[str, bytes]:
+    """Capture plan and inputs once; reproduce the original preparation artifacts."""
+    plan_files = _read_plan_files(plan, archive=plan_archive)
+    verified = research_plan_package.verify_package_files(plan_files)["report"]
+    files, _, _ = _files(
+        plan_files, synthetic_prepare.read_input_bytes(inputs), verified=verified,
+    )
+    return files
+
+
+def export_package(
+    plan: Path, inputs: Path, output: Path, *, plan_archive: bool = False,
+) -> dict[str, Any]:
     try:
         _check_path(output)
         if output.exists():
             raise PrepareError("OUTPUT_PATH_EXISTS")
-        plan_files = _read_files(plan, research_plan_package.NAMES)
-        if output.resolve().is_relative_to(plan.resolve()):
+        plan_files = _read_plan_files(plan, archive=plan_archive)
+        if not plan_archive and output.resolve().is_relative_to(plan.resolve()):
             raise PrepareError("OUTPUT_INSIDE_SOURCE_PLAN")
         # Plan consistency fails before reading inputs; captured files are never re-read.
         verified = research_plan_package.verify_package_files(plan_files)["report"]
@@ -186,11 +208,14 @@ def main(argv: list[str] | None = None) -> int:
     parser = _Parser(description="交付并复算显式合成输入准备包", allow_abbrev=False)
     source = parser.add_mutually_exclusive_group(required=True)
     source.add_argument("--package", metavar="PLAN_DIR")
+    source.add_argument("--plan-archive", metavar="PLAN_ZIP")
     source.add_argument("--verify", metavar="DIR")
     source.add_argument("--archive", metavar="PREPARATION_DIR")
     source.add_argument("--verify-archive", metavar="ZIP")
     parser.add_argument("--inputs", metavar="JSON")
-    parser.add_argument("--output", metavar="NEW_DIR")
+    destination = parser.add_mutually_exclusive_group()
+    destination.add_argument("--output", metavar="NEW_DIR_OR_ZIP")
+    destination.add_argument("--output-archive", metavar="NEW_ZIP")
     parser.add_argument("--json", action="store_true")
     try:
         args = parser.parse_args(argv)
@@ -198,7 +223,7 @@ def main(argv: list[str] | None = None) -> int:
         if args.archive is not None or args.verify_archive is not None:
             from ashare_research.tools import preparation_archive
 
-            if args.inputs is not None:
+            if args.inputs is not None or args.output_archive is not None:
                 raise PrepareError("INVALID_ARGUMENTS")
             if args.archive is not None:
                 if args.output is None:
@@ -210,13 +235,27 @@ def main(argv: list[str] | None = None) -> int:
                 receipt = preparation_archive.verify_archive(Path(args.verify_archive))
             renderer = preparation_archive.render_markdown
         elif args.verify is not None:
-            if args.inputs is not None or args.output is not None:
+            if (args.inputs is not None or args.output is not None
+                    or args.output_archive is not None):
                 raise PrepareError("INVALID_ARGUMENTS")
             receipt = verify_package(Path(args.verify))
         else:
-            if args.inputs is None or args.output is None:
+            if args.inputs is None or (args.output is None and args.output_archive is None):
                 raise PrepareError("INVALID_ARGUMENTS")
-            receipt = export_package(Path(args.package), Path(args.inputs), Path(args.output))
+            plan = Path(args.package if args.package is not None else args.plan_archive)
+            if args.output_archive is not None:
+                from ashare_research.tools import preparation_archive
+
+                receipt = preparation_archive.export_from_plan(
+                    plan, Path(args.inputs), Path(args.output_archive),
+                    plan_archive=args.plan_archive is not None,
+                )
+                renderer = preparation_archive.render_markdown
+            else:
+                receipt = export_package(
+                    plan, Path(args.inputs), Path(args.output),
+                    plan_archive=args.plan_archive is not None,
+                )
         text = _json_bytes(receipt) if args.json else renderer(receipt).encode("utf-8")
         sys.stdout.buffer.write(text)
         sys.stdout.buffer.flush()
