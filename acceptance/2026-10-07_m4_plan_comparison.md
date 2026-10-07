@@ -31,7 +31,7 @@ Ruff and whitespace checks pass. Public CLI smoke: IDENTICAL_SOURCE_BYTES;
 same_source_bytes and same_canonical_config true, changes empty. No full-suite
 local run, no failed tests, no existing test edits. Hosted checks are separate.
 
-Protected primary HEAD/status/stash and captured hashes unchanged. All 427
+Protected primary HEAD/status/stash and captured hashes unchanged. All 395
 tracked reports/config/fixture hashes unchanged. Foreign worktree HEAD/branch
 identities unchanged. A foreign provider acquisition tree has unrelated routing
 edits; it was read-only and its initial file hashes were not captured, so this
