@@ -11,7 +11,12 @@ from ashare_research.mechanism.contract_compiler import ContractCompilationError
 from ashare_research.mechanism.datasets import AdapterError
 from ashare_research.mechanism.hypothesis_config import HypothesisConfigError
 from ashare_research.mechanism.planning.matrix import MatrixError
-from ashare_research.tools import preparation_archive, preparation_compare, preparation_package
+from ashare_research.tools import (
+    preparation_archive,
+    preparation_compare,
+    preparation_diagnostics,
+    preparation_package,
+)
 from ashare_research.tools.research_plan import PlanError
 from ashare_research.tools.synthetic_prepare import PrepareError
 
@@ -38,6 +43,13 @@ def render_markdown(report: dict[str, Any]) -> str:
     )
 
 
+def render_summary_markdown(summary: dict[str, Any]) -> str:
+    return preparation_compare.render_summary_markdown(
+        summary,
+        source_legend="left 为修改前的准备交付包；right 为修改后的准备交付包。",
+    )
+
+
 class _Parser(argparse.ArgumentParser):
     def error(self, message: str) -> None:
         raise PrepareError("INVALID_ARGUMENTS")
@@ -51,17 +63,25 @@ def main(argv: list[str] | None = None) -> int:
     right = parser.add_mutually_exclusive_group(required=True)
     right.add_argument("--right", metavar="DIR")
     right.add_argument("--right-archive", metavar="ZIP")
+    parser.add_argument("--summary", action="store_true")
+    parser.add_argument("--role", action="append", default=[], metavar="ID")
     parser.add_argument("--json", action="store_true")
     try:
         args = parser.parse_args(argv)
+        preparation_diagnostics.validate_options(args.summary, args.role, False)
         report = build_report(
             Path(args.left if args.left is not None else args.left_archive),
             Path(args.right if args.right is not None else args.right_archive),
             left_archive=args.left_archive is not None,
             right_archive=args.right_archive is not None,
         )
-        text = (preparation_compare._json(report) + "\n" if args.json
-                else render_markdown(report))
+        if args.summary:
+            summary = preparation_compare.build_summary(report, roles=args.role)
+            text = (preparation_compare._json(summary) + "\n" if args.json
+                    else render_summary_markdown(summary))
+        else:
+            text = (preparation_compare._json(report) + "\n" if args.json
+                    else render_markdown(report))
         sys.stdout.buffer.write(text.encode("utf-8"))
         sys.stdout.buffer.flush()
         return 0

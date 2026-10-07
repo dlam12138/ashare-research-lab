@@ -46,7 +46,8 @@ COMMANDS: tuple[ResearchCommand, ...] = (
         "prepare-delivery-compare",
         "ashare_research.tools.preparation_delivery_compare",
         "完整复核两份准备目录或 ZIP，再对比同一计划与样本域的原质量诊断",
-        ("(--left DIR | --left-archive ZIP) (--right DIR | --right-archive ZIP) [--json]",),
+        ("(--left DIR | --left-archive ZIP) (--right DIR | --right-archive ZIP) [--json]",
+         "对比可用 [--summary [--role ID（可重复）]]（完整复核后查看角色诊断变更）"),
     ),
     ResearchCommand(
         "prepare-package",
@@ -63,7 +64,8 @@ COMMANDS: tuple[ResearchCommand, ...] = (
         "prepare-compare",
         "ashare_research.tools.preparation_compare",
         "对比同一计划及声明样本域下两份合成输入的原质量诊断",
-        ("(--package DIR | --archive ZIP) --left-inputs JSON --right-inputs JSON [--json]",),
+        ("(--package DIR | --archive ZIP) --left-inputs JSON --right-inputs JSON [--json]",
+         "对比可用 [--summary [--role ID（可重复）]]（完整复核后查看角色诊断变更）"),
     ),
     ResearchCommand(
         "prepare",

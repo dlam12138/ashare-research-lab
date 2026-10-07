@@ -120,6 +120,19 @@ ashare-research research prepare-compare --archive new-plan.zip --left-inputs BE
 每个不同输入独立复核计划并准备数据，因此跨读取的计划变化也会拒绝；
 同一路径仅使用一次载入的报告。对比不修改输入或修补摘要，也不授权真实研究。
 
+对比也可只附加角色速览：
+
+```powershell
+ashare-research research prepare-compare --archive new-plan.zip --left-inputs BEFORE.json --right-inputs AFTER.json --summary --role FACTOR --json
+```
+
+速览在完整对比后用同一次捕获的报告汇总每个角色的审计日期、修改前后有效／无效单元
+和有效性变更计数，并只展示所选角色的原诊断变更；重复的 `--role` 按原角色顺序去重。
+全局审计计数、双方质量、身份、边界及输入分类保持原样，筛选只影响展示的明细。
+所选角色没有变化时明确提示；未知角色在完整对比后拒绝，非法参数和角色格式在读取前拒绝。
+速览不重新读取计划或输入、不修补摘要、不显示观测值或矩阵单元。省略参数时
+原有 JSON 与默认 Markdown 输出保持不变。
+
 准备结果也可保存为独立目录交付：
 
 ```powershell
@@ -173,6 +186,16 @@ ashare-research research prepare-delivery-compare --left before-preparation --ri
 无需另行提供计划或输入文件，不解压、不创建临时目录，也不修改交付包。
 任一包损坏或复算不一致即拒绝比较；相同路径与格式只使用一次复核的报告。
 有效性变化仅描述合成审计事实，不代表来源、真实研究就绪或执行授权。
+
+交付包对比同样支持 `--summary`（可用重复的 `--role` 按原角色顺序筛选）：
+
+```powershell
+ashare-research research prepare-delivery-compare --left before-preparation --right-archive after-preparation.zip --summary --role TARGET_OUTCOME --json
+```
+
+两侧先各自完整复核一次，速览只是该次复核结果的角色投影；不重新读取或解压、
+不修改交付包，全局计数、质量、身份、边界和输入分类保持原样，
+所选角色没有变化时明确提示。省略参数时原有 JSON 与默认 Markdown 输出保持不变。
 
 接收方也可从交付目录或 ZIP 直接阅读原质量诊断，按角色查看缺口：
 
