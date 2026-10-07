@@ -52,7 +52,7 @@ plan c73268f7b63a24f300aec8e5fd3f20adbe3fc1031b85acebe3835148964c3267.
 Receipts tmp/plan-package-{export,verification}-receipt.json.
 
 Pre-implementation snapshot tmp/m4-plan-package-baseline.json records primary
-dirty/untracked state/diff/HEAD/local-main/stash, database SHA256 and427protected
+dirty/untracked state/diff/HEAD/local-main/stash, database SHA256 and408protected
 file hashes, and worktree registrations. Final independent committed scope/diff/
 refs/sync/protection/Goal review and hosted checks recorded in
 tmp/m4-plan-package-final-review.md. Local evidence PASS; final acceptance depends
