@@ -168,13 +168,25 @@ def main(argv: list[str] | None = None) -> int:
     source.add_argument("--archive", metavar="ZIP")
     parser.add_argument("--inputs", required=True, metavar="JSON")
     parser.add_argument("--json", action="store_true")
+    parser.add_argument("--summary", action="store_true")
+    parser.add_argument("--role", action="append", default=[], metavar="ID")
+    parser.add_argument("--gaps-only", action="store_true")
     try:
         args = parser.parse_args(argv)
+        from ashare_research.tools import preparation_diagnostics
+
+        preparation_diagnostics.validate_options(args.summary, args.role, args.gaps_only)
         report = build_report(
             Path(args.package if args.package is not None else args.archive),
             Path(args.inputs), archive=args.archive is not None,
         )
-        text = _json(report) + "\n" if args.json else render_markdown(report)
+        renderer = render_markdown
+        if args.summary:
+            report = preparation_diagnostics.build_summary(
+                report, roles=args.role, gaps_only=args.gaps_only,
+            )
+            renderer = preparation_diagnostics.render_markdown
+        text = _json(report) + "\n" if args.json else renderer(report)
         sys.stdout.buffer.write(text.encode("utf-8"))
         sys.stdout.buffer.flush()
         return 0

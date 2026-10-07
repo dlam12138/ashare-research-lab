@@ -46,7 +46,8 @@ COMMANDS: tuple[ResearchCommand, ...] = (
         "prepare",
         "ashare_research.tools.synthetic_prepare",
         "用显式合成输入检查数据质量并准备设计矩阵（不执行统计）",
-        ("(--package DIR | --archive ZIP) --inputs JSON [--json]",),
+        ("(--package DIR | --archive ZIP) --inputs JSON [--json]",
+         "[--summary [--role ID（可重复）] [--gaps-only]]（按角色查看原质量诊断）"),
     ),
     ResearchCommand(
         "plan-compare",

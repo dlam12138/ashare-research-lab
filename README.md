@@ -99,7 +99,14 @@ ashare-research research plan-compare --left-archive old-plan.zip --right-archiv
 ```powershell
 ashare-research research prepare --package new-plan-package --inputs docs/examples/m4_bound_inputs.json
 ashare-research research prepare --archive new-plan.zip --inputs docs/examples/m4_bound_inputs.json --json
+ashare-research research prepare --archive new-plan.zip --inputs MY_INPUTS.json --summary --role FACTOR --gaps-only
 ```
+
+`--summary` 提供质量诊断速览，可用重复的 `--role` 选择角色，并用 `--gaps-only`
+只展示所选角色的无效单元及原始原因、日期和证据引用。角色计数始终覆盖全部审计日期，
+全局覆盖分母、拒绝日期、准备状态和摘要保持原样；已知角色没有缺口会明确提示。
+这些筛选只能与 `--summary` 合用。速览不显示观测值或矩阵单元，也不计算统计结果；
+省略新参数仍输出完整的原准备报告。
 
 [输入示例](docs/examples/m4_bound_inputs.json) 绑定上述示范假设，包含四个显式虚构日期，
 不是真实交易日历。输入沿用现有 `BoundDatasetInputsV1`：日历、成员、角色、观测与
