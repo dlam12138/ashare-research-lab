@@ -129,7 +129,8 @@ def build_report(package: Path, inputs: Path, *, archive: bool = False) -> dict[
         "dataset": dataset_to_canonical_dict(prepared),
         "matrix": matrix,
         "boundary": {
-            "synthetic_observations_read": True, "outcome_read": True,
+            "synthetic_observations_read": bool(bound.observations),
+            "outcome_read": any(row.role == "TARGET_OUTCOME" for row in bound.observations),
             "execution_authorized": False, "statistics_computed": False,
             "holdout_accessed": False, "source_evidence_validated": False,
             "research_ready": False,
@@ -145,7 +146,7 @@ def render_markdown(report: dict[str, Any]) -> str:
     lines = ["# 合成输入准备检查", "", f"准备状态：`{dataset['status']}`。",
              f"共同有效覆盖：{quality['coverage_numerator']}/{quality['coverage_denominator']}；"
              f"门槛：{quality['coverage_gate']}。", f"设计矩阵：{dimensions}。", "",
-             "已读取虚构合成目标值；未执行统计研究。", "", "## 输入身份", "",
+             "仅读取显式提供的虚构合成观测；未执行统计研究。", "", "## 输入身份", "",
              "```json", _json({"plan_identity": report["plan_identity"],
                               "input_file_sha256": report["input_file_sha256"]}), "```", "",
              "## 完整数据准备与质量诊断", "", "```json", _json(dataset), "```", "",

@@ -30,6 +30,10 @@ Ruff initially found two long test lines, wrapped. Second run2passed1failed due
 new test expecting tool error for the existing top-level global-option rejection;
 corrected assertion to exact existing code2/empty-stdout/two-line message, no CLI
 behavior change. Third run3passed. No existing tests modified/full local run.
+Independent committed review found empty observation input needs truthful read
+flags; derived observation/outcome flags from actually supplied rows, added empty
+input rejection diagnostics (0/4,16missing observations,null matrix,read flagsfalse),
+and reran affected checks before an ordinary follow-up commit.
 
 Cases: public directory/ZIP equivalence and exact direct-API dataset/matrix output;
 input byte identities, unchanged input files, service/network/database/pipeline/

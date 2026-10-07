@@ -134,6 +134,16 @@ def test_quality_rejection_preserves_denominator_and_invalid_bindings_fail_close
         assert len(report["dataset"]["audit_rows"]) == 4
         assert report["dataset"]["complete_rows"] == []
         assert "REJECTED_QUALITY" in prepare.render_markdown(report)
+    empty = copy.deepcopy(original)
+    empty["observations"] = []
+    write(_seal(empty))
+    assert cli.main(args) == 0
+    report = json.loads(capsys.readouterr().out)
+    assert report["dataset"]["status"] == "REJECTED_QUALITY" and report["matrix"] is None
+    assert report["dataset"]["quality"]["coverage_numerator"] == 0
+    assert report["dataset"]["quality"]["coverage_denominator"] == 4
+    assert report["dataset"]["quality"]["reason_counts"] == {"MISSING_OBSERVATION": 16}
+    assert not any(report["boundary"].values())
     cases = []
     for key, value, code in (("mode", "REAL", "UNSUPPORTED_MODE"),
                              ("source_contract_digest", "0" * 64, "CONTRACT_PLAN_MISMATCH"),
