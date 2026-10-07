@@ -69,7 +69,7 @@ def _constant(value: str) -> None:
     raise PrepareError("NONFINITE_INPUT_JSON_NUMBER")
 
 
-def _read_inputs(path: Path) -> tuple[dict[str, Any], str]:
+def read_input_bytes(path: Path) -> bytes:
     try:
         absolute = path.absolute()
         for candidate in (absolute, *absolute.parents):
@@ -84,6 +84,14 @@ def _read_inputs(path: Path) -> tuple[dict[str, Any], str]:
         raise PrepareError("INPUT_READ_FAILED") from error
     if len(payload) > MAX_INPUT_BYTES:
         raise PrepareError("INPUT_TOO_LARGE")
+    return payload
+
+
+def _parse_input_bytes(payload: bytes) -> dict[str, Any]:
+    if type(payload) is not bytes:
+        raise PrepareError("INVALID_INPUT_JSON")
+    if len(payload) > MAX_INPUT_BYTES:
+        raise PrepareError("INPUT_TOO_LARGE")
     try:
         document = json.loads(payload.decode("utf-8"), object_pairs_hook=_pairs,
                               parse_constant=_constant)
@@ -91,12 +99,17 @@ def _read_inputs(path: Path) -> tuple[dict[str, Any], str]:
         raise PrepareError("INVALID_INPUT_JSON") from error
     if type(document) is not dict:
         raise PrepareError("INVALID_INPUT_ROOT")
-    return document, hashlib.sha256(payload).hexdigest()
+    return document
 
 
 def build_report(package: Path, inputs: Path, *, archive: bool = False) -> dict[str, Any]:
     verified = (research_plan_archive.verify_archive(package)["verification"]["report"]
                 if archive else research_plan_package.verify_package(package)["report"])
+    return build_report_from_bytes(verified, read_input_bytes(inputs))
+
+
+def build_report_from_bytes(verified: dict[str, Any], payload: bytes) -> dict[str, Any]:
+    """Prepare one captured input against an already verified canonical plan report."""
     parser_config = dict(verified["config"])
     # Canonical reports explicitly include an absent optional holdout as null;
     # the original input parser expresses absence by omitting this key.
@@ -107,7 +120,8 @@ def build_report(package: Path, inputs: Path, *, archive: bool = False) -> dict[
     if (_json(contract_to_canonical_dict(contract)) != _json(verified["contract"])
             or _json(plan_to_canonical_dict(plan)) != _json(verified["plan"])):
         raise PrepareError("VERIFIED_PLAN_REBUILD_MISMATCH")
-    document, source_hash = _read_inputs(inputs)
+    document = _parse_input_bytes(payload)
+    source_hash = hashlib.sha256(payload).hexdigest()
     bound = BoundDatasetInputsV1.from_dict(document)
     prepared = materialize_analysis_dataset(contract, plan, bound)
     validate_dataset(prepared, contract, plan, bound)

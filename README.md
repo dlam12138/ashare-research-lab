@@ -120,6 +120,22 @@ ashare-research research prepare-compare --archive new-plan.zip --left-inputs BE
 每个不同输入独立复核计划并准备数据，因此跨读取的计划变化也会拒绝；
 同一路径仅使用一次载入的报告。对比不修改输入或修补摘要，也不授权真实研究。
 
+准备结果也可保存为独立目录交付：
+
+```powershell
+ashare-research research prepare-package --package new-plan-package --inputs MY_INPUTS.json --output new-preparation --json
+ashare-research research prepare-package --verify new-preparation --json
+```
+
+交付包含原计划包的四个文件副本、原输入字节、完整准备与诊断的 JSON/Markdown、
+以及内容清单，共十个固定文件。复核从保存的计划和输入重新生成所有文件并逐字节比较，
+因此修改报告后重写清单哈希仍不能通过。质量拒绝同样可以交付和复核。
+本版导出只接收目录计划包；输出父目录须存在，目标必须是新目录，
+且不能位于原计划包内，不覆盖或删除文件。
+读写拒绝链接和 Windows reparse 路径；失败留下已创建的部分目录供检查。
+源假设和输入各限 1 MiB，其他单文件限 16 MiB，总包限 64 MiB。
+复算一致性不证明来源、历史封存、可估计或研究就绪，也不执行统计。
+
 [输入示例](docs/examples/m4_bound_inputs.json) 绑定上述示范假设，包含四个显式虚构日期，
 不是真实交易日历。输入沿用现有 `BoundDatasetInputsV1`：日历、成员、角色、观测与
 摘要必须显式提供并相互一致；修改假设或数据后应通过既有 API 重新绑定摘要，工具不会修补。
