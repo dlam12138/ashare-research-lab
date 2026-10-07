@@ -127,6 +127,7 @@ def test_format_only_inputs_missing_null_types_pointer_and_markdown_escaping(tmp
     assert "<tag>" not in markdown and "&lt;tag&gt;" in markdown
     assert "\\|" in markdown and "&#96;" in markdown and "&amp;#96;" not in markdown
     assert "null" in markdown
+    assert compare._cell("*x*_[label](url)") == r"\*x\*\_\[label\]\(url\)"
 
 
 def test_full_verification_failures_flags_links_and_single_snapshot(tmp_path, monkeypatch, capsys):

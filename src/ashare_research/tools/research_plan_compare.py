@@ -114,6 +114,8 @@ def _json(value: Any) -> str:
 def _cell(value: Any) -> str:
     text = (html.escape(str(value), quote=False).replace("\\", "\\\\").replace("|", "\\|")
             .replace("`", "&#96;").replace("\r", "\\r").replace("\n", "\\n"))
+    for character in "*_[]()":
+        text = text.replace(character, f"\\{character}")
     return text
 
 

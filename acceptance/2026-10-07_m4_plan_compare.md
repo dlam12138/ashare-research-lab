@@ -30,6 +30,9 @@ Tests cover mixed verified inputs, source/compiled identities, exact differences
 reverse comparison, format-only changes, immutable/relocated inputs, offline
 guards, missing/null/type distinctions, escaped pointers/Markdown, corruption,
 missing/linked inputs, argument rejection and one-read verified snapshots.
+Independent committed review additionally identified Markdown emphasis/link
+syntax in values; escaped those metacharacters and added an assertion in the
+existing new test. Repeated affected tests, Ruff and diff check after the fix.
 
 Actual CLI subprocess demo: 10 changes (config2/contract2/plan6), JSON and Markdown
 both successful; all seven source/package/archive input hashes unchanged. Actual

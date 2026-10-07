@@ -26,3 +26,6 @@ base codex/m4-plan-archive, depends69 then68. Exact final head, actual hosted te
 summaries, all-check gate, committed independent review and protection/sync evidence
 go in ignored tmp/m4-plan-compare-final-review.md. Pending hosted results are not
 represented as successful. No automatic merge or next stage.
+Independent committed review found Markdown emphasis/link syntax needed escaping;
+fixed renderer, extended the new test, reran affected checks and made a normal
+follow-up commit. Final hosted gates apply to this corrected head.
