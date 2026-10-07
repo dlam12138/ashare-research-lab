@@ -46,7 +46,8 @@ COMMANDS: tuple[ResearchCommand, ...] = (
         "plan",
         "ashare_research.tools.research_plan",
         "从显式假设配置编译冻结合同、分析计划和数据要求（不执行）",
-        ("--hypothesis JSON [--json]（V1 合成身份，不授权真实执行）",),
+        ("--hypothesis JSON [--compare-with JSON] [--json]"
+         "（可比较修改前后；V1 合成身份，不授权真实执行）",),
     ),
     ResearchCommand(
         "trace",
