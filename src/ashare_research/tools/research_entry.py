@@ -43,6 +43,12 @@ class ResearchCommand:
 
 COMMANDS: tuple[ResearchCommand, ...] = (
     ResearchCommand(
+        "prepare-compare",
+        "ashare_research.tools.preparation_compare",
+        "对比同一计划及声明样本域下两份合成输入的原质量诊断",
+        ("(--package DIR | --archive ZIP) --left-inputs JSON --right-inputs JSON [--json]",),
+    ),
+    ResearchCommand(
         "prepare",
         "ashare_research.tools.synthetic_prepare",
         "用显式合成输入检查数据质量并准备设计矩阵（不执行统计）",
