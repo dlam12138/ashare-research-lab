@@ -43,6 +43,12 @@ class ResearchCommand:
 
 COMMANDS: tuple[ResearchCommand, ...] = (
     ResearchCommand(
+        "plan-compare",
+        "ashare_research.tools.research_plan_compare",
+        "对比已复核研究计划的配置、合同与数据／方法要求（不执行）",
+        ("(--left DIR | --left-archive ZIP) (--right DIR | --right-archive ZIP) [--json]",),
+    ),
+    ResearchCommand(
         "plan",
         "ashare_research.tools.research_plan",
         "从显式假设配置编译冻结合同、分析计划和数据要求（不执行）",

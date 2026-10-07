@@ -82,6 +82,18 @@ ZIP 内容与目录计划包一致，输出仍必须是现有父目录下的新�
 复核限制包与成员大小，在解析前限制中央目录；拒绝重复、危险路径、目录、链接、压缩、
 加密、CRC 损坏及内容不一致。ZIP 字节摘要仍只是内容标识，不表示独立封存或执行授权。
 
+两份计划可以先完整复核，再对比规范配置、冻结合同和数据／方法要求：
+
+```powershell
+ashare-research research plan-compare --left old-plan-package --right-archive new-plan.zip
+ashare-research research plan-compare --left-archive old-plan.zip --right-archive new-plan.zip --json
+```
+
+源文件 SHA256 与配置、合同、计划摘要分开展示；仅 JSON 格式变化会显示源摘要不同，
+规范内容变化为零。差异按对象和 JSON Pointer 列出完整前后值，缺失与 `null` 分开，
+列表按原始索引比较。比较只读，不推断对象对齐、方案优劣或执行授权；任一输入复核失败
+即返回错误，不输出部分对比。目录与原生 ZIP 可混用，现有 ZIP 格式限制继续适用。
+
 ## M4 离线进度检查（只读，无网络）
 
 一条命令复核已冻结的 EIA 传输/PIT 元数据证据，输出确定性的当前研究阻塞与最小下一步；不需要参数选择根目录、路径或来源：
