@@ -36,6 +36,13 @@ def build_report(
     # Only identical caller paths reuse a snapshot; aliases still pass the original link gate.
     after_full = (before_full if left == right else
                   synthetic_prepare.build_report(package, right, archive=archive))
+    return build_report_from_reports(before_full, after_full)
+
+
+def build_report_from_reports(
+    before_full: dict[str, Any], after_full: dict[str, Any],
+) -> dict[str, Any]:
+    """Compare captured, fully reproduced preparation reports without further IO."""
     if before_full["plan_identity"] != after_full["plan_identity"]:
         raise PrepareError("COMPARISON_PLAN_MISMATCH")
     before_data, after_data = before_full["dataset"], after_full["dataset"]
@@ -88,10 +95,13 @@ def build_report(
     }
 
 
-def render_markdown(report: dict[str, Any]) -> str:
+def render_markdown(
+    report: dict[str, Any], *,
+    source_legend: str = "--left-inputs 为修改前；--right-inputs 为修改后。",
+) -> str:
     lines = [
         "# 合成输入诊断对比", "",
-        "--left-inputs 为修改前；--right-inputs 为修改后。", "",
+        source_legend, "",
         f"输入分类：`{report['classification']}`；计划及声明样本域一致。", "",
         "| 输入 | 原准备状态 | 原共同有效覆盖 | 原质量门槛 |",
         "| --- | --- | --- | --- |",
