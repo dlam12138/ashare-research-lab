@@ -152,6 +152,14 @@ def test_adversarial_members_crc_rehashed_artifacts_and_resource_bounds(
     rejected(bytes(broken_crc), "PLAN_ARCHIVE_INVALID")
     rejected(raw[:-1], "PLAN_ARCHIVE_LAYOUT_INVALID")
     rejected(raw + b"trailing", "PLAN_ARCHIVE_LAYOUT_INVALID")
+    # Valid ZIP payloads behind an unmanaged prefix must not qualify as native.
+    prefixed = io.BytesIO(b"PK\x03\x04ignored-prefix")
+    with zipfile.ZipFile(prefixed, "a") as view:
+        for name, payload in sorted(files.items()):
+            info = zipfile.ZipInfo(name, archive.FIXED_DATE)
+            info.external_attr = (stat.S_IFREG | 0o644) << 16
+            view.writestr(info, payload)
+    rejected(prefixed.getvalue(), "PLAN_ARCHIVE_LAYOUT_INVALID")
     many_members = bytearray(raw)
     struct.pack_into("<H", many_members, len(raw) - 12, 65535)
     rejected(bytes(many_members), "PLAN_ARCHIVE_LAYOUT_INVALID")

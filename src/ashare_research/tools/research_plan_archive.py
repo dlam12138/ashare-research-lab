@@ -56,7 +56,8 @@ def _decode_verified(raw: bytes) -> dict[str, Any]:
         with zipfile.ZipFile(io.BytesIO(raw), "r") as archive:
             entries = archive.infolist()
             names = [entry.filename for entry in entries]
-            if len(entries) != 4 or set(names) != package.NAMES:
+            if (len(entries) != 4 or set(names) != package.NAMES
+                    or min(entry.header_offset for entry in entries) != 0):
                 raise PlanError("PLAN_ARCHIVE_LAYOUT_INVALID")
             total = 0
             for entry in entries:

@@ -36,12 +36,17 @@ overwrites. No atomic publication or hostile concurrent filesystem guarantee.
 Exact local commands, PYTHONPATH=src, Python D:/量化分析/.venv/Scripts/python.exe:
 ```powershell
 python -m pytest -q tests/test_research_plan.py tests/test_research_plan_package.py tests/test_research_plan_archive.py
-# 8 passed in1.57s, one run; no existing tests changed/failed/full suite repeated.
+# 8 passed in1.57s; no existing tests changed/failed/full suite repeated.
 python -m ruff check src/ashare_research/tools/research_plan.py src/ashare_research/tools/research_plan_package.py src/ashare_research/tools/research_plan_archive.py src/ashare_research/tools/research_entry.py tests/test_research_plan_archive.py
 # All checks passed. Two test style findings corrected before test execution.
 git diff --check
 # PASS.
 ```
+Independent code review added first-member offset validation to reject unmanaged
+prefix data even when it starts with ZIP magic and has a valid EOCD. Added a
+real prefixed ZIP case. Affected-only rerun:
+python -m pytest -q tests/test_research_plan_archive.py,3passed; Ruff/diff rechecked.
+
 Three new public cases cover ZIP/directory exact bytes, direct original compilation
 identities, deterministic exports/relocation, false boundaries, service/network/DB/
 executor/extraction guards, mutation after original source and archive reads;

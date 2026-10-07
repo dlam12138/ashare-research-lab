@@ -15,8 +15,10 @@ output preserves existing/raced/partial files; link/reparse ancestors rejected.
 Native ZIP consistency only, no independent seal or real research authority.
 
 Exact commands/demo/limits in acceptance/2026-10-07_m4_plan_archive.md.
-Original/new tests8passed1.57s, one run; Ruff/diff PASS. Two test style findings
-corrected before tests. No failed/repeated/full local tests or existing test edits.
+Original/new tests8passed1.57s; Ruff/diff PASS. Two test style findings
+corrected before tests. Independent review added first-member offset validation
+and a real prefixed-ZIP rejection case; affected new tests rerun3passed,
+Ruff/diff rechecked. No failed/full local tests or existing test edits.
 Actual relocated CLI ZIP verifies; actual Windows junction input/export rejection
 PASS. Nine scoped files; normal stacked PR depends on unmerged PR68. Independent
 committed/Goal/scope/protection/refs/sync/hosted review evidence in
