@@ -56,7 +56,8 @@ COMMANDS: tuple[ResearchCommand, ...] = (
          "  (--output NEW_DIR | --output-archive NEW_ZIP) [--json]",
          "--verify DIR [--json]（当前编译器与适配器复算，不授权统计执行）",
          "--archive PREPARATION_DIR --output NEW_ZIP [--json]",
-         "--verify-archive ZIP [--json]（直接复核原生 ZIP，无需解压）"),
+         "--verify-archive ZIP [--json]（直接复核原生 ZIP，无需解压）",
+         "复核可用 [--summary [--role ID（可重复）] [--gaps-only]]（完整复算后查看原诊断）"),
     ),
     ResearchCommand(
         "prepare-compare",

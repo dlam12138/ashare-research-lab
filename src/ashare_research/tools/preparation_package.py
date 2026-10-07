@@ -217,8 +217,14 @@ def main(argv: list[str] | None = None) -> int:
     destination.add_argument("--output", metavar="NEW_DIR_OR_ZIP")
     destination.add_argument("--output-archive", metavar="NEW_ZIP")
     parser.add_argument("--json", action="store_true")
+    parser.add_argument("--summary", action="store_true")
+    parser.add_argument("--role", action="append", default=[], metavar="ID")
+    parser.add_argument("--gaps-only", action="store_true")
     try:
         args = parser.parse_args(argv)
+        if args.summary and args.verify is None and args.verify_archive is None:
+            raise PrepareError("INVALID_ARGUMENTS")
+        preparation_diagnostics.validate_options(args.summary, args.role, args.gaps_only)
         renderer = render_markdown
         if args.archive is not None or args.verify_archive is not None:
             from ashare_research.tools import preparation_archive
@@ -256,6 +262,13 @@ def main(argv: list[str] | None = None) -> int:
                     plan, Path(args.inputs), Path(args.output),
                     plan_archive=args.plan_archive is not None,
                 )
+        if args.summary:
+            report = (receipt["verification"]["report"] if args.verify_archive is not None
+                      else receipt["report"])
+            receipt = preparation_diagnostics.build_summary(
+                report, roles=args.role, gaps_only=args.gaps_only,
+            )
+            renderer = preparation_diagnostics.render_markdown
         text = _json_bytes(receipt) if args.json else renderer(receipt).encode("utf-8")
         sys.stdout.buffer.write(text)
         sys.stdout.buffer.flush()
