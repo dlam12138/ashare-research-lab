@@ -94,6 +94,12 @@ COMMANDS: tuple[ResearchCommand, ...] = (
          "robustness|evidence|holdout"),
     ),
     ResearchCommand(
+        "registry-compare",
+        "ashare_research.tools.research_registry_compare",
+        "只读比较两个显式 M4-B registry 产物（record 或 snapshot，不写入）",
+        ("--left JSON --right JSON [--json]（机械字段/记录差异，不判断对错）",),
+    ),
+    ResearchCommand(
         "registry",
         "ashare_research.tools.research_registry",
         "只读复核显式 M4-B 规范记录、registry 快照或状态转换预检（不写入）",
