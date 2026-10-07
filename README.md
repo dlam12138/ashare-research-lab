@@ -94,6 +94,21 @@ ashare-research research plan-compare --left-archive old-plan.zip --right-archiv
 列表按原始索引比较。比较只读，不推断对象对齐、方案优劣或执行授权；任一输入复核失败
 即返回错误，不输出部分对比。目录与原生 ZIP 可混用，现有 ZIP 格式限制继续适用。
 
+已复核计划可与显式虚构输入一起做数据及矩阵准备检查：
+
+```powershell
+ashare-research research prepare --package new-plan-package --inputs docs/examples/m4_bound_inputs.json
+ashare-research research prepare --archive new-plan.zip --inputs docs/examples/m4_bound_inputs.json --json
+```
+
+[输入示例](docs/examples/m4_bound_inputs.json) 绑定上述示范假设，包含四个显式虚构日期，
+不是真实交易日历。输入沿用现有 `BoundDatasetInputsV1`：日历、成员、角色、观测与
+摘要必须显式提供并相互一致；修改假设或数据后应通过既有 API 重新绑定摘要，工具不会修补。
+仅读取显式 UTF-8 JSON（最多 1MiB），不获取数据、不写文件。输出完整质量诊断和矩阵；
+质量拒绝保留缺口且矩阵为 `null`。退出码 0 只表示诊断生成，`READY_SYNTHETIC` 不代表
+可估计或执行授权。检查会读取合成目标值，但不运行回归、秩检查、bootstrap 或 holdout，
+也不把合成模式或摘要解释为真实来源证据。
+
 ## M4 离线进度检查（只读，无网络）
 
 一条命令复核已冻结的 EIA 传输/PIT 元数据证据，输出确定性的当前研究阻塞与最小下一步；不需要参数选择根目录、路径或来源：
