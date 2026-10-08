@@ -165,12 +165,38 @@ def export_package(source: Path, output: Path) -> dict[str, Any]:
     return _receipt("exported_pre_execution", manifest)
 
 
-def verify_package(package: Path) -> dict[str, Any]:
-    captured = _read_package(_plain_root(package))
+def managed_path(path: Path) -> Path:
+    """Validate a managed path and its ancestors without following links."""
+    return _plain_root(path)
+
+
+def read_regular_file(path: Path, limit: int) -> bytes:
+    """Capture one bounded regular file under the package path guards."""
+    return _read_file(path, limit)
+
+
+def verify_captured_files(captured: dict[str, bytes]) -> dict[str, Any]:
+    """Reproduce exactly four already captured members using the frozen compiler."""
+    if set(captured) != set(FILE_LIMITS):
+        raise PlanError("PACKAGE_MEMBERSHIP_MISMATCH")
+    for name, data in captured.items():
+        if not isinstance(data, bytes):
+            raise PlanError("UNSAFE_PACKAGE_FILE")
+        if len(data) > FILE_LIMITS[name]:
+            raise PlanError("PACKAGE_FILE_TOO_LARGE")
     expected, manifest = _artifacts(captured["hypothesis.json"])
     if captured != expected:
         raise PlanError("PACKAGE_REPRODUCTION_MISMATCH")
     return _receipt("verified_pre_execution", manifest)
+
+
+def capture_verified_package(package: Path) -> tuple[dict[str, bytes], dict[str, Any]]:
+    captured = _read_package(_plain_root(package))
+    return captured, verify_captured_files(captured)
+
+
+def verify_package(package: Path) -> dict[str, Any]:
+    return capture_verified_package(package)[1]
 
 
 class _Parser(argparse.ArgumentParser):
