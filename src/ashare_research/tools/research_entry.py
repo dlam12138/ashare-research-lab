@@ -43,6 +43,12 @@ class ResearchCommand:
 
 COMMANDS: tuple[ResearchCommand, ...] = (
     ResearchCommand(
+        "hypothesis-diff",
+        "ashare_research.tools.research_hypothesis_compare",
+        "比较两份假设配置及其原始冻结合同、分析计划（不执行）",
+        ("--left JSON --right JSON [--json]（区分源文件字节与规范内容变化）",),
+    ),
+    ResearchCommand(
         "plan",
         "ashare_research.tools.research_plan",
         "从显式假设配置编译冻结合同、分析计划和数据要求（不执行）",
