@@ -108,6 +108,18 @@ ashare-research research prepare --archive new-plan.zip --inputs MY_INPUTS.json 
 这些筛选只能与 `--summary` 合用。速览不显示观测值或矩阵单元，也不计算统计结果；
 省略新参数仍输出完整的原准备报告。
 
+两份显式合成输入可在同一复核计划下对比：
+
+```powershell
+ashare-research research prepare-compare --archive new-plan.zip --left-inputs BEFORE.json --right-inputs AFTER.json --json
+```
+
+对比保留双方原始质量和摘要，按日期、角色展示有效性及原诊断引用变化，
+区分输入字节相同与绑定输入等价，不显示观测值或计算统计效果。
+计划、声明样本域及审计日期必须一致；改变覆盖分母或样本域会拒绝对比。
+每个不同输入独立复核计划并准备数据，因此跨读取的计划变化也会拒绝；
+同一路径仅使用一次载入的报告。对比不修改输入或修补摘要，也不授权真实研究。
+
 [输入示例](docs/examples/m4_bound_inputs.json) 绑定上述示范假设，包含四个显式虚构日期，
 不是真实交易日历。输入沿用现有 `BoundDatasetInputsV1`：日历、成员、角色、观测与
 摘要必须显式提供并相互一致；修改假设或数据后应通过既有 API 重新绑定摘要，工具不会修补。
