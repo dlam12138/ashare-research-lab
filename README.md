@@ -64,6 +64,26 @@ Markdown 显示数据角色、序列、观测时序、样本窗口、质量门�
 `FROZEN` 和摘要只是编译结果的内容身份，不代表独立封存、历史证据审查或执行授权；
 `research_ready` 与各执行状态保持 false。输出到 stdout，文件留存由调用者选择。
 
+保存可复核的假设计划包：
+
+```powershell
+ashare-research research plan-package --hypothesis docs/examples/m4_hypothesis.json --output NEW_PLAN_DIR --json
+ashare-research research plan-package --verify NEW_PLAN_DIR --json
+```
+
+导出一次读取原始假设，保存其原始字节为 `hypothesis.json`，同时生成完整
+`report.json`、可读的 `report.md` 和包含文件大小、SHA256、原合同/计划摘要及
+执行边界的 `manifest.json`。复核只读包内四个文件，从捕获的原始假设重新编译，
+逐字节核对全部报告与清单；修改报告后重算清单哈希也不能通过。
+目录可复制后离线复核，不需要原假设路径、数据库或网络。
+
+输出必须是新目录，父目录需已存在；已存在的输出不会覆盖，管理路径拒绝 `..`、
+符号链接及 Windows junction/reparse point。每个文件有大小上限；缺少、多出、
+非普通文件、内容不一致或无效假设都会报错，退出码 2，stdout 为空。
+写入前完成编译和渲染，成功前读回复核；晚期写入失败保留自建的部分目录供检查。
+复核要求兼容的原编译器和渲染器。此包证明内容一致与可复现，不是数字签名、
+独立封存或来源证据，仍不授权真实研究、统计执行或 holdout 访问。
+
 ## M4 离线进度检查（只读，无网络）
 
 一条命令复核已冻结的 EIA 传输/PIT 元数据证据，输出确定性的当前研究阻塞与最小下一步；不需要参数选择根目录、路径或来源：

@@ -43,6 +43,12 @@ class ResearchCommand:
 
 COMMANDS: tuple[ResearchCommand, ...] = (
     ResearchCommand(
+        "plan-package",
+        "ashare_research.tools.research_plan_package",
+        "保存显式假设及完整编译计划，并从包内原始假设离线复核",
+        ("--hypothesis JSON --output NEW_DIR [--json]", "--verify DIR [--json]（仅读取复核）"),
+    ),
+    ResearchCommand(
         "plan",
         "ashare_research.tools.research_plan",
         "从显式假设配置编译冻结合同、分析计划和数据要求（不执行）",
