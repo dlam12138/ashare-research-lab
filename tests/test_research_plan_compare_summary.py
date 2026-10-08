@@ -2,6 +2,7 @@
 
 import copy
 import json
+import os
 import socket
 import subprocess
 from contextlib import contextmanager
@@ -261,10 +262,13 @@ def test_summary_stays_offline_no_write_and_links_rejected(tmp_path, monkeypatch
     assert summary["selection"]["shown_changes"] > 0
     assert {path: path.read_bytes() for path in snapshot} == snapshot
     linked = tmp_path / "junction"
-    created = subprocess.run(
-        ["cmd", "/c", "mklink", "/J", str(linked), str(left)], capture_output=True,
-    )
-    assert created.returncode == 0, created.stderr
+    if os.name == "nt":
+        created = subprocess.run(
+            ["cmd", "/c", "mklink", "/J", str(linked), str(left)], capture_output=True,
+        )
+        assert created.returncode == 0, created.stderr
+    else:
+        linked.symlink_to(left, target_is_directory=True)
     assert cli.main([*_args(linked, right), "--summary", "--json"]) == 2
     captured = capsys.readouterr()
     assert captured.out == "" and captured.err == "error: LINKED_PACKAGE_PATH\n"
