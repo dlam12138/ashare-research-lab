@@ -84,6 +84,22 @@ ashare-research research plan-package --verify NEW_PLAN_DIR --json
 复核要求兼容的原编译器和渲染器。此包证明内容一致与可复现，不是数字签名、
 独立封存或来源证据，仍不授权真实研究、统计执行或 holdout 访问。
 
+将已复核计划包交付为 ZIP，并直接复核 ZIP：
+
+```powershell
+ashare-research research plan-archive --package NEW_PLAN_DIR --output NEW_PLAN.zip --json
+ashare-research research plan-archive --verify NEW_PLAN.zip --json
+```
+
+ZIP 使用固定顺序、时间和普通文件元数据，只保存上述四个文件，不压缩。
+同一计划包产生相同 ZIP 字节；回执包含 ZIP SHA256 与原计划清单。
+复核一次捕获有上限的 ZIP，检查成员和结构，再从原始假设重编译并核对全部字节，
+全程不解压、不创建恢复目录。只接受此工具生成的规范 ZIP；第三方重新压缩、
+改变元数据、加入额外成员或前后缀均会拒绝。复制或改名不影响复核。
+输出必须是新文件，父目录已存在；管理路径沿用目录包的链接、junction 和
+`..` 防护，独占创建且成功前读回，晚期失败保留自建的部分文件。
+目录复核接口保持兼容，原编译器/渲染器兼容性和执行边界同样适用于 ZIP。
+
 ## M4 离线进度检查（只读，无网络）
 
 一条命令复核已冻结的 EIA 传输/PIT 元数据证据，输出确定性的当前研究阻塞与最小下一步；不需要参数选择根目录、路径或来源：

@@ -43,6 +43,12 @@ class ResearchCommand:
 
 COMMANDS: tuple[ResearchCommand, ...] = (
     ResearchCommand(
+        "plan-archive",
+        "ashare_research.tools.research_plan_archive",
+        "计划包 ZIP 交付及直接离线复核（不解压、不执行）",
+        ("--package DIR --output NEW_ZIP [--json]", "--verify ZIP [--json]"),
+    ),
+    ResearchCommand(
         "plan-package",
         "ashare_research.tools.research_plan_package",
         "保存显式假设及完整编译计划，并从包内原始假设离线复核",
