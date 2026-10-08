@@ -174,6 +174,21 @@ ashare-research research prepare-delivery-compare --left before-preparation --ri
 任一包损坏或复算不一致即拒绝比较；相同路径与格式只使用一次复核的报告。
 有效性变化仅描述合成审计事实，不代表来源、真实研究就绪或执行授权。
 
+接收方也可从交付目录或 ZIP 直接阅读原质量诊断，按角色查看缺口：
+
+```powershell
+ashare-research research prepare-package --verify new-preparation --summary --json
+ashare-research research prepare-package --verify-archive new-preparation.zip --summary --role TARGET_OUTCOME --gaps-only
+```
+
+两种入口都先完整复算全部十个文件，再使用与 `prepare --summary` 相同的诊断视图。
+重复的 `--role` 按原角色顺序去重；`--gaps-only` 只筛选展示明细，角色计数仍覆盖
+全部原审计日期，原质量状态、覆盖分母和摘要不变。所选角色没有缺口时会明确提示，
+即使其他角色仍导致全局质量拒绝。筛选不会跳过未展示内容的复核。
+这些参数仅用于复核，角色和缺口筛选须配合 `--summary`；
+不解压、不读取外部输入、不修改交付包，也不显示观测值或执行统计。
+未加这些参数时原复核输出保持不变。
+
 [输入示例](docs/examples/m4_bound_inputs.json) 绑定上述示范假设，包含四个显式虚构日期，
 不是真实交易日历。输入沿用现有 `BoundDatasetInputsV1`：日历、成员、角色、观测与
 摘要必须显式提供并相互一致；修改假设或数据后应通过既有 API 重新绑定摘要，工具不会修补。
