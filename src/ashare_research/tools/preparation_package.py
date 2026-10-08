@@ -134,7 +134,25 @@ def export_package(plan: Path, inputs: Path, output: Path) -> dict[str, Any]:
 
 
 def verify_package(directory: Path) -> dict[str, Any]:
+    return verify_package_files(_read_files(directory, NAMES))
+
+
+def read_package_files(directory: Path) -> dict[str, bytes]:
+    """Return a once-read snapshot only after complete original reproduction."""
     files = _read_files(directory, NAMES)
+    verify_package_files(files)
+    return files
+
+
+def verify_package_files(files: dict[str, bytes]) -> dict[str, Any]:
+    """Reproduce a bounded file snapshot with the same rules as directory verification."""
+    if type(files) is not dict or set(files) != NAMES:
+        raise PrepareError("INVALID_PREPARATION_PACKAGE_FILES")
+    if any(type(raw) is not bytes for raw in files.values()):
+        raise PrepareError("INVALID_PREPARATION_PACKAGE_FILES")
+    if (any(len(raw) > _limit(name) for name, raw in files.items())
+            or sum(map(len, files.values())) > MAX_TOTAL_BYTES):
+        raise PrepareError("PREPARATION_PACKAGE_LIMIT_EXCEEDED")
     plan_files = {name: files[saved] for name, saved in PLAN_NAMES.items()}
     expected, _, report = _files(plan_files, files["inputs.json"])
     if files != expected:
@@ -169,12 +187,29 @@ def main(argv: list[str] | None = None) -> int:
     source = parser.add_mutually_exclusive_group(required=True)
     source.add_argument("--package", metavar="PLAN_DIR")
     source.add_argument("--verify", metavar="DIR")
+    source.add_argument("--archive", metavar="PREPARATION_DIR")
+    source.add_argument("--verify-archive", metavar="ZIP")
     parser.add_argument("--inputs", metavar="JSON")
     parser.add_argument("--output", metavar="NEW_DIR")
     parser.add_argument("--json", action="store_true")
     try:
         args = parser.parse_args(argv)
-        if args.verify is not None:
+        renderer = render_markdown
+        if args.archive is not None or args.verify_archive is not None:
+            from ashare_research.tools import preparation_archive
+
+            if args.inputs is not None:
+                raise PrepareError("INVALID_ARGUMENTS")
+            if args.archive is not None:
+                if args.output is None:
+                    raise PrepareError("INVALID_ARGUMENTS")
+                receipt = preparation_archive.export_archive(Path(args.archive), Path(args.output))
+            else:
+                if args.output is not None:
+                    raise PrepareError("INVALID_ARGUMENTS")
+                receipt = preparation_archive.verify_archive(Path(args.verify_archive))
+            renderer = preparation_archive.render_markdown
+        elif args.verify is not None:
             if args.inputs is not None or args.output is not None:
                 raise PrepareError("INVALID_ARGUMENTS")
             receipt = verify_package(Path(args.verify))
@@ -182,7 +217,7 @@ def main(argv: list[str] | None = None) -> int:
             if args.inputs is None or args.output is None:
                 raise PrepareError("INVALID_ARGUMENTS")
             receipt = export_package(Path(args.package), Path(args.inputs), Path(args.output))
-        text = _json_bytes(receipt) if args.json else render_markdown(receipt).encode("utf-8")
+        text = _json_bytes(receipt) if args.json else renderer(receipt).encode("utf-8")
         sys.stdout.buffer.write(text)
         sys.stdout.buffer.flush()
         return 0

@@ -136,6 +136,19 @@ ashare-research research prepare-package --verify new-preparation --json
 源假设和输入各限 1 MiB，其他单文件限 16 MiB，总包限 64 MiB。
 复算一致性不证明来源、历史封存、可估计或研究就绪，也不执行统计。
 
+已交付目录可打包成单个原生 ZIP，并直接复核：
+
+```powershell
+ashare-research research prepare-package --archive new-preparation --output new-preparation.zip --json
+ashare-research research prepare-package --verify-archive new-preparation.zip --json
+```
+
+ZIP 保留同样十个文件，固定排序、时间戳和属性，使用未压缩格式；复核在内存中
+调用与目录完全相同的逐文件复算，不解压、不创建临时目录。
+本入口只支持自身生成的原生布局，拒绝压缩、加密、ZIP64、额外成员和非规范布局；
+总内容仍限 64 MiB，ZIP 大小另加固定头部开销。输出必须是新文件，
+不得位于原准备目录内。失败保留部分输出，文件摘要不构成独立封存或来源证明。
+
 [输入示例](docs/examples/m4_bound_inputs.json) 绑定上述示范假设，包含四个显式虚构日期，
 不是真实交易日历。输入沿用现有 `BoundDatasetInputsV1`：日历、成员、角色、观测与
 摘要必须显式提供并相互一致；修改假设或数据后应通过既有 API 重新绑定摘要，工具不会修补。
