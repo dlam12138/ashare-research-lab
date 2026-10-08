@@ -43,6 +43,12 @@ class ResearchCommand:
 
 COMMANDS: tuple[ResearchCommand, ...] = (
     ResearchCommand(
+        "prepare-delivery-compare",
+        "ashare_research.tools.preparation_delivery_compare",
+        "完整复核两份准备目录或 ZIP，再对比同一计划与样本域的原质量诊断",
+        ("(--left DIR | --left-archive ZIP) (--right DIR | --right-archive ZIP) [--json]",),
+    ),
+    ResearchCommand(
         "prepare-package",
         "ashare_research.tools.preparation_package",
         "交付原计划与合成输入准备结果，并从保存字节复算核对",
