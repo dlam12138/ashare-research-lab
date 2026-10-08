@@ -51,6 +51,10 @@ def _preflight(raw: bytes) -> None:
 
 
 def _decode_verified(raw: bytes) -> dict[str, Any]:
+    return _decode_verified_files(raw)[1]
+
+
+def _decode_verified_files(raw: bytes) -> tuple[dict[str, bytes], dict[str, Any]]:
     _preflight(raw)
     try:
         with zipfile.ZipFile(io.BytesIO(raw), "r") as archive:
@@ -83,7 +87,7 @@ def _decode_verified(raw: bytes) -> dict[str, Any]:
                 if len(payload) != entry.file_size:
                     raise PlanError("PLAN_ARCHIVE_INVALID")
                 files[entry.filename] = payload
-        return package.verify_package_files(files)
+        return files, package.verify_package_files(files)
     except (ValueError, RuntimeError, NotImplementedError, zipfile.BadZipFile) as error:
         raise PlanError("PLAN_ARCHIVE_INVALID") from error
 
@@ -118,13 +122,26 @@ def export_archive(source: Path, output: Path) -> dict[str, Any]:
 
 
 def verify_archive(source: Path) -> dict[str, Any]:
+    raw, _, verified = _read_verified_archive(source)
+    return _receipt(raw, verified, "verified_archive")
+
+
+def read_archive_files(source: Path) -> dict[str, bytes]:
+    """Return original bounded members only after complete plan verification."""
+    _, files, _ = _read_verified_archive(source)
+    return files
+
+
+def _read_verified_archive(
+    source: Path,
+) -> tuple[bytes, dict[str, bytes], dict[str, Any]]:
     try:
         package._check_path(source)
         if not stat.S_ISREG(source.lstat().st_mode):
             raise PlanError("PLAN_ARCHIVE_SOURCE_INVALID")
         with source.open("rb") as stream:
             raw = stream.read(MAX_ARCHIVE_BYTES + 1)
-        verified = _decode_verified(raw)
-        return _receipt(raw, verified, "verified_archive")
+        files, verified = _decode_verified_files(raw)
+        return raw, files, verified
     except OSError as error:
         raise PlanError("PLAN_ARCHIVE_READ_FAILED") from error

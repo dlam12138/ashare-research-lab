@@ -99,6 +99,38 @@ def export_archive(source: Path, output: Path) -> dict[str, Any]:
         files = package.read_package_files(source)
         if output.resolve().is_relative_to(source.resolve()):
             raise PrepareError("OUTPUT_INSIDE_SOURCE_PREPARATION")
+        return export_package_files(files, output)
+    except FileExistsError as error:
+        raise PrepareError("OUTPUT_PATH_EXISTS") from error
+    except OSError as error:
+        raise PrepareError("PREPARATION_ARCHIVE_WRITE_FAILED") from error
+
+
+def export_from_plan(
+    plan: Path, inputs: Path, output: Path, *, plan_archive: bool = False,
+) -> dict[str, Any]:
+    """Build and deliver a preparation ZIP without intermediate filesystem artifacts."""
+    try:
+        package._check_path(output)
+        if output.exists():
+            raise PrepareError("OUTPUT_PATH_EXISTS")
+        if not plan_archive and output.resolve().is_relative_to(plan.resolve()):
+            raise PrepareError("OUTPUT_INSIDE_SOURCE_PLAN")
+        files = package.build_package_files(plan, inputs, plan_archive=plan_archive)
+        return export_package_files(files, output)
+    except FileExistsError as error:
+        raise PrepareError("OUTPUT_PATH_EXISTS") from error
+    except OSError as error:
+        raise PrepareError("PREPARATION_ARCHIVE_WRITE_FAILED") from error
+
+
+def export_package_files(files: dict[str, bytes], output: Path) -> dict[str, Any]:
+    """Verify the complete bounded snapshot before encoding and exclusive output."""
+    try:
+        package._check_path(output)
+        if output.exists():
+            raise PrepareError("OUTPUT_PATH_EXISTS")
+        package.verify_package_files(files)
         raw = _encode(files)
         verified = _decode_verified(raw)
         receipt = _receipt(raw, verified, "archived_preparation")

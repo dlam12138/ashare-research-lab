@@ -130,7 +130,7 @@ ashare-research research prepare-package --verify new-preparation --json
 交付包含原计划包的四个文件副本、原输入字节、完整准备与诊断的 JSON/Markdown、
 以及内容清单，共十个固定文件。复核从保存的计划和输入重新生成所有文件并逐字节比较，
 因此修改报告后重写清单哈希仍不能通过。质量拒绝同样可以交付和复核。
-本版导出只接收目录计划包；输出父目录须存在，目标必须是新目录，
+计划来源可为目录或原生 ZIP；输出父目录须存在，目标必须是新目录，
 且不能位于原计划包内，不覆盖或删除文件。
 读写拒绝链接和 Windows reparse 路径；失败留下已创建的部分目录供检查。
 源假设和输入各限 1 MiB，其他单文件限 16 MiB，总包限 64 MiB。
@@ -148,6 +148,19 @@ ZIP 保留同样十个文件，固定排序、时间戳和属性，使用未压�
 本入口只支持自身生成的原生布局，拒绝压缩、加密、ZIP64、额外成员和非规范布局；
 总内容仍限 64 MiB，ZIP 大小另加固定头部开销。输出必须是新文件，
 不得位于原准备目录内。失败保留部分输出，文件摘要不构成独立封存或来源证明。
+
+也可从计划和显式合成输入直接生成准备 ZIP，无需先创建准备目录：
+
+```powershell
+ashare-research research prepare-package --package new-plan-package --inputs MY_INPUTS.json --output-archive new-preparation.zip --json
+ashare-research research prepare-package --plan-archive new-plan.zip --inputs MY_INPUTS.json --output-archive new-preparation.zip --json
+ashare-research research prepare-package --plan-archive new-plan.zip --inputs MY_INPUTS.json --output new-preparation --json
+```
+
+每份原计划文件或计划 ZIP 只读取一次，完整复核计划后才读取输入。
+直接 ZIP 与原“目录交付后打包”保留相同十个文件和确定字节；
+不解压、不创建中间目录。`--output` 与 `--output-archive` 互斥，
+已有路径、链接路径及目录计划包内的输出仍会拒绝，失败保留部分输出供检查。
 
 接收方可直接对比两份准备交付包，目录和原生 ZIP 可混用：
 
