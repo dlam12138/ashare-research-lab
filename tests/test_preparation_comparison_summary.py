@@ -3,6 +3,7 @@
 import copy
 import hashlib
 import json
+import os
 import socket
 import subprocess
 import zipfile
@@ -411,11 +412,14 @@ def test_summary_stays_offline_no_extraction_no_write_and_links_rejected(
     assert {path: path.read_bytes() for path in delivery_left.iterdir()} == snapshot
 
     linked = tmp_path / "junction"
-    created = subprocess.run(
-        ["cmd", "/c", "mklink", "/J", str(linked), str(delivery_left)],
-        capture_output=True,
-    )
-    assert created.returncode == 0, created.stderr
+    if os.name == "nt":
+        created = subprocess.run(
+            ["cmd", "/c", "mklink", "/J", str(linked), str(delivery_left)],
+            capture_output=True,
+        )
+        assert created.returncode == 0, created.stderr
+    else:
+        linked.symlink_to(delivery_left, target_is_directory=True)
     assert cli.main([*delivery_args(linked, delivery_right), "--summary", "--json"]) == 2
     captured = capsys.readouterr()
     assert captured.out == ""
