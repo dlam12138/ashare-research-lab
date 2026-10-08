@@ -47,3 +47,14 @@ Seven-file scoped normal feature commit/push and PR stacked on80. Final actual
 head/scope/clean tree/refs/protections and hosted state retained in
 tmp/plan-comparison-summary/final-evidence.json.
 No main/force push, automatic merge or following stage.
+
+## 2026-10-08 queue closeout fix（root，无 DSH）
+
+Hosted PR #81 的 ubuntu clean-clone 失败：本 PR 新增测试用
+`cmd /c mklink /J` 构造链接目录，POSIX 无 `cmd`。修复为平台自适应
+（Windows 保留 junction；非 Windows 用 `Path.symlink_to(..., target_is_directory=True)`），
+与 #89 测试既有写法一致；断言、退出码与 `LINKED_PACKAGE_PATH` 契约不变。
+
+本地验证（Windows，PYTHONPATH=src，D:/量化分析/.venv/Scripts/python.exe）：
+`python -m pytest -q tests/test_research_plan_compare_summary.py tests/test_research_entry.py`
+→ 10 passed，exit 0。POSIX 分支由推送后的 ubuntu CI 复核。
