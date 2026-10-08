@@ -47,3 +47,19 @@ Eight-file scoped normal feature commit/push and PR stacked on79. Final actual
 head/scope/clean tree/refs/protections and hosted state retained in
 tmp/preparation-comparison-summary/final-evidence.json.
 No main/force push, automatic merge or following stage.
+
+## 2026-10-08 queue closeout fix（root，无 DSH）
+
+Hosted PR #80 复核发现：ubuntu clean-clone 在
+`test_summary_stays_offline_no_extraction_no_write_and_links_rejected` 失败，
+原因是测试用 `cmd /c mklink /J` 构造链接目录，POSIX 无 `cmd`。
+这不是产品缺陷；被测的 `_check_path` 对 POSIX symlink 同样以
+`LINKED_PREPARATION_PACKAGE_PATH` 拒绝。
+
+修复：非 Windows 平台改用 `Path.symlink_to(..., target_is_directory=True)`
+创建等价链接目录；Windows 保留 junction 方式。测试意图、退出码与错误契约不变，
+没有跳过或放宽任何断言。
+
+本地验证（Windows，PYTHONPATH=src，D:/量化分析/.venv/Scripts/python.exe）：
+`python -m pytest -q tests/test_preparation_comparison_summary.py` →
+9 passed in 22.45s，exit 0。POSIX 分支行为由推送后的 ubuntu CI 复核。
