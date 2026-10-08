@@ -43,6 +43,12 @@ class ResearchCommand:
 
 COMMANDS: tuple[ResearchCommand, ...] = (
     ResearchCommand(
+        "plan-batch",
+        "ashare_research.tools.research_hypothesis_batch",
+        "编译多份假设并汇总各计划声明的数据需求（不执行、不判定可复用性）",
+        ("--hypothesis JSON（可重复，1–16 份，ID 不可重复）[--json]",),
+    ),
+    ResearchCommand(
         "plan",
         "ashare_research.tools.research_plan",
         "从显式假设配置编译冻结合同、分析计划和数据要求（不执行）",
