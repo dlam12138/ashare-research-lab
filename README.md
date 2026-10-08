@@ -52,6 +52,8 @@ ashare-research research plan --hypothesis docs/examples/m4_hypothesis.json
 ashare-research research plan --hypothesis MY_HYPOTHESIS.json --json
 ashare-research research plan --hypothesis MY_HYPOTHESIS.json --output new-plan-package
 ashare-research research plan --verify new-plan-package --json
+ashare-research research plan --hypothesis MY_HYPOTHESIS.json --archive new-plan.zip
+ashare-research research plan --verify-archive new-plan.zip --json
 ```
 
 可复制并编辑 [示范配置](docs/examples/m4_hypothesis.json) 的条件、窗口、控制项等。
@@ -73,6 +75,150 @@ Markdown 显示数据角色、序列、观测时序、样本窗口、质量门�
 写入失败返回错误，保留部分输出供检查；不会覆盖、删除或自动重试该目录。
 复核要求恰好四个普通文件，缺失、额外文件或任意内容改动均拒绝。清单和编译摘要只证明
 一致性；不验证作者、独立封存、历史来源或真实研究就绪，也不构成执行授权。
+
+也可直接生成单文件 ZIP，再用 `--verify-archive` 在内存中复核，无需解压或创建中间目录。
+ZIP 内容与目录计划包一致，输出仍必须是现有父目录下的新文件；已有路径不覆盖。
+原生 ZIP 固定四个普通成员、无压缩、无附加字段或注释，文件顺序及元数据固定。
+复核限制包与成员大小，在解析前限制中央目录；拒绝重复、危险路径、目录、链接、压缩、
+加密、CRC 损坏及内容不一致。ZIP 字节摘要仍只是内容标识，不表示独立封存或执行授权。
+
+两份计划可以先完整复核，再对比规范配置、冻结合同和数据／方法要求：
+
+```powershell
+ashare-research research plan-compare --left old-plan-package --right-archive new-plan.zip
+ashare-research research plan-compare --left-archive old-plan.zip --right-archive new-plan.zip --json
+```
+
+源文件 SHA256 与配置、合同、计划摘要分开展示；仅 JSON 格式变化会显示源摘要不同，
+规范内容变化为零。差异按对象和 JSON Pointer 列出完整前后值，缺失与 `null` 分开，
+列表按原始索引比较。比较只读，不推断对象对齐、方案优劣或执行授权；任一输入复核失败
+即返回错误，不输出部分对比。目录与原生 ZIP 可混用，现有 ZIP 格式限制继续适用。
+
+已复核计划可与显式虚构输入一起做数据及矩阵准备检查：
+
+```powershell
+ashare-research research prepare --package new-plan-package --inputs docs/examples/m4_bound_inputs.json
+ashare-research research prepare --archive new-plan.zip --inputs docs/examples/m4_bound_inputs.json --json
+ashare-research research prepare --archive new-plan.zip --inputs MY_INPUTS.json --summary --role FACTOR --gaps-only
+```
+
+`--summary` 提供质量诊断速览，可用重复的 `--role` 选择角色，并用 `--gaps-only`
+只展示所选角色的无效单元及原始原因、日期和证据引用。角色计数始终覆盖全部审计日期，
+全局覆盖分母、拒绝日期、准备状态和摘要保持原样；已知角色没有缺口会明确提示。
+这些筛选只能与 `--summary` 合用。速览不显示观测值或矩阵单元，也不计算统计结果；
+省略新参数仍输出完整的原准备报告。
+
+两份显式合成输入可在同一复核计划下对比：
+
+```powershell
+ashare-research research prepare-compare --archive new-plan.zip --left-inputs BEFORE.json --right-inputs AFTER.json --json
+```
+
+对比保留双方原始质量和摘要，按日期、角色展示有效性及原诊断引用变化，
+区分输入字节相同与绑定输入等价，不显示观测值或计算统计效果。
+计划、声明样本域及审计日期必须一致；改变覆盖分母或样本域会拒绝对比。
+每个不同输入独立复核计划并准备数据，因此跨读取的计划变化也会拒绝；
+同一路径仅使用一次载入的报告。对比不修改输入或修补摘要，也不授权真实研究。
+
+对比也可只附加角色速览：
+
+```powershell
+ashare-research research prepare-compare --archive new-plan.zip --left-inputs BEFORE.json --right-inputs AFTER.json --summary --role FACTOR --json
+```
+
+速览在完整对比后用同一次捕获的报告汇总每个角色的审计日期、修改前后有效／无效单元
+和有效性变更计数，并只展示所选角色的原诊断变更；重复的 `--role` 按原角色顺序去重。
+全局审计计数、双方质量、身份、边界及输入分类保持原样，筛选只影响展示的明细。
+所选角色没有变化时明确提示；未知角色在完整对比后拒绝，非法参数和角色格式在读取前拒绝。
+速览不重新读取计划或输入、不修补摘要、不显示观测值或矩阵单元。省略参数时
+原有 JSON 与默认 Markdown 输出保持不变。
+
+准备结果也可保存为独立目录交付：
+
+```powershell
+ashare-research research prepare-package --package new-plan-package --inputs MY_INPUTS.json --output new-preparation --json
+ashare-research research prepare-package --verify new-preparation --json
+```
+
+交付包含原计划包的四个文件副本、原输入字节、完整准备与诊断的 JSON/Markdown、
+以及内容清单，共十个固定文件。复核从保存的计划和输入重新生成所有文件并逐字节比较，
+因此修改报告后重写清单哈希仍不能通过。质量拒绝同样可以交付和复核。
+计划来源可为目录或原生 ZIP；输出父目录须存在，目标必须是新目录，
+且不能位于原计划包内，不覆盖或删除文件。
+读写拒绝链接和 Windows reparse 路径；失败留下已创建的部分目录供检查。
+源假设和输入各限 1 MiB，其他单文件限 16 MiB，总包限 64 MiB。
+复算一致性不证明来源、历史封存、可估计或研究就绪，也不执行统计。
+
+已交付目录可打包成单个原生 ZIP，并直接复核：
+
+```powershell
+ashare-research research prepare-package --archive new-preparation --output new-preparation.zip --json
+ashare-research research prepare-package --verify-archive new-preparation.zip --json
+```
+
+ZIP 保留同样十个文件，固定排序、时间戳和属性，使用未压缩格式；复核在内存中
+调用与目录完全相同的逐文件复算，不解压、不创建临时目录。
+本入口只支持自身生成的原生布局，拒绝压缩、加密、ZIP64、额外成员和非规范布局；
+总内容仍限 64 MiB，ZIP 大小另加固定头部开销。输出必须是新文件，
+不得位于原准备目录内。失败保留部分输出，文件摘要不构成独立封存或来源证明。
+
+也可从计划和显式合成输入直接生成准备 ZIP，无需先创建准备目录：
+
+```powershell
+ashare-research research prepare-package --package new-plan-package --inputs MY_INPUTS.json --output-archive new-preparation.zip --json
+ashare-research research prepare-package --plan-archive new-plan.zip --inputs MY_INPUTS.json --output-archive new-preparation.zip --json
+ashare-research research prepare-package --plan-archive new-plan.zip --inputs MY_INPUTS.json --output new-preparation --json
+```
+
+每份原计划文件或计划 ZIP 只读取一次，完整复核计划后才读取输入。
+直接 ZIP 与原“目录交付后打包”保留相同十个文件和确定字节；
+不解压、不创建中间目录。`--output` 与 `--output-archive` 互斥，
+已有路径、链接路径及目录计划包内的输出仍会拒绝，失败保留部分输出供检查。
+
+接收方可直接对比两份准备交付包，目录和原生 ZIP 可混用：
+
+```powershell
+ashare-research research prepare-delivery-compare --left before-preparation --right-archive after-preparation.zip --json
+```
+
+两边先分别完整复算，再调用与 `prepare-compare` 相同的诊断对比；计划、声明样本域、
+日期及角色顺序必须一致。保留双方质量、身份和审计单元变化，不显示观测值或统计效果。
+无需另行提供计划或输入文件，不解压、不创建临时目录，也不修改交付包。
+任一包损坏或复算不一致即拒绝比较；相同路径与格式只使用一次复核的报告。
+有效性变化仅描述合成审计事实，不代表来源、真实研究就绪或执行授权。
+
+交付包对比同样支持 `--summary`（可用重复的 `--role` 按原角色顺序筛选）：
+
+```powershell
+ashare-research research prepare-delivery-compare --left before-preparation --right-archive after-preparation.zip --summary --role TARGET_OUTCOME --json
+```
+
+两侧先各自完整复核一次，速览只是该次复核结果的角色投影；不重新读取或解压、
+不修改交付包，全局计数、质量、身份、边界和输入分类保持原样，
+所选角色没有变化时明确提示。省略参数时原有 JSON 与默认 Markdown 输出保持不变。
+
+接收方也可从交付目录或 ZIP 直接阅读原质量诊断，按角色查看缺口：
+
+```powershell
+ashare-research research prepare-package --verify new-preparation --summary --json
+ashare-research research prepare-package --verify-archive new-preparation.zip --summary --role TARGET_OUTCOME --gaps-only
+```
+
+两种入口都先完整复算全部十个文件，再使用与 `prepare --summary` 相同的诊断视图。
+重复的 `--role` 按原角色顺序去重；`--gaps-only` 只筛选展示明细，角色计数仍覆盖
+全部原审计日期，原质量状态、覆盖分母和摘要不变。所选角色没有缺口时会明确提示，
+即使其他角色仍导致全局质量拒绝。筛选不会跳过未展示内容的复核。
+这些参数仅用于复核，角色和缺口筛选须配合 `--summary`；
+不解压、不读取外部输入、不修改交付包，也不显示观测值或执行统计。
+未加这些参数时原复核输出保持不变。
+
+[输入示例](docs/examples/m4_bound_inputs.json) 绑定上述示范假设，包含四个显式虚构日期，
+不是真实交易日历。输入沿用现有 `BoundDatasetInputsV1`：日历、成员、角色、观测与
+摘要必须显式提供并相互一致；修改假设或数据后应通过既有 API 重新绑定摘要，工具不会修补。
+仅读取显式 UTF-8 JSON（最多 1MiB），不获取数据、不写文件。输出完整质量诊断和矩阵；
+质量拒绝保留缺口且矩阵为 `null`。退出码 0 只表示诊断生成，`READY_SYNTHETIC` 不代表
+可估计或执行授权。检查仅读取显式提供的合成观测，不运行回归、秩检查、bootstrap 或 holdout，
+也不把合成模式或摘要解释为真实来源证据。
 
 ## M4 离线进度检查（只读，无网络）
 

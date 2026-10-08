@@ -153,11 +153,27 @@ def main(argv: list[str] | None = None) -> int:
     source = parser.add_mutually_exclusive_group(required=True)
     source.add_argument("--hypothesis", metavar="JSON")
     source.add_argument("--verify", metavar="DIR")
-    parser.add_argument("--output", metavar="NEW_DIR")
+    source.add_argument("--verify-archive", metavar="ZIP")
+    output = parser.add_mutually_exclusive_group()
+    output.add_argument("--output", metavar="NEW_DIR")
+    output.add_argument("--archive", metavar="NEW_ZIP")
     parser.add_argument("--json", action="store_true")
     try:
         args = parser.parse_args(argv)
-        if args.verify is not None or args.output is not None:
+        if args.hypothesis is None and (args.output is not None or args.archive is not None):
+            raise PlanError("INVALID_ARGUMENTS")
+        if args.archive is not None or args.verify_archive is not None:
+            from ashare_research.tools import research_plan_archive
+
+            if args.verify_archive is not None:
+                receipt = research_plan_archive.verify_archive(Path(args.verify_archive))
+                message = "verified compile-only plan archive\n"
+            else:
+                receipt = research_plan_archive.export_archive(
+                    Path(args.hypothesis), Path(args.archive),
+                )
+                message = "archived compile-only plan package (4 files)\n"
+        elif args.verify is not None or args.output is not None:
             from ashare_research.tools import research_plan_package
 
             if args.verify is not None:
@@ -170,12 +186,13 @@ def main(argv: list[str] | None = None) -> int:
                     Path(args.hypothesis), Path(args.output),
                 )
                 message = "exported compile-only plan package (4 files)\n"
-            text = _json(receipt) + "\n" if args.json else message
+        else:
+            report = build_report(Path(args.hypothesis))
+            text = _json(report) + "\n" if args.json else render_markdown(report)
             sys.stdout.buffer.write(text.encode("utf-8"))
             sys.stdout.buffer.flush()
             return 0
-        report = build_report(Path(args.hypothesis))
-        text = _json(report) + "\n" if args.json else render_markdown(report)
+        text = _json(receipt) + "\n" if args.json else message
         sys.stdout.buffer.write(text.encode("utf-8"))
         sys.stdout.buffer.flush()
         return 0

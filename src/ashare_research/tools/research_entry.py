@@ -43,11 +43,51 @@ class ResearchCommand:
 
 COMMANDS: tuple[ResearchCommand, ...] = (
     ResearchCommand(
+        "prepare-delivery-compare",
+        "ashare_research.tools.preparation_delivery_compare",
+        "完整复核两份准备目录或 ZIP，再对比同一计划与样本域的原质量诊断",
+        ("(--left DIR | --left-archive ZIP) (--right DIR | --right-archive ZIP) [--json]",
+         "对比可用 [--summary [--role ID（可重复）]]（完整复核后查看角色诊断变更）"),
+    ),
+    ResearchCommand(
+        "prepare-package",
+        "ashare_research.tools.preparation_package",
+        "交付原计划与合成输入准备结果，并从保存字节复算核对",
+        ("(--package PLAN_DIR | --plan-archive PLAN_ZIP) --inputs JSON\n"
+         "  (--output NEW_DIR | --output-archive NEW_ZIP) [--json]",
+         "--verify DIR [--json]（当前编译器与适配器复算，不授权统计执行）",
+         "--archive PREPARATION_DIR --output NEW_ZIP [--json]",
+         "--verify-archive ZIP [--json]（直接复核原生 ZIP，无需解压）",
+         "复核可用 [--summary [--role ID（可重复）] [--gaps-only]]（完整复算后查看原诊断）"),
+    ),
+    ResearchCommand(
+        "prepare-compare",
+        "ashare_research.tools.preparation_compare",
+        "对比同一计划及声明样本域下两份合成输入的原质量诊断",
+        ("(--package DIR | --archive ZIP) --left-inputs JSON --right-inputs JSON [--json]",
+         "对比可用 [--summary [--role ID（可重复）]]（完整复核后查看角色诊断变更）"),
+    ),
+    ResearchCommand(
+        "prepare",
+        "ashare_research.tools.synthetic_prepare",
+        "用显式合成输入检查数据质量并准备设计矩阵（不执行统计）",
+        ("(--package DIR | --archive ZIP) --inputs JSON [--json]",
+         "[--summary [--role ID（可重复）] [--gaps-only]]（按角色查看原质量诊断）"),
+    ),
+    ResearchCommand(
+        "plan-compare",
+        "ashare_research.tools.research_plan_compare",
+        "对比已复核研究计划的配置、合同与数据／方法要求（不执行）",
+        ("(--left DIR | --left-archive ZIP) (--right DIR | --right-archive ZIP) [--json]",),
+    ),
+    ResearchCommand(
         "plan",
         "ashare_research.tools.research_plan",
         "从显式假设配置编译冻结合同、分析计划和数据要求（不执行）",
         ("--hypothesis JSON [--output NEW_DIR] [--json]（V1 合成身份，不授权真实执行）",
-         "--verify DIR [--json]（重新编译并复核计划包，不验证独立封存）"),
+         "--verify DIR [--json]（重新编译并复核计划包，不验证独立封存）",
+         "--hypothesis JSON --archive NEW_ZIP [--json]（单文件 ZIP 交付）",
+         "--verify-archive ZIP [--json]（直接复核原生 ZIP，无需解压）"),
     ),
     ResearchCommand(
         "trace",
