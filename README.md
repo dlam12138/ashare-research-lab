@@ -52,6 +52,8 @@ ashare-research research plan --hypothesis docs/examples/m4_hypothesis.json
 ashare-research research plan --hypothesis MY_HYPOTHESIS.json --json
 ashare-research research plan --hypothesis MY_HYPOTHESIS.json --output new-plan-package
 ashare-research research plan --verify new-plan-package --json
+ashare-research research plan --hypothesis MY_HYPOTHESIS.json --archive new-plan.zip
+ashare-research research plan --verify-archive new-plan.zip --json
 ```
 
 可复制并编辑 [示范配置](docs/examples/m4_hypothesis.json) 的条件、窗口、控制项等。
@@ -73,6 +75,12 @@ Markdown 显示数据角色、序列、观测时序、样本窗口、质量门�
 写入失败返回错误，保留部分输出供检查；不会覆盖、删除或自动重试该目录。
 复核要求恰好四个普通文件，缺失、额外文件或任意内容改动均拒绝。清单和编译摘要只证明
 一致性；不验证作者、独立封存、历史来源或真实研究就绪，也不构成执行授权。
+
+也可直接生成单文件 ZIP，再用 `--verify-archive` 在内存中复核，无需解压或创建中间目录。
+ZIP 内容与目录计划包一致，输出仍必须是现有父目录下的新文件；已有路径不覆盖。
+原生 ZIP 固定四个普通成员、无压缩、无附加字段或注释，文件顺序及元数据固定。
+复核限制包与成员大小，在解析前限制中央目录；拒绝重复、危险路径、目录、链接、压缩、
+加密、CRC 损坏及内容不一致。ZIP 字节摘要仍只是内容标识，不表示独立封存或执行授权。
 
 ## M4 离线进度检查（只读，无网络）
 

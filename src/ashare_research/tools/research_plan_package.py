@@ -98,14 +98,25 @@ def verify_package(directory: Path) -> dict[str, Any]:
             if len(payload) > limit:
                 raise PlanError("PLAN_ARTIFACT_TOO_LARGE")
             files[entry.name] = payload
-        expected, _, report = _files(files["hypothesis.json"])
-        if files != expected:
-            raise PlanError("PLAN_PACKAGE_MISMATCH")
-        return {
-            "schema": "m4_compile_only_plan_verification_v1",
-            "status": "verified_against_current_compilers",
-            "independent_seal_verified": False,
-            "report": report,
-        }
+        return verify_package_files(files)
     except OSError as error:
         raise PlanError("PLAN_PACKAGE_READ_FAILED") from error
+
+
+def verify_package_files(files: dict[str, bytes]) -> dict[str, Any]:
+    """Verify a bounded in-memory snapshot with the same directory-package rules."""
+    if set(files) != NAMES:
+        raise PlanError("INVALID_PLAN_PACKAGE_FILES")
+    for name, payload in files.items():
+        limit = MAX_INPUT_BYTES if name == "hypothesis.json" else MAX_ARTIFACT_BYTES
+        if len(payload) > limit:
+            raise PlanError("PLAN_ARTIFACT_TOO_LARGE")
+    expected, _, report = _files(files["hypothesis.json"])
+    if files != expected:
+        raise PlanError("PLAN_PACKAGE_MISMATCH")
+    return {
+        "schema": "m4_compile_only_plan_verification_v1",
+        "status": "verified_against_current_compilers",
+        "independent_seal_verified": False,
+        "report": report,
+    }
