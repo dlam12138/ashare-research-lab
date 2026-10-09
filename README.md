@@ -82,6 +82,25 @@ ZIP 内容与目录计划包一致，输出仍必须是现有父目录下的新�
 复核限制包与成员大小，在解析前限制中央目录；拒绝重复、危险路径、目录、链接、压缩、
 加密、CRC 损坏及内容不一致。ZIP 字节摘要仍只是内容标识，不表示独立封存或执行授权。
 
+计划也可以在完整编译或完整复核后只查看顶层分区速览：
+
+```powershell
+ashare-research research plan --hypothesis docs/examples/m4_hypothesis.json --summary
+ashare-research research plan --verify new-plan-package --summary --section method --json
+ashare-research research plan --verify-archive new-plan.zip --summary --section requirements --section holdout --json
+```
+
+速览只投影本次捕获的计划视图：`--hypothesis` 编译一次，`--verify` 与 `--verify-archive`
+分别完整复核一次，之后不再读取、不重新编译、不解压，也不写入任何文件。
+分区 ID 为 `requirements`、`sample`、`condition`、`method`、`conditional`、`bootstrap`、
+`robustness`、`evidence`、`holdout`；重复的 `--section` 按该规范顺序去重，省略时展示全部。
+身份（假设 ID、源 SHA256、合同／计划状态和四项摘要）、形状计数（要求角色、模型项总数、
+稳健性条目数、bootstrap 开关与 holdout 授权边界）、执行边界与限制始终保持完整计划视图
+的原值，筛选只改变展示的分区载荷。导出模式（`--output`、`--archive`）不接受速览选择器；
+没有 `--summary` 的 `--section` 与非法分区在读取前拒绝。速览不执行统计研究、不访问
+holdout，也不代表独立封存或执行授权；省略 `--summary` 时原有 JSON 与默认 Markdown
+输出保持不变。
+
 两份计划可以先完整复核，再对比规范配置、冻结合同和数据／方法要求：
 
 ```powershell

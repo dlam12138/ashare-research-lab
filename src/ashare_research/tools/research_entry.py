@@ -88,7 +88,10 @@ COMMANDS: tuple[ResearchCommand, ...] = (
         ("--hypothesis JSON [--output NEW_DIR] [--json]（V1 合成身份，不授权真实执行）",
          "--verify DIR [--json]（重新编译并复核计划包，不验证独立封存）",
          "--hypothesis JSON --archive NEW_ZIP [--json]（单文件 ZIP 交付）",
-         "--verify-archive ZIP [--json]（直接复核原生 ZIP，无需解压）"),
+         "--verify-archive ZIP [--json]（直接复核原生 ZIP，无需解压）",
+         "编译或复核可用 [--summary [--section ID（可重复）]]（投影本次捕获的计划视图）",
+         "  速览 ID：requirements|sample|condition|method|conditional|bootstrap|"
+         "robustness|evidence|holdout"),
     ),
     ResearchCommand(
         "trace",
