@@ -121,6 +121,64 @@ def _json(value: Any) -> str:
     return json.dumps(value, ensure_ascii=False, sort_keys=True, indent=2, allow_nan=False)
 
 
+def _changes(
+    before: dict[str, Any], after: dict[str, Any], path: str = "",
+) -> list[dict[str, Any]]:
+    changes = []
+    for key in sorted(before.keys() | after.keys()):
+        pointer = path + "/" + key.replace("~", "~0").replace("/", "~1")
+        left_present, right_present = key in before, key in after
+        left, right = before.get(key), after.get(key)
+        if left_present and right_present and type(left) is dict and type(right) is dict:
+            changes.extend(_changes(left, right, pointer))
+        elif left_present != right_present or _json(left) != _json(right):
+            changes.append({
+                "path": pointer, "before_present": left_present,
+                "after_present": right_present, "before": left, "after": right,
+            })
+    return changes
+
+
+def build_comparison(source: Path, comparison: Path) -> dict[str, Any]:
+    before = build_report(source)
+    after = before if source.resolve() == comparison.resolve() else build_report(comparison)
+    changes = sorted(_changes(before["config"], after["config"]), key=lambda item: item["path"])
+    same_bytes = before["source_file_sha256"] == after["source_file_sha256"]
+    return {
+        "schema": "m4_compile_only_plan_comparison_v1",
+        "status": "compared_pre_execution",
+        "same_source_bytes": same_bytes,
+        "same_canonical_config": not changes,
+        "classification": (
+            "CANONICAL_CONFIG_CHANGED" if changes else
+            "IDENTICAL_SOURCE_BYTES" if same_bytes else "CANONICALLY_EQUIVALENT_INPUTS"
+        ),
+        "before": before, "after": after, "changes": changes,
+        "boundary": dict(before["boundary"]),
+        "notes": [*NOTES, "变更列表只比较规范配置；列表顺序保留，不推断统计或研究效果。"],
+    }
+
+
+def render_comparison(report: dict[str, Any]) -> str:
+    lines = [
+        "# 假设研究计划对比（仅编译）", "",
+        "--hypothesis 为修改前；--compare-with 为修改后。", "",
+        f"分类：{report['classification']}；配置变更数：{len(report['changes'])}。",
+        "", "## 规范配置变更", "",
+    ]
+    if report["changes"]:
+        for change in report["changes"]:
+            lines.extend([f"### `{_cell(change['path'])}`", "", "```json",
+                          _json(change), "```", ""])
+    else:
+        lines.extend(["规范配置相同。源文件字节是否相同见分类和 SHA256。", ""])
+    for label in ("before", "after"):
+        lines.extend([f"## {label}", "", render_markdown(report[label])])
+    lines.extend(["## 对比边界", "", "```json", _json(report["boundary"]), "```", "",
+                  *(f"- {note}" for note in report["notes"])])
+    return "\n".join(lines) + "\n"
+
+
 def _cell(value: Any) -> str:
     return str(value).replace("|", "\\|").replace("\n", " ")
 
@@ -338,12 +396,19 @@ def main(argv: list[str] | None = None) -> int:
     output.add_argument("--archive", metavar="NEW_ZIP")
     parser.add_argument("--summary", action="store_true")
     parser.add_argument("--section", action="append", default=[], metavar="ID")
+    parser.add_argument("--compare-with", metavar="JSON")
     parser.add_argument("--json", action="store_true")
     try:
         args = parser.parse_args(argv)
         if args.hypothesis is None and (args.output is not None or args.archive is not None):
             raise PlanError("INVALID_ARGUMENTS")
         if (args.output is not None or args.archive is not None) and (args.summary or args.section):
+            raise PlanError("INVALID_ARGUMENTS")
+        if args.compare_with is not None and (
+            args.verify is not None or args.verify_archive is not None
+            or args.output is not None or args.archive is not None
+            or args.summary or args.section
+        ):
             raise PlanError("INVALID_ARGUMENTS")
         validate_summary_options(args.summary, args.section)
         if args.archive is not None or args.verify_archive is not None:
@@ -372,6 +437,12 @@ def main(argv: list[str] | None = None) -> int:
                     Path(args.hypothesis), Path(args.output),
                 )
                 message = "exported compile-only plan package (4 files)\n"
+        elif args.compare_with is not None:
+            report = build_comparison(Path(args.hypothesis), Path(args.compare_with))
+            text = _json(report) + "\n" if args.json else render_comparison(report)
+            sys.stdout.buffer.write(text.encode("utf-8"))
+            sys.stdout.buffer.flush()
+            return 0
         else:
             report = build_report(Path(args.hypothesis))
             if args.summary:

@@ -97,7 +97,8 @@ COMMANDS: tuple[ResearchCommand, ...] = (
         "plan",
         "ashare_research.tools.research_plan",
         "从显式假设配置编译冻结合同、分析计划和数据要求（不执行）",
-        ("--hypothesis JSON [--output NEW_DIR] [--json]（V1 合成身份，不授权真实执行）",
+        ("--hypothesis JSON [--compare-with JSON] [--output NEW_DIR] [--json]"
+         "（可比较修改前后；V1 合成身份，不授权真实执行）",
          "--verify DIR [--json]（重新编译并复核计划包，不验证独立封存）",
          "--hypothesis JSON --archive NEW_ZIP [--json]（单文件 ZIP 交付）",
          "--verify-archive ZIP [--json]（直接复核原生 ZIP，无需解压）",

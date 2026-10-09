@@ -50,6 +50,7 @@ M3 最终处置为 `M3_DAILY_MECHANISM_NOT_ESTABLISHED`。Holdout 已使用一�
 ```powershell
 ashare-research research plan --hypothesis docs/examples/m4_hypothesis.json
 ashare-research research plan --hypothesis MY_HYPOTHESIS.json --json
+ashare-research research plan --hypothesis BEFORE.json --compare-with AFTER.json --json
 ashare-research research plan --hypothesis MY_HYPOTHESIS.json --output new-plan-package
 ashare-research research plan --verify new-plan-package --json
 ashare-research research plan --hypothesis MY_HYPOTHESIS.json --archive new-plan.zip
@@ -57,6 +58,10 @@ ashare-research research plan --verify-archive new-plan.zip --json
 ```
 
 可复制并编辑 [示范配置](docs/examples/m4_hypothesis.json) 的条件、窗口、控制项等。
+`--compare-with` 将 `--hypothesis` 视为修改前，比较两份规范配置的字段变化，
+保留双方完整合同、计划和原始文件 SHA256。它区分字节相同、规范配置等价与配置改变；
+控制项及注册项列表按整体比较并保留顺序，不推断修改的统计效果或研究效果。
+省略该参数仍输出单份计划；两种模式均不获取数据、不执行统计，也不授权 holdout。
 当前 V1 仅支持既有合成身份与词汇；真实身份策略会拒绝，未新增真实研究能力。
 Markdown 显示数据角色、序列、观测时序、样本窗口、质量门槛、模型项、bootstrap、
 稳健性注册和 holdout 边界。JSON 保留原编译器的规范配置、冻结合同、完整分析计划
