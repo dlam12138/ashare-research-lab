@@ -97,7 +97,7 @@ COMMANDS: tuple[ResearchCommand, ...] = (
         "registry-compare",
         "ashare_research.tools.research_registry_compare",
         "只读比较两个显式 M4-B registry 产物（record 或 snapshot，不写入）",
-        ("--left JSON --right JSON [--json]（机械字段/记录差异，不判断对错）",),
+        ("--left JSON --right JSON [--summary] [--json]（机械差异或类别摘要，不判断对错）",),
     ),
     ResearchCommand(
         "registry",

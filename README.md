@@ -174,6 +174,23 @@ snapshot 顶层键判定 record/snapshot 并用既有视图入口复核；单侧
 记录清单。比较只描述机械差异，不判断哪一侧正确，也不构成证据、研究结论或执行
 授权；失败同样以退出码 2、空 stdout 与 `error: CODE` 净化收尾。
 
+`--summary` 在完整复核之后只投影同一次捕获的比较结果，不重新读取、不重新计算差异：
+
+```powershell
+ashare-research research registry-compare --left MY_RECORD.json --right MY_RECORD_V2.json --summary
+ashare-research research registry-compare --left MY_RECORD.json --right MY_RECORD_V2.json --summary --json
+ashare-research research registry-compare --left MY_SNAPSHOT_A.json --right MY_SNAPSHOT_B.json --summary --json
+```
+
+record 对按冻结字段划分输出身份（identity，22 个身份承载字段）、可变（mutable，仅
+`status` 与 `state_history`）与摘要（digest，`identity_digest`／`record_digest`）
+三类的变更计数与字段清单，并保留六个身份/摘要/状态等价性；snapshot 对输出
+added/removed/changed/unchanged 计数与 `ID@版本` 紧凑清单。摘要校验捕获报告必须满足
+冻结不变量（如身份类字段变化与 `identity_digest` 一致、记录计数与变更清单相符），
+违反时以 `REGISTRY_COMPARISON_SUMMARY_MISMATCH` fail-closed。摘要不判断哪一侧正确，
+不构成证据、研究结论或执行授权；省略 `--summary` 时原有 JSON 与默认 Markdown 输出
+保持不变。
+
 已复核计划可与显式虚构输入一起做数据及矩阵准备检查：
 
 ```powershell
