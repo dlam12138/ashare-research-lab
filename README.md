@@ -24,7 +24,7 @@
 | M4 合成演示 CLI | 已实现（离线、仅合成、固定样例） | `python -m ashare_research.synthetic_demo`（`--json` 可选） | 只跑固定的虚构 24 行示例；没有输入/配置/seed/provider/数据库/输出路径/注册表参数；合成演示不等于真实研究授权 | [模块](src/ashare_research/synthetic_demo.py)、[测试](tests/test_m4_synthetic_demo_cli.py) |
 | M2 离线研究包 | 已实现（固定来源汇编、离线、无新计算） | `python -m ashare_research.tools.value_research_bundle`（`--json`、`--output NEW_DIR`、`--verify DIR`） | 只汇编九个固定基线报告：混合日期历史汇编，不是统一 PIT 查询或研究刷新；无总体评分、排名、资格或建议；缺失证据不视为 0 或负面结论 | [模块](src/ashare_research/tools/value_research_bundle.py)、[测试](tests/test_value_research_bundle.py) |
 | M2 既有指标 PIT 重放 | 已实现（离线只读、内存重放既有七个指标） | 下方 `python -m ashare_research.tools.pit_metric_replay` | 只用既有已批准定义，无新公式/评分/排名/建议；缺失保持缺失；重放不是发布 | [模块](src/ashare_research/tools/pit_metric_replay.py)、[测试](tests/test_pit_metric_replay.py) |
-| M4-B 理论/假设注册表 | 最小元数据 API 已实现（仅合成/schema 校验） | `ashare_research.mechanism.registry` 的 `parse_hypothesis_record(document)`、显式状态转换与有界快照入口 | 不创建或加载真实候选数据集，不采集文献，不访问 provider、数据库、真实行情或 holdout；真实假设执行仍未授权 | [设计](docs/m4b_hypothesis_registry_design_v1.md)、[验收场景](docs/m4b_hypothesis_registry_acceptance_cases_v1.md)、[实现测试](tests/test_m4b_hypothesis_registry.py)、[实现验收](acceptance/2026-09-12_m4b_hypothesis_registry_implementation.md)、[冻结前置合同](reports/m4_stage4p_m4b_hypothesis_registry_contract_v1.json) |
+| M4-B 理论/假设注册表 | 最小元数据 API 已实现（仅合成/schema 校验）；显式规范 JSON 可只读复核 | `ashare_research.mechanism.registry` 的 `parse_hypothesis_record(document)`、显式状态转换与有界快照入口，或 `ashare-research research registry --record/--snapshot` | 不创建或加载真实候选数据集，不采集文献，不访问 provider、数据库、真实行情或 holdout；CLI 只读，不写入或提升记录；真实假设执行仍未授权 | [设计](docs/m4b_hypothesis_registry_design_v1.md)、[验收场景](docs/m4b_hypothesis_registry_acceptance_cases_v1.md)、[实现测试](tests/test_m4b_hypothesis_registry.py)、[实现验收](acceptance/2026-09-12_m4b_hypothesis_registry_implementation.md)、[冻结前置合同](reports/m4_stage4p_m4b_hypothesis_registry_contract_v1.json) |
 
 ### 研究结论与边界
 
@@ -50,6 +50,10 @@ M3 最终处置为 `M3_DAILY_MECHANISM_NOT_ESTABLISHED`。Holdout 已使用一�
 ```powershell
 ashare-research research plan --hypothesis docs/examples/m4_hypothesis.json
 ashare-research research plan --hypothesis MY_HYPOTHESIS.json --json
+ashare-research research plan --hypothesis MY_HYPOTHESIS.json --output new-plan-package
+ashare-research research plan --verify new-plan-package --json
+ashare-research research plan --hypothesis MY_HYPOTHESIS.json --archive new-plan.zip
+ashare-research research plan --verify-archive new-plan.zip --json
 ```
 
 可复制并编辑 [示范配置](docs/examples/m4_hypothesis.json) 的条件、窗口、控制项等。
@@ -63,6 +67,272 @@ Markdown 显示数据角色、序列、观测时序、样本窗口、质量门�
 错误时无部分结果。无需配置数据库，不联网、不获取数据、不运行统计或访问 holdout。
 `FROZEN` 和摘要只是编译结果的内容身份，不代表独立封存、历史证据审查或执行授权；
 `research_ready` 与各执行状态保持 false。输出到 stdout，文件留存由调用者选择。
+
+计划包包含原始 `hypothesis.json`、完整 `plan.json`、可读 `plan.md` 和
+`manifest.json` 字节清单。可将整个目录移到其他位置再复核；复核使用当前安装的编译器
+重新编译包内假设，逐字节检查全部文件，不联网或执行统计研究。原始假设只读取一次。
+输出必须是现有父目录下的新目录，已有文件或目录、符号链接及 Windows 重解析路径均拒绝。
+写入失败返回错误，保留部分输出供检查；不会覆盖、删除或自动重试该目录。
+复核要求恰好四个普通文件，缺失、额外文件或任意内容改动均拒绝。清单和编译摘要只证明
+一致性；不验证作者、独立封存、历史来源或真实研究就绪，也不构成执行授权。
+
+也可直接生成单文件 ZIP，再用 `--verify-archive` 在内存中复核，无需解压或创建中间目录。
+ZIP 内容与目录计划包一致，输出仍必须是现有父目录下的新文件；已有路径不覆盖。
+原生 ZIP 固定四个普通成员、无压缩、无附加字段或注释，文件顺序及元数据固定。
+复核限制包与成员大小，在解析前限制中央目录；拒绝重复、危险路径、目录、链接、压缩、
+加密、CRC 损坏及内容不一致。ZIP 字节摘要仍只是内容标识，不表示独立封存或执行授权。
+
+计划也可以在完整编译或完整复核后只查看顶层分区速览：
+
+```powershell
+ashare-research research plan --hypothesis docs/examples/m4_hypothesis.json --summary
+ashare-research research plan --verify new-plan-package --summary --section method --json
+ashare-research research plan --verify-archive new-plan.zip --summary --section requirements --section holdout --json
+```
+
+速览只投影本次捕获的计划视图：`--hypothesis` 编译一次，`--verify` 与 `--verify-archive`
+分别完整复核一次，之后不再读取、不重新编译、不解压，也不写入任何文件。
+分区 ID 为 `requirements`、`sample`、`condition`、`method`、`conditional`、`bootstrap`、
+`robustness`、`evidence`、`holdout`；重复的 `--section` 按该规范顺序去重，省略时展示全部。
+身份（假设 ID、源 SHA256、合同／计划状态和四项摘要）、形状计数（要求角色、模型项总数、
+稳健性条目数、bootstrap 开关与 holdout 授权边界）、执行边界与限制始终保持完整计划视图
+的原值，筛选只改变展示的分区载荷。导出模式（`--output`、`--archive`）不接受速览选择器；
+没有 `--summary` 的 `--section` 与非法分区在读取前拒绝。速览不执行统计研究、不访问
+holdout，也不代表独立封存或执行授权；省略 `--summary` 时原有 JSON 与默认 Markdown
+输出保持不变。
+
+两份计划可以先完整复核，再对比规范配置、冻结合同和数据／方法要求：
+
+```powershell
+ashare-research research plan-compare --left old-plan-package --right-archive new-plan.zip
+ashare-research research plan-compare --left-archive old-plan.zip --right-archive new-plan.zip --json
+```
+
+源文件 SHA256 与配置、合同、计划摘要分开展示；仅 JSON 格式变化会显示源摘要不同，
+规范内容变化为零。差异按对象和 JSON Pointer 列出完整前后值，缺失与 `null` 分开，
+列表按原始索引比较。比较只读，不推断对象对齐、方案优劣或执行授权；任一输入复核失败
+即返回错误，不输出部分对比。目录与原生 ZIP 可混用，现有 ZIP 格式限制继续适用。
+
+对比也可只附加分区速览：
+
+```powershell
+ashare-research research plan-compare --left old-plan-package --right-archive new-plan.zip --summary --section config --json
+```
+
+速览在完整复核后汇总两个身份、五项摘要的相同状态、规范内容变化总数和
+`config`／`contract`／`plan` 各分区变化项数，并只展示所选分区的 JSON Pointer 前后值。
+重复的 `--section` 按原分区顺序去重；所选分区没有变化时明确提示。
+身份、相等性、全局计数、执行边界与限制保持完整对比原值，筛选只影响展示的变更行。
+没有 `--summary` 的 `--section` 与非法分区在读取前拒绝；速览不重新读取或解压、
+不重新计算差异，也不评价方案优劣或授权执行。省略参数时原有 JSON 与默认 Markdown
+输出保持不变。
+
+M4-B 假设记录与 registry 快照也可以直接做只读复核，不写入任何注册表：
+
+```powershell
+ashare-research research registry --record MY_RECORD.json
+ashare-research research registry --record MY_RECORD.json --json
+ashare-research research registry --snapshot MY_SNAPSHOT.json --json
+```
+
+仅接受显式规范 JSON（UTF-8 无 BOM、恰好一个结尾 LF、无浮点 token，最多 1MiB）：
+记录按冻结的注册表入口复算规范字节、身份摘要、记录摘要与状态历史；快照额外复算
+`registry_digest`、记录规范顺序与规模上限（最多 3 条记录、3 条 real-demo）。
+缺键、多余键、摘要不一致或非规范字节一律 fail-closed：退出码 2、无部分输出，
+`error: CODE` 只含稳定错误码。本视图只读，不写入、不修正、不提升状态，也不加载
+默认或真实候选数据集；`DISCOVERED`、`LITERATURE_REVIEWED` 等来源状态与 registry
+元数据不是证据，也不构成研究结论或执行授权。
+
+状态转换可以在不产生记录的前提下先做只读预检：
+
+```powershell
+ashare-research research registry --record MY_RECORD.json --transition MY_REQUEST.json --json
+```
+
+请求是显式 `StateTransitionRequestV1` 规范 JSON（同一套严格字节规则，七个字段齐全）；
+预检只调用冻结状态机校验：接受时输出 `m4_registry_transition_preflight_v1` 回执
+（记录身份、请求回显、`would_be_status`／`would_be_ordinal` 与全 false 执行边界），
+拒绝时以稳定错误码 fail-closed（如 `ILLEGAL_STATE_TRANSITION`、
+`MISSING_AUTHORIZATION_REF`、`TERMINAL_STATE_HAS_NO_OUTGOING_TRANSITION`）。
+预检不产生、不写入、不提升任何记录；校验通过只说明请求满足冻结转换前置条件，
+`authorization_ref` 仅按标识符检查，授权合同是否真实存在或已生效由工具之外核实，
+预检也不构成执行或研究结论。
+
+两个显式规范产物也可以直接做只读比较（record 对 record、snapshot 对 snapshot），不写入、不合并：
+
+```powershell
+ashare-research research registry-compare --left MY_RECORD.json --right MY_RECORD_V2.json
+ashare-research research registry-compare --left MY_RECORD.json --right MY_RECORD_V2.json --json
+ashare-research research registry-compare --left MY_SNAPSHOT_A.json --right MY_SNAPSHOT_B.json --json
+```
+
+两侧文件各自经与 `research registry` 相同的严格字节解码与冻结入口复核，按冻结
+snapshot 顶层键判定 record/snapshot 并用既有视图入口复核；单侧失败保持既有稳定
+错误码，两侧类型不同以 `INCOMPARABLE_ARTIFACT_KINDS` 拒绝。接受时输出
+`m4_registry_comparison_v1`：record 对输出逐字段差异与身份/记录摘要、状态、状态数
+等价性；snapshot 对输出 registry 摘要与计数等价性及 added/removed/changed/unchanged
+记录清单。比较只描述机械差异，不判断哪一侧正确，也不构成证据、研究结论或执行
+授权；失败同样以退出码 2、空 stdout 与 `error: CODE` 净化收尾。
+
+`--summary` 在完整复核之后只投影同一次捕获的比较结果，不重新读取、不重新计算差异：
+
+```powershell
+ashare-research research registry-compare --left MY_RECORD.json --right MY_RECORD_V2.json --summary
+ashare-research research registry-compare --left MY_RECORD.json --right MY_RECORD_V2.json --summary --json
+ashare-research research registry-compare --left MY_SNAPSHOT_A.json --right MY_SNAPSHOT_B.json --summary --json
+```
+
+record 对按冻结字段划分输出身份（identity，22 个身份承载字段）、可变（mutable，仅
+`status` 与 `state_history`）与摘要（digest，`identity_digest`／`record_digest`）
+三类的变更计数与字段清单，并保留六个身份/摘要/状态等价性；snapshot 对输出
+added/removed/changed/unchanged 计数与 `ID@版本` 紧凑清单。摘要校验捕获报告必须满足
+冻结不变量（如身份类字段变化与 `identity_digest` 一致、记录计数与变更清单相符），
+违反时以 `REGISTRY_COMPARISON_SUMMARY_MISMATCH` fail-closed。摘要不判断哪一侧正确，
+不构成证据、研究结论或执行授权；省略 `--summary` 时原有 JSON 与默认 Markdown 输出
+保持不变。
+
+一条显式规范记录也可以直接核对是否已登记在某个显式规范快照中，不写入、不修复、不提升：
+
+```powershell
+ashare-research research registry-membership --record MY_RECORD.json --snapshot MY_SNAPSHOT.json
+ashare-research research registry-membership --record MY_RECORD.json --snapshot MY_SNAPSHOT.json --json
+```
+
+两侧文件各自经与 `research registry` 相同的严格字节解码与冻结入口复核，单侧失败保持
+既有稳定错误码。接受时输出 `m4_registry_snapshot_membership_v1`，只回答机械成员关系：
+快照中是否存在同 `(hypothesis_id, hypothesis_version)` 的登记项，以及该登记项的规范记录
+字节是否与显式记录一致。三种状态为 `registered_identical`（已登记且规范字节一致）、
+`registered_different`（同键但字节不同，附按字段排序的机械差异与身份/摘要/状态等价性）
+与 `not_registered`（键不存在，附该假设 ID 在快照中的版本清单）；键不存在时所有等价性
+布尔一律为 false，不代表任何一侧有误。检查只做只读机械判断，不判断哪一侧正确，不构成
+证据、研究结论或执行授权；不加载默认或真实候选数据集，不访问数据库、provider、网络或
+holdout。失败同样以退出码 2、空 stdout 与 `error: CODE` 净化收尾。
+
+已复核计划可与显式虚构输入一起做数据及矩阵准备检查：
+
+```powershell
+ashare-research research prepare --package new-plan-package --inputs docs/examples/m4_bound_inputs.json
+ashare-research research prepare --archive new-plan.zip --inputs docs/examples/m4_bound_inputs.json --json
+ashare-research research prepare --archive new-plan.zip --inputs MY_INPUTS.json --summary --role FACTOR --gaps-only
+```
+
+`--summary` 提供质量诊断速览，可用重复的 `--role` 选择角色，并用 `--gaps-only`
+只展示所选角色的无效单元及原始原因、日期和证据引用。角色计数始终覆盖全部审计日期，
+全局覆盖分母、拒绝日期、准备状态和摘要保持原样；已知角色没有缺口会明确提示。
+这些筛选只能与 `--summary` 合用。速览不显示观测值或矩阵单元，也不计算统计结果；
+省略新参数仍输出完整的原准备报告。
+
+两份显式合成输入可在同一复核计划下对比：
+
+```powershell
+ashare-research research prepare-compare --archive new-plan.zip --left-inputs BEFORE.json --right-inputs AFTER.json --json
+```
+
+对比保留双方原始质量和摘要，按日期、角色展示有效性及原诊断引用变化，
+区分输入字节相同与绑定输入等价，不显示观测值或计算统计效果。
+计划、声明样本域及审计日期必须一致；改变覆盖分母或样本域会拒绝对比。
+每个不同输入独立复核计划并准备数据，因此跨读取的计划变化也会拒绝；
+同一路径仅使用一次载入的报告。对比不修改输入或修补摘要，也不授权真实研究。
+
+对比也可只附加角色速览：
+
+```powershell
+ashare-research research prepare-compare --archive new-plan.zip --left-inputs BEFORE.json --right-inputs AFTER.json --summary --role FACTOR --json
+```
+
+速览在完整对比后用同一次捕获的报告汇总每个角色的审计日期、修改前后有效／无效单元
+和有效性变更计数，并只展示所选角色的原诊断变更；重复的 `--role` 按原角色顺序去重。
+全局审计计数、双方质量、身份、边界及输入分类保持原样，筛选只影响展示的明细。
+所选角色没有变化时明确提示；未知角色在完整对比后拒绝，非法参数和角色格式在读取前拒绝。
+速览不重新读取计划或输入、不修补摘要、不显示观测值或矩阵单元。省略参数时
+原有 JSON 与默认 Markdown 输出保持不变。
+
+准备结果也可保存为独立目录交付：
+
+```powershell
+ashare-research research prepare-package --package new-plan-package --inputs MY_INPUTS.json --output new-preparation --json
+ashare-research research prepare-package --verify new-preparation --json
+```
+
+交付包含原计划包的四个文件副本、原输入字节、完整准备与诊断的 JSON/Markdown、
+以及内容清单，共十个固定文件。复核从保存的计划和输入重新生成所有文件并逐字节比较，
+因此修改报告后重写清单哈希仍不能通过。质量拒绝同样可以交付和复核。
+计划来源可为目录或原生 ZIP；输出父目录须存在，目标必须是新目录，
+且不能位于原计划包内，不覆盖或删除文件。
+读写拒绝链接和 Windows reparse 路径；失败留下已创建的部分目录供检查。
+源假设和输入各限 1 MiB，其他单文件限 16 MiB，总包限 64 MiB。
+复算一致性不证明来源、历史封存、可估计或研究就绪，也不执行统计。
+
+已交付目录可打包成单个原生 ZIP，并直接复核：
+
+```powershell
+ashare-research research prepare-package --archive new-preparation --output new-preparation.zip --json
+ashare-research research prepare-package --verify-archive new-preparation.zip --json
+```
+
+ZIP 保留同样十个文件，固定排序、时间戳和属性，使用未压缩格式；复核在内存中
+调用与目录完全相同的逐文件复算，不解压、不创建临时目录。
+本入口只支持自身生成的原生布局，拒绝压缩、加密、ZIP64、额外成员和非规范布局；
+总内容仍限 64 MiB，ZIP 大小另加固定头部开销。输出必须是新文件，
+不得位于原准备目录内。失败保留部分输出，文件摘要不构成独立封存或来源证明。
+
+也可从计划和显式合成输入直接生成准备 ZIP，无需先创建准备目录：
+
+```powershell
+ashare-research research prepare-package --package new-plan-package --inputs MY_INPUTS.json --output-archive new-preparation.zip --json
+ashare-research research prepare-package --plan-archive new-plan.zip --inputs MY_INPUTS.json --output-archive new-preparation.zip --json
+ashare-research research prepare-package --plan-archive new-plan.zip --inputs MY_INPUTS.json --output new-preparation --json
+```
+
+每份原计划文件或计划 ZIP 只读取一次，完整复核计划后才读取输入。
+直接 ZIP 与原“目录交付后打包”保留相同十个文件和确定字节；
+不解压、不创建中间目录。`--output` 与 `--output-archive` 互斥，
+已有路径、链接路径及目录计划包内的输出仍会拒绝，失败保留部分输出供检查。
+
+接收方可直接对比两份准备交付包，目录和原生 ZIP 可混用：
+
+```powershell
+ashare-research research prepare-delivery-compare --left before-preparation --right-archive after-preparation.zip --json
+```
+
+两边先分别完整复算，再调用与 `prepare-compare` 相同的诊断对比；计划、声明样本域、
+日期及角色顺序必须一致。保留双方质量、身份和审计单元变化，不显示观测值或统计效果。
+无需另行提供计划或输入文件，不解压、不创建临时目录，也不修改交付包。
+任一包损坏或复算不一致即拒绝比较；相同路径与格式只使用一次复核的报告。
+有效性变化仅描述合成审计事实，不代表来源、真实研究就绪或执行授权。
+
+交付包对比同样支持 `--summary`（可用重复的 `--role` 按原角色顺序筛选）：
+
+```powershell
+ashare-research research prepare-delivery-compare --left before-preparation --right-archive after-preparation.zip --summary --role TARGET_OUTCOME --json
+```
+
+两侧先各自完整复核一次，速览只是该次复核结果的角色投影；不重新读取或解压、
+不修改交付包，全局计数、质量、身份、边界和输入分类保持原样，
+所选角色没有变化时明确提示。省略参数时原有 JSON 与默认 Markdown 输出保持不变。
+
+接收方也可从交付目录或 ZIP 直接阅读原质量诊断，按角色查看缺口：
+
+```powershell
+ashare-research research prepare-package --verify new-preparation --summary --json
+ashare-research research prepare-package --verify-archive new-preparation.zip --summary --role TARGET_OUTCOME --gaps-only
+```
+
+两种入口都先完整复算全部十个文件，再使用与 `prepare --summary` 相同的诊断视图。
+重复的 `--role` 按原角色顺序去重；`--gaps-only` 只筛选展示明细，角色计数仍覆盖
+全部原审计日期，原质量状态、覆盖分母和摘要不变。所选角色没有缺口时会明确提示，
+即使其他角色仍导致全局质量拒绝。筛选不会跳过未展示内容的复核。
+这些参数仅用于复核，角色和缺口筛选须配合 `--summary`；
+不解压、不读取外部输入、不修改交付包，也不显示观测值或执行统计。
+未加这些参数时原复核输出保持不变。
+
+[输入示例](docs/examples/m4_bound_inputs.json) 绑定上述示范假设，包含四个显式虚构日期，
+不是真实交易日历。输入沿用现有 `BoundDatasetInputsV1`：日历、成员、角色、观测与
+摘要必须显式提供并相互一致；修改假设或数据后应通过既有 API 重新绑定摘要，工具不会修补。
+仅读取显式 UTF-8 JSON（最多 1MiB），不获取数据、不写文件。输出完整质量诊断和矩阵；
+质量拒绝保留缺口且矩阵为 `null`。退出码 0 只表示诊断生成，`READY_SYNTHETIC` 不代表
+可估计或执行授权。检查仅读取显式提供的合成观测，不运行回归、秩检查、bootstrap 或 holdout，
+也不把合成模式或摘要解释为真实来源证据。
 
 准备多个假设的数据需求清单：
 
@@ -82,6 +352,7 @@ JSON 还保留每份完整原始编译结果及源文件 SHA256。
 原始合成身份词汇及执行边界保持不变，不联网、不获取数据、不运行统计。
 总输出最多 8MiB；任一假设无效、ID 重复、数量或输出超限都会以退出码 2
 失败，stdout 为空，不输出部分清单。
+
 
 ## M4 离线进度检查（只读，无网络）
 
