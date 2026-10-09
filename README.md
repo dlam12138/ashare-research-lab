@@ -348,6 +348,25 @@ ashare-research research hypothesis-diff --left BEFORE.json --right AFTER.json -
 Markdown 显示差异和源文件、合同、计划摘要。比较仍限定既有合成身份词汇，
 不解释哪份配置更好，不验证证据或授权执行；任一侧无效则退出码 2，stdout 为空。
 
+准备多个假设的数据需求清单：
+
+```powershell
+ashare-research research plan-batch --hypothesis FIRST.json --hypothesis SECOND.json
+ashare-research research plan-batch --hypothesis FIRST.json --hypothesis SECOND.json --json
+```
+
+一次接受 1–16 份原始假设，每份仍由原入口读取并编译一次；假设 ID 不可重复。
+清单按假设 ID 和声明的序列 ID 稳定排序，汇总序列名称重叠与角色之外的声明差异，
+并为每次使用保留原始需求、索引、计划摘要、完整样本窗口/质量门槛和总体成员要求。
+Markdown 展示原始摘要、角色、序列、转换、时序及各计划的窗口与门槛；
+JSON 还保留每份完整原始编译结果及源文件 SHA256。
+
+同名序列只是声明重叠，不证明真实来源相同、数据可互换或已经满足 PIT 要求。
+工具不合并窗口、门槛或身份，也不判定兼容性、研究就绪或执行资格。
+原始合成身份词汇及执行边界保持不变，不联网、不获取数据、不运行统计。
+总输出最多 8MiB；任一假设无效、ID 重复、数量或输出超限都会以退出码 2
+失败，stdout 为空，不输出部分清单。
+
 
 ## M4 离线进度检查（只读，无网络）
 
