@@ -96,9 +96,10 @@ COMMANDS: tuple[ResearchCommand, ...] = (
     ResearchCommand(
         "registry",
         "ashare_research.tools.research_registry",
-        "只读复核显式 M4-B 规范记录或 registry 快照（不写入）",
+        "只读复核显式 M4-B 规范记录、registry 快照或状态转换预检（不写入）",
         ("--record JSON [--json]（复算记录规范字节、身份摘要、记录摘要与状态历史）",
-         "--snapshot JSON [--json]（复算快照记录、计数、规范顺序与 registry 摘要）"),
+         "--snapshot JSON [--json]（复算快照记录、计数、规范顺序与 registry 摘要）",
+         "--record JSON --transition REQUEST.json [--json]（只读预检，不产生记录）"),
     ),
     ResearchCommand(
         "trace",

@@ -1,13 +1,14 @@
-"""只读复核显式给出的 M4-B 规范记录或 registry 快照。
+"""只读复核显式给出的 M4-B 规范记录、registry 快照或状态转换请求。
 
     ashare-research research registry --record JSON | --snapshot JSON [--json]
+    ashare-research research registry --record JSON --transition REQUEST.json [--json]
 
-本模块只读取调用者显式给出的单个文件（最多 1MiB），并用冻结的 13 个注册表入口
-重新解析与复算；默认输出紧凑中文 Markdown 视图，``--json`` 输出有界机器视图。
-工具不写入任何 registry 状态、不加载默认或真实候选数据集、不修复摘要、不提升
-状态，也不访问数据库、provider、网络或 holdout。冻结的 ``mechanism/registry``
-公开面保持不变：全部 registry 语义校验仍由该包完成，本模块只做严格字节解码、
-只读投影与渲染。
+本模块只读取调用者显式给出的单个或两个文件（各最多 1MiB），并用冻结的 13 个注册表
+入口重新解析与复算；默认输出紧凑中文 Markdown 视图，``--json`` 输出有界机器视图。
+状态转换预检只调用冻结的 ``validate_state_transition``：不产生新记录、不写入、不
+提升状态。工具不加载默认或真实候选数据集、不修复摘要，也不访问数据库、provider、
+网络或 holdout。冻结的 ``mechanism/registry`` 公开面保持不变：全部 registry 语义
+校验仍由该包完成，本模块只做严格字节解码、只读投影与渲染。
 """
 
 from __future__ import annotations
@@ -30,6 +31,7 @@ from ashare_research.mechanism.registry import (
     SNAPSHOT_SCHEMA_VERSION,
     HypothesisRecordV1,
     RegistryError,
+    StateTransitionRequestV1,
     build_hypothesis_registry_snapshot,
     hypothesis_record_digest,
     hypothesis_record_identity_digest,
@@ -37,14 +39,18 @@ from ashare_research.mechanism.registry import (
     parse_hypothesis_record,
     serialize_hypothesis_record,
     serialize_hypothesis_registry_snapshot,
+    validate_state_transition,
 )
 
 _CONTAINER_FIELDS = tuple(
     item.name for item in fields(HypothesisRecordV1) if str(item.type).startswith("tuple[")
 )
+REQUEST_FIELDS = tuple(item.name for item in fields(StateTransitionRequestV1))
 SCHEMA_RECORD_VIEW = "m4_registry_record_view_v1"
 SCHEMA_SNAPSHOT_VIEW = "m4_registry_snapshot_view_v1"
+SCHEMA_TRANSITION_PREFLIGHT = "m4_registry_transition_preflight_v1"
 VIEW_STATUS = "validated_metadata_only"
+PREFLIGHT_STATUS = "accepted_preflight_only"
 MAX_INPUT_BYTES = 1_048_576
 SNAPSHOT_FIELDS = (
     "registry_schema_version",
@@ -72,6 +78,11 @@ COMMON_NOTES = (
     "本视图只读：不写入、不修正、不提升状态，也不加载默认或真实候选数据集。",
     "DISCOVERED／LITERATURE_REVIEWED 等来源状态与 registry 元数据不是证据，"
     "也不构成研究结论或执行授权。",
+)
+PREFLIGHT_NOTES = (
+    "预检只调用冻结状态机校验：不产生新记录、不写入、不提升任何状态。",
+    "校验通过只表示请求满足冻结转换前置条件；authorization_ref 仅按标识符检查，"
+    "工具不核实授权合同是否存在或已生效。",
 )
 
 
@@ -273,6 +284,55 @@ def build_snapshot_view(payload: bytes) -> dict[str, Any]:
     }
 
 
+def build_transition_preflight(record_payload: bytes, request_payload: bytes) -> dict[str, Any]:
+    """Check one explicit transition request through the frozen state machine."""
+    record = _record_from_bytes(record_payload)
+    request = strict_json_document(request_payload)
+    validate_state_transition(record, request)
+    if request_payload != _canonical_bytes(request):
+        raise RegistryError("NON_CANONICAL_SERIALIZATION")
+    request_view = {name: request[name] for name in REQUEST_FIELDS}
+    return {
+        "schema": SCHEMA_TRANSITION_PREFLIGHT,
+        "status": PREFLIGHT_STATUS,
+        "source_file_sha256": _sha256(record_payload),
+        "request_file_sha256": _sha256(request_payload),
+        "record": {
+            "hypothesis_id": record.hypothesis_id,
+            "hypothesis_version": record.hypothesis_version,
+            "status": record.status,
+            "identity_digest": record.identity_digest,
+            "record_digest": record.record_digest,
+            "state_count": len(record.state_history),
+        },
+        "request": request_view,
+        "result": {
+            "accepted": True,
+            "would_be_ordinal": len(record.state_history) + 1,
+            "would_be_status": request_view["to_state"],
+        },
+        "boundary": dict(BOUNDARY),
+        "notes": [*PREFLIGHT_NOTES, *COMMON_NOTES],
+    }
+
+
+def render_transition_markdown(preflight: dict[str, Any]) -> str:
+    lines = [
+        "# M4-B 状态转换只读预检",
+        "",
+        "记录与转换请求已按冻结入口复核；预检不产生新记录、不写入、不提升状态。",
+    ]
+    for title, value in (
+        ("记录身份", preflight["record"]),
+        ("转换请求", preflight["request"]),
+        ("预检结果", preflight["result"]),
+        ("执行边界", preflight["boundary"]),
+    ):
+        lines.extend(["", f"## {title}", "", "```json", _json(value), "```"])
+    lines.extend(["", "## 限制", "", *(f"- {note}" for note in preflight["notes"])])
+    return "\n".join(lines) + "\n"
+
+
 def _json(value: Any) -> str:
     return json.dumps(value, ensure_ascii=False, sort_keys=True, indent=2, allow_nan=False)
 
@@ -373,17 +433,27 @@ class _Parser(argparse.ArgumentParser):
 
 def main(argv: list[str] | None = None) -> int:
     parser = _Parser(
-        description="只读复核显式 M4-B 规范记录或 registry 快照", allow_abbrev=False,
+        description="只读复核显式 M4-B 规范记录、registry 快照或状态转换请求",
+        allow_abbrev=False,
     )
     source = parser.add_mutually_exclusive_group(required=True)
     source.add_argument("--record", metavar="JSON")
     source.add_argument("--snapshot", metavar="JSON")
+    parser.add_argument("--transition", metavar="JSON")
     parser.add_argument("--json", action="store_true")
     try:
         args = parser.parse_args(argv)
+        if args.snapshot is not None and args.transition is not None:
+            raise RegistryViewError("INVALID_ARGUMENTS")
         if args.record is not None:
-            view = build_record_view(read_registry_bytes(Path(args.record)))
-            text = _json(view) + "\n" if args.json else render_record_markdown(view)
+            payload = read_registry_bytes(Path(args.record))
+            if args.transition is not None:
+                request = read_registry_bytes(Path(args.transition))
+                view = build_transition_preflight(payload, request)
+                text = _json(view) + "\n" if args.json else render_transition_markdown(view)
+            else:
+                view = build_record_view(payload)
+                text = _json(view) + "\n" if args.json else render_record_markdown(view)
         else:
             view = build_snapshot_view(read_registry_bytes(Path(args.snapshot)))
             text = _json(view) + "\n" if args.json else render_snapshot_markdown(view)

@@ -143,6 +143,21 @@ ashare-research research registry --snapshot MY_SNAPSHOT.json --json
 默认或真实候选数据集；`DISCOVERED`、`LITERATURE_REVIEWED` 等来源状态与 registry
 元数据不是证据，也不构成研究结论或执行授权。
 
+状态转换可以在不产生记录的前提下先做只读预检：
+
+```powershell
+ashare-research research registry --record MY_RECORD.json --transition MY_REQUEST.json --json
+```
+
+请求是显式 `StateTransitionRequestV1` 规范 JSON（同一套严格字节规则，七个字段齐全）；
+预检只调用冻结状态机校验：接受时输出 `m4_registry_transition_preflight_v1` 回执
+（记录身份、请求回显、`would_be_status`／`would_be_ordinal` 与全 false 执行边界），
+拒绝时以稳定错误码 fail-closed（如 `ILLEGAL_STATE_TRANSITION`、
+`MISSING_AUTHORIZATION_REF`、`TERMINAL_STATE_HAS_NO_OUTGOING_TRANSITION`）。
+预检不产生、不写入、不提升任何记录；校验通过只说明请求满足冻结转换前置条件，
+`authorization_ref` 仅按标识符检查，授权合同是否真实存在或已生效由工具之外核实，
+预检也不构成执行或研究结论。
+
 已复核计划可与显式虚构输入一起做数据及矩阵准备检查：
 
 ```powershell
