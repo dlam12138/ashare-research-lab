@@ -94,6 +94,13 @@ COMMANDS: tuple[ResearchCommand, ...] = (
          "robustness|evidence|holdout"),
     ),
     ResearchCommand(
+        "registry",
+        "ashare_research.tools.research_registry",
+        "只读复核显式 M4-B 规范记录或 registry 快照（不写入）",
+        ("--record JSON [--json]（复算记录规范字节、身份摘要、记录摘要与状态历史）",
+         "--snapshot JSON [--json]（复算快照记录、计数、规范顺序与 registry 摘要）"),
+    ),
+    ResearchCommand(
         "trace",
         "ashare_research.tools.metric_evidence_trace",
         "追溯指标输入，或按事实 ID 反查指标及直接父引用",
