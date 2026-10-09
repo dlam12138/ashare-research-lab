@@ -108,6 +108,12 @@ COMMANDS: tuple[ResearchCommand, ...] = (
          "--record JSON --transition REQUEST.json [--json]（只读预检，不产生记录）"),
     ),
     ResearchCommand(
+        "registry-membership",
+        "ashare_research.tools.research_registry_membership",
+        "只读检查一条记录是否已登记在 registry 快照中（不写入）",
+        ("--record JSON --snapshot JSON [--json]（同键登记项与规范字节机械核对）",),
+    ),
+    ResearchCommand(
         "trace",
         "ashare_research.tools.metric_evidence_trace",
         "追溯指标输入，或按事实 ID 反查指标及直接父引用",
