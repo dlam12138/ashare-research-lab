@@ -158,6 +158,22 @@ ashare-research research registry --record MY_RECORD.json --transition MY_REQUES
 `authorization_ref` 仅按标识符检查，授权合同是否真实存在或已生效由工具之外核实，
 预检也不构成执行或研究结论。
 
+两个显式规范产物也可以直接做只读比较（record 对 record、snapshot 对 snapshot），不写入、不合并：
+
+```powershell
+ashare-research research registry-compare --left MY_RECORD.json --right MY_RECORD_V2.json
+ashare-research research registry-compare --left MY_RECORD.json --right MY_RECORD_V2.json --json
+ashare-research research registry-compare --left MY_SNAPSHOT_A.json --right MY_SNAPSHOT_B.json --json
+```
+
+两侧文件各自经与 `research registry` 相同的严格字节解码与冻结入口复核，按冻结
+snapshot 顶层键判定 record/snapshot 并用既有视图入口复核；单侧失败保持既有稳定
+错误码，两侧类型不同以 `INCOMPARABLE_ARTIFACT_KINDS` 拒绝。接受时输出
+`m4_registry_comparison_v1`：record 对输出逐字段差异与身份/记录摘要、状态、状态数
+等价性；snapshot 对输出 registry 摘要与计数等价性及 added/removed/changed/unchanged
+记录清单。比较只描述机械差异，不判断哪一侧正确，也不构成证据、研究结论或执行
+授权；失败同样以退出码 2、空 stdout 与 `error: CODE` 净化收尾。
+
 已复核计划可与显式虚构输入一起做数据及矩阵准备检查：
 
 ```powershell
