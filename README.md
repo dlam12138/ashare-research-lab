@@ -334,6 +334,20 @@ ashare-research research prepare-package --verify-archive new-preparation.zip --
 可估计或执行授权。检查仅读取显式提供的合成观测，不运行回归、秩检查、bootstrap 或 holdout，
 也不把合成模式或摘要解释为真实来源证据。
 
+比较修改前后的两份假设配置：
+
+```powershell
+ashare-research research hypothesis-diff --left BEFORE.json --right AFTER.json
+ashare-research research hypothesis-diff --left BEFORE.json --right AFTER.json --json
+```
+
+两侧各用原入口读取并编译一次。比较区分源文件字节变化与规范配置、合同、计划变化；
+仅调整 JSON 排版不会产生规范内容差异。差异行使用 JSON pointer 路径，显示增加、
+删除或值变化，有序列表按完整值比较，缺失字段与显式 null 分开表示。
+派生摘要保留在两侧完整原始结果中，不重复列为内容差异。JSON 提供完整两侧信封，
+Markdown 显示差异和源文件、合同、计划摘要。比较仍限定既有合成身份词汇，
+不解释哪份配置更好，不验证证据或授权执行；任一侧无效则退出码 2，stdout 为空。
+
 准备多个假设的数据需求清单：
 
 ```powershell
