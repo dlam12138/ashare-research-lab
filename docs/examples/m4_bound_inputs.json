@@ -1,0 +1,220 @@
+{
+  "schema_version": "M4_BOUND_SYNTHETIC_DATASET_V1",
+  "mode": "SYNTHETIC",
+  "source_contract_digest": "56e914cf9afef8af935c2553e242dc2c0c888d537c5494dabb05eb094a1c4610",
+  "plan_digest": "c73268f7b63a24f300aec8e5fd3f20adbe3fc1031b85acebe3835148964c3267",
+  "domain": {
+    "domain_id": "INVENTED_FOUR_DATE_DOMAIN",
+    "universe_id": "SYNTH_UNIVERSE_A",
+    "membership_policy": "SYNTHETIC_FIXED_UNIVERSE",
+    "pit_policy": "EXPLICIT_PIT",
+    "target_series_id": "SYNTH_TARGET_A",
+    "identity_policy": "SYNTHETIC_FIXED_IDENTITY",
+    "development_start": "2020-01-01",
+    "development_end": "2022-12-31",
+    "expected_dates": [
+      "2020-01-02",
+      "2020-01-03",
+      "2020-01-06",
+      "2020-01-07"
+    ],
+    "calendar_evidence": {
+      "evidence_kind": "SYNTHETIC_CALENDAR_V1",
+      "domain_id": "INVENTED_FOUR_DATE_DOMAIN",
+      "development_start": "2020-01-01",
+      "development_end": "2022-12-31",
+      "expected_dates": [
+        "2020-01-02",
+        "2020-01-03",
+        "2020-01-06",
+        "2020-01-07"
+      ],
+      "evidence_digest": "372928d317daa317c94c3744243b489c0fff17884dbd0c6908c86e1e842ed7b0"
+    },
+    "membership_evidence": {
+      "evidence_kind": "SYNTHETIC_FIXED_MEMBERSHIP_V1",
+      "universe_id": "SYNTH_UNIVERSE_A",
+      "target_series_id": "SYNTH_TARGET_A",
+      "expected_dates": [
+        "2020-01-02",
+        "2020-01-03",
+        "2020-01-06",
+        "2020-01-07"
+      ],
+      "evidence_digest": "2d9d4bd4e23785dbadb75aef589e4aba24a73b1913a2528194dda5bca0673a68"
+    }
+  },
+  "bindings": [
+    {
+      "role": "TARGET_OUTCOME",
+      "series_id": "SYNTH_TARGET_A",
+      "value_semantics": "DAILY_RETURN",
+      "unit": "DECIMAL_RETURN",
+      "adjustment_policy": "SYNTHETIC_DECLARED_RETURN",
+      "outcome_id": "SYNTH_DAILY_RETURN",
+      "horizon": "1D",
+      "observation_timing": "CLOSE_TO_CLOSE"
+    },
+    {
+      "role": "FACTOR",
+      "series_id": "SYNTH_FACTOR_A",
+      "value_semantics": "DAILY_RETURN",
+      "unit": "DECIMAL_RETURN",
+      "adjustment_policy": "SYNTHETIC_DECLARED_RETURN",
+      "outcome_id": null,
+      "horizon": "1D",
+      "observation_timing": "CLOSE_TO_CLOSE"
+    },
+    {
+      "role": "CONTROL_0001",
+      "series_id": "SYNTH_CONTROL_1",
+      "value_semantics": "DAILY_RETURN",
+      "unit": "DECIMAL_RETURN",
+      "adjustment_policy": "SYNTHETIC_DECLARED_RETURN",
+      "outcome_id": null,
+      "horizon": "1D",
+      "observation_timing": "CLOSE_TO_CLOSE"
+    },
+    {
+      "role": "CONTROL_0002",
+      "series_id": "SYNTH_CONTROL_2",
+      "value_semantics": "DAILY_RETURN",
+      "unit": "DECIMAL_RETURN",
+      "adjustment_policy": "SYNTHETIC_DECLARED_RETURN",
+      "outcome_id": null,
+      "horizon": "1D",
+      "observation_timing": "CLOSE_TO_CLOSE"
+    }
+  ],
+  "observations": [
+    {
+      "role": "TARGET_OUTCOME",
+      "trade_date": "2020-01-02",
+      "value": "0.01",
+      "available_on": "2020-01-02",
+      "source_record_id": "INVENTED_TARGET_OUTCOME_2020-01-02",
+      "evidence_digest": "2da138db9992a9ae755d2af13bdd2e612dee9daa005e6ee7808efdcdfb8d68c0"
+    },
+    {
+      "role": "FACTOR",
+      "trade_date": "2020-01-02",
+      "value": "-0.02",
+      "available_on": "2020-01-02",
+      "source_record_id": "INVENTED_FACTOR_2020-01-02",
+      "evidence_digest": "766631e5e00d483f90112605bf97ee31ed65cb31c5c2fb05118539e4b4aa6338"
+    },
+    {
+      "role": "CONTROL_0001",
+      "trade_date": "2020-01-02",
+      "value": "0",
+      "available_on": "2020-01-02",
+      "source_record_id": "INVENTED_CONTROL_0001_2020-01-02",
+      "evidence_digest": "7a1d39c2a34736b36f691e29ab39a8b97574047584b8fa24b6775379ebb944a5"
+    },
+    {
+      "role": "CONTROL_0002",
+      "trade_date": "2020-01-02",
+      "value": "0.03",
+      "available_on": "2020-01-02",
+      "source_record_id": "INVENTED_CONTROL_0002_2020-01-02",
+      "evidence_digest": "b9b9902cf4f646f5205b3f459ad9fc745f603f5e8bd67f72cc4df96a4fc4aa98"
+    },
+    {
+      "role": "TARGET_OUTCOME",
+      "trade_date": "2020-01-03",
+      "value": "-0.02",
+      "available_on": "2020-01-03",
+      "source_record_id": "INVENTED_TARGET_OUTCOME_2020-01-03",
+      "evidence_digest": "7ce08cb9228577fb32c356a8b70f40a73642721dbede87128af09fd22388863d"
+    },
+    {
+      "role": "FACTOR",
+      "trade_date": "2020-01-03",
+      "value": "0.01",
+      "available_on": "2020-01-03",
+      "source_record_id": "INVENTED_FACTOR_2020-01-03",
+      "evidence_digest": "ba795aa264f64895805d84c354bfad2fbcb619e9dc7e5eb6a381848223ccf54b"
+    },
+    {
+      "role": "CONTROL_0001",
+      "trade_date": "2020-01-03",
+      "value": "0.01",
+      "available_on": "2020-01-03",
+      "source_record_id": "INVENTED_CONTROL_0001_2020-01-03",
+      "evidence_digest": "1106e0623425da3585909294f3fd87d2f2ad5531dd33743a7d2ce3d19427b4a8"
+    },
+    {
+      "role": "CONTROL_0002",
+      "trade_date": "2020-01-03",
+      "value": "0.02",
+      "available_on": "2020-01-03",
+      "source_record_id": "INVENTED_CONTROL_0002_2020-01-03",
+      "evidence_digest": "7e49d608b9c7cb1d1d3756f8a3052cd86ea31d0674374672bd6036f9ab4b12cd"
+    },
+    {
+      "role": "TARGET_OUTCOME",
+      "trade_date": "2020-01-06",
+      "value": "0.03",
+      "available_on": "2020-01-06",
+      "source_record_id": "INVENTED_TARGET_OUTCOME_2020-01-06",
+      "evidence_digest": "ad3fb84c617d638201287b56dc74c79c6ad91dc07ae0c88f9ca1e6229245bd76"
+    },
+    {
+      "role": "FACTOR",
+      "trade_date": "2020-01-06",
+      "value": "-0.03",
+      "available_on": "2020-01-06",
+      "source_record_id": "INVENTED_FACTOR_2020-01-06",
+      "evidence_digest": "b7d18b27a67f73fba7950796dd925b7466d0db507b0184d05323875f11c1d696"
+    },
+    {
+      "role": "CONTROL_0001",
+      "trade_date": "2020-01-06",
+      "value": "0.02",
+      "available_on": "2020-01-06",
+      "source_record_id": "INVENTED_CONTROL_0001_2020-01-06",
+      "evidence_digest": "f9c404cb822923910cac82d6c51544186fea5024f182564e6ce49c6adb3c63ae"
+    },
+    {
+      "role": "CONTROL_0002",
+      "trade_date": "2020-01-06",
+      "value": "0.01",
+      "available_on": "2020-01-06",
+      "source_record_id": "INVENTED_CONTROL_0002_2020-01-06",
+      "evidence_digest": "a26da88ec7669fe9d11307b55e72165e80d708335f7af79648dcfd97d8ab1e0c"
+    },
+    {
+      "role": "TARGET_OUTCOME",
+      "trade_date": "2020-01-07",
+      "value": "0",
+      "available_on": "2020-01-07",
+      "source_record_id": "INVENTED_TARGET_OUTCOME_2020-01-07",
+      "evidence_digest": "861278c5e518415ec1b75fd5ba805dcd7f281650d691ffb13fff930a4e9c11f8"
+    },
+    {
+      "role": "FACTOR",
+      "trade_date": "2020-01-07",
+      "value": "0.02",
+      "available_on": "2020-01-07",
+      "source_record_id": "INVENTED_FACTOR_2020-01-07",
+      "evidence_digest": "871c942c1f5d5fb983cca7f8d98e4dcee5cc2d5966e77c496c12ebdcb1f8b757"
+    },
+    {
+      "role": "CONTROL_0001",
+      "trade_date": "2020-01-07",
+      "value": "0.03",
+      "available_on": "2020-01-07",
+      "source_record_id": "INVENTED_CONTROL_0001_2020-01-07",
+      "evidence_digest": "0e47aaab9a4216596d81692c1f4d0edc1dc781e014113731ae574615f0626e74"
+    },
+    {
+      "role": "CONTROL_0002",
+      "trade_date": "2020-01-07",
+      "value": "0",
+      "available_on": "2020-01-07",
+      "source_record_id": "INVENTED_CONTROL_0002_2020-01-07",
+      "evidence_digest": "98afdf913201ca0867cb1448ebd13048531d0ab350f1298fde6200b2c6123569"
+    }
+  ],
+  "input_digest": "dc89f5cc5dd538ddd99b7ab612506b61f38b000343276ef385eeb46c7b3e6283"
+}

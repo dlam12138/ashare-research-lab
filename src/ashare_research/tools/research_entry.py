@@ -43,11 +43,76 @@ class ResearchCommand:
 
 COMMANDS: tuple[ResearchCommand, ...] = (
     ResearchCommand(
+        "prepare-delivery-compare",
+        "ashare_research.tools.preparation_delivery_compare",
+        "完整复核两份准备目录或 ZIP，再对比同一计划与样本域的原质量诊断",
+        ("(--left DIR | --left-archive ZIP) (--right DIR | --right-archive ZIP) [--json]",
+         "对比可用 [--summary [--role ID（可重复）]]（完整复核后查看角色诊断变更）"),
+    ),
+    ResearchCommand(
+        "prepare-package",
+        "ashare_research.tools.preparation_package",
+        "交付原计划与合成输入准备结果，并从保存字节复算核对",
+        ("(--package PLAN_DIR | --plan-archive PLAN_ZIP) --inputs JSON\n"
+         "  (--output NEW_DIR | --output-archive NEW_ZIP) [--json]",
+         "--verify DIR [--json]（当前编译器与适配器复算，不授权统计执行）",
+         "--archive PREPARATION_DIR --output NEW_ZIP [--json]",
+         "--verify-archive ZIP [--json]（直接复核原生 ZIP，无需解压）",
+         "复核可用 [--summary [--role ID（可重复）] [--gaps-only]]（完整复算后查看原诊断）"),
+    ),
+    ResearchCommand(
+        "prepare-compare",
+        "ashare_research.tools.preparation_compare",
+        "对比同一计划及声明样本域下两份合成输入的原质量诊断",
+        ("(--package DIR | --archive ZIP) --left-inputs JSON --right-inputs JSON [--json]",
+         "对比可用 [--summary [--role ID（可重复）]]（完整复核后查看角色诊断变更）"),
+    ),
+    ResearchCommand(
+        "prepare",
+        "ashare_research.tools.synthetic_prepare",
+        "用显式合成输入检查数据质量并准备设计矩阵（不执行统计）",
+        ("(--package DIR | --archive ZIP) --inputs JSON [--json]",
+         "[--summary [--role ID（可重复）] [--gaps-only]]（按角色查看原质量诊断）"),
+    ),
+    ResearchCommand(
+        "plan-compare",
+        "ashare_research.tools.research_plan_compare",
+        "对比已复核研究计划的配置、合同与数据／方法要求（不执行）",
+        ("(--left DIR | --left-archive ZIP) (--right DIR | --right-archive ZIP) [--json]",
+         "对比可用 [--summary [--section config|contract|plan（可重复）]]（按分区查看变更）"),
+    ),
+    ResearchCommand(
         "plan",
         "ashare_research.tools.research_plan",
         "从显式假设配置编译冻结合同、分析计划和数据要求（不执行）",
-        ("--hypothesis JSON [--compare-with JSON] [--json]"
-         "（可比较修改前后；V1 合成身份，不授权真实执行）",),
+        ("--hypothesis JSON [--compare-with JSON] [--output NEW_DIR] [--json]"
+         "（可比较修改前后；V1 合成身份，不授权真实执行）",
+         "--verify DIR [--json]（重新编译并复核计划包，不验证独立封存）",
+         "--hypothesis JSON --archive NEW_ZIP [--json]（单文件 ZIP 交付）",
+         "--verify-archive ZIP [--json]（直接复核原生 ZIP，无需解压）",
+         "编译或复核可用 [--summary [--section ID（可重复）]]（投影本次捕获的计划视图）",
+         "  速览 ID：requirements|sample|condition|method|conditional|bootstrap|"
+         "robustness|evidence|holdout"),
+    ),
+    ResearchCommand(
+        "registry-compare",
+        "ashare_research.tools.research_registry_compare",
+        "只读比较两个显式 M4-B registry 产物（record 或 snapshot，不写入）",
+        ("--left JSON --right JSON [--summary] [--json]（机械差异或类别摘要，不判断对错）",),
+    ),
+    ResearchCommand(
+        "registry",
+        "ashare_research.tools.research_registry",
+        "只读复核显式 M4-B 规范记录、registry 快照或状态转换预检（不写入）",
+        ("--record JSON [--json]（复算记录规范字节、身份摘要、记录摘要与状态历史）",
+         "--snapshot JSON [--json]（复算快照记录、计数、规范顺序与 registry 摘要）",
+         "--record JSON --transition REQUEST.json [--json]（只读预检，不产生记录）"),
+    ),
+    ResearchCommand(
+        "registry-membership",
+        "ashare_research.tools.research_registry_membership",
+        "只读检查一条记录是否已登记在 registry 快照中（不写入）",
+        ("--record JSON --snapshot JSON [--json]（同键登记项与规范字节机械核对）",),
     ),
     ResearchCommand(
         "trace",
