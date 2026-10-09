@@ -43,6 +43,18 @@ class ResearchCommand:
 
 COMMANDS: tuple[ResearchCommand, ...] = (
     ResearchCommand(
+        "hypothesis-diff",
+        "ashare_research.tools.research_hypothesis_compare",
+        "比较两份假设配置及其原始冻结合同、分析计划（不执行）",
+        ("--left JSON --right JSON [--json]（区分源文件字节与规范内容变化）",),
+    ),
+    ResearchCommand(
+        "plan-batch",
+        "ashare_research.tools.research_hypothesis_batch",
+        "编译多份假设并汇总各计划声明的数据需求（不执行、不判定可复用性）",
+        ("--hypothesis JSON（可重复，1–16 份，ID 不可重复）[--json]",),
+    ),
+    ResearchCommand(
         "prepare-delivery-compare",
         "ashare_research.tools.preparation_delivery_compare",
         "完整复核两份准备目录或 ZIP，再对比同一计划与样本域的原质量诊断",
