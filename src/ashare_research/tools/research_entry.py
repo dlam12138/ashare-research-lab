@@ -5,6 +5,7 @@
     ashare-research research report   固定来源价值研究包 (value_research_bundle)
     ashare-research research facts    指定时点财务事实浏览器 (pit_fact_explorer)
     ashare-research research metrics  既有指标 PIT 重放 (pit_metric_replay)
+    ashare-research research financial 显式只读数据库的公司多年核心财务分析 (financial_analysis)
     ashare-research research demo     冻结的合成机制演示 (synthetic_demo)
     ashare-research research session  完整研究档案及复核 (research_session)
 
@@ -16,6 +17,8 @@
 ``--config``/``--debug`` 对离线入口没有任何作用，因此与 research 组合时一律以退出码 2
 拒绝，而不是静默忽略。
 """
+
+# AI provenance: action=modified; model=GPT-5; agent=Codex; date=2026-10-10
 
 from __future__ import annotations
 
@@ -213,6 +216,15 @@ COMMANDS: tuple[ResearchCommand, ...] = (
         "ashare_research.tools.value_research_bundle",
         "固定来源价值研究包",
         ("--json | --output NEW_DIR | --verify DIR",),
+    ),
+    ResearchCommand(
+        "financial",
+        "ashare_research.tools.financial_analysis",
+        "显式只读数据库上的任意公司多年 PIT 核心财务分析（既有 12 个指标）",
+        (
+            "--database PATH --symbol SYMBOL --as-of DATE --year YEAR（可重复）[--json]",
+            "[--compare-with / --metric / --scope / --output NEW_DIR] 可选",
+        ),
     ),
     ResearchCommand(
         "facts",
