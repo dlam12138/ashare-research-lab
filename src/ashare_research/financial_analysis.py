@@ -1,6 +1,8 @@
 """任意标的多年度 PIT 核心财务分析（显式只读事实数据库）。
 
 # AI provenance: action=created; model=GPT-5; agent=Codex; date=2026-10-10
+# AI provenance: action=modified; model=GPT-5; agent=Codex; date=2026-10-10
+# AI provenance: action=modified; model=GPT-5; agent=Codex; date=2026-10-10
 
 调用者显式指定只读 DuckDB 事实数据库、标的、as-of 时点、有界年度窗口与合并范围口径；
 先用公开 PIT 门禁（``AsOfQuery.get_latest_available``）选出每个事实键在时点的最新可得
@@ -327,7 +329,7 @@ def _load_contexts(
     placeholders = ", ".join(["?"] * len(context_ids))
     rows = _read_frame(
         store,
-        "SELECT context_id, fiscal_year, period_type, period_start, period_end, "
+        "SELECT context_id, symbol, fiscal_year, period_type, period_start, period_end, "
         "instant_or_duration, consolidation_scope, accounting_standard, "
         "restatement_version, source_document, filing_date "
         f"FROM fact_contexts WHERE context_id IN ({placeholders})",
@@ -420,11 +422,36 @@ def _classification(
     return (not reasons, integer, reasons)
 
 
+def _context_matches_fact(
+    row: dict[str, Any], context: dict[str, Any], *, year: int, scope: str
+) -> bool:
+    expected_type = _expected_period_type(str(row.get("concept_id") or ""))
+    expected_end = f"{year}-12-31"
+    expected_starts = ("", expected_end) if expected_type == "instant" else (f"{year}-01-01",)
+    return (
+        context.get("symbol") == row.get("symbol")
+        and context.get("fiscal_year") == year
+        and context.get("consolidation_scope") == scope
+        and context.get("period_type") == expected_type
+        and row.get("period_end") == expected_end
+        and context.get("period_end") == expected_end
+        and str(context.get("period_start") or "") in expected_starts
+        and context.get("instant_or_duration")
+        == ("instant" if expected_type == "instant" else "duration")
+    )
+
+
 def _enrich_row(
     row: dict[str, Any], *, date: str, scope: str, contexts: dict[str, dict[str, Any]]
 ) -> dict[str, Any]:
     context = contexts.get(str(row.get("context_id") or ""))
     compatible, integer, reasons = _classification(row, context)
+    stored_value = row.get("value")
+    reported_value = (
+        float(stored_value)
+        if isinstance(stored_value, (int, float)) and math.isfinite(stored_value)
+        else None
+    )
     year = _fiscal_year(row.get("period_end"))
     period_type = str(context.get("period_type") or "") if context else ""
     if year is None:
@@ -433,7 +460,7 @@ def _enrich_row(
     if (
         context is not None
         and year is not None
-        and period_type != _expected_period_type(str(row.get("concept_id") or ""))
+        and not _context_matches_fact(row, context, year=year, scope=scope)
     ):
         reasons = [*reasons, EXCLUDE_PERIOD_CONTEXT_MISMATCH]
         compatible = False
@@ -444,7 +471,7 @@ def _enrich_row(
         "fiscal_year": year,
         "period_type": period_type,
         "consolidation_scope": scope,
-        "value": float(row["value"]) if isinstance(row.get("value"), (int, float)) else None,
+        "value": reported_value,
         "value_integer": integer,
         "unit": str(row.get("unit") or ""),
         "raw_unit": str(row.get("raw_unit") or ""),
@@ -934,7 +961,12 @@ def build_report(
 
 
 def render_json(report: dict[str, Any]) -> str:
-    return json.dumps(report, ensure_ascii=False, sort_keys=True, indent=2, default=str) + "\n"
+    return (
+        json.dumps(
+            report, ensure_ascii=False, sort_keys=True, indent=2, default=str, allow_nan=False
+        )
+        + "\n"
+    )
 
 
 def _table(header: tuple[str, ...], rows: list[tuple[str, ...]]) -> list[str]:

@@ -1,4 +1,6 @@
 <!-- AI provenance: action=created; model=GPT-5; agent=Codex; date=2026-10-10 -->
+<!-- AI provenance: action=modified; model=GPT-5; agent=Codex; date=2026-10-10 -->
+<!-- AI provenance: action=modified; model=GPT-5; agent=Codex; date=2026-10-10 -->
 
 # 任意标的多年度核心财务分析使用指南（v1）
 
@@ -63,6 +65,10 @@ python -m ashare_research.tools.financial_analysis `
 - 只绑定**年末**记录：年度流量要求 `period_end = YYYY-12-31` 且 `period_type = annual`；
   时点余额（`total_assets`、`equity_attributable_to_parent`）要求 `period_type = instant`。
   期间类型不符的记录不会以“最近可用”方式替代，而是显式记为缺失/排除。
+- 事实与上下文必须属于同一公司、年度和合并范围，且两个 `period_end` 都为该年末。
+  年度流量的上下文必须是 `duration`，从当年 1 月 1 日开始；时点余额必须是
+  `instant`，`period_start` 可以为空或等于年末时点。违反这些条件的已选事实以
+  `period_context_mismatch` 排除，相关指标保持缺失；不会回退到更早的事实版本。
 - 年度窗口 `[Y..N]` 内部实际需要 `Y-1..N` 年的事实，以便计算首年同比与期初余额。
 
 ## 值精度边界（绝不四舍五入）
@@ -76,6 +82,10 @@ python -m ashare_research.tools.financial_analysis `
 `period_end_invalid`。
 
 排除不会被当作“缺失证据”，也不会触发插值、替代或回退。
+
+NaN 和正负无穷值保持 `value_not_exact_integer` 排除原因，事实索引中的 `value`
+与 `value_integer` 输出为 `null`；相关指标保持 `missing_input`，不会替换为零。
+JSON 序列化拒绝非有限数字，导出报告可由严格 JSON 解析器读取。
 
 ## 输出结构
 

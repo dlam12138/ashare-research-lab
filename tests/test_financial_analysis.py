@@ -12,6 +12,8 @@ CLI subprocess runs including export manifests and sanitized failures.  The data
 and schema are checked to prove the analysis never mutates or creates a fact database.
 
 # AI provenance: action=created; model=GPT-5; agent=Codex; date=2026-10-10
+# AI provenance: action=modified; model=GPT-5; agent=Codex; date=2026-10-10
+# AI provenance: action=modified; model=GPT-5; agent=Codex; date=2026-10-10
 """
 
 from __future__ import annotations
@@ -705,6 +707,58 @@ def test_incompatible_inputs_are_excluded_not_coerced(
     assert binding["exclusion_reasons"] == [expected_reason]
 
 
+@pytest.mark.parametrize("value", [float("nan"), float("inf"), float("-inf")])
+def test_non_finite_facts_remain_excluded_in_strict_json(
+    tmp_path: Path, value: float
+) -> None:
+    prior, prior_ctx = _fact(SYMBOL, "revenue", 2022, 800.0, "2023-03-01")
+    current, current_ctx = _fact(SYMBOL, "revenue", 2023, 1000.0, "2024-03-01")
+    database = _seed(tmp_path / "non-finite.duckdb", [(prior, prior_ctx), (current, current_ctx)])
+    connection = duckdb.connect(str(database))
+    try:
+        connection.execute(
+            "UPDATE financial_facts SET value = ? WHERE fact_id = ?", [value, current["fact_id"]]
+        )
+    finally:
+        connection.close()
+    before_hash = _sha256(database)
+    report = core.build_report(
+        database=database, symbol=SYMBOL, as_of="2024-06-30", years=[2023], metrics=["revenue_yoy"]
+    )
+
+    def reject_constant(token: str) -> None:
+        raise ValueError(f"nonstandard JSON constant: {token}")
+
+    decoded = json.loads(core.render_json(report), parse_constant=reject_constant)
+    entries = {entry["fact_id"]: entry for entry in decoded["as_of"]["selected_fact_index"]}
+    assert entries[current["fact_id"]]["value"] is None
+    assert entries[current["fact_id"]]["value_integer"] is None
+    assert entries[current["fact_id"]]["compatible"] is False
+    assert entries[current["fact_id"]]["exclusion_reasons"] == ["value_not_exact_integer"]
+    assert entries[prior["fact_id"]]["value"] == 800.0
+    row = _record(decoded, "revenue_yoy", 2023)
+    assert row["status"] == "missing_input"
+    assert row["value"] is None
+    assert row["inputs"][0]["status"] == "excluded"
+    assert decoded["as_of"]["compatible_fact_count"] == 1
+
+    output = tmp_path / "report"
+    manifest = core.export_report(report, output)
+    exported = json.loads(
+        (output / "report.json").read_text(encoding="utf-8"), parse_constant=reject_constant
+    )
+    assert exported == decoded
+    for entry in manifest["files"]:
+        assert _sha256(output / entry["path"]) == entry["sha256"]
+    assert _sha256(database) == before_hash
+
+
+@pytest.mark.parametrize("value", [float("nan"), float("inf"), float("-inf")])
+def test_non_finite_json_serialization_fails_closed(value: float) -> None:
+    with pytest.raises(ValueError):
+        core.render_json({"unexpected_non_finite_value": value})
+
+
 @pytest.mark.parametrize(
     ("prior_value", "expected_status"),
     [(0.0, "undefined_zero_denominator"), (-100.0, "not_comparable_negative_prior")],
@@ -990,3 +1044,148 @@ def test_rendered_output_is_deterministic_and_path_free(tmp_path: Path) -> None:
         assert (tmp_path / "export-a" / name).read_bytes() == (
             tmp_path / "export-b" / name
         ).read_bytes()
+
+
+@pytest.mark.parametrize(
+    ("field", "value"),
+    [
+        ("symbol", OTHER_SYMBOL),
+        ("symbol", ""),
+        ("fiscal_year", 2022),
+        ("fiscal_year", 0),
+        ("period_end", "2022-12-31"),
+        ("period_end", "2023-06-30"),
+        ("period_start", "2023-10-01"),
+        ("period_start", "2022-01-01"),
+        ("period_start", ""),
+        ("instant_or_duration", INSTANT),
+        ("instant_or_duration", ""),
+    ],
+)
+def test_context_binding_rejects_inconsistent_annual_flow(
+    tmp_path: Path, field: str, value: Any
+) -> None:
+    prior, prior_ctx = _fact(SYMBOL, "revenue", 2022, 800.0, "2023-03-01")
+    current, current_ctx = _fact(SYMBOL, "revenue", 2023, 1000.0, "2024-03-01")
+    current_ctx[field] = value
+    database = _seed(
+        tmp_path / "annual-context.duckdb", [(prior, prior_ctx), (current, current_ctx)]
+    )
+    before_hash = _sha256(database)
+    report = core.build_report(
+        database=database, symbol=SYMBOL, as_of="2024-06-30", years=[2023], metrics=["revenue_yoy"]
+    )
+    row = _record(report, "revenue_yoy", 2023)
+    assert row["status"] == "missing_input"
+    assert row["value"] is None
+    assert row["inputs"][0]["status"] == "excluded"
+    assert row["inputs"][0]["fact_id"] == current["fact_id"]
+    assert row["inputs"][0]["exclusion_reasons"] == ["period_context_mismatch"]
+    assert report["as_of"]["compatible_fact_count"] == 1
+    assert _sha256(database) == before_hash
+
+
+@pytest.mark.parametrize(
+    ("field", "value"),
+    [
+        ("symbol", OTHER_SYMBOL),
+        ("fiscal_year", 2022),
+        ("fiscal_year", 0),
+        ("period_end", "2022-12-31"),
+        ("period_end", "2023-06-30"),
+        ("period_start", "2023-01-01"),
+        ("instant_or_duration", "duration"),
+        ("instant_or_duration", ""),
+    ],
+)
+def test_context_binding_rejects_inconsistent_instant_balance(
+    tmp_path: Path, field: str, value: Any
+) -> None:
+    profit, profit_ctx = _fact(
+        SYMBOL, "net_profit_attributable_to_parent", 2023, 105.0, "2024-03-01"
+    )
+    opening, opening_ctx = _fact(
+        SYMBOL, "equity_attributable_to_parent", 2022, 1000.0, "2023-03-01", period_type=INSTANT
+    )
+    closing, closing_ctx = _fact(
+        SYMBOL, "equity_attributable_to_parent", 2023, 1100.0, "2024-03-01", period_type=INSTANT
+    )
+    closing_ctx[field] = value
+    database = _seed(
+        tmp_path / "instant-context.duckdb",
+        [(profit, profit_ctx), (opening, opening_ctx), (closing, closing_ctx)],
+    )
+    before_hash = _sha256(database)
+    report = core.build_report(
+        database=database, symbol=SYMBOL, as_of="2024-06-30", years=[2023], metrics=[ROE]
+    )
+    row = _record(report, ROE, 2023)
+    assert row["status"] == "missing_input"
+    assert row["value"] is None
+    closing_binding = next(item for item in row["inputs"] if item["role"] == "closing")
+    assert closing_binding["status"] == "excluded"
+    assert closing_binding["fact_id"] == closing["fact_id"]
+    assert closing_binding["exclusion_reasons"] == ["period_context_mismatch"]
+    assert report["as_of"]["compatible_fact_count"] == 2
+    assert _sha256(database) == before_hash
+
+
+@pytest.mark.parametrize("start", ["", "2023-12-31"])
+def test_context_binding_accepts_valid_instant_conventions(tmp_path: Path, start: str) -> None:
+    profit, profit_ctx = _fact(
+        SYMBOL, "net_profit_attributable_to_parent", 2023, 105.0, "2024-03-01"
+    )
+    opening, opening_ctx = _fact(
+        SYMBOL, "equity_attributable_to_parent", 2022, 1000.0, "2023-03-01", period_type=INSTANT
+    )
+    closing, closing_ctx = _fact(
+        SYMBOL, "equity_attributable_to_parent", 2023, 1100.0, "2024-03-01", period_type=INSTANT
+    )
+    closing_ctx["period_start"] = start
+    database = _seed(
+        tmp_path / "valid-context.duckdb",
+        [(profit, profit_ctx), (opening, opening_ctx), (closing, closing_ctx)],
+    )
+    report = core.build_report(
+        database=database, symbol=SYMBOL, as_of="2024-06-30", years=[2023], metrics=[ROE]
+    )
+    row = _record(report, ROE, 2023)
+    assert row["status"] == "computed"
+    assert Decimal(row["value"]) == Decimal("0.1")
+    assert report["as_of"]["excluded_inputs"] == []
+
+
+def test_context_binding_never_falls_back_to_an_older_version(tmp_path: Path) -> None:
+    prior, prior_ctx = _fact(SYMBOL, "revenue", 2022, 800.0, "2023-03-01")
+    original, original_ctx = _fact(SYMBOL, "revenue", 2023, 1000.0, "2024-03-01")
+    revision, revision_ctx = _fact(
+        SYMBOL, "revenue", 2023, 1200.0, "2025-03-01",
+        fact_version=2, restatement_version="revision", supersedes_fact_id=original["fact_id"],
+    )
+    revision_ctx["context_id"] += "|revision"
+    revision["context_id"] = revision_ctx["context_id"]
+    revision = make_verified_fact(**revision)
+    revision_ctx["period_start"] = "2023-10-01"
+    database = _seed(
+        tmp_path / "revision-context.duckdb",
+        [(prior, prior_ctx), (original, original_ctx), (revision, revision_ctx)],
+    )
+    before_hash = _sha256(database)
+    report = core.build_report(
+        database=database, symbol=SYMBOL, as_of="2024-06-30", compare_with="2025-06-30",
+        years=[2023], metrics=["revenue_yoy"],
+    )
+    before = _record(report, "revenue_yoy", 2023)
+    assert before["status"] == "computed"
+    assert Decimal(before["value"]) == Decimal("0.25")
+    after = report["compare_with"]["records"][0]
+    assert after["status"] == "missing_input"
+    assert after["value"] is None
+    assert after["inputs"][0]["fact_id"] == revision["fact_id"]
+    assert after["inputs"][0]["status"] == "excluded"
+    selected_ids = {
+        entry["fact_id"] for entry in report["compare_with"]["selected_fact_index"]
+    }
+    assert revision["fact_id"] in selected_ids
+    assert original["fact_id"] not in selected_ids
+    assert _sha256(database) == before_hash
