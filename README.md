@@ -26,7 +26,7 @@
 | M4 合成演示 CLI | 已实现（离线、仅合成、固定样例） | `python -m ashare_research.synthetic_demo`（`--json` 可选） | 只跑固定的虚构 24 行示例；没有输入/配置/seed/provider/数据库/输出路径/注册表参数；合成演示不等于真实研究授权 | [模块](src/ashare_research/synthetic_demo.py)、[测试](tests/test_m4_synthetic_demo_cli.py) |
 | M2 离线研究包 | 已实现（固定来源汇编、离线、无新计算） | `python -m ashare_research.tools.value_research_bundle`（`--json`、`--output NEW_DIR`、`--verify DIR`） | 只汇编九个固定基线报告：混合日期历史汇编，不是统一 PIT 查询或研究刷新；无总体评分、排名、资格或建议；缺失证据不视为 0 或负面结论 | [模块](src/ashare_research/tools/value_research_bundle.py)、[测试](tests/test_value_research_bundle.py) |
 | M2 既有指标 PIT 重放 | 已实现（离线只读、内存重放既有七个指标） | 下方 `python -m ashare_research.tools.pit_metric_replay` | 只用既有已批准定义，无新公式/评分/排名/建议；缺失保持缺失；重放不是发布 | [模块](src/ashare_research/tools/pit_metric_replay.py)、[测试](tests/test_pit_metric_replay.py) |
-| M2 通用公司财务分析 | 本分支已实现，主线集成待审阅 | 下方 `python -m ashare_research.cli research financial`；显式指定事实数据库、标的、时点和年度 | 只读数据库，复用既有 12 个指标；严格期间绑定，缺失与排除保持可见；无新公式、评分、排名或建议 | [指南](docs/core_financial_analysis_guide_v1.md)、[测试](tests/test_financial_analysis.py)、[本地交付记录](agent/record/2026-10-10_11-financial-local-delivery.md) |
+| M2 通用公司财务分析 | 已实现（只读、显式数据库、多年度 PIT；复用既有 12 个指标） | 下方 `python -m ashare_research.cli research financial`；显式指定事实数据库、标的、时点和年度 | 只读数据库，复用既有 12 个指标；严格期间绑定，缺失与排除保持可见；无新公式、评分、排名或建议 | [指南](docs/core_financial_analysis_guide_v1.md)、[测试](tests/test_financial_analysis.py)、[本地交付记录](agent/record/2026-10-10_11-financial-local-delivery.md) |
 | M4-B 理论/假设注册表 | 最小元数据 API 已实现（仅合成/schema 校验）；显式规范 JSON 可只读复核 | `ashare_research.mechanism.registry` 的 `parse_hypothesis_record(document)`、显式状态转换与有界快照入口，或 `ashare-research research registry --record/--snapshot` | 不创建或加载真实候选数据集，不采集文献，不访问 provider、数据库、真实行情或 holdout；CLI 只读，不写入或提升记录；真实假设执行仍未授权 | [设计](docs/m4b_hypothesis_registry_design_v1.md)、[验收场景](docs/m4b_hypothesis_registry_acceptance_cases_v1.md)、[实现测试](tests/test_m4b_hypothesis_registry.py)、[实现验收](acceptance/2026-09-12_m4b_hypothesis_registry_implementation.md)、[冻结前置合同](reports/m4_stage4p_m4b_hypothesis_registry_contract_v1.json) |
 
 ### 研究结论与边界
@@ -1052,7 +1052,7 @@ python -m ashare_research.tools.pit_fact_explorer --as-of 2024-03-31 --compare-w
 ## M2 通用公司财务分析（显式数据库、多年度 PIT）
 
 在显式指定的已有 DuckDB 事实数据库上，为任意合格 A 股标的计算多年度财务画像。
-此入口在本分支可用，主线集成仍待审阅；详细规则见
+此入口已随主线可用；详细规则见
 [使用指南](docs/core_financial_analysis_guide_v1.md)。
 
 ```powershell
